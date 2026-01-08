@@ -990,27 +990,29 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         }
                     }
                     // older - end
+                    Activity activity = getActivity();
+                    if (isAdded() && activity != null) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recent_adapter = new VisitAdapter(getActivity(), mRecentPrescriptionModelList, VisitReceivedFragment.this);
+                                recycler_recent.setNestedScrollingEnabled(false);
+                                recycler_recent.setAdapter(recent_adapter);
 
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            recent_adapter = new VisitAdapter(getActivity(), mRecentPrescriptionModelList, VisitReceivedFragment.this);
-                            recycler_recent.setNestedScrollingEnabled(false);
-                            recycler_recent.setAdapter(recent_adapter);
+                                older_adapter = new VisitAdapter(getActivity(), mOlderPrescriptionModelList, VisitReceivedFragment.this);
+                                recycler_older.setNestedScrollingEnabled(false);
+                                recycler_older.setAdapter(older_adapter);
 
-                            older_adapter = new VisitAdapter(getActivity(), mOlderPrescriptionModelList, VisitReceivedFragment.this);
-                            recycler_older.setNestedScrollingEnabled(false);
-                            recycler_older.setAdapter(older_adapter);
-
-                            /**
-                             * Checking here the query that is entered and it is not empty so check the size of all of these
-                             * arraylists; if there size is 0 than show the no patient found view.
-                             */
-                            int allCount = mRecentPrescriptionModelList.size() + mOlderPrescriptionModelList.size();
-                            allCountVisibility(allCount);
-                            recent_older_visibility(mRecentPrescriptionModelList, mOlderPrescriptionModelList);
-                        }
-                    });
+                                /**
+                                 * Checking here the query that is entered and it is not empty so check the size of all of these
+                                 * arraylists; if there size is 0 than show the no patient found view.
+                                 */
+                                int allCount = mRecentPrescriptionModelList.size() + mOlderPrescriptionModelList.size();
+                                allCountVisibility(allCount);
+                                recent_older_visibility(mRecentPrescriptionModelList, mOlderPrescriptionModelList);
+                            }
+                        });
+                    }
 
                 }
             }

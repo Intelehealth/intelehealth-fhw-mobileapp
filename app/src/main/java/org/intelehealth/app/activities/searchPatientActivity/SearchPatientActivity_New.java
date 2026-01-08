@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -31,8 +33,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -72,7 +79,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     LinearLayout addPatientTV;
     String query;
     boolean fullyLoaded = false;
-    RelativeLayout view_nopatientfound;
+    RelativeLayout view_nopatientfound, toolbarRelative;
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
@@ -93,6 +100,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
+        EdgeToEdge.enable(this);
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
         LinearLayoutManager lm = new LinearLayoutManager(getApplicationContext());
@@ -111,11 +119,27 @@ public class SearchPatientActivity_New extends BaseActivity {
         iconSearch = findViewById(R.id.icon_search);
         iconClear = findViewById(R.id.icon_clear);
 
+        toolbarRelative = findViewById(R.id.toolbar_relative);
+
 
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setJustifyContent(JustifyContent.FLEX_START);
+
+
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+            toolbarRelative.setPadding(systemBars.left,systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });
 
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
@@ -258,19 +282,23 @@ public class SearchPatientActivity_New extends BaseActivity {
 
             if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
                 fetchDataforTags(patientDTOList);
-                runOnUiThread(this::searchData_Available);
-                try {
-                    runOnUiThread(() -> {
-                        adapter = new SearchPatientAdapter_New(this, patientDTOList);
-                        search_recycelview.setAdapter(adapter);
-                        start = end;
-                        end += limit;
-                    });
-                } catch (Exception e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(this::searchData_Available);
+                    try {
+                        runOnUiThread(() -> {
+                            adapter = new SearchPatientAdapter_New(this, patientDTOList);
+                            search_recycelview.setAdapter(adapter);
+                            start = end;
+                            end += limit;
+                        });
+                    } catch (Exception e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
                 }
             } else {
-                runOnUiThread(this::searchData_Unavailable);
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(this::searchData_Unavailable);
+                }
             }
         });
     }
@@ -488,15 +516,17 @@ public class SearchPatientActivity_New extends BaseActivity {
                 }
 
                 List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-                runOnUiThread(() -> {
-                    if (!tempList.isEmpty()) {
-                        patientDTOList.addAll(tempList);
-                        adapter.patientDTOS.addAll(tempList);
-                        adapter.notifyDataSetChanged();
-                        start = end;
-                        end += limit;
-                    }
-                });
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(() -> {
+                        if (!tempList.isEmpty()) {
+                            patientDTOList.addAll(tempList);
+                            adapter.patientDTOS.addAll(tempList);
+                            adapter.notifyDataSetChanged();
+                            start = end;
+                            end += limit;
+                        }
+                    });
+                }
             }
         });
     }

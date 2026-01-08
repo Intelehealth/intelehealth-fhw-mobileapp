@@ -35,6 +35,7 @@ import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
@@ -190,7 +191,8 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
 
                     @Override
                     public void onNext(ResetPasswordResModel_New resetPasswordResModel_new) {
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(ResetPasswordActivity_New.this, cpd);
+
                         snackbarUtils.showSnackLinearLayoutParentSuccess(ResetPasswordActivity_New.this, layoutParent, StringUtils.getMessageTranslated(resetPasswordResModel_new.getMessage(), sessionManager.getAppLanguage()), true);
                         if (resetPasswordResModel_new.getSuccess()) {
                             final Handler handler = new Handler();
@@ -212,7 +214,7 @@ public class ResetPasswordActivity_New extends AppCompatActivity {
                     public void onError(Throwable e) {
                         Logger.logD(TAG, "Login Failure" + e.getMessage());
                         e.printStackTrace();
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(ResetPasswordActivity_New.this, cpd);
                         snackbarUtils.showSnackLinearLayoutParentSuccess(context, layoutParent, getResources().getString(R.string.failed_to_change_password), false);
 
                     }

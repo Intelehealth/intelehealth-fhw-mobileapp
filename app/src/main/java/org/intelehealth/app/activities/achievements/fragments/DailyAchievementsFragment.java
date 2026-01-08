@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.achievements.fragments;
 
+import android.app.Activity;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
 import android.content.Context;
@@ -138,7 +139,10 @@ public class DailyAchievementsFragment extends Fragment {
         final Cursor todayPatientsCursor = db.rawQuery(patientsCreatedTodayQuery, new String[]{sessionManager.getProviderID(), todaysDate});
         todayPatientsCursor.moveToFirst();
         String todayPatientsCount = todayPatientsCursor.getString(todayPatientsCursor.getColumnIndex(todayPatientsCursor.getColumnName(0)));
-        requireActivity().runOnUiThread(() -> tvPatientsCreatedToday.setText(todayPatientsCount));
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+           activity.runOnUiThread(() -> tvPatientsCreatedToday.setText(todayPatientsCount));
+        }
         todayPatientsCursor.close();
     }
 
@@ -150,7 +154,11 @@ public class DailyAchievementsFragment extends Fragment {
 
         todayVisitsEndedCursor.moveToFirst();
         String todayVisitsEndedCount = todayVisitsEndedCursor.getString(todayVisitsEndedCursor.getColumnIndex(todayVisitsEndedCursor.getColumnName(0)));
-        requireActivity().runOnUiThread(() -> tvVisitsEndedToday.setText(todayVisitsEndedCount));
+
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+           activity.runOnUiThread(() -> tvVisitsEndedToday.setText(todayVisitsEndedCount));
+        }
         todayVisitsEndedCursor.close();
     }
 
@@ -172,7 +180,11 @@ public class DailyAchievementsFragment extends Fragment {
         }
 
         double finalAverageScore = averageScore;
-        requireActivity().runOnUiThread(() -> tvAvgSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
+
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            activity.runOnUiThread(() -> tvAvgSatisfactionScore.setText(StringUtils.formatDoubleValues(finalAverageScore)));
+        }
         satisfactionScoreCursor.close();
     }
 
@@ -186,15 +198,17 @@ public class DailyAchievementsFragment extends Fragment {
         UsageStatsManager usageStatsManager = ((MyAchievementsFragment) requireParentFragment()).usageStatsManager;
         Map<String, UsageStats> aggregateStatsMap = usageStatsManager.queryAndAggregateUsageStats(startDate, endDate);
         overallUsageStats = aggregateStatsMap.get("org.intelehealth.app");
-
-        requireActivity().runOnUiThread(() -> {
-            String totalTimeSpent = "";
-            if (overallUsageStats != null) {
-                totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(overallUsageStats.getTotalTimeInForeground()));
-            } else {
-                totalTimeSpent = "0h 0m";
-            }
-            tvDailyTimeSpent.setText(totalTimeSpent);
-        });
+        Activity activity = getActivity();
+        if (isAdded() && activity != null) {
+            activity.runOnUiThread(() -> {
+                String totalTimeSpent = "";
+                if (overallUsageStats != null) {
+                    totalTimeSpent = String.format(Locale.ENGLISH, DateAndTimeUtils.convertMillisecondsToHoursAndMinutes(overallUsageStats.getTotalTimeInForeground()));
+                } else {
+                    totalTimeSpent = "0h 0m";
+                }
+                tvDailyTimeSpent.setText(totalTimeSpent);
+            });
+        }
     }
 }

@@ -42,6 +42,7 @@ import android.widget.TextView;
 
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -142,7 +143,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
+                SafeDialogUtil.dismissDialog(PhysicalExamActivity.this, dialog);
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.show();

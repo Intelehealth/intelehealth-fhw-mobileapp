@@ -56,6 +56,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.dataMigration.SmoothUpgrade;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.Logger;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.fcm.utils.FcmRemoteConfig;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
@@ -628,7 +629,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
             AlertDialog dialog = builder.create();
             dialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-            dialog.show();
+            SafeDialogUtil.showDialog(activityContext, dialog);
             int width = activityContext.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
 
             dialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);

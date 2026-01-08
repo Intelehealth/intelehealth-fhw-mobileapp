@@ -331,7 +331,10 @@
     <string name="prescription_diagnosis">Diagnosis</string>
     <string name="prescription_medication">Medication</string>
     <string name="prescription_recommended_investigation">Recommended Investigation</string>
+    <string name="prescription_test">Test</string>
     <string name="prescription_general_advice">General Advice</string>
+    <string name="prescription_advice">Advice</string>
+    <string name="prescription_additional_ins">Additional Instructions</string>
     <string name="prescription_follow_up">Follow Up</string>
 
     <string name="sample_text">sample text</string>

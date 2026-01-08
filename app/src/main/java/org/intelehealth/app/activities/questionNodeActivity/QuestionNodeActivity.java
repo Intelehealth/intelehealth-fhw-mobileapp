@@ -60,6 +60,8 @@ import org.intelehealth.app.knowledgeEngine.ncd.NCDNodeValidationLogic;
 import org.intelehealth.app.knowledgeEngine.ncd.NCDValidationResult;
 import org.intelehealth.app.knowledgeEngine.ncd.ValidationConstants;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.shared.BaseActivity;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -417,11 +419,11 @@ public class QuestionNodeActivity extends AppCompatActivity implements Questions
             alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
+                    SafeDialogUtil.dismissDialog(QuestionNodeActivity.this, dialog);
                 }
             });
             AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+            SafeDialogUtil.showDialog(this, alertDialog);
             IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
         } else {
 

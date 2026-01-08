@@ -1,5 +1,7 @@
 package org.intelehealth.app.utilities;
+
 import android.app.ActionBar;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -50,24 +52,35 @@ public class TooltipWindow {
         int contentViewWidth = contentView.getMeasuredWidth();
         int position_x = anchor_rect.centerX() - (contentViewWidth / 2);
         int position_y = anchor_rect.bottom - (anchor_rect.height() / 2);
-        tipWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, position_x,position_y);
+        tipWindow.showAtLocation(anchor, Gravity.NO_GRAVITY, position_x, position_y);
         handler.sendEmptyMessageDelayed(MSG_DISMISS_TOOLTIP, 4000);
     }
+
     public boolean isTooltipShown() {
         if (tipWindow != null && tipWindow.isShowing())
             return true;
         return false;
     }
+
     public void dismissTooltip() {
         if (tipWindow != null && tipWindow.isShowing())
             tipWindow.dismiss();
     }
+
     Handler handler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MSG_DISMISS_TOOLTIP) {
-                if (tipWindow != null && tipWindow.isShowing())
-                    tipWindow.dismiss();
+                if (tipWindow != null && tipWindow.isShowing()) {
+                    if (ctx instanceof Activity) {
+                        if (!((Activity) ctx).isFinishing() && !((Activity) ctx).isDestroyed()) {
+                            tipWindow.dismiss();
+                        }
+                    }
+                }
+
             }
-        };
+        }
+
+        ;
     };
 }

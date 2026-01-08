@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
@@ -36,6 +37,7 @@ import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
@@ -228,13 +230,15 @@ public class VisitActivity extends BaseActivity implements
     private void updateCounts(boolean isForReceivedPrescription) {
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
-            runOnUiThread(() -> {
-                if (isForReceivedPrescription)
-                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
-                else
-                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> {
+                    if (isForReceivedPrescription)
+                        Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
+                    else
+                        Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
 
-            });
+                });
+            }
 
         });
     }
@@ -257,8 +261,9 @@ public class VisitActivity extends BaseActivity implements
     }
 
     private void hideProgressbar() {
-        if(syncClicked && !this.isFinishing()){
-            loadingDialog.dismiss();
+        if(syncClicked && !this.isFinishing() && !isDestroyed()){
+            SafeDialogUtil.dismissDialog(VisitActivity.this, loadingDialog);
+
         }
     }
 
@@ -291,7 +296,7 @@ public class VisitActivity extends BaseActivity implements
     public void syncNow(View view) {
         if (NetworkConnection.isOnline(this)) {
 
-            if (!this.isFinishing()) {
+            if (!isFinishing() && !isDestroyed()) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

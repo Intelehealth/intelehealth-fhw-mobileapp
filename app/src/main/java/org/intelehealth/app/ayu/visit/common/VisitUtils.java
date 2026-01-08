@@ -157,7 +157,7 @@ AB NEGATIVE = 1231*/
                     .replace("times per week", "દર અઠવાડિયે વખત")
                     .replace("times per month", "દર મહિને વખત")
                     .replace("times per year", "વર્ષ દીઠ વખત");
-        } else if (locale.equalsIgnoreCase("te")) {
+        } /*else if (locale.equalsIgnoreCase("te")) {
             result = result.replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
                     .replace("Patient reports -", "రోగి నివేదికలు -")
                     .replace("Patient denies -", "రోగి నిరాకరించాడు -")
@@ -169,7 +169,7 @@ AB NEGATIVE = 1231*/
                     .replace("times per week", "వారానికి సార్లు")
                     .replace("times per month", "నెలకు సార్లు")
                     .replace("times per year", "సంవత్సరానికి సార్లు");
-        } else if (locale.equalsIgnoreCase("mr")) {
+        } */else if (locale.equalsIgnoreCase("mr")) {
             result = result.replace("Question not answered", "प्रश्नाचे उत्तर दिले नाही")
                     .replace("Patient reports -", "रुग्ण अहवाल-")
                     .replace("Patient denies -", "रुग्ण नकार देतो-")
@@ -244,6 +244,19 @@ AB NEGATIVE = 1231*/
                     .replace("times per week", "வாரத்திற்கு முறை")
                     .replace("times per month", "மாதம் முறை")
                     .replace("times per year", "வருடத்திற்கு முறை");
+
+        }else if (locale.equalsIgnoreCase("te")) {
+            result = result.replace("Question not answered", "ప్రశ్నకు సమాధానం ఇవ్వలేదు")
+                    .replace("Patient reports -", "రోగి వెల్లడిస్తారు-")
+                    .replace("Patient denies -", "రోగి నిరాకరిస్తారు-")
+                    .replace("Hours", "గంటలు").replace("Days", "రోజులు")
+                    .replace("Weeks", "వారం").replace("Months", "నెలలు")
+                    .replace("Years", "సంవత్సరాలు")
+                    .replace("times per hour", "ఒక గంటకు సార్లు")
+                    .replace("time per day", "ఒక రోజుకు సారి")
+                    .replace("times per week", "వారం కు సార్లు")
+                    .replace("times per month", "నెలకు సార్లు")
+                    .replace("times per year", "వర్షం కు సార్లు");
         }
         CustomLog.v("VisitUtils", "OUT - " + result);
 
@@ -348,6 +361,10 @@ AB NEGATIVE = 1231*/
             return "ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "रुग्ण नकार देतो-";
+        } else if (localeCode.equalsIgnoreCase("ta")) {
+            return "நோயாளி மறுக்கிறார்-";
+        } else if (localeCode.equalsIgnoreCase("te")) {
+            return "రోగి నిరాకరిస్తారు-";
         } else {
             return "Patient denies -";
         }
@@ -368,7 +385,12 @@ AB NEGATIVE = 1231*/
             return "ನೀವು ಈ ಕೆಳಗಿನ ರೋಗಲಕ್ಷಣಗಳನ್ನು ಹೊಂದಿದ್ದೀರಾ?";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "तुम्हाला खालील लक्षण (लक्षणे) आहेत का?";
-        } else {
+        } else if (localeCode.equalsIgnoreCase("ta")) {
+            return "உங்களுக்கு பின்வரும் அறிகுறிகள் உள்ளதா?*";
+        }else if (localeCode.equalsIgnoreCase("te")) {
+            return "మీకు క్రింది లక్షణాలు ఉన్నాయా?*";
+        }
+        else {
             return "Do you have the following symptom(s)?";
         }
     }
@@ -389,6 +411,11 @@ AB NEGATIVE = 1231*/
             return "ಸಾಮಾನ್ಯ ಪರೀಕ್ಷೆಗಳು:";
         } else if (localeCode.equalsIgnoreCase("mr")) {
             return "सामान्य परीक्षण:";
+        }else if (localeCode.equalsIgnoreCase("ta")) {
+            return "பொது தேர்வுகள்:";
+        }
+        else if (localeCode.equalsIgnoreCase("te")) {
+            return "సాధారణ పరీక్షలు:";
         } else {
             return "General exams:";
         }

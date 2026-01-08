@@ -2,6 +2,7 @@ package org.intelehealth.klivekit.provider
 
 import android.content.Context
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.livekit.android.AudioOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
 import io.livekit.android.RoomOptions
@@ -12,11 +13,15 @@ import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
+import io.livekit.android.room.track.VideoCaptureParameter
+import io.livekit.android.room.track.VideoEncoding
+import io.livekit.android.room.track.VideoPreset
 import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
+import livekit.org.webrtc.DefaultVideoEncoderFactory
+import livekit.org.webrtc.EglBase
+import livekit.org.webrtc.HardwareVideoEncoderFactory
 import org.intelehealth.klivekit.utils.AudioType
-import org.webrtc.EglBase
-import org.webrtc.HardwareVideoEncoderFactory
 
 /**
  * Created by Vaghela Mithun R. on 16-09-2023 - 20:32.
@@ -47,7 +52,7 @@ object LiveKitProvider {
     private fun provideLocalVideoTrackOptions() = LocalVideoTrackOptions(
         deviceId = "",
         position = CameraPosition.FRONT,
-        captureParams = VideoPreset43.FHD.capture,
+        captureParams = VideoPreset43.H1080.capture,
     )
 
     private fun provideAudioPublishDefault() = AudioTrackPublishDefaults(
@@ -56,7 +61,7 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset43.VGA.encoding
+        videoEncoding = VideoPreset43.H480.encoding
 //        videoEncoding = VideoPreset169.VGA.encoding,
 //            videoCodec = VideoCodec.VP8.codecName
     )
@@ -83,12 +88,22 @@ object LiveKitProvider {
         options = options,
         overrides = LiveKitOverrides(
             okHttpClient = RetrofitProvider.getOkHttpClient(),
-            audioHandler = audioSwitchHandler,
-            videoEncoderFactory = HardwareVideoEncoderFactory(
+            audioOptions = AudioOptions(
+                audioHandler = audioSwitchHandler,
+            ),
+            //video call wasn't working properly for lower end device for the HardwareVideoEncoderFactory
+            //that's why commented
+
+            /*videoEncoderFactory = HardwareVideoEncoderFactory(
                 EglBase.create().eglBaseContext,
                 true,
                 true
-            )
+            )*/
+            /*videoEncoderFactory = DefaultVideoEncoderFactory(
+                EglBase.create().eglBaseContext,
+                  true,
+                true
+            )*/
         )
     )
 

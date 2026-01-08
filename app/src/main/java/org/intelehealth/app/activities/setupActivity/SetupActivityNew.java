@@ -22,6 +22,15 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.location_survey.LocationSurveyActivity;
+import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributeRequest;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
+import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
+import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -75,6 +84,7 @@ import org.intelehealth.app.utilities.LocationValidationUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringEncryption;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -576,7 +586,12 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = "https://" + urlString.concat(":3030/auth/login");
+        Log.d(TAG, "getJWTToken: finalURL : "+finalURL);
+
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
+        Log.d(TAG, "getJWTToken: authBody1 : "+authBody);
+        Log.d(TAG, "getJWTToken: authBody2 : "+new Gson().toJson(authBody));
+
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
         authJWTResponseObservable
@@ -592,10 +607,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                     public void onNext(AuthJWTResponse authJWTResponse) {
                         // in case of error password
                         if (!authJWTResponse.getStatus()) {
-                            cpd.dismiss();
+                            SafeDialogUtil.dismissDialog(SetupActivityNew.this, cpd);
                             showErrorDialog();
                             return;
                         }
+                        Log.d(TAG, "onNext: authJWTResponse  : "+new Gson().toJson(authJWTResponse));
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
                         TestSetup(urlString, username, password, admin_password);
@@ -603,7 +619,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
                     @Override
                     public void onError(Throwable e) {
-                        cpd.dismiss();
+                        SafeDialogUtil.dismissDialog(SetupActivityNew.this, cpd);
                         if (Objects.requireNonNull(e.getMessage()).contains("Unable to resolve host")) {
                             showServerErrorDialog();
                         } else {
@@ -767,7 +783,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                             public void onError(Throwable e) {
                                                 Logger.logD(TAG, "handle provider error" + e.getMessage());
                                                 e.printStackTrace();
-                                                cpd.dismiss();
+                                                SafeDialogUtil.dismissDialog(SetupActivityNew.this, cpd);
+
                                                 ////   progress.dismiss();
                                                 // dismissLoggingInDialog();
                                             }
@@ -946,7 +963,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
                         AlertDialog alertDialog = dialog.create();
                         alertDialog.setView(promptsView, 20, 0, 20, 0);
-                        alertDialog.show();
+                        SafeDialogUtil.showDialog(this, alertDialog);
                         alertDialog.setCanceledOnTouchOutside(false); //dialog wont close when clicked outside...
 
                         // Get the alert dialog buttons reference
@@ -1219,6 +1236,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     protected void onResume() {
         super.onResume();
         //temporary added
-        sessionManager.setIsLoggedIn(false);
+        //sessionManager.setIsLoggedIn(false);
     }
 }

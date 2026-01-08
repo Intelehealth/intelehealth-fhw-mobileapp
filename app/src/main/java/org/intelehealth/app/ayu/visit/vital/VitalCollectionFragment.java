@@ -14,6 +14,7 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 
+import org.intelehealth.app.activities.visit.PrescriptionActivity;
 import org.intelehealth.app.activities.visit.staticEnabledFields.VitalsEnabledFieldsHelper;
 import org.intelehealth.app.ayu.visit.model.VitalsWrapper;
 import org.intelehealth.app.utilities.CustomLog;
@@ -63,6 +64,7 @@ import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -319,7 +321,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     @Override
                     public void onSelect(SimpleItemData data) {
                         if (mBloodGroupAlertDialog != null) {
-                            mBloodGroupAlertDialog.dismiss();
+                            SafeDialogUtil.dismissDialog(requireActivity(), mBloodGroupAlertDialog);
+
                         }
                         mBloodGroupTextView.setText(data.getTitle());
                         //as we are saving code not text for blood group
@@ -380,7 +383,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBmiStatusTextView.setText("");
             }
             mheightSpinner.setSelection(position);
-            listPopupWindow.dismiss();
+            if(!requireActivity().isFinishing() && !requireActivity().isDestroyed()){
+                listPopupWindow.dismiss();
+            }
 
             boolean isValid = isValidaForm();
             setDisabledSubmit(!isValid);

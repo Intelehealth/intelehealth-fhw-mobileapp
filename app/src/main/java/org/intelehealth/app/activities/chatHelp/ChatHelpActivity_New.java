@@ -49,6 +49,7 @@ import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.calendarviewcustom.CalendarViewDemoActivity;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.File;
@@ -362,16 +363,19 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
             @Override
             public void run() {
                 boolean flag = BitmapUtils.fileCompressed(filePath);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (flag) {
-                            saveImage(filePath);
-                        } else
-                            Toast.makeText(ChatHelpActivity_New.this, getString(R.string.something_went_wrong),
-                                    Toast.LENGTH_SHORT).show();
-                    }
-                });
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (flag) {
+                                saveImage(filePath);
+                            } else
+                                Toast.makeText(ChatHelpActivity_New.this, getString(R.string.something_went_wrong),
+                                        Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
 
             }
         });
@@ -466,7 +470,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         });
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
@@ -559,7 +563,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
                 .skipMemoryCache(true)
                 .into(ivFullImage);
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
 
 
     }

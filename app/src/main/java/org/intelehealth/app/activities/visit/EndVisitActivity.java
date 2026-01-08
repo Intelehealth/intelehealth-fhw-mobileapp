@@ -927,90 +927,92 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
                 List<PrescriptionModel> allRecentList = recentNotEndedVisits();
                 List<PrescriptionModel> allOlderList = olderNotEndedVisits();
                 CustomLog.d("TAG", "searchListReturned: " + allRecentList.size() + ", " + allOlderList.size());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (!finalQuery.isEmpty()) {
-                            // recent- start
-                            recent.clear();
-                            older.clear();
+                if (!isFinishing() && !isDestroyed()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!finalQuery.isEmpty()) {
+                                // recent- start
+                                recent.clear();
+                                older.clear();
 
-                            if (allRecentList.size() > 0) {
-                                for (PrescriptionModel model : allRecentList) {
-                                    if (model.getMiddle_name() != null) {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String middleName = model.getMiddle_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullPartName = firstName + " " + lastName;
-                                        String fullName = firstName + " " + middleName + " " + lastName;
+                                if (allRecentList.size() > 0) {
+                                    for (PrescriptionModel model : allRecentList) {
+                                        if (model.getMiddle_name() != null) {
+                                            String firstName = model.getFirst_name().toLowerCase();
+                                            String middleName = model.getMiddle_name().toLowerCase();
+                                            String lastName = model.getLast_name().toLowerCase();
+                                            String fullPartName = firstName + " " + lastName;
+                                            String fullName = firstName + " " + middleName + " " + lastName;
 
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
-                                                lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            recent.add(model);
+                                            if (firstName.contains(finalQuery) || middleName.contains(finalQuery) ||
+                                                    lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                recent.add(model);
+                                            } else {
+                                                // dont add in list value.
+                                            }
                                         } else {
-                                            // dont add in list value.
-                                        }
-                                    } else {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullName = firstName + " " + lastName;
+                                            String firstName = model.getFirst_name().toLowerCase();
+                                            String lastName = model.getLast_name().toLowerCase();
+                                            String fullName = firstName + " " + lastName;
 
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            recent.add(model);
-                                        } else {
-                                            // dont add in list value.
-                                        }
-                                    }
-                                }
-                            }
-
-                            if (allOlderList.size() > 0) {
-                                for (PrescriptionModel model : allOlderList) {
-                                    if (model.getMiddle_name() != null) {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String middleName = model.getMiddle_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullPartName = firstName + " " + lastName;
-                                        String fullName = firstName + " " + middleName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
-                                                || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            older.add(model);
-                                        } else {
-                                            // do nothing
-                                        }
-                                    } else {
-                                        String firstName = model.getFirst_name().toLowerCase();
-                                        String lastName = model.getLast_name().toLowerCase();
-                                        String fullName = firstName + " " + lastName;
-
-                                        if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
-                                            older.add(model);
-                                        } else {
-                                            // do nothing
+                                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                recent.add(model);
+                                            } else {
+                                                // dont add in list value.
+                                            }
                                         }
                                     }
                                 }
+
+                                if (allOlderList.size() > 0) {
+                                    for (PrescriptionModel model : allOlderList) {
+                                        if (model.getMiddle_name() != null) {
+                                            String firstName = model.getFirst_name().toLowerCase();
+                                            String middleName = model.getMiddle_name().toLowerCase();
+                                            String lastName = model.getLast_name().toLowerCase();
+                                            String fullPartName = firstName + " " + lastName;
+                                            String fullName = firstName + " " + middleName + " " + lastName;
+
+                                            if (firstName.contains(finalQuery) || middleName.contains(finalQuery)
+                                                    || lastName.contains(finalQuery) || fullPartName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                older.add(model);
+                                            } else {
+                                                // do nothing
+                                            }
+                                        } else {
+                                            String firstName = model.getFirst_name().toLowerCase();
+                                            String lastName = model.getLast_name().toLowerCase();
+                                            String fullName = firstName + " " + lastName;
+
+                                            if (firstName.contains(finalQuery) || lastName.contains(finalQuery) || fullName.contains(finalQuery)) {
+                                                older.add(model);
+                                            } else {
+                                                // do nothing
+                                            }
+                                        }
+                                    }
+                                }
+
+                                recentVisitsAdapter = new EndVisitAdapter(context, recent, EndVisitActivity.this);
+                                recycler_recent.setNestedScrollingEnabled(false);
+                                recycler_recent.setAdapter(recentVisitsAdapter);
+
+                                olderVisitsAdapter = new EndVisitAdapter(context, older, EndVisitActivity.this);
+                                recycler_older.setNestedScrollingEnabled(false);
+                                recycler_older.setAdapter(olderVisitsAdapter);
+
+                                /**
+                                 * Checking here the query that is entered and it is not empty so check the size of all of these
+                                 * arraylists; if there size is 0 than show the no patient found view.
+                                 */
+                                int allCount = recent.size() + older.size();
+                                allCountVisibility(allCount);
+                                recent_older_visibility(recent, older);
                             }
-
-                            recentVisitsAdapter = new EndVisitAdapter(context, recent, EndVisitActivity.this);
-                            recycler_recent.setNestedScrollingEnabled(false);
-                            recycler_recent.setAdapter(recentVisitsAdapter);
-
-                            olderVisitsAdapter = new EndVisitAdapter(context, older, EndVisitActivity.this);
-                            recycler_older.setNestedScrollingEnabled(false);
-                            recycler_older.setAdapter(olderVisitsAdapter);
-
-                            /**
-                             * Checking here the query that is entered and it is not empty so check the size of all of these
-                             * arraylists; if there size is 0 than show the no patient found view.
-                             */
-                            int allCount = recent.size() + older.size();
-                            allCountVisibility(allCount);
-                            recent_older_visibility(recent, older);
                         }
-                    }
-                });
+                    });
+                }
             }
         }).start();
 

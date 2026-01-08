@@ -27,6 +27,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SafeDialogUtil
 import org.intelehealth.app.utilities.extensions.addFilter
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -91,14 +92,17 @@ class PatientPersonalInfoFragment :
                     it.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
                 }
 
-                dialogBinding.btnCancelPicker.setOnClickListener { dialog.dismiss() }
+                dialogBinding.btnCancelPicker.setOnClickListener {
+                    SafeDialogUtil.dismissDialog(requireActivity(), dialog)
+                }
                 dialogBinding.buttonOkPicker.setOnClickListener {
                     val month = dialogBinding.dialog2NumbersUnit.value
                     val year = dialogBinding.dialog2NumbersQuantity.value
                     val days = dialogBinding.dialog3NumbersUnit.value
 
                     bindAgeAndDobValue(year, month, days)
-                    dialog.dismiss()
+                    SafeDialogUtil.dismissDialog(requireActivity(), dialog)
+
                 }
 
             }.show()

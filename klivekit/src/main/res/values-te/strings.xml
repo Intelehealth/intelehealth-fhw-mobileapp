@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Int-Health V-Call</string>
+    <string name="settings_name" translatable="false">AppRTC Settings</string>
+    <string name="disconnect_call">కాల్ నిలిపివేయి</string>
+    <string name="room_description">
+        దయచేసి ఒక గది పేరు ఇవ్వండి. గది పేర్లు అందరితో పంచుకుంటారు, కాబట్టి ఒక ప్రత్యేకమైన పేరు ఆలోచించి మీ స్నేహితునికి పంపండి.
+    </string>
+    <string name="favorites">ఇష్టాలు</string>
+    <string name="no_favorites">ఇష్టాలు లేవు</string>
+    <string name="invalid_url_title">చెల్లని URL</string>
+    <string name="invalid_url_text">మీరు ఇచ్చిన URL లేదా గది పేరు చెల్లని URL గా మారింది: %1$s</string>
+    <string name="channel_error_title">కనెక్షన్ లోపం</string>
+    <string name="connecting_to">కనెక్ట్ అవుతోంది: %1$s</string>
+    <string name="missing_url">తీవ్ర లోపం: కనెక్ట్ కావడానికి URL లేదు.</string>
+    <string name="camera2_texture_only_error">Camera2 కేవలం టెక్స్చర్‌లో క్యాప్చర్ చేయడాన్నే అనుమతిస్తుంది. Camera2ని నిలిపివేయండి లేదా ఆప్షన్లలో టెక్స్చర్‌లో క్యాప్చర్ ఆన్ చేయండి.</string>
+    <string name="ok">సరే</string>
+    <string name="switch_camera">ముందు/వెనుక కెమెరా మార్చు</string>
+    <string name="capture_format_change_text">క్యాప్చర్ ఫార్మాట్ మార్చడానికి స్లైడ్ చేయండి</string>
+    <string name="muted">మ్యూట్ చేయబడింది</string>
+    <string name="toggle_debug">డీబగ్ వీక్షణ మార్చు</string>
+    <string name="toggle_mic">మైక్రోఫోన్ ఆన్/ఆఫ్ చేయి</string>
+    <string name="action_settings">సెట్టింగ్స్</string>
+    <string name="action_loopback">లూప్‌బ్యాక్ కనెక్షన్</string>
+    <string name="connect_description">గదికి కనెక్ట్ అవ్వండి</string>
+    <string name="add_favorite_description">ఇష్టాన్ని జోడించు</string>
+    <string name="format_description">%1$dx%2$d @ %3$d fps</string>
+
+    <string name="video_on_lbl">వీడియో ఆన్!</string>
+    <string name="video_off_lbl">వీడియో ఆఫ్!</string>
+    <string name="call_end_lbl">కాల్ ముగిసింది!</string>
+    <string name="audio_off_lbl">ఆడియో ఆఫ్!</string>
+    <string name="audio_on_lbl">ఆడియో ఆన్!</string>
+    <string name="video_on_off_button">వీడియో ఆన్/ఆఫ్ బటన్</string>
+    <string name="flip_camera">కెమెరా మార్చు</string>
+    <string name="call_end_button">కాల్ ముగింపు బటన్</string>
+    <string name="audio_on_off_button">ఆడియో ఆన్/ఆఫ్ బటన్</string>
+    <string name="you">మీరు</string>
+    <string name="start_call_now">ఇప్పుడే కాల్ ప్రారంభించండి</string>
+    <string name="start_txt_chat_now">ఇప్పుడే టెక్స్ట్ చాట్ ప్రారంభించండి</string>
+    <string name="connecting">కనెక్ట్ అవుతోంది...</string>
+    <string name="dummy_text">లోరెం ఇప్సమ్ డోలర్ సిట్ అమెట్, కాన్సెక్టటుర్ అడిపిస్కింగ్ ఎలిట్, సెడ్ డో ఈయుస్మోడ్ టెంపోర్ ఇంకిడిడుంట్ యుట్ లాబోరే ఎట్ డోలోర్ మాగ్నా అలిక్వా.</string>
+    <string name="dummy_text_1">లోరెం ఇప్సమ్ డోలర్ సిట్ అమెట్</string>
+    <string name="you_have_no_messages_start_sending_messages_now">మీకు సందేశాలు లేవు! ఇప్పుడే సందేశాలు పంపడం ప్రారంభించండి.</string>
+    <string name="empty_message_txt">దయచేసి మీ సందేశాన్ని రాయండి!</string>
+    <string name="loading">లోడింగ్...</string>
+    <string name="video_call">వీడియో కాల్</string>
+    <string name="please_wait_for_doctor">దయచేసి డాక్టర్ అందుబాటులోకి వచ్చే వరకు వేచి ఉండండి.</string>
+    <string name="call_end_aler_txt">మీరు వీడియో కాల్‌ను ముగించాలనుకుంటున్నారా?</string>
+    <string name="yes">అవును</string>
+    <string name="no">కాదు</string>
+    <string name="type_text_here_str">ఇక్కడ టైప్ చేయండి ...</string>
+    <string name="take_photo_lbl">ఫోటో తీయండి</string>
+    <string name="choose_from_gallery_lbl">గ్యాలరీ నుండి ఎంచుకోండి</string>
+    <string name="cancel_lbl">రద్దు చేయి</string>
+    <string name="max_doc_size_toast">గరిష్ట డాక్ సైజ్ 512 KB</string>
+    <string name="choose_documents">డాక్యుమెంట్స్ ఎంచుకోండి</string>
+    <string name="read">చదివినది</string>
+    <string name="sent">పంపబడింది</string>
+    <string name="msg_delivered">డెలివర్ చేయబడింది</string>
+    <string name="sending">పంపుతోంది</string>
+    <string name="max_5_image">ఒక కేసుకు గరిష్టంగా 5 చిత్రాలను మాత్రమే పంపవచ్చు</string>
+    <string name="max_2_image">ఒక కేసుకు గరిష్టంగా 2 చిత్రాలను మాత్రమే పంపవచ్చు</string>
+    <string name="select">ఎంచుకోండి</string>
+    <string name="camera_permission_denied">కెమెరా అనుమతి నిరాకరించబడింది!</string>
+    <string name="unable_to_pick_data">గ్యాలరీ డేటాను ఎంచుకోవడం సాధ్యం కాదు!</string>
+    <string name="max_doc_size_toast_mb">గరిష్ట డాక్ సైజ్ 1 MB</string>
+    <string name="doctor_annotation">డా.</string>
+    <string name="disconnected">డిస్కనెక్ట్ అయ్యింది!</string>
+    <string name="enter_room_id">దయచేసి గది ID ఇవ్వండి</string>
+    <string name="permission_denied">అనుమతి నిరాకరించబడింది\n</string>
+    <string name="incoming_voice_call">ఇన్కమింగ్ వాయిస్ కాల్</string>
+    <string name="incoming_call">ఇన్కమింగ్ కాల్</string>
+    <string name="doctor_profile_picture">డాక్టర్ ప్రొఫైల్ చిత్రం</string>
+    <string name="poor_connection">బలహీనమైన కనెక్షన్</string>
+    <string name="remote_participant_mic_off_status">దూరపు పాల్గొనేవారి మైక్ ఆఫ్ స్థితి</string>
+    <string name="sender_image">పంపిన వ్యక్తి చిత్రం</string>
+    <string name="select_spinner">ఎంచుకోండి</string>
+    <string name="call_swipe_up">పైకి స్వైప్ చేయండి</string>
+    <string name="release_now">ఇప్పుడే రిలీజ్ చేయండి</string>
+    <string name="chat_text_reach_to_limit">మీరు గరిష్ట పరిమితి 1000 అక్షరాలకు చేరుకున్నారు</string>
+</resources>

@@ -33,6 +33,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.appointmentNew.ScheduleAppointmentActivity_New;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -691,7 +692,7 @@ public class CalendarViewDemoActivity extends BaseActivity implements SendSelect
             alertDialog.dismiss();
         });*/
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
     }
 
 

@@ -52,6 +52,7 @@ import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
@@ -129,8 +130,11 @@ import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.RegexUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -650,7 +654,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
@@ -1108,11 +1112,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String fontFamilyFile = "";
         if (details != null && details.getFontOfSign() != null) {
             if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/youthness.ttf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/asem.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/arty.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
@@ -1231,10 +1235,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         positive_btn.setOnClickListener(v -> {
             /*Intent intent = new Intent(PrescriptionActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(PrescriptionActivity.this, alertDialog);
+
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     private void expandableCardVisibilityHandling() {
@@ -1402,9 +1407,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
                 if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
-                    diagnosisReturned = diagnosisReturned + ",\n" + value;
+                    diagnosisReturned = diagnosisReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
-                    diagnosisReturned = value;
+                    diagnosisReturned =  Node.bullet + " " + value;
                 }
                 diagnosis_txt.setText(diagnosisReturned);
                 break;
@@ -1426,10 +1431,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
             case UuidDictionary.MEDICAL_ADVICE: {
                 if (!adviceReturned.isEmpty() && !adviceReturned.contains(value)) {
-                    adviceReturned = adviceReturned + "\n" + value;
+                    adviceReturned = adviceReturned + "\n\n" + Node.bullet + " " + value;
                     CustomLog.d("GAME", "GAME: " + adviceReturned);
                 } else {
-                    adviceReturned = value;
+                    adviceReturned = Node.bullet + " " + value;
                     CustomLog.d("GAME", "GAME_2: " + adviceReturned);
                 }
               /*  if (medicalAdviceCard.getVisibility() != View.VISIBLE) {
@@ -1461,7 +1466,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
-                adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+               // adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -1610,10 +1615,22 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         hideAdditionalInstruction();
 
         String[] medicationDataArray = rxReturned.split("\n");
+        StringBuilder additionalInstruction = new StringBuilder();
 
         for (String medicine : medicationDataArray) {
-            if (medicine.contains(":")) {
-                String[] medicineDetailArray = medicine.split(":");
+            if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
+                if(!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")){
+                    additionalInstruction.append(Node.bullet)
+                            .append(" ")
+                            .append(medicine)
+                            .append("\n");
+                }
+
+            } else {
+                medicineModelList.add(((PrescribedMedicineModel) ParserUtils.Companion.parseMedication(medicine)));
+            }
+            /* if (medicine.contains(":")) {
+             *//*String[] medicineDetailArray = medicine.split(":");
                 PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
                 for (int i = 0; i < medicineDetailArray.length; i++) {
                     switch (i) {
@@ -1623,15 +1640,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         case 3 -> medicineModel.setTiming(medicineDetailArray[i]);
                         default -> medicineModel.setRemark(medicineDetailArray[i]);
                     }
-                }
-                medicineModelList.add(medicineModel);
+                }*//*
+                medicineModelList.add(ParserUtils.Companion.parse(medicine));
             } else {
                 if (!medicine.isEmpty()) {
                     setAdditionalInstruction(medicine);
                 }
 
-            }
+            }*/
         }
+
+        setAdditionalInstruction(additionalInstruction.toString());
         return medicineModelList;
     }
 
@@ -1703,8 +1722,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             additionalReturned = "";
             followUpDate = "";
             String[] columns = {"value", " conceptuuid"};
-            String visitSelection = "encounteruuid = ? ";
-            String[] visitArgs = {encounterUuid};
+            String visitSelection = "encounteruuid = ? and voided = ?";
+            String[] visitArgs = {encounterUuid, "0"};
 
             Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
             if (visitCursor.moveToFirst()) {
@@ -2029,7 +2048,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
     // presc share - start
     private void sharePresc() {
-        if (hasPrescription) {
+       /* if (hasPrescription) {
             getVisitStartDate();
 
             String[] eColumns = {"visituuid", "encounter_type_uuid"};
@@ -2062,6 +2081,45 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             } catch (ActivityNotFoundException exception) {
                 Toast.makeText(PrescriptionActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
             }
+        }*/
+        if (hasPrescription) {
+            getVisitStartDate();
+
+            String[] patientNameArray = patientName.split(" ");
+            String fileNamePatientName = patientNameArray[0] + "-" + patientNameArray[1].charAt(0);
+            String prescriptionString = "Prescription";
+
+            String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
+            buildAndSavePrescription(fileName);
+            try {
+                File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+                Uri uri = FileProvider.getUriForFile(PrescriptionActivity.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("application/pdf");
+                intent.putExtra(Intent.EXTRA_STREAM, uri);
+                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                intent.setPackage("com.whatsapp");
+                Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
+                Log.d("DEBUG", "File exists: " + pdfFile.exists());
+                Log.d("DEBUG", "File size: " + pdfFile.length());
+                Log.d("DEBUG", "URI: " + uri.toString());
+                startActivity(intent);
+                updateLocalPrescriptionInformations(visitID);
+            } catch (ActivityNotFoundException exception) {
+                Toast.makeText(PrescriptionActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
+            }
+        } else
+            showOkDismissDialog(null, getString(R.string.download_prescription_first_before_sharing), getString(R.string.ok));
+
+    }
+
+    private void showOkDismissDialog(String title, String message, String okBtn) {
+        try {
+            DialogUtils dialogUtils = new DialogUtils();
+            dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
+        } catch (Exception e) {
+
         }
     }
 
@@ -2178,7 +2236,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String colon = ":";
         String result = "";
 
-        for (String mc: mComplaints) {
+        for (String mc : mComplaints) {
             String[] complaints = {mc};
             if (complaints != null) {
                 for (String value : complaints) {
@@ -2654,7 +2712,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         String referredSpeciality_web = stringToWeb(referredSpeciality);
 
-        String advice_web = stringToWeb(adviceReturned);
+        String advice_web = stringToWebAdvice(adviceReturned);
         //  String advice_web = "";
 //        if(medicalAdviceTextView.getText().toString().indexOf("Start") != -1 ||
 //                medicalAdviceTextView.getText().toString().lastIndexOf(("User") + 6) != -1) {
@@ -2724,14 +2782,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         // Generate an HTML document on the fly:
-        String fontFamilyFile = "";
+        String fontFamilyFile = "src: url('file:///android_asset/font/youthness.ttf);";
         if (details != null && details.getFontOfSign() != null) {
             if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("youthness")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Youthness.ttf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/youthness.ttf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("asem")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Asem.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/asem.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("arty")) {
-                fontFamilyFile = "src: url('file:///android_asset/fonts/Arty.otf');";
+                fontFamilyFile = "src: url('file:///android_asset/fonts/arty.otf');";
             } else if (details.getFontOfSign().toLowerCase().equalsIgnoreCase("almondita")) {
                 fontFamilyFile = "src: url('file:///android_asset/fonts/almondita.ttf');";
             }
@@ -2759,7 +2817,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
-        VitalsObject vitalsData = getAllVitalsData();
+        //VitalsObject vitalsData = getAllVitalsData();
+        VitalsObject vitalsData = getVitals();
+        vitalsData.setHeight(org.intelehealth.app.ayu.visit.common.VisitUtils.convertHeightIntoFeets(height.getValue(), this));
+
         String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus);
 
         if (isRespiratory) {
@@ -2892,6 +2953,21 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
             String para_close = "</p>";
             formatted = para_open + Node.big_bullet + input.replaceAll("\n", para_close + para_open + Node.big_bullet) + para_close;
+        }
+
+        return formatted;
+    }
+
+    // string to web
+    //specially for advice to fit same strings on the view and prescription
+    private String stringToWebAdvice(String input) {
+        String formatted = "";
+        Log.d("IIIII", input);
+        if (input != null && !input.isEmpty()) {
+
+            String para_open = "<p style=\"font-size:11pt; margin: 0px; padding: 0px;\">";
+            String para_close = "</p>";
+            formatted = para_open + input.replaceAll("\n", para_close + para_open) + para_close;
         }
 
         return formatted;

@@ -2,6 +2,7 @@ package org.intelehealth.app.activities.searchPatientActivity;
 
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -100,7 +101,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             //  4. Visit Start Date else No visit created text display.
             if (model.getVisit_startdate() != null) {
                 boolean isDoctorVisit = new VisitsDAO().isDoctorVisit(model.getVisitDTO().getUuid());
-                if(isDoctorVisit){
+                if (isDoctorVisit) {
                     if (model.isPrescription_exists()) {
                         holder.presc_receivingCV.setVisibility(View.VISIBLE);
                         holder.presc_pendingCV.setVisibility(View.GONE);
@@ -136,6 +137,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 String visitDate = model.getVisit_startdate();
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     visitDate = StringUtils.en_hi_dob_three(visitDate);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+                    visitDate = StringUtils.en_te_dob_three(visitDate);
                 holder.search_date_relative.setVisibility(View.VISIBLE);
                 holder.search_date_relative.setText(visitDate);
             } else {
@@ -179,7 +182,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         .skipMemoryCache(true)
                         .into(holder.profile_imgview);
             } else {
-                holder.profile_imgview.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                holder.profile_imgview.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
 
         }
@@ -267,15 +270,18 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
                         if (updated) {
-                            RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                                    .asDrawable().sizeMultiplier(0.3f);
-                            Glide.with(context)
-                                    .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                    .thumbnail(requestBuilder)
-                                    .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(holder.profile_imgview);
+                            if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
+                                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
+                                        .asDrawable().sizeMultiplier(0.3f);
+                                Glide.with(context)
+                                        .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
+                                        .thumbnail(requestBuilder)
+                                        .centerCrop()
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                        .skipMemoryCache(true)
+                                        .into(holder.profile_imgview);
+                            }
+
                         }
                         ImagesDAO imagesDAO = new ImagesDAO();
                         boolean isImageDownloaded = false;

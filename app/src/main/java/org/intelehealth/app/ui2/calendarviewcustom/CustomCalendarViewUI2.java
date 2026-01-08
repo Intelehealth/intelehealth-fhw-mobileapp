@@ -34,6 +34,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.ToastUtil;
 
@@ -703,7 +704,8 @@ public class CustomCalendarViewUI2 extends DialogFragment {
         alertDialog.setCancelable(false);
 
         btnCancelCalendar.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(requireActivity(), alertDialog);
+
         });
 
         btnOkCalendar.setOnClickListener(v -> {
@@ -726,9 +728,9 @@ public class CustomCalendarViewUI2 extends DialogFragment {
                 }
             } catch (Exception e) {
             }
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(requireActivity(), alertDialog);
         });
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
         return alertDialog;
     }
 

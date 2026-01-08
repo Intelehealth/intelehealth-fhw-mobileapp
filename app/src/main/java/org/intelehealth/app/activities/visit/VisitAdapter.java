@@ -59,6 +59,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -163,7 +164,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         .diskCacheStrategy(DiskCacheStrategy.DATA)
                         .into(holder.profile_image);
             } else {
-                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
             // photo - end
 
@@ -173,8 +174,10 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
                 CustomLog.v("startdate", "startDAte: " + startDate);
-                if(sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     startDate = StringUtils.en_hi_dob_three(startDate);
+                if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+                    startDate = StringUtils.en_te_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
             }
 
@@ -196,7 +199,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             holder.fu_cardview_item.setOnClickListener(v -> {
                 Intent intent = new Intent(context, VisitDetailsActivity.class);
-                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0,1));
+                intent.putExtra("patientname", model.getFirst_name() + " " + model.getLast_name().substring(0, 1));
                 intent.putExtra("patientUuid", model.getPatientUuid());
                 intent.putExtra("gender", model.getGender());
                 intent.putExtra("dob", model.getDob());
@@ -304,7 +307,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
                         }
-                }
+                    }
                 });
     }
 
@@ -351,7 +354,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
+
     }
 
     private void updateLocalPrescriptionInformations(String visituuid) {
@@ -359,11 +363,12 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         Gson gson = new Gson();
         SharedPreferences sharedPreference = IntelehealthApplication.getAppContext().getSharedPreferences(IntelehealthApplication.getAppContext().getString(R.string.prescription_share_key), Context.MODE_PRIVATE);
         String prescriptionListJson = sharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
-        if(!prescriptionListJson.isEmpty()){
-            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {}.getType();
+        if (!prescriptionListJson.isEmpty()) {
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {
+            }.getType();
             prescriptionDataList = gson.fromJson(prescriptionListJson, type);
-            for(LocalPrescriptionInfo lpi: prescriptionDataList){
-                if(lpi.getVisitUUID().equals(visituuid)){
+            for (LocalPrescriptionInfo lpi : prescriptionDataList) {
+                if (lpi.getVisitUUID().equals(visituuid)) {
                     lpi.setShareStatus(true);
                 }
             }

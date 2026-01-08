@@ -98,6 +98,7 @@ import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -516,7 +517,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
-                networkFailureDialog.dismiss();
+                SafeDialogUtil.dismissDialog(this, networkFailureDialog);
+
                 checkInternetAndUpdateProfile();
             });
         }
@@ -849,7 +851,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     @Override
                     public void run() {
                         //run on ui thread
-                        runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
+                        if (!isFinishing() && !isDestroyed()) {
+                            runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
+                        }
                     }
                 };
                 thread.start();
@@ -868,7 +872,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
             @Override
             public void onActionDone(int action) {
-                mImagePickerAlertDialog.dismiss();
+                SafeDialogUtil.dismissDialog(MyProfileActivity.this, mImagePickerAlertDialog);
+
                 if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
                     Intent cameraIntent = new Intent(MyProfileActivity.this, CameraActivity.class);
                     String imageName = UUID.randomUUID().toString();
@@ -952,12 +957,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(() -> {
             boolean flag = BitmapUtils.fileCompressed(filePath);
-            runOnUiThread(() -> {
-                if (flag) {
-                    saveImage(filePath);
-                } else
-                    Toast.makeText(MyProfileActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-            });
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> {
+                    if (flag) {
+                        saveImage(filePath);
+                    } else
+                        Toast.makeText(MyProfileActivity.this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                });
+            }
 
         });
 
@@ -1053,13 +1060,15 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     Thread thread = new Thread() {
                         @Override
                         public void run() {
-                            runOnUiThread(new Runnable() //run on ui thread
-                            {
-                                public void run() {
-                                    RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
-                                    Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
-                                }
-                            });
+                            if (!isFinishing() && !isDestroyed()) {
+                                runOnUiThread(new Runnable() //run on ui thread
+                                {
+                                    public void run() {
+                                        RequestBuilder<Drawable> requestBuilder = Glide.with(MyProfileActivity.this).asDrawable().sizeMultiplier(0.3f);
+                                        Glide.with(MyProfileActivity.this).load(finalFilePath).thumbnail(requestBuilder).centerCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(ivProfileImage);
+                                    }
+                                });
+                            }
                         }
                     };
                     thread.start();
@@ -1120,7 +1129,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         });
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.show();
+        SafeDialogUtil.showDialog(context, alertDialog);
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);

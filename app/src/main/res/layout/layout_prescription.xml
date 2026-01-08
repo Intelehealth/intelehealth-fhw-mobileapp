@@ -351,7 +351,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/prescription_recommended_investigation"
+            android:text="@string/prescription_test"
             android:textSize="@dimen/heading_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -377,7 +377,7 @@
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/lato_bold"
-            android:text="@string/prescription_general_advice"
+            android:text="@string/prescription_advice"
             android:textSize="@dimen/heading_title_size"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -435,6 +435,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_dr_signature"
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
@@ -442,6 +443,16 @@
                 android:layout_marginBottom="5dp"
                 android:textAlignment="textEnd"
                 android:textSize="@dimen/dr_signature_size" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/im_dr_signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="5dp"
+              />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_dr_name"

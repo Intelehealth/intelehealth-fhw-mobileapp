@@ -184,6 +184,9 @@ public class DateAndTimeUtils {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if(date == null) return "";
+
         String formattedDate = targetFormat.format(date);  // 20120821
         String[] components = formattedDate.split("\\-");
 
@@ -312,18 +315,31 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+
         try {
             date = originalFormat.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        if(date == null) return "";
+
         String formattedDate = targetFormat.format(date);  // 20120821
 
         String[] components = formattedDate.split("\\-");
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
+        if (components.length != 3) return "";
+
+        int day, month, year;
+
+        try {
+            day = Integer.parseInt(components[0]);
+            month = Integer.parseInt(components[1]);
+            year = Integer.parseInt(components[2]);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return "";
+        }
 
         //call to function to pass this year and month for age mindmaps questions...
         //getAge_Year_Month(year, month, day);
@@ -468,7 +484,7 @@ public class DateAndTimeUtils {
     }
 
     public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
-        if (date.isEmpty()) return "";
+        if (date == null || date.isEmpty()) return "";
         String result = "";
         SimpleDateFormat sdf;
         SimpleDateFormat sdf1;
@@ -488,6 +504,7 @@ public class DateAndTimeUtils {
     }
 
     public static String date_formatter(String dateString, String format, String result_format) {
+        if(dateString == null && dateString.trim().isEmpty()) return null;
         String formattedDate = null;
         try {
             DateFormat originalFormat = new SimpleDateFormat(format, Locale.ENGLISH);
@@ -495,7 +512,8 @@ public class DateAndTimeUtils {
             Date date = originalFormat.parse(dateString);
             formattedDate = targetFormat.format(date);
         } catch (Exception ex) {
-            FirebaseCrashlytics.getInstance().recordException(ex);
+            //the exception is storing on the firebase so commenting this (AEAT-1979)
+            //FirebaseCrashlytics.getInstance().recordException(ex);
             CustomLog.v("SearchPatient", "date_ex: " + ex);
         }
         return formattedDate;

@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
 
@@ -135,16 +137,16 @@ public class PrivacyPolicyActivity_New extends BaseActivity implements WebViewSt
 
     @Override
     public void onPageStarted() {
-        loadingDialog.show();
+        SafeDialogUtil.showDialog(this, loadingDialog);
     }
 
     @Override
     public void onPageFinish() {
-        loadingDialog.dismiss();
+        SafeDialogUtil.dismissDialog(this, loadingDialog);
     }
 
     @Override
     public void onPageError(@NonNull String error) {
-        loadingDialog.dismiss();
+        SafeDialogUtil.dismissDialog(this, loadingDialog);
     }
 }

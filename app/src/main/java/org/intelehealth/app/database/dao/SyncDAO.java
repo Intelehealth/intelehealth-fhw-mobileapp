@@ -7,10 +7,14 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
+import org.intelehealth.app.user.UserSessionDao;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -26,7 +30,7 @@ import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
-import org.intelehealth.app.services.InitialSyncIntentService;
+import org.intelehealth.app.syncModule.InitialSyncWorker;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
@@ -61,7 +65,8 @@ public class SyncDAO {
     private SQLiteDatabase db;
     String appLanguage;
 
-    private static final SyncProgress syncProgress = new SyncProgress();
+    public static SyncProgress liveDataSync = new SyncProgress();
+
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -78,6 +83,7 @@ public class SyncDAO {
         ProviderDAO providerDAO = new ProviderDAO();
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
+        UserSessionDao userSessionDao = new UserSessionDao(IntelehealthApplication.getAppContext());
 
         try {
             Logger.logD(TAG, "pull sync started");
@@ -93,7 +99,8 @@ public class SyncDAO {
             providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
             visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
-
+            Log.d(TAG, "kzSyncData: provider attributes : "+new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
+            userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
             Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
             Logger.logD(TAG, "Pull sync ended");
             sessionManager.setFirstTimeSyncExecute(false);
@@ -152,9 +159,9 @@ public class SyncDAO {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe();*/
+                    //ADDED due to crash. config response is null hence crashing on sync -when called syncnow()
                     Single.fromCallable(() -> populatePullSuccessBackground(response, context))
                             .subscribeOn(Schedulers.io())
-                            .observeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(result -> {
                                 // Handle success here, `result` is the output of
@@ -300,14 +307,14 @@ public class SyncDAO {
                         if (nextPageNo != -1) {
                             percentage = (int) Math.round(nextPageNo * 100.0 / totalCount);
                             Logger.logD(PULL_ISSUE, "percentage: " + percentage);
-//                            setProgress(percentage);
+                            setProgress(percentage);
                             pullData(context, fromActivity, nextPageNo);
                             return;
                         } else {
                             percentage = 100;
                             sessionManager.setPullExcutedTime(sessionManager.isPulled());
                             Logger.logD(PULL_ISSUE, "percentage page -1: " + percentage);
-//                            setProgress(percentage);
+                            setProgress(percentage);
                             Intent broadcast = new Intent();
                             broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
                             broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
@@ -407,6 +414,7 @@ public class SyncDAO {
      * @return
      */
     public boolean pullDataBackgroundService(final Context context, String fromActivity, int pageNo) {
+
         mDbHelper = new InteleHealthDatabaseHelper(context);
         if (db == null) {
             db = mDbHelper.getWriteDb();
@@ -414,10 +422,9 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        String initialTime = "2006-08-22 22:21:48 ";
 
         String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/pull/pulldata/"
-                + sessionManager.getCurrentLocationUuid() + "/" + initialTime
+                + sessionManager.getCurrentLocationUuid() + "/" + sessionManager.getPullExcutedTime()
                 + "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
@@ -435,13 +442,23 @@ public class SyncDAO {
                     ResponseDTO responseDTO = response.body();
                     //Large amount of data passing not possible with intent
                     //we passing data through static function
-                    InitialSyncIntentService.setData(responseDTO, url);
+                    InitialSyncWorker.setData(responseDTO);
 
                     //Inserting huge data to database is a heavy operation
-                    //that's why we using service here for initial data push
-                    Intent intent = new Intent(context, InitialSyncIntentService.class);
+                    //that's why we using workmanager here for initial data push
+
+                    Data inputData = new Data.Builder()
+                            .putString("from", fromActivity)
+                            .build();
+                    OneTimeWorkRequest workRequest =
+                            new OneTimeWorkRequest.Builder(InitialSyncWorker.class)
+                                    .setInputData(inputData)
+                                    .build();
+                    WorkManager.getInstance(context).enqueue(workRequest);
+
+                   /* Intent intent = new Intent(context, InitialSyncWorker.class);
                     intent.putExtra("from", fromActivity);
-                    context.startService(intent);
+                    context.startService(intent);*/
 
 
                     if (sessionManager.getTriggerNoti().equals("yes")) {
@@ -562,6 +579,154 @@ public class SyncDAO {
         EncounterDAO encounterDAO = new EncounterDAO();
         ProviderDAO providerDAO = new ProviderDAO();
         AppointmentDAO appointmentDAO = new AppointmentDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+
+        PushRequestApiCall pushRequestApiCall;
+        PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
+        pushRequestApiCall = patientsFrameJson.frameJson();
+        final boolean[] isSucess = {true};
+        String encoded = sessionManager.getEncoded();
+        Gson gson = new Gson();
+        CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
+        String pushRequestCall = gson.toJson(pushRequestApiCall);
+        Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
+        String url = sessionManager.getServerUrl() + "/EMR-Middleware/webapi/push/pushdata";
+        Logger.logD(TAG, "push request url - " + url);
+        Logger.logD(TAG, "push request encoded - " + encoded);
+        if (!pushRequestApiCall.getVisits().isEmpty()
+                || !pushRequestApiCall.getPersons().isEmpty()
+                || !pushRequestApiCall.getPatients().isEmpty()
+                || !pushRequestApiCall.getEncounters().isEmpty()
+                || !pushRequestApiCall.getProviders().isEmpty()
+                || !pushRequestApiCall.getAppointments().isEmpty()) {
+            Single<PushResponseApiCall> pushResponseApiCallObservable = AppConstants.apiInterface.PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic " + encoded, pushRequestApiCall);
+            pushResponseApiCallObservable.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
+                        @Override
+                        public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+                            CustomLog.d(TAG, "onSuccess: in push api response");
+                            Logger.logD(TAG, "success" + pushResponseApiCall);
+                            try {
+                                for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
+                                    try {
+                                        patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                        CustomLog.d("SYNC", "ProvUUDI" + pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG, e.getMessage());
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
+                                    try {
+                                        visitsDAO.updateVisitSync(pushResponseApiCall.getData().getVisitlist().get(i).getUuid(), pushResponseApiCall.getData().getVisitlist().get(i).getSyncd().toString());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG, e.getMessage());
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
+                                    try {
+                                        encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                        CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                                    } catch (DAOException e) {
+                                        FirebaseCrashlytics.getInstance().recordException(e);
+                                        CustomLog.e(TAG, e.getMessage());
+                                    }
+                                }
+
+                                for (int i = 0; i < pushResponseApiCall.getData().getAppointmentList().size(); i++) {
+                                    try {
+                                        String sync = pushResponseApiCall.getData().getAppointmentList().get(i).getSync();
+                                        String visitUuid = pushResponseApiCall.getData().getAppointmentList().get(i).getVisitUuid();
+                                        appointmentDAO.updateAppointmentSync(visitUuid, sync);
+                                    } catch (DAOException exception) {
+                                        FirebaseCrashlytics.getInstance().recordException(exception);
+                                        CustomLog.e(TAG, exception.getMessage());
+                                    }
+                                }
+
+                                //ui2.0 for provider profile details
+                                if (pushResponseApiCall.getData().getProviderlist() != null) {
+                                    CustomLog.d(TAG, "onSuccess: getProviderlist : " + pushResponseApiCall.getData().getProviderlist().size());
+                                    for (int i = 0; i < pushResponseApiCall.getData().getProviderlist().size(); i++) {
+                                        try {
+                                            providerDAO.updateProviderProfileSync(pushResponseApiCall.getData().getProviderlist().get(i).getUuid(), "true");
+                                            CustomLog.d("SYNC", "profile Data: " + pushResponseApiCall.getData().getProviderlist().get(i).toString());
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG, e.getMessage());
+                                        }
+                                    }
+                                }
+
+                                // image push is dependant with push data api
+                                // that's why added image upload logic here
+                              /*  final Handler handler_foreground = new Handler();
+                                handler_foreground.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.logD(TAG, "Image Push Started");
+                                        imagesPushDAO.obsImagesPush();
+                                        Logger.logD(TAG, "Image Pull ended");
+                                    }
+                                }, 3000);*/
+
+                                imagesPushDAO.obsImagesPush();
+                                imagesPushDAO.deleteObsImage();
+
+                                isSucess[0] = true;
+                                sessionManager.setSyncFinished(true);
+
+                                Intent broadcast = new Intent();
+                                broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
+                                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                                IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                CustomLog.e(TAG, e.getMessage());
+                            }
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Logger.logD(TAG, "Onerror " + e.getMessage());
+                            e.printStackTrace();
+                            isSucess[0] = false;
+                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        }
+                    });
+            sessionManager.setPullSyncFinished(true);
+            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
+        }else{
+            //this is fallback to handle push images if anyone is missing to push
+            imagesPushDAO.obsImagesPush();
+            imagesPushDAO.deleteObsImage();
+        }
+
+        return isSucess[0];
+    }
+
+    public boolean pushDataApiForVisitUpload() {
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        PatientsDAO patientsDAO = new PatientsDAO();
+        VisitsDAO visitsDAO = new VisitsDAO();
+        EncounterDAO encounterDAO = new EncounterDAO();
+        ProviderDAO providerDAO = new ProviderDAO();
+        AppointmentDAO appointmentDAO = new AppointmentDAO();
+        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+
 
         PushRequestApiCall pushRequestApiCall;
         PatientsFrameJson patientsFrameJson = new PatientsFrameJson();
@@ -649,13 +814,30 @@ public class SyncDAO {
                                 isSucess[0] = true;
                                 sessionManager.setSyncFinished(true);
 
+
+                                 // image push is dependant with push data api
+                                 // that's why added image upload logic here
+                              /*  final Handler handler_foreground = new Handler();
+                                handler_foreground.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Logger.logD(TAG, "Image Push Started");
+                                        imagesPushDAO.obsImagesPush();
+                                        Logger.logD(TAG, "Image Pull ended");
+                                    }
+                                }, 3000);*/
+
+                                imagesPushDAO.obsImagesPush();
+                                imagesPushDAO.deleteObsImage();
+
                                 Intent broadcast = new Intent();
                                 broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
                                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
                                 broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                                 IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
 
-                            } catch (Exception e) {
+                            }
+                            catch (Exception e) {
                                 e.printStackTrace();
                                 CustomLog.e(TAG, e.getMessage());
                             }
@@ -676,11 +858,14 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
+        }else{
+            //this is fallback to handle push images if anyone is missing to push
+            imagesPushDAO.obsImagesPush();
+            imagesPushDAO.deleteObsImage();
         }
 
         return isSucess[0];
     }
-
     private void CalculateAgoTime(Context context) {
         String finalTime = "";
 
@@ -721,11 +906,12 @@ public class SyncDAO {
         sessionManager.setLastTimeAgo(finalTime);
     }
 
+
     public static void setProgress(int progress) {
-        syncProgress.updateProgress(progress);
+        liveDataSync.updateProgress(progress);
     }
 
-    public static LiveData<Integer> getSyncProgressLiveData() {
-        return syncProgress.getLiveData();
+    public static SyncProgress getSyncProgress_LiveData() {
+        return liveDataSync;
     }
 }

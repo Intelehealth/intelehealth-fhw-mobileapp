@@ -141,4 +141,11 @@ public class DateTimeUtils {
     public static TimeZone getUTCTimeZone() {
         return TimeZone.getTimeZone(TIME_ZONE_UTC);
     }
+
+    public static String formatMillisToHourMinute(long millis) {
+        long hours = millis / (1000 * 60 * 60);
+        long minutes = (millis / (1000 * 60)) % 60;
+        return String.format("%02dh %02dm", hours, minutes);
+    }
+
 }

@@ -2,6 +2,7 @@ package org.intelehealth.app.networkApiCalls;
 
 
 import org.intelehealth.app.activities.notification.NotificationResponse;
+import org.intelehealth.app.activities.user.api.UserSessionRequest;
 import org.intelehealth.app.models.ChangePasswordModel_New;
 import org.intelehealth.app.models.ChangePasswordParamsModel_New;
 import org.intelehealth.app.models.CheckAppUpdateRes;
@@ -36,12 +37,14 @@ import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.models.statewise_location.Setup_LocationModel;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTBody;
 import org.intelehealth.app.utilities.authJWT_API.AuthJWTResponse;
+import org.json.JSONObject;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -250,4 +253,16 @@ public interface ApiInterface {
             @Header("Authorization") String authHeader,
             @Body HeartbeatApiRequest request
     );
+
+    @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
+    Observable<ResponseBody> pushUserSessionDetails(@Path("userUuid") String userUuid,
+                                                  @Body ProfileCreateAttribute profileCreateAttribute, @Header("Authorization") String authHeader);
+    @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
+    Observable<ResponseBody> pushUserSessionDetails1(@Path("userUuid") String userUuid,
+                                                         @Body RequestBody body,
+                                                         @Header("Authorization") String authHeader);
+
+    @POST("/openmrs/ws/rest/v1/provider/{userUuid}/attribute")
+    Observable<ResponseBody> pushUserSessionDetails2(@Path("userUuid") String userUuid,
+                                                     @Body UserSessionRequest userSessionRequest, @Header("Authorization") String authHeader);
 }

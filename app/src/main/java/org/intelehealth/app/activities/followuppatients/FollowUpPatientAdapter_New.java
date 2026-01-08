@@ -77,6 +77,11 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
         sessionManager = new SessionManager(context);
     }
 
+    public void setData(List<FollowUpModel> patients){
+        this.patients = patients;
+        notifyDataSetChanged();
+    }
+
     public FollowUpPatientAdapter_New(Context context) {
         this.context = context;
     }

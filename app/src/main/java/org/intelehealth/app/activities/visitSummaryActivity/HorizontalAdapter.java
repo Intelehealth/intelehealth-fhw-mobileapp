@@ -33,6 +33,7 @@ import java.util.List;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.Base64Utils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 
 
 /**
@@ -137,7 +138,7 @@ public class HorizontalAdapter extends RecyclerView.Adapter<MyViewHolder> {
             }
         });
 
-        dialog.show();
+        SafeDialogUtil.showDialog(context, dialog);
 
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override

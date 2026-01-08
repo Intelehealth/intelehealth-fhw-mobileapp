@@ -1822,6 +1822,26 @@ public final class StringUtils {
         return mdob_text;
     }
 
+    public static String en_te_dob_three(String dob) { // English short month names replaced with Telugu text
+        // added this logic to handle crash when dob is null
+        if (dob == null || dob.isEmpty()) return "";
+
+        String mdob_text = dob
+                .replace("Jan", "జనవరి")
+                .replace("Feb", "ఫిబ్రవరి")
+                .replace("Mar", "మార్చి")
+                .replace("Apr", "ఏప్రిల్")
+                .replace("May", "మే")
+                .replace("Jun", "జూన్")
+                .replace("Jul", "జులై")
+                .replace("Aug", "ఆగస్ట్")
+                .replace("Sep", "సెప్టెంబర్")
+                .replace("Oct", "అక్టోబర్")
+                .replace("Nov", "నవంబర్")
+                .replace("Dec", "డిసెంబర్");
+
+        return mdob_text;
+    }
 
     public static String en__gu_dob(String dob) { //English dob is replaced to Hindi text.
         //added this logic to handle crash when dob is null
@@ -4226,6 +4246,10 @@ public final class StringUtils {
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
         //  1. Age
         String age = DateAndTimeUtils.getAge_FollowUp(dob, context);
+
+        if (gender == null) {
+            gender = "";
+        }
 
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
             if (gender.equalsIgnoreCase("M")) {

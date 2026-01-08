@@ -38,6 +38,8 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import io.reactivex.Observable;
+
 public class PatientsDAO {
 
     private int updatecount = 0;
@@ -1120,41 +1122,65 @@ public class PatientsDAO {
     }
 
     //getting followup patient count here
-    public static int getAllFollowupPatientCount() {
-        int count = 0;
+    public static Observable<Integer> getAllFollowupPatientCount() {
+        return  Observable.fromCallable(()->{
+            int count = 0;
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
-        String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
-                + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
-                + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ?"
-                + "AND o.voided='0' and "
-                + "o.value is NOT NULL GROUP BY a.patientuuid"
-                + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
+            String query = "SELECT " +
+                    "a.uuid as visituuid, " +
+                    "a.sync, " +
+                    "a.patientuuid, " +
+                    "substr(a.startdate, 1, 10) as startdate, "
+                    + "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                    "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
+                    "o.value as follow_up_info," +
+                    "b.patient_photo, " +
+                    "a.enddate, b.uuid, " +
+                    "b.first_name, " +
+                    "b.middle_name, " +
+                    "b.last_name, " +
+                    "b.date_of_birth, " +
+                    "b.openmrs_id, " +
+                    "b.gender, " +
+                    "c.value AS speciality, " +
+                    "SUBSTR(o.value,1,10) AS value_text, " +
+                    "MAX(o.obsservermodifieddate) AS obsservermodifieddate " +
+                    "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                    "WHERE " +
+                    "a.uuid = c.visit_uuid " +
+                    "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not showing the follow-up item
+                    "AND a.patientuuid = b.uuid " +
+                    "AND a.uuid = d.visituuid " +
+                    "AND d.uuid = o.encounteruuid " +
+                    "AND o.conceptuuid = ? " +
+                    "AND o.voided='0' " +
+                    "AND o.value is NOT NULL " +
+                    "AND followup_date is NOT NULL " +
+                    "GROUP BY a.patientuuid " +
+                    "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
+                    "AND value_text != '' ) ";
 
-        CustomLog.d("QUERY_COUNT", "" + query);
+            CustomLog.d("QUERY_COUNT", query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
-        if (cursor.moveToFirst()) {
-            do {
-                try {
-                    String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    count++;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    CustomLog.e(TAG, e.getMessage());
+            final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                        count++;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
                 }
+                while (cursor.moveToNext());
             }
-            while (cursor.moveToNext());
-        }
-        cursor.close();
+            cursor.close();
 
-        return count;
+            return count;
+        });
     }
 
     public boolean checkIfBaselineSurveyCompleted(String patientId) {

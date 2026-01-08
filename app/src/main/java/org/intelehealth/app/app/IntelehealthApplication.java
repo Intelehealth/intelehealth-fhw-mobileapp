@@ -9,13 +9,20 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.ProcessLifecycleOwner;
+import androidx.lifecycle.ViewModelStore;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 import androidx.work.Configuration;
+import androidx.work.Constraints;
+import androidx.work.ExistingWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.github.ajalt.timberkt.Timber;
@@ -25,7 +32,13 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.achievements.utils.AppUsageTracker;
+import org.intelehealth.app.activities.user.api.AppUsageTrackerNew;
+import org.intelehealth.app.activities.user.api.DailyApiWorker;
+import org.intelehealth.app.activities.user.api.WorkScheduler;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.user.AppUsesStatisticsObserver;
+import org.intelehealth.app.user.UserSessionDao;
+import org.intelehealth.app.user.UserSessionRepository;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -39,12 +52,16 @@ import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 import org.intelehealth.ncd.fhir.FhirInitializer;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
+
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
-public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
+public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver, ViewModelStoreOwner {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
     private static Context mContext;
@@ -74,7 +91,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 //    private RealTimeDataChangedObserver dataChangedObserver;
 
     private final SocketManager socketManager = SocketManager.getInstance();
-    public AppUsageTracker appUsageTracker;
+    public AppUsesStatisticsObserver appUsageTracker;
+    private final ViewModelStore appViewModelStore = new ViewModelStore();
+
+    @NonNull
+    @Override
+    public ViewModelStore getViewModelStore() {
+        return appViewModelStore;
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -92,11 +116,16 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
-        appUsageTracker = new AppUsageTracker(mContext);
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(appUsageTracker);
+        UserSessionDao sessionDao = new UserSessionDao(this);
+        UserSessionRepository userSessionRepository = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+        //ProcessLifecycleOwner.get().getLifecycle().addObserver(appUsageTracker);
+        AppUsageTrackerNew appUsageTrackerNew = new AppUsageTrackerNew(this, sessionManager);
+        AppUsesStatisticsObserver appUsageTracker = new AppUsesStatisticsObserver(userSessionRepository,appUsageTrackerNew);
 
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(appUsageTracker);
         // keeping the base url in one singleton object for using in apprtc module
 
+    /*    configureCrashReporting();
        /* configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {
@@ -135,6 +164,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
         }
+        new WorkScheduler().scheduleDailyApiWorker(this);
+
         FhirInitializer.INSTANCE.init();
     }
 

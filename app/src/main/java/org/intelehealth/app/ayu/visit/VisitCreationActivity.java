@@ -9,6 +9,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -81,6 +82,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -369,7 +374,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         }
 
-        if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
+        if (encounterAdultIntials == null || encounterAdultIntials.equalsIgnoreCase("")) {
             encounterAdultIntials = UUID.randomUUID().toString();
             mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         }
@@ -683,17 +688,20 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertion = "";
         insertionLocale = "";
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
-            Node node = mChiefComplainRootNodeList.get(i);
-            boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
-            String val = formatComplainRecord(node, isAssociateSymptomsType);
-            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
+        if(mChiefComplainRootNodeList != null){
+            for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+                Node node = mChiefComplainRootNodeList.get(i);
+                boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
+                String val = formatComplainRecord(node, isAssociateSymptomsType);
+                String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
 
-            stringBuilder.append(answerInLocale);
-            if (val == null) {
-                return false;
+                stringBuilder.append(answerInLocale);
+                if (val == null) {
+                    return false;
+                }
             }
         }
+
 
         insertionLocale = stringBuilder.toString();
 
@@ -731,15 +739,28 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private List<Node> loadPhysicalExam() {
         ArrayList<String> physicalExams = new ArrayList<>();
-        ArrayList<String> childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
+        ArrayList<String> childNodeSelectedPhysicalExams = new ArrayList<>();
+        if(mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+            childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
+        }
         if (!childNodeSelectedPhysicalExams.isEmpty())
             physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
-        ArrayList<String> rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
+        ArrayList<String> rootNodePhysicalExams = new ArrayList<>();
+        if(mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+            rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
+        }
         if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
             physicalExams.addAll(rootNodePhysicalExams); //For Root Node
         Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-        mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+
+        if(mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+            mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+        }
+
         String[] exm = mLastChiefComplainPhysicalString.split(";");
         HashMap<String, List<String>> map = new HashMap<String, List<String>>();
         for (String s : exm) {
@@ -1551,7 +1572,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
+                   /* if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String currentPhotoPath = "";
                         if (data != null) {
@@ -1585,8 +1606,45 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
+                    }*/
+
+
+                    Intent data = result.getData();
+                    if (data != null) {
+                        Uri selectedImage = data.getData();
+                        if (selectedImage != null) {
+                            try {
+                                // Getting bitmap from the selected image URI
+                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
+
+                                // Generating random file name
+                                mLastSelectedImageName = UUID.randomUUID().toString();
+                                String fileName = mLastSelectedImageName + ".jpg";
+                                File destFile = new File(AppConstants.IMAGE_PATH, fileName);
+
+                                // Saving bitmap as a valid JPEG image
+                                FileOutputStream outputStream = new FileOutputStream(destFile);
+                                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+                                outputStream.flush();
+                                outputStream.close();
+
+                                // Passing the image path back
+                                Bundle bundle = new Bundle();
+                                bundle.putString("image", destFile.getAbsolutePath());
+                                imageUtilsListener.onImageReady(bundle);
+
+                                CustomLog.i(TAG, "Saved image from gallery: " + destFile.getAbsolutePath());
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                Toast.makeText(VisitCreationActivity.this, "Failed to process selected image", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
+
             });
 
     private String mLastSelectedImageName = "";
@@ -1622,7 +1680,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void selectImage() {
         if (mImagePickerAlertDialog != null && mImagePickerAlertDialog.isShowing()) {
-            mImagePickerAlertDialog.dismiss();
+            if(!isFinishing() && !isDestroyed()){
+                mImagePickerAlertDialog.dismiss();
+            }
         }
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.add_image_by), new DialogUtils.ImagePickerDialogListener() {
             @Override

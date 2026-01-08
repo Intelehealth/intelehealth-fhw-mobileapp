@@ -55,6 +55,7 @@ import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
 import org.json.JSONObject;
@@ -102,7 +103,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         if (mIsForPhysicalExam) {
-            final String parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);
+            final String parent_name = mPhysicalExam.getExamParentNodeNameForImage(mLastImageCaptureSelectedNodeIndex);
             mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
             CustomLog.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
 
@@ -2529,7 +2530,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
-        dialog.show();
+        SafeDialogUtil.showDialog(mContext, dialog);
+
     }
 
     private void showDurationTypes(final TextView textView) {
@@ -2553,7 +2555,8 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         // create and show the alert dialog
         AlertDialog dialog = builder.create();
-        dialog.show();
+        SafeDialogUtil.showDialog(mContext, dialog);
+
     }
 
 

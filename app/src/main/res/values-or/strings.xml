@@ -448,7 +448,6 @@
     <string name="accept_new">ଗ୍ରହଣ କରନ୍ତୁ</string>
     <string name="next_new">ପରବର୍ତ୍ତୀ</string>
     <string name="okay">ଠିକ ଅଛି</string>
-    <string name="my_achievements">ମୋର ସଫଳତା</string>
     <string name="achievements">ସଫଳତା</string>
     <string name="my_profile">ମୋର ପ୍ରୋଫାଇଲ୍</string>
     <string name="setup_tooltip_text">ଦିଆଯାଇଥିବା ପରିଚୟପତ୍ର ପ୍ରବେଶ କରନ୍ତୁ \nଇଣ୍ଟେଲିହେଲଥ୍ ଦଳ ଦ୍ୱାରା |</string>
@@ -680,7 +679,6 @@
     <string name="protocols_successfully_changed">ପ୍ରୋଟୋକଲଗୁଡିକ ସଫଳତାର ସହିତ ପରିବର୍ତ୍ତନ କରାଯାଇଛି!</string>
     <string name="overall">ସାମଗ୍ରିକ ଭାବରେ |</string>
     <string name="daily">ଦୈନିକ</string>
-    <string name="date_range">ତାରିଖ ପରିସର</string>
     <string name="visit_date">ପରିଦର୍ଶନ ତାରିଖ</string>
     <string name="patient_registered">ରୋଗୀ ପଞ୍ଜିକୃତ |</string>
     <string name="does_patient_start_visit_now">ବର୍ତ୍ତମାନ ରୋଗୀ ପରିଦର୍ଶନ ଆରମ୍ଭ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?</string>
@@ -872,6 +870,41 @@
     <string name="address_to_other_info">Address to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
     <string name="lbl_clear_all">ସମସ୍ତ ସଫା କର</string>
+    <string name="blackout">Blackout</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="notification">Notification</string>
+
+    <string name="doctor_visits">ଡାକ୍ତର ସାକ୍ଷାତ</string>
+    <string name="sevika_or_ncd_visits">ସେବିକା/ଏନସିଡି ସାକ୍ଷାତ</string>
+    <string name="beneficiary_registered">ଲାଭାର୍ଥୀ ପଞ୍ଜୀକୃତ</string>
+    <string name="household_registered">ପରିବାର ପଞ୍ଜୀକୃତ</string>
+    <string name="status">ସ୍ଥିତି</string>
+    <string name="daily_time_spent">ମୋଟ ସମୟ ବ୍ୟୟ</string>
+    <string name="active">ସକ୍ରିୟ</string>
+    <string name="non_active">ନିଷ୍କ୍ରିୟ</string>
+    <string name="days_active">ସକ୍ରିୟ ଦିନ</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">ଡାକ୍ତର ସାକ୍ଷାତ ଅପଲୋଡ</string>
+    <string name="doctor_visits_uploaded_tooltip_content">ସେବିକା ଦ୍ୱାରା ଅପଲୋଡ୍ କୃତ \nଡାକ୍ତର ସାକ୍ଷାତର ସଂଖ୍ୟା।</string>
+    <string name="sevika_visits_uploaded_tooltip_title">ସେବିକା ସାକ୍ଷାତ ଅପଲୋଡ</string>
+    <string name="sevika_visits_uploaded_tooltip_content">ଅପଲୋଡ୍ କରାଯାଇଥିବା ସେବିକା/\nଏନସିଡି ସାକ୍ଷାତର ସଂଖ୍ୟା।</string>
+    <string name="beneficiaries_registered_tooltip_title"> ଲାଭାର୍ଥୀ ଙ୍କର ପଞ୍ଜିକରଣ</string>
+    <string name="beneficiaries_registered_tooltip_content">ସେବିକା ଦ୍ୱାରା ପଞ୍ଜୀକୃତ ହୋଇଥିବା \nଲାଭାର୍ଥୀଙ୍କ ସଂଖ୍ୟା।</string>
+    <string name="households_registered_tooltip_title">ପଞ୍ଜୀକୃତ ପରିବାର</string>
+    <string name="households_registered_tooltip_content">ସମୁଦାୟ ବିଶିଷ୍ଟ ପରିବାର \nପ୍ରବେଶର ମୋଟ ସଂଖ୍ୟା।</string>
+    <string name="active_status_tooltip_title">ସକ୍ରିୟ ସ୍ଥିତି</string>
+    <string name="active_status_tooltip_content">ନିର୍ଦ୍ଦିଷ୍ଟ ଦିନରେ ସେବିକା ଅତି \nକମରେ ୧ଟି ସାକ୍ଷାତ (ଡାକ୍ତର \nକିମ୍ବା ସେବିକା/ଏନସିଡି) ଅପଲୋଡ୍ \nକରିଥିଲେ ସକ୍ରିୟ ବୋଲି \nଗଣନା କରାଯାଏ।</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">ସେବିକାଙ୍କ ବ୍ୟୟ କୃତ ମୋଟ ସମୟ</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">ସେବିକା ଙ୍କ ଦ୍ଵାରା  ଆପ୍‌କୁ ପ୍ରଥମ \nସ୍କ୍ରିନରେ / ସାମ୍ନା ଭାଗରେ \nଖୋଲିଥିବା ସମୟ ।</string>
+    <string name="todays_tab_achievement">ଦୈନିକ</string>
+    <string name="date_range">ତାରିଖ ସୀମା</string>
+    <string name="my_achievements">ମୋର ସଫଳତା</string>
+
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d ଖୋଲା ପରିଦର୍ଶନ</item>
+        <item quantity="other">%d ଖୋଲା ପରିଦର୍ଶନ</item>
+    </plurals>
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
     <string name="back_desc">back_desc</string>

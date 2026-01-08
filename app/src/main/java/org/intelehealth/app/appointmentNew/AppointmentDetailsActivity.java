@@ -80,6 +80,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.VisitUtils;
@@ -783,7 +784,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(AppointmentDetailsActivity.this, alertDialog);
     }
 
     private void cancelAppointmentRequest(String reason) {
@@ -869,7 +870,8 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
+
     }
 
     private void askReasonForRescheduleAppointment(Context context) {
@@ -958,7 +960,8 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 alertDialog.dismiss();
             }
         });
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
+
 
     }
 
@@ -1039,7 +1042,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
             }
         });
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
 
     }
 

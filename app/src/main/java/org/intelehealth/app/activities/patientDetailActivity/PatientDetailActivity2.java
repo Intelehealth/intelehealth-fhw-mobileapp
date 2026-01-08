@@ -148,6 +148,7 @@ import org.intelehealth.app.utilities.PatientRegConfigKeys;
 import org.intelehealth.app.utilities.PatientRegFieldsUtils;
 import org.intelehealth.app.utilities.PatientRegSource;
 import org.intelehealth.app.utilities.PatientRegStage;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
@@ -254,6 +255,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private CompositeDisposable disposables = new CompositeDisposable();
 
     private boolean isBaselineWarningOkClicked = false;
+
+    CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -867,6 +870,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //TODO: need to check why two instance
+        compositeDisposable.dispose();
+        disposables.dispose();
     }
 
     @Override
@@ -2412,56 +2418,65 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String url = urlModifiers.patientProfileImageUrl(patientDTO.getUuid());
         Logger.logD(TAG, "profileimage url" + url);
         Observable<ResponseBody> profilePicDownload = AppConstants.apiInterface.PERSON_PROFILE_PIC_DOWNLOAD(url, "Basic " + sessionManager.getEncoded());
-        profilePicDownload.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new DisposableObserver<ResponseBody>() {
-                    @Override
-                    public void onNext(ResponseBody file) {
-                        DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
-                        downloadFilesUtils.saveToDisk(file, patientDTO.getUuid());
-                        Logger.logD(TAG, file.toString());
-                    }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.logD(TAG, e.getMessage());
-                    }
 
-                    @Override
-                    public void onComplete() {
-                        Logger.logD(TAG, "complete" + patientDTO.getPatientPhoto());
-                        PatientsDAO patientsDAO = new PatientsDAO();
-                        boolean updated = false;
-                        try {
-                            updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG, e.getMessage());
-                        }
-                        if (updated) {
-                            RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
-                                    .asDrawable().sizeMultiplier(0.3f);
-                            Glide.with(PatientDetailActivity2.this)
-                                    .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                    .thumbnail(requestBuilder)
-                                    .centerCrop()
-                                    .error(R.drawable.avatar1)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .into(profile_image);
-                        }
-                        ImagesDAO imagesDAO = new ImagesDAO();
-                        boolean isImageDownloaded = false;
-                        try {
-                            isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH +
-                                    patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG, e.getMessage());
-                        }
-                    }
-                });
+        compositeDisposable.add(
+                profilePicDownload.subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableObserver<ResponseBody>() {
+                            @Override
+                            public void onNext(ResponseBody file) {
+                                DownloadFilesUtils downloadFilesUtils = new DownloadFilesUtils();
+                                downloadFilesUtils.saveToDisk(file, patientDTO.getUuid());
+                                Logger.logD(TAG, file.toString());
+                            }
+
+                            @Override
+                            public void onError(Throwable e) {
+                                Logger.logD(TAG, e.getMessage());
+                            }
+
+                            @Override
+                            public void onComplete() {
+                                Logger.logD(TAG, "complete" + patientDTO.getPatientPhoto());
+                                PatientsDAO patientsDAO = new PatientsDAO();
+                                boolean updated = false;
+                                try {
+                                    updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                    CustomLog.e(TAG, e.getMessage());
+                                }
+                                if (updated) {
+                                    if (!isFinishing() && !isDestroyed()) {
+                                        RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
+                                                .asDrawable().sizeMultiplier(0.3f);
+                                        Glide.with(PatientDetailActivity2.this)
+                                                .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
+                                                .thumbnail(requestBuilder)
+                                                .centerCrop()
+                                                .error(R.drawable.avatar1)
+                                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                                .skipMemoryCache(true)
+                                                .into(profile_image);
+                                    }
+                                }
+                                ImagesDAO imagesDAO = new ImagesDAO();
+                                boolean isImageDownloaded = false;
+                                try {
+                                    isImageDownloaded = imagesDAO.insertPatientProfileImages(AppConstants.IMAGE_PATH +
+                                            patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
+                                } catch (DAOException e) {
+                                    FirebaseCrashlytics.getInstance().recordException(e);
+                                    CustomLog.e(TAG, e.getMessage());
+                                }
+                            }
+                        })
+        );
     }
+
+
+
 
 
     private void handleDeviceBackPress() {
@@ -2629,7 +2644,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            if (!isFinishing() && !isDestroyed()) {
+                alertDialog.dismiss();
+            }
 
         });
 
@@ -2637,7 +2654,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             //  checkVisitOrStartNewVisit();  // commented as this isnt being in use.
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
+
     }
 
 /*

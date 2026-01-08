@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,8 +51,6 @@ import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.AudioType.*
 import org.intelehealth.klivekit.utils.extensions.flatMapLatestOrNull
 import org.intelehealth.klivekit.utils.extensions.hide
-import org.webrtc.EglBase
-import org.webrtc.HardwareVideoEncoderFactory
 import kotlin.coroutines.coroutineContext
 
 open class CallViewModel(
@@ -300,7 +299,7 @@ open class CallViewModel(
             mutableRemoteConnectionQuality.postValue(it.quality)
     }
 
-    private fun manageTrackPublicationOnConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
+    /*private fun manageTrackPublicationOnConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
         viewModelScope.launch {
             when (it.quality) {
                 ConnectionQuality.POOR -> {
@@ -318,7 +317,7 @@ open class CallViewModel(
                 }
             }
         }
-    }
+    }*/
 
     private suspend fun onDataReceived(roomEvent: RoomEvent.DataReceived) {
         val identity = roomEvent.participant?.identity ?: "server"
@@ -366,15 +365,15 @@ open class CallViewModel(
             put(key, flag)
         }
 
-    private fun getRemoteParticipantIdentity(remoteParticipant: Participant) {
+  /*  private fun getRemoteParticipantIdentity(remoteParticipant: Participant) {
         viewModelScope.launch {
             remoteParticipant::identity.flow.collect { identity ->
                 identity?.let { mutableRemoteParticipantIdentity.emit(it) }
             }
         }
     }
-
-    private fun observeRemoteParticipantAudioTrack(remoteParticipant: Participant) {
+*/
+    /*private fun observeRemoteParticipantAudioTrack(remoteParticipant: Participant) {
         viewModelScope.launch {
             remoteParticipant::audioTracks.flow
                 .flatMapLatest { tracks ->
@@ -389,7 +388,7 @@ open class CallViewModel(
                     mutableMicEnabled.postValue(getParticipantStatusMap(remoteParticipant, muted))
                 }
         }
-    }
+    }*/
 
     private fun checkRemoteParticipantConnectivity(remoteParticipant: Participant) {
         viewModelScope.launch {
@@ -406,7 +405,7 @@ open class CallViewModel(
         return participant.getTrackPublication(Track.Source.CAMERA)?.track as? VideoTrack
     }
 
-    @SuppressLint("FlowDelegateUsageDetector")
+   /* @SuppressLint("FlowDelegateUsageDetector")
     private fun updateVideoTrack(participant: Participant) {
         // observe videoTracks changes.
         val videoTrackPubFlow = participant::videoTracks.flow
@@ -445,7 +444,7 @@ open class CallViewModel(
                 }
             }
         }
-    }
+    }*/
 
     fun connectToRoom() {
         viewModelScope.launch {
@@ -483,7 +482,7 @@ open class CallViewModel(
             mutableMicEnabled.postValue(
                 getParticipantStatusMap(
                     localParticipant,
-                    localParticipant.isMicrophoneEnabled()
+                    localParticipant.isMicrophoneEnabled
                 )
             )
 
@@ -491,7 +490,9 @@ open class CallViewModel(
             mutableCameraEnabled.postValue(
                 getParticipantStatusMap(
                     localParticipant,
-                    localParticipant.isCameraEnabled()
+                    //commented this because sometimes it was returning false after updating livekit library
+                    //updated to new version to support 16 kb page size
+                    /*localParticipant.isCameraEnabled*/true
                 )
             )
 
@@ -559,7 +560,9 @@ open class CallViewModel(
         val localParticipant = room.localParticipant
         viewModelScope.launch {
             val screencastTrack =
-                localParticipant.createScreencastTrack(mediaProjectionPermissionResultData = mediaProjectionPermissionResultData)
+                localParticipant.createScreencastTrack(mediaProjectionPermissionResultData = mediaProjectionPermissionResultData){
+                    mutableScreencastEnabled.postValue( false)
+                }
             localParticipant.publishVideoTrack(
                 screencastTrack
             )
@@ -595,7 +598,7 @@ open class CallViewModel(
 
     fun toggleMicrophone() {
         viewModelScope.launch {
-            val enabled = room.localParticipant.isMicrophoneEnabled().not()
+            val enabled = room.localParticipant.isMicrophoneEnabled.not()
             room.localParticipant.setMicrophoneEnabled(enabled)
             mutableMicEnabled.postValue(getParticipantStatusMap(room.localParticipant, enabled))
         }
@@ -603,7 +606,7 @@ open class CallViewModel(
 
     fun toggleCamera() {
         viewModelScope.launch {
-            val enabled = room.localParticipant.isCameraEnabled().not()
+            val enabled = room.localParticipant.isCameraEnabled.not()
             room.localParticipant.setCameraEnabled(enabled)
             mutableCameraEnabled.postValue(getParticipantStatusMap(room.localParticipant, enabled))
         }

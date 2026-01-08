@@ -361,6 +361,9 @@ public class VisitReasonCaptureFragment extends Fragment {
 
             }
             for (String s : temp) {
+                if(!s.endsWith(".json")){
+                    continue;
+                }
                 String fileName = s.split(".json")[0];
                 Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();

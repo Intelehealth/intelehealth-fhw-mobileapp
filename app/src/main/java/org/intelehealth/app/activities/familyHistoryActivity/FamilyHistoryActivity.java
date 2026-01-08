@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -207,7 +208,7 @@ public class FamilyHistoryActivity extends AppCompatActivity implements Question
             });
 
             AlertDialog alertDialog = alertdialog.create();
-            alertDialog.show();
+            SafeDialogUtil.showDialog(this, alertDialog);
 
             Button pb = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
             pb.setTextColor(ContextCompat.getColor(this,(R.color.colorPrimary)));

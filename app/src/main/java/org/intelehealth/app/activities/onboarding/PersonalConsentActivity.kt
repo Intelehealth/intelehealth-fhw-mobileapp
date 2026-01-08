@@ -17,6 +17,7 @@ import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.SafeDialogUtil
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
 import java.util.Locale
@@ -62,19 +63,21 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
             text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
             text += "</body></html>"
 
-            runOnUiThread {
-                webView?.settings?.apply {
-                    domStorageEnabled = true
-                    javaScriptEnabled = true
-                }
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread {
+                    webView?.settings?.apply {
+                        domStorageEnabled = true
+                        javaScriptEnabled = true
+                    }
 
-                webView?.loadDataWithBaseURL(
-                    null,
-                    text,
-                    "text/html",
-                    "utf-8",
-                    null
-                )
+                    webView?.loadDataWithBaseURL(
+                        null,
+                        text,
+                        "text/html",
+                        "utf-8",
+                        null
+                    )
+                }
             }
         }.start()
 
@@ -122,10 +125,10 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     override fun onPageFinish() {
-        loadingDialog?.dismiss()
+        SafeDialogUtil.dismissDialog(this, loadingDialog)
     }
 
     override fun onPageError(error: String) {
-        loadingDialog?.dismiss()
+        SafeDialogUtil.dismissDialog(this, loadingDialog)
     }
 }

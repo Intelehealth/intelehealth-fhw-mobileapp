@@ -441,7 +441,6 @@
     <string name="accept_new">গ্রহণ করুন</string>
     <string name="next_new">পরবর্তী</string>
     <string name="okay">ঠিক আছে</string>
-    <string name="my_achievements">আমার অর্জনসমূহ</string>
     <string name="achievements">অর্জনসমূহ</string>
     <string name="my_profile">আমার প্রোফাইল</string>
     <string name="setup_tooltip_text">Intelehealth টিমের দেওয়া শংসাপত্রগুলি লিখুন।.</string>
@@ -756,7 +755,6 @@
     <string name="protocols_successfully_changed">প্রোটোকল সফলভাবে পরিবর্তন করা হয়েছে!</string>
     <string name="overall">সামগ্রিক</string>
     <string name="daily">দৈনিক</string>
-    <string name="date_range">তারিখের পরিসর</string>
     <string name="visit_date">পরিদর্শনের তারিখ</string>
     <string name="patient_registered">রোগী নিবন্ধিত!</string>
     <string name="does_patient_start_visit_now">রোগী কি এখন পরিদর্শন শুরু করতে চান?</string>
@@ -1021,6 +1019,38 @@
     <string name="personal_to_address_info">Personal to address info</string>
     <string name="lbl_clear_all">সব পরিষ্কার</string>
     <string name="sync">রিফ্রেশ করুন</string>
+    <string name="blackout">Blackout</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="notification">Notification</string>
+
+    <string name="doctor_visits">ডাক্তার ভিজিট</string>
+    <string name="sevika_or_ncd_visits">সেভিকা/এনসিডি ভিজিট</string>
+    <string name="beneficiary_registered">উপকারভোগী নিবন্ধিত</string>
+    <string name="household_registered">পরিবার নিবন্ধিত</string>
+    <string name="status">অবস্থা</string>
+    <string name="daily_time_spent">মোট সময় ব্যয়</string>
+    <string name="active">সক্রিয়</string>
+    <string name="non_active">নিষ্ক্রিয়</string>
+    <string name="days_active">সক্রিয় দিন</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">ডাক্তার ভিজিট আপলোড</string>
+    <string name="doctor_visits_uploaded_tooltip_content">সেভিকা দ্বারা আপলোড করা \nডাক্তার ভিজিট সংখ্যা।</string>
+    <string name="sevika_visits_uploaded_tooltip_title">সেভিকা ভিজিট আপলোড</string>
+    <string name="sevika_visits_uploaded_tooltip_content">আপলোড করা সেভিকা/এনসিডি \nভিজিট সংখ্যা।</string>
+    <string name="beneficiaries_registered_tooltip_title">নিবন্ধিত উপকারভোগী</string>
+    <string name="beneficiaries_registered_tooltip_content">সেভিকা দ্বারা নিবন্ধিত \nউপকারভোগীর সংখ্যা।</string>
+    <string name="households_registered_tooltip_title">নিবন্ধিত পরিবার</string>
+    <string name="households_registered_tooltip_content">তৈরি করা অনন্য পরিবারের \nমোট এন্ট্রি সংখ্যা।</string>
+    <string name="active_status_tooltip_title">সক্রিয় অবস্থা</string>
+    <string name="active_status_tooltip_content">নির্দিষ্ট দিনে সেভিকা অন্তত \nএকটি ভিজিট (ডাক্তার বা \nসেভিকা/এনসিডি) আপলোড \nকরলে সক্রিয় ধরা হয়।</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">সেভিকার ব্যয়িত মোট সময়</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">সেভিকা যখন অ্যাপটি সামনের \nপর্দায় খোলা রাখেন।</string>
+    <string name="todays_tab_achievement">দৈনিক</string>
+    <string name="date_range">তারিখ সীমা</string>
+    <string name="my_achievements">আমার সাফল্য</string>
+
+
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
     <string name="back_desc">back_desc</string>

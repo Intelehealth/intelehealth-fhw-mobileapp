@@ -106,4 +106,7 @@ public class UuidDictionary {
     public static final String  ATTRIBUTE_TYPE_DATE_CREATED_NAME= "createdDate";
     public static final String ATTRIBUTE_TYPE_PROVIDER_ID_NAME = "providerUUID";
     public static final String OTHER_MEDICAL_HISTORY ="0bc1ce08-4013-4959-80c6-a6ccf7a208c2";
+    public static final String ATTRIBUTE_TYPE_USER_SESSION_TIME = "6f15d5cd-d4b3-4708-90ac-fcaacf30c924";
+
+
 }

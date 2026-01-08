@@ -68,7 +68,8 @@ public class FileUtils {
             return s;
 
         } catch (Exception e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+            //the exception is storing on the firebase so commenting this (AEAT-1983)
+            //FirebaseCrashlytics.getInstance().recordException(e);
             return null;
         }
 

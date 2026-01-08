@@ -102,10 +102,20 @@ fun TextInputLayout.validateNumberOfUsualMembers(
     val usualMembers: String = usualMembersInput.text.toString()
     val totalMembers: String = totalMembersInput.text.toString()
     return if (usualMembers.isNotEmpty() || totalMembers.isNotEmpty()) {
-        if (usualMembers.toInt() > totalMembers.toInt()) {
+        //having problem to parse phone number to integer as phone number is too long
+        //so, converting string to long integer
+        val usual = usualMembers.toLongOrNull()
+        val total = totalMembers.toLongOrNull()
+
+        if (usual == null || total == null) {
             showError(resId)
             false
-        } else true
+        } else{
+            if (usual > total) {
+                showError(resId)
+                false
+            } else true
+        }
     } else false
 }
 

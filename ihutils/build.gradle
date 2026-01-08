@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 36
 
 //    namespace 'org.intelehealth.ihutils'
 
     defaultConfig {
-        minSdk 23
-        targetSdk 34
+        minSdk 26
+        targetSdk 36
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import org.intelehealth.app.utilities.CustomLog;
@@ -114,8 +115,10 @@ public class DownloadMindMaps extends AsyncTask<String, Integer, String> {
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
 
-        if (alertDialog != null)
-            alertDialog.dismiss();
+        if (alertDialog != null) {
+            SafeDialogUtil.dismissDialog(context, alertDialog);
+
+        }
         CustomLog.e("MindMapDownloadTask", "Successfully get MindMap URL"+s);
         if(!s.equalsIgnoreCase(context.getResources().getString(R.string.protocols_downloaded_successfully))) {
             if(screenStr.equalsIgnoreCase("setup")){

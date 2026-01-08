@@ -6,8 +6,11 @@ import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Build;
@@ -17,19 +20,27 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.util.Base64;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.activities.chatHelp.ChatHelpActivity_New;
+import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.databinding.LayoutPrescriptionBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -39,6 +50,8 @@ import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.ParserUtils;
+import org.intelehealth.app.utilities.RegexUtils;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
@@ -106,7 +119,9 @@ public class PrescriptionBuilder {
             //uncomment the below line if any hindi disclaimer is available
             //disclaimerStr = sessionManager.getAppLanguage().equalsIgnoreCase("hi") ? obj.getString("prescriptionDisclaimer_Hindi") : obj.getString("prescriptionDisclaimer_English");
         } catch (JSONException e) {
-            throw new RuntimeException(e);
+            return "";
+            //commented to avoid run time crash
+            //throw new RuntimeException(e);
         }
 
 
@@ -119,7 +134,7 @@ public class PrescriptionBuilder {
         String openingDivTag = "<div>";
 
         String divClassDisclaimerTag =
-                "<div style=\" position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
+                "<div style=\" margin-top: 30px; position: fixed; bottom: 0; left: 0; width: 100%; text-align: center;\">" + disclaimerStr + closingDivTag;
 
         finalDisclaimerString = openingDivTag
                 + openingDivTag
@@ -327,6 +342,7 @@ public class PrescriptionBuilder {
         String vitalsDataString = "";
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_ft), vitalsData.getHeight());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.prescription_wt), vitalsData.getWeight());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_bmi), vitalsData.getBmi());
 
         String systolicColor = "";
         if (vitalsData.getBpsys() == null || vitalsData.getBpsys().isEmpty()) {
@@ -375,6 +391,9 @@ public class PrescriptionBuilder {
         //vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_temp), vitalsData.getTemperature());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.table_spo2), vitalsData.getSpo2());
         vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.respiratory_rate), vitalsData.getResp());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.haemoglobin), vitalsData.getHaemoglobin());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.sugar_random), vitalsData.getSugarRandom());
+        vitalsDataString = vitalsDataString + createVitalsListItem(activityContext.getString(R.string.blood_group_txt), vitalsData.getBloodGroup());
 
         if (vitalsDataString.isEmpty()) return "";
 
@@ -463,7 +482,7 @@ public class PrescriptionBuilder {
             newValue = activityContext.getString(R.string.not_provided);
             //we are not gonna show empty vitals on ui
             //we removing whole ui for corresponding vitals
-            return "";
+            //return "";
         }
 
         return listOpeningTag
@@ -658,11 +677,53 @@ public class PrescriptionBuilder {
         }
 
         String finalMedicationDataString = "";
+        //String[] medicationDataArray = medicationData.split("\n");
+
+        String tableRowOpeningTag = "<tr>";
+        String tableRowClosingTag = " </tr>";
+        String tableDataOpeningTag = "<td>";
+        String tableDataClosingTag = "</td>";
+
+        StringBuilder builder = new StringBuilder();
+
         String[] medicationDataArray = medicationData.split("\n");
 
-        if (!checkIfArrayContainsMedicationData(medicationDataArray)) {
+        for (String medicine : medicationDataArray) {
+            if (ParserUtils.Companion.parseMedication(medicine) instanceof PrescribedMedicineModel) {
+                PrescribedMedicineModel model = ((PrescribedMedicineModel) ParserUtils.Companion.parseMedication(medicine));
+
+                builder.append(tableRowOpeningTag);
+
+                builder.append(tableDataOpeningTag);
+                assert model != null;
+                builder.append(model.getMedicineName());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getStrength());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getNoOfDays());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getTiming());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableDataOpeningTag);
+                builder.append(model.getRemark());
+                builder.append(tableDataClosingTag);
+
+                builder.append(tableRowClosingTag);
+
+                finalMedicationDataString = builder.toString();
+            }
+
+    /*    if (!checkIfArrayContainsMedicationData(medicationDataArray)) {
             finalMedicationDataString = handleEmptyMedicationData();
-        } else {
+        }
+        else {
             String[][] splitMedicationDataArray = new String[medicationDataArray.length][5];
             for (int i = 0; i < splitMedicationDataArray.length; i++) {
                 if (medicationDataArray[i].contains(":")) {
@@ -691,10 +752,11 @@ public class PrescriptionBuilder {
             }
 
             finalMedicationDataString = builder.toString();
+        }*/
         }
-
         return finalMedicationDataString;
     }
+
 
     private String handleEmptyMedicationData() {
         String finalEmptyMedicationString = "";
@@ -743,7 +805,7 @@ public class PrescriptionBuilder {
         String spanClosingTag = "</span>";
 
         StringBuilder additionalInstructionsData = new StringBuilder();
-        String[] medicationDataArray = medicationData.split("\n");
+       /* String[] medicationDataArray = medicationData.split("\n");
         for (String s : medicationDataArray) {
             if (!s.contains(":")) {
                 additionalInstructionsData.append(listOpeningTag);
@@ -754,6 +816,25 @@ public class PrescriptionBuilder {
                 additionalInstructionsData.append(divClosingTag);
                 additionalInstructionsData.append(listClosingTag);
             }
+        }*/
+
+        StringBuilder builder = new StringBuilder();
+
+        String[] medicationDataArray = medicationData.split("\n");
+
+        for (String medicine : medicationDataArray) {
+            if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
+                if (!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")) {
+                    additionalInstructionsData.append(listOpeningTag);
+                    additionalInstructionsData.append(divOpeningTag);
+                    additionalInstructionsData.append(spanOpeningTag);
+                    additionalInstructionsData.append(ParserUtils.Companion.parseMedication(medicine));
+                    additionalInstructionsData.append(spanClosingTag);
+                    additionalInstructionsData.append(divClosingTag);
+                    additionalInstructionsData.append(listClosingTag);
+                }
+            }
+
         }
         if (additionalInstructionsData.length() == 0) return "";
 
@@ -807,7 +888,10 @@ public class PrescriptionBuilder {
         String spanOpeningTag = "<span>";
         String spanClosingTag = "</span>";
 
-        if (!adviceData.contains("<br><br>")) {
+        //removing all bullets as we are adding through html
+        adviceData = adviceData.replaceAll(Node.bullet, "");
+
+        if (!adviceData.contains("\n\n")) {
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
@@ -820,7 +904,7 @@ public class PrescriptionBuilder {
             finalAdviceStringBuilder.append(closingDivTag);
             finalAdviceStringBuilder.append(listClosingTag);
         } else {
-            String[] adviceArray = adviceData.split("<br><br>");
+            String[] adviceArray = adviceData.split("\n\n");
             //checking any advice exist or not
             //if not then return empty string
             //because we will disable advice ui if advice is empty
@@ -835,6 +919,36 @@ public class PrescriptionBuilder {
                 finalAdviceStringBuilder.append(listClosingTag);
             }
         }
+
+        /*if (!adviceData.contains("<br><br>")) {
+            //checking any advice exist or not
+            //if not then return empty string
+            //because we will disable advice ui if advice is empty
+            if (adviceData.isEmpty()) return "";
+            finalAdviceStringBuilder.append(listOpeningTag);
+            finalAdviceStringBuilder.append(divClassOpeningTagCenter);
+            finalAdviceStringBuilder.append(spanOpeningTag);
+            finalAdviceStringBuilder.append(adviceData);
+            finalAdviceStringBuilder.append(spanClosingTag);
+            finalAdviceStringBuilder.append(closingDivTag);
+            finalAdviceStringBuilder.append(listClosingTag);
+        }
+        else {
+            String[] adviceArray = adviceData.split("<br><br>");
+            //checking any advice exist or not
+            //if not then return empty string
+            //because we will disable advice ui if advice is empty
+            if (adviceArray.length == 0) return "";
+            for (String advice : adviceArray) {
+                finalAdviceStringBuilder.append(listOpeningTag);
+                finalAdviceStringBuilder.append(divClassOpeningTagCenter);
+                finalAdviceStringBuilder.append(spanOpeningTag);
+                finalAdviceStringBuilder.append(advice);
+                finalAdviceStringBuilder.append(spanClosingTag);
+                finalAdviceStringBuilder.append(closingDivTag);
+                finalAdviceStringBuilder.append(listClosingTag);
+            }
+        }*/
 
         return finalAdviceStringBuilder.toString();
     }
@@ -1157,7 +1271,8 @@ public class PrescriptionBuilder {
         String addressLine2 = checkValueAndReturnNA(patient.getAddress2());
         String postalCode = checkValueAndReturnNA(patient.getPostal_code());
 
-        String address = activityContext.getString(R.string.prescription_address, addressLine1.concat(",").concat(addressLine2).concat(", ").concat(postalCode));
+        //String address = activityContext.getString(R.string.prescription_address, addressLine1.concat(",").concat(addressLine2).concat(", ").concat(postalCode));
+        String address = activityContext.getString(R.string.prescription_address, patient.getCity_village());
         String openMrsId = activityContext.getString(R.string.prescription_patient_id, patient.getOpenmrs_id());
         String dateOfVisit = activityContext.getString(R.string.prescription_date_of_visit, visitDate);
 
@@ -1273,13 +1388,13 @@ public class PrescriptionBuilder {
 
     public void setDiagnosis(String diagnosis) {
         diagnosis = removeNodeBulletsAndLineBreaks(diagnosis);
-        diagnosis = getOrganizedDataWithBullets(diagnosis);
+        diagnosis = getOrganizedDiagnosisDataWithBullets(diagnosis);
         checkDataValidOrHideViews(binding.tvDiagnosis, binding.tvDiagnosisData, diagnosis);
     }
 
     public void setMedication(String medication) {
         medication = removeNodeBulletsAndLineBreaks(medication);
-        medication = getOrganizedDataWithBullets(medication);
+        medication = getOrganizeMedicineDataWithBullets(medication);
         checkDataValidOrHideViews(binding.tvMedication, binding.tvMedicationData, medication);
     }
 
@@ -1290,8 +1405,8 @@ public class PrescriptionBuilder {
     }
 
     public void setAdvice(String advice) {
-        advice = removeNodeBulletsAndLineBreaks(advice);
-        advice = getOrganizedDataWithBullets(advice);
+       /* advice = removeNodeBulletsAndLineBreaks(advice);
+        advice = getOrganizedDataWithBullets(advice);*/
         checkDataValidOrHideViews(binding.tvGeneralAdvice, binding.tvGeneralAdviceData, advice);
     }
 
@@ -1302,9 +1417,21 @@ public class PrescriptionBuilder {
     public void setDoctorData(ClsDoctorDetails clsDoctorDetails) {
         if (clsDoctorDetails == null) return;
 
-        binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
-        binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
+        //checking text signature exist or not if exit then setting the text
+        //otherwise setting image signature
+        if (clsDoctorDetails.getTextOfSign() != null) {
+            binding.imDrSignature.setVisibility(View.GONE);
+            binding.tvDrSignature.setVisibility(View.VISIBLE);
+            binding.tvDrSignature.setText(clsDoctorDetails.getTextOfSign());
+            binding.tvDrSignature.setTypeface(getSignatureTypeface(clsDoctorDetails.getFontOfSign()));
+        } else if (clsDoctorDetails.getSignature() != null) {
+
+            binding.tvDrSignature.setVisibility(View.GONE);
+            binding.imDrSignature.setVisibility(View.VISIBLE);
+            setBase64ToImageView(clsDoctorDetails.getSignature(), binding.imDrSignature);
+        }
         binding.tvDrName.setText(checkValueAndReturnNA(clsDoctorDetails.getName()));
+
 
         String degreeSpecialization = "";
         if (clsDoctorDetails.getQualification() != null) {
@@ -1325,6 +1452,28 @@ public class PrescriptionBuilder {
         binding.tvDrRegistration.setText(activityContext.getString(R.string.prescription_dr_registration, checkValueAndReturnNA(clsDoctorDetails.getRegistrationNumber())));
     }
 
+
+    public void setBase64ToImageView(String base64String, ImageView imageView) {
+        try {
+            // Remove data:image/...;base64, if exists
+            if (base64String.contains(",")) {
+                base64String = base64String.split(",")[1];
+            }
+
+            // Decode Base64 string
+            byte[] decodedBytes = Base64.decode(base64String, Base64.DEFAULT);
+
+            // Convert to Bitmap
+            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+
+            // Set to ImageView
+            imageView.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private String checkValueAndReturnNA(String value) {
         if (value == null || value.isEmpty() || value.isBlank()) {
             return "NA";
@@ -1332,6 +1481,7 @@ public class PrescriptionBuilder {
             return value;
         }
     }
+
 
     public String getOrganizedDataWithBullets(String data) {
         if (data == null || data.isBlank() || data.isEmpty()) return data;
@@ -1350,6 +1500,77 @@ public class PrescriptionBuilder {
             data = data.concat("\n");
             data = data.concat(Node.big_bullet).concat(" ").concat(string);
             data = data.concat("\n");
+        }
+        return data;
+    }
+
+    public String getOrganizedDiagnosisDataWithBullets(String data) {
+        if (data == null || data.isBlank() || data.isEmpty()) return data;
+
+        data = data.trim();
+        data = Node.big_bullet.concat(" ").concat(data);
+        String[] splitData;
+        if (data.contains("\n\n")) {
+            splitData = data.split("\n\n");
+        } else {
+            splitData = data.split("\n");
+        }
+        data = "";
+
+        for (String string : splitData) {
+            if (string.contains(Node.big_bullet)) {
+                data = string.concat("\n");
+                continue;
+            }
+
+            data = data.concat("\n");
+            data = data.concat(Node.big_bullet).concat(" ").concat(string);
+            data = data.concat("\n");
+        }
+        return data;
+    }
+
+    /**
+     * medication data is different from others
+     * so using separate function fot this
+     *
+     * @param data
+     * @return
+     */
+    public String getOrganizeMedicineDataWithBullets(String data) {
+        if (data == null || data.isBlank() || data.isEmpty()) return data;
+
+        data = data.trim();
+        data = Node.big_bullet.concat(" ").concat(data);
+        String[] splitData = data.split("\n");
+        data = "";
+
+        String additionalInstruction = "";
+
+        for (String string : splitData) {
+            if (string.contains(Node.big_bullet)) {
+                data = string;
+                continue;
+            }
+
+            //checking the data is matching with the parser regex or not
+            //if yes its a medicine, otherwise its a additional instructions
+            if (ParserUtils.Companion.parseMedication(string) instanceof PrescribedMedicineModel) {
+                data = data.concat("\n");
+                data = data.concat(Node.big_bullet).concat(" ").concat(string);
+                data = data.concat("\n");
+            } else {
+                if (!string.matches(RegexUtils.getAdditionalInstructionRegex()) && string.contains("::")) {
+                    additionalInstruction = additionalInstruction.concat("\n");
+                    additionalInstruction = additionalInstruction.concat(Node.big_bullet).concat(" ").concat(string);
+                    //additionalInstruction = additionalInstruction.concat("\n");
+                }
+            }
+        }
+        if (!additionalInstruction.isEmpty()) {
+            data = data + "\n\n"
+                    + activityContext.getString(R.string.prescription_additional_ins) + ":\n"
+                    + additionalInstruction;
         }
         return data;
     }
@@ -1392,7 +1613,21 @@ public class PrescriptionBuilder {
     }
 
     private Typeface getSignatureTypeface(String font) {
-        String directory = "font/almondita.ttf";
+        // 4.1.3 code
+        String directory = "font/youthness.ttf";
+        if (font != null) {
+            if (font.equalsIgnoreCase("Youthness")) {
+                directory = "font/youthness.ttf";
+            } else if (font.equalsIgnoreCase("Asem")) {
+                directory = "font/asem.otf";
+            } else if (font.equalsIgnoreCase("Arty")) {
+                directory = "font/arty.otf";
+            } else if (font.equalsIgnoreCase("Almondita")) {
+                directory = "font/almondita.ttf";
+            }
+        }
+            // NCD side code
+        /*String directory = "font/almondita.ttf";
         if(font!=null) {
             if (font.equalsIgnoreCase("Youthness")) {
                 directory = "font/Youthness.ttf";
@@ -1403,88 +1638,88 @@ public class PrescriptionBuilder {
             } else if (font.equalsIgnoreCase("Almondita")) {
                 directory = "font/almondita.ttf";
             }
+        }*/
+
+            return Typeface.createFromAsset(activityContext.getAssets(), directory);
         }
 
-        return Typeface.createFromAsset(activityContext.getAssets(), directory);
-    }
-
-    public void build(String fileName) {
-        DisplayMetrics metrics = new DisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            Display display = activityContext.getDisplay();
-            if (display != null) {
-                display.getRealMetrics(metrics);
-            }
-        } else {
-            WindowManager windowManager = activityContext.getWindowManager();
-            windowManager.getDefaultDisplay().getMetrics(metrics);
-        }
-
-        // Measure the view at the exact width and unspecified height to determine the total height needed
-        binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-
-        binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
-
-        int viewHeight = binding.getRoot().getMeasuredHeight();
-        int viewWidth = metrics.widthPixels;
-
-        // Create a PDF document with a single page that matches the content height
-        PdfDocument pdfDocument = new PdfDocument();
-
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, viewHeight, 1).create();
-        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
-
-        Canvas canvas = page.getCanvas();
-        binding.getRoot().draw(canvas);
-
-        pdfDocument.finishPage(page);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-
-            // This code looks if there are  existing prescription and deletes them.
-            Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
-            String selection = MediaStore.MediaColumns.DISPLAY_NAME + "=?";
-            String[] selectionArgs = new String[]{fileName};
-
-            try (Cursor cursor = activityContext.getContentResolver().query(contentUri, null, selection, selectionArgs, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    // Found the existing file, delete it
-                    int idColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
-                    Uri fileUri = ContentUris.withAppendedId(contentUri, cursor.getLong(idColumn));
-                    activityContext.getContentResolver().delete(fileUri, null, null);
+        public void build (String fileName){
+            DisplayMetrics metrics = new DisplayMetrics();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                Display display = activityContext.getDisplay();
+                if (display != null) {
+                    display.getRealMetrics(metrics);
                 }
+            } else {
+                WindowManager windowManager = activityContext.getWindowManager();
+                windowManager.getDefaultDisplay().getMetrics(metrics);
             }
 
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
-            values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
-            values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+            // Measure the view at the exact width and unspecified height to determine the total height needed
+            binding.getRoot().measure(View.MeasureSpec.makeMeasureSpec(metrics.widthPixels, View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
-            Uri uri = activityContext.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
-            if (uri != null) {
-                try (OutputStream out = activityContext.getContentResolver().openOutputStream(uri)) {
-                    pdfDocument.writeTo(out);
+            binding.getRoot().layout(0, 0, metrics.widthPixels, binding.getRoot().getMeasuredHeight());
+
+            int viewHeight = binding.getRoot().getMeasuredHeight();
+            int viewWidth = metrics.widthPixels;
+
+            // Create a PDF document with a single page that matches the content height
+            PdfDocument pdfDocument = new PdfDocument();
+
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(viewWidth, viewHeight, 1).create();
+            PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+
+            Canvas canvas = page.getCanvas();
+            binding.getRoot().draw(canvas);
+
+            pdfDocument.finishPage(page);
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+
+                // This code looks if there are  existing prescription and deletes them.
+                Uri contentUri = MediaStore.Downloads.EXTERNAL_CONTENT_URI;
+                String selection = MediaStore.MediaColumns.DISPLAY_NAME + "=?";
+                String[] selectionArgs = new String[]{fileName};
+
+                try (Cursor cursor = activityContext.getContentResolver().query(contentUri, null, selection, selectionArgs, null)) {
+                    if (cursor != null && cursor.moveToFirst()) {
+                        // Found the existing file, delete it
+                        int idColumn = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID);
+                        Uri fileUri = ContentUris.withAppendedId(contentUri, cursor.getLong(idColumn));
+                        activityContext.getContentResolver().delete(fileUri, null, null);
+                    }
+                }
+
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+                values.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+                values.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+                Uri uri = activityContext.getContentResolver().insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, values);
+                if (uri != null) {
+                    try (OutputStream out = activityContext.getContentResolver().openOutputStream(uri)) {
+                        pdfDocument.writeTo(out);
+                        pdfDocument.close();
+                    } catch (IOException e) {
+                        throw new RuntimeException("Error saving PDF", e);
+                    }
+                }
+            } else {
+                File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File filePath = new File(downloadsDir, fileName);
+
+                if (filePath.exists()) {
+                    // If the file exists, delete it
+                    boolean isDeleted = filePath.delete();
+                }
+
+                try (FileOutputStream fos = new FileOutputStream(filePath)) {
+                    pdfDocument.writeTo(fos);
                     pdfDocument.close();
+                    fos.close();
                 } catch (IOException e) {
                     throw new RuntimeException("Error saving PDF", e);
                 }
             }
-        } else {
-            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-            File filePath = new File(downloadsDir, fileName);
-
-            if (filePath.exists()) {
-                // If the file exists, delete it
-                boolean isDeleted = filePath.delete();
-            }
-
-            try (FileOutputStream fos = new FileOutputStream(filePath)) {
-                pdfDocument.writeTo(fos);
-                pdfDocument.close();
-                fos.close();
-            } catch (IOException e) {
-                throw new RuntimeException("Error saving PDF", e);
-            }
         }
     }
-}

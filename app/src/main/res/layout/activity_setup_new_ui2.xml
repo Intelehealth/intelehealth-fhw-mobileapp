@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="?colorPrimary"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activities.setupActivity.SetupActivityNew">
 
     <ImageView
@@ -37,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_setup"
+        android:layout_toStartOf="@+id/setupIm"
         android:layout_marginStart="@dimen/tv_setup_note_margin_start"
         android:layout_marginTop="@dimen/tv_setup_note_margin_top"
         android:gravity="start"
@@ -45,6 +47,7 @@
         android:textSize="@dimen/common_hint_text_size" />
 
     <ImageView
+        android:id="@+id/setupIm"
         android:layout_width="@dimen/iv_setup_width"
         android:layout_height="@dimen/iv_setup_height"
         android:layout_below="@+id/iv_back_arrow"
@@ -53,7 +56,7 @@
         android:src="@drawable/ui2_ic_setup_screen_icon" />
 
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_setup_note"
@@ -61,45 +64,61 @@
         android:layout_marginTop="@dimen/layout_setup_margin_top"
         android:background="@drawable/top_rounded_whitebg"
         android:orientation="vertical"
-        android:paddingStart="@dimen/layout_setup_padding_start"
         android:paddingTop="@dimen/layout_setup_padding_top"
-        android:paddingEnd="@dimen/layout_setup_padding_end"
         android:paddingBottom="@dimen/layout_setup_padding_bottom">
 
         <ScrollView
+            android:id="@+id/scrollView2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="none">
+            android:layout_height="0dp"
+            android:paddingStart="@dimen/layout_setup_padding_start"
+            android:paddingEnd="@dimen/layout_setup_padding_end"
+            android:paddingBottom="@dimen/layout_setup_padding_bottom"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <RelativeLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/enterDetailsTV"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="10dp"
                         android:text="@string/enter_following_details"
                         android:textColor="@color/textColorBlack"
-                        android:textSize="@dimen/common_header_text_size" />
+                        android:textSize="@dimen/common_header_text_size"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/setup_info_question_mark"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/setup_info_question_mark"
                         android:layout_width="16dp"
                         android:layout_height="16dp"
-                        android:layout_centerInParent="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginHorizontal="10dp"
-                        android:layout_toEndOf="@id/enterDetailsTV"
+                        android:layout_toEndOf="@+id/enterDetailsTV"
                         android:src="@drawable/ui2_ic_info_question_mark"
+                        app:layout_constraintBottom_toBottomOf="@+id/enterDetailsTV"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/enterDetailsTV"
                         app:tint="?attr/colorPrimary" />
 
-                </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     style="@style/TextviewInputTitleStyle"
@@ -402,45 +421,46 @@
 
         </ScrollView>
 
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/layout_setup_padding_start"
-        android:layout_marginTop="@dimen/button_setup1_margin_top"
-        android:layout_marginEnd="@dimen/layout_setup_padding_end"
-        android:layout_marginBottom="@dimen/button_setup1_margin_bottom"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tvNoNetworkSetupScreen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginVertical="@dimen/hamburger_margin_start"
-            android:lineSpacingExtra="0sp"
-            android:text="@string/setup_internet_not_available"
-            android:textAppearance="@style/registr_error_msg"
-            android:textColor="@color/red"
-            android:textSize="13sp"
-            android:visibility="visible" />
-
-        <Button
-            android:id="@+id/btn_setup"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ui2_common_primary_bg"
-            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
-            android:drawableTint="@color/iconTintWhite"
-            android:paddingStart="@dimen/common_button_padding_left"
-            android:paddingTop="@dimen/common_button_padding_top"
-            android:paddingEnd="@dimen/common_button_padding_right"
-            android:paddingBottom="@dimen/common_button_padding_bottom"
-            android:text="@string/setup"
-            android:textSize="@dimen/common_button_text_size" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/layout_setup_padding_start"
+            android:layout_marginEnd="@dimen/layout_setup_padding_end"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="27dp">
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/tvNoNetworkSetupScreen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginVertical="@dimen/hamburger_margin_start"
+                android:lineSpacingExtra="0sp"
+                android:text="@string/setup_internet_not_available"
+                android:textAppearance="@style/registr_error_msg"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:visibility="visible" />
+
+            <Button
+                android:id="@+id/btn_setup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ui2_common_primary_bg"
+                android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+                android:drawableTint="@color/iconTintWhite"
+                android:paddingStart="@dimen/common_button_padding_left"
+                android:paddingTop="@dimen/common_button_padding_top"
+                android:paddingEnd="@dimen/common_button_padding_right"
+                android:paddingBottom="@dimen/common_button_padding_bottom"
+                android:text="@string/setup"
+                android:textSize="@dimen/common_button_text_size" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </RelativeLayout>

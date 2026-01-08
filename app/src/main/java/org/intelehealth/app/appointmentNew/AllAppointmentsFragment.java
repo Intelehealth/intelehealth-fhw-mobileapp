@@ -8,6 +8,7 @@ import static org.intelehealth.app.utilities.constatnt.BundleConstants.SELECTED_
 import static org.intelehealth.app.utilities.constatnt.BundleConstants.TO_DATE;
 import static org.intelehealth.app.utilities.constatnt.BundleConstants.WHICH_DATE;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -611,20 +612,23 @@ public class AllAppointmentsFragment extends Fragment {
                         }
                     }
                 }
+                Activity activity = getActivity();
+                if (isAdded() && activity != null) {
+                    activity.runOnUiThread(() -> {
+                        upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "upcoming");
+                        rvUpcomingApp.setNestedScrollingEnabled(true);
+                        rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
 
-                requireActivity().runOnUiThread(() -> {
-                    upcomingAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "upcoming");
-                    rvUpcomingApp.setNestedScrollingEnabled(true);
-                    rvUpcomingApp.setAdapter(upcomingAllAppointmentsAdapter);
+                        cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
+                        rvCancelledApp.setNestedScrollingEnabled(true);
+                        rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
 
-                    cancelledAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), cancelledAppointmentInfoList, "cancelled");
-                    rvCancelledApp.setNestedScrollingEnabled(true);
-                    rvCancelledApp.setAdapter(cancelledAllAppointmentsAdapter);
+                        completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "completed");
+                        rvCompletedApp.setNestedScrollingEnabled(true);
+                        rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
+                    });
+                }
 
-                    completedAllAppointmentsAdapter = new AllAppointmentsAdapter(getActivity(), completedAppointmentInfoList, "completed");
-                    rvCompletedApp.setNestedScrollingEnabled(true);
-                    rvCompletedApp.setAdapter(completedAllAppointmentsAdapter);
-                });
             }
 
 

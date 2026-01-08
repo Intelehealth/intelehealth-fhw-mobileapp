@@ -266,8 +266,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         }*/
         mUpcomingAppointmentCountTextView = view.findViewById(R.id.textView5);
         mCountPendingFollowupVisitsTextView = view.findViewById(R.id.textView6);
-        mUpcomingAppointmentCountTextView.setText("0 " + getString(R.string.upcoming));
-        mCountPendingFollowupVisitsTextView.setText("0 " + getString(R.string.pending));
+        mUpcomingAppointmentCountTextView.setText("0 " + requireActivity().getString(R.string.upcoming));
+        mCountPendingFollowupVisitsTextView.setText("0 " + requireActivity().getString(R.string.pending));
         TextView tvLocation = requireActivity().findViewById(R.id.tv_user_location_home);
         tvLocation.setText(StringUtils.translateLocation(sessionManager.getCurrentLocationName(), sessionManager.getAppLanguage()));
         tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ui2_ic_location_home, 0, 0, 0);
@@ -310,7 +310,39 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 startActivity(intent);
             }
         });
+        /*executorService.execute(() -> {
+            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
+            int countPendingCloseVisits = repository.getRecentNotEndedVisits(db).size() + repository.getOlderNotEndedVisits(db).size();
+            if (isAdded()) {
+                activity.runOnUiThread(() -> countPendingCloseVisitsTextView.setText(
+                        activity.getResources().getQuantityString(R.plurals.open_no_of_visit, countPendingCloseVisits, countPendingCloseVisits)
+                ));
+            }
+        });*/
 
+        // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
+        Executors.newSingleThreadExecutor().execute(() -> {
+            countStrPendingFollowupVisits();
+            if (isAdded()) {
+                //added null checking to avoid crash (AEAT-1981)
+                Activity act = getActivity();
+                if (act == null || !isAdded()) return;
+                activity.runOnUiThread(() -> {
+                    StringBuilder followupCount = new StringBuilder()
+                            .append(todaysCount)
+                            .append(" ")
+                            .append(act.getString(R.string.today))
+                            .append("\n")
+                            .append(tomorrowsCount)
+                            .append(" ")
+                            .append(act.getString(R.string.tomorrow));
+
+                    mCountPendingFollowupVisitsTextView.setText(
+                            followupCount
+                    );
+                });
+            }
+        });
         getUpcomingAppointments();
     }
 
@@ -434,7 +466,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 }*/
 
                 int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
-                ;
                 if (mUpcomingAppointmentCountTextView != null) {
                     Activity activity = getActivity();
                     if (isAdded() && activity != null) {
@@ -461,28 +492,37 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
         // TODO: end date is removed later add it again. --> Added...
         String query = "SELECT a.uuid as visituuid, a.sync, a.patientuuid, substr(a.startdate, 1, 10) as startdate, "
-                + "date(substr(o.value, 1, 10)) as followup_date, o.value as follow_up_info,"
+                + "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
+                "o.value as follow_up_info,"
                 + "b.patient_photo, a.enddate, b.uuid, b.first_name, "
                 + "b.middle_name, b.last_name, b.date_of_birth, b.openmrs_id, b.gender, c.value AS speciality, SUBSTR(o.value,1,10) AS value_text, MAX(o.obsservermodifieddate) AS obsservermodifieddate "
-                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c WHERE "
-                + "a.uuid = c.visit_uuid AND   " +
-                "a.patientuuid = b.uuid AND "
-                + "a.uuid = d.visituuid AND d.uuid = o.encounteruuid AND o.conceptuuid = ? "
-                + "AND o.voided='0' and "
-                + "o.value is NOT NULL GROUP BY a.patientuuid"
+                + "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
+                "WHERE " +
+                "a.uuid = c.visit_uuid " +
+                "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not counting
+                "AND a.patientuuid = b.uuid " +
+                "AND a.uuid = d.visituuid " +
+                "AND d.uuid = o.encounteruuid " +
+                "AND o.conceptuuid = ? " +
+                "AND o.voided='0' " +
+                "AND (followup_date = ? or followup_date = ?) " +
+                "AND o.value is NOT NULL " +
+                "AND followup_date is NOT NULL " +
+                "GROUP BY a.patientuuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
         CustomLog.d("COUNT_QUERY", query);
 
-        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
+        final Cursor cursor = db.rawQuery(query, new String[]{UuidDictionary.FOLLOW_UP_VISIT, todaysDateStr, tomorrowsDateStr});  //"e8caffd6-5d22-41c4-8d6a-bc31a44d0c86"
         if (cursor.moveToFirst()) {
             do {
                 try {
                     // Fetch encounters who have emergency set and udpate modelist.
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                    CustomLog.v(TAG, "value_text - " + value_text);
-                    CustomLog.v(TAG, "visitUuid - " + visitUuid);
+//                    CustomLog.v(TAG, "value_text - " + value_text);
+//                    CustomLog.v(TAG, "visitUuid - " + visitUuid);
                     modelList.add(new FollowUpModel(visitUuid,
                             cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
                             cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
@@ -494,7 +534,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                             cursor.getString(cursor.getColumnIndexOrThrow("gender")),
                             cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
                             cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                            cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("followup_date")),
                             cursor.getString(cursor.getColumnIndexOrThrow("sync")),
                             true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
                             cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
@@ -512,7 +552,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         tomorrowsCount = 0;
 
         for (FollowUpModel model : modelList) {
-            String formatedFollowupDate = model.getFollowup_date().substring(0, 10).trim();
+            String formatedFollowupDate = model.getFollowup_date().trim();
             if (formatedFollowupDate.equals(todaysDateStr.trim())) {
                 todaysCount++;
             } else if (formatedFollowupDate.equals(tomorrowsDateStr.trim())) {
@@ -546,9 +586,13 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
-            if (isAdded()) {
+            Activity activity = getActivity();
+            if (isAdded() && activity != null) {
                 requireActivity().runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + getString(R.string.out_of) + " " + total + " " + getString(R.string.received).toLowerCase();
+                    Activity act = getActivity();
+                    if (act == null || !isAdded()) return;
+
+                    String prescCountText = countReceivedPrescription + " " + act.getString(R.string.out_of) + " " + total + " " + act.getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                     }
@@ -569,7 +613,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             int olderPendingCount = VisitsDAO.olderNotEndedVisits().size();
             int totalPendingCount = recentPendingCount + olderPendingCount;
 
-            requireActivity().runOnUiThread(() -> countPendingCloseVisitsTextView.setText(getResources().getQuantityString(R.plurals.open_no_of_visit, totalPendingCount, totalPendingCount)));
+            if (getActivity() != null && isAdded()) {
+                requireActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getActivity() != null && isAdded()) {
+                            countPendingCloseVisitsTextView.setText(requireActivity().getResources().getQuantityString(R.plurals.open_no_of_visit, totalPendingCount, totalPendingCount));
+                        }
+                    }
+                });
+            }
         });
     }
 }

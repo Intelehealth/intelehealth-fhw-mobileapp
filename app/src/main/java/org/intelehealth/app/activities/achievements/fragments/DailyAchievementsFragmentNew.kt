@@ -1,48 +1,36 @@
 package org.intelehealth.app.activities.achievements.fragments
 
-import android.app.DatePickerDialog
-import android.app.usage.UsageStatsManager
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
 import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.achievements.model.SyncViewModel
-import org.intelehealth.app.activities.achievements.utils.AppUsageTracker
 import org.intelehealth.app.activities.achievements.viewmodel.DailyMyAchievementsViewModel
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.LayoutDailyAchievementsFragmentBinding
-import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
-import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.klivekit.utils.DateTimeUtils
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import java.util.TimeZone
 
 class DailyAchievementsFragmentNew : Fragment() {
 
@@ -119,14 +107,25 @@ class DailyAchievementsFragmentNew : Fragment() {
             selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
         )
        /* // 6 Daily time spent */
-        setDailyTimeSpent()
+       // setDailyTimeSpent()
+       //db
+        viewModel.getUserAverageTimeSpentByDate(selectedDate)
+        viewModel.averageSessionDuration.observe(viewLifecycleOwner) { totalTime: String? ->
+           // binding.tvHouseholdRegisteredValue.text = totalTime.toString()
+            if(totalTime!=null)
+            binding.tvDailyTimeSpentValue.text = totalTime
+            else
+                binding.tvDailyTimeSpentValue.text = "00h 00m"
+
+            Log.d("TAG", "setObservers: totalTime daily : "+totalTime)
+
+        }
 
     }
 
 
     override fun onDestroyView() {
         super.onDestroyView()
-        handler.removeCallbacks(updateRunnable)
         _binding = null
     }
 
@@ -167,7 +166,9 @@ class DailyAchievementsFragmentNew : Fragment() {
 
         tooltipCall();
 
-        handler.post(updateRunnable)
+        //handler.post(updateRunnable)
+        Log.d("TAG", "initialize: context : "+context)
+       // context?.let { SessionRepository().syncUserSessions(it) };   //for testing call
     }
 
     private fun fetchAllStats() {
@@ -204,7 +205,10 @@ class DailyAchievementsFragmentNew : Fragment() {
             selectedDate = DateAndTimeUtils.convertInputDateToRequiredFormat(selectedDate, AppConstants.DATE_FORMAT_YYYY_MM_DD, AppConstants.DATE_FORMAT_DD_MMM_YYYY_FULL_MONTH)
         )
         /* // 6 Daily time spent */
-        setDailyTimeSpent()
+       // setDailyTimeSpent()
+        viewModel.getUserAverageTimeSpentByDate(selectedDate
+        )
+
     }
 
     private fun syncAppAndUpdateUI() {
@@ -221,11 +225,11 @@ class DailyAchievementsFragmentNew : Fragment() {
             }
         }
     }
-    private fun setDailyTimeSpent() {
+   /* private fun setDailyTimeSpent() {
         val app = requireContext().applicationContext as IntelehealthApplication
         val usageMillis = (app.appUsageTracker?.getTotalUsageTimeMillis()) ?: 0L
     }
-
+*/
     private fun tooltipCall(){
 
         binding.ivInfoDoctorVisits.setOnClickListener {
@@ -246,25 +250,6 @@ class DailyAchievementsFragmentNew : Fragment() {
         binding.ivDailyTimeSpent.setOnClickListener {
             showTooltip(binding.ivDailyTimeSpent,  getString(R.string.daily_time_spent_by_sevika_tooltip_title),getString(R.string.daily_time_spent_by_sevika_tooltip_content))
         }
-    }
-
-    private val handler = Handler(Looper.getMainLooper())
-    private val updateRunnable = object : Runnable {
-        override fun run() {
-            val app = requireContext().applicationContext as IntelehealthApplication
-            val usageMillis = app?.appUsageTracker?.getTotalUsageTimeMillis() ?: 0L
-            val usageFormatted = convertMillisecondsToHoursMinutesSeconds(usageMillis)
-            _binding?.let { binding ->
-                binding.tvDailyTimeSpentValue.text = usageFormatted
-                handler.postDelayed(this, 60_000)
-            }
-        }
-    }
-    fun convertMillisecondsToHoursMinutesSeconds(millis: Long): String {
-        //val seconds = (millis / 1000) % 60
-        val minutes = (millis / (1000 * 60)) % 60
-        val hours = (millis / (1000 * 60 * 60))
-        return String.format("%02d hr %02d min", hours, minutes)
     }
 
     private fun showTooltip(anchorView: View, title: String, description: String) {
@@ -334,5 +319,6 @@ class DailyAchievementsFragmentNew : Fragment() {
             }
         }
     }
+
 
 }

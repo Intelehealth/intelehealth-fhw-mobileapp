@@ -564,7 +564,6 @@
     <string name="accept_new">ಸ್ವೀಕರಿಸಿ</string>
     <string name="next_new">ಮುಂದೆ</string>
     <string name="okay">ಸರಿ</string>
-    <string name="my_achievements">ನನ್ನ ಸಾಧನೆಗಳು</string>
     <string name="achievements">ಸಾಧನೆಗಳು</string>
     <string name="my_profile">ನನ್ನ ಪ್ರೊಫೈಲ್</string>
     <string name="setup_tooltip_text">ನೀಡಿದ ರುಜುವಾತುಗಳನ್ನು ನಮೂದಿಸಿ \nಇಂಟೆಲಿಹೆಲ್ತ್ ತಂಡದಿಂದ.</string>
@@ -798,7 +797,6 @@
     <string name="protocols_successfully_changed">ಪ್ರೋಟೋಕಾಲ್‌ಗಳನ್ನು ಯಶಸ್ವಿಯಾಗಿ ಬದಲಾಯಿಸಲಾಗಿದೆ!</string>
     <string name="overall">ಒಟ್ಟಾರೆ</string>
     <string name="daily">ದೈನಂದಿನ</string>
-    <string name="date_range">ದಿನಾಂಕ ಶ್ರೇಣಿ</string>
     <string name="visit_date">ಭೇಟಿ ದಿನಾಂಕ</string>
     <string name="patient_registered">ರೋಗಿಯನ್ನು ನೋಂದಾಯಿಸಲಾಗಿದೆ!</string>
     <string name="does_patient_start_visit_now">ರೋಗಿಯು ಈಗ ಭೇಟಿಯನ್ನು ಪ್ರಾರಂಭಿಸಲು ಬಯಸುತ್ತಾರೆಯೇ?</string>
@@ -986,6 +984,43 @@
     <string name="address_to_other_info">Address to Other info</string>
     <string name="personal_to_address_info">Personal to address info</string>
     <string name="lbl_clear_all">ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಿ</string>
+    <string name="blackout">Blackout</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
+    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
+    <string name="notification">Notification</string>
+
+    <string name="doctor_visits">ಡಾಕ್ಟರ್ ಭೇಟಿಗಳು</string>
+    <string name="sevika_or_ncd_visits">ಸೇವಿಕ/ಎನ್ಸಿಡಿ ಭೇಟಿಗಳು</string>
+    <string name="beneficiary_registered">ಲಾಭಾರ್ಥಿ ನೋಂದಾಯಿತ</string>
+    <string name="household_registered">ಮನೆಮಂದಿ ನೋಂದಾಯಿತ</string>
+    <string name="status">ಸ್ಥಿತಿ</string>
+    <string name="daily_time_spent">ಒಟ್ಟು ಸಮಯ ವ್ಯಯ</string>
+    <string name="active">ಸಕ್ರಿಯ</string>
+    <string name="non_active">ನಿಷ್ಕ್ರಿಯ</string>
+    <string name="days_active">ಸಕ್ರಿಯ ದಿನಗಳು</string>
+
+    <string name="doctor_visits_uploaded_tooltip_title">ಡಾಕ್ಟರ್ ಭೇಟಿಗಳ ಅಪ್ಲೋಡ್</string>
+    <string name="doctor_visits_uploaded_tooltip_content">ಸೇವಿಕ ಅಪ್ಲೋಡ್ ಮಾಡಿದ ಡಾಕ್ಟರ್ \nಭೇಟಿಗಳ ಸಂಖ್ಯೆ.</string>
+    <string name="sevika_visits_uploaded_tooltip_title">ಸೇವಿಕ ಭೇಟಿಗಳು ಅಪ್ಲೋಡ್</string>
+    <string name="sevika_visits_uploaded_tooltip_content">ಅಪ್ಲೋಡ್ ಮಾಡಿದ ಸೇವಿಕ/\nಎನ್ಸಿಡಿ ಭೇಟಿಗಳ ಸಂಖ್ಯೆ.</string>
+    <string name="beneficiaries_registered_tooltip_title">ನೋಂದಾಯಿತ ಲಾಭಾರ್ಥಿಗಳು</string>
+    <string name="beneficiaries_registered_tooltip_content">ಸೇವಿಕೆ ನೋಂದಾಯಿಸಿದ \nಲಾಭಾರ್ಥಿಗಳ ಸಂಖ್ಯೆ.</string>
+    <string name="households_registered_tooltip_title">ನೋಂದಾಯಿತ ಮನೆಮಂದಿ</string>
+    <string name="households_registered_tooltip_content">ಸೃಷ್ಟಿಸಿದ ವಿಶಿಷ್ಟ ಮನೆಮಂದಿ ನಮೂದುಗಳ \nಒಟ್ಟು ಸಂಖ್ಯೆ.</string>
+    <string name="active_status_tooltip_title">ಸಕ್ರಿಯ ಸ್ಥಿತಿ</string>
+    <string name="active_status_tooltip_content">ಸೇವಿಕ ನೀಡಿದ ದಿನ ಕನಿಷ್ಠ ಒಂದು \nಭೇಟಿ (ಡಾಕ್ಟರ್ ಅಥವಾ ಸೇವಿಕೆ/\nಎನ್ಸಿಡಿ) ಅಪ್ಲೋಡ್ ಮಾಡಿದರೆ \nಸಕ್ರಿಯ ಎಂದು ಪರಿಗಣಿಸಲಾಗುತ್ತದೆ.</string>
+    <string name="daily_time_spent_by_sevika_tooltip_title">ಸೇವಿಕ ವ್ಯಯಿಸಿದ ಒಟ್ಟು ಸಮಯ</string>
+    <string name="daily_time_spent_by_sevika_tooltip_content">ಸೇವಿಕ ಆಪ್ಅನ್ನು ಮುಂಭಾಗದಲ್ಲಿ \nತೆರೆದಿರುವ ಸಮಯ.</string>
+    <string name="todays_tab_achievement">ದೈನಂದಿನ</string>
+    <string name="date_range">ದಿನಾಂಕ ವ್ಯಾಪ್ತಿ</string>
+    <string name="my_achievements">ನನ್ನ ಸಾಧನೆಗಳು</string>
+
+
+
+    <plurals name="open_no_of_visit">
+        <item quantity="one">%d ಮುಕ್ತ ಭೇಟಿ</item>
+        <item quantity="other">%d ಮುಕ್ತ ಭೇಟಿಗಳು</item>
+    </plurals>
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
     <string name="back_desc">back_desc</string>

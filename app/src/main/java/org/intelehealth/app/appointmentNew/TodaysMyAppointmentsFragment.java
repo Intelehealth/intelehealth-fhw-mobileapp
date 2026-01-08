@@ -3,6 +3,7 @@ package org.intelehealth.app.appointmentNew;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.isVisitPresentForPatient_fetchVisitValues;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -696,19 +697,23 @@ public class TodaysMyAppointmentsFragment extends Fragment {
                     }
                 }
 
-                requireActivity().runOnUiThread(() -> {
-                    todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
-                    rvUpcomingApp.setNestedScrollingEnabled(true);
-                    rvUpcomingApp.setAdapter(todaysMyAppointmentsAdapter);
+                Activity activity = getActivity();
+                if (isAdded() && activity != null) {
+                    activity.runOnUiThread(() -> {
+                        todaysMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), upcomingSearchList, "upcoming");
+                        rvUpcomingApp.setNestedScrollingEnabled(true);
+                        rvUpcomingApp.setAdapter(todaysMyAppointmentsAdapter);
 
-                    cancelledMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), cancelledSearchList, "cancelled");
-                    rvCancelledApp.setNestedScrollingEnabled(true);
-                    rvCancelledApp.setAdapter(cancelledMyAppointmentsAdapter);
+                        cancelledMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), cancelledSearchList, "cancelled");
+                        rvCancelledApp.setNestedScrollingEnabled(true);
+                        rvCancelledApp.setAdapter(cancelledMyAppointmentsAdapter);
 
-                    completedMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), completedSearchList, "completed");
-                    rvCompletedApp.setNestedScrollingEnabled(true);
-                    rvCompletedApp.setAdapter(completedMyAppointmentsAdapter);
-                });
+                        completedMyAppointmentsAdapter = new TodaysMyAppointmentsAdapter(getActivity(), completedSearchList, "completed");
+                        rvCompletedApp.setNestedScrollingEnabled(true);
+                        rvCompletedApp.setAdapter(completedMyAppointmentsAdapter);
+                    });
+                }
+
             }
 
         }).start();

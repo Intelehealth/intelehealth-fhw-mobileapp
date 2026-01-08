@@ -2,8 +2,9 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-    <data>
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
+   <data>
     </data>
 
     <RelativeLayout
@@ -707,7 +708,7 @@
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
                                         android:layout_marginBottom="@dimen/margin_16dp"
-                                        android:text="General Physician" />
+                                        android:text="@string/specialty_general_physician" />
 
                                 </RelativeLayout>
 

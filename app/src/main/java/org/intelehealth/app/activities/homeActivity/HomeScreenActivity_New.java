@@ -34,6 +34,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
@@ -45,16 +46,21 @@ import android.provider.Settings;
 import android.text.Html;
 import android.util.DisplayMetrics;
 
+import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.activities.homeActivity.heartbeatApi.HeartbeatApi;
+import org.intelehealth.app.activities.user.api.DailyApiWorker;
 import org.intelehealth.app.ayu.visit.notification.NotificationHelper;
 import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
 import org.intelehealth.app.syncModule.SyncProgress;
+import org.intelehealth.app.user.UserSessionDao;
+import org.intelehealth.app.user.UserSessionRepository;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -64,6 +70,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -74,14 +81,22 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+import androidx.work.Constraints;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
@@ -126,6 +141,7 @@ import org.intelehealth.app.utilities.NavigationUtils;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.OfflineLogin;
+import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
@@ -221,8 +237,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     public void setCallback(CountCallback callback) {
         this.callback = callback;
     }
-
-    SyncProgress syncProgress;
 
     @Override
     protected void onNewIntent(Intent intent) {
@@ -329,8 +343,47 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
+
+        // Transparent status bar for immersive look
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
+        // Setting dark icons for light background
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+
+        // Applying safe merging and padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationview), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Getting current layout params and cast to MarginLayoutParams
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+            // Apply insets as margins
+            lp.leftMargin = systemBars.left;
+            lp.rightMargin = systemBars.right;
+            lp.bottomMargin = systemBars.bottom;
+            lp.topMargin = systemBars.top;
+
+            // Reapplying the updated layout params
+            view.setLayoutParams(lp);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
         networkUtils = new NetworkUtils(context, this);
@@ -350,12 +403,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
         loadFragment(new HomeFragment_New(), TAG_HOME);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
-        }
-        sessionManager = new SessionManager(this);
+        }*/
+        sessionManager = SessionManager.getInstance(this);
 
         backPress();
         initUI();
@@ -497,8 +550,26 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private void resetApp() {
         // to insert time spent by user into the db
-        insertTimeSpentByUserIntoDb();
+        //insertTimeSpentByUserIntoDb();
+        UserSessionRepository repo = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+        repo.endSession();
+
+
         showResetConfirmationDialog();
+    }
+
+    private void apiCallforSaveTimeSpentValues() {
+        //new SessionRepository().syncUserSessions(HomeScreenActivity_New.this);
+        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DailyApiWorker.class)
+                .setConstraints(
+                        new Constraints.Builder()
+                                .setRequiredNetworkType(NetworkType.CONNECTED)
+                                .build()
+                )
+                .build();
+
+        WorkManager.getInstance(context).enqueue(workRequest);
+
     }
 
     private void showResetConfirmationDialog() {
@@ -519,6 +590,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             if (isSynced) {
 
                 new Handler().postDelayed(() -> {
+                    apiCallforSaveTimeSpentValues();
 
                     // next we're displaying the sync successful message - Added by Arpan Sircar
                     updateSimpleDialog(resetDialog, getString(R.string.sync_successful), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_login_success));
@@ -553,14 +625,17 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
             Button tryAgainButton = networkFailureDialog.findViewById(R.id.positive_btn);
             if (tryAgainButton != null) tryAgainButton.setOnClickListener(v -> {
-                networkFailureDialog.dismiss();
+                if(!isFinishing() && !isDestroyed()){
+                    SafeDialogUtil.dismissDialog(this, networkFailureDialog);
+
+                }
                 checkNetworkConnectionAndPerformSync();
             });
         }
     }
 
     private void showResetProgressbar() {
-        resetDialog.dismiss();
+        SafeDialogUtil.dismissDialog(this, resetDialog);
         MaterialAlertDialogBuilder resetDialogBuilder = new MaterialAlertDialogBuilder(context);
         showSimpleDialog(resetDialogBuilder, getString(R.string.resetting_app_dialog), getString(R.string.please_wait_app_reset), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
     }
@@ -595,7 +670,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void clearAppData() {
-        resetDialog.dismiss();
+        SafeDialogUtil.dismissDialog(this, resetDialog);
+
         try {
             // clearing app data
             if (Build.VERSION_CODES.KITKAT <= Build.VERSION.SDK_INT) {
@@ -633,7 +709,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         resetDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         resetDialog.setCancelable(false);
-        resetDialog.show();
+        SafeDialogUtil.showDialog(context, resetDialog);
     }
 
     private void updateSimpleDialog(Dialog dialog, String title, String subtitle, Drawable dialogIcon) {
@@ -704,11 +780,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         });
         if (sessionManager.isFirstTimeLaunched()) {
+            sessionManager.setPulled(null);
             sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
             showRefreshDialog();
-            syncProgress = new SyncProgress();
-            SyncDAO.setProgress(0);
-            SyncDAO.getSyncProgressLiveData().observe(this, syncLiveData);
+            //resetting the sync progress live data
+            //specially for switching location
+            SyncDAO.liveDataSync = null;
+            SyncDAO.liveDataSync = new SyncProgress();
+            SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
             Executors.newSingleThreadExecutor().execute(() -> {
                 syncUtils.initialSync("home", this);
@@ -743,7 +822,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         progressTvEnd = syncView.findViewById(R.id.progressTvEnd);
         syncProgressbar.setMax(100);
         syncProgressbar.setIndeterminate(false);
-        mSyncAlertDialog.show();
+        SafeDialogUtil.showDialog(this, mSyncAlertDialog);
     }
 
     private void showSnackBarAndRemoveLater(String text) {
@@ -865,17 +944,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         noButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
         });
 
         yesButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
             moveTaskToBack(true);
 
 
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     public void wantToLogoutFromApp(Context context, String title, String subTitle, String positiveBtnTxt, String negativeBtnTxt) {
@@ -904,11 +985,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         noButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
         });
 
         yesButton.setOnClickListener(v -> {
-            alertDialog.dismiss();
+            SafeDialogUtil.dismissDialog(this, alertDialog);
+
             logout();
 
 //            if (CallListenerBackgroundService.isInstanceCreated()) {
@@ -918,7 +1001,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         });
 
-        alertDialog.show();
+        SafeDialogUtil.showDialog(this, alertDialog);
     }
 
     public void showRefreshInProgressDialog() {
@@ -936,7 +1019,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogRefreshInProgress.dismiss();
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+
             }
         }, 3000);
     }
@@ -956,7 +1040,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogRefreshInProgress.dismiss();
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+
             }
         }, 3000);
     }
@@ -964,8 +1049,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        notificationReceiver.unregisterModuleBReceiver(this);
-        scheduleExactAlarmPermissionLauncher.unregister();
+        if (notificationReceiver != null) {
+            notificationReceiver.unregisterModuleBReceiver(this);
+        }
+
+        if (scheduleExactAlarmPermissionLauncher != null) {
+            scheduleExactAlarmPermissionLauncher.unregister();
+        }
 
 //        Log.v(TAG, "Is BG Service On - " + CallListenerBackgroundService.isInstanceCreated());
 //        if (!CallListenerBackgroundService.isInstanceCreated()) {
@@ -1023,7 +1113,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                dialogLoginSuccess.dismiss();
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+
             }
         }, 2000);
     }
@@ -1049,6 +1140,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String tag = "";
         int itemId = menuItem.getItemId();
         if (itemId == R.id.menu_my_achievements) {
+            SyncUtils.syncNow(HomeScreenActivity_New.this, imageViewIsInternet, syncAnimator);
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.my_achievements));
             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tvAppLastSync.setVisibility(View.GONE);
@@ -1122,16 +1214,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
 
         AlertDialog syncDialog = dialogUtils.showSyncDialog(this, getResources());
-        boolean isSynced = syncUtils.syncForeground("");
+        boolean isSynced = syncUtils.pushDataOnly();/*syncUtils.syncForeground("home");*/
         if (!isSynced) {
-            syncDialog.dismiss();
+            SafeDialogUtil.dismissDialog(this, syncDialog);
+
             dialogUtils.showOkDialog(this, getString(R.string.error), getString(R.string.sync_failed), getString(R.string.generic_ok));
             return;
         }
 
         final Handler handler = new Handler();
         handler.postDelayed(() -> {
-            syncDialog.dismiss();
+            SafeDialogUtil.dismissDialog(this, syncDialog);
+
             showSwitchLocationConfirmationDialog();
         }, 3000);
     }
@@ -1145,7 +1239,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         builder.setNegativeButton(getString(R.string.no), null);
         AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+
+        SafeDialogUtil.showDialog(this, alertDialog);
 
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
@@ -1169,8 +1264,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void switchLocationSetup(Map.Entry<String, String> villageName, String patientUuid, String visitUuid) {
-        SyncDAO.setProgress(0);
-
         ProgressDialog progress;
         progress = new ProgressDialog(HomeScreenActivity_New.this, R.style.AlertDialogStyle);
         progress.setTitle(getString(R.string.please_wait_progress));
@@ -1183,11 +1276,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setCurrentLocationUuid(villageName.getKey());
         sessionManager.setFirstTimeSyncExecute(true);
         sessionManager.setFirstTimeLaunched(true);
-        sessionManager.setPullExcutedTime("2006-08-22 22:21:48 ");
-        sessionManager.setPulled("2006-08-22 22:21:48");
 
         clearDatabase();
-        progress.dismiss();
+        WorkManager.getInstance(this).cancelAllWork();
+        SafeDialogUtil.dismissDialog(this, progress);
+
         Intent intent = new Intent(HomeScreenActivity_New.this, HomeScreenActivity_New.class);
         intent.putExtra("intentType", "switchLocation");
 
@@ -1234,7 +1327,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
 
         if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            dialogRefreshInProgress.dismiss();
+            SafeDialogUtil.dismissDialog(this, dialogRefreshInProgress);
+
         }
         CustomLog.d(TAG, "check11onResume: home");
         loadLastSelectedFragment();
@@ -1242,8 +1336,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
             lastSync = StringUtils.en__hi_dob(lastSync);
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
             lastSync = StringUtils.en__te_dob(lastSync);
+        else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
+            lastSync = StringUtils.en__ta_dob(lastSync);
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
@@ -1354,6 +1450,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                 lastSync = StringUtils.en__hi_dob(lastSync);
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
+                lastSync = StringUtils.en__ta_dob(lastSync);
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+                lastSync = StringUtils.en__te_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
 
@@ -1374,7 +1474,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         if (mTempSyncHelperList != null) mTempSyncHelperList.clear();
 
         if (dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            dialogRefreshInProgress.dismiss();
+            SafeDialogUtil.dismissDialog(this, dialogRefreshInProgress);
+
         }
 
         if (isSuccess) {
@@ -1561,9 +1662,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
     }
 
-    public void logout() {
+    /*public void logout() {
         // to insert time spent by user into the db
-        insertTimeSpentByUserIntoDb();
+        //insertTimeSpentByUserIntoDb();
+        showSimpleDialog(resetAlertDialogBuilder, getString(R.string.app_sync_dialog_title), getString(R.string.please_wait_sync_progress), ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in));
+
+        UserSessionRepository repo = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+        repo.endSession();
+        apiCallforSaveTimeSpentValues();
+
         IntelehealthApplication.getInstance().disconnectSocket();
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
 
@@ -1577,8 +1684,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         startActivity(intent);
         finish();
 
-
-    }
+    }*/
 
 
     public void profilePicDownloaded(ProviderDTO providerDTO) throws DAOException {
@@ -1686,6 +1792,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(getString(R.string.my_achievements));
             tag = TAG_ACHIEVEMENT;
+            SyncUtils.syncNow(HomeScreenActivity_New.this, imageViewIsInternet, syncAnimator);
         }
         loadFragment(fragment, tag);
 
@@ -1732,24 +1839,28 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     /**
      * observing sync status here
      */
-
-
-    private final Observer<Integer> syncLiveData = new Observer<>() {
+    private final Observer<Integer> syncLiveData = new Observer<Integer>() {
         @Override
         public void onChanged(Integer progress) {
+            Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncAlertDialog != null) {
                 syncProgressbar.setProgress(progress);
-
-                String progressPercentage = progress + "%";
-                String progressNumber = progress + "/100";
-                progressTvStart.setText(progressPercentage);
-                progressTvEnd.setText(progressNumber);
+                if (progress <= 100) {
+                    progressTvStart.setText((progress) + "%");
+                    progressTvEnd.setText(progress + "/100");
+                }
+                Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
 
                 if (progress == 100) {
-                    SyncDAO.getSyncProgressLiveData().removeObserver(syncLiveData);
-                    new Handler().postDelayed(() -> {
-                        mSyncAlertDialog.dismiss();
-                        callback.fetchCount();
+                    SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
+                    Logger.logD(SyncDAO.PULL_ISSUE, "progress is 100 so close");
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, mSyncAlertDialog);
+
+                            callback.fetchCount();
+                        }
                     }, 2000);
                 }
             }
@@ -1778,5 +1889,76 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
     }
+    public void logout() {
+        showSimpleDialog(
+                resetAlertDialogBuilder,
+                getString(R.string.app_sync_dialog_title),
+                getString(R.string.please_wait_sync_progress),
+                ContextCompat.getDrawable(this, R.drawable.ui2_icon_logging_in)
+        );
+
+        new Thread(() -> {
+            // Step 1: End session (DB write)
+            UserSessionRepository repo = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
+            repo.endSession(); // blocking DB insert
+
+            // Step 2: Wait a bit to ensure DB commit
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            // Step 3: Back to main thread to start WorkManager and observe it
+
+            if (!isFinishing() && !isDestroyed()) {
+                runOnUiThread(() -> {
+                    if (NetworkConnection.isOnline(this)) {
+                        OneTimeWorkRequest workRequest = new OneTimeWorkRequest.Builder(DailyApiWorker.class)
+                                .setConstraints(
+                                        new Constraints.Builder()
+                                                .setRequiredNetworkType(NetworkType.CONNECTED)
+                                                .build()
+                                )
+                                .build();
+
+                        WorkManager.getInstance(context).enqueue(workRequest);
+
+                        // Observe worker completion
+                        WorkManager.getInstance(context)
+                                .getWorkInfoByIdLiveData(workRequest.getId())
+                                .observe(this, workInfo -> {
+                                    if (workInfo != null && workInfo.getState().isFinished()) {
+                                        proceedWithLogout();
+                                    }
+                                });
+                    } else {
+                        proceedWithLogout();
+                    }
+                });
+            }
+        }).start();
+    }
+
+    private void proceedWithLogout() {
+        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+            IntelehealthApplication.getInstance().disconnectSocket();
+            OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
+            syncUtils.syncBackground();
+            sessionManager.setReturningUser(false);
+            sessionManager.setLogout(true);
+            unregisterReceiver(syncBroadcastReceiver);
+
+            SafeDialogUtil.dismissDialog(this, resetDialog);
+
+
+            Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }, 3000);
+    }
+
+
 
 }

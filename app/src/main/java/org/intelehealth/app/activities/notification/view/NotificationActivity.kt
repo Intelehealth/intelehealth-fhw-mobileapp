@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +27,8 @@ import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.Logger
+import org.intelehealth.app.utilities.SafeDialogUtil
+import org.intelehealth.app.utilities.SafeDialogUtil.dismissDialog
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.klivekit.data.PreferenceHelper
 
@@ -62,6 +65,13 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
             mBinding.simpleAppBar.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }
 
+
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
+
+
     }
 
     private fun initialization() {
@@ -80,13 +90,9 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     notificationList = it.data as ArrayList<NotificationModel>
                     setNotificationAdapter()
                     if (!notificationList.isNullOrEmpty()) {
-                        mBinding.notifiHeaderTitle.text = String.format(
-                            getString(
-                                R.string.five_presc_received,
-                                mViewModel.getPrescriptionCount().toString()
-                            )
-                        )
-
+                        mBinding.notifiHeaderTitle.text = getString(R.string.five_presc_received, mViewModel.getPrescriptionCount().toString())
+                    } else {
+                        mBinding.notifiHeaderTitle.text = getString(R.string.five_presc_received, "0")
                     }
                 }
 
@@ -123,18 +129,19 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
     fun showAlertDialog(message :String) {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Notification")
+        builder.setTitle(getString(R.string.notification))
         builder.setMessage(message)
 
         // Add the OK button
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             // User clicked OK button
-            dialog.dismiss()
+            dismissDialog(this, dialog)
+
         }
 
         // Create and show the alert dialog
         val dialog: AlertDialog = builder.create()
-        dialog.show()
+        SafeDialogUtil.showDialog(this, dialog)
     }
 
     private fun setListeners() {

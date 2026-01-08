@@ -1,7 +1,6 @@
 package org.intelehealth.app.activities.visit;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
-import static org.webrtc.ContextUtils.getApplicationContext;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -1040,26 +1039,30 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         }
                     }
                     // older - end
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            recent_adapter = new VisitAdapter(getActivity(), recent, VisitPendingFragment.this);
-                            recycler_recent.setNestedScrollingEnabled(false);
-                            recycler_recent.setAdapter(recent_adapter);
 
-                            older_adapter = new VisitAdapter(getActivity(), older, VisitPendingFragment.this);
-                            recycler_older.setNestedScrollingEnabled(false);
-                            recycler_older.setAdapter(older_adapter);
+                    Activity activity = getActivity();
+                    if (isAdded() && activity != null) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                recent_adapter = new VisitAdapter(getActivity(), recent, VisitPendingFragment.this);
+                                recycler_recent.setNestedScrollingEnabled(false);
+                                recycler_recent.setAdapter(recent_adapter);
 
-                            /**
-                             * Checking here the query that is entered and it is not empty so check the size of all of these
-                             * arraylists; if there size is 0 than show the no patient found view.
-                             */
-                            int allCount = recent.size() + older.size();
-                            allCountVisibility(allCount);
-                            recent_older_visibility(recent, older);
-                        }
-                    });
+                                older_adapter = new VisitAdapter(getActivity(), older, VisitPendingFragment.this);
+                                recycler_older.setNestedScrollingEnabled(false);
+                                recycler_older.setAdapter(older_adapter);
+
+                                /**
+                                 * Checking here the query that is entered and it is not empty so check the size of all of these
+                                 * arraylists; if there size is 0 than show the no patient found view.
+                                 */
+                                int allCount = recent.size() + older.size();
+                                allCountVisibility(allCount);
+                                recent_older_visibility(recent, older);
+                            }
+                        });
+                    }
                 }
             }
         }).start();
