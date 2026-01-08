@@ -1132,4 +1132,11 @@
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">ભૂતકાળની %1$s NCD મુલાકાતો જોવા ક્લિક કરો</string>
     <string name="msg_ekal_thank_you_ncd_report">એકલ ટેલીમેડિસિન સેવા ઉપયોગ કરવા બદલ આભાર!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD સંબંધિત પ્રશ્નો અધૂરા છે!</string>
+    <string name="ncd_questions_are_incomplete_body">શું તમે ખરેખર આપેલા જવાબો રદ કરવા માંગો છો?</string>
+    <string name="ncd_baseline_dialog_content">NCD મુલાકાત અને ડોક્ટર મુલાકાતની પ્રક્રિયા માટે કેટલાક બેઝલાઇન પ્રશ્નોના જવાબ આપવો ફરજિયાત છે</string>
+    <string name="data_saved">ડેટા સાચવાયો</string>
+    <string name="ncd_baseline">NCD-બેઝલાઇન</string>
+
 </resources>

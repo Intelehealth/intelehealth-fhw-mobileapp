@@ -1084,4 +1084,10 @@
     <string name="click_to_view_past_ncd_visits">ಹಿಂದಿನ %1$s NCD ಭೇಟಿಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ</string>
     <string name="msg_ekal_thank_you_ncd_report">ಏಕಲ್ ಟೆಲಿಮೆಡಿಸಿನ್ ಸೇವೆಯನ್ನು ಬಳಸಿದಕ್ಕಾಗಿ ಧನ್ಯವಾದಗಳು!</string>
 
+    <string name="ncd_questions_are_incomplete_title">NCD ಸಂಬಂಧಿತ ಪ್ರಶ್ನೆಗಳು ಅಪೂರ್ಣವಾಗಿವೆ!</string>
+    <string name="ncd_questions_are_incomplete_body">ನೀವು ಉತ್ತರಗಳನ್ನು ತಿರಸ್ಕರಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುತ್ತೀರಾ?</string>
+    <string name="ncd_baseline_dialog_content">NCD ಭೇಟಿ ಮತ್ತು ವೈದ್ಯರ ಭೇಟಿ ಪ್ರಕ್ರಿಯೆಗೆ ಕೆಲವು ಬೇಸ್‌ಲೈನ್ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸುವುದು ಕಡ್ಡಾಯವಾಗಿದೆ</string>
+    <string name="data_saved">ಡೇಟಾ ಸಂರಕ್ಷಿಸಲಾಗಿದೆ</string>
+    <string name="ncd_baseline">NCD-ಬೇಸ್‌ಲೈನ್</string>
+
 </resources>
