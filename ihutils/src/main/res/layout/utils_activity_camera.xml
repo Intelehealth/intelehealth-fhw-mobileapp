@@ -104,17 +104,14 @@
 
     </LinearLayout>
 
-
-    <com.google.android.cameraview.CameraView
-        android:id="@+id/utils_camera_surface_CameraView"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/utils_camera_surface_preview_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/footer_layout"
-        android:layout_below="@+id/header_ll"
-        android:adjustViewBounds="true"
+        android:layout_height="match_parent"
+        android:layout_above="@id/footer_layout"
+        android:layout_below="@id/header_ll"
         android:background="@android:color/black"
-        app:aspectRatio="4:3"
-        app:facing="back" />
+        android:importantForAccessibility="no" />
 
     <ImageView
         android:id="@+id/flash_switch_iv"

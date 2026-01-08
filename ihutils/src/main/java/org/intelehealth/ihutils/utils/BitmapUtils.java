@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.util.Log;
 
+import androidx.camera.core.ImageProxy;
+
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,9 +18,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
 
 public class BitmapUtils {
     private static final String TAG = "BitmapUtils";
+
     /**
      * Rotate an image if required.
      *
@@ -54,12 +58,12 @@ public class BitmapUtils {
         return rotatedImg;
     }
 
-/**
- * Function is used for Copy the Image
- * @param inputPath image uri path from media storage.
- * @param outputPath  to Copy the Path at intelehealth Directory.
- *
- * */
+    /**
+     * Function is used for Copy the Image
+     *
+     * @param inputPath  image uri path from media storage.
+     * @param outputPath to Copy the Path at intelehealth Directory.
+     */
     public static void copyFile(String inputPath, String outputPath) {
 
         InputStream in = null;
@@ -94,12 +98,12 @@ public class BitmapUtils {
      * Compress the file into bitmap
      *
      * @param filePath path of file to be compressed
-     * */
+     */
 
     public static boolean fileCompressed(String filePath) {
         File file = new File(filePath);
 
-        Log.d(TAG, "fileCompressed: filePath : "+filePath);
+        Log.d(TAG, "fileCompressed: filePath : " + filePath);
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -112,8 +116,8 @@ public class BitmapUtils {
         float maxWidth = 612.0f;
         float imgRatio = actualWidth / actualHeight;
         float maxRatio = maxWidth / maxHeight;
-        Log.d(TAG, "fileCompressed: actualWidth : "+actualWidth);
-        Log.d(TAG, "fileCompressed: actualHeight : "+actualHeight);
+        Log.d(TAG, "fileCompressed: actualWidth : " + actualWidth);
+        Log.d(TAG, "fileCompressed: actualHeight : " + actualHeight);
 
         if (actualHeight > maxHeight || actualWidth > maxWidth) {
             if (imgRatio < maxRatio) {
@@ -204,14 +208,12 @@ public class BitmapUtils {
     }
 
 
-
     /**
-     * @param  options object option
+     * @param options   object option
      * @param reqWidth  Width of bitmap
-     * @param reqHeight  Height of bitmap
+     * @param reqHeight Height of bitmap
      * @return inSampleSize =integer value of image size
-     *
-     * */
+     */
 
     private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
@@ -228,4 +230,17 @@ public class BitmapUtils {
         return inSampleSize;
     }
 
+    public static Bitmap imageProxyToBitmap(ImageProxy image) {
+        ByteBuffer buffer = image.getPlanes()[0].getBuffer();
+        buffer.rewind();
+        byte[] bytes = new byte[buffer.capacity()];
+        buffer.get(bytes);
+        byte[] clonedBytes = bytes.clone();
+        try {
+            return rotateImageIfRequired(clonedBytes);
+        } catch (IOException ignored) {
+            // this guard will not be reached
+        }
+        return null;
+    }
 }
