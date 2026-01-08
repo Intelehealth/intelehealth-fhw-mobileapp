@@ -4,6 +4,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoFNew;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.IS_NCD_VISIT_ATTRIBUTE;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -1130,15 +1131,22 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" and v.enddate is null " +
-                        "and e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ? and " +
-                        " and v.startdate > DATETIME('now', '-4 day') " +
+                        "and e.encounter_type_uuid = ? " +
+                        "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and " +
+                        "and v.startdate > DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         " group by p.openmrs_id ORDER BY MAX(v.startdate) DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -1205,15 +1213,22 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" and v.enddate is null " +
-                        "and e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ? and "+
-                        " and v.startdate > DATETIME('now', '-4 day') " +
+                        "and e.encounter_type_uuid = ? " +
+                        "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and "+
+                        "and v.startdate > DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         " group by p.openmrs_id ORDER BY v.startdate DESC",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -1279,15 +1294,22 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" and v.enddate is null " +
-                        "and e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ?  "+
-                        " and v.startdate <= DATE('now', '-4 day') " +
+                        "and e.encounter_type_uuid = ? " +
+                        "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +//and" + " o.conceptuuid = ?  "+
+                        "and v.startdate <= DATE('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         "group by p.openmrs_id ORDER BY MAX(v.startdate) DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -1353,15 +1375,22 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         // ie. visit is active and presc is given.
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
-                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
-                        " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
+                        " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync " +
+                        "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
+                        "where p.uuid = v.patientuuid " +
+                        "and v.uuid = e.visituuid " +
+                        "and euid = o.encounteruuid " +
                         //" and v.enddate is null " +
-                        "and e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0  " +//and" + " o.conceptuuid = ? and "+
-                        " and v.startdate <= DATE('now', '-4 day') " +
+                        "and e.encounter_type_uuid = ? " +
+                        "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and "+
+                        "and v.startdate <= DATE('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         "group by p.openmrs_id ORDER BY v.startdate DESC",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE});  // not needed as diagnosis is not mandatoy. --> 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
