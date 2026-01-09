@@ -93,7 +93,7 @@ class BaselineLinelistingQuestionsActivity : AppCompatActivity() {
             getString(R.string.confirm_continue_changes_button_dialog),
             getString(R.string.confirm_discard_changes_button_dialog)
         ) { action ->
-            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
                 navigateToPatientDetail(patientUUID)
             }
         }
