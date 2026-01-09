@@ -259,13 +259,27 @@ class BaselineMedicalFragmentNEW :
             } else true
 
             // Anemia - Q2: Taking any medication?
-            val takingAnyMedicationForAnemia =
+          /*  val takingAnyMedicationForAnemia =
                 if (it.takingAnyMedicationForAnemia!!.isEnabled &&
                     it.takingAnyMedicationForAnemia!!.isMandatory &&
                     binding.layoutAnemiaMedication.layoutAnemiaMedication.isVisible
                 ) {
                     binding.layoutAnemiaMedication.rgAnemiaTakingMedicationOptions.validate()
-                } else true
+                } else true*/
+            val takingAnyMedicationForAnemia =
+                if (!isAgeGreaterThan11) {
+                    true
+                } else if (
+                    it.takingAnyMedicationForAnemia!!.isEnabled &&
+                    it.takingAnyMedicationForAnemia!!.isMandatory &&
+                    binding.layoutAnemiaMedication.layoutAnemiaMedication.isVisible
+                ) {
+                    binding.layoutAnemiaMedication
+                        .rgAnemiaTakingMedicationOptions
+                        .validate()
+                } else {
+                    true
+                }
 
             // Anemia - Q3: Seen by health worker in past year?
             val haveYouSeenToHWinPastOneYearForAnemia =
@@ -320,13 +334,27 @@ class BaselineMedicalFragmentNEW :
             } else true
 
             // bp - Q2: Taking any medication?
-            val takingAnyMedicationForBP =
+          /*  val takingAnyMedicationForBP =
                 if (it.takingAnyMedicationForBP!!.isEnabled &&
                     it.takingAnyMedicationForBP!!.isMandatory &&
                     binding.layoutBpMedication.layoutBpMedication.isVisible
                 ) {
                     binding.layoutBpMedication.rgBpTakingMedicationOptions.validate()
-                } else true
+                } else true*/
+            val takingAnyMedicationForBP =
+                if (!isAgeGreaterThan18) {
+                    true
+                } else if (
+                    it.takingAnyMedicationForBP!!.isEnabled &&
+                    it.takingAnyMedicationForBP!!.isMandatory &&
+                    binding.layoutBpMedication.layoutBpMedication.isVisible
+                ) {
+                    binding.layoutBpMedication
+                        .rgBpTakingMedicationOptions
+                        .validate()
+                } else {
+                    true
+                }
 
             // bp - Q3: Seen by health worker in past year?
             val haveYouSeenToHWinPastOneYearForBP =
@@ -380,13 +408,27 @@ class BaselineMedicalFragmentNEW :
                 } else true
 
             // Diabetes - Q2: Taking any medication?
-            val takingAnyMedicationForDiabetes =
+          /*  val takingAnyMedicationForDiabetes =
                 if (it.takingAnyMedicationForDiabetes!!.isEnabled &&
                     it.takingAnyMedicationForDiabetes!!.isMandatory &&
                     binding.layoutDiabetesMedication.layoutDiabetesMedication.isVisible
                 ) {
                     binding.layoutDiabetesMedication.rgDiabetesTakingMedicationOptions.validate()
-                } else true
+                } else true*/
+            val takingAnyMedicationForDiabetes =
+                if (!isAgeGreaterThan20) {
+                    true
+                } else if (
+                    it.takingAnyMedicationForDiabetes!!.isEnabled &&
+                    it.takingAnyMedicationForDiabetes!!.isMandatory &&
+                    binding.layoutDiabetesMedication.layoutDiabetesMedication.isVisible
+                ) {
+                    binding.layoutDiabetesMedication
+                        .rgDiabetesTakingMedicationOptions
+                        .validate()
+                } else {
+                    true
+                }
 
             // Diabetes - Q3: Seen by health worker in past year?
             val haveYouSeenToHWinPastOneYearForDiabetes =
