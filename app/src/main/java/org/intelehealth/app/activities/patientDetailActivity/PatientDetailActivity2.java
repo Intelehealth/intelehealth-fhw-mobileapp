@@ -513,7 +513,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             populateFamilyMembers(houseHoldValue);
         }
         binding.startNCDSevikaVisitBtn.setOnClickListener(view -> {
-            new DialogUtils().showCommonDialog(
+            new DialogUtils().showCommonDialogNonCancelable(
                     this,
                     R.drawable.ic_sevika_service_start,
                     getResources().getString(R.string.start_newadvice_confirmation_title),
@@ -656,7 +656,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         startSevikaVisitBtn.setOnClickListener(view -> {
-            new DialogUtils().showCommonDialog(
+            new DialogUtils().showCommonDialogNonCancelable(
                     this,
                     R.drawable.ic_sevika_service_start,
                     getResources().getString(R.string.start_newadvice_confirmation_title),

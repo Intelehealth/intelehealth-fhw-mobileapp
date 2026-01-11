@@ -1019,7 +1019,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogRefreshInProgress);
 
             }
         }, 3000);
