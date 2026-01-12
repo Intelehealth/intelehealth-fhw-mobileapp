@@ -6,12 +6,12 @@
     <string name="type_to_search">Type to Search…</string>
 
     // Search Patient Screen Tabs
-    <string name="tab_anemia_screening">Anemia Screening</string>
-    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
-    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_anemia_screening">એનિમિયા સ્ક્રીનિંગ</string>
+    <string name="tab_anemia_follow_up">એનિમિયા ફોલોઅપ</string>
+    <string name="tab_diabetes_screening">ડાયાબિટીસ સ્ક્રીનિંગ</string>
     <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
-    <string name="tab_hypertension_screening">Hypertension Screening</string>
-    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
+    <string name="tab_hypertension_screening">હાઈપરટેન્શન સ્ક્રીનિંગ</string>
+    <string name="tab_hypertension_follow_up">હાઇપરટેન્શન ફોલો-અપ</string>
     <string name="tab_general">General</string>
     <string name="search_patient">Search Patient</string>
 
@@ -36,7 +36,7 @@
     <string name="presc_received">Prescription received</string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="search_gender">M 22</string>
-    <string name="search_txt_enter">Type Patient name or ID</string>
+    <string name="search_txt_enter">દર્દીનું નામ અથવા ID લખો</string>
     <string name="search_hint_text">Previously searched</string>
     <string name="all_patients_txt">All Patients</string>
     <string name="clear">Clear</string>

@@ -6,12 +6,12 @@
     <string name="type_to_search">Type to Search…</string>
 
     // Search Patient Screen Tabs
-    <string name="tab_anemia_screening">Anemia Screening</string>
-    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
-    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_anemia_screening">অ্যানিমিয়া পরীক্ষা</string>
+    <string name="tab_anemia_follow_up">অ্যানিমিয়া ফলোআপ</string>
+    <string name="tab_diabetes_screening">ডায়াবেটিস স্ক্রিনিং</string>
     <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
-    <string name="tab_hypertension_screening">Hypertension Screening</string>
-    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
+    <string name="tab_hypertension_screening">উচ্চ রক্তচাপ পরীক্ষা</string>
+    <string name="tab_hypertension_follow_up">উচ্চ রক্তচাপের ফলোআপ</string>
     <string name="tab_general">General</string>
     <string name="search_patient">Search Patient</string>
 
@@ -36,7 +36,7 @@
     <string name="presc_received">Prescription received</string>
     <string name="visit_not_uploaded">Visit Not Uploaded</string>
     <string name="search_gender">M 22</string>
-    <string name="search_txt_enter">Type Patient name or ID</string>
+    <string name="search_txt_enter">রোগীর নাম বা আইডি টাইপ করুন</string>
     <string name="search_hint_text">Previously searched</string>
     <string name="all_patients_txt">All Patients</string>
     <string name="clear">Clear</string>
