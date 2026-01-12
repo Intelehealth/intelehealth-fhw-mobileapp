@@ -9,7 +9,8 @@ data class UserData(
     val address: String,
     val pinCode: String,
     val abhaAddress: String,
-    val abhaNumber: String
+    val abhaNumber: String,
+    val phoneNumber: String
 ) {
     companion object {
         fun getEmptyDataAsDashes(): UserData {
@@ -21,7 +22,8 @@ data class UserData(
                 address = "-",
                 pinCode = "-",
                 abhaAddress = "-",
-                abhaNumber = "-"
+                abhaNumber = "-",
+                phoneNumber = "-"
             )
         }
     }

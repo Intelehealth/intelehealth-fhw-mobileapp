@@ -422,6 +422,49 @@
                     </RadioGroup>
                 </TableRow>
 
+                <TableRow android:layout_marginBottom="@dimen/margin_8">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:padding="8dp"
+                        android:text="@string/phone_number"
+                        android:textColor="@android:color/black" />
+
+                    <RadioGroup
+                        android:id="@+id/rgPhoneNumber"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/rbPhoneNumberLocal"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:buttonTint="@android:color/black"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:padding="8dp"
+                            android:text="@{localData.phoneNumber}" />
+
+                        <RadioButton
+                            android:id="@+id/rbPhoneNumberAbha"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:buttonTint="@android:color/black"
+                            android:ellipsize="end"
+                            android:gravity="top"
+                            android:padding="8dp"
+                            android:text="@{abhaData.phoneNumber}" />
+                    </RadioGroup>
+
+                </TableRow>
+
             </TableLayout>
 
             <!-- Confirm Button -->

@@ -7,18 +7,12 @@ import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.R
 import org.intelehealth.app.abdm.model.AbhaProfileResponse
-import org.intelehealth.app.abdm.model.OTPVerificationResponse
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.databinding.ActivityCompareDataBinding
-import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.UserData
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.syncModule.SyncUtils
@@ -72,7 +66,8 @@ class CompareDataActivity : AppCompatActivity() {
             address = addressStringBuilder.toString().ifEmpty { "Not Found" },
             pinCode = (patientDto.postalcode ?: "").ifEmpty { "Not Found" },
             abhaAddress = (patientDto.abhaAddress ?: "").ifEmpty { "Not Found" },
-            abhaNumber = (patientDto.abhaNumber ?: "").ifEmpty { "Not Found" }
+            abhaNumber = (patientDto.abhaNumber ?: "").ifEmpty { "Not Found" },
+            phoneNumber = (patientDto.phonenumber ?: "").ifEmpty { "Not Found" }
         )
 
         val abhaUser = UserData(
@@ -83,7 +78,8 @@ class CompareDataActivity : AppCompatActivity() {
             address = (abhaProfileResponse.address ?: "").ifEmpty { "Not Found" },
             pinCode = (abhaProfileResponse.pincode ?: "").ifBlank { "Not Found" },
             abhaAddress = (abhaProfileResponse.preferredAbhaAddress ?: "").ifBlank { "Not Found" },
-            abhaNumber = (abhaProfileResponse.abhaNumber ?: "").ifEmpty { "Not Found" }
+            abhaNumber = (abhaProfileResponse.abhaNumber ?: "").ifEmpty { "Not Found" },
+            phoneNumber = (abhaProfileResponse.mobile ?: "").ifEmpty { "Not Found" }
         )
 
         binding.localData = localUser
@@ -125,6 +121,13 @@ class CompareDataActivity : AppCompatActivity() {
             binding.rbAbhaNumberAbha,
             localUser.abhaNumber,
             abhaUser.abhaNumber
+        )
+
+        autoSelectIfSame(
+            binding.rbPhoneNumberLocal,
+            binding.rbPhoneNumberAbha,
+            localUser.phoneNumber,
+            abhaUser.phoneNumber
         )
 
         binding.btnConfirm.setOnClickListener {
@@ -212,8 +215,9 @@ class CompareDataActivity : AppCompatActivity() {
         val selectedPinCode = getSelectedRadioText(binding.rgPinCode)
         val selectedAbhaAddress = getSelectedRadioText(binding.rgAbhaAddress)
         val selectedAbhaNumber = getSelectedRadioText(binding.rgAbhaNumber)
+        val selectedPhoneNumber = getSelectedRadioText(binding.rgPhoneNumber)
 
-        if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty() || selectedAbhaAddress.isEmpty() || selectedAbhaNumber.isEmpty()) {
+        if (selectedFName.isEmpty() || selectedLName.isEmpty() || selectedDob.isEmpty() || selectedGender.isEmpty() || selectedAddress.isEmpty() || selectedPinCode.isEmpty() || selectedAbhaAddress.isEmpty() || selectedAbhaNumber.isEmpty() || selectedPhoneNumber.isEmpty()) {
             Toast.makeText(
                 this,
                 getString(R.string.please_select_all_the_fields_to_continue), Toast.LENGTH_SHORT
@@ -231,6 +235,7 @@ class CompareDataActivity : AppCompatActivity() {
         patientDto.abhaNumber = abhaProfileResponse.abhaNumber
         patientDto.abhaAddress = selectedAbhaAddress
         patientDto.abhaNumber = selectedAbhaNumber
+        patientDto.phonenumber = selectedPhoneNumber
 
         return patientDto
     }

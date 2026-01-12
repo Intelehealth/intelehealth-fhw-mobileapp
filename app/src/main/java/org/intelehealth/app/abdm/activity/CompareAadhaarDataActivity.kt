@@ -62,7 +62,8 @@ class CompareAadhaarDataActivity : AppCompatActivity() {
         address = payload.abhaProfile.address,
         pinCode = payload.abhaProfile.pinCode,
         abhaAddress = payload.abhaProfile.phrAddress[0],
-        abhaNumber = payload.abhaProfile.abhaNumber
+        abhaNumber = payload.abhaProfile.abhaNumber,
+        phoneNumber = payload.abhaProfile.mobile
     )
 
     private fun setAllAbhaRadioButtonsAsSelected() {

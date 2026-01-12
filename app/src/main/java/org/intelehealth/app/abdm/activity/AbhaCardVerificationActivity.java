@@ -953,7 +953,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
                                                     String patientUuid = PatientsDAO.getPatientUuidByAbhaDetails(abhaProfileResponse.getABHANumber());
 
                                                     if (patientUuid != null) {
-                                                        return PatientsDAO.getPatientDetailsByUuid(patientUuid);
+                                                        return PatientsDAO.getPatientDetailsForAbhaComparison(patientUuid);
                                                     } else {
                                                         return PatientsDAO.getPatientDetailsByPhoneNum(
                                                                 "+91" + abhaProfileResponse.getMobile(),

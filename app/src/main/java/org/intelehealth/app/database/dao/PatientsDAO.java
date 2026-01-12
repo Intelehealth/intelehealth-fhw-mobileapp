@@ -849,7 +849,8 @@ public class PatientsDAO {
     public static PatientDTO getPatientDetailsByUuid(String patientUuid) {
         PatientDTO patientDTO = null;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? /*and (sync = 1 OR sync = 'true' OR sync = 'TRUE')*/ and voided = 0 ORDER BY modified_date DESC", new String[]{patientUuid});
+        final Cursor cursor = db.rawQuery("select distinct p.* from tbl_patient as p join tbl_patient_attribute as pa on p.uuid = pa.patientuuid" +
+                " where p.uuid = ? and voided = 0 ORDER BY modified_date DESC", new String[]{patientUuid});
 
         if (cursor.moveToFirst()) {
             do {
@@ -858,7 +859,6 @@ public class PatientsDAO {
                 patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
                 patientDTO.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
                 patientDTO.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 patientDTO.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
                 patientDTO.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
@@ -873,8 +873,49 @@ public class PatientsDAO {
             }
             while (cursor.moveToNext());
         }
-        cursor.close();
 
+        cursor.close();
+        return patientDTO;
+    }
+
+    public static PatientDTO getPatientDetailsForAbhaComparison(String patientUuid) {
+        PatientDTO patientDTO = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        final Cursor cursor = db.rawQuery("SELECT DISTINCT p.uuid, p.openmrs_id, p.first_name, p.middle_name, p.last_name, p.date_of_birth, p.phone_number, p.address1, " +
+                        "p.address2, p.city_village, p.state_province, p.postal_code, p.country, p.gender, p.abha_number, p.abha_address, pa.value " +
+                        "FROM tbl_patient AS p " +
+                        "JOIN tbl_patient_attribute AS pa " +
+                        "ON p.uuid = pa.patientuuid " +
+                        "WHERE p.uuid = ? " +
+                        "AND pa.person_attribute_type_uuid = ? " +
+                        "AND (p.sync = TRUE or p.sync = 1 or p.sync = true) " +
+                        "ORDER BY p.modified_date DESC",
+                new String[]{patientUuid, "14d4f066-15f5-102d-96e4-000c29c2a5d7"}
+        );
+
+        if (cursor.moveToFirst()) {
+            do {
+                patientDTO = new PatientDTO();
+                patientDTO.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                patientDTO.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                patientDTO.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                patientDTO.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                patientDTO.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                patientDTO.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+                patientDTO.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+                patientDTO.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
+                patientDTO.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
+                patientDTO.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
+                patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                patientDTO.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+                patientDTO.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
+                patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
         return patientDTO;
     }
 
