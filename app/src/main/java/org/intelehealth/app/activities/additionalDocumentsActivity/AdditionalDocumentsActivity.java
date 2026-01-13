@@ -6,10 +6,12 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +21,9 @@ import androidx.appcompat.widget.Toolbar;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -122,7 +126,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials,
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials,
                     rowListItem, AppConstants.IMAGE_PATH, this, true);
             recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -172,28 +176,27 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
     }
 
     /**
-     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
         AlertDialog.Builder builder = new AlertDialog.Builder(AdditionalDocumentsActivity.this);
         builder.setTitle(R.string.additional_doc_image_picker_title);
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
-                    String imageName = UUID.randomUUID().toString();
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                    cameraActivityResult.launch(cameraIntent);
-
-                } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    galleryActivityResult.launch(intent);
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
+        builder.setItems(options, (dialog, item) -> {
+            if (item == 0) {
+                Intent cameraIntent = new Intent(AdditionalDocumentsActivity.this, CameraActivity.class);
+                String imageName = UUID.randomUUID().toString();
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
+                cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
+                cameraActivityResult.launch(cameraIntent);
+            } else if (item == 1) {
+                pickMediaLauncher.launch(
+                        new PickVisualMediaRequest.Builder()
+                                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                .build()
+                );
+            } else if (options[item].equals("Cancel")) {
+                dialog.dismiss();
             }
         });
         builder.show();
@@ -206,32 +209,32 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         }
     });
 
-    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            if(result.getData()!=null) {
-                Uri selectedImage = result.getData().getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                CustomLog.v("path", picturePath + "");
-
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
-            }
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        if (uri != null) {
+            pickImage(uri);
         }
     });
 
-/**
- * @param filePath Final Image path to compress.
- *
- * */
+    private void pickImage(Uri uri) {
+        String[] filePath = {MediaStore.Images.Media.DATA};
+        Cursor c = getContentResolver().query(uri, filePath, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+
+            String finalImageName = UUID.randomUUID().toString();
+            final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+            BitmapUtils.copyFile(picturePath, finalFilePath);
+            compressImageAndSave(finalFilePath);
+        }
+    }
+
+    /**
+     * @param filePath Final Image path to compress.
+     */
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -251,6 +254,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         });
 
     }
+
     private void saveImage(String picturePath) {
         CustomLog.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);

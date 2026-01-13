@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.chatHelp;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -25,7 +26,9 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -123,9 +126,9 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
 
 
         if (CheckInternetAvailability.isNetworkAvailable(this)) {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            ivIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
 
         }
         checkPerm();
@@ -188,21 +191,11 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
 
         layoutGallery.setOnClickListener(v -> {
             layoutMediaOptions.setVisibility(View.GONE);
-          /*  Intent intent = new Intent();
-            intent.setType("image/* video/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent,"Select Video"),PICK_IMAGE_FROM_GALLERY);
-
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);*/
-           /* Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            pickIntent.setType("image/* video/*");
-            startActivityForResult(pickIntent, PICK_IMAGE_FROM_GALLERY);*/
-
-            Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-            photoPickerIntent.setType("*/*");
-            photoPickerIntent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "video/*"});
-            galleryActivityResult.launch(photoPickerIntent);
+            pickMediaLauncher.launch(
+                    new PickVisualMediaRequest.Builder()
+                            .setMediaType(ActivityResultContracts.PickVisualMedia.ImageAndVideo.INSTANCE)
+                            .build()
+            );
         });
 
         layoutDocument.setOnClickListener(new View.OnClickListener() {
@@ -224,55 +217,53 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         }
     });
 
-    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            if (result.getData() != null) {
-                Uri selectedImage = result.getData().getData();
-                CustomLog.d(TAG, "onActivityResult: selectedImage : " + selectedImage);
-                if (selectedImage.toString().toLowerCase().contains("image") || selectedImage.toString().toLowerCase().contains(".jpeg") || selectedImage.toString().toLowerCase().contains(".jpg")) {
-                    CustomLog.d(TAG, "onActivityResult: im image if");
-                    //handle image
-                    String[] filePath = {MediaStore.Images.Media.DATA};
-                    Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                    c.moveToFirst();
-                    int columnIndex = c.getColumnIndex(filePath[0]);
-                    String picturePath = c.getString(columnIndex);
-                    c.close();
-                    //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                    CustomLog.v("path", picturePath + "");
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        if (uri == null) {
+            return;
+        }
 
-                    // copy & rename the file
-                    String finalImageName = UUID.randomUUID().toString();
-                    final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                    BitmapUtils.copyFile(picturePath, finalFilePath);
-                    compressImageAndSave(finalFilePath);
-                } else if (selectedImage.toString().toLowerCase().contains("video") || selectedImage.toString().toLowerCase().contains(".mp4")) {
-                    //handle video
-                    String filemanagerstring = selectedImage.getPath();
-                    CustomLog.d(TAG, "onActivityResult: video result : " + filemanagerstring);
+        String contentType = uri.toString().toLowerCase();
+        if (contentType.contains("image") || contentType.contains(".jpeg") || contentType.contains(".jpg")) {
+            pickImage(uri);
+        }
 
-                    // MEDIA GALLERY
-                    String selectedImagePath = getPath(selectedImage);
-                    if (selectedImagePath != null) {
-                        ChatHelpModel c1 = new ChatHelpModel("", "", "",
-                                getCurrentTime(), "", false,
-                                false, true, false, false,
-                                false, false, false, selectedImagePath,
-                                "");
-                        chattingDetailsList.add(c1);
-                        CustomLog.d(TAG, "saveImage: chattingDetailsList size : " + chattingDetailsList.size());
-                        chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
-                        rvChatSupport.setAdapter(chatHelpAdapter_new);
-                    }
-
-                }
-
-
-            }
+        if (contentType.contains("video") || contentType.contains(".mp4")) {
+            pickVideo(uri);
         }
     });
 
-    ActivityResultLauncher<Intent>  layoutMediaResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+    private void pickImage(Uri uri) {
+        String[] filePath = {MediaStore.Images.Media.DATA};
+        Cursor c = getContentResolver().query(uri, filePath, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+
+            String finalImageName = UUID.randomUUID().toString();
+            final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+            BitmapUtils.copyFile(picturePath, finalFilePath);
+            compressImageAndSave(finalFilePath);
+        }
+    }
+
+    private void pickVideo(Uri uri) {
+        String selectedImagePath = getPath(uri);
+        if (selectedImagePath != null) {
+            ChatHelpModel c1 = new ChatHelpModel("", "", "",
+                    getCurrentTime(), "", false,
+                    false, true, false, false,
+                    false, false, false, selectedImagePath,
+                    "");
+            chattingDetailsList.add(c1);
+            chatHelpAdapter_new = new ChatHelpAdapter_New(this, chattingDetailsList, this);
+            rvChatSupport.setAdapter(chatHelpAdapter_new);
+        }
+    }
+
+    ActivityResultLauncher<Intent> layoutMediaResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             Uri uri = result.getData().getData();
             String selectedDocPath = getPathNew(uri);
@@ -471,10 +462,10 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }
@@ -521,7 +512,7 @@ public class ChatHelpActivity_New extends BaseActivity implements ClickListenerI
     }
 
     private void openDocument(String mediaPath) {
-        CustomLog.d(TAG, "openDocument: mediaPath : "+mediaPath);
+        CustomLog.d(TAG, "openDocument: mediaPath : " + mediaPath);
      /*   File file = new File(Environment.getExternalStorageDirectory(),
                 mediaPath);
         Uri path = Uri.fromFile(file);

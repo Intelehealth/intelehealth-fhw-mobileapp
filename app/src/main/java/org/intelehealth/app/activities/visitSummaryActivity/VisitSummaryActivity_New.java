@@ -99,6 +99,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -2545,18 +2546,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (id == 1) {
-//            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-//                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
-//            }
-
             int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
-                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
-                }
-            } else {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                     listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
                     listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -2636,29 +2627,29 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     });
 
-    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            if (result.getData() != null) {
-                Uri selectedImage = result.getData().getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                CustomLog.v("path", picturePath + "");
-                BitmapUtils.fileCompressed(picturePath);
-
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
-            }
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        if (uri != null) {
+            pickImage(uri);
         }
     });
 
+    private void pickImage(Uri uri) {
+        String[] filePath = {MediaStore.Images.Media.DATA};
+        Cursor c = getContentResolver().query(uri, filePath, null, null, null);
+
+        if (c != null) {
+            c.moveToFirst();
+            int columnIndex = c.getColumnIndex(filePath[0]);
+            String picturePath = c.getString(columnIndex);
+            c.close();
+
+            BitmapUtils.fileCompressed(picturePath);
+            String finalImageName = UUID.randomUUID().toString();
+            final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+            BitmapUtils.copyFile(picturePath, finalFilePath);
+            compressImageAndSave(finalFilePath);
+        }
+    }
 
     // Permission - start
     private void checkPerm(int item) {
@@ -2671,10 +2662,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 cameraActivityResult.launch(cameraIntent);
             }
         } else if (item == 1) {
-            if (checkAndRequestPermissions(item)) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                galleryActivityResult.launch(intent);
-            }
+            pickMediaLauncher.launch(
+                    new PickVisualMediaRequest.Builder()
+                            .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                            .build()
+            );
         }
     }
 
@@ -3224,10 +3216,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
             viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
-               try {
-                   String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
-                   vd_special_value.setText(" " + Node.bullet + "  " + value);
-               }catch (Exception e){}
+                try {
+                    String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+                    vd_special_value.setText(" " + Node.bullet + "  " + value);
+                } catch (Exception e) {
+                }
             });
 
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();

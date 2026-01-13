@@ -23,6 +23,8 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -1705,79 +1707,45 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
             });
+
+    ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        if (uri != null) {
+            pickImage(uri);
+        } else {
+            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+        }
+    });
+
+    private void pickImage(Uri uri) {
+        try {
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            mLastSelectedImageName = UUID.randomUUID().toString();
+            String fileName = mLastSelectedImageName + ".jpg";
+            File destFile = new File(AppConstants.IMAGE_PATH, fileName);
+
+            FileOutputStream outputStream = new FileOutputStream(destFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            Bundle bundle = new Bundle();
+            bundle.putString("image", destFile.getAbsolutePath());
+            imageUtilsListener.onImageReady(bundle);
+        } catch (IOException ignored) {
+            Toast.makeText(VisitCreationActivity.this, "Failed to process selected image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                   /* if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        String currentPhotoPath = "";
-                        if (data != null) {
-                            Uri selectedImage = data.getData();
-                            String[] filePath = {MediaStore.Images.Media.DATA};
-                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                            c.moveToFirst();
-                            int columnIndex = c.getColumnIndex(filePath[0]);
-                            String picturePath = c.getString(columnIndex);
-                            c.close();
-                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                            CustomLog.v("path", picturePath + "");
-
-                            // copy & rename the file
-                            mLastSelectedImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
-                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
-
-                            // Handle the Intent
-
-
-                            Bundle bundle = new Bundle();
-                            bundle.putString("image", currentPhotoPath);
-                            imageUtilsListener.onImageReady(bundle);
-
-                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
-                            CustomLog.i(TAG, currentPhotoPath);
-                            //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-                            //updateImageDatabase(mLastSelectedImageName);
-                        } else {
-                            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }*/
-
-
                     Intent data = result.getData();
                     if (data != null) {
                         Uri selectedImage = data.getData();
                         if (selectedImage != null) {
-                            try {
-                                // Getting bitmap from the selected image URI
-                                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImage);
 
-                                // Generating random file name
-                                mLastSelectedImageName = UUID.randomUUID().toString();
-                                String fileName = mLastSelectedImageName + ".jpg";
-                                File destFile = new File(AppConstants.IMAGE_PATH, fileName);
-
-                                // Saving bitmap as a valid JPEG image
-                                FileOutputStream outputStream = new FileOutputStream(destFile);
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outputStream);
-                                outputStream.flush();
-                                outputStream.close();
-
-                                // Passing the image path back
-                                Bundle bundle = new Bundle();
-                                bundle.putString("image", destFile.getAbsolutePath());
-                                imageUtilsListener.onImageReady(bundle);
-
-                                CustomLog.i(TAG, "Saved image from gallery: " + destFile.getAbsolutePath());
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                                Toast.makeText(VisitCreationActivity.this, "Failed to process selected image", Toast.LENGTH_SHORT).show();
-                            }
                         } else {
-                            Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
                     }
                 }
@@ -1807,8 +1775,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private void galleryStart() {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        mStartForGalleryResult.launch(intent);
+        pickMediaLauncher.launch(
+                new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build()
+        );
     }
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;

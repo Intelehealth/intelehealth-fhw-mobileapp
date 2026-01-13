@@ -220,12 +220,12 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH)
         val bluetoothAdminPermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN)
-        val coarseLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-        val fineLocationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+        val coarseLocationPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val fineLocationPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            writeExternalStoragePermission =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
             val notificationPermission =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
@@ -249,7 +249,6 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)
                 listPermissionsNeeded.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
             } else {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -322,7 +321,8 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun authenticateFingerprint() {
         val executor = ContextCompat.getMainExecutor(this)
-        BiometricPrompt(this, executor,
+        BiometricPrompt(
+            this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
