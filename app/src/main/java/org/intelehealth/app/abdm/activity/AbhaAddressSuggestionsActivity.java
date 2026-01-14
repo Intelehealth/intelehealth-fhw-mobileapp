@@ -32,6 +32,7 @@ import org.intelehealth.app.abdm.dialog.AbhaAddressSuggestionDialogFragment;
 import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.app.abdm.model.OTPVerificationResponse;
 import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
+import org.intelehealth.app.abdm.model.UpdateIdentifierReqBody;
 import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
 import org.intelehealth.app.app.AppConstants;
@@ -41,7 +42,9 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.SnackbarUtils;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.WindowsUtils;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -55,6 +58,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
 
 public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
@@ -276,7 +280,11 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
                     public void onSuccess(Response<SetAbhaAddressResponse> setAbhaAddressResponseResponse) {
-                        handleSuccess(setAbhaAddressResponseResponse);
+                        if (otpVerificationResponse.getUuID() != null) {
+                            updatePatientIdentifier(otpVerificationResponse, setAbhaAddressResponseResponse);
+                        } else {
+                            handleSuccess(setAbhaAddressResponseResponse);
+                        }
                     }
 
                     @Override
@@ -285,6 +293,38 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                     }
                 })).start();
     }
+
+    private void updatePatientIdentifier(OTPVerificationResponse abhaProfileResponse, Response<SetAbhaAddressResponse> setAbhaAddressResponseResponse) {
+        if (setAbhaAddressResponseResponse != null && setAbhaAddressResponseResponse.body() != null) {
+            String newAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
+
+            UpdateIdentifierReqBody requestBody = new UpdateIdentifierReqBody();
+            requestBody.setIdentifier(newAbhaAddress);
+            requestBody.setIdentifierType(UuidDictionary.UPDATE_IDENTIFIER_TYPE_UUID);
+            requestBody.setLocation(sessionManager.getLocationUuid());
+
+            String url = UrlModifiers.getUpdatePatientIdentifierUrl(abhaProfileResponse.getUuID());
+            Single<Response<ResponseBody>> responseSingle = AppConstants.apiInterface.updatePatientIdentifier(
+                    url,
+                    "Basic " + sessionManager.getEncoded(),
+                    requestBody
+            );
+
+            responseSingle.subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new DisposableSingleObserver<>() {
+                        @Override
+                        public void onSuccess(Response<ResponseBody> response) {
+                            handleSuccess(setAbhaAddressResponseResponse);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                        }
+                    });
+        }
+    }
+
 
     private void handleSuccess(Response<SetAbhaAddressResponse> setAbhaAddressResponseResponse) {
         if (setAbhaAddressResponseResponse.code() == 200) {// ie. setting this new abha address is done.
@@ -323,7 +363,6 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
             Toast.makeText(context, setAbhaAddressResponseResponse.raw().message(), Toast.LENGTH_SHORT).show();
         }
     }
-
 
     private void createDynamicChips(String chipTitle) {
         Chip chip = new Chip(context);
