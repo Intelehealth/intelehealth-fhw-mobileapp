@@ -161,8 +161,8 @@
     <string name="years_abbr">Y</string>
     <string name="anemia_followup">অ্যানিমিয়া ফলোআপ</string>
 
-    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
-    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
-    <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_discard_changes_title">এই ভিজিট অসম্পূর্ণ!</string>
+    <string name="confirm_discard_changes_content">আপনি কি নিশ্চিত যে এই ভিজিটের সমস্ত বিবরণ বাতিল করতে চান?</string>
+    <string name="confirm_discard_changes_button_dialog">বাতিল করুন</string>
+    <string name="confirm_continue_changes_button_dialog">চালিয়ে যান</string>
 </resources>

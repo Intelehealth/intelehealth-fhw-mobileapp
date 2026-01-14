@@ -1149,4 +1149,5 @@
     <string name="hypertension_reduce_salt">বিপি: লবণের পরিমাণ কমান</string>
     <string name="hypertension_quit_alcohol_tobacco">বিপি: মদ ও তামাক ছেড়ে দিন</string>
     <string name="ncd_report">NCD রিপোর্ট</string>
+    <string name="msg_ekal_thank_you_ncd_report">একাল টেলিমেডিসিন ব্যবহার করার জন্য আপনাকে ধন্যবাद!</string>
 </resources>

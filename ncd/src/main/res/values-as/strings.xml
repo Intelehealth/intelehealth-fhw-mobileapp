@@ -159,8 +159,8 @@
     <string name="tab_all">সকলো</string>
     <string name="questionnaire_title_anemia_followup">এনিমিয়া ফল-আপ</string>
     <string name="years_abbr">Y</string>
-    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
-    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
-    <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_discard_changes_title">এই ভিজিট অসম্পূৰ্ণ!</string>
+    <string name="confirm_discard_changes_content">আপুনি নিশ্চিতনে এই ভিজিটৰ সকলো বিৱৰণ বাতিল কৰিব বিচাৰে?</string>
+    <string name="confirm_discard_changes_button_dialog">বাতিল কৰক</string>
+    <string name="confirm_continue_changes_button_dialog">অব্যাহত ৰাখক</string>
 </resources>
