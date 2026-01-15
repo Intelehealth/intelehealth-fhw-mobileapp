@@ -155,7 +155,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
-                Glide.with(context)
+                Glide.with(IntelehealthApplication.getAppContext())
                         .load(model.getPatient_photo())
                         .override(100, 100)
                         .thumbnail(requestBuilder)

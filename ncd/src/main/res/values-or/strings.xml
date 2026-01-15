@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="video_library">Video Library</string>
-    <string name="no_videos_found_on_server">No videos found on the server</string>
+    <string name="video_library">ଭିଡିଓ ଲାଇବ୍ରେରୀ</string>
+    <string name="no_videos_found_on_server">ସର୍ଭରରେ କୌଣସି ଭିଡିଓ ମିଳିଲା ନାହିଁ</string>
 
-    <string name="type_to_search">Type to Search…</string>
-
+    <string name="type_to_search">ଖୋଜିବା ପାଇଁ ଟାଇପ୍ କରନ୍ତୁ…</string>
     // Search Patient Screen Tabs
     <string name="tab_anemia_screening">ଅନିମିଆ ତଦନ୍ତ</string>
     <string name="tab_anemia_follow_up">ଅନିମିଆ ଫଲୋଅପ୍</string>
@@ -12,35 +11,35 @@
     <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
     <string name="tab_hypertension_screening">ରକ୍ତଚାପ ତଦନ୍ତଂ</string>
     <string name="tab_hypertension_follow_up">ହାଇପରଟେନସନ୍ ଫଲୋଅପ୍</string>
-    <string name="tab_general">General</string>
-    <string name="search_patient">Search Patient</string>
+    <string name="tab_general">ସାଧାରଣ</string>
+    <string name="search_patient">ରୋଗୀ ଖୋଜନ୍ତୁ</string>
 
-    <string name="medical_history_yes">Yes</string>
-    <string name="age">Age</string>
-    <string name="years">years</string>
-    <string name="months">months</string>
-    <string name="days">days</string>
-    <string name="sample_name_open_mrs_id_text">Ravi Kumar, 2AGY-87</string>
-    <string name="sample_age_text">Age: 16 years 10 months 16 days</string>
-    <string name="sample_disease_category">Sample Disease</string>
+    <string name="medical_history_yes">ହଁ</string>
+    <string name="age">ବୟସ</string>
+    <string name="years">ବର୍ଷ</string>
+    <string name="months">ମାସ</string>
+    <string name="days">ଦିନ</string>
+    <string name="sample_name_open_mrs_id_text">ରବି କୁମାର, 2AGY-87</string>
+    <string name="sample_age_text">ବୟସ: 16 ବର୍ଷ 10 ମାସ 16 ଦିନ</string>
+    <string name="sample_disease_category">ନମୁନା ରୋଗ</string>
 
-    <string name="search_text_filed_hint">Find patient by name, ID or mobile</string>
-    <string name="no_data_found">No data found</string>
-    <string name="patient_not_found">Patient not found!</string>
-    <string name="correct_search_string_message">Use correct patient name, or ID, or mobile number to search or you can register a new patient.</string>
-    <string name="add_new_patient">Add New Patient</string>
-    <string name="presc_pending">Prescription pending</string>
-    <string name="priority">Priority</string>
-    <string name="search_date_txt">24 May, at 3:15 pm</string>
-    <string name="five_presc_received">%1$s prescriptions received</string>
-    <string name="presc_received">Prescription received</string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
-    <string name="search_gender">M 22</string>
+    <string name="search_text_filed_hint">ନାମ, ID କିମ୍ବା ମୋବାଇଲ୍ ଦ୍ୱାରା ରୋଗୀ ଖୋଜନ୍ତୁ</string>
+    <string name="no_data_found">କୌଣସି ତଥ୍ୟ ମିଳିଲା ନାହିଁ</string>
+    <string name="patient_not_found">ରୋଗୀ ମିଳିଲା ନାହିଁ!</string>
+    <string name="correct_search_string_message">ସଠିକ୍ ରୋଗୀଙ୍କ ନାମ, କିମ୍ବା ID, କିମ୍ବା ମୋବାଇଲ୍ ନମ୍ବର ବ୍ୟବହାର କରି ଖୋଜନ୍ତୁ କିମ୍ବା ଆପଣ ଏକ ନୂତନ ରୋଗୀ ପଞ୍ଜିକରଣ କରିପାରିବେ।</string>
+    <string name="add_new_patient">ନୂତନ ରୋଗୀ ଯୋଡନ୍ତୁ</string>
+    <string name="presc_pending">ପ୍ରେସକ୍ରିପସନ୍ ବିଚାରାଧୀନ</string>
+    <string name="priority">ପ୍ରାଥମିକତା</string>
+    <string name="search_date_txt">24 ମେ, ଅପରାହ୍ନ 3:15 ରେ</string>
+    <string name="five_presc_received">%1$s ପ୍ରେସକ୍ରିପସନ୍ ପ୍ରାପ୍ତ ହୋଇଛି</string>
+    <string name="presc_received">ପ୍ରେସକ୍ରିପସନ୍ ପ୍ରାପ୍ତ ହୋଇଛି</string>
+    <string name="visit_not_uploaded">ପରିଦର୍ଶନ ଅପଲୋଡ୍ ହୋଇନାହିଁ</string>
+    <string name="search_gender">ପୁ 22</string>
     <string name="search_txt_enter">ରୋଗୀଙ୍କ ନାମ କିମ୍ବା ID ଟାଇପ୍ କରନ୍ତୁ</string>
-    <string name="search_hint_text">Previously searched</string>
-    <string name="all_patients_txt">All Patients</string>
-    <string name="clear">Clear</string>
-    <string name="search_pat_not_found_txt">Patient not found!</string>
+    <string name="search_hint_text">ପୂର୍ବରୁ ଖୋଜାଯାଇଛି</string>
+    <string name="all_patients_txt">ସମସ୍ତ ରୋଗୀ</string>
+    <string name="clear">ସଫା କରନ୍ତୁ</string>
+    <string name="search_pat_not_found_txt">ରୋଗୀ ମିଳିଲା ନାହିଁ!</string>
 
 
     <!-- values-or/strings.xml -->
