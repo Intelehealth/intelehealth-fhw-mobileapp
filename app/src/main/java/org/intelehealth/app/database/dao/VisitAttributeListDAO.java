@@ -88,6 +88,124 @@ public class VisitAttributeListDAO {
         return isInserted;
     }
 
+    private static final int BATCH_SIZE = 100;
+
+    /**
+     * @param visitAttributeDTOS
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertProvidersAttributeListV2(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
+
+        // ---------- PREPROCESS (NO DB LOCK) ----------
+        mSharedPreference = IntelehealthApplication
+                .getAppContext()
+                .getSharedPreferences(
+                        IntelehealthApplication.getAppContext()
+                                .getString(R.string.prescription_share_key),
+                        Context.MODE_PRIVATE
+                );
+
+        String prescriptionListJson =
+                mSharedPreference.getString(AppConstants.PRESCRIPTION_DATA_LIST, "");
+
+        if (!prescriptionListJson.isEmpty()) {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<LocalPrescriptionInfo>>() {
+            }.getType();
+            prescriptionDataList = gson.fromJson(prescriptionListJson, type);
+            getUnsharedPrescriptionCount();
+        }
+
+        // ---------- DB WORK ----------
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+            int processed = 0;
+
+            for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
+
+                // Skip early if not needed
+                if (!isRelevantVisitAttribute(visitDTO)) {
+                    continue;
+                }
+
+                if (processed % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                bindVisitAttribute(values, visitDTO);
+
+                db.insertWithOnConflict(
+                        "tbl_visit_attribute",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_IGNORE
+                );
+
+                // Collect prescription info (NO DB logic)
+                if (PRESCRIPTION_LINK.equalsIgnoreCase(
+                        visitDTO.getVisit_attribute_type_uuid())) {
+                    updatePrescriptionList(visitDTO);
+                }
+
+                processed++;
+
+                if (processed % BATCH_SIZE == 0) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            if (processed % BATCH_SIZE != 0) {
+                db.setTransactionSuccessful();
+                db.endTransaction();
+            }
+
+            // ---------- POST DB ----------
+            updateSharedPrefForPrescriptionData();
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * @param dto
+     * @return
+     */
+    private boolean isRelevantVisitAttribute(VisitAttributeDTO dto) {
+        String type = dto.getVisit_attribute_type_uuid();
+        return SPECIALITY.equalsIgnoreCase(type)
+                || ADDITIONAL_NOTES.equalsIgnoreCase(type)
+                || PRESCRIPTION_LINK.equalsIgnoreCase(type)
+                || IS_NCD_VISIT_ATTRIBUTE.equalsIgnoreCase(type);
+    }
+
+    /**
+     * @param values
+     * @param visitDTO
+     */
+    private void bindVisitAttribute(
+            ContentValues values,
+            VisitAttributeDTO visitDTO
+    ) {
+        values.put("uuid", visitDTO.getUuid());
+        values.put("visit_uuid", visitDTO.getVisit_uuid());
+        values.put("value", visitDTO.getValue());
+        values.put("visit_attribute_type_uuid",
+                visitDTO.getVisit_attribute_type_uuid());
+        values.put("voided", visitDTO.getVoided());
+        values.put("sync", "1");
+    }
+
     private boolean createVisitAttributeList(VisitAttributeDTO visitDTO, SQLiteDatabase db) throws DAOException {
 
         boolean isCreated = true;
@@ -108,11 +226,11 @@ public class VisitAttributeListDAO {
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) || visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(IS_NCD_VISIT_ATTRIBUTE)) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if (createdRecordsCount != -1) {
+                /*if (createdRecordsCount != -1) {
                     CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
                 } else {
                     CustomLog.d("SPECI", "SIZEVISTATTR: " + createdRecordsCount);
-                }
+                }*/
 
                 if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK)) {
                     updatePrescriptionList(visitDTO);
@@ -368,7 +486,8 @@ public class VisitAttributeListDAO {
         cursor.close();
         return isNcdVisit;
     }
-// check is visit arrtibue is alreday exists or not for  visitid
+
+    // check is visit arrtibue is alreday exists or not for  visitid
     public static boolean isVisitAttributeExists(String visitUuid, String attributeTypeUUID) {
         boolean exists = false;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();

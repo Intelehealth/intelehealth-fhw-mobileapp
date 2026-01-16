@@ -70,6 +70,87 @@ public class PatientsDAO {
         return isInserted;
     }
 
+    private static final int BATCH_SIZE = 50;
+
+    /**
+     * Insert patients in batches
+     *
+     * @param patients
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertPatientsV2(List<PatientDTO> patients) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+
+            for (int i = 0; i < patients.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                bindPatientValues(values, patients.get(i));
+                db.insertWithOnConflict(
+                        "tbl_patient",
+                        null,
+                        values,
+                        //SQLiteDatabase.CONFLICT_IGNORE
+                        SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == patients.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     * Bind patient values to ContentValues
+     *
+     * @param values
+     * @param patient
+     */
+    private void bindPatientValues(ContentValues values, PatientDTO patient) {
+
+        values.put("uuid", patient.getUuid());
+        values.put("openmrs_id", patient.getOpenmrsId());
+        values.put("first_name", patient.getFirstname());
+        values.put("middle_name", patient.getMiddlename());
+        values.put("last_name", patient.getLastname());
+        values.put("address1", patient.getAddress1());
+        values.put("address2", patient.getAddress2());
+        values.put("country", patient.getCountry());
+        values.put(
+                "date_of_birth",
+                DateAndTimeUtils.formatDateFromOnetoAnother(
+                        patient.getDateofbirth(),
+                        "MMM dd, yyyy hh:mm:ss a",
+                        "yyyy-MM-dd"
+                )
+        );
+        values.put("gender", patient.getGender());
+        values.put("postal_code", patient.getPostalcode());
+        values.put("state_province", patient.getStateprovince());
+        values.put("city_village", patient.getCityvillage());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("dead", patient.getDead());
+        values.put("sync", patient.getSyncd());
+    }
+
     public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
@@ -284,6 +365,61 @@ public class PatientsDAO {
         }
         return isInserted;
     }
+
+
+    /**
+     * Insert patient attributes in batches
+     *
+     * @param list
+     * @return
+     * @throws DAOException
+     */
+    public boolean patientAttributesV2(List<PatientAttributesDTO> list) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+
+            for (int i = 0; i < list.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                PatientAttributesDTO dto = list.get(i);
+
+                values.put("uuid", dto.getUuid());
+                values.put("person_attribute_type_uuid", dto.getPersonAttributeTypeUuid());
+                values.put("patientuuid", dto.getPatientuuid());
+                values.put("value", dto.getValue());
+                values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+                values.put("sync", "TRUE");
+
+                db.insertWithOnConflict(
+                        "tbl_patient_attribute",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == list.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
 
     public List<Attribute> getPatientAttributes(String patientuuid) throws DAOException {
         List<Attribute> patientAttributesList = new ArrayList<>();
@@ -561,6 +697,59 @@ public class PatientsDAO {
 
         return isInserted;
     }
+
+    /**
+     *
+     * @param list
+     * @return
+     * @throws DAOException
+     */
+    public boolean patientAttributeMasterV2(List<PatientAttributeTypeMasterDTO> list) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+            String modifiedDate = AppConstants.dateAndTimeUtils.currentDateTime();
+
+            for (int i = 0; i < list.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                PatientAttributeTypeMasterDTO dto = list.get(i);
+
+                values.put("uuid", dto.getUuid());
+                values.put("name", dto.getName());
+                values.put("modified_date", modifiedDate);
+                values.put("sync", "TRUE");
+
+                db.insertWithOnConflict(
+                        "tbl_patient_attribute_master",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_IGNORE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == list.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";
@@ -1123,7 +1312,7 @@ public class PatientsDAO {
 
     //getting followup patient count here
     public static Observable<Integer> getAllFollowupPatientCount() {
-        return  Observable.fromCallable(()->{
+        return Observable.fromCallable(() -> {
             int count = 0;
 
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
