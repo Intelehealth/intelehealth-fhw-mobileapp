@@ -276,7 +276,8 @@ public class VitalCollectionSummaryFragment extends Fragment {
                     getActivity().finish();
                 } else {
                     String visitType = IntelehealthApplication.getInstance().getVisitType();
-                    if (visitType.equals(AppConstants.VISIT_TYPE_SEVIKA)) {
+                    //added null checking to resolve (AEAT-2070)
+                    if (visitType!=null && visitType.equals(AppConstants.VISIT_TYPE_SEVIKA)) {
                         saveSevikaVisitAndProceed();
                     } else {
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
@@ -293,7 +294,23 @@ public class VitalCollectionSummaryFragment extends Fragment {
                             if (SystemClock.elapsedRealtime() - mLastClickTime < 1000) {
                                 return;
                             }
-                            mLastClickTime = SystemClock.elapsedRealtime();
+                            mLastClickTime = SystemClock.elapsedRealtime();view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mIsEditMode && ((VisitCreationActivity) requireActivity()).isEditTriggerFromVisitSummary()) {
+                    getActivity().setResult(Activity.RESULT_OK);
+                    getActivity().finish();
+                } else {
+                    String visitType = IntelehealthApplication.getInstance().getVisitType();
+                    //added null checking to resolve (AEAT-2070)
+                    if (visitType!=null && visitType.equals(AppConstants.VISIT_TYPE_SEVIKA)) {
+                        saveSevikaVisitAndProceed();
+                    } else {
+                        mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_VISIT_REASON, mIsEditMode, mVitalsObject);
+                    }
+                }
+            }
+        });
 
                             speciality_attributes.insertVisitAttributes(visitUuid,"", AppConstants.DOCTOR_NOT_NEEDED);
                             // speciality_attributes.insertVisitAttributes(visitUuid, " Specialist doctor not needed");

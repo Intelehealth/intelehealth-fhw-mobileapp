@@ -513,7 +513,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             populateFamilyMembers(houseHoldValue);
         }
         binding.startNCDSevikaVisitBtn.setOnClickListener(view -> {
-            new DialogUtils().showCommonDialog(
+            new DialogUtils().showCommonDialogNonCancelable(
                     this,
                     R.drawable.ic_sevika_service_start,
                     getResources().getString(R.string.start_newadvice_confirmation_title),
@@ -656,7 +656,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         startSevikaVisitBtn.setOnClickListener(view -> {
-            new DialogUtils().showCommonDialog(
+            new DialogUtils().showCommonDialogNonCancelable(
                     this,
                     R.drawable.ic_sevika_service_start,
                     getResources().getString(R.string.start_newadvice_confirmation_title),
@@ -3021,7 +3021,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
     private void showBaselineMissingQuestionsDialog() {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(
+        dialogUtils.showCommonDialogNonCancelable(
                 PatientDetailActivity2.this,
                 R.drawable.ui2_ic_warning_internet,
                 getResources().getString(R.string.ncd_baseline),

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">एकल आरोग्य</string>
+    <string name="app_name">एकल आरोग्य</string>
     <string name="intro_title_1">आपण कोण आहोत?</string>
     <string name="intro_tagline_1">एकल आरोग्य हे एक नाविन्यपूर्ण टेलिमेडिसिन व्यासपीठ आहे जे दूरस्थ भागांतील आरोग्यसेवा उपलब्धतेतील अंतर भरून काढण्यासाठी डिझाइन केले गेले आहे, समोरच्या फळीत काम करणारे आरोग्य कर्मचारी आणि रुग्णांना आभासी डॉक्टराशी जोडून उच्च-गुणवत्तेच्या आरोग्यसेवा प्रदान करण्यासाठी।</string>
     <string name="intro_title_2">रुग्ण भेट घ्या</string>
@@ -444,10 +444,11 @@
     <string name="category_anemia">अ‍ॅनिमिया</string>
     <string name="category_hypertension">हायपरटेन्शन</string>
     <string name="category_diabetes">डायबिटीज</string>
-
+<!--
+    we have this already in ncd module hence commented
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>-->
 
 </resources>

@@ -26,6 +26,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.ParserUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -1381,6 +1382,40 @@ public class VisitsDAO {
         return visitUuidList;
     }
 
+    public void deleteAllDataForOngoingIncompleteVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Delete observations related to the visit's encounters
+            db.execSQL(
+                    "DELETE FROM tbl_obs " +
+                            "WHERE encounteruuid IN (" +
+                            " SELECT uuid FROM tbl_encounter WHERE visituuid = ?" +
+                            ")",
+                    new Object[]{visitId}
+            );
+
+            //  Delete encounters for the visit
+            db.execSQL(
+                    "DELETE FROM tbl_encounter WHERE visituuid = ?",
+                    new Object[]{visitId}
+            );
+
+            //  Delete the visit itself
+            db.execSQL(
+                    "DELETE FROM tbl_visit WHERE uuid = ?",
+                    new Object[]{visitId}
+            );
+
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            Log.d(TAG, "deleteAllDataForOngoingIncompleteVisit: e : "+e.getLocalizedMessage());
+            e.printStackTrace();
+        }  finally{
+            db.endTransaction();
+        }
+    }
+
     public boolean isDoctorVisit(String visitId) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         boolean doctorVisit = false;
@@ -1400,6 +1435,55 @@ public class VisitsDAO {
 
         return doctorVisit;
     }
+
+    /**
+     * getting total doctor visit count
+     * if visit is not a doctor visit then the value would be "Specialist doctor not needed"
+     * and filtering visit based on the doctor word
+     * @param visitAttributeType
+     * @return
+     */
+    public static int getDoctorVisitCount(
+            String patientUuid,
+            String visitAttributeType
+    ) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        int count = 0;
+
+        StringBuilder queryBuilder = new StringBuilder(
+                "SELECT COUNT(DISTINCT v.uuid) AS total " +
+                        "FROM tbl_visit v " +
+                        "LEFT JOIN tbl_visit_attribute attr " +
+                        "       ON v.uuid = attr.visit_uuid " +
+                        "LEFT JOIN tbl_visit_attribute speciality " +
+                        "       ON v.uuid = speciality.visit_uuid " +
+                        "      AND speciality.visit_attribute_type_uuid = ? " +
+                        "WHERE  v.patientuuid = ? " +
+                        "AND   v.sync IN (1, 'TRUE') COLLATE NOCASE"
+        );
+
+        List<String> args = new ArrayList<>();
+        args.add(UuidDictionary.SPECIALITY);
+        args.add(patientUuid);
+
+        if (visitAttributeType != null && !visitAttributeType.isEmpty()) {
+            queryBuilder.append(" AND attr.visit_attribute_type_uuid != ?");
+            args.add(visitAttributeType);
+        }
+
+        queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''");
+        queryBuilder.append(" AND (speciality.value IS NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)");
+
+        try (Cursor cursor = db.rawQuery(queryBuilder.toString(), args.toArray(new String[0]))) {
+            if (cursor.moveToFirst()) {
+                int colIndex = cursor.getColumnIndexOrThrow("total");
+                count = cursor.getInt(colIndex);
+            }
+        }
+
+        return count;
+    }
+
 
     public boolean isDoctorVisitNew(SQLiteDatabase db, String visitId) {
         boolean doctorVisit = false;

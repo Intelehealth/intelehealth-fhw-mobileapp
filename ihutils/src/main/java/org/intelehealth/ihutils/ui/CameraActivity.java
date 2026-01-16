@@ -322,7 +322,9 @@ public class CameraActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (mCameraView != null) mCameraView.stop();
+        // this is odd to stop camera on onResume,
+        // removed it to prevent window attach crash
+        // if (mCameraView != null) mCameraView.stop();
         CameraActivityPermissionsDispatcher.startCameraWithPermissionCheck(this);
     }
 

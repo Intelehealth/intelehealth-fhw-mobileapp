@@ -1118,7 +1118,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             message = message.concat(getString(R.string.pulse_bpm)).concat("\n");
             message = message.concat(getString(R.string.temperature_f_new)).concat("\n");
 
-            dialogUtils.showCommonDialog(requireActivity(), R.drawable.close_patient_svg, title, message, true, getString(R.string.generic_ok), "", action -> {
+            dialogUtils.showCommonDialogNonCancelable(requireActivity(), R.drawable.close_patient_svg, title, message, true, getString(R.string.generic_ok), "", action -> {
             });
 
             return;
@@ -1129,7 +1129,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             message = message.concat(getInvalidVitals(pulse, temperature, bpSystolic, bpDiastolic)).concat("\n\n");
             message = message.concat(getString(R.string.do_you_still_want_to_continue));
 
-            dialogUtils.showCommonDialog(requireActivity(), R.drawable.close_patient_svg, title, message, false, getString(R.string.yes), getString(R.string.no), action -> {
+            dialogUtils.showCommonDialogNonCancelable(requireActivity(), R.drawable.close_patient_svg, title, message, false, getString(R.string.yes), getString(R.string.no), action -> {
                 if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
                     saveAndProceed();
                 }

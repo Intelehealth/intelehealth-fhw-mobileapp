@@ -160,8 +160,8 @@
     <string name="questionnaire_title_anemia_followup">அனீமியா தொடர்ச்சி</string>
     <string name="years_abbr">Y</string>
 
-    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
-    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
-    <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_discard_changes_title">இந்த வருகை முழுமையடையவில்லை!</string>
+    <string name="confirm_discard_changes_content">இந்த வருகையின் அனைத்து விவரங்களையும் நிராகரிக்க நீங்கள் உறுதியாக விரும்புகிறீர்களா?</string>
+    <string name="confirm_discard_changes_button_dialog">நிராகரி</string>
+    <string name="confirm_continue_changes_button_dialog">தொடரவும்</string>
 </resources>

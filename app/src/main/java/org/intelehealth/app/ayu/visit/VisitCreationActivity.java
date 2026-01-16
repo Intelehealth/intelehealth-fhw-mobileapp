@@ -13,12 +13,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -402,6 +404,20 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         bundle.putString("encounterUuidVitals", encounterVitals);
 
         loadFeatureActiveStatus();
+        handleDeviceBackPress();
+    }
+
+    private void handleDeviceBackPress() {
+        getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if(!mIsEditTriggerFromVisitSummary){
+                    showConfirmationDialog( getString(R.string.confirm_discard_changes_content));
+                }else{
+                    finish();
+                }
+            }
+        });
     }
 
     public boolean isEditTriggerFromVisitSummary() {
@@ -471,7 +487,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     public void backPress(View view) {
-        finish();
+       // finish();
+        if(!mIsEditTriggerFromVisitSummary){
+            showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
+        }else{
+            finish();
+        }
     }
 
     private VitalsObject mVitalsObject;
@@ -925,7 +946,19 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
         } else if (screenId == STEP_2_VISIT_REASON_QUESTION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-            title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+            String reasonName = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+            //added null checking to prevent crash (AEAT-2072)
+            if (mSelectedComplainList != null &&
+                    !mSelectedComplainList.isEmpty() &&
+                    mSelectedComplainList.get(0) != null) {
+
+                String name = mSelectedComplainList.get(0).getReasonNameLocalized();
+                if (name != null) {
+                    reasonName += " : "+name;
+                }
+            }
+
+            title = reasonName;
         } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
             currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
             title = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
@@ -1749,8 +1782,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private ObjectAnimator syncAnimator;
 
     public void syncNow(View view) {
-        if (NetworkConnection.isOnline(this)) {
-            SyncUtils.syncNow(this, view, syncAnimator);
+        if(mIsEditTriggerFromVisitSummary){
+            if (NetworkConnection.isOnline(this)) {
+                SyncUtils.syncNow(this, view, syncAnimator);
+            }
+        }else{
+            showConfirmationDialog(getString(R.string.confirm_discard_changes_content_on_sync));
         }
     }
 
@@ -1779,5 +1816,22 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     public FeatureActiveStatus getFeatureActiveStatus() {
         return featureActiveStatus;
+    }
+
+
+
+    private void showConfirmationDialog(String content) {
+        Log.d(TAG, "showConfirmationDialog: visitUuid : "+visitUuid);
+        DialogUtils dialogUtils = new DialogUtils();
+        dialogUtils.showCommonDialogNonCancelable(this, R.drawable.fingerprint_dialog_error, getString(R.string.this_visit_is_incomplete),
+                content, false,
+                getResources().getString(R.string.button_continue), getString(R.string.discard), action -> {
+
+                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                        new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid);
+                        finish();
+                    }
+                });
+
     }
 }
