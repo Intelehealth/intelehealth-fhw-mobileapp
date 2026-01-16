@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">इंटेलहेल्थ</string>
+    <string name="app_name" translatable="false">इंटेलहेल्थ</string>
 
     //Generic
     <string name="tag_optional">पर्यायी</string>
@@ -1044,6 +1044,10 @@
     <string name="todays_tab_achievement">दैनिक</string>
     <string name="date_range">दिनांक श्रेणी</string>
     <string name="my_achievements">माझी कामगिरी</string>
+    <string name="this_visit_is_incomplete">ही भेट अपूर्ण आहे!</string>
+    <string name="discard">वगळा</string>
+    <string name="confirm_discard_changes_content">आपण खात्री आहात का की या भेटीचे सर्व तपशील वगळू इच्छिता?</string>
+    <string name="confirm_discard_changes_content_on_sync">आपली भेट तयार करण्याची प्रक्रिया अपूर्ण आहे. आपण ती पूर्ण करू शकता किंवा वगळू शकता.</string>
 
 
     <plurals name="open_no_of_visit">

@@ -143,4 +143,8 @@
     <string name="dialog_baseline_ok">Ok</string>
     <string name="baseline_warning_alert">Alert!</string>
     <string name="category_already_selected">You already selected an item from %1$s</string>
+    <string name="this_visit_is_incomplete">This visit is incomplete!</string>
+    <string name="discard">Discard</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_content_on_sync">Your visit creation process remains incomplete. You can either proceed to finalize the process or choose to discard it.</string>
 </resources>

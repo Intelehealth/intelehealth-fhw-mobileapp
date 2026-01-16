@@ -87,26 +87,29 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
-//            saveConfig(responseDTO.getData().getConfigResponse());
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
-            locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
-            providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+            if (responseDTO.getData() != null) {
+                patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+                patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+                patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+                encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+                obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+                locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
+                providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+                providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
+                visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
-            Log.d(TAG, "kzSyncData: provider attributes : "+new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
-            userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
-            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
-            Logger.logD(TAG, "Pull sync ended");
-            sessionManager.setFirstTimeSyncExecute(false);
-            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
+                Log.d(TAG, "kzSyncData: provider attributes : " + new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
+                userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
+                Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+                Logger.logD(TAG, "Pull sync ended");
+                sessionManager.setFirstTimeSyncExecute(false);
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
+            }
+//            saveConfig(responseDTO.getData().getConfigResponse());
+
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE(TAG, "Exception", e);
@@ -709,7 +712,7 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
-        }else{
+        } else {
             //this is fallback to handle push images if anyone is missing to push
             imagesPushDAO.obsImagesPush();
             imagesPushDAO.deleteObsImage();
@@ -815,8 +818,8 @@ public class SyncDAO {
                                 sessionManager.setSyncFinished(true);
 
 
-                                 // image push is dependant with push data api
-                                 // that's why added image upload logic here
+                                // image push is dependant with push data api
+                                // that's why added image upload logic here
                               /*  final Handler handler_foreground = new Handler();
                                 handler_foreground.postDelayed(new Runnable() {
                                     @Override
@@ -836,8 +839,7 @@ public class SyncDAO {
                                 broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                                 IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
 
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 CustomLog.e(TAG, e.getMessage());
                             }
@@ -858,7 +860,7 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
-        }else{
+        } else {
             //this is fallback to handle push images if anyone is missing to push
             imagesPushDAO.obsImagesPush();
             imagesPushDAO.deleteObsImage();
@@ -866,6 +868,7 @@ public class SyncDAO {
 
         return isSucess[0];
     }
+
     private void CalculateAgoTime(Context context) {
         String finalTime = "";
 

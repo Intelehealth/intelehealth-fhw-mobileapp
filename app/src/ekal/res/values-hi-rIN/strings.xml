@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">एकल आरोग्य</string>
+    <string name="app_name">एकल आरोग्य</string>
     <string name="intro_title_1">हम कौन हैं?</string>
     <string name="intro_tagline_1">एकल आरोग्य एक अभिनव टेलीमेडिसिन सुविधा है जिसे दूरस्थ क्षेत्रों में स्वास्थ्य सेवा पहुंच के अंतर को पाटने के लिए डिज़ाइन किया गया है, जो प्राथमिक स्वास्थ्य कार्यकर्ता और पेशेंट को एक ऑनलाइन डॉक्टर से जोड़ता है ताकि उच्च-गुणवत्ता वाली स्वास्थ्य सेवाएँ प्रदान की जा सकें।</string>
     <string name="intro_title_2">पेशेंट का विजिट करें</string>
@@ -447,10 +447,11 @@
     <string name="not_eligible_for_protocols_message">आप इस समय किसी भी NCD प्रोटोकॉल के लिए पात्र नहीं हैं। यदि आप फिर भी आगे बढ़ना चाहते हैं, तो अपनी पसंद का प्रोटोकॉल चुनें।</string>
     <string name="yes_move_ahead">हाँ, आगे बढ़ें</string>
     <string name="no_go_back">नहीं, वापस जाएँ</string>
-
+<!--
+    we have this already in ncd module hence commented
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>-->
 
 </resources>

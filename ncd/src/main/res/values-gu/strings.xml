@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="video_library">Video Library</string>
-    <string name="no_videos_found_on_server">No videos found on the server</string>
+    <string name="video_library">વીડિયો લાઇબ્રેરી</string>
+    <string name="no_videos_found_on_server">સર્વર પર કોઈ વીડિયો મળ્યો નથી</string>
 
-    <string name="type_to_search">Type to Search…</string>
+    <string name="type_to_search">શોધવા માટે ટાઇપ કરો…</string>
 
     // Search Patient Screen Tabs
-    <string name="tab_anemia_screening">Anemia Screening</string>
-    <string name="tab_anemia_follow_up">Anemia Follow-Up</string>
-    <string name="tab_diabetes_screening">Diabetes Screening</string>
+    <string name="tab_anemia_screening">એનિમિયા સ્ક્રીનિંગ</string>
+    <string name="tab_anemia_follow_up">એનિમિયા ફોલોઅપ</string>
+    <string name="tab_diabetes_screening">ડાયાબિટીસ સ્ક્રીનિંગ</string>
     <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
-    <string name="tab_hypertension_screening">Hypertension Screening</string>
-    <string name="tab_hypertension_follow_up">Hypertension Follow-Up</string>
-    <string name="tab_general">General</string>
-    <string name="search_patient">Search Patient</string>
+    <string name="tab_hypertension_screening">હાઈપરટેન્શન સ્ક્રીનિંગ</string>
+    <string name="tab_hypertension_follow_up">હાઇપરટેન્શન ફોલો-અપ</string>
+    <string name="tab_general">સામાન્ય</string>
+    <string name="search_patient">દર્દી શોધો</string>
 
-    <string name="medical_history_yes">Yes</string>
-    <string name="age">Age</string>
-    <string name="years">years</string>
-    <string name="months">months</string>
-    <string name="days">days</string>
-    <string name="sample_name_open_mrs_id_text">Ravi Kumar, 2AGY-87</string>
-    <string name="sample_age_text">Age: 16 years 10 months 16 days</string>
-    <string name="sample_disease_category">Sample Disease</string>
+    <string name="medical_history_yes">હા</string>
+    <string name="age">ઉંમર</string>
+    <string name="years">વર્ષ</string>
+    <string name="months">મહિના</string>
+    <string name="days">દિવસ</string>
+    <string name="sample_name_open_mrs_id_text">રવિ કુમાર, 2AGY-87</string>
+    <string name="sample_age_text">ઉંમર: 16 વર્ષ 10 મહિના 16 દિવસ</string>
+    <string name="sample_disease_category">નમૂના રોગ</string>
 
-    <string name="search_text_filed_hint">Find patient by name, ID or mobile</string>
-    <string name="no_data_found">No data found</string>
-    <string name="patient_not_found">Patient not found!</string>
-    <string name="correct_search_string_message">Use correct patient name, or ID, or mobile number to search or you can register a new patient.</string>
-    <string name="add_new_patient">Add New Patient</string>
-    <string name="presc_pending">Prescription pending</string>
-    <string name="priority">Priority</string>
-    <string name="search_date_txt">24 May, at 3:15 pm</string>
-    <string name="five_presc_received">%1$s prescriptions received</string>
-    <string name="presc_received">Prescription received</string>
-    <string name="visit_not_uploaded">Visit Not Uploaded</string>
-    <string name="search_gender">M 22</string>
-    <string name="search_txt_enter">Type Patient name or ID</string>
-    <string name="search_hint_text">Previously searched</string>
-    <string name="all_patients_txt">All Patients</string>
-    <string name="clear">Clear</string>
-    <string name="search_pat_not_found_txt">Patient not found!</string>
+    <string name="search_text_filed_hint">નામ, ID અથવા મોબાઇલ દ્વારા દર્દી શોધો</string>
+    <string name="no_data_found">કોઈ ડેટા મળ્યો નથી</string>
+    <string name="patient_not_found">દર્દી મળ્યો નથી!</string>
+    <string name="correct_search_string_message">યોગ્ય દર્દીનું નામ, અથવા ID, અથવા મોબાઇલ નંબર વાપરીને શોધો અથવા તમે નવા દર્દીની નોંધણી કરી શકો છો.</string>
+    <string name="add_new_patient">નવો દર્દી ઉમેરો</string>
+    <string name="presc_pending">પ્રિસ્ક્રિપ્શન બાકી</string>
+    <string name="priority">પ્રાથમિકતા</string>
+    <string name="search_date_txt">24 મે, બપોરે 3:15 વાગે</string>
+    <string name="five_presc_received">%1$s પ્રિસ્ક્રિપ્શન પ્રાપ્ત થયા</string>
+    <string name="presc_received">પ્રિસ્ક્રિપ્શન પ્રાપ્ત થયું</string>
+    <string name="visit_not_uploaded">મુલાકાત અપલોડ થઈ નથી</string>
+    <string name="search_gender">પુ 22</string>
+    <string name="search_txt_enter">દર્દીનું નામ અથવા ID ટાઇપ કરો</string>
+    <string name="search_hint_text">અગાઉ શોધેલ</string>
+    <string name="all_patients_txt">બધા દર્દીઓ</string>
+    <string name="clear">સાફ કરો</string>
+    <string name="search_pat_not_found_txt">દર્દી મળ્યો નથી!</string>
 
     <!-- values-gu/strings.xml -->
     <!-- 1.1 Navigation -->
@@ -161,8 +161,8 @@
     <string name="years_abbr">Y</string>
     <string name="anemia_followup">એનિમિયા ફોલોઅપ</string>
 
-    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
-    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
-    <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_discard_changes_title">આ મુલાકાત અપૂર્ણ છે!</string>
+    <string name="confirm_discard_changes_content">શું તમે ખરેખર આ મુલાકાતની તમામ વિગતો રદ કરવા માંગો છો?</string>
+    <string name="confirm_discard_changes_button_dialog">રદ કરો</string>
+    <string name="confirm_continue_changes_button_dialog">ચાલુ રાખો</string>
 </resources>

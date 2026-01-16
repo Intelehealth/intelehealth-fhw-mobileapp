@@ -84,7 +84,7 @@ class BaselineLinelistingQuestionsActivity : AppCompatActivity() {
     }
     private fun showBaselineMissingQuestionsDialog() {
         val dialogUtils = DialogUtils()
-        dialogUtils.showCommonDialog(
+        dialogUtils.showCommonDialogNonCancelable(
             this,
             R.drawable.baseline_do_not_disturb_alt_24,
             getString(R.string.ncd_questions_are_incomplete_title),

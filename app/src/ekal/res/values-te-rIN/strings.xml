@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">Ekal Arogya</string>
+    <string name="app_name">ఏకల్ ఆరోగ్యం</string>
     <string name="intro_title_1">మనం ఎవరం?</string>
     <string name="intro_tagline_1">ఏకల్ ఆరోగ్య అనేది ఒక వినూత్న టెలిమెడిసిన్ ప్లాట్‌ఫామ్, ఇది మారుమూల ప్రాంతాలలో ఆరోగ్య సంరక్షణ అంతరాన్ని తగ్గించడానికి, ఫ్రంట్‌లైన్ ఆరోగ్య కార్యకర్త మరియు రోగిని వర్చువల్ వైద్యుడితో అనుసంధానించి అధిక-నాణ్యత ఆరోగ్య సేవలను అందించడానికి రూపొందించబడింది.</string>
     <string name="intro_title_2">రోగుల సందర్శనలను తీసుకుంటాము</string>
@@ -337,10 +337,12 @@
     <string name="category_hypertension">హైపర్‌టెన్షన్</string>
     <string name="category_diabetes">డయాబెటిస్</string>
 
+ <!--
+     we have this already in ncd module hence commented
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>-->
     <string name="sample_text">sample text</string>
 
     <string name="prescription_dr_email">Email: %1$s</string>

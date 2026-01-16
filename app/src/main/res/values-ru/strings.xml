@@ -544,4 +544,9 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">Нажмите, чтобы посмотреть предыдущие %1$s визита по НИЗ</string>
+    <string name="this_visit_is_incomplete">Этот визит неполный!</string>
+    <string name="discard">Удалить</string>
+    <string name="confirm_discard_changes_content">Вы уверены, что хотите удалить все данные этого визита?</string>
+    <string name="confirm_discard_changes_content_on_sync">Процесс создания визита не завершён. Вы можете завершить его или удалить.</string>
+
 </resources>

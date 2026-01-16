@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">એકલ આરોગ્ય</string>
+    <string name="app_name">એકલ આરોગ્ય</string>
     <string name="intro_title_1">આપણે કોણ છીએ?</string>
     <string name="intro_tagline_1">એકલ આરોગ્ય એ એક નવીન ટેલિમેડિસિન પ્લેટફોર્મ છે, જે દૂરસ્થ વિસ્તારોમાં આરોગ્યસેવાની ઉપલબ્ધતાની ખાધને દૂર કરવા માટે ડિઝાઇન કરવામાં આવ્યું છે, ફ્રન્ટલાઇન આરોગ્ય કાર્યકર્તા અને દર્દીને વર્ચ્યુઅલ ડૉક્ટર સાથે જોડવા માટે, ઉચ્ચ ગુણવત્તાની આરોગ્યસેવાઓ પ્રદાન કરવા માટે।</string>
     <string name="intro_title_2">રોગી મુલાકાત લો</string>
@@ -443,11 +443,12 @@
     <string name="category_anemia">એનીમિયા</string>
     <string name="category_hypertension">હાઇપરટેન્શન</string>
     <string name="category_diabetes">ડાયાબિટીસ</string>
-
+<!--
+   we have this already in ncd module hence commented
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="confirm_continue_changes_button_dialog">Continue</string>-->
 
 
 </resources>

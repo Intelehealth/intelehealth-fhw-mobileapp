@@ -1129,6 +1129,10 @@
     <string name="todays_tab_achievement">தினசரி</string>
     <string name="date_range">தேதி வரம்பு</string>
     <string name="my_achievements">என் சாதனைகள்</string>
+    <string name="this_visit_is_incomplete">இந்த வருகை முழுமையாக இல்லை!</string>
+    <string name="discard">நீக்கவும்</string>
+    <string name="confirm_discard_changes_content">இந்த வருகையின் அனைத்து விவரங்களையும் நீக்க விரும்புகிறீர்களா?</string>
+    <string name="confirm_discard_changes_content_on_sync">உங்கள் வருகை உருவாக்கும் செயல் முழுமையடையவில்லை. நீங்கள் அதை முடிக்கலாம் அல்லது நீக்கலாம்.</string>
 
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>

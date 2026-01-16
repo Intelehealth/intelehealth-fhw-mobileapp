@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ଆନ୍ତରିକତା</string>
+    <string name="app_name" translatable="false">ଆନ୍ତରିକତା</string>
     <string name="button_ok">ଓକେ</string>
     <string name="action_end_visit">ମାତ୍ରା ସମାପ୍ତି</string>
     <string name="action_home">ଘର</string>
@@ -900,6 +900,10 @@
     <string name="todays_tab_achievement">ଦୈନିକ</string>
     <string name="date_range">ତାରିଖ ସୀମା</string>
     <string name="my_achievements">ମୋର ସଫଳତା</string>
+    <string name="this_visit_is_incomplete">ଏହି ଯାତ୍ରାଟି ଅସମ୍ପୂର୍ଣ୍ଣ!</string>
+    <string name="discard">ବାତିଲ୍ କରନ୍ତୁ</string>
+    <string name="confirm_discard_changes_content">ଆପଣ ନିଶ୍ଚିତ କି ଯେ ଏହି ଯାତ୍ରାର ସମସ୍ତ ବିବରଣୀ ବାତିଲ୍ କରିବାକୁ ଚାହାଁଛନ୍ତି?</string>
+    <string name="confirm_discard_changes_content_on_sync">ଆପଣଙ୍କ ଯାତ୍ରା ସୃଷ୍ଟି ପ୍ରକ୍ରିୟା ଅସମ୍ପୂର୍ଣ୍ଣ ଅଛି। ଆପଣ ଏହାକୁ ସମାପ୍ତ କରିବା କିମ୍ବା ବାତିଲ୍ କରିବା ଚୟନ କରିପାରିବେ।</string>
 
     <plurals name="open_no_of_visit">
         <item quantity="one">%d ଖୋଲା ପରିଦର୍ଶନ</item>

@@ -1019,7 +1019,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogLoginSuccess);
+                SafeDialogUtil.dismissDialog(HomeScreenActivity_New.this, dialogRefreshInProgress);
 
             }
         }, 3000);
@@ -1312,7 +1312,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     @Override
     protected void onResume() {
-
+        super.onResume();
         if (new PreferenceHelper(this).get(PreferenceHelper.IS_NOTIFICATION, false)) {
             ivNotificationIcon.setVisibility(View.VISIBLE);
         } else {
@@ -1355,7 +1355,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        super.onResume();
     }
 
     private void checkAppVer() {

@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.view.LayoutInflater;
@@ -154,7 +155,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
-                Glide.with(context)
+                Glide.with(IntelehealthApplication.getAppContext())
                         .load(model.getPatient_photo())
                         .override(100, 100)
                         .thumbnail(requestBuilder)
@@ -404,7 +405,8 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                         if (updated) {
                             RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                                     .asDrawable().sizeMultiplier(0.3f);
-                            Glide.with(context)
+                            //app context added to handle crash (AEAT-2071)
+                            Glide.with(IntelehealthApplication.getAppContext())
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
                                     .override(100, 100)
                                     .thumbnail(requestBuilder)
