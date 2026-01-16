@@ -86,34 +86,35 @@ public class SyncDAO {
         try {
             Logger.logD(TAG, "pull sync started");
             if (responseDTO.getData() != null) {
-                
+
 //            saveConfig(responseDTO.getData().getConfigResponse());
-            //patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.insertPatientsV2(responseDTO.getData().getPatientDTO());
+                //patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+                patientsDAO.insertPatientsV2(responseDTO.getData().getPatientDTO());
 
-            //patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            patientsDAO.patientAttributesV2(responseDTO.getData().getPatientAttributesDTO());
+                //patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+                patientsDAO.patientAttributesV2(responseDTO.getData().getPatientAttributesDTO());
 
-            //patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            patientsDAO.patientAttributeMasterV2(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                //patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                patientsDAO.patientAttributeMasterV2(responseDTO.getData().getPatientAttributeTypeMasterDTO());
 
-            //visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            visitsDAO.insertVisitsV2(responseDTO.getData().getVisitDTO());
+                //visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+                visitsDAO.insertVisitsV2(responseDTO.getData().getVisitDTO());
 
-            //encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            encounterDAO.insertEncountersV2(responseDTO.getData().getEncounterDTO());
+                //encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+                encounterDAO.insertEncountersV2(responseDTO.getData().getEncounterDTO());
 
-            //obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
-            obsDAO.insertObsTempV2(responseDTO.getData().getObsDTO());
+                //obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+                obsDAO.insertObsTempV2(responseDTO.getData().getObsDTO());
 
-            locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
-            providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+                locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
+                providerDAO.insertProviders(responseDTO.getData().getProviderlist());
 
-            //providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
-            providerAttributeLIstDAO.insertProvidersAttributeListV2(responseDTO.getData().getProviderAttributeList());
+                //providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
+                providerAttributeLIstDAO.insertProvidersAttributeListV2(responseDTO.getData().getProviderAttributeList());
 
-            //visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeListV2(responseDTO.getData().getVisitAttributeList());
+                //visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+                //TODO: need to change the function name
+                visitAttributeListDAO.insertVisitAttributeListV2(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
                 Log.d(TAG, "kzSyncData: provider attributes : " + new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
                 userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());

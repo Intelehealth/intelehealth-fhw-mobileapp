@@ -95,7 +95,7 @@ public class VisitAttributeListDAO {
      * @return
      * @throws DAOException
      */
-    public boolean insertProvidersAttributeListV2(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
+    public boolean insertVisitAttributeListV2(List<VisitAttributeDTO> visitAttributeDTOS) throws DAOException {
 
         // ---------- PREPROCESS (NO DB LOCK) ----------
         mSharedPreference = IntelehealthApplication
