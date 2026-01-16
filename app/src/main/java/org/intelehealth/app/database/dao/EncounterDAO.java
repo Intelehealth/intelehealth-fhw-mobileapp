@@ -39,7 +39,6 @@ public class EncounterDAO {
     private long createdRecordsCount = 0;
 
 
-
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -58,6 +57,71 @@ public class EncounterDAO {
         }
 
         return isInserted;
+    }
+
+    private static final int BATCH_SIZE = 50;
+
+    /**
+     * @param encounters
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertEncountersV2(List<EncounterDTO> encounters) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+            String modifiedDate = AppConstants.dateAndTimeUtils.currentDateTime();
+
+            for (int i = 0; i < encounters.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                bindEncounter(values, encounters.get(i), modifiedDate);
+
+                db.insertWithOnConflict(
+                        "tbl_encounter",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == encounters.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     *
+     * @param values
+     * @param encounter
+     * @param modifiedDate
+     */
+    private void bindEncounter(ContentValues values, EncounterDTO encounter, String modifiedDate) {
+
+        values.put("uuid", encounter.getUuid());
+        values.put("visituuid", encounter.getVisituuid());
+        values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+        values.put("provider_uuid", encounter.getProvideruuid());
+        values.put("modified_date", modifiedDate);
+        values.put("sync", encounter.getSyncd());
+        values.put("voided", encounter.getVoided());
+        values.put("privacynotice_value", encounter.getPrivacynotice_value());
     }
 
     private boolean createEncounters(EncounterDTO encounter, SQLiteDatabase db) throws DAOException {

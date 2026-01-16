@@ -167,6 +167,7 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import io.reactivex.Observable;
@@ -789,9 +790,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             SyncDAO.liveDataSync = new SyncProgress();
             SyncDAO.getSyncProgress_LiveData().observe(this, syncLiveData);
             showRefreshInProgressDialog();
-            Executors.newSingleThreadExecutor().execute(() -> {
-                syncUtils.initialSync("home", this);
+
+            Executors.newFixedThreadPool(5).execute(() -> {
+                syncUtils.initialSync("home", getApplicationContext());
             });
+
+            /*Executors.newSingleThreadExecutor().execute(() -> {
+                syncUtils.initialSync("home", this);
+            });*/
         } else {
             // if initial setup done then we can directly set the periodic background sync job
             WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);

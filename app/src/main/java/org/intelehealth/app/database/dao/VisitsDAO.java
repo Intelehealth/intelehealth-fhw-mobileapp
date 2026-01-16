@@ -61,6 +61,74 @@ public class VisitsDAO {
 
         return isInserted;
     }
+    private static final int BATCH_SIZE = 50;
+
+    /**
+     *
+     * @param visits
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertVisitsV2(List<VisitDTO> visits) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+            String modifiedDate = AppConstants.dateAndTimeUtils.currentDateTime();
+
+            for (int i = 0; i < visits.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                bindVisit(values, visits.get(i), modifiedDate);
+
+                db.insertWithOnConflict(
+                        "tbl_visit",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == visits.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+    private void bindVisit(ContentValues values, VisitDTO visit, String modifiedDate) {
+
+        values.put("uuid", visit.getUuid());
+        values.put("patientuuid", visit.getPatientuuid());
+        values.put("locationuuid", visit.getLocationuuid());
+        values.put("visit_type_uuid", visit.getVisitTypeUuid());
+        values.put("creator", visit.getCreatoruuid());
+
+        values.put(
+                "startdate",
+                DateAndTimeUtils.formatDateFromOnetoAnother(
+                        visit.getStartdate(),
+                        "MMM dd, yyyy hh:mm:ss a",
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                )
+        );
+
+        values.put("enddate", visit.getEnddate());
+        values.put("modified_date", modifiedDate);
+        values.put("sync", visit.getSyncd());
+    }
 
     private boolean createVisits(VisitDTO visit, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;

@@ -7,15 +7,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-
-import org.intelehealth.app.user.UserSessionDao;
-import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -32,6 +28,8 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.syncModule.InitialSyncWorker;
 import org.intelehealth.app.syncModule.SyncProgress;
+import org.intelehealth.app.user.UserSessionDao;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
@@ -59,7 +57,7 @@ import retrofit2.Response;
 
 public class SyncDAO {
     public static final String TAG = "SyncDAO";
-    public static final String PULL_ISSUE = "PULL_ISSUE";
+    public static final String PULL_ISSUE = "SyncDao - PULL_ISSUE";
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
@@ -88,16 +86,32 @@ public class SyncDAO {
         try {
             Logger.logD(TAG, "pull sync started");
 //            saveConfig(responseDTO.getData().getConfigResponse());
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+            //patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+            patientsDAO.insertPatientsV2(responseDTO.getData().getPatientDTO());
+
+            //patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+            patientsDAO.patientAttributesV2(responseDTO.getData().getPatientAttributesDTO());
+
+            //patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+            patientsDAO.patientAttributeMasterV2(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+
+            //visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+            visitsDAO.insertVisitsV2(responseDTO.getData().getVisitDTO());
+
+            //encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+            encounterDAO.insertEncountersV2(responseDTO.getData().getEncounterDTO());
+
+            //obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+            obsDAO.insertObsTempV2(responseDTO.getData().getObsDTO());
+
             locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+
+            //providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
+            providerAttributeLIstDAO.insertProvidersAttributeListV2(responseDTO.getData().getProviderAttributeList());
+
+            //visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+            visitAttributeListDAO.insertProvidersAttributeListV2(responseDTO.getData().getVisitAttributeList());
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
             Log.d(TAG, "kzSyncData: provider attributes : "+new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
             userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());

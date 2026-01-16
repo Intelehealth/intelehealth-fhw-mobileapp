@@ -60,6 +60,81 @@ public class ObsDAO {
         return isInserted;
 
     }
+    private static final int BATCH_SIZE = 100;
+
+    /**
+     *
+     * @param obsList
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertObsTempV2(List<ObsDTO> obsList) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            SessionManager sessionManager =
+                    new SessionManager(IntelehealthApplication.getAppContext());
+
+            ContentValues values = new ContentValues();
+            String modifiedDate = AppConstants.dateAndTimeUtils.currentDateTime();
+
+            for (int i = 0; i < obsList.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                ObsDTO obs = obsList.get(i);
+
+                if (sessionManager.isFirstTimeSyncExcuted() && obs.getVoided() == 1) {
+                    continue;
+                }
+
+                values.clear();
+                bindObs(values, obs, modifiedDate);
+
+                db.insertWithOnConflict(
+                        "tbl_obs",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_IGNORE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == obsList.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     *
+     * @param values
+     * @param obs
+     * @param modifiedDate
+     */
+    private void bindObs(ContentValues values, ObsDTO obs, String modifiedDate) {
+
+        values.put("uuid", obs.getUuid());
+        values.put("encounteruuid", obs.getEncounteruuid());
+        values.put("creator", obs.getCreator());
+        values.put("conceptuuid", obs.getConceptuuid());
+        values.put("value", obs.getValue());
+        values.put("obsservermodifieddate", obs.getObsServerModifiedDate());
+        values.put("modified_date", modifiedDate);
+        values.put("voided", obs.getVoided());
+        values.put("sync", "TRUE");
+    }
 
     private boolean createObs(ObsDTO obsDTOS) throws DAOException {
         boolean isCreated = true;

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import java.util.ArrayList;
@@ -48,6 +49,88 @@ public class ProviderAttributeLIstDAO {
         return isInserted;
     }
 
+    private static final int BATCH_SIZE = 100;
+    private static final String SPECIALITY_ATTR_UUID =
+            "ed1715f5-93e2-404e-b3c9-2a2d9600f062";
+
+    /**
+     * @param list
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertProvidersAttributeListV2(List<ProviderAttributeListDTO> list) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+
+            int processed = 0;
+
+            for (int i = 0; i < list.size(); i++) {
+
+                ProviderAttributeListDTO dto = list.get(i);
+
+                // Skip irrelevant rows BEFORE transaction
+                if (dto.getVoided() != 0 ||
+                        !SPECIALITY_ATTR_UUID.equalsIgnoreCase(dto.getAttributetypeuuid())) {
+                    continue;
+                }
+
+                if (processed % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                bindProviderAttribute(values, dto);
+
+                db.insertWithOnConflict(
+                        "tbl_dr_speciality",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_IGNORE
+                );
+
+                processed++;
+
+                if (processed % BATCH_SIZE == 0) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            // Close last open transaction
+            if (processed % BATCH_SIZE != 0) {
+                db.setTransactionSuccessful();
+                db.endTransaction();
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+
+    /**
+     *
+     * @param values
+     * @param dto
+     */
+    private void bindProviderAttribute(
+            ContentValues values,
+            ProviderAttributeListDTO dto
+    ) {
+        values.put("uuid", dto.getUuid());
+        values.put("provideruuid", dto.getProvideruuid());
+        values.put("attributetypeuuid", dto.getAttributetypeuuid());
+        values.put("value", dto.getValue());
+        values.put("voided", dto.getVoided());
+    }
+
     private boolean createProvidersAttributeList(ProviderAttributeListDTO attributeListDTO, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
@@ -63,11 +146,11 @@ public class ProviderAttributeLIstDAO {
                     attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062")) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_dr_speciality", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                if (createdRecordsCount != -1) {
+                /*if (createdRecordsCount != -1) {
                     CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
                 } else {
                     CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
-                }
+                }*/
 
             }
 
@@ -101,7 +184,7 @@ public class ProviderAttributeLIstDAO {
 
         sortSpecialties(listDTOArrayList);
         idCursor.close();
-       // db.setTransactionSuccessful();
+        // db.setTransactionSuccessful();
         //db.endTransaction();
 //        db.close();
         return listDTOArrayList;

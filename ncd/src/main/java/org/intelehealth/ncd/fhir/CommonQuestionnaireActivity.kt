@@ -52,6 +52,7 @@ import org.intelehealth.ncd.R
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+
 //import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 //import androidx.activity.OnBackPressedCallback
 
@@ -101,7 +102,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     lateinit var rootView: View
     val matchedViews = mutableListOf<View>()
     var appLang: String? = "en"
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -208,12 +208,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
     }
 
-  /*  @SuppressLint("MissingSuperCall")
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        // Do nothing → disables back button
-        hideKeyboard()
-    }*/
+    /*  @SuppressLint("MissingSuperCall")
+      @Deprecated("Deprecated in Java")
+      override fun onBackPressed() {
+          // Do nothing → disables back button
+          hideKeyboard()
+      }*/
 
     private fun loadQuestionnaireFragment(
         questionnaireResponse: Any?,
@@ -883,7 +883,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-    private val FIVE_MINUTES_MILLIS: Long = 5 * 1000
+    private val FIVE_MINUTES_MILLIS: Long = 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
