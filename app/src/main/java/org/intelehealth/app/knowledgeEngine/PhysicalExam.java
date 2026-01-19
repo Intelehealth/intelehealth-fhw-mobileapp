@@ -223,6 +223,24 @@ public class PhysicalExam extends Node {
 
     }
 
+    public String getExamParentNodeNameForImage(int index) {
+
+        String title = getTitle(index);
+        String[] split = title.split(" : ");
+
+        String parent_node = split[0];
+
+        for (Node selectedNode : selectedNodes) {
+            if (selectedNode.getText().equals(split[0])) {
+                //physical exam images were not uploading properly with others language. eg.hi,bn,ta
+                //hence taking english name only
+                parent_node = selectedNode.getDisplay();
+            }
+        }
+        return parent_node;
+
+    }
+
     public String getExamParentNodeName(int index) {
 
         String title = getTitle(index);

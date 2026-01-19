@@ -777,18 +777,20 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertion = "";
         insertionLocale = "";
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
-            Node node = mChiefComplainRootNodeList.get(i);
-            CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
-            boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
-            String val = formatComplainRecord(node, isAssociateSymptomsType);
-            CustomLog.v(TAG, "val- " + val);
-            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
-            CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
+        if (mChiefComplainRootNodeList != null) {
+            for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+                Node node = mChiefComplainRootNodeList.get(i);
+                CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
+                boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
+                String val = formatComplainRecord(node, isAssociateSymptomsType);
+                CustomLog.v(TAG, "val- " + val);
+                String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
+                CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
 
-            stringBuilder.append(answerInLocale);
-            if (val == null) {
-                return false;
+                stringBuilder.append(answerInLocale);
+                if (val == null) {
+                    return false;
+                }
             }
         }
         insertionLocale = stringBuilder.toString();
@@ -824,15 +826,30 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private List<Node> loadPhysicalExam() {
         ArrayList<String> physicalExams = new ArrayList<>();
-        ArrayList<String> childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
-        if (!childNodeSelectedPhysicalExams.isEmpty())
-            physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+        ArrayList<String> childNodeSelectedPhysicalExams = new ArrayList<>();
+        if (mChiefComplainRootNodeList != null && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
+            childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
+        }
 
-        ArrayList<String> rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
-        if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
+        if (!childNodeSelectedPhysicalExams.isEmpty()) {
+            physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+        }
+
+        ArrayList<String> rootNodePhysicalExams = new ArrayList<>();
+        if (mChiefComplainRootNodeList != null && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
+            rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
+        }
+
+        if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty()) {
             physicalExams.addAll(rootNodePhysicalExams); //For Root Node
+        }
+
         Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
-        mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+
+        if (mChiefComplainRootNodeList != null && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
+            mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
+        }
+
         String[] exm = mLastChiefComplainPhysicalString.split(";");
         HashMap<String, List<String>> map = new HashMap<String, List<String>>();
         for (String s : exm) {

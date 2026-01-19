@@ -115,7 +115,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
                 parent_name = mPhysicalExam.getExamParentNodeName_NAS(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
             else
-                parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
+                parent_name = mPhysicalExam.getExamParentNodeNameForImage(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
 
             mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
             CustomLog.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
