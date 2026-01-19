@@ -447,17 +447,17 @@ public class AppointmentDAO {
                     andOr = " or ";
                 }
                 if (item.getFilterValue().equals(context.getString(R.string.completed))) {
-                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now', 'localtime')").append(" and ").append("a.status = 'completed'))");
+                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now')").append(" and ").append("a.status = 'completed'))");
                 }
                 if (item.getFilterValue().equals(context.getString(R.string.cancelled))) {
-                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now', 'localtime')").append(" and ").append("a.status = 'cancelled'))");
+                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now')").append(" and ").append("a.status = 'cancelled'))");
                 }
                 if (item.getFilterValue().equals(context.getString(R.string.missed))) {
-                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now', 'localtime')").append(" and ").append("a.status = 'booked'))");
+                    filterQuery.append(andOr).append("((").append("datetime(a.slot_js_date) < datetime('now')").append(" and ").append("a.status = 'booked'))");
                 }
             }
         } else {
-            filterQuery.append("(").append("datetime(a.slot_js_date) < datetime('now', 'localtime'))");
+            filterQuery.append("(").append("datetime(a.slot_js_date) < datetime('now'))");
         }
 
         idCursor = db.rawQuery("select p.patient_photo, p.first_name || " + middleName + " || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
@@ -598,13 +598,13 @@ public class AppointmentDAO {
                         + "from tbl_patient p, tbl_appointments a "
                         + "where p.uuid = a.patient_id "
                         + "AND a.status = 'booked' "
-                        + "AND  (datetime(a.slot_js_date) >= datetime('now', 'localtime'))";
+                        + "AND  (datetime(a.slot_js_date) >= datetime('now'))";
                 cursor = db.rawQuery(query, new String[]{});
             } else if (appointmentTabType == AppointmentTabType.PAST) {
                 query = "select count(*) "
                         + "from tbl_patient p, tbl_appointments a "
                         + "where p.uuid = a.patient_id "
-                        + "and (datetime(a.slot_js_date) < datetime('now', 'localtime'))";
+                        + "and (datetime(a.slot_js_date) < datetime('now'))";
                 cursor = db.rawQuery(query, new String[]{});
             }
             db.setTransactionSuccessful();
@@ -1515,7 +1515,7 @@ public class AppointmentDAO {
                         + "FROM tbl_patient p, tbl_appointments a "
                         + "WHERE p.uuid = a.patient_id "
                         + "AND a.status = 'booked'"
-                        + "AND datetime(a.slot_js_date) >= datetime('now', 'localtime')"
+                        + "AND datetime(a.slot_js_date) >= datetime('now')"
                         + searchQuery
                         + "ORDER BY  datetime(a.slot_js_date) " + orderType
                         + " LIMIT ? OFFSET ?"
