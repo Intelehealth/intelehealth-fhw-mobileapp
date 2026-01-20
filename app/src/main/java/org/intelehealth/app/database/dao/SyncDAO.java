@@ -90,35 +90,87 @@ public class SyncDAO {
 //            saveConfig(responseDTO.getData().getConfigResponse());
                 //patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
                 patientsDAO.insertPatientsV2(responseDTO.getData().getPatientDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        5 // 100% of the current page
+                );
 
                 //patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
                 patientsDAO.patientAttributesV2(responseDTO.getData().getPatientAttributesDTO());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        15 // 100% of the current page
+                );
                 //patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
                 patientsDAO.patientAttributeMasterV2(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        25 // 100% of the current page
+                );
                 //visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
                 visitsDAO.insertVisitsV2(responseDTO.getData().getVisitDTO());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        35 // 100% of the current page
+                );
                 //encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
                 encounterDAO.insertEncountersV2(responseDTO.getData().getEncounterDTO());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        45 // 100% of the current page
+                );
                 //obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
                 obsDAO.insertObsTempV2(responseDTO.getData().getObsDTO());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        75 // 100% of the current page
+                );
                 locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
                 providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        85 // 100% of the current page
+                );
                 //providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
                 providerAttributeLIstDAO.insertProvidersAttributeListV2(responseDTO.getData().getProviderAttributeList());
-
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        90 // 100% of the current page
+                );
                 //visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
                 //TODO: need to change the function name
                 visitAttributeListDAO.insertVisitAttributeListV2(responseDTO.getData().getVisitAttributeList());
+
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
-                Log.d(TAG, "kzSyncData: provider attributes : " + new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
-                userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
-                Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+                //Log.d(TAG, "kzSyncData: provider attributes : " + new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
+
+                //userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        95 // 100% of the current page
+                );
+
+                userSessionDao.parseAndInsertSessionsV2(responseDTO.getData().getProviderAttributeList());
+
+                //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
                 Logger.logD(TAG, "Pull sync ended");
                 sessionManager.setFirstTimeSyncExecute(false);
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
@@ -136,6 +188,59 @@ public class SyncDAO {
         return isSynced;
 
     }
+
+    private int lastProgress = 0;
+
+    public void updateProgressForPage(
+            int pageNo,
+            int totalCount,
+            int pageLimit,
+            double pageCompletionPercent
+    ) {
+        Logger.logD(TAG, "updateProgressForPage: pageNo=" + pageNo +
+                ", totalCount=" + totalCount +
+                ", pageLimit=" + pageLimit +
+                ", pageCompletionPercent=" + pageCompletionPercent);
+        int newProgress;
+        // Case: single page
+        if (totalCount <= pageLimit) {
+            newProgress = (int) Math.round(pageCompletionPercent);
+        }
+        if (pageNo == -1 || totalCount <= 0 || pageLimit <= 0) {
+            return;
+        }
+
+
+        int totalPages = (int) Math.ceil((double) totalCount / pageLimit);
+        if (totalPages == 0) return;
+
+        double pageShare = 100.0 / totalPages;
+        double completionRatio = pageCompletionPercent / 100.0;
+
+        double calculatedProgress =
+                ((pageNo - 1) * pageShare) +
+                        (pageShare * completionRatio);
+
+        newProgress = (int) Math.round(calculatedProgress);
+
+
+        //  NEVER allow progress to go backward
+        if (newProgress < lastProgress) {
+            Logger.logD(TAG,
+                    "Progress clamped: new=" + newProgress +
+                            ", last=" + lastProgress);
+            newProgress = lastProgress;
+        }
+
+        // Optional: cap at 99% until final completion
+        newProgress = Math.min(newProgress, 99);
+
+        lastProgress = newProgress;
+        setProgress(newProgress);
+
+        Logger.logD(TAG, "Progress set to=" + newProgress);
+    }
+
 
     private void saveConfig(ConfigResponse response) {
         CustomLog.d(TAG, "saveConfig");

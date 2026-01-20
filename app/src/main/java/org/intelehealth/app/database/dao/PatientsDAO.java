@@ -26,6 +26,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DeviceUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -70,7 +71,7 @@ public class PatientsDAO {
         return isInserted;
     }
 
-    private static final int BATCH_SIZE = 50;
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
 
     /**
      * Insert patients in batches

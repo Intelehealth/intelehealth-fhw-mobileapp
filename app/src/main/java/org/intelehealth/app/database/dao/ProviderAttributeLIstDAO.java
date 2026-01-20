@@ -5,17 +5,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.Uuid_Value;
+import org.intelehealth.app.models.dto.ProviderAttributeListDTO;
+import org.intelehealth.app.utilities.DeviceUtils;
+import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.Uuid_Value;
-import org.intelehealth.app.models.dto.ProviderAttributeListDTO;
-import org.intelehealth.app.utilities.exception.DAOException;
 
 /**
  * Created by Prajwal Waingankar
@@ -49,7 +47,7 @@ public class ProviderAttributeLIstDAO {
         return isInserted;
     }
 
-    private static final int BATCH_SIZE = 100;
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
     private static final String SPECIALITY_ATTR_UUID =
             "ed1715f5-93e2-404e-b3c9-2a2d9600f062";
 

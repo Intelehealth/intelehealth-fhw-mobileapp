@@ -29,6 +29,7 @@ import org.intelehealth.app.ayu.visit.notification.ReminderReceiver;
 import org.intelehealth.app.ayu.visit.notification.ReminderWorker;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DeviceUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -88,7 +89,7 @@ public class VisitAttributeListDAO {
         return isInserted;
     }
 
-    private static final int BATCH_SIZE = 100;
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
 
     /**
      * @param visitAttributeDTOS

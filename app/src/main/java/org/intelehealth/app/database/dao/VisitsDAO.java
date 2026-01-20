@@ -1,6 +1,5 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.app.database.InteleHealthDatabaseHelper.database;
 import static org.intelehealth.app.utilities.UuidDictionary.CURRENT_COMPLAINT;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
@@ -24,6 +23,7 @@ import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DeviceUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.ParserUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -62,7 +62,7 @@ public class VisitsDAO {
 
         return isInserted;
     }
-    private static final int BATCH_SIZE = 50;
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
 
     /**
      *

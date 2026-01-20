@@ -21,6 +21,7 @@ import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.DeviceUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -59,7 +60,7 @@ public class EncounterDAO {
         return isInserted;
     }
 
-    private static final int BATCH_SIZE = 50;
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
 
     /**
      * @param encounters

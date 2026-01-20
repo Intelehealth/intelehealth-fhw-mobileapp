@@ -19,6 +19,7 @@ import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.DeviceUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -60,7 +61,7 @@ public class ObsDAO {
         return isInserted;
 
     }
-    private static final int BATCH_SIZE = 100;
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
 
     /**
      *
