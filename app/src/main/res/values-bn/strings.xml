@@ -1150,4 +1150,6 @@
     <string name="hypertension_quit_alcohol_tobacco">বিপি: মদ ও তামাক ছেড়ে দিন</string>
     <string name="ncd_report">NCD রিপোর্ট</string>
     <string name="msg_ekal_thank_you_ncd_report">একাল টেলিমেডিসিন ব্যবহার করার জন্য আপনাকে ধন্যবাद!</string>
+
+    <string name="specialty_general_physician">সাধারণ চিকিৎসক</string>
 </resources>

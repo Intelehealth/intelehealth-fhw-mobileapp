@@ -1171,4 +1171,6 @@
     <string name="confirm_discard_changes_content">શું તમે ખાતરી કરો કે તમે આ મુલાકાતની બધી વિગતો રદ કરવા માંગો છો?</string>
     <string name="confirm_discard_changes_content_on_sync">તમારી મુલાકાત બનાવવાની પ્રક્રિયા અધૂરી છે. તમે તેને પૂર્ણ કરી શકો અથવા રદ કરી શકો.</string>
 
+    <string name="specialty_general_physician">સામાન્ય ચિકિત્સક</string>
+
 </resources>

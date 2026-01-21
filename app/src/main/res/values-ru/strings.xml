@@ -549,4 +549,6 @@
     <string name="confirm_discard_changes_content">Вы уверены, что хотите удалить все данные этого визита?</string>
     <string name="confirm_discard_changes_content_on_sync">Процесс создания визита не завершён. Вы можете завершить его или удалить.</string>
 
+    <string name="specialty_general_physician">Врач общей практики</string>
+
 </resources>
