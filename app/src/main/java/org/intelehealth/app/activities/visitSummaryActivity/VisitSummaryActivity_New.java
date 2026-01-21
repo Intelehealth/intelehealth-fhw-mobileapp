@@ -2329,7 +2329,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         speciality_spinner.setSelection(index);
         speciality_spinner.setEnabled(false);
         if (speciality_selected == null || speciality_selected.isEmpty()) {
-            speciality_selected = speciality_spinner.getSelectedItem().toString();
+            speciality_selected = getEnglishStringArray(this, R.array.speciality_values)[index] ;/*speciality_spinner.getSelectedItem().toString();*/
         }
 
         //speciality_selected = mIsNCDVisit ? "NCD Consultation": "General Physician";
@@ -2377,6 +2377,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //
 //            }
 //        });
+    }
+
+
+    public String[] getEnglishStringArray(Context context, int arrayId) {
+        Configuration configuration = new Configuration(context.getResources().getConfiguration());
+
+        // Force the English locale
+        configuration.setLocale(Locale.ENGLISH);
+
+        // Create a localized context to access English resources
+        Context localizedContext = context.createConfigurationContext(configuration);
+        return localizedContext.getResources().getStringArray(arrayId);
     }
 
     private List<FacilityToVisitModel> getFacilityList() {

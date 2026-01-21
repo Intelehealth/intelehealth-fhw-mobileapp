@@ -1183,4 +1183,6 @@
     <string name="discard">त्यागें</string>
     <string name="confirm_discard_changes_content">क्या आप वाकई इस विज़िट का सारा विवरण त्यागना चाहते हैं?</string>
     <string name="confirm_discard_changes_content_on_sync">आपकी विज़िट बनाने की प्रक्रिया अधूरी है। आप इसे पूरा कर सकते हैं या त्याग सकते हैं।</string>
+
+    <string name="specialty_general_physician">सामान्य चिकित्सक</string>
 </resources>
