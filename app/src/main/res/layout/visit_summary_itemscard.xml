@@ -1030,7 +1030,7 @@
                             android:layout_marginTop="@dimen/hamburger_margin_start"
                             android:layout_marginEnd="@dimen/fu_margin_start"
                             android:layout_marginBottom="@dimen/fu_margin_start"
-                            android:text="here comes the phys exam data in html format."
+                            android:text="@string/no_data_found"
                             android:textSize="@dimen/find_patient_hint_size"
                             android:visibility="gone" />
 

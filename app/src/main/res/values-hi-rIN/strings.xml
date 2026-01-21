@@ -1009,7 +1009,7 @@
     <string name="enter_other_information_txt">अन्य जानकारी दर्ज करें</string>
     <string name="blood_group_txt">ब्लड ग्रुप</string>
     <string name="eg_a_ve">Eg. A +ve</string>
-    <string name="dont_know">Don\'t know</string>
+    <string name="dont_know">पता नहीं</string>
     <string name="universal_donor">( सार्वभौमिक दाता )</string>
     <string name="universal_recipient">( सार्वभौमिक प्राप्तकर्ता )</string>
     <string name="view_prescription_lbl">View Prescription</string>
@@ -1017,24 +1017,24 @@
     <string name="missed">चुक होना</string>
     <string name="sorted_by_descending_order">अवरोही क्रम में क्रमबद्ध</string>
     <string name="sorted_by_ascending_order">आरोही क्रम में क्रमबद्ध</string>
-    <string name="over">" Over"</string>
-    <string name="facility_to_visit">Facility to visit</string>
-    <string name="follow_up_date">Follow up date</string>
-    <string name="please_select_valid_followup_date">Please select valid followup date</string>
-    <string name="reminder">Reminder</string>
-    <string name="patient_follow_up_appointment_on">Patient %1$s (%2$s): Follow-up appointment on %3$s</string>
-    <string name="open_followup">Open Followup</string>
-    <string name="find_patients_hint">Find patients</string>
-    <string name="tomorrow">Tomorrow</string>
-    <string name="range">Range</string>
-    <string name="apply">Apply</string>
-    <string name="select_date_to_apply_filter">Select date to apply filter.</string>
-    <string name="required_alarm_and_reminder_permission">Required alarm and reminder permission.</string>
-    <string name="forgot_your_username">Forgot your username?</string>
-    <string name="contact_your_admin">Contact your admin</string>
+    <string name="over">" से अधिक"</string>
+    <string name="facility_to_visit">जाने के लिए सुविधा</string>
+    <string name="follow_up_date">फॉलो अप की तारीख</string>
+    <string name="please_select_valid_followup_date">कृपया वैध फॉलो अप तारीख चुनें</string>
+    <string name="reminder">रिमाइंडर</string>
+    <string name="patient_follow_up_appointment_on">मरीज़ %1$s (%2$s): %3$s को फॉलो-अप अपॉइंटमेंट</string>
+    <string name="open_followup">फॉलो अप खोलें</string>
+    <string name="find_patients_hint">मरीज़ खोजें</string>
+    <string name="tomorrow">कल</string>
+    <string name="range">सीमा</string>
+    <string name="apply">लागू करें</string>
+    <string name="select_date_to_apply_filter">फ़िल्टर लागू करने के लिए तारीख चुनें।</string>
+    <string name="required_alarm_and_reminder_permission">अलार्म और रिमाइंडर की अनुमति आवश्यक है।</string>
+    <string name="forgot_your_username">अपना यूज़रनेम भूल गए?</string>
+    <string name="contact_your_admin">अपने एडमिन से संपर्क करें</string>
     <string name="lbl_clear_all">सभी साफ़ करें</string>
-    <string name="sync">Refresh</string>
-    <string name="sending_otp">Sending OTP...</string>
+    <string name="sync">रिफ्रेश करें</string>
+    <string name="sending_otp">OTP भेजा जा रहा है...</string>
 
     <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
 
@@ -1064,24 +1064,24 @@
     <string name="date_range">दिनांक सीमा</string>
     <string name="my_achievements">मेरी उपलब्धियां</string>
 
-    <string name="blackout">Blackout</string>
-    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
-    <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
-    <string name="notification">Notification</string>
+    <string name="blackout">ब्लैकआउट</string>
+    <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">नीचे दिए गए समय अवधि के बीच सूचना को अक्षम करने के लिए, ब्लैकआउट अवधि चालू करें</string>
+    <string name="from_9_00_pm_to_6_00_am">रात 9:00 बजे से सुबह 6:00 बजे तक</string>
+    <string name="notification">सूचना</string>
 
-    <string name="please_move_to_next_question">Please move to next question</string>
-    <string name="please_confirm_your_details">Please Confirm Your Details</string>
-    <string name="back_desc">back_desc</string>
-    <string name="next_desc">next_desc</string>
-    <string name="Minute">Minutes</string>
-    <string name="node_input_empty_error">%1$s  should not be empty !</string>
-    <string name="node_input_range_error">%1$s  should be in between %2$s and %3$s</string>
-    <string name="node_input_range_gtr_error">%1$s  can\\\'t be lower than %2$s</string>
-    <string name="node_input_range_less_error">%1$s  can\\\\\\\'t be greater than %2$s</string>
-    <string name="hemoglobin_error">Hemoglobin should be in between %1$s and %2$s</string>
+    <string name="please_move_to_next_question">कृपया अगले प्रश्न पर जाएं</string>
+    <string name="please_confirm_your_details">कृपया अपने विवरण की पुष्टि करें</string>
+    <string name="back_desc">वापस जाएं</string>
+    <string name="next_desc">आगे बढ़ें</string>
+    <string name="Minute">मिनट</string>
+    <string name="node_input_empty_error">%1$s खाली नहीं होना चाहिए!</string>
+    <string name="node_input_range_error">%1$s, %2$s और %3$s के बीच होना चाहिए</string>
+    <string name="node_input_range_gtr_error">%1$s, %2$s से कम नहीं हो सकता</string>
+    <string name="node_input_range_less_error">%1$s, %2$s से अधिक नहीं हो सकता</string>
+    <string name="hemoglobin_error">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>
     <string name="visit_reason_txt">भेंट का कारण</string>
 
-    <string name="screening_questionnaire_txt">Screening Questionnaire</string>
+    <string name="screening_questionnaire_txt">स्क्रीनिंग प्रश्नावली</string>
 
     <string name="never_prescribed_medication">मुझे कभी दवाएँ निर्धारित नहीं की गईं</string>
     <string name="forgot_to_take_it">मैं इसे लेना भूल गया</string>
