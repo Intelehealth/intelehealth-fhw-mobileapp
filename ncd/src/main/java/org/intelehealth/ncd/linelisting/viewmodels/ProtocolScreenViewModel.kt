@@ -26,7 +26,7 @@ class ProtocolScreenViewModel(
 
     //private val searchQuery = MutableStateFlow("")
 
-   /* fun setSearchQuery(query: String) {
+    /* fun setSearchQuery(query: String) {
         searchQuery.value = query
     }*/
 
@@ -41,7 +41,12 @@ class ProtocolScreenViewModel(
             .flatMapLatest { query ->
 
                 Pager(
-                    config = PagingConfig(pageSize = 20),
+                    config = PagingConfig(
+                        pageSize = 10,
+                        initialLoadSize = 20,
+                        prefetchDistance = 5,
+                        enablePlaceholders = false
+                    ),
                     pagingSourceFactory = {
                         // Step 1: fetch latest ended visit per patient (paged)
                         repository.getPagedVisits(
@@ -54,16 +59,13 @@ class ProtocolScreenViewModel(
                     .map { pagingData ->
                         pagingData.map { baseVisit ->
 
-                            Log.d("TAGkz", "Base visit from main query: $baseVisit")
-
                             // Fetch all visits for the patient (including non-ended)
                             val allVisits = repository.getAllVisitsForPatient(baseVisit.patientId)
-                            Log.d("TAGkz", "All visits for patient ${baseVisit.patientId}: $allVisits")
+                            ///val allVisits = repository.getAllVisitsForPatientNew(baseVisit.patientId)
 
                             // Parse protocol flags from all visits (non-ended included)
-                            val flagsOnlyPatient = ProtocolParserHelper.parsePatientHistory(allVisits)
-                            Log.d("TAGkz", "getPatientsPaged: flagsOnlyPatient 1 : ${flagsOnlyPatient}")
-                            Log.d("TAGkz", "getPatientsPaged: flagsOnlyPatient 2 : "+Gson().toJson(flagsOnlyPatient))
+                            val flagsOnlyPatient =
+                                ProtocolParserHelper.parsePatientHistory(allVisits)
 
                             // Merge base visit info + protocol flags
                             val finalPatient = flagsOnlyPatient.copy(
@@ -95,30 +97,27 @@ class ProtocolScreenViewModel(
                                 isHypertensionFollowupGiven = flagsOnlyPatient.isHypertensionFollowupGiven,
                                 isHypertensionFollowupTodayOrLater = flagsOnlyPatient.isHypertensionFollowupTodayOrLater
                             )
-
-                            Log.d("TAGkz", "Merged patient with protocol flags: $finalPatient")
                             finalPatient
                         }
                     }
-
-                    // Step 3: apply category segregation filter
                     .map { pagingData ->
-                       /* if (skipCategorySegregation) {
+                        /* if (skipCategorySegregation) {
                             Log.d("TAG", "getPatientsPaged: in skip : "+skipCategorySegregation)
                             pagingData // skip segregation
                         } else {*/
-                            Log.d("TAG", "getPatientsPaged: in non skip : "+skipCategorySegregation)
 
-                            pagingData.filter { parsedPatient ->
-                                Log.d("TAGkz", "Merged parsedPatient: $parsedPatient")
+                        pagingData.filter { parsedPatient ->
 
-                                val resultList = categorySegregationUtils
-                                    .segregateAndFetchPatientVisitDetails(listOf(parsedPatient), category)
-                                resultList.isNotEmpty()
-                          //  }
+                            val resultList = categorySegregationUtils
+                                .segregateAndFetchPatientVisitDetails(
+                                    listOf(parsedPatient),
+                                    category
+                                )
+                            resultList.isNotEmpty()
+                            //  }
                         }
                     }
-                    /*.map { pagingData ->
+                /*.map { pagingData ->
                         pagingData.filter { parsedPatient ->
                             val resultList = categorySegregationUtils
                                 .segregateAndFetchPatientVisitDetails(listOf(parsedPatient), category)
@@ -131,6 +130,66 @@ class ProtocolScreenViewModel(
                             resultList.isNotEmpty() // keep only matching patients
                         }
                     }*/
+            }
+            .cachedIn(viewModelScope)
+    }
+
+    fun getPatientsPagedNew(
+        category: String,
+        searchQueryFlow: Flow<String>,
+        skipCategorySegregation: Boolean = false
+    ): Flow<PagingData<PatientVisitDetails>> {
+
+        return searchQueryFlow
+            .debounce(300)
+            .flatMapLatest { searchQuery ->
+
+                Pager(
+                    config = PagingConfig(
+                        pageSize = 50,
+                        initialLoadSize = 20,
+                        prefetchDistance = 5,
+                        enablePlaceholders = false
+                    ),
+                    pagingSourceFactory = {
+                        repository.getPagedVisits(searchQuery)
+                    }
+                ).flow
+                    .map { pagingData ->
+                        pagingData.map { patient ->
+
+                            val patientId = patient.patientId
+
+                            val allVisits =
+                                if (patientId != null) {
+                                    repository.getAllVisitsForPatientNew(
+                                        patientUuid = listOf(patientId)
+                                    )
+                                } else {
+                                    emptyList()
+                                }
+
+                            // base patient
+                            ProtocolParserHelper.parsePatientHistoryNew(
+                                basePatient = patient,
+                                allVisits = allVisits
+                            )
+                        }
+                    }
+                    .map { pagingData ->
+                        if (skipCategorySegregation) {
+                            pagingData
+                        } else {
+                            pagingData.filter { patient ->
+                                categorySegregationUtils
+                                    .segregateAndFetchPatientVisitDetails(
+                                        listOf(patient),
+                                        category
+                                    )
+                                    .isNotEmpty()
+                            }
+                        }
+                    }
             }
             .cachedIn(viewModelScope)
     }
