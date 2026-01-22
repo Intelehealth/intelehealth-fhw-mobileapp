@@ -166,5 +166,6 @@
     <string name="confirm_discard_changes_content">तुम्हाला खात्री आहे की तुम्ही या भेटीचे सर्व तपशील रद्द करू इच्छिता?</string>
     <string name="confirm_discard_changes_button_dialog">रद्द करा</string>
     <string name="confirm_continue_changes_button_dialog">सुरू ठेवा</string>
+    <string name="please_wait">कृपया थांबा...</string>
 
 </resources>

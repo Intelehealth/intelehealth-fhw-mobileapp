@@ -164,4 +164,7 @@
     <string name="confirm_discard_changes_content">మీరు ఖచ్చితంగా ఈ విజిట్ యొక్క అన్ని వివరాలను విస్మరించాలనుకుంటున్నారా?</string>
     <string name="confirm_discard_changes_button_dialog">విస్మరించు</string>
     <string name="confirm_continue_changes_button_dialog">కొనసాగించు</string>
+
+    <string name="please_wait">దయచేసి వేచి ఉండండి...</string>
+
 </resources>

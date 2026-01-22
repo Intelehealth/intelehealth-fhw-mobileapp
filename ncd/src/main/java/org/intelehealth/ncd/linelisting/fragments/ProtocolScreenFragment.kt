@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import org.intelehealth.ncd.callbacks.PatientClickedListener
@@ -97,18 +99,38 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
         binding.recyclerView.adapter = adapter.withLoadStateFooter(
             footer = PatientLoadStateAdapter { adapter.retry() }
         )
+        adapter.addLoadStateListener { loadState ->
+            val refresh = loadState.refresh
+            val append = loadState.append
+            val prepend = loadState.prepend
+
+            val isAllLoaded =
+                refresh is LoadState.NotLoading &&
+                        append.endOfPaginationReached &&
+                        prepend.endOfPaginationReached
+
+            val isEmptyList = adapter.itemCount == 0
+
+            binding.noDataLayout.isVisible = isAllLoaded && isEmptyList
+
+            // Show progress bar when loading
+            // binding.progressBar.isVisible = refresh is LoadState.Loading
+        }
+
+
+
     }
 
-   /* private fun setupSearch() {
-        val searchBar = requireActivity().findViewById<EditText>(R.id.search_txt_enter)
-        searchBar?.addTextChangedListener { editable ->
-            viewModel.setSearchQuery(editable?.toString() ?: "")
-        }
-    }*/
+    /* private fun setupSearch() {
+         val searchBar = requireActivity().findViewById<EditText>(R.id.search_txt_enter)
+         searchBar?.addTextChangedListener { editable ->
+             viewModel.setSearchQuery(editable?.toString() ?: "")
+         }
+     }*/
 
     private fun observePatients() {
         lifecycleScope.launchWhenStarted {
-            viewModel.getPatientsPaged(
+            viewModel.getPatientsPagedNew(
                 category = category,
                 searchQueryFlow = searchVM.searchTextFlow,
                 skipCategorySegregation = false
