@@ -165,4 +165,7 @@
     <string name="confirm_discard_changes_content">શું તમે ખરેખર આ મુલાકાતની તમામ વિગતો રદ કરવા માંગો છો?</string>
     <string name="confirm_discard_changes_button_dialog">રદ કરો</string>
     <string name="confirm_continue_changes_button_dialog">ચાલુ રાખો</string>
+
+    <string name="please_wait">કૃપા કરીને રાહ જુઓ...</string>
+
 </resources>

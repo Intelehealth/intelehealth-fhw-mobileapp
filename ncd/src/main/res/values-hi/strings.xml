@@ -164,4 +164,6 @@
     <string name="confirm_discard_changes_content">क्या आप वाकई इस विज़िट की सभी जानकारी रद्द करना चाहते हैं?</string>
     <string name="confirm_discard_changes_button_dialog">रद्द करें</string>
     <string name="confirm_continue_changes_button_dialog">जारी रखें</string>
+    <string name="please_wait">कृपया प्रतीक्षा करें...</string>
+
 </resources>

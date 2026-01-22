@@ -163,4 +163,7 @@
     <string name="confirm_discard_changes_content">আপুনি নিশ্চিতনে এই ভিজিটৰ সকলো বিৱৰণ বাতিল কৰিব বিচাৰে?</string>
     <string name="confirm_discard_changes_button_dialog">বাতিল কৰক</string>
     <string name="confirm_continue_changes_button_dialog">অব্যাহত ৰাখক</string>
+
+    <string name="please_wait">অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
+
 </resources>

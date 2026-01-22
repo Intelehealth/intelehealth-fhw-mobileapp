@@ -165,4 +165,7 @@
     <string name="confirm_discard_changes_content">ଆପଣ ନିଶ୍ଚିତ କି ଏହି ଭିଜିଟ୍‌ର ସମସ୍ତ ବିବରଣୀ ବାତିଲ କରିବାକୁ ଚାହୁଁଛନ୍ତି?</string>
     <string name="confirm_discard_changes_button_dialog">ବାତିଲ କରନ୍ତୁ</string>
     <string name="confirm_continue_changes_button_dialog">ଜାରି ରଖନ୍ତୁ</string>
+
+    <string name="please_wait">ଦୟାକରି ପ୍ରତୀକ୍ଷା କରନ୍ତୁ...</string>
+
 </resources>
