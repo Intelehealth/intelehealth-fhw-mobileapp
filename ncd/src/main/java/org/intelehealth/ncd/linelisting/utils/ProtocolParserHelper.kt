@@ -16,8 +16,6 @@ object ProtocolParserHelper {
 
     private val displayFormat = SimpleDateFormat("dd/MMM/yyyy", Locale.US)
     private val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.US)
-
-    // FIX: Add end-date parser
     private val endDateFormat = SimpleDateFormat("MMM d, yyyy h:mm:ss a", Locale.US)
 
     private fun parseDateSafe(raw: String?): Date {
@@ -26,13 +24,12 @@ object ProtocolParserHelper {
         try { displayFormat.parse(raw)?.let { return it } } catch (_: Exception) {}
         try { isoFormat.parse(raw.replace(":", ""))?.let { return it } } catch (_: Exception) {}
 
-        // FIX: Parse visitEndDate format: "Oct 7, 2025 3:11:34 PM"
         try { endDateFormat.parse(raw)?.let { return it } } catch (_: Exception) {}
 
         return Date(0)
     }
 
-    fun extractComplaintBlocks(data: String): List<String> {
+    private fun extractComplaintBlocks(data: String): List<String> {
         val normalized = data.replace("\n", "")
             .replace("\\u003c", "<")
             .replace("\\u003e", ">")
@@ -44,23 +41,16 @@ object ProtocolParserHelper {
     }
 
     fun parsePatientHistory(allVisits: List<PatientVisitDetails>): PatientVisitDetails {
-        Log.d(TAG, "parsePatientHistory: allVisits : ${allVisits}")
         if (allVisits.isEmpty()) return PatientVisitDetails()
-
-        // FIX: Remove redundant ended filtering
         val endedVisits = allVisits
-        Log.d(TAG, "parsePatientHistory: endedVisits : ${endedVisits}")
-
-        // If still empty
+        //if empty
         if (endedVisits.isEmpty()) return PatientVisitDetails()
 
-        // Sorting FIXED because parseDateSafe now works
         val latestEndedVisit = endedVisits
             .sortedByDescending { parseDateSafe(it.startDate) }
             .first()
 
         val result = latestEndedVisit.copy()
-        Log.d(TAG, "parsePatientHistory: result : "+result)
 
         result.isHypertensionFollowupGiven = null
         result.isHypertensionFollowupTodayOrLater = null
@@ -149,5 +139,121 @@ object ProtocolParserHelper {
         }
 
         return null
+    }
+
+
+    private val complaintRegex = "<b>(.*?)</b>".toRegex()
+    private val followUpRegex =
+        "(?i)Next follow Up(?: Date)? -\\s*([0-9]{1,2}/[A-Za-z]{3}/[0-9]{4})"
+            .toRegex()
+
+
+    fun parsePatientHistoryNew(
+        basePatient: PatientVisitDetails,
+        allVisits: List<PatientVisitDetails>
+    ): PatientVisitDetails {
+
+        //  NO visits - return patient as-is
+        if (allVisits.isEmpty()) return basePatient
+
+        val latestVisit =
+            allVisits.maxByOrNull { parseDateSafe(it.startDate) }
+                ?: return basePatient
+
+        //  Merge visit info into existing patient
+        val result = basePatient.copy(
+            visitId = latestVisit.visitId,
+            startDate = latestVisit.startDate,
+            visitEndDate = latestVisit.visitEndDate,
+            isPrescriptionExist = latestVisit.isPrescriptionExist,
+            isNcdVisit = latestVisit.isNcdVisit,
+            chiefComplaintData = latestVisit.chiefComplaintData,
+            visitSpeciality = latestVisit.visitSpeciality
+        )
+
+        // Reset protocol flags
+        result.isHypertensionFollowupGiven = null
+        result.isHypertensionFollowupTodayOrLater = null
+        result.isAnemiaFollowupGiven = null
+        result.isAnemiaFollowupTodayOrLater = null
+        result.isDiabetesFollowupGiven = null
+        result.isDiabetesFollowupTodayOrLater = null
+
+        val today = Date()
+
+        val foundGiven = mutableMapOf(
+            "hypertension" to false,
+            "anemia" to false,
+            "diabetes" to false
+        )
+
+        val foundTodayOrLater = mutableMapOf(
+            "hypertension" to false,
+            "anemia" to false,
+            "diabetes" to false
+        )
+
+        val visitsSortedDesc =
+            allVisits.sortedByDescending { parseDateSafe(it.startDate) }
+
+        for (visit in visitsSortedDesc) {
+
+            if (!visit.isNcdVisit.equals("true", ignoreCase = true)) continue
+
+            val blocks =
+                visit.chiefComplaintData
+                    ?.let { extractComplaintBlocks(it) }
+                    ?: continue
+
+            for (block in blocks) {
+
+                val complaint =
+                    complaintRegex.find(block)
+                        ?.groupValues
+                        ?.getOrNull(1)
+                        ?.trim()
+                        ?.lowercase()
+                        ?: continue
+
+                val protocol = when (complaint) {
+                    "hypertension screening", "hypertension followup" -> "hypertension"
+                    "anemia screening", "anemia followup" -> "anemia"
+                    "diabetes screening", "diabetes followup" -> "diabetes"
+                    else -> null
+                } ?: continue
+
+                if (!foundGiven[protocol]!!) {
+                    when (protocol) {
+                        "hypertension" -> result.isHypertensionFollowupGiven = true
+                        "anemia" -> result.isAnemiaFollowupGiven = true
+                        "diabetes" -> result.isDiabetesFollowupGiven = true
+                    }
+                    foundGiven[protocol] = true
+                }
+
+                val followUpDateStr =
+                    followUpRegex.find(block)?.groupValues?.getOrNull(1)
+
+                if (followUpDateStr != null && !foundTodayOrLater[protocol]!!) {
+                    val followUpDate = parseFollowUpDate(followUpDateStr)
+                    val isTodayOrLater =
+                        followUpDate != null && !today.before(followUpDate)
+
+                    when (protocol) {
+                        "hypertension" -> result.isHypertensionFollowupTodayOrLater = isTodayOrLater
+                        "anemia" -> result.isAnemiaFollowupTodayOrLater = isTodayOrLater
+                        "diabetes" -> result.isDiabetesFollowupTodayOrLater = isTodayOrLater
+                    }
+                    foundTodayOrLater[protocol] = true
+                }
+            }
+
+            if (foundGiven.values.all { it } &&
+                foundTodayOrLater.values.all { it }
+            ) break
+        }
+
+        Log.d(TAG, "parsePatientHistoryNew: result: $result")
+        return result
     }
 }

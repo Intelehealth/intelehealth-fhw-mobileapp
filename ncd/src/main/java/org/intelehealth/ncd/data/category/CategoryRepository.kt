@@ -20,6 +20,8 @@ import java.util.Date
 import java.util.Locale
 
 class CategoryRepository(private val dataSource: CategoryDataSource) {
+    private var lastQuery: String? = null
+    private var lastPagerFlow: Flow<PagingData<PatientVisitDetails>>? = null
 
     suspend fun getPatientVisitDetails(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)
@@ -108,13 +110,38 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
     }
 
     fun getPagedPatients(query: String,generalTabDao: GeneralTabDao): Flow<PagingData<PatientVisitDetails>> {
-        return Pager(
+        val safeQuery = query.trim()
+
+        if (safeQuery == lastQuery && lastPagerFlow != null) {
+            return lastPagerFlow!!
+        }
+
+        lastQuery = safeQuery
+
+        lastPagerFlow = Pager(
+            config = PagingConfig(
+                pageSize = 10,
+                initialLoadSize = 20,
+                prefetchDistance = 5,
+                enablePlaceholders = false
+            ),
+            pagingSourceFactory = {
+                PatientVisitPagingSource(
+                    dataSource,
+                    safeQuery,
+                    Constants.PATIENT_PHONE
+                )
+            }
+        ).flow
+
+        return lastPagerFlow!!
+       /* return Pager(
             config = PagingConfig(
                 pageSize = 5,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { PatientVisitPagingSource(dataSource,query, Constants.PATIENT_PHONE) }
-        ).flow
+        ).flow*/
     }
 
 
