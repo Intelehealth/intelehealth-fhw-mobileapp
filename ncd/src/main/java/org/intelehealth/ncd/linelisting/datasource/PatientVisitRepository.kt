@@ -30,4 +30,12 @@ class PatientVisitRepository(
             Constants.IS_NCD_VISIT_ATTRIBUTE, Constants.PATIENT_PHONE, Constants.SPECIALITY,
             Constants.ENCOUNTER_ADULTINITIAL, Constants.CURRENT_COMPLAINT)
     }
+
+    suspend fun getAllVisitsForPatientNew(
+        patientUuid: List<String>,
+    ): List<PatientVisitDetails> {
+        return dataSource.getAllVisitsForPatientNew(patientUuid, Constants.OTHER_MEDICAL_HISTORY, Constants.ENCOUNTER_VISIT_COMPLETE, "searchQuery",
+            Constants.IS_NCD_VISIT_ATTRIBUTE, Constants.PATIENT_PHONE, Constants.SPECIALITY,
+            Constants.ENCOUNTER_ADULTINITIAL, Constants.CURRENT_COMPLAINT)
+    }
 }
