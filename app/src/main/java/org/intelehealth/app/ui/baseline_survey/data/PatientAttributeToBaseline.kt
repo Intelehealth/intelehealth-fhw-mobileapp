@@ -178,7 +178,8 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
         )
         val medicalHistory: MedicalHistory = medicalHistoryList[0]
 
-        baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
+        //baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
+        baseline.anemiaValue = medicalHistory.anaemia.returnEmptyIfHyphen()
         baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
         baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
         baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()

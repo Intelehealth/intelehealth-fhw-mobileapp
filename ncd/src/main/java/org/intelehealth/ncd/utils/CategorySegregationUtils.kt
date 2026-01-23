@@ -225,7 +225,8 @@ class CategorySegregationUtils(private val resources: Resources) {
         } else {
             // all values are in english in database but in app its in local language comparing with string resource
             // medicalHistoryList[0].anemia == resources.getString(R.string.medical_history_yes)
-            medicalHistoryList[0].anemia.equals("Yes", ignoreCase = true)
+            //medicalHistoryList[0].anemia.equals("Yes", ignoreCase = true)
+            medicalHistoryList[0].anaemia.equals("Yes", ignoreCase = true)
         }
     }
 
