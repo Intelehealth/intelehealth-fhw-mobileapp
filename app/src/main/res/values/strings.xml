@@ -1082,7 +1082,7 @@
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">To disable notification between below time period. switch on the blackout period</string>
     <string name="from_9_00_pm_to_6_00_am">From 9:00 PM To 6:00 AM</string>
     <string name="notification">Notification</string>
-
+    <string name="confirm_continue_changes_button_dialog">Continue</string>
     <string name="doctor_visits">Doctor Visits</string>
     <string name="sevika_or_ncd_visits">Sevika/ NCD Visits</string>
     <string name="beneficiary_registered">Beneficiary Registered</string>
@@ -1106,6 +1106,10 @@
     <string name="daily_time_spent_by_sevika_tooltip_title">Total time spent by sevika</string>
     <string name="daily_time_spent_by_sevika_tooltip_content">The time when sevikas\nhas the app open\nin the foreground.</string>
     <string name="todays_tab_achievement">Daily</string>
+    <string name="this_visit_is_incomplete">This visit is incomplete!</string>
+    <string name="discard">Discard</string>
+    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
+    <string name="confirm_discard_changes_content_on_sync">Your visit creation process remains incomplete. You can either proceed to finalize the process or choose to discard it.</string>
 
     <string name="not_eligible_for_protocols_message">You are not eligible for any NCD protocols at the moment. If you still want to move ahead, select the protocol of your choice.</string>
     <string name="yes_move_ahead">"Yes,move ahead"</string>
@@ -1186,7 +1190,7 @@
     <string name="hypertension_quit_alcohol_tobacco">Hypertension: Quit alcohol and tobacco</string>
     <string name="ncd_report">NCD Report</string>
     <string name="yes_proceed">Yes, Proceed</string>
-    <string name="ncd_baseline">NCD Baseline</string>
+    <string name="ncd_baseline">NCD-Baseline</string>
     <string name="ncd_baseline_dialog_content">Answering to few baseline questions is mandatory for NCD visit &amp; Doctor visit workflow</string>
     <string name="data_saved">Data saved</string>
 
@@ -1208,5 +1212,9 @@
 
     <string name="click_to_view_past_ncd_visits">Click to view the past %1$s NCD visits</string>
 
+    <string name="failed_to_load_the_page">Failed to load the page</string>
+    <string name="msg_ekal_thank_you_ncd_report">Thank you for using Ekal Telemedicine!</string>
+    <string name="ncd_questions_are_incomplete_title">NCD related questions are incomplete!</string>
+    <string name="ncd_questions_are_incomplete_body">Are you sure you want to discard the answers.</string>
 
 </resources>

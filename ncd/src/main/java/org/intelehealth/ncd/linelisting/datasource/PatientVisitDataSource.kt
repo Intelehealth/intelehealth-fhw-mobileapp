@@ -19,9 +19,8 @@ class PatientVisitDataSource(
         chiefComplaintObsConceptUuid: String
     ): PagingSource<Int, PatientVisitDetails> {
         val safeSearchQuery = searchQuery ?: ""
-        return dao.getAllVisitsPaged(attributeTypeUuid, visitNoteEncounterUuid,
-            safeSearchQuery,ncdVisitAttribute, patientPhoneNoAttribute, visitSpecialityAttribute,
-            chiefComplaintEncounterConceptUuid, chiefComplaintObsConceptUuid)
+        return dao.getAllVisitsPagedNew(attributeTypeUuid,
+            safeSearchQuery, patientPhoneNoAttribute)
     }
 
     suspend fun getAllVisitsForPatient(
@@ -50,5 +49,23 @@ class PatientVisitDataSource(
         val safeSearchQuery = searchQuery ?: ""
         return dao.getPatientAndLatestVisitDetailsByPatientId(attributeTypeUuid, visitNoteEncounterUuid, safePatientUuid,
             safeSearchQuery,ncdVisitAttribute, patientPhoneNoAttribute, visitSpecialityAttribute, chiefComplaintEncounterConceptUuid, chiefComplaintObsConceptUuid)
+    }
+
+    suspend fun getAllVisitsForPatientNew(
+       patientUuidsList: List<String>,
+        attributeTypeUuid: String,
+        visitNoteEncounterUuid: String,
+        searchQuery: String?,
+        ncdVisitAttribute: String,
+        patientPhoneNoAttribute: String,
+        visitSpecialityAttribute: String,
+        chiefComplaintEncounterConceptUuid: String,
+        chiefComplaintObsConceptUuid: String
+    ): List<PatientVisitDetails> {
+        val safeSearchQuery = searchQuery ?: ""
+
+        return dao.getVisitsForPatients(patientUuidsList, attributeTypeUuid, visitNoteEncounterUuid,
+            ncdVisitAttribute, patientPhoneNoAttribute, visitSpecialityAttribute,
+            chiefComplaintEncounterConceptUuid, chiefComplaintObsConceptUuid)
     }
 }

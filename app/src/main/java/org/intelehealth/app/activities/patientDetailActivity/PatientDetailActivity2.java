@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
+import static org.intelehealth.app.database.dao.PatientsDAO.fetchDateOfBirth;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -488,7 +489,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
         MissingLineListingQuestionsHelper helper = new MissingLineListingQuestionsHelper(this);
-        MissingLineListingResult resultModel = helper.evaluateMedicalHistory(patientDTO.getUuid());
+        Log.d(TAG, "onCreate: dob : "+patientDTO.getDateofbirth());
+        int patientAge = DateAndTimeUtils.getAgeInYear(fetchDateOfBirth(patientDTO.getUuid()), context);
+        MissingLineListingResult resultModel = helper.evaluateMedicalHistory(patientDTO.getUuid(), patientAge);
         Log.d(TAG, "onCreate: resultModel value : "+new Gson().toJson(resultModel));
 
 
@@ -510,7 +513,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             populateFamilyMembers(houseHoldValue);
         }
         binding.startNCDSevikaVisitBtn.setOnClickListener(view -> {
-            new DialogUtils().showCommonDialog(
+            new DialogUtils().showCommonDialogNonCancelable(
                     this,
                     R.drawable.ic_sevika_service_start,
                     getResources().getString(R.string.start_newadvice_confirmation_title),
@@ -624,6 +627,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             }
                             String fullName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
                             int age = DateAndTimeUtils.getAgeInYear(patientDTO.getDateofbirth(), context);
+                            Log.d(TAG, "onCreate: age : "+age);
 
                             Intent intent2 = new Intent(PatientDetailActivity2.this, ComplaintNodeActivity.class);
                             intent2.putExtra("patientUuid", patientDTO.getUuid());
@@ -652,7 +656,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         startSevikaVisitBtn.setOnClickListener(view -> {
-            new DialogUtils().showCommonDialog(
+            new DialogUtils().showCommonDialogNonCancelable(
                     this,
                     R.drawable.ic_sevika_service_start,
                     getResources().getString(R.string.start_newadvice_confirmation_title),
@@ -3017,7 +3021,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
     private void showBaselineMissingQuestionsDialog() {
         DialogUtils dialogUtils = new DialogUtils();
-        dialogUtils.showCommonDialog(
+        dialogUtils.showCommonDialogNonCancelable(
                 PatientDetailActivity2.this,
                 R.drawable.ui2_ic_warning_internet,
                 getResources().getString(R.string.ncd_baseline),

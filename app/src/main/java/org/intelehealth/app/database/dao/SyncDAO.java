@@ -7,15 +7,11 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
 import android.util.Log;
 
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
-
-import org.intelehealth.app.user.UserSessionDao;
-import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -32,6 +28,8 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.syncModule.InitialSyncWorker;
 import org.intelehealth.app.syncModule.SyncProgress;
+import org.intelehealth.app.user.UserSessionDao;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
 import org.intelehealth.app.utilities.PatientsFrameJson;
@@ -59,7 +57,7 @@ import retrofit2.Response;
 
 public class SyncDAO {
     public static final String TAG = "SyncDAO";
-    public static final String PULL_ISSUE = "PULL_ISSUE";
+    public static final String PULL_ISSUE = "SyncDao - PULL_ISSUE";
     SessionManager sessionManager = null;
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
@@ -87,26 +85,100 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
+            if (responseDTO.getData() != null) {
+
 //            saveConfig(responseDTO.getData().getConfigResponse());
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
-            patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
-            patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
-            visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
-            encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
-            obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
-            locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
-            providerDAO.insertProviders(responseDTO.getData().getProviderlist());
-            providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
-            visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+                //patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+                patientsDAO.insertPatientsV2(responseDTO.getData().getPatientDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        5 // 100% of the current page
+                );
+
+                //patientsDAO.patientAttributes(responseDTO.getData().getPatientAttributesDTO());
+                patientsDAO.patientAttributesV2(responseDTO.getData().getPatientAttributesDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        15 // 100% of the current page
+                );
+                //patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                patientsDAO.patientAttributeMasterV2(responseDTO.getData().getPatientAttributeTypeMasterDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        25 // 100% of the current page
+                );
+                //visitsDAO.insertVisit(responseDTO.getData().getVisitDTO());
+                visitsDAO.insertVisitsV2(responseDTO.getData().getVisitDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        35 // 100% of the current page
+                );
+                //encounterDAO.insertEncounter(responseDTO.getData().getEncounterDTO());
+                encounterDAO.insertEncountersV2(responseDTO.getData().getEncounterDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        45 // 100% of the current page
+                );
+                //obsDAO.insertObsTemp(responseDTO.getData().getObsDTO());
+                obsDAO.insertObsTempV2(responseDTO.getData().getObsDTO());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        75 // 100% of the current page
+                );
+                locationDAO.insertLocations(responseDTO.getData().getLocationDTO());
+                providerDAO.insertProviders(responseDTO.getData().getProviderlist());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        85 // 100% of the current page
+                );
+                //providerAttributeLIstDAO.insertProvidersAttributeList(responseDTO.getData().getProviderAttributeList());
+                providerAttributeLIstDAO.insertProvidersAttributeListV2(responseDTO.getData().getProviderAttributeList());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        90 // 100% of the current page
+                );
+                //visitAttributeListDAO.insertProvidersAttributeList(responseDTO.getData().getVisitAttributeList());
+                //TODO: need to change the function name
+                visitAttributeListDAO.insertVisitAttributeListV2(responseDTO.getData().getVisitAttributeList());
+
 //           visitsDAO.insertVisitAttribToDB(responseDTO.getData().getVisitAttributeList())
-            Log.d(TAG, "kzSyncData: provider attributes : "+new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
-            userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
-            Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
-            Logger.logD(TAG, "Pull sync ended");
-            sessionManager.setFirstTimeSyncExecute(false);
-            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
+                //Log.d(TAG, "kzSyncData: provider attributes : " + new Gson().toJson(responseDTO.getData().getProviderAttributeList()));
+
+                //userSessionDao.parseAndInsertSessions(responseDTO.getData().getProviderAttributeList());
+                updateProgressForPage(
+                        responseDTO.getData().getPageNo(),
+                        responseDTO.getData().getTotalCount(),
+                        AppConstants.PAGE_LIMIT,
+                        95 // 100% of the current page
+                );
+
+                userSessionDao.parseAndInsertSessionsV2(responseDTO.getData().getProviderAttributeList());
+
+                //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
+                Logger.logD(TAG, "Pull sync ended");
+                sessionManager.setFirstTimeSyncExecute(false);
+                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
+            }
+//            saveConfig(responseDTO.getData().getConfigResponse());
+
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             Logger.logE(TAG, "Exception", e);
@@ -116,6 +188,59 @@ public class SyncDAO {
         return isSynced;
 
     }
+
+    private int lastProgress = 0;
+
+    public void updateProgressForPage(
+            int pageNo,
+            int totalCount,
+            int pageLimit,
+            double pageCompletionPercent
+    ) {
+        Logger.logD(TAG, "updateProgressForPage: pageNo=" + pageNo +
+                ", totalCount=" + totalCount +
+                ", pageLimit=" + pageLimit +
+                ", pageCompletionPercent=" + pageCompletionPercent);
+        int newProgress;
+        // Case: single page
+        if (totalCount <= pageLimit) {
+            newProgress = (int) Math.round(pageCompletionPercent);
+        }
+        if (pageNo == -1 || totalCount <= 0 || pageLimit <= 0) {
+            return;
+        }
+
+
+        int totalPages = (int) Math.ceil((double) totalCount / pageLimit);
+        if (totalPages == 0) return;
+
+        double pageShare = 100.0 / totalPages;
+        double completionRatio = pageCompletionPercent / 100.0;
+
+        double calculatedProgress =
+                ((pageNo - 1) * pageShare) +
+                        (pageShare * completionRatio);
+
+        newProgress = (int) Math.round(calculatedProgress);
+
+
+        //  NEVER allow progress to go backward
+        if (newProgress < lastProgress) {
+            Logger.logD(TAG,
+                    "Progress clamped: new=" + newProgress +
+                            ", last=" + lastProgress);
+            newProgress = lastProgress;
+        }
+
+        // Optional: cap at 99% until final completion
+        newProgress = Math.min(newProgress, 99);
+
+        lastProgress = newProgress;
+        setProgress(newProgress);
+
+        Logger.logD(TAG, "Progress set to=" + newProgress);
+    }
+
 
     private void saveConfig(ConfigResponse response) {
         CustomLog.d(TAG, "saveConfig");
@@ -709,7 +834,7 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
-        }else{
+        } else {
             //this is fallback to handle push images if anyone is missing to push
             imagesPushDAO.obsImagesPush();
             imagesPushDAO.deleteObsImage();
@@ -815,8 +940,8 @@ public class SyncDAO {
                                 sessionManager.setSyncFinished(true);
 
 
-                                 // image push is dependant with push data api
-                                 // that's why added image upload logic here
+                                // image push is dependant with push data api
+                                // that's why added image upload logic here
                               /*  final Handler handler_foreground = new Handler();
                                 handler_foreground.postDelayed(new Runnable() {
                                     @Override
@@ -836,8 +961,7 @@ public class SyncDAO {
                                 broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
                                 IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
 
-                            }
-                            catch (Exception e) {
+                            } catch (Exception e) {
                                 e.printStackTrace();
                                 CustomLog.e(TAG, e.getMessage());
                             }
@@ -858,7 +982,7 @@ public class SyncDAO {
             IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                     .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                     .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_DONE));
-        }else{
+        } else {
             //this is fallback to handle push images if anyone is missing to push
             imagesPushDAO.obsImagesPush();
             imagesPushDAO.deleteObsImage();
@@ -866,6 +990,7 @@ public class SyncDAO {
 
         return isSucess[0];
     }
+
     private void CalculateAgoTime(Context context) {
         String finalTime = "";
 

@@ -1,6 +1,5 @@
 package org.intelehealth.app.database.dao;
 
-import static org.intelehealth.app.database.InteleHealthDatabaseHelper.database;
 import static org.intelehealth.app.utilities.UuidDictionary.CURRENT_COMPLAINT;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
@@ -24,8 +23,10 @@ import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.DeviceUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.ParserUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.text.SimpleDateFormat;
@@ -60,6 +61,74 @@ public class VisitsDAO {
         }
 
         return isInserted;
+    }
+    private static final int BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
+
+    /**
+     *
+     * @param visits
+     * @return
+     * @throws DAOException
+     */
+    public boolean insertVisitsV2(List<VisitDTO> visits) throws DAOException {
+
+        SQLiteDatabase db = null;
+        try {
+            db = IntelehealthApplication
+                    .inteleHealthDatabaseHelper
+                    .getWriteDb();
+
+            ContentValues values = new ContentValues();
+            String modifiedDate = AppConstants.dateAndTimeUtils.currentDateTime();
+
+            for (int i = 0; i < visits.size(); i++) {
+
+                if (i % BATCH_SIZE == 0) {
+                    db.beginTransaction();
+                }
+
+                values.clear();
+                bindVisit(values, visits.get(i), modifiedDate);
+
+                db.insertWithOnConflict(
+                        "tbl_visit",
+                        null,
+                        values,
+                        SQLiteDatabase.CONFLICT_REPLACE
+                );
+
+                if (i % BATCH_SIZE == BATCH_SIZE - 1 || i == visits.size() - 1) {
+                    db.setTransactionSuccessful();
+                    db.endTransaction();
+                }
+            }
+
+            return true;
+
+        } catch (Exception e) {
+            throw new DAOException(e.getMessage(), e);
+        }
+    }
+    private void bindVisit(ContentValues values, VisitDTO visit, String modifiedDate) {
+
+        values.put("uuid", visit.getUuid());
+        values.put("patientuuid", visit.getPatientuuid());
+        values.put("locationuuid", visit.getLocationuuid());
+        values.put("visit_type_uuid", visit.getVisitTypeUuid());
+        values.put("creator", visit.getCreatoruuid());
+
+        values.put(
+                "startdate",
+                DateAndTimeUtils.formatDateFromOnetoAnother(
+                        visit.getStartdate(),
+                        "MMM dd, yyyy hh:mm:ss a",
+                        "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                )
+        );
+
+        values.put("enddate", visit.getEnddate());
+        values.put("modified_date", modifiedDate);
+        values.put("sync", visit.getSyncd());
     }
 
     private boolean createVisits(VisitDTO visit, SQLiteDatabase db) throws DAOException {
@@ -539,12 +608,17 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid " +
+                        "and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                        " v.startdate > DATETIME('now', '-4 day') " +
-                        " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+                        "AND v.startdate > DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -587,12 +661,17 @@ public class VisitsDAO {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid " +
+                        "and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
                         //  " v.startdate > DATETIME('now', '-4 day') " +
                         // " AND v.enddate IS NULL ORDER BY v.startdate DESC",
-                        "v.enddate IS NULL ORDER BY v.startdate DESC",
-                new String[]{});
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "and v.enddate IS NULL ORDER BY v.startdate DESC",
+                new String[]{IS_NCD_VISIT_ATTRIBUTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -637,12 +716,17 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND" +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid " +
+                        "and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
 //                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                        " v.startdate > DATETIME('now', '-4 day')" +
-                        " AND v.enddate IS NULL ORDER BY v.startdate DESC",
-                new String[]{});
+                        "AND v.startdate > DATETIME('now', '-4 day')" +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "AND v.enddate IS NULL ORDER BY v.startdate DESC",
+                new String[]{IS_NCD_VISIT_ATTRIBUTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -690,13 +774,18 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid " +
+                        "and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
 //                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
-                        " v.startdate < DATETIME('now', '-4 day') AND " +
-                        "v.enddate IS NULL ORDER BY v.startdate DESC",
-                new String[]{});
+                        "AND v.startdate < DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "and v.enddate IS NULL ORDER BY v.startdate DESC",
+                new String[]{IS_NCD_VISIT_ATTRIBUTE});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -739,13 +828,17 @@ public class VisitsDAO {
 
         Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
                         " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
 //                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
 //                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
-                        " v.startdate < DATETIME('now', '-4 day') AND " +
-                        "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+                        "AND v.startdate < DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "and v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -831,11 +924,15 @@ public class VisitsDAO {
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
                         //" and v.enddate is null " +
                         "and e.encounter_type_uuid = ? and" +
-                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +//and" + " o.conceptuuid = ? and " +
+                        " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and " +
                         " and v.startdate > DATETIME('now', '-4 day') " +
+                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         " group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -1155,7 +1252,7 @@ public class VisitsDAO {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             Cursor cursor = null;
             if (isForReceivedPrescription)
-                cursor = db.rawQuery("select p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                cursor = db.rawQuery("select v.uuid as vuid,p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
                         + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where"
                         + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and"
                         + "  e.encounter_type_uuid = ? and"
@@ -1163,49 +1260,55 @@ public class VisitsDAO {
                         //+ " and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
                         //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
-                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 "
+                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
             else
-                cursor = db.rawQuery("select p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
+                cursor = db.rawQuery("select v.uuid as vuid,p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
                         + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         //" e.encounter_type_uuid = ?  and " +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 "
                         //+ "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
-                        //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
+                        //+ " STRFTIME('%m',date(substr(o.obsserverm----------------------------------------odifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
-                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{});
+                        + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+                        "where  attr.visit_uuid = v.uuid " +
+                        "and attr.visit_attribute_type_uuid = ?) <=0 "
+                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{IS_NCD_VISIT_ATTRIBUTE});
             if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                 do {
 
-                    String puid = cursor.getString(cursor.getColumnIndexOrThrow("puid"));
+                    String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
 
-                    List<String> visitUuidList = getFilteredVisits(db, puid);
+                    //List<String> visitUuidList = getFilteredVisits(db, puid);
 
-                    for (String vuid : visitUuidList) {
-                        boolean isCompletedExitedSurvey = false;
-                        boolean isPrescriptionReceived = false;
-                        try {
-                            isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
-                            isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
-                        } catch (DAOException e) {
-                            e.printStackTrace();
-                            CustomLog.e(TAG, e.getMessage());
-                        }
-                        //TODO: need more improvement in main query, this condition can be done by join query
-                        if (isForReceivedPrescription) {
-                            if (!isCompletedExitedSurvey && isPrescriptionReceived) {
-                                count += 1;
+                    // for (String vuid : visitUuidList) {
+                    boolean isCompletedExitedSurvey = false;
+                    boolean isPrescriptionReceived = false;
+                    try {
+                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
+                        isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
+                    } catch (DAOException e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
+                    //TODO: need more improvement in main query, this condition can be done by join query
+                    if (isForReceivedPrescription) {
+                        if (!isCompletedExitedSurvey && isPrescriptionReceived) {
+                            count += 1;
 //                                Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
 //                                        + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                            }
-                        } else {
-                            if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
-                                count += 1;
+                        }
+                    } else {
+                        if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
+                            count += 1;
 //                                Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
 //                                        + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
 
-                            }
                         }
                     }
+                    // }
 
                     /*String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     boolean isCompletedExitedSurvey = false;
@@ -1279,6 +1382,40 @@ public class VisitsDAO {
         return visitUuidList;
     }
 
+    public void deleteAllDataForOngoingIncompleteVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Delete observations related to the visit's encounters
+            db.execSQL(
+                    "DELETE FROM tbl_obs " +
+                            "WHERE encounteruuid IN (" +
+                            " SELECT uuid FROM tbl_encounter WHERE visituuid = ?" +
+                            ")",
+                    new Object[]{visitId}
+            );
+
+            //  Delete encounters for the visit
+            db.execSQL(
+                    "DELETE FROM tbl_encounter WHERE visituuid = ?",
+                    new Object[]{visitId}
+            );
+
+            //  Delete the visit itself
+            db.execSQL(
+                    "DELETE FROM tbl_visit WHERE uuid = ?",
+                    new Object[]{visitId}
+            );
+
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            Log.d(TAG, "deleteAllDataForOngoingIncompleteVisit: e : "+e.getLocalizedMessage());
+            e.printStackTrace();
+        }  finally{
+            db.endTransaction();
+        }
+    }
+
     public boolean isDoctorVisit(String visitId) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         boolean doctorVisit = false;
@@ -1298,6 +1435,55 @@ public class VisitsDAO {
 
         return doctorVisit;
     }
+
+    /**
+     * getting total doctor visit count
+     * if visit is not a doctor visit then the value would be "Specialist doctor not needed"
+     * and filtering visit based on the doctor word
+     * @param visitAttributeType
+     * @return
+     */
+    public static int getDoctorVisitCount(
+            String patientUuid,
+            String visitAttributeType
+    ) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        int count = 0;
+
+        StringBuilder queryBuilder = new StringBuilder(
+                "SELECT COUNT(DISTINCT v.uuid) AS total " +
+                        "FROM tbl_visit v " +
+                        "LEFT JOIN tbl_visit_attribute attr " +
+                        "       ON v.uuid = attr.visit_uuid " +
+                        "LEFT JOIN tbl_visit_attribute speciality " +
+                        "       ON v.uuid = speciality.visit_uuid " +
+                        "      AND speciality.visit_attribute_type_uuid = ? " +
+                        "WHERE  v.patientuuid = ? " +
+                        "AND   v.sync IN (1, 'TRUE') COLLATE NOCASE"
+        );
+
+        List<String> args = new ArrayList<>();
+        args.add(UuidDictionary.SPECIALITY);
+        args.add(patientUuid);
+
+        if (visitAttributeType != null && !visitAttributeType.isEmpty()) {
+            queryBuilder.append(" AND attr.visit_attribute_type_uuid != ?");
+            args.add(visitAttributeType);
+        }
+
+        queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''");
+        queryBuilder.append(" AND (speciality.value IS NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)");
+
+        try (Cursor cursor = db.rawQuery(queryBuilder.toString(), args.toArray(new String[0]))) {
+            if (cursor.moveToFirst()) {
+                int colIndex = cursor.getColumnIndexOrThrow("total");
+                count = cursor.getInt(colIndex);
+            }
+        }
+
+        return count;
+    }
+
 
     public boolean isDoctorVisitNew(SQLiteDatabase db, String visitId) {
         boolean doctorVisit = false;
@@ -1352,31 +1538,31 @@ public class VisitsDAO {
     ) {
         List<NCDReading> ncdReadings = new ArrayList<>();
 
-        String query = "SELECT tbl_obs.*" +
+        String query = "SELECT tbl_obs.*, tbl_visit.startdate " +
                 "FROM tbl_obs, tbl_encounter, tbl_visit, tbl_visit_attribute " +
                 "WHERE tbl_obs.encounteruuid = tbl_encounter.uuid " +
                 "AND tbl_encounter.visituuid = tbl_visit.uuid " +
                 "AND tbl_visit_attribute.visit_uuid = tbl_visit.uuid " +
                 "AND tbl_obs.conceptuuid = ? " +
-                "AND tbl_visit_attribute.visit_attribute_type_uuid = ? "+
-                "AND tbl_visit.patientuuid = ? "+
-                "AND tbl_visit.enddate IS NOT NULL "+
-                "GROUP BY tbl_visit.uuid "+
-                "ORDER BY tbl_obs.obsservermodifieddate DESC "+
+                "AND tbl_visit_attribute.visit_attribute_type_uuid = ? " +
+                "AND tbl_visit.patientuuid = ? " +
+                "AND tbl_visit.enddate IS NOT NULL " +
+                "GROUP BY tbl_visit.uuid " +
+                "ORDER BY tbl_visit.startdate DESC " +
                 "LIMIT 7";
 
         Cursor cursor = null;
         try {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
-            cursor = db.rawQuery(query, new String[]{CURRENT_COMPLAINT,IS_NCD_VISIT_ATTRIBUTE, patientUuid});
+            cursor = db.rawQuery(query, new String[]{CURRENT_COMPLAINT, IS_NCD_VISIT_ATTRIBUTE, patientUuid});
 
             if (cursor.moveToFirst()) {
                 do {
-                    String value  = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                    String date  = cursor.getString(cursor.getColumnIndexOrThrow("created_date"));
+                    String value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                    String date = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
                     ncdReadings.add(new NCDReading(
-                            DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd HH:mm:ss", "dd MMM, yy"),
+                            DateAndTimeUtils.date_formatter(date, "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM, yy"),
                             ParserUtils.parseBP(value),
                             ParserUtils.parseHemoglobin(value),
                             ParserUtils.parseRBS(value)
@@ -1398,6 +1584,7 @@ public class VisitsDAO {
 
     /**
      * Fetches the count of NCD readings for a patient (maximum 7)
+     *
      * @param patientUuid The UUID of the patient
      * @return Count of NCD observation records (capped at 7)
      */
@@ -1412,7 +1599,7 @@ public class VisitsDAO {
                 "AND tbl_visit_attribute.visit_uuid = tbl_visit.uuid " +
                 "AND tbl_obs.conceptuuid = ? " +
                 "AND tbl_visit_attribute.visit_attribute_type_uuid = ? " +
-                "AND tbl_visit.patientuuid = ? "+
+                "AND tbl_visit.patientuuid = ? " +
                 "AND tbl_visit.enddate IS NOT NULL";
 
         Cursor cursor = null;

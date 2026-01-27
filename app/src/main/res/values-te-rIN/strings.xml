@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ఇంటెలిహెల్త్</string>
+    <string name="app_name" translatable="false">ఇంటెలిహెల్త్</string>
     <string name="generic_coming_soon" translatable="false">"త్వరలో....."</string>
     <string name="title_activity_login" translatable="false">"ఇంటెలిహెల్త్"</string>
     <string name="prompt_admin_password" translatable="false">"అడ్మిన్ పాస్వర్డ్"</string>
@@ -968,6 +968,165 @@
     <string name="blackout">బ్లాక్‌అవుట్</string>
     <string name="to_disable_notification_between_below_time_period_switch_on_the_blackout_period">కింద తెలిపిన సమయావధిలో నోటిఫికేషన్‌లు అడ్డుకోవడానికి బ్లాక్‌అవుట్ పీరియడ్‌ను ఆన్ చేయండి</string>
     <string name="from_9_00_pm_to_6_00_am">రాత్రి 9:00 నుండి ఉదయం 6:00 వరకు</string>
+    <string name="this_visit_is_incomplete">ఈ సందర్శనం అసంపూర్ణంగా ఉంది!</string>
+    <string name="discard">విస్మరించు</string>
+    <string name="confirm_discard_changes_content">ఈ సందర్శనలోని అన్ని వివరాలను విస్మరించాలనుకుంటున్నారా?</string>
+    <string name="confirm_discard_changes_content_on_sync">మీ సందర్శనం సృష్టించే ప్రక్రియ అసంపూర్ణంగా ఉంది. మీరు దాన్ని పూర్తి చేయవచ్చు లేదా విస్మరించవచ్చు.</string>
 
+
+    <!-- Content Descriptions -->
+    <string name="thermometer_icon">Thermometer icon</string>
+    <string name="bp_icon">Blood pressure icon</string>
+    <string name="hb_icon">Hemoglobin icon</string>
+    <string name="rbs_icon">Blood sugar icon</string>
+    <string name="collapse_expand">Collapse or expand</string>
+    <string name="click_to_view_past_ncd_visits">గత %1$s NCD సందర్శనలను చూడటానికి క్లిక్ చేయండి</string>
+    <string name="msg_ekal_thank_you_ncd_report">ఏకల్ టెలిమెడిసిన్ సేవను ఉపయోగించినందుకు ధన్యవాదాలు!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD సంబంధిత ప్రశ్నలు పూర్తిగా లేవు!</string>
+    <string name="ncd_questions_are_incomplete_body">మీరు నిజంగా సమాధానాలను విస్మరించాలనుకుంటున్నారా?</string>
+    <string name="ncd_baseline_dialog_content">NCD విజిట్ మరియు డాక్టర్ విజిట్ వర్క్‌ఫ్లో కోసం కొన్ని బేస్‌లైన్ ప్రశ్నలకు సమాధానం ఇవ్వడం తప్పనిసరి</string>
+    <string name="data_saved">డేటా సేవ్ చేయబడింది</string>
+    <string name="ncd_baseline">NCD-బేస్‌లైన్</string>
+
+    <!-- Basic UI Elements -->
+    <string name="enter_verification_code">ధృవీకరణ కోడ్‌ను నమోదు చేయండి</string>
+    <string name="otp_sent">మీ నమోదిత నంబర్ మరియు ఇమెయిల్‌కు 6-అంకెల OTP పంపబడింది.\nదయచేసి తనిఖీ చేసి, OTP ని నమోదు చేయండి.</string>
+    <string name="no_otp_received">OTP అందలేదా?</string>
+    <string name="resend_otp_in">తిరిగి పంపండి</string>
+    <string name="resend_otp"><font color='#2E1E91'>తిరిగి పంపండి</font></string>
+    <string name="help"><u>సహాయం</u></string>
+    <string name="enter_new_password">కొత్త పాస్‌వర్డ్‌ను నమోదు చేయండి</string>
+    <string name="new_password">కొత్త పాస్‌వర్డ్</string>
+    <string name="generate_new_password"><u>కొత్త పాస్‌వర్డ్‌ను రూపొందించండి</u></string>
+    <string name="reenter_new_password">కొత్త పాస్‌వర్డ్‌ను మళ్లీ నమోదు చేయండి</string>
+    <string name="reset_password">పాస్‌వర్డ్‌ను రీసెట్ చేయాలా?</string>
+    <string name="please_reset_password">దయచేసి మీ ఖాతా కోసం \nకొత్త పాస్‌వర్డ్‌ను రీసెట్ చేయండి</string>
+    <string name="forgot_password_link"><u>పాస్‌వర్డ్ మర్చిపోయారా?</u></string>
+    <string name="notification">నోటిఫికేషన్</string>
+    <string name="confirm_continue_changes_button_dialog">కొనసాగించు</string>
+
+    <!-- All missing translations compared to default string file -->
+    <!-- NCD Protocol Selection -->
+    <string name="not_eligible_for_protocols_message">మీరు ప్రస్తుతం ఏ NCD ప్రోటోకాల్‌లకు అర్హులు కారు. మీరు ఇంకా ముందుకు వెళ్లాలనుకుంటే, మీ ఎంపిక ప్రోటోకాల్‌ను ఎంచుకోండి.</string>
+    <string name="yes_move_ahead">అవును, ముందుకు వెళ్లండి</string>
+    <string name="no_go_back">కాదు, వెనక్కి వెళ్లండి</string>
+    <string name="please_move_to_next_question">దయచేసి తదుపరి ప్రశ్నకు వెళ్లండి</string>
+    <string name="please_confirm_your_details">దయచేసి మీ వివరాలను నిర్ధారించండి</string>
+    <string name="back_desc">వెనుకకు</string>
+    <string name="next_desc">తదుపరి</string>
+    <string name="Minute">నిమిషాలు</string>
+    <string name="node_input_empty_error">%1$s ఖాళీగా ఉండకూడదు!</string>
+    <string name="node_input_range_error">%1$s %2$s మరియు %3$s మధ్య ఉండాలి</string>
+    <string name="node_input_range_gtr_error">%1$s %2$s కంటే తక్కువగా ఉండకూడదు</string>
+    <string name="node_input_range_less_error">%1$s %2$s కంటే ఎక్కువగా ఉండకూడదు</string>
+    <string name="hemoglobin_error">హిమోగ్లోబిన్ %1$s మరియు %2$s మధ్య ఉండాలి</string>
+    <string name="visit_reason_txt">సందర్శన కారణం</string>
+    <string name="screening_questionnaire_txt">స్క్రీనింగ్ ప్రశ్నాపత్రం</string>
+
+    <!-- NCD Medication Questions -->
+    <string name="are_you_taking_any_medication_for_bp">మీరు ప్రస్తుతం BP కోసం ఏదైనా మందులు తీసుకుంటున్నారా?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">మీరు ప్రస్తుతం మధుమేహం కోసం ఏదైనా మందులు తీసుకుంటున్నారా?</string>
+    <string name="are_you_taking_any_medication_for_anemia">మీరు ప్రస్తుతం రక్తహీనత కోసం ఏదైనా మందులు తీసుకుంటున్నారా?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">మీ BP కోసం గత 1 సంవత్సరంలో ఆరోగ్య కార్యకర్త ద్వారా మీరు పరీక్షించబడ్డారా?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">మీ మధుమేహం కోసం గత 1 సంవత్సరంలో ఆరోగ్య కార్యకర్త ద్వారా మీరు పరీక్షించబడ్డారా?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">మీ రక్తహీనత కోసం గత 1 సంవత్సరంలో ఆరోగ్య కార్యకర్త ద్వారా మీరు పరీక్షించబడ్డారా?</string>
+    <string name="why_are_you_not_taking_your_bp_medication">మీరు మీ BP మందులు ఎందుకు తీసుకోవడం లేదు?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">మీరు మీ మధుమేహ మందులు ఎందుకు తీసుకోవడం లేదు?</string>
+    <string name="why_are_you_not_taking_your_anemia_medication">మీరు మీ రక్తహీనత మందులు ఎందుకు తీసుకోవడం లేదు?</string>
+
+    <!-- Medication Non-Compliance Reasons -->
+    <string name="never_prescribed_medication">నాకు ఎప్పుడూ మందులు సూచించబడలేదు.</string>
+    <string name="forgot_to_take_it">నేను తీసుకోవడం మర్చిపోయాను.</string>
+    <string name="cannot_afford_medications">నేను మందులు కొనలేను.</string>
+    <string name="ran_out_of_medication">నా మందులు అయిపోయాయి / మందులు పోయాయి.</string>
+    <string name="i_am_needing_follow_up_with_my_PHC">నాకు నా PHC తో ఫాలో అప్ అవసరం.</string>
+    <string name="i_dont_think_i_need_it">నాకు అవసరం లేదని నేను అనుకుంటున్నాను.</string>
+    <string name="side_effect_related_to_medication">మందుకు సంబంధించిన దుష్ప్రభావం.</string>
+    <string name="unknown_other">తెలియదు / ఇతర</string>
+
+    <!-- WhatsApp Communication -->
+    <string name="do_you_or_any_of_your_family_member_use_whatsapp">మీరు లేదా మీ కుటుంబ సభ్యులు వాట్సాప్ ఉపయోగిస్తున్నారా?</string>
+    <string name="what_is_the_phone_number_associated_with_your_family_member_whatsapp_account">మీ కుటుంబ సభ్యుని వాట్సాప్ ఖాతాతో అనుబంధించబడిన మొబైల్ నంబర్ ఏమిటి?</string>
+    <string name="what_is_the_phone_number_associated_with_your_personal_whatsapp_account">మీ వ్యక్తిగత వాట్సాప్ ఖాతాతో అనుబంధించబడిన మొబైల్ నంబర్ ఏమిటి?</string>
+    <string name="i_dont_know">నాకు తెలియదు</string>
+    <string name="can_ekal_send_a_summary_of_visit_to_you">మా సందర్శన సారాంశాన్ని ఏకల్ మీకు ఉచిత వాట్సాప్ సందేశం పంపగలదా?</string>
+    <string name="yes_family_member">అవును (కుటుంబ సభ్యుడు)</string>
+    <string name="yes_personal">అవును (వ్యక్తిగత)</string>
+    <string name="send_summary_on_whatsApp">వాట్సాప్‌లో సారాంశం పంపండి</string>
+
+    <!-- NCD/Sevika Visit -->
+    <string name="new_ncd_sevika_visit">కొత్త NCD/సేవిక సందర్శన</string>
+    <string name="screening_lbl">స్క్రీనింగ్</string>
+    <string name="view_ncd_module">సమాచార మాడ్యూల్ చూడండి</string>
+    <string name="share_ncd_module">సమాచార మాడ్యూల్ భాగస్వామ్యం చేయండి</string>
+    <string name="share_ncd_info_dialog_title">NCD ఆరోగ్య సమాచారం ఈ వాట్సాప్ నంబర్‌కు భాగస్వామ్యం చేయబడుతుంది</string>
+    <string name="suggested_info_modules">సూచించిన NCD ఆరోగ్య సమాచార మాడ్యూల్స్</string>
+    <string name="ncd_info_whatsapp_msg">హలో, ఇంటెలిహెల్త్ ఉపయోగించినందుకు ధన్యవాదాలు.\nఅధిక రక్తపోటు కోసం మీ ఆరోగ్య సమాచార మాడ్యూల్ డౌన్‌లోడ్ చేయడానికి, ఇక్కడ క్లిక్ చేయండి</string>
+    <string name="enter_whatsapp_number">దయచేసి వాట్సాప్ నంబర్‌ను నమోదు చేయండి</string>
+
+    <!-- Health Information Modules -->
+    <string name="decrease_salt_intake">ఉప్పు తీసుకోవడం తగ్గించండి</string>
+    <string name="exercise">వ్యాయామం</string>
+    <string name="alcohol_and_tobacco_cessation">మద్యం మరియు పొగాకు మానుకోవడం</string>
+    <string name="ncd_info_whatsapp_msg_new">ఏకల్ టెలిమెడిసిన్ ఉపయోగించినందుకు ధన్యవాదాలు. అధిక రక్తపోటును నిర్వహించడానికి లేదా తగ్గించడానికి దయచేసి సమాచారాన్ని డౌన్‌లోడ్ చేసి చదవండి</string>
+    <string name="health_information">ఆరోగ్య సమాచారం</string>
+    <string name="saved_to_downloads">ఫైల్ డౌన్‌లోడ్‌లకు సేవ్ చేయబడింది</string>
+    <string name="failed_to_save_downloads">PDF సేవ్ చేయడం విఫలమైంది</string>
+    <string name="patient_visit_sent_ended">రోగి సందర్శన విజయవంతంగా సేవ్ చేయబడింది మరియు ఆటోమేటిక్‌గా ముగిసింది.</string>
+    <string name="category_already_selected">మీరు ఇప్పటికే %1$s నుండి ఒక అంశాన్ని ఎంచుకున్నారు</string>
+    <string name="please_complete_the_baseline_survey">దయచేసి బేస్‌లైన్ సర్వేను పూర్తి చేయండి.</string>
+    <string name="dialog_baseline_ok">సరే</string>
+    <string name="baseline_warning_alert">హెచ్చరిక!</string>
+
+    <!-- Health Advice Messages -->
+    <string name="msg_ekal_thank_you">ఏకల్ టెలిమెడిసిన్ ఉపయోగించినందుకు ధన్యవాదాలు! ప్రతిరోజు ఆరోగ్యంగా ఉండే సరళమైన మార్గాలను తెలుసుకోవడానికి లింక్‌ను క్లిక్ చేయండి.</string>
+    <string name="anemia_food_advice">రక్తహీనత: ఐరన్, ఫోలిక్ ఆమ్లం మరియు ప్రోటీన్ అధికంగా ఉన్న ఆహారాలను తినండి</string>
+    <string name="anemia_deworm_hygiene">రక్తహీనత: క్రమం తప్పకుండా డీవార్మింగ్ చేయండి మరియు మంచి పరిశుభ్రతను కాపాడుకోండి</string>
+    <string name="anemia_quit_alcohol_tobacco">రక్తహీనత: మద్యం మరియు పొగాకు మానుకోండి</string>
+    <string name="diabetes_reduce_sugar">మధుమేహం: చక్కెర తీసుకోవడం తగ్గించండి</string>
+    <string name="exercise_regularly">క్రమం తప్పకుండా వ్యాయామం చేయండి</string>
+    <string name="diabetes_quit_alcohol_tobacco">మధుమేహం: మద్యం మరియు పొగాకు మానుకోండి</string>
+    <string name="hypertension_reduce_salt">అధిక రక్తపోటు: ఉప్పు తీసుకోవడం తగ్గించండి</string>
+    <string name="hypertension_quit_alcohol_tobacco">అధిక రక్తపోటు: మద్యం మరియు పొగాకు మానుకోండి</string>
+
+    <!-- NCD Report -->
+    <string name="ncd_report">NCD నివేదిక</string>
+    <string name="yes_proceed">అవును, కొనసాగించు</string>
+
+    <!-- Recent NCD Readings -->
+    <string name="recent_ncd_readings">ఇటీవలి NCD రీడింగ్‌లు</string>
+    <string name="bp">BP</string>
+    <string name="hb">HB</string>
+    <string name="rbs">RBS</string>
+    <string name="mm_hg">(mm/Hg)</string>
+    <string name="gm_dl">(gm/dL)</string>
+    <string name="mg_dl">(mg/dL)</string>
+
+    <!-- Guardian/Contact Information -->
+    <string name="guardian_name_non_required">సంరక్షకుడి పేరు</string>
+    <string name="enter_guardian_name">సంరక్షకుడి పేరు నమోదు చేయండి</string>
+    <string name="guardian_type_non_required">సంరక్షకుడి రకం</string>
+    <string name="select_guardian_type">సంరక్షకుడి రకాన్ని ఎంచుకోండి</string>
+    <string name="contact_type_non_required">సంప్రదింపు రకం</string>
+    <string name="emergency_contact_number_non_required">అత్యవసర సంప్రదింపు నంబర్</string>
+    <string name="emergency_contact_name_non_required">అత్యవసర సంప్రదింపు పేరు</string>
+    <string name="enter_emergency_contact_name">అత్యవసర సంప్రదింపు పేరును నమోదు చేయండి</string>
+    <string name="phone_number_and_emergency_number_can_not_be_the_same">ఫోన్ నంబర్ మరియు అత్యవసర నంబర్ ఒకేలా ఉండకూడదు</string>
+    <string name="address_to_other_info">చిరునామా నుండి ఇతర సమాచారం</string>
+    <string name="personal_to_address_info">వ్యక్తిగత నుండి చిరునామా సమాచారం</string>
+    <string name="emergency_contact_number">అత్యవసర నంబర్</string>
+    <string name="hint_drop_down_guardian_type">సంరక్షకుడి రకాన్ని ఎంచుకోండి</string>
+    <string name="hint_drop_down_contact_type">సంప్రదింపు రకాన్ని ఎంచుకోండి</string>
+    <string name="hint_drop_down_economic">ఆర్థిక వర్గాన్ని ఎంచుకోండి</string>
+    <string name="hint_drop_down_education">విద్యను ఎంచుకోండి</string>
+    <string name="hint_drop_down_social_category">సామాజిక వర్గాన్ని ఎంచుకోండి</string>
+    <string name="hint_drop_down_country">దేశాన్ని ఎంచుకోండి</string>
+    <string name="hint_drop_down_state">రాష్ట్రాన్ని ఎంచుకోండి</string>
+    <string name="hint_drop_down_district">జిల్లాను ఎంచుకోండి</string>
+
+    <!-- Miscellaneous -->
+    <string name="severity_of_case">కేసు తీవ్రత</string>
+    <string name="failed_to_load_the_page">పేజీని లోడ్ చేయడం విఫలమైంది</string>
 
 </resources>

@@ -133,26 +133,27 @@ private fun getMedicalHistory(
     medicationForDiabetes: String,
     healthWorkerForDiabetes: String,
     reasonForNoDiabetesMedication: String
-    ): String = Gson().toJson(
+): String = Gson().toJson(
     listOf(
-      MedicalHistory(
-                bp = bpCheck.storeHyphenIfEmpty(),
-        diabetes = diabetesCheck.storeHyphenIfEmpty(),
-        arthritis = arthritisCheck.storeHyphenIfEmpty(),
-        anemia = anemiaCheck.storeHyphenIfEmpty(),
-        anySurgeries = surgeryCheck.storeHyphenIfEmpty(),
-        reasonForSurgery = reasonForSurgery.storeHyphenIfEmpty(),
-        medicationForAnemia = medicationForAnemia.storeHyphenIfEmpty(),
-        healthWorkerForAnemia = healthWorkerForAnemia.storeHyphenIfEmpty(),
-        reasonForNoAnemiaMedication = reasonForNoAnemiaMedication.storeHyphenIfEmpty(),
-        medicationForBP = medicationForBP.storeHyphenIfEmpty(),
-        healthWorkerForBP = healthWorkerForBP.storeHyphenIfEmpty(),
-        reasonForNoHypertensionMedication = reasonForNoBPMedication.storeHyphenIfEmpty(),
-        hypertension = bpCheck.storeHyphenIfEmpty(),
-        medicationForDiabetes = medicationForDiabetes.storeHyphenIfEmpty(),
-        healthWorkerForDiabetes = healthWorkerForDiabetes.storeHyphenIfEmpty(),
-        reasonForNoDiabetesMedication = reasonForNoDiabetesMedication.storeHyphenIfEmpty()
-    )
+        MedicalHistory(
+            bp = bpCheck.storeHyphenIfEmpty(),
+            diabetes = diabetesCheck.storeHyphenIfEmpty(),
+            arthritis = arthritisCheck.storeHyphenIfEmpty(),
+            //anemia = anemiaCheck.storeHyphenIfEmpty(),
+            anaemia = anemiaCheck.storeHyphenIfEmpty(),
+            anySurgeries = surgeryCheck.storeHyphenIfEmpty(),
+            reasonForSurgery = reasonForSurgery.storeHyphenIfEmpty(),
+            medicationForAnemia = medicationForAnemia.storeHyphenIfEmpty(),
+            healthWorkerForAnemia = healthWorkerForAnemia.storeHyphenIfEmpty(),
+            reasonForNoAnemiaMedication = reasonForNoAnemiaMedication.storeHyphenIfEmpty(),
+            medicationForBP = medicationForBP.storeHyphenIfEmpty(),
+            healthWorkerForBP = healthWorkerForBP.storeHyphenIfEmpty(),
+            reasonForNoHypertensionMedication = reasonForNoBPMedication.storeHyphenIfEmpty(),
+            hypertension = bpCheck.storeHyphenIfEmpty(),
+            medicationForDiabetes = medicationForDiabetes.storeHyphenIfEmpty(),
+            healthWorkerForDiabetes = healthWorkerForDiabetes.storeHyphenIfEmpty(),
+            reasonForNoDiabetesMedication = reasonForNoDiabetesMedication.storeHyphenIfEmpty()
+        )
     )
 )
 

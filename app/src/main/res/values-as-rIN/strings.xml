@@ -1097,7 +1097,10 @@
     <string name="todays_tab_achievement">দৈনিক</string>
     <string name="date_range">তাৰিখ সীমা</string>
     <string name="my_achievements">মোৰ সফলতা</string>
-
+    <string name="this_visit_is_incomplete">এই ভ্ৰমণটো অসম্পূৰ্ণ!</string>
+    <string name="discard">বাতিল কৰক</string>
+    <string name="confirm_discard_changes_content">আপুনি নিশ্চিত নেকি এই ভ্ৰমণটোৰ সকলো বিৱৰণ বাতিল কৰিব?</string>
+    <string name="confirm_discard_changes_content_on_sync">আপোনাৰ ভ্ৰমণ সৃষ্টি প্ৰক্ৰিয়া অসম্পূৰ্ণ। আপুনি প্ৰক্ৰিয়াটো সম্পূৰ্ণ কৰিব পাৰে অথবা বাতিল কৰিব পাৰে।</string>
 
     <string name="please_move_to_next_question">Please move to next question</string>
     <string name="please_confirm_your_details">Please Confirm Your Details</string>
@@ -1212,4 +1215,12 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">বিগত %1$sটা NCD ভিজিট চাবলৈ ক্লিক কৰক</string>
+    <string name="msg_ekal_thank_you_ncd_report">একল টেলিমেডিচিন সেৱা ব্যৱহাৰ কৰাৰ বাবে ধন্যবাদ!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD সম্পৰ্কীয় প্ৰশ্নসমূহ অসম্পূৰ্ণ!</string>
+    <string name="ncd_questions_are_incomplete_body">আপুনি নিশ্চিতভাৱে উত্তৰসমূহ বাতিল কৰিব বিচাৰে নেকি?</string>
+    <string name="ncd_baseline_dialog_content">NCD ভিজিট আৰু ডাক্তৰৰ ভিজিট ৱৰ্কফ্ল ৰ বাবে কেইটামান বেছলাইন প্ৰশ্নৰ উত্তৰ দিয়া বাধ্যতামূলক</string>
+    <string name="data_saved">তথ্য সংৰক্ষণ কৰা হৈছে</string>
+    <string name="ncd_baseline">NCD-বেছলাইন</string>
+
 </resources>

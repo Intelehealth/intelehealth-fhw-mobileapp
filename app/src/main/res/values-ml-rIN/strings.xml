@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ഇന്റലിഹെൽത്ത്</string>
+    <string name="app_name" translatable="false">ഇന്റലിഹെൽത്ത്</string>
     <string name="tag_optional" translatable="false">" ഓപ്ഷണൽ"</string>
     <string name="generic_ok">ഓക്കെ</string>
     <string name="generic_cancel">ക്യാൻസൽ</string>
@@ -456,6 +456,13 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">കഴിഞ്ഞ %1$s NCD സന്ദർശനങ്ങൾ കാണാൻ ക്ലിക്ക് ചെയ്യുക</string>
+
+    <string name="this_visit_is_incomplete">ഈ സന്ദർശനം അപൂർണ്ണമാണ്!</string>
+    <string name="discard">ഉപേക്ഷിക്കുക</string>
+    <string name="confirm_discard_changes_content">ഈ സന്ദർശനത്തിലെ എല്ലാ വിശദാംശങ്ങളും ഉപേക്ഷിക്കാൻ നിങ്ങൾക്ക് തീർച്ചയാണോ?</string>
+    <string name="confirm_discard_changes_content_on_sync">നിങ്ങളുടെ സന്ദർശനം സൃഷ്ടിക്കുന്ന പ്രക്രിയ അപൂർണ്ണമാണ്. അത് പൂർത്തിയാക്കുകയോ ഉപേക്ഷിക്കുകയോ ചെയ്യാം.</string>
+
+    <string name="specialty_general_physician">ജനറൽ ഫിസിഷ്യൻ</string>
 
 </resources>
 

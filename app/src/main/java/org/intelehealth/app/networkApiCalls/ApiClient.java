@@ -29,7 +29,7 @@ public class ApiClient {
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
-                    .baseUrl(apiBaseUrl)
+                    .baseUrl(normalizeBaseUrl(apiBaseUrl))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 
 
@@ -38,7 +38,7 @@ public class ApiClient {
         builder = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .baseUrl(apiBaseUrl);
+                .baseUrl(normalizeBaseUrl(apiBaseUrl));
 
     }
 
@@ -54,4 +54,17 @@ public class ApiClient {
         return retrofit.create(serviceClass);
     }
 
+
+    /**
+     * added this to handle crashes in case of invalid url
+     * AEAT-2097
+     * @param url
+     * @return
+     */
+    private static String normalizeBaseUrl(String url) {
+        if (url != null && !url.startsWith("http://") && !url.startsWith("https://")) {
+            return "https://" + url;
+        }
+        return url;
+    }
 }

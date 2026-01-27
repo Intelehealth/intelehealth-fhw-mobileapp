@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">इंटेलहेल्थ</string>
+    <string name="app_name" translatable="false">इंटेलहेल्थ</string>
 
     //Generic
     <string name="tag_optional">पर्यायी</string>
@@ -1044,6 +1044,10 @@
     <string name="todays_tab_achievement">दैनिक</string>
     <string name="date_range">दिनांक श्रेणी</string>
     <string name="my_achievements">माझी कामगिरी</string>
+    <string name="this_visit_is_incomplete">ही भेट अपूर्ण आहे!</string>
+    <string name="discard">वगळा</string>
+    <string name="confirm_discard_changes_content">आपण खात्री आहात का की या भेटीचे सर्व तपशील वगळू इच्छिता?</string>
+    <string name="confirm_discard_changes_content_on_sync">आपली भेट तयार करण्याची प्रक्रिया अपूर्ण आहे. आपण ती पूर्ण करू शकता किंवा वगळू शकता.</string>
 
 
     <plurals name="open_no_of_visit">
@@ -1152,4 +1156,14 @@
     <string name="rbs_icon">Blood sugar icon</string>
     <string name="collapse_expand">Collapse or expand</string>
     <string name="click_to_view_past_ncd_visits">मागील %1$s NCD भेटी पाहण्यासाठी क्लिक करा</string>
+    <string name="msg_ekal_thank_you_ncd_report">एकल टेलिमेडिसिन सेवा वापरल्याबद्दल धन्यवाद!</string>
+
+    <string name="ncd_questions_are_incomplete_title">NCD संबंधित प्रश्न अपूर्ण आहेत!</string>
+    <string name="ncd_questions_are_incomplete_body">आपण खरोखरच उत्तरे रद्द करू इच्छिता का?</string>
+    <string name="ncd_baseline_dialog_content">NCD भेट आणि डॉक्टर भेट प्रक्रियेसाठी काही बेसलाइन प्रश्नांची उत्तरे देणे अनिवार्य आहे</string>
+    <string name="data_saved">डेटा जतन केला आहे</string>
+    <string name="ncd_baseline">NCD-बेसलाइन</string>
+
+    <string name="specialty_general_physician">सामान्य चिकित्सक</string>
+
 </resources>

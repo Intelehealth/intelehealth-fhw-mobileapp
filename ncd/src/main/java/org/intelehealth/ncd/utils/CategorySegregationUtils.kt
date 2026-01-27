@@ -23,14 +23,20 @@ import org.intelehealth.ncd.room.dao.PatientDao
 import org.intelehealth.ncd.room.dao.VisitDao
 
 class CategorySegregationUtils(private val resources: Resources) {
-    private  val TAG = "CategorySegregationUtil"
+    private val TAG = "CategorySegregationUtil"
     fun segregateAndFetchData(
         patientList: MutableList<Patient>,
         patientAttributeList: MutableList<PatientAttributes>,
         category: String
     ): MutableList<Patient> {
-        Log.d("HypertensionDebug", "Full Patient Attribute List:\n${patientAttributeList.joinToString("\n")}")
-        Log.d("HypertensionDebug", "Full Patient Attribute List size:\n${patientAttributeList.size}")
+        Log.d(
+            "HypertensionDebug",
+            "Full Patient Attribute List:\n${patientAttributeList.joinToString("\n")}"
+        )
+        Log.d(
+            "HypertensionDebug",
+            "Full Patient Attribute List size:\n${patientAttributeList.size}"
+        )
 
         when (category) {
 
@@ -42,7 +48,9 @@ class CategorySegregationUtils(private val resources: Resources) {
                 if (attribute.value == null) {
                     return@forEach
                 }
-                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(attribute.value) || isThereAFollowUpWithAnemiaPHC(attribute.value))
+                if (isHistoryOfAnemiaPresent(attribute.value) && (isCurrentlyTakingAnemiaMedication(
+                        attribute.value
+                    ) || isThereAFollowUpWithAnemiaPHC(attribute.value))
                 ) {
                     removePatientsFromList(patientList, attribute)
                 }
@@ -55,14 +63,14 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
 
 
-          /*  Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfAnemiaPresent(attribute.value) || !isCurrentlyTakingAnemiaMedication(
-                        attribute.value
-                    ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)
-                ) {
-                    removePatientsFromList(patientList, attribute)
-                }
-            }*/
+            /*  Constants.ANEMIA_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+                  if (!isHistoryOfAnemiaPresent(attribute.value) || !isCurrentlyTakingAnemiaMedication(
+                          attribute.value
+                      ) && !isThereAFollowUpWithAnemiaPHC(attribute.value)
+                  ) {
+                      removePatientsFromList(patientList, attribute)
+                  }
+              }*/
 
             Constants.DIABETES_SCREENING -> patientAttributeList.forEach { attribute ->
                 if (isHistoryOfDiabetesPresent(attribute.value) && (isCurrentlyTakingDiabetesMedication(
@@ -83,15 +91,15 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
 
-           /* Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
-                if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
-                        attribute.value
-                    ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
-                ) {
-                    removePatientsFromList(patientList, attribute)
+            /* Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
+                 if (isHistoryOfHypertensionPresent(attribute.value) && (isCurrentlyTakingHypertensionMedication(
+                         attribute.value
+                     ) || isThereAFollowUpWithHypertensionPHC(attribute.value))
+                 ) {
+                     removePatientsFromList(patientList, attribute)
 
-                }
-            }*/
+                 }
+             }*/
             Constants.HYPERTENSION_SCREENING -> patientAttributeList.forEach { attribute ->
                 //1.  History of hypertension - no  ||  2. History of hypertension - yes and currently taking medication  - no -but logic is of remove the entry from list
                 val hasHypertensionHistory = isHistoryOfHypertensionPresent(attribute.value)
@@ -113,7 +121,7 @@ class CategorySegregationUtils(private val resources: Resources) {
                 val currentlyOnMedication = isCurrentlyTakingHypertensionMedication(attribute.value)
 
                 // Inclusion criteria flags
-                val includePatient =  hasHypertensionHistory && currentlyOnMedication
+                val includePatient = hasHypertensionHistory && currentlyOnMedication
 
 
                 // Remove if patient does not meet inclusion
@@ -122,14 +130,14 @@ class CategorySegregationUtils(private val resources: Resources) {
                 }
             }
 
-         /*   Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
-                if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
-                        attribute.value
-                    ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
-                ) {
-                    removePatientsFromList(patientList, attribute)
-                }
-            }*/
+            /*   Constants.HYPERTENSION_FOLLOW_UP -> patientAttributeList.forEach { attribute ->
+                   if (!isHistoryOfHypertensionPresent(attribute.value) || !isCurrentlyTakingHypertensionMedication(
+                           attribute.value
+                       ) && !isThereAFollowUpWithHypertensionPHC(attribute.value)
+                   ) {
+                       removePatientsFromList(patientList, attribute)
+                   }
+               }*/
         }
         return patientList
     }
@@ -215,7 +223,10 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].anemia == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            // medicalHistoryList[0].anemia == resources.getString(R.string.medical_history_yes)
+            //medicalHistoryList[0].anemia.equals("Yes", ignoreCase = true)
+            medicalHistoryList[0].anaemia.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -227,7 +238,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].medicationForAnemia == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].medicationForAnemia == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].medicationForAnemia.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -239,7 +252,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].healthWorkerForAnemia == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].healthWorkerForAnemia == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].healthWorkerForAnemia.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -251,10 +266,13 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].hypertension == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].hypertension == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].hypertension.equals("Yes", ignoreCase = true)
         }
     }
 
+    //[{"anemia":"Yes","anySurgeries":"No","arthritis":"No","bp":"Yes","diabetes":"Yes","healthWorkerForAnemia":"No","healthWorkerForBP":"Yes","healthWorkerForDiabetes":"Yes","hypertension":"Yes","medicationForAnemia":"Yes","medicationForBP":"Yes","medicationForDiabetes":"Yes","reasonForNoAnemiaMedication":"-","reasonForNoDiabetesMedication":"-","reasonForNoHypertensionMedication":"-","reasonForSurgery":"-"}]
     private fun isCurrentlyTakingHypertensionMedication(medicalHistoryJson: String?): Boolean {
         if (medicalHistoryJson.isNullOrEmpty()) {
             return false
@@ -263,7 +281,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].medicationForBP == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].medicationForBP == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].medicationForBP.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -275,7 +295,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].healthWorkerForBP == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].healthWorkerForBP == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].healthWorkerForBP.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -287,7 +309,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].diabetes == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].diabetes == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].diabetes.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -299,7 +323,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].medicationForDiabetes == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].medicationForDiabetes == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].medicationForDiabetes.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -311,7 +337,9 @@ class CategorySegregationUtils(private val resources: Resources) {
         return if (medicalHistoryList.isEmpty()) {
             false
         } else {
-            medicalHistoryList[0].healthWorkerForDiabetes == resources.getString(R.string.medical_history_yes)
+            // all values are in english in database but in app its in local language comparing with string resource
+            //medicalHistoryList[0].healthWorkerForDiabetes == resources.getString(R.string.medical_history_yes)
+            medicalHistoryList[0].healthWorkerForDiabetes.equals("Yes", ignoreCase = true)
         }
     }
 
@@ -349,9 +377,11 @@ class CategorySegregationUtils(private val resources: Resources) {
                 jsonElement.isJsonArray -> {
                     gson.fromJson(jsonElement, object : TypeToken<List<MedicalHistory>>() {}.type)
                 }
+
                 jsonElement.isJsonObject -> {
                     listOf(gson.fromJson(jsonElement, MedicalHistory::class.java))
                 }
+
                 else -> emptyList()
             }
         } catch (e: Exception) {
@@ -360,7 +390,7 @@ class CategorySegregationUtils(private val resources: Resources) {
         }
     }
 
-     fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
+    fun getEligibleMMsForPatients(patientVisitDetailsList: List<PatientVisitDetails>): Map<String, Any> {
         val mmCategories = listOf(
             Constants.HYPERTENSION_SCREENING,
             Constants.HYPERTENSION_FOLLOW_UP,
@@ -370,12 +400,16 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
         val eligibleMms = mutableListOf<String>()
         val patientId = patientVisitDetailsList.firstOrNull()?.patientId ?: ""
-         Log.d(TAG, "kk getEligibleMMsForPatients: patientVisitDetailsList : ${patientVisitDetailsList}")
+        Log.d(
+            TAG,
+            "kk getEligibleMMsForPatients: patientVisitDetailsList : ${patientVisitDetailsList}"
+        )
 
-         Log.d(TAG, "kk getEligibleMMsForPatients: patientId : "+patientId)
+        Log.d(TAG, "kk getEligibleMMsForPatients: patientId : " + patientId)
         for (category in mmCategories) {
-            val eligiblePatients = segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
-            Log.d(TAG, "kk getEligibleMMsForPatients: eligiblePatients : "+eligiblePatients)
+            val eligiblePatients =
+                segregateAndFetchPatientVisitDetails(patientVisitDetailsList, category)
+            Log.d(TAG, "kk getEligibleMMsForPatients: eligiblePatients : " + eligiblePatients)
 
             if (eligiblePatients.isNotEmpty()) {
                 eligibleMms.add(category)
@@ -387,7 +421,10 @@ class CategorySegregationUtils(private val resources: Resources) {
         )
     }
 
-     private suspend fun checkForAllEligibleProtocols(patientUuid: String, context: Context): Map<String, Any> {
+    private suspend fun checkForAllEligibleProtocols(
+        patientUuid: String,
+        context: Context
+    ): Map<String, Any> {
         val database = CategoryDatabase.getInstance(context)
 
         val patientDao: PatientDao = database.patientDao()
@@ -404,26 +441,37 @@ class CategorySegregationUtils(private val resources: Resources) {
             visitNoteEncounterUuid = Constants.ENCOUNTER_VISIT_COMPLETE,
             patientUuid
         )
-         return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
+        return utils.getEligibleMMsForPatients(patientVisitDetailsList = result)
     }
 
     fun segregateAndFetchPatientVisitDetails(
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
-        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : "+Gson().toJson(patientVisitDetailsList))
-        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : "+category)
+        Log.d(
+            TAG,
+            "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : " + Gson().toJson(
+                patientVisitDetailsList
+            )
+        )
+        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : " + category)
         val gson = GsonBuilder().serializeNulls().create()
-        Log.d("testmulti", "newlist : " +gson.toJson(patientVisitDetailsList))
+        Log.d("testmulti", "newlist : " + gson.toJson(patientVisitDetailsList))
 
 
         patientVisitDetailsList.forEachIndexed { index, item ->
             val json = Gson().toJson(item)
-           // logLong(TAG, "testmulti Patient #$index : $json")
+            // logLong(TAG, "testmulti Patient #$index : $json")
         }
         val result = when (category) {
-            Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(patientVisitDetailsList)
-            Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(patientVisitDetailsList)
+            Constants.HYPERTENSION_SCREENING -> filterHypertensionScreeningPatients(
+                patientVisitDetailsList
+            )
+
+            Constants.HYPERTENSION_FOLLOW_UP -> filterHypertensionFollowUpPatients(
+                patientVisitDetailsList
+            )
+
             Constants.ANEMIA_SCREENING -> filterAnemiaScreeningPatients(patientVisitDetailsList)
             Constants.ANEMIA_FOLLOW_UP -> filterAnemiaFollowUpPatients(patientVisitDetailsList)
             Constants.DIABETES_SCREENING -> filterDiabetesScreeningPatients(patientVisitDetailsList)
@@ -485,6 +533,7 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
         }
     }
+
     private fun filterAnemiaScreeningPatients(
         patientVisitDetailsList: List<PatientVisitDetails>
     ): List<PatientVisitDetails> {
@@ -506,6 +555,7 @@ class CategorySegregationUtils(private val resources: Resources) {
             meetsAgeCriteria && (!hasHistory || (hasHistory && !onMedication))
         }
     }
+
     // 🔥 Add this: Wrapper that Java can call
     fun checkForAllEligibleProtocolsBlocking(
         patientUuid: String,
@@ -513,6 +563,7 @@ class CategorySegregationUtils(private val resources: Resources) {
     ): Map<String, Any> = runBlocking {
         checkForAllEligibleProtocols(patientUuid, context)
     }
+
     private fun filterAnemiaFollowUpPatients(
         patientVisitDetailsList: List<PatientVisitDetails>
     ): List<PatientVisitDetails> {
@@ -541,12 +592,17 @@ class CategorySegregationUtils(private val resources: Resources) {
             }
         }
     }
+
     private fun filterDiabetesScreeningPatients(
         patientVisitDetailsList: List<PatientVisitDetails>
     ): List<PatientVisitDetails> {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
-            age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING
+            val hasPreviousVisit = detail.isDiabetesFollowupGiven
+            Log.d(TAG, "filterDiabetesScreeningPatients: compalint: " + detail.chiefComplaintData)
+            Log.d(TAG, "filterDiabetesScreeningPatients: hasPreviousVisit: " + hasPreviousVisit)
+
+            age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING && hasPreviousVisit != true
         }
     }
 }

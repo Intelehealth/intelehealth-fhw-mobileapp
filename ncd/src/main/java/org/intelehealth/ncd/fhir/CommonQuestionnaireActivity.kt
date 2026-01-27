@@ -29,6 +29,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.commitNow
 import androidx.lifecycle.lifecycleScope
 import ca.uhn.fhir.context.FhirContext
@@ -52,6 +55,7 @@ import org.intelehealth.ncd.R
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+
 //import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 //import androidx.activity.OnBackPressedCallback
 
@@ -103,7 +107,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var appLang: String? = "en"
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
@@ -117,6 +120,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         })
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+        setupSystemBar(toolbar)
+
         val questionnaireTitlesResources = listOf(
             //"Abdominal distention",
             getString(R.string.questionnaire_title_hypertension_screening),
@@ -200,6 +205,31 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             startQuestionnaireMonitoring()
     }
 
+
+    private fun setupSystemBar(toolbar: Toolbar) {
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = false
+
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById<Toolbar>(R.id.root_lay)
+        ) { view: View?, insets: WindowInsetsCompat? ->
+            val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            view!!.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            toolbar.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                24
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
+    }
+
     private fun hideKeyboard() {
         val view: View? = currentFocus
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -208,12 +238,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
     }
 
-  /*  @SuppressLint("MissingSuperCall")
-    @Deprecated("Deprecated in Java")
-    override fun onBackPressed() {
-        // Do nothing → disables back button
-        hideKeyboard()
-    }*/
+    /*  @SuppressLint("MissingSuperCall")
+      @Deprecated("Deprecated in Java")
+      override fun onBackPressed() {
+          // Do nothing → disables back button
+          hideKeyboard()
+      }*/
 
     private fun loadQuestionnaireFragment(
         questionnaireResponse: Any?,
@@ -883,7 +913,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-    private val FIVE_MINUTES_MILLIS: Long = 5 * 1000
+    private val FIVE_MINUTES_MILLIS: Long = 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 

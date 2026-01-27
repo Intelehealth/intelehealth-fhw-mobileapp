@@ -55,7 +55,7 @@ class ParserUtils {
             // Pattern to match Hb format: "hb_measurement - Hemoglobin(Hb) Measurement - 17.0"
             // This pattern looks for decimal numbers after "Hemoglobin" or "Hb" measurement
             val pattern = Pattern.compile(
-                "(?:hb_measurement|Hemoglobin|Hb).*?Measurement\\s*-\\s*([0-9]+\\.?[0-9]*)",
+                "(?:hb_measurement|Hemoglobin|Hb)(?:\\s*\\([^)]*\\))?\\s+Measurement\\s*-\\s*([0-9]+\\.?[0-9]*)",
                 Pattern.CASE_INSENSITIVE
             )
             val matcher = pattern.matcher(text)
@@ -111,7 +111,7 @@ class ParserUtils {
                 RegexOption.IGNORE_CASE
             )
             val match = regex.find(data.trim())
-            if(match!=null){
+            if (match != null) {
                 match.let {
                     val medicine = PrescribedMedicineModel()
                     medicine.medicineName = it.groupValues[1].trim()
@@ -123,7 +123,7 @@ class ParserUtils {
 
                     return medicine
                 }
-            }else{
+            } else {
                 return data
             }
         }

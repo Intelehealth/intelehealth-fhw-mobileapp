@@ -7,7 +7,7 @@ app:cardElevation="6dp">
 
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="wrap_content" android:padding="@dimen/margin_24"
     android:orientation="vertical">
 
     <ImageView

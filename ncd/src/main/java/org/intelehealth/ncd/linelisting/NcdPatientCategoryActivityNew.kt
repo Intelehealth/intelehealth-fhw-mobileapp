@@ -7,6 +7,10 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.category.pager.CategoryPagerAdapter
@@ -26,14 +30,40 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityNcdPatientCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        setupSystemBar()
 
         setupBackPress()
         setupViewPager()
         setupSearchListener()
     }
 
+    private fun setupSystemBar() {
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = false
+
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            binding.rootLay
+        ) { view: View?, insets: WindowInsetsCompat? ->
+            val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+            view!!.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            binding.toolbarRelative.setPadding(
+                systemBars.left,
+                systemBars.top,
+                systemBars.right,
+                0
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+
+    }
+
     private fun setupBackPress() {
-        onBackPressedDispatcher.addCallback(this,
+        onBackPressedDispatcher.addCallback(
+            this,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     finish()
@@ -46,11 +76,26 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
     private fun setupViewPager() {
 
         val fragmentList = listOf(
-            ProtocolScreenFragment.newInstance(Constants.ANEMIA_SCREENING, age = Constants.ANEMIA_EXCLUSION_AGE),
-            ProtocolScreenFragment.newInstance(Constants.ANEMIA_FOLLOW_UP, age = Constants.ANEMIA_EXCLUSION_AGE),
-            ProtocolScreenFragment.newInstance(Constants.DIABETES_SCREENING, age = Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING),
-            ProtocolScreenFragment.newInstance(Constants.HYPERTENSION_SCREENING, age =  Constants.HYPERTENSION_EXCLUSION_AGE),
-            ProtocolScreenFragment.newInstance(Constants.HYPERTENSION_FOLLOW_UP, age =  Constants.HYPERTENSION_EXCLUSION_AGE),
+            ProtocolScreenFragment.newInstance(
+                Constants.ANEMIA_SCREENING,
+                age = Constants.ANEMIA_EXCLUSION_AGE
+            ),
+            ProtocolScreenFragment.newInstance(
+                Constants.ANEMIA_FOLLOW_UP,
+                age = Constants.ANEMIA_EXCLUSION_AGE
+            ),
+            ProtocolScreenFragment.newInstance(
+                Constants.DIABETES_SCREENING,
+                age = Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING
+            ),
+            ProtocolScreenFragment.newInstance(
+                Constants.HYPERTENSION_SCREENING,
+                age = Constants.HYPERTENSION_EXCLUSION_AGE
+            ),
+            ProtocolScreenFragment.newInstance(
+                Constants.HYPERTENSION_FOLLOW_UP,
+                age = Constants.HYPERTENSION_EXCLUSION_AGE
+            ),
             GeneralFragment()
         )
 

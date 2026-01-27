@@ -10,6 +10,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.ui.baseline_survey.factory.BaselineSurveyViewModelFactory
 import org.intelehealth.app.ui.baseline_survey.fragments.BaselineMedicalFragmentNEW
+import org.intelehealth.app.utilities.DialogUtils
 
 class BaselineLinelistingQuestionsActivity : AppCompatActivity() {
     private lateinit var patientUUID: String
@@ -50,12 +51,14 @@ class BaselineLinelistingQuestionsActivity : AppCompatActivity() {
         val tvBack: ImageView = toolbar.findViewById(R.id.iv_back_arrow_common)
         tvTitle.text = getString(R.string.ncd_baseline)
         tvBack.setOnClickListener {
-            val intent = Intent(this@BaselineLinelistingQuestionsActivity, PatientDetailActivity2::class.java)
+         /*   val intent = Intent(this@BaselineLinelistingQuestionsActivity, PatientDetailActivity2::class.java)
             intent.putExtra("SKIP_DIALOG", true);
             intent.putExtra("patientUuid", patientUuid);
             startActivity(intent)
-            finish()
-        }    }
+            finish()*/
+            showBaselineMissingQuestionsDialog()
+        }
+    }
 
     private fun fetchPatientDetails(id: String) {
         baselineSurveyViewModel.loadBaselineData(id).observe(this) {
@@ -77,7 +80,23 @@ class BaselineLinelistingQuestionsActivity : AppCompatActivity() {
     }
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        super.onBackPressed()
-        navigateToPatientDetail(patientUUID)
+        showBaselineMissingQuestionsDialog()
     }
+    private fun showBaselineMissingQuestionsDialog() {
+        val dialogUtils = DialogUtils()
+        dialogUtils.showCommonDialogNonCancelable(
+            this,
+            R.drawable.baseline_do_not_disturb_alt_24,
+            getString(R.string.ncd_questions_are_incomplete_title),
+            getString(R.string.ncd_questions_are_incomplete_body),
+            false,
+            getString(R.string.confirm_continue_changes_button_dialog),
+            getString(R.string.confirm_discard_changes_button_dialog)
+        ) { action ->
+            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                navigateToPatientDetail(patientUUID)
+            }
+        }
+    }
+
 }

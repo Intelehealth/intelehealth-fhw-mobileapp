@@ -1,7 +1,8 @@
 package org.intelehealth.ncd.model
 
 data class MedicalHistory(
-    val anemia: String,
+   // val anemia: String,
+    val anaemia: String,
     val anySurgeries: String,
     val arthritis: String,
     val diabetes: String,

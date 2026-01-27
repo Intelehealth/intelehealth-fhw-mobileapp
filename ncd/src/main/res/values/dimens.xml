@@ -73,5 +73,7 @@
     <dimen name="txtsize_patdetail_16sp">16sp</dimen>
     <dimen name="txtsize_patdetail_14sp">14sp</dimen>
     <dimen name="txtsize_20sp">20sp</dimen>
+    <dimen name="txtsize_16sp">16sp</dimen>
+    <dimen name="txtsize_14sp">14sp</dimen>
     <dimen name="internet_dialog_width">310dp</dimen>
 </resources>

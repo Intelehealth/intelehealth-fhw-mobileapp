@@ -72,11 +72,12 @@ class ShowInfoModuleDialog(
                     if (imageView != null) {
                         showPage(0, imageView)
                     }
+                    dialog?.show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 (context as Activity).runOnUiThread {
-                    Toast.makeText(context, "Failed to load PDF", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.failed_to_load_the_page), Toast.LENGTH_SHORT).show()
                 }
             }
         }.start()
@@ -184,12 +185,12 @@ class ShowInfoModuleDialog(
 */
 
 
-        dialog?.show()
+       // dialog?.show()
     }
 
     fun dismiss() {
-        pdfRenderer.close()
-        parcelFileDescriptor.close()
+        if (::pdfRenderer.isInitialized) pdfRenderer.close()
+        if (::parcelFileDescriptor.isInitialized) parcelFileDescriptor.close()
         dialog?.dismiss()
     }
     private fun showPage(index: Int, imageView: ZoomableImageView) {

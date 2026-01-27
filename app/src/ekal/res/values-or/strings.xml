@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">ଏକଲ ଆରୋଗ୍ୟ</string>
+    <string name="app_name">ଏକଲ ଆରୋଗ୍ୟ</string>
     <string name="intro_title_1">ଆମେ କିଏ?</string>
     <string name="intro_tagline_1">ଏକଲ ଆରୋଗ୍ୟ ହେଉଛି ଏକ ନୂତନ ଟେଲିମେଡିସିନ ପ୍ଲାଟଫର୍ମ ଯାହା ଦୂରସ୍ଥ ଅଞ୍ଚଳରେ ସ୍ୱାସ୍ଥ୍ୟ ସେବା ଲଭ୍ୟତାର ଅନ୍ତରକୁ ପୁରଣ କରିବା ପାଇଁ ଡିଜାଇନ କରାଯାଇଛି, ଏକ ଭର୍ଚ୍ଚୁଆଲ୍ ଡକ୍ତର ସହିତ ଫ୍ରଣ୍ଟଲାଇନ୍ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମଚାରୀ ଏବଂ ରୋଗୀଙ୍କୁ ସଂଯୋଗ କରି ଉଚ୍ଚ ଗୁଣବତ୍ତା ସ୍ୱାସ୍ଥ୍ୟ ସେବା ଦେଇପାରିବ।</string>
     <string name="intro_title_2">ରୋଗୀଙ୍କ ଦର୍ଶନ ନିଅନ୍ତୁ</string>
@@ -444,10 +444,13 @@
     <string name="category_anemia">ଅନିମିଆ</string>
     <string name="category_hypertension">ହାଇପାରଟେନ୍ସନ୍</string>
     <string name="category_diabetes">ଡାଏବେଟିସ୍</string>
+<!--
+   we have this already in ncd module hence commented
 
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_button_dialog">Discard</string>
     <string name="confirm_continue_changes_button_dialog">Continue</string>
+-->
 
 </resources>
