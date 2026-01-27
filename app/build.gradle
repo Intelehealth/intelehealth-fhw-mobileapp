@@ -24,13 +24,13 @@ android {
         applicationId "org.intelehealth.app"
         minSdk 26
         targetSdk 36
-        versionCode 88
+        versionCode 89
         versionName '4.2'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
-        archivesBaseName = "Ekal- " + versionName + "- Regression-1-" + getDateTime()
+        archivesBaseName = "Ekal-" + versionName + "-" + getDateTime()
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
