@@ -968,7 +968,9 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
 
             if (complaint.getValue().contains("►<b> Associated symptoms</b>:  <br/>")) {
                 valueArray = value.split("►<b> Associated symptoms</b>: {2}<br/>");
-            } else {
+            } else if(complaint.getValue().contains("►<b>Associated symptoms</b>: <br/>")){
+                valueArray = value.split("►<b>Associated symptoms</b>: <br/>");
+            }else {
                 valueArray = value.split("►<b>сопутствующие симптомы</b>: <br/>");
             }
 
@@ -1074,6 +1076,10 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
             String[] valueArray;
             if (value.contains("General exams: <br>")) {
                 valueArray = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
+            } else if(value.contains("<b>General exams: </b><br/>")){
+                valueArray = value.split("<b>General exams: </b><br/>");
+            } else if(value.contains("<b>Общие экзамены: </b><br/>")){
+                valueArray = value.split("<b>Общие экзамены: </b><br/>");
             } else {
                 valueArray = value.replace("Общие экзамены: <br>", "<b>Общие экзамены: </b><br/>").split("<b>Общие экзамены: </b><br/>");
             }
