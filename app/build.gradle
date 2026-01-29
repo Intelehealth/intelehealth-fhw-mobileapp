@@ -14,12 +14,13 @@ static def getDateTime() {
 
 android {
     namespace 'org.intelehealth.unicef'
-    compileSdk 34
+    compileSdk 36
+    ndkVersion "27.3.13750724"
 
     defaultConfig {
         applicationId 'org.intelehealth.unicef'
         minSdk 26
-        targetSdk 34
+        targetSdk 36
         versionCode 44
         versionName '5.2.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

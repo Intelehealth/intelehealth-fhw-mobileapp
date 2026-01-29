@@ -27,6 +27,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -101,6 +105,8 @@ public class SearchPatientActivity_New extends LocalConfigActivity {
         setContentView(R.layout.activity_search_patient_new);
         sessionManager = new SessionManager(this);
         super.setLocale(sessionManager.getAppLanguage());
+
+        setupStatusBar();
 
         mSearchEditText = findViewById(R.id.search_txt_enter);
         search_hint_text = findViewById(R.id.search_hint_text);
@@ -257,6 +263,22 @@ public class SearchPatientActivity_New extends LocalConfigActivity {
             }
         });
 
+    }
+
+    private void setupStatusBar() {
+
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+            findViewById(R.id.toolbar_relative).setPadding(systemBars.left,systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });
     }
 
     private void managePreviousSearchStorage(String text) {
