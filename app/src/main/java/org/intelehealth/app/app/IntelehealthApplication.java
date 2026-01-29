@@ -120,12 +120,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         UserSessionRepository userSessionRepository = UserSessionRepository.getInstance(sessionManager, new UserSessionDao(this));
         //ProcessLifecycleOwner.get().getLifecycle().addObserver(appUsageTracker);
         AppUsageTrackerNew appUsageTrackerNew = new AppUsageTrackerNew(this, sessionManager);
-        AppUsesStatisticsObserver appUsageTracker = new AppUsesStatisticsObserver(userSessionRepository,appUsageTrackerNew);
+        AppUsesStatisticsObserver appUsageTracker = new AppUsesStatisticsObserver(userSessionRepository, appUsageTrackerNew);
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(appUsageTracker);
         // keeping the base url in one singleton object for using in apprtc module
 
-    /*    configureCrashReporting();
+        configureCrashReporting();
        /* configureCrashReporting();
 
         RxJavaPlugins.setErrorHandler(throwable -> {

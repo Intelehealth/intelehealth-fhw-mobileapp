@@ -64,7 +64,8 @@ public class SyncDAO {
     String appLanguage;
 
     public static SyncProgress liveDataSync = new SyncProgress();
-
+    // ✅ Global progress state (VERY IMPORTANT)
+    private static int lastProgress = 0;
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -173,6 +174,8 @@ public class SyncDAO {
                 //Logger.logD(TAG, "Pull ENCOUNTER: " + responseDTO.getData().getEncounterDTO());
                 Logger.logD(TAG, "Pull sync ended");
                 sessionManager.setFirstTimeSyncExecute(false);
+                // FINAL completion signal
+                //setProgress(100);
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                         .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE));
@@ -189,7 +192,6 @@ public class SyncDAO {
 
     }
 
-    private int lastProgress = 0;
 
     public void updateProgressForPage(
             int pageNo,
@@ -201,10 +203,16 @@ public class SyncDAO {
                 ", totalCount=" + totalCount +
                 ", pageLimit=" + pageLimit +
                 ", pageCompletionPercent=" + pageCompletionPercent);
+        // 🔒 Stop once completed
+        if (lastProgress >= 100) return;
+
         int newProgress;
         // Case: single page
+        // ✅ Single-page sync
         if (totalCount <= pageLimit) {
             newProgress = (int) Math.round(pageCompletionPercent);
+            setProgress(newProgress);
+            return;
         }
         if (pageNo == -1 || totalCount <= 0 || pageLimit <= 0) {
             return;
@@ -222,20 +230,6 @@ public class SyncDAO {
                         (pageShare * completionRatio);
 
         newProgress = (int) Math.round(calculatedProgress);
-
-
-        //  NEVER allow progress to go backward
-        if (newProgress < lastProgress) {
-            Logger.logD(TAG,
-                    "Progress clamped: new=" + newProgress +
-                            ", last=" + lastProgress);
-            newProgress = lastProgress;
-        }
-
-        // Optional: cap at 99% until final completion
-        newProgress = Math.min(newProgress, 99);
-
-        lastProgress = newProgress;
         setProgress(newProgress);
 
         Logger.logD(TAG, "Progress set to=" + newProgress);
@@ -1033,9 +1027,15 @@ public class SyncDAO {
 
 
     public static void setProgress(int progress) {
+        progress = Math.min(Math.max(progress, lastProgress), 100);
+        lastProgress = progress;
         liveDataSync.updateProgress(progress);
     }
-
+    // call only before FIRST sync page
+    public static void resetProgress() {
+        lastProgress = 0;
+        liveDataSync.updateProgress(0);
+    }
     public static SyncProgress getSyncProgress_LiveData() {
         return liveDataSync;
     }
