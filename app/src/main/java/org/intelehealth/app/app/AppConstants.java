@@ -319,6 +319,7 @@ public class AppConstants {
     public static final String NCD_PROTOCOL_DIRECTORY = "engines/ncd";
     public static final String PROTOCOL_DIRECTORY = "engines";
     public static final String NCD_REPORT_BASE_URL = "https://afitraining.ekalarogya.org/intelehealth/index.html#/r/";
+    public static final String NCD_REPORT_BASE_URL_SUFFIX = "/intelehealth/index.html#/r/";
 
     public static final int ANEMIA_EXCLUSION_AGE = 11;
     public static final int DIABETES_EXCLUSION_AGE = 20;

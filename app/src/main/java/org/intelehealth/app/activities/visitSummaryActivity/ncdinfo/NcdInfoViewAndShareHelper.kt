@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants.NCD_REPORT_BASE_URL
+import org.intelehealth.app.app.AppConstants.NCD_REPORT_BASE_URL_SUFFIX
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.database.dao.VisitAttributeListDAO
@@ -23,6 +25,7 @@ import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.VisitAttributeDTO
 import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.CustomLog
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.exception.DAOException
 import java.io.UnsupportedEncodingException
@@ -44,7 +47,8 @@ class NcdInfoViewAndShareHelper(
         val patientsDAO = PatientsDAO()
         val patientWhatsappNo: String? = patientsDAO.getPatientAttributeByPatientUuid(
             patientUuid,
-            PatientAttributesDTO.Column.SELF_OR_FAMILY_WHATSAPP.value)
+            PatientAttributesDTO.Column.SELF_OR_FAMILY_WHATSAPP.value
+        )
 
         val alertDialogBuilder = MaterialAlertDialogBuilder(context)
         val inflater = LayoutInflater.from(context)
@@ -69,7 +73,7 @@ class NcdInfoViewAndShareHelper(
 
         shareBtn.setOnClickListener {
             val phoneNumber = editText.text.toString()
-            if (phoneNumber.isNotEmpty() && phoneNumber.length==10) {
+            if (phoneNumber.isNotEmpty() && phoneNumber.length == 10) {
                 if (!visitUuid.isNullOrEmpty()) {
                     val isInserted: Boolean =
                         visitAttributeListDAO.checkInfoShareInsertedOrNot(visitUuid)
@@ -87,23 +91,34 @@ class NcdInfoViewAndShareHelper(
                         }
                     }
                 }
-                val whatsappMessage = generateWhatsappMessage(phoneNumber, infoModulesFileUrlsList, patientUuid)
+                val whatsappMessage =
+                    generateWhatsappMessage(phoneNumber, infoModulesFileUrlsList, patientUuid)
                 CustomLog.v("whatsappMessage", whatsappMessage)
                 context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(whatsappMessage)))
                 alertDialog.dismiss()
             } else {
-                Toast.makeText(context, context.getString(R.string.enter_whatsapp_number), Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.enter_whatsapp_number),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
 
-    fun viewNcdInfoModuleInfoNew(infoModulesFileUrlsList: List<HealthModuleItem>, binding: ActivityVisitSummaryNewBinding) {
+    fun viewNcdInfoModuleInfoNew(
+        infoModulesFileUrlsList: List<HealthModuleItem>,
+        binding: ActivityVisitSummaryNewBinding
+    ) {
         val linearLayoutManager = LinearLayoutManager(context)
-        binding.layoutVisitSummaryItems.layoutHealthInfoModule.rvInfoModules.layoutManager = linearLayoutManager
+        binding.layoutVisitSummaryItems.layoutHealthInfoModule.rvInfoModules.layoutManager =
+            linearLayoutManager
         val ncdHealthInfoAdapter = NcdHealthInfoAdapter(infoModulesFileUrlsList, context)
-        binding.layoutVisitSummaryItems.layoutHealthInfoModule.rvInfoModules.adapter = ncdHealthInfoAdapter
+        binding.layoutVisitSummaryItems.layoutHealthInfoModule.rvInfoModules.adapter =
+            ncdHealthInfoAdapter
 
     }
+
     private fun generateWhatsappMessage(
         phoneNumber: String,
         fileUrls: List<HealthModuleItem>,
@@ -111,7 +126,9 @@ class NcdInfoViewAndShareHelper(
     ): String {
         val ncdMessageTitle = context.getString(R.string.ncd_report)
         //val baseMessage = context.getString(R.string.msg_ekal_thank_you)
-        val ncdReportUrl = NCD_REPORT_BASE_URL + patientUuid
+        //val ncdReportUrl = NCD_REPORT_BASE_URL + patientUuid
+        val ncdReportUrl =
+            SessionManager(context).getServerUrl() + NCD_REPORT_BASE_URL_SUFFIX + patientUuid
         val baseMessage = if (fileUrls.isNotEmpty()) {
             context.getString(R.string.msg_ekal_thank_you)
         } else {
@@ -133,7 +150,7 @@ class NcdInfoViewAndShareHelper(
 
         Log.d("TAG", "generateWhatsappMessage: encodedMessage : $encodedMessage")
 
-        return "https://api.whatsapp.com/send?phone=$phoneNumber&text=$encodedMessage"
+        return "https://api.whatsapp.com/send?phone=91$phoneNumber&text=$encodedMessage"
     }
 
 }
