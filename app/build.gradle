@@ -14,14 +14,15 @@ static def getDateTime() {
 
 android {
     namespace 'org.intelehealth.unicef'
-    compileSdk 34
+    compileSdk 36
+    ndkVersion "27.3.13750724"
 
     defaultConfig {
         applicationId 'org.intelehealth.unicef'
         minSdk 26
-        targetSdk 34
-        versionCode 45
-        versionName '5.3'
+        targetSdk 36
+        versionCode 46
+        versionName '5.3.1'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //Change this to true to enable multidex support for Kitkat
         multiDexEnabled true

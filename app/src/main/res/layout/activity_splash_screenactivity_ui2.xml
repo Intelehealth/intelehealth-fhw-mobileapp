@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activities.chooseLanguageActivity.SplashScreenActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout

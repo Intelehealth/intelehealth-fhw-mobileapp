@@ -30,6 +30,7 @@
         android:minHeight="36dip"
         android:maxLength="1000"
         android:padding="16dip"
+        android:textIsSelectable="true"
         android:text="@string/dummy_text"
         android:textColor="@color/gray_7"
         android:textSize="13sp" />

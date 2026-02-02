@@ -1,6 +1,7 @@
 package org.intelehealth.klivekit.provider
 
 import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
 import io.livekit.android.AudioOptions
 import io.livekit.android.LiveKit
 import io.livekit.android.LiveKitOverrides
@@ -12,8 +13,15 @@ import io.livekit.android.room.participant.VideoTrackPublishDefaults
 import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.LocalAudioTrackOptions
 import io.livekit.android.room.track.LocalVideoTrackOptions
+import io.livekit.android.room.track.VideoCaptureParameter
+import io.livekit.android.room.track.VideoEncoding
+import io.livekit.android.room.track.VideoPreset
 import io.livekit.android.room.track.VideoPreset169
 import io.livekit.android.room.track.VideoPreset43
+import livekit.org.webrtc.DefaultVideoEncoderFactory
+import livekit.org.webrtc.EglBase
+import livekit.org.webrtc.HardwareVideoEncoderFactory
+import org.intelehealth.klivekit.utils.AudioType
 
 //import livekit.org.webrtc.EglBase
 //import livekit.org.webrtc.HardwareVideoEncoderFactory
@@ -26,7 +34,8 @@ import io.livekit.android.room.track.VideoPreset43
 object LiveKitProvider {
 
     fun createRoom(context: Context) = provideLiveKitRoom(
-        context = context, options = provideRoomOptions(
+        context = context,
+        options = provideRoomOptions(
             provideLocalAudioTrackOptions(),
             provideLocalVideoTrackOptions(),
             provideAudioPublishDefault(),
@@ -45,7 +54,7 @@ object LiveKitProvider {
     private fun provideLocalVideoTrackOptions() = LocalVideoTrackOptions(
         deviceId = "",
         position = CameraPosition.FRONT,
-        captureParams = VideoPreset169.H720.capture,
+        captureParams = VideoPreset43.H1080.capture,
     )
 
     private fun provideAudioPublishDefault() = AudioTrackPublishDefaults(
@@ -54,7 +63,7 @@ object LiveKitProvider {
     )
 
     private fun provideVideoPublishTrack() = VideoTrackPublishDefaults(
-        videoEncoding = VideoPreset169.H720.encoding,
+        videoEncoding = VideoPreset43.H480.encoding
 //        videoEncoding = VideoPreset169.VGA.encoding,
 //            videoCodec = VideoCodec.VP8.codecName
     )
@@ -75,16 +84,27 @@ object LiveKitProvider {
     private fun provideAudioSwitchHandler(context: Context) = AudioSwitchHandler(context)
 
     private fun provideLiveKitRoom(
-        context: Context, options: RoomOptions, audioSwitchHandler: AudioSwitchHandler
+        context: Context,
+        options: RoomOptions, audioSwitchHandler: AudioSwitchHandler
     ): Room = LiveKit.create(
         appContext = context, options = options, overrides = LiveKitOverrides(
             okHttpClient = RetrofitProvider.getOkHttpClient(),
             audioOptions = AudioOptions(
-                audioHandler = audioSwitchHandler, audioOutputType = io.livekit.android.AudioType.CallAudioType()
+                audioHandler = audioSwitchHandler,
             ),
+            //video call wasn't working properly for lower end device for the HardwareVideoEncoderFactory
+            //that's why commented
+
             /*videoEncoderFactory = HardwareVideoEncoderFactory(
-                           EglBase.create().eglBaseContext, true, true
-                       )*/
+                EglBase.create().eglBaseContext,
+                true,
+                true
+            )*/
+            /*videoEncoderFactory = DefaultVideoEncoderFactory(
+                EglBase.create().eglBaseContext,
+                  true,
+                true
+            )*/
         )
     )
 
