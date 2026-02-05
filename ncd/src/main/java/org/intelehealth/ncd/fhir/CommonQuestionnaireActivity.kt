@@ -43,6 +43,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -285,53 +286,58 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         // need to disable the sbp & dbp fields
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
-        supportFragmentManager.commitNow {
-            setReorderingAllowed(true)
-            fragmentBuilder = QuestionnaireFragment.builder()
-                .setQuestionnaire(latestQuestionnaire!!)
-                .setQuestionnaireLaunchContextMap(launchContextMap)
-                .showAsterisk(true)
-                .showRequiredText(false)
-                .setShowSubmitAnywayButton(false)
+        //supportFragmentManager.commitNow {
+        if (!supportFragmentManager.isStateSaved)
+            supportFragmentManager.commitNow {
+                setReorderingAllowed(true)
+                fragmentBuilder = QuestionnaireFragment.builder()
+                    .setQuestionnaire(latestQuestionnaire!!)
+                    .setQuestionnaireLaunchContextMap(launchContextMap)
+                    .showAsterisk(true)
+                    .showRequiredText(false)
+                    .setShowSubmitAnywayButton(false)
 
 
-            // If you want your questionnaire to start with some answers already filled,
-            // include a questionnaire response in your arguments bundle for your
-            //.setQuestionnaireResponse(questionnaireResponse)
-            //.setShowCancelButton(true)
-            if (questionnaireResponse != null)
-                fragmentBuilder!!.setQuestionnaireResponse(questionnaireResponse.toString())
+                // If you want your questionnaire to start with some answers already filled,
+                // include a questionnaire response in your arguments bundle for your
+                //.setQuestionnaireResponse(questionnaireResponse)
+                //.setShowCancelButton(true)
+                if (questionnaireResponse != null)
+                    fragmentBuilder!!.setQuestionnaireResponse(questionnaireResponse.toString())
 
-            questionnaireFragment = fragmentBuilder!!.build()
+                questionnaireFragment = fragmentBuilder!!.build()
 
-            replace(
-                R.id.fragment_container_view,
-                questionnaireFragment!!,
-                QUESTIONNAIRE_FRAGMENT_TAG
-            )
+                replace(
+                    R.id.fragment_container_view,
+                    questionnaireFragment!!,
+                    QUESTIONNAIRE_FRAGMENT_TAG
+                )
 
-            // commitNow already used earlier, so view should exist — but run in post to be safe
-            supportFragmentManager.executePendingTransactions()
+                // commitNow already used earlier, so view should exist — but run in post to be safe
+                supportFragmentManager.executePendingTransactions()
 
-            // Observe viewLifecycleOwnerLiveData so we run only after onCreateView/onViewCreated
-            questionnaireFragment!!.viewLifecycleOwnerLiveData.observe(this@CommonQuestionnaireActivity) { owner ->
-                if (owner != null) {
-                    // Now it's safe to use requireView()
-                    questionnaireFragment!!.requireView().post {
-                        rootView = questionnaireFragment!!.requireView()
-                        bottomActionController = QuestionnaireBottomActionController(rootView)
+                // Observe viewLifecycleOwnerLiveData so we run only after onCreateView/onViewCreated
+                questionnaireFragment!!.viewLifecycleOwnerLiveData.observe(this@CommonQuestionnaireActivity) { owner ->
+                    if (owner != null) {
+                        // Now it's safe to use requireView()
+                        //  questionnaireFragment!!.requireView().post {
+                        questionnaireFragment?.view?.post {
+                            val v = questionnaireFragment?.view ?: return@post
+                            rootView = v
+                            // rootView = questionnaireFragment!!.requireView()
+                            bottomActionController = QuestionnaireBottomActionController(rootView)
 
-                        //bottomActionController.setBottomActionsEnabled(false)
-                        bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
-                        //bottomActionController.attachAutoToggleForRequiredInputs()
-                        // hideNextButtonIn(root)
-                        if (isRecurring) updateUIComponents();
+                            //bottomActionController.setBottomActionsEnabled(false)
+                            bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
+                            //bottomActionController.attachAutoToggleForRequiredInputs()
+                            // hideNextButtonIn(root)
+                            if (isRecurring) updateUIComponents();
+                        }
                     }
                 }
+
+
             }
-
-
-        }
 
     }
 
@@ -657,11 +663,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
 
     private fun showHospitalPopup() {
-        AlertDialog.Builder(this)
-            .setTitle("Immediate Referral Needed")
-            .setMessage("Your blood pressure is critically high. Please go to the hospital immediately.")
-            .setPositiveButton("OK", null)
-            .show()
+        if (!isFinishing && !isDestroyed && hasWindowFocus())
+            AlertDialog.Builder(this)
+                .setTitle("Immediate Referral Needed")
+                .setMessage("Your blood pressure is critically high. Please go to the hospital immediately.")
+                .setPositiveButton("OK", null)
+                .show()
     }
 
     var lastResponseHash: Int? = null
@@ -672,8 +679,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     // working
 // "expression": "%resource.item.where(linkId='bp_measurement_page').item.where(linkId='sbp_dbp_measurement_1').item.where(linkId='sbp_m1').answer.value > 139"
     private fun startQuestionnaireMonitoring() {
-        lifecycleScope.launch {
-            while (isActive) {
+        monitorJob = lifecycleScope.launch {
+            while (isActive && !isFinishing) {
                 delay(1000) // Check every 5 second (adjust as needed)
                 // updateUIComponents()
                 Log.d("BP_MONITOR", "bpReadings = $bpReadings")
@@ -824,15 +831,16 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         if (!bpReadingsHelper[index]?.validationDialogShownOnce!!) {
                             bpReadingsHelper[index]?.validationDialogShownOnce = true
                             // show alert dialog new
-                            AlertDialog.Builder(this)
-                                .setTitle(getString(R.string.input_error_title))
-                                .setCancelable(false)
-                                .setMessage(getString(R.string.systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values))
-                                .setPositiveButton(getString(R.string.ok_btn_lbl)) { dialog, _ ->
-                                    dialog.dismiss()
+                            if (!isFinishing && !isDestroyed && hasWindowFocus())
+                                AlertDialog.Builder(this)
+                                    .setTitle(getString(R.string.input_error_title))
+                                    .setCancelable(false)
+                                    .setMessage(getString(R.string.systolic_bp_sbp_should_be_greater_than_diastolic_bp_dbp_please_correct_the_values))
+                                    .setPositiveButton(getString(R.string.ok_btn_lbl)) { dialog, _ ->
+                                        dialog.dismiss()
 
-                                }
-                                .show()
+                                    }
+                                    .show()
                         }
                     }
 
@@ -904,11 +912,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     private fun showBpDialogOnce() {
         if (!hasShownDialog) {
             hasShownDialog = true
-            AlertDialog.Builder(this)
-                .setTitle("BP Alert")
-                .setMessage("Abnormal BP detected. Refer to a doctor.")
-                .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
-                .show()
+            if (!isFinishing && !isDestroyed && hasWindowFocus())
+                AlertDialog.Builder(this)
+                    .setTitle("BP Alert")
+                    .setMessage("Abnormal BP detected. Refer to a doctor.")
+                    .setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+                    .show()
         }
     }
 
@@ -948,7 +957,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 // builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
 
                 val dialog = builder.create()
-                dialog.show()
+                if (!isFinishing && !isDestroyed && hasWindowFocus())
+                    dialog.show()
                 isAllowedForBottomActionEnable = false
                 bottomActionController?.setBottomActionsEnabledSmooth(isAllowedForBottomActionEnable)
                 /*if (foundIndexedValue == 0) {
@@ -1150,7 +1160,20 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             alertDialog.dismiss()
 
         })
-
-        alertDialog.show()
+        if (!isFinishing && !isDestroyed && hasWindowFocus())
+            alertDialog.show()
     }
+
+    private var monitorJob: Job? = null
+
+    override fun onStart() {
+        super.onStart()
+        if (isRecurring) startQuestionnaireMonitoring()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        monitorJob?.cancel()
+    }
+
 }

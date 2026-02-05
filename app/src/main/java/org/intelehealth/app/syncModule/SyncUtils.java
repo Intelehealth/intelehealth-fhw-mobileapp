@@ -22,8 +22,6 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
-import timber.log.Timber;
-
 public class SyncUtils {
 
 
@@ -35,6 +33,7 @@ public class SyncUtils {
      * @param fromActivity
      */
     public void initialSync(String fromActivity, Context context) {
+        SyncDAO.resetProgress();
         SyncDAO syncDAO = new SyncDAO();
         syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, 0);
         AppointmentSync.getAppointments(context);

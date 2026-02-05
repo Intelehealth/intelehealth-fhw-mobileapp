@@ -52,4 +52,5 @@ val NCD_PROTOCOL_ORDER = listOf(
     const val ENCOUNTER_ADULTINITIAL: String = "8d5b27bc-c2cc-11de-8d13-0010c6dffd0f" //adult initial encounter
     const val CURRENT_COMPLAINT: String = "3edb0e09-9135-481e-b8f0-07a26fa9a5ce" //current complaint
     const val NCD_HEALTH_INFO_MODULES: String = "https://afitraining.ekalarogya.org:3004/ncdinfo/"
+    const val NCD_HEALTH_INFO_MODULES_SUFFIX: String = ":3004/ncdinfo/"
 }

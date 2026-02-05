@@ -3,7 +3,10 @@ package org.intelehealth.app.activities.visitSummaryActivity.ncdinfo
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
+import org.intelehealth.app.app.AppConstants.NCD_REPORT_BASE_URL_SUFFIX
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.ncd.constants.Constants.NCD_HEALTH_INFO_MODULES
+import org.intelehealth.ncd.constants.Constants.NCD_HEALTH_INFO_MODULES_SUFFIX
 import java.util.regex.Pattern
 
 
@@ -15,11 +18,13 @@ class NcdInfoModuleFilesNameGenerator {
             .map { it.trim() }
             .filter { it.startsWith("<b>", ignoreCase = true) }
     }
+
     private fun extractChiefComplaint(text: String): String {
         val pattern = Pattern.compile("<b>(.*?)</b>", Pattern.CASE_INSENSITIVE)
         val matcher = pattern.matcher(text)
         return if (matcher.find()) matcher.group(1).trim() else ""
     }
+
     private fun extractInformationModules(text: String): List<String> {
         val pattern = Pattern.compile(
             "Information modules - (.*?)(<br/>|$)",
@@ -42,6 +47,7 @@ class NcdInfoModuleFilesNameGenerator {
         val name = chiefComplaint.lowercase()
         return name.contains("followup") || name.toLowerCase().contains("diabetes screening")
     }
+
     fun generateModulesNew(
         complaintDetails: String,
         languageCode: String,
@@ -66,14 +72,17 @@ class NcdInfoModuleFilesNameGenerator {
 
             modules.forEach { module ->
                 val moduleLower = module.lowercase().removeSuffix(".")
-                Log.d(TAG, "generateModulesNew: moduleLower : "+moduleLower)
+                Log.d(TAG, "generateModulesNew: moduleLower : " + moduleLower)
 
                 var normalizedModuleNameForUrl = moduleLower.replace("[\\s-]+".toRegex(), "_")
-                Log.d(TAG, "generateModulesNew:  normalizedModuleNameForUrl   : "+normalizedModuleNameForUrl)
-                if(normalizedModuleNameForUrl == "increase_intake_of_iron_folic_acid_and_protein_rich_foods")
+                Log.d(
+                    TAG,
+                    "generateModulesNew:  normalizedModuleNameForUrl   : " + normalizedModuleNameForUrl
+                )
+                if (normalizedModuleNameForUrl == "increase_intake_of_iron_folic_acid_and_protein_rich_foods")
                     normalizedModuleNameForUrl = "increase_iron_folicacid_protein_intake"
 
-                if(normalizedModuleNameForUrl == "deworming_health_&_hygiene")
+                if (normalizedModuleNameForUrl == "deworming_health_&_hygiene")
                     normalizedModuleNameForUrl = "deworming_health_and_hygiene"
 
 
@@ -81,9 +90,11 @@ class NcdInfoModuleFilesNameGenerator {
 
                 val item = HealthModuleItem(
                     moduleName = module,
-                    url = "$NCD_HEALTH_INFO_MODULES$moduleFileName"
+                    //url = "$NCD_HEALTH_INFO_MODULES$moduleFileName"
+                    url = SessionManager(context).getServerUrl() + NCD_HEALTH_INFO_MODULES_SUFFIX + moduleFileName
                 )
-                item.displayName = HealthModuleTitleMapper.getDisplayName(context, module, chiefComplaint)
+                item.displayName =
+                    HealthModuleTitleMapper.getDisplayName(context, module, chiefComplaint)
 
                 if (moduleLower in commonModules) {
                     // store exercise separately to add later at the bottom

@@ -4,8 +4,11 @@
     <application>
         <activity
             android:name=".fhir.CommonQuestionnaireActivity"
-            android:theme="@style/Theme.Androidfhir"
-            android:exported="true" />
+            android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|uiMode"
+            android:exported="true"
+            android:keepScreenOn="true"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.Androidfhir" />
         <activity
             android:name=".search.activity.NcdSearchActivity"
             android:exported="false"
