@@ -1,7 +1,9 @@
 package org.intelehealth.app.activities.setupActivity;
 
 import android.content.Context;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,20 +31,23 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
-        View v;
-        if (position == 0) {
-            TextView tv = new TextView(getContext());
-            tv.setHeight(0);
-            tv.setVisibility(View.GONE);
-            v = tv;
+        View v = super.getDropDownView(position, convertView, parent);
+
+        TextView textView = v.findViewById(R.id.text1);
+
+        if (textView != null) {
+            textView.setContentDescription("location_dropdown_item_" + position);
         }
-        else {
-            v = super.getDropDownView(position, null, parent);
+
+        if (position == 0) {
+            v.setVisibility(View.GONE);
+            v.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
         }
 
         parent.setVerticalScrollBarEnabled(false);
         return v;
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -55,8 +60,7 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
         View view = super.getView(position, convertView, parent);
         if (view != null) {
 //            if(getItem(position).equalsIgnoreCase("Telemedicine Clinic 1") /*|| getItem(position).equalsIgnoreCase("Telemedicine Clinic 2")*/)
-            if(position==0)
-            {
+            if (position == 0) {
                 View divider = view.findViewById(R.id.spinner_divider);
                 divider.setVisibility(View.GONE);
             }
