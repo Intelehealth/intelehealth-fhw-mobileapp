@@ -85,6 +85,7 @@
                 android:textSize="@dimen/common_hint_text_size" />
 
             <ImageView
+                android:id="@+id/iv_forgot_password"
                 android:layout_width="@dimen/image_intelehealth_login_width"
                 android:layout_height="@dimen/image_intelehealth_login_height"
                 android:layout_below="@+id/tv_please_continue"
@@ -163,7 +164,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="@null"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
 
 
                 </RelativeLayout>

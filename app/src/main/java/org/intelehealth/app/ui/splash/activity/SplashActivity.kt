@@ -119,7 +119,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun handleButtonClickListener() {
-        binding.btnNextToIntro.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             adapter.getList().find { it.selected }?.let {
                 sessionManager.appLanguage = it.code
                 setupLanguage()
@@ -385,16 +385,16 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
                 override fun onAnimationRepeat(animation: Animation) {}
             })
-            binding.layoutChild1.startAnimation(translateAnim)
+            binding.clLayoutChild1.startAnimation(translateAnim)
         }, 500)
     }
 
     private fun showChooseLanguageUI(show: Boolean) {
         val transition: Transition = Slide(Gravity.BOTTOM)
         transition.duration = 2000
-        transition.addTarget(R.id.layout_panel)
+        transition.addTarget(R.id.cl_choose_language)
         TransitionManager.beginDelayedTransition(binding.layoutParent, transition)
-        binding.layoutPanel.visibility = if (show) View.VISIBLE else View.GONE
+        binding.clChooseLanguage.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     companion object {
