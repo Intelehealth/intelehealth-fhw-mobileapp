@@ -33,6 +33,7 @@
             app:menu="@menu/menu_home_footer" />
 
         <include
+            android:id="@+id/layout_home"
             layout="@layout/layout_new_app_bar_ui2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -69,6 +70,7 @@
         app:theme="@style/NavigationDrawerItemStyle">
 
         <RelativeLayout
+            android:id="@+id/rl_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom">
@@ -82,6 +84,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/iv_reset_app_icon"
                     android:layout_width="@dimen/reset_app_icon_width"
                     android:layout_height="@dimen/reset_app_icon_height"
                     android:layout_gravity="center"
@@ -89,6 +92,7 @@
                     android:src="@drawable/ui2_ic_no_internet" />
 
                 <TextView
+                    android:id="@+id/tv_reset_app_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"

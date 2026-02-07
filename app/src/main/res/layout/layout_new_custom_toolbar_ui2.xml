@@ -48,6 +48,7 @@
         android:textSize="@dimen/common_label_text_size" />
 
     <LinearLayout
+        android:id="@+id/ll_host"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
