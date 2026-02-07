@@ -102,6 +102,7 @@
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_fingerprint_lock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/tv_pass_margin_start"
@@ -116,6 +117,7 @@
                         app:tint="?colorPrimary" />
 
                     <TextView
+                        android:id="@+id/tv_fingerprint_lock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/tv_change_pass_margin_start"
@@ -138,6 +140,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_username_margin_top"
@@ -191,6 +194,7 @@
 
 
                 <TextView
+                    android:id="@+id/tv_first_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -263,6 +267,7 @@
                     tools:visibility="visible">
 
                     <TextView
+                        android:id="@+id/tv_middle_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -317,6 +322,7 @@
                 -->
 
                 <TextView
+                    android:id="@+id/tv_last_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -382,6 +388,7 @@
                     tools:visibility="visible" />
 
                 <TextView
+                    android:id="@+id/tv_gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -445,6 +452,7 @@
                 </RadioGroup>
 
                 <LinearLayout
+                    android:id="@+id/ll_dob"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -452,6 +460,7 @@
                     android:weightSum="1">
 
                     <TextView
+                        android:id="@+id/tv_dob"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.6"
@@ -462,6 +471,7 @@
                         android:textSize="@dimen/common_label_text_size" />
 
                     <TextView
+                        android:id="@+id/tv_age"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dob_age_margin_start"
@@ -532,6 +542,7 @@
                     tools:visibility="visible" />
 
                 <TextView
+                    android:id="@+id/tv_phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
@@ -620,6 +631,7 @@
                     android:visibility="gone" />
 
                 <TextView
+                    android:id="@+id/tv_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/profile_tv_label_margin_top"
