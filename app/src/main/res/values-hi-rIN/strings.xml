@@ -1079,7 +1079,7 @@
     <string name="node_input_range_gtr_error">%1$s, %2$s से कम नहीं हो सकता</string>
     <string name="node_input_range_less_error">%1$s, %2$s से अधिक नहीं हो सकता</string>
     <string name="hemoglobin_error">हीमोग्लोबिन %1$s और %2$s के बीच होना चाहिए</string>
-    <string name="visit_reason_txt">भेंट का कारण</string>
+    <string name="visit_reason_txt">विज़िट का कारण</string>
 
     <string name="screening_questionnaire_txt">स्क्रीनिंग प्रश्नावली</string>
 

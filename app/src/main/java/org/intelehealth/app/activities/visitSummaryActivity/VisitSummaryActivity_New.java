@@ -31,7 +31,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -530,7 +529,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        sessionManager = new SessionManager(this);
+        language = sessionManager.getAppLanguage();
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_visit_summary_new);
         context = VisitSummaryActivity_New.this;
         infoModulesList = new ArrayList<>();
@@ -572,7 +572,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             setupSpecialization();
             checkIfVisitIsEnded();
 
-            language = sessionManager.getAppLanguage();
+
             viewAndShareHealthInfoModule();
         }
     }
@@ -2329,7 +2329,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         speciality_spinner.setSelection(index);
         speciality_spinner.setEnabled(false);
         if (speciality_selected == null || speciality_selected.isEmpty()) {
-            speciality_selected = getEnglishStringArray(this, R.array.speciality_values)[index] ;/*speciality_spinner.getSelectedItem().toString();*/
+            speciality_selected = getEnglishStringArray(this, R.array.speciality_values)[index];/*speciality_spinner.getSelectedItem().toString();*/
         }
 
         //speciality_selected = mIsNCDVisit ? "NCD Consultation": "General Physician";
@@ -3090,22 +3090,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                     String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
                     buildAndSavePrescription(fileName);
-                    try {
-                        File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
-                        Uri uri = FileProvider.getUriForFile(VisitSummaryActivity_New.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+                    //try {
+                    File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+                    Uri uri = FileProvider.getUriForFile(VisitSummaryActivity_New.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
 
-                        Intent intent = new Intent(Intent.ACTION_SEND);
-                        intent.setType("application/pdf");
-                        intent.putExtra(Intent.EXTRA_STREAM, uri);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setPackage("com.whatsapp");
-                        Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
-                        Log.d("DEBUG", "File exists: " + pdfFile.exists());
-                        Log.d("DEBUG", "File size: " + pdfFile.length());
-                        Log.d("DEBUG", "URI: " + uri.toString());
+                    Intent intent = new Intent(Intent.ACTION_SEND);
+                    intent.setType("application/pdf");
+                    intent.putExtra(Intent.EXTRA_STREAM, uri);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    //intent.setPackage("com.whatsapp");
+                    String pkg = StringUtils.getWhatsAppPackage(VisitSummaryActivity_New.this);
+
+                    Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
+                    Log.d("DEBUG", "File exists: " + pdfFile.exists());
+                    Log.d("DEBUG", "File size: " + pdfFile.length());
+                    Log.d("DEBUG", "URI: " + uri.toString());
+                    if (pkg != null) {
+                        intent.setPackage(pkg);
                         startActivity(intent);
                         updateLocalPrescriptionInformations(visitUUID);
-                    } catch (ActivityNotFoundException exception) {
+                    } else {
                         Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
                     }
 
@@ -3546,6 +3550,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     private boolean mInProgressUpload = false;
+
     private void visitUploadBlock() {
         //Toast.makeText(context, "Entered to visitUploadBlock!", Toast.LENGTH_SHORT).show();
         // Upload button disabled to prevent multiple insertion of data
@@ -3721,14 +3726,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (mIsNCDVisit)
                     endSevikaVisitBeforeUpload();
                 if (NetworkConnection.isOnline(getApplication())) {
-                    if(mInProgressUpload) {
+                    if (mInProgressUpload) {
                         return;
                     }
                     mInProgressUpload = true;
                     if (!isFinishing() && !isDestroyed()) {
                         runOnUiThread(() -> Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show());
                     }
-
 
 
                     final Handler handler = new Handler(Looper.getMainLooper());

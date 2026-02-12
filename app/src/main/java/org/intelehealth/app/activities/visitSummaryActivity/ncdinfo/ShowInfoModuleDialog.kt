@@ -10,8 +10,11 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import android.view.View
 import android.view.Window
 import android.widget.ImageButton
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
 import org.intelehealth.app.R
@@ -34,7 +37,7 @@ class ShowInfoModuleDialog(
     private var file: File? = null
 
     fun show() {
-        Log.d("TAGkz", "show: url : "+url)
+        Log.d("TAGkz", "show: url : " + url)
         dialog = Dialog(context)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.setContentView(R.layout.dialog_pdf_viewer)
@@ -50,9 +53,13 @@ class ShowInfoModuleDialog(
         val imageView = dialog?.findViewById<ZoomableImageView>(R.id.pdfImageView)
         val btnClose = dialog?.findViewById<ImageButton>(R.id.btnClose)
         val btnDownload = dialog?.findViewById<ImageButton>(R.id.btnDownload)
-
+        val loader = dialog?.findViewById<ProgressBar>(R.id.progressBar4)
+        val txtProgress = dialog?.findViewById<TextView>(R.id.downloading_helper_tv)
+        loader?.visibility = View.VISIBLE
+        txtProgress?.visibility = View.VISIBLE
+        dialog?.show()
         // Create a temporary file for this PDF
-        Thread {
+        /*Thread {
             try {
                 val tempFile = File.createTempFile("pdf_temp_", ".pdf", context.cacheDir)
                 file = tempFile // store reference for download button
@@ -72,12 +79,82 @@ class ShowInfoModuleDialog(
                     if (imageView != null) {
                         showPage(0, imageView)
                     }
-                    dialog?.show()
+                    loader?.visibility = View.GONE
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
                 (context as Activity).runOnUiThread {
                     Toast.makeText(context, context.getString(R.string.failed_to_load_the_page), Toast.LENGTH_SHORT).show()
+                    dismiss()
+                }
+            }
+        }.start()
+*/
+        Thread {
+            try {
+
+                val connection = URL(url).openConnection()
+                connection.connect()
+
+                val fileLength = connection.contentLength
+
+                val input = connection.getInputStream()
+                val tempFile = File.createTempFile("pdf_temp_", ".pdf", context.cacheDir)
+                file = tempFile
+
+                val output = FileOutputStream(tempFile)
+
+                val buffer = ByteArray(4096)
+                var total: Long = 0
+                var count: Int
+
+                (context as Activity).runOnUiThread {
+                    loader?.apply {
+                        visibility = View.VISIBLE
+                        isIndeterminate = false
+                        progress = 0
+                        max = 100
+                    }
+                }
+
+                while (input.read(buffer).also { count = it } != -1) {
+                    total += count
+                    output.write(buffer, 0, count)
+
+                    if (fileLength > 0) {
+                        val progress = (total * 100 / fileLength).toInt()
+
+                        (context as Activity).runOnUiThread {
+                            loader?.progress = progress
+                        }
+                    }
+                }
+
+                output.flush()
+                output.close()
+                input.close()
+
+                // Render PDF
+                (context as Activity).runOnUiThread {
+                    parcelFileDescriptor =
+                        ParcelFileDescriptor.open(tempFile, ParcelFileDescriptor.MODE_READ_ONLY)
+                    pdfRenderer = PdfRenderer(parcelFileDescriptor)
+
+                    imageView?.let { showPage(0, it) }
+
+                    loader?.visibility = View.GONE
+                    txtProgress?.visibility = View.GONE
+                }
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                (context as Activity).runOnUiThread {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.failed_to_load_the_page),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    dismiss()
                 }
             }
         }.start()
@@ -100,14 +177,30 @@ class ShowInfoModuleDialog(
                         // Open connection to the URL
                         val connection = URL(url).openConnection()
                         connection.connect()
-
+                        val fileLength = connection.contentLength
                         val input = connection.getInputStream()
                         val output = FileOutputStream(outFile)
 
                         val buffer = ByteArray(4096)
-                        var bytesRead: Int
+                        var total: Long = 0
+                        var count: Int
+
+                        /*var bytesRead: Int
                         while (input.read(buffer).also { bytesRead = it } != -1) {
                             output.write(buffer, 0, bytesRead)
+                        }*/
+                        while (input.read(buffer).also { count = it } != -1) {
+                            total += count
+                            output.write(buffer, 0, count)
+
+                            if (fileLength > 0) {
+                                val progress = (total * 100 / fileLength).toInt()
+
+                                (context as Activity).runOnUiThread {
+                                    loader?.progress = progress
+                                    //txtProgress?.text = "$progress%"
+                                }
+                            }
                         }
 
                         output.flush()
@@ -137,7 +230,7 @@ class ShowInfoModuleDialog(
                     }
                 }.start()
             }
-        }else{
+        } else {
             Toast.makeText(
                 context,
                 context.getString(R.string.could_not_connect_with_server),
@@ -147,45 +240,45 @@ class ShowInfoModuleDialog(
 
 
         // Download button
-/*
-        btnDownload?.setOnClickListener {
-            Thread {
-                try {
-                    val uri = url.toUri()
-                    val fileName2 = uri.lastPathSegment
-                    val fileName = uri.lastPathSegment ?: fileName2
-                    val downloads =
-                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-                    val outFile = fileName?.let { it1 -> File(downloads, it1) }
+        /*
+                btnDownload?.setOnClickListener {
+                    Thread {
+                        try {
+                            val uri = url.toUri()
+                            val fileName2 = uri.lastPathSegment
+                            val fileName = uri.lastPathSegment ?: fileName2
+                            val downloads =
+                                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                            val outFile = fileName?.let { it1 -> File(downloads, it1) }
 
-                    // Copy the file
-                    outFile?.let { it1 -> file?.copyTo(it1, overwrite = true) }
+                            // Copy the file
+                            outFile?.let { it1 -> file?.copyTo(it1, overwrite = true) }
 
-                    // Notify success on main thread
-                    (context as Activity).runOnUiThread {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.saved_to_downloads),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    // Notify failure on main thread
-                    (context as Activity).runOnUiThread {
-                        Toast.makeText(
-                            context,
-                            context.getString(R.string.failed_to_save_downloads),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                            // Notify success on main thread
+                            (context as Activity).runOnUiThread {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.saved_to_downloads),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            // Notify failure on main thread
+                            (context as Activity).runOnUiThread {
+                                Toast.makeText(
+                                    context,
+                                    context.getString(R.string.failed_to_save_downloads),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    }.start()
                 }
-            }.start()
-        }
-*/
+        */
 
 
-       // dialog?.show()
+        // dialog?.show()
     }
 
     fun dismiss() {
@@ -193,6 +286,7 @@ class ShowInfoModuleDialog(
         if (::parcelFileDescriptor.isInitialized) parcelFileDescriptor.close()
         dialog?.dismiss()
     }
+
     private fun showPage(index: Int, imageView: ZoomableImageView) {
         if (index < 0 || index >= pdfRenderer.pageCount) return
         val page = pdfRenderer.openPage(index)

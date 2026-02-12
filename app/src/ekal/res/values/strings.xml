@@ -345,7 +345,7 @@
     <string name="medical_to_other_info">Medical to Other info</string>
     <string name="general_to_medical_info">General to medical info</string>
     <string name="start_newadvice_confirmation_msg">Are you sure you want to start a Sevika advice?</string>
-    <string name="start_newadvice_confirmation_title">Begin Sevika advice</string>
+    <string name="start_newadvice_confirmation_title">Begin NCD advice</string>
     <string name="doctor_advice_alert_title">Begin Tele-consultation</string>
     <string name="doctor_advice_alert_msg">Do you want tele-consultation from Doctor?</string>
     <string name="vital_alert_continue_button">Yes, Continue</string>

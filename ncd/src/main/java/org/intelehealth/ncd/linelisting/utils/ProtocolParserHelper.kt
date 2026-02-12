@@ -253,7 +253,7 @@ object ProtocolParserHelper {
             ) break
         }
 
-        Log.d(TAG, "parsePatientHistoryNew: result: $result")
+        //Log.d(TAG, "parsePatientHistoryNew: result: $result")
         return result
     }
 }

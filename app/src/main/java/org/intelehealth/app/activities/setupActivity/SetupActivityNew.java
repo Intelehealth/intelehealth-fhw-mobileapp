@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
+import android.os.Looper;
 import android.os.StrictMode;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -22,14 +23,6 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.location_survey.LocationSurveyActivity;
-import org.intelehealth.app.activities.settingsActivity.Language_ProtocolsActivity;
-import org.intelehealth.app.models.locationAttributes.push.LocationAttributeRequest;
-import org.intelehealth.app.models.locationAttributes.push.LocationAttributes;
-import org.intelehealth.app.models.locationAttributes.push.LocationAttributesResponse;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.util.Patterns;
 import android.view.KeyEvent;
@@ -416,6 +409,10 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                 baseUrl = null;
                 displayCheckUrlToast();
             } else {
+                // url validator, because some time user entering any special character at end/ start of the url and it will cause issue in future when we are using this url to make any api call, so added the regex validation here
+                // wait when user is continuously entering the url and when user stop for some time then only validate the url, wait for sometime
+                validateWithDelay(val);
+
                 updateListeners(etServer, tw, val);
                 baseUrl = val;
                 isUrlValid = true;
@@ -425,6 +422,45 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 //                mHandler.removeCallbacksAndMessages(null);
 //                mHandler.postDelayed(userStoppedTyping, 1500);
         }
+    }
+
+    private Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable validationRunnable;
+
+    private void validateWithDelay(String val) {
+
+        if (validationRunnable != null) {
+            handler.removeCallbacks(validationRunnable);
+        }
+
+        validationRunnable = () -> validateUrl(val);
+        handler.postDelayed(validationRunnable, 800); // wait 800ms
+    }
+
+    private void validateUrl(String val) {
+
+        val = val.trim();
+        if (!Patterns.DOMAIN_NAME.matcher(val).matches()) {
+            showInvalid();
+        } else {
+            // Valid URL
+            serverErrorTextView.setVisibility(View.GONE);
+            isUrlValid = true;
+            baseUrl = val;
+
+        }
+
+    }
+
+    private void showInvalid() {
+        serverErrorTextView.setVisibility(View.VISIBLE);
+        serverErrorTextView.setText(getString(R.string.url_invalid));
+        isUrlValid = false;
+        baseUrl = null;
+        // reset the location, username & password
+//        autotvLocations.setText("");
+//        etUsername.setText("");
+//        etPassword.setText("");
     }
 
     public void updateListeners(TextInputEditText tiet, TextWatcher tw, String val) {
@@ -586,11 +622,11 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = "https://" + urlString.concat(":3030/auth/login");
-        Log.d(TAG, "getJWTToken: finalURL : "+finalURL);
+        Log.d(TAG, "getJWTToken: finalURL : " + finalURL);
 
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
-        Log.d(TAG, "getJWTToken: authBody1 : "+authBody);
-        Log.d(TAG, "getJWTToken: authBody2 : "+new Gson().toJson(authBody));
+        Log.d(TAG, "getJWTToken: authBody1 : " + authBody);
+        Log.d(TAG, "getJWTToken: authBody2 : " + new Gson().toJson(authBody));
 
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
@@ -611,7 +647,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                             showErrorDialog();
                             return;
                         }
-                        Log.d(TAG, "onNext: authJWTResponse  : "+new Gson().toJson(authJWTResponse));
+                        Log.d(TAG, "onNext: authJWTResponse  : " + new Gson().toJson(authJWTResponse));
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
                         TestSetup(urlString, username, password, admin_password);

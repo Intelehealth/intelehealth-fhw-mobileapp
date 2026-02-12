@@ -15,6 +15,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.text.InputFilter;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -4552,6 +4553,7 @@ public final class StringUtils {
 
         return regionalChiefComplaintData;
     }
+
     /***
      * It will help in making code readable and reduce boiler-plate code.
      * @param context Activity context.
@@ -4928,6 +4930,25 @@ public final class StringUtils {
 
         Logger.logV("StringUtils", "second_filter: " + value);  // 16.
         return value;
+    }
+
+    public static String getWhatsAppPackage(Context context) {
+
+        PackageManager pm = context.getPackageManager();
+
+        try {
+            pm.getPackageInfo("com.whatsapp", 0);
+            return "com.whatsapp";
+        } catch (Exception ignored) {
+        }
+
+        try {
+            pm.getPackageInfo("com.whatsapp.w4b", 0);
+            return "com.whatsapp.w4b";
+        } catch (Exception ignored) {
+        }
+
+        return null;
     }
 
 }

@@ -54,6 +54,7 @@ class NcdInfoViewAndShareHelper(
         val inflater = LayoutInflater.from(context)
         val convertView = inflater.inflate(R.layout.layout_dialog_share_info_module, null)
         val shareBtn = convertView.findViewById<Button>(R.id.btn_share_info)
+        val cancelBtn = convertView.findViewById<Button>(R.id.btn_share_info_cancel)
         val editText = convertView.findViewById<EditText>(R.id.et_mobileno_info)
         val tvTitle = convertView.findViewById<TextView>(R.id.tv_message_info)
         alertDialogBuilder.setView(convertView)
@@ -70,7 +71,9 @@ class NcdInfoViewAndShareHelper(
         val width = context.resources.getDimensionPixelSize(R.dimen.internet_dialog_width)
         alertDialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
         alertDialog.show()
-
+        cancelBtn.setOnClickListener {
+            alertDialog.dismiss()
+        }
         shareBtn.setOnClickListener {
             val phoneNumber = editText.text.toString()
             if (phoneNumber.isNotEmpty() && phoneNumber.length == 10) {

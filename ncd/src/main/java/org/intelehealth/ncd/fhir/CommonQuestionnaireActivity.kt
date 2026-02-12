@@ -3,9 +3,11 @@ package org.intelehealth.ncd.fhir
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.os.LocaleList
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
@@ -56,6 +58,7 @@ import org.intelehealth.ncd.R
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 //import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 //import androidx.activity.OnBackPressedCallback
@@ -108,6 +111,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var appLang: String? = "en"
 
 
+    // change the locale of the activity
+//    override onC
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
@@ -138,6 +144,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         patientDOB = intent.getStringExtra("patient_dob")
         patientGender = intent.getStringExtra("patient_gender")
         appLang = intent.getStringExtra("appLang")
+        Log.d("FHIR", "Language appLang: $appLang")
         //supportActionBar?.title = questionnaireTitle
         supportActionBar?.title =
             questionnaireTitlesResources[questionnaireTitles.indexOf(questionnaireTitle)]
@@ -1175,5 +1182,30 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         super.onStop()
         monitorJob?.cancel()
     }
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(setLocale(newBase))
+    }
 
+    fun setLocale(context: Context): Context {
+        val pref = context.getSharedPreferences("Intelehealth", Context.MODE_PRIVATE)
+        appLang = pref.getString("CURRENT_LANG", "en") ?: "en"
+        // log the appLang
+        Log.d("FHIR", "Language Setting locale with appLang: $appLang")
+        //Log.d("FHIR", "Language Setting locale with appLang: ${intent.getStringExtra("appLang")}")
+        //val appLanguage: String = sessionManager1.getAppLanguage()
+        val res = context.getResources()
+        val conf = res.getConfiguration()
+        val locale = Locale(appLang)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.getDisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.locale = locale
+        }
+        res.updateConfiguration(conf, dm)
+        return context
+    }
 }

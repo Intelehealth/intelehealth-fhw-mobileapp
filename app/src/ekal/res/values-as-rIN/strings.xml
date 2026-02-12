@@ -342,8 +342,8 @@
 
     <string name="medical_to_other_info">Medical to Other info</string>
     <string name="general_to_medical_info">General to medical info</string>
-    <string name="start_newadvice_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি এটা সেভিকা পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>
-    <string name="start_newadvice_confirmation_title">ছেভিকা নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
+    <string name="start_newadvice_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি এটা NCD পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>
+    <string name="start_newadvice_confirmation_title">NCD নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
     <string name="doctor_advice_alert_title">টেলি-পৰামৰ্শ আৰম্ভ কৰক</string>
     <string name="doctor_advice_alert_msg">ডাক্তৰৰ পৰা টেলি-কনছালেচন বিচাৰেনে??</string>
     <string name="vital_alert_continue_button">হয়, আগবাঢ়ি যাওক</string>

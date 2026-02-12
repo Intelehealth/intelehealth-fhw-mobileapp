@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +16,7 @@ import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
@@ -26,6 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import org.intelehealth.app.BuildConfig
@@ -44,6 +47,7 @@ import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
+import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
@@ -145,11 +149,43 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun handleFcmCall() {
-        // refresh the fcm token
-        getDeviceToken { token: String? ->
-            IntelehealthApplication.getInstance().refreshedFCMTokenID = token
+        // check network connectivity before making the call
+        if (NetworkConnection.isOnline(this)) {
+            // refresh the fcm token
+            getDeviceToken { token: String? ->
+                IntelehealthApplication.getInstance().refreshedFCMTokenID = token
+            }
+            getRemoteConfig(this) { checkForceUpdate(it) }
+        } else {
+            // show the snack bar for no internet connection
+
+            val snackbar = Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.could_not_connect_with_server),
+                Snackbar.LENGTH_LONG
+            )
+
+            // Customize colors
+            snackbar.setBackgroundTint(Color.RED)
+            snackbar.setTextColor(Color.WHITE)
+
+            // Center the text
+            val textView =
+                snackbar.view.findViewById<TextView>(
+                    com.google.android.material.R.id.snackbar_text
+                )
+            textView.gravity = Gravity.CENTER
+            textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            textView.isSingleLine = true
+            textView.textSize = 10f
+
+            snackbar.show()
+
+
+            // if no network then directly navigate to next screen as remote config call is only for force update and it should not block user to access app if there is no internet connection
+            checkPerm(true)
+
         }
-        getRemoteConfig(this) { checkForceUpdate(it) }
     }
 
     private fun checkForceUpdate(config: FirebaseRemoteConfig) {
@@ -319,7 +355,8 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun authenticateFingerprint() {
         val executor = ContextCompat.getMainExecutor(this)
-        BiometricPrompt(this, executor,
+        BiometricPrompt(
+            this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
