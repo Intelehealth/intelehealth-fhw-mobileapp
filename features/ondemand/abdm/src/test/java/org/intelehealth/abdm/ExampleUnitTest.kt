@@ -1,4 +1,4 @@
-package com.example.abdm
+package org.intelehealth.abdm
 
 import org.junit.Test
 
