@@ -6,4 +6,20 @@
     </style>
 
     <style name="Theme.AndroidMobileClient" parent="Base.Theme.AndroidMobileClient" />
+
+    <style name="style_subtitle">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/subtitle_color</item>
+    </style>
+
+    <style name="type_mobile_no">
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/subtitle_color</item>
+    </style>
+
+    <style name="style_error_message">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/error_red</item>
+    </style>
+
 </resources>

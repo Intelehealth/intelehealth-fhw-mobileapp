@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">abdm</string>
+    <string name="otp_verification">Otp Verification</string>
+    <string name="verify_your_aadhar_card_for_data_security_and_privacy">Verify your Aadhaar card for data security and privacy.</string>
+    <string name="we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number">We will send you OTP on Phone number linked to</string>
+    <string name="no_otp_received">Didn\'t receive OTP?</string>
+    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 30 mins.</string>
+    <string name="enter_mobile_no">Enter mobile number</string>
+    <string name="aadhar_otp_information">It is preferable to use your Aadhaar-linked mobile number. If you choose to use a different mobile number, it will need to be validated again and will be used for all communication related to ABHA.</string>
+    <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="send_otp">Send Otp</string>
+    <string name="enter_your_aadhar_card_number">Enter your Aadhar card number</string>
+    <string name="i_agree_terms_amp_conditions"><![CDATA[I Agree Terms & Conditions]]></string>
+
 </resources>

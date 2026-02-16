@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="back_arrow_margin_start">24dp</dimen>
+    <dimen name="back_arrow_width">24dp</dimen>
+    <dimen name="back_arrow_height">24dp</dimen>
+    <dimen name="title_margin_start">24dp</dimen>
+    <dimen name="setup_privacy_screen_info">18sp</dimen>
+
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+
+    <dimen name="tv_resend_otp_margin_start">5dp</dimen>
+    <dimen name="hamburger_margin_start">8dp</dimen>
+    <dimen name="common_button_padding_left">12dp</dimen>
+    <dimen name="common_button_padding_top">10dp</dimen>
+    <dimen name="common_button_padding_right">12dp</dimen>
+    <dimen name="common_button_padding_bottom">10dp</dimen>
+    <dimen name="corner_radius_8">8dp</dimen>
+
+    <dimen name="text_13">13sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_15">15sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+
+    <dimen name="margin_15">15dp</dimen>
+
+</resources>

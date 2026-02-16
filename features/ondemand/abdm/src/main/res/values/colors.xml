@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#2E1E91</color>
+    <color name="iconTintWhite">#FFFFFF</color>
+    <color name="red">#F44336</color>
+    <color name="hintColor">#B0ADBE</color>
+    <color name="liteRed">#F3665C</color>
+    <color name="textColorGray">#7F7B92</color>
+    <color name="colorPrimaryDark">#201560</color>
+    <color name="fadeColor">#20ce93d8</color>
+    <color name="textColorBlack">#1B163A</color>
+    <color name="subtitle_color">#575555</color>
+    <color name="error_red">#FF475D</color>
+    <color name="hint_color">#B0ADBE</color>
+    <color name="primary_text">#212121</color>
+
 </resources>
