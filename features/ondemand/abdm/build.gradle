@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace 'com.example.abdm'
+    namespace 'org.intelehealth.abdm'
     compileSdk 36
 
     defaultConfig {
@@ -24,12 +24,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = '17'
     }
 
     buildFeatures {
@@ -55,5 +55,15 @@ dependencies {
     api 'com.squareup.retrofit2:retrofit:2.9.0'
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
     api "com.squareup.okhttp3:logging-interceptor:4.10.0"
+
+    // RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.9'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
+
+    // RxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+
+    // Timber
+    implementation 'com.github.ajalt:timberkt:1.5.1'
 
 }

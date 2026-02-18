@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llParents"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/iconTintWhite"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_20">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/margin_20"
+        android:text="@string/_6_digit_otp_sent_on_your_registered_number_please_check_and_enter_the_otp" />
+
+    <com.mukesh.OtpView
+        android:id="@+id/otpBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:focusableInTouchMode="true"
+        android:gravity="center"
+        android:inputType="number"
+        android:itemBackground="@color/fadeColor"
+        android:paddingBottom="@dimen/margin_20"
+        android:textColor="@color/colorPrimaryDark"
+        app:OtpItemCount="6"
+        app:OtpLineColor="@color/colorPrimaryDark"
+        app:OtpViewType="line"
+        tools:text="123456" />
+
+    <RelativeLayout
+        android:id="@+id/rl_resendOTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/resendTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_otp_received"
+            android:textColor="@color/textColorGray"
+            android:textSize="@dimen/text_14" />
+
+        <TextView
+            android:id="@+id/resendBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/tv_resend_otp_margin_start"
+            android:layout_toEndOf="@+id/resendTxt"
+            android:text="@string/resend"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_14" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_resend_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/tv_resend_counter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/maximum_number_of_retries_exceeded_please_try_again_after_10_mins"
+            android:textColor="@color/liteRed"
+            android:textSize="@dimen/text_14" />
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/sendOtpBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_common_with_state"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:drawableTint="@color/iconTintWhite"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/verify" />
+
+</LinearLayout>

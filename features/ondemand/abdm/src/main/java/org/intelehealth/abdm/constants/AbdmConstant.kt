@@ -1,6 +1,6 @@
-package org.intelehealth.app.abdm.utils
+package org.intelehealth.abdm.constants
 
-object ABDMConstant{
+object AbdmConstant {
     const val SCOPE_AADHAAR = "aadhar"
     const val SCOPE_MOBILE = "mobile"
     const val SCOPE_INDEX = "index"
@@ -18,4 +18,7 @@ object ABDMConstant{
     const val BEARER = "Bearer "
 
     const val KYC_STATUS_PENDING = "PENDING"
+    const val INTENT_PATIENT_NAME_TAG: String = "patientName"
+    const val PAYLOAD = "payload"
+
 }

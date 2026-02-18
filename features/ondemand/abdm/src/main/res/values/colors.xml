@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#2E1E91</color>
+    <color name="colorAccent">#0FD197</color>
+    <color name="colorPrimaryLightCard">#1a2E1E91</color>
+    <color name="colorAccentLightCard">#1a0FD197</color>
     <color name="iconTintWhite">#FFFFFF</color>
     <color name="red">#F44336</color>
     <color name="hintColor">#B0ADBE</color>
@@ -13,5 +16,10 @@
     <color name="error_red">#FF475D</color>
     <color name="hint_color">#B0ADBE</color>
     <color name="primary_text">#212121</color>
+    <color name="colorSuccess">#36c762</color>
+    <color name="colorFailure">#FF475D</color>
+    <color name="medium_gray">#9E9E9E</color>
+    <color name="greyButton">#EFE8FF</color>
+    <color name="colorPrimaryDark1">#098E66</color>
 
 </resources>

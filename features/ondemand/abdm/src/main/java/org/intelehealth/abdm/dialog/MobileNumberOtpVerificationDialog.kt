@@ -1,4 +1,4 @@
-package org.intelehealth.app.abdm.dialog
+package org.intelehealth.abdm.dialog
 
 import android.app.Dialog
 import android.graphics.Paint
@@ -9,23 +9,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
-import org.intelehealth.app.R
-import org.intelehealth.app.abdm.model.AadharApiBody
-import org.intelehealth.app.abdm.model.EnrollNumberWithABDMRequest
-import org.intelehealth.app.abdm.model.OTPResponse
-import org.intelehealth.app.abdm.utils.ABDMConstant
-import org.intelehealth.app.app.AppConstants
-import org.intelehealth.app.databinding.DialogMobileNumberOtpVerificationBinding
-import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.app.utilities.SnackbarUtils
-import org.intelehealth.app.utilities.StringUtils
-import org.intelehealth.app.utilities.UrlModifiers
-import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog
+import org.intelehealth.abdm.R
+import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.databinding.DialogMobileNumberOtpVerificationBinding
+import org.intelehealth.abdm.model.AadharApiBody
+import org.intelehealth.abdm.model.OTPResponse
+import org.intelehealth.abdm.restapi.RetrofitProvider
+import org.intelehealth.abdm.utils.SnackBarUtils
+import org.intelehealth.abdm.model.EnrollNumberWithABDMRequest
+
 import retrofit2.Response
 
 
@@ -33,8 +29,7 @@ import retrofit2.Response
 class MobileNumberOtpVerificationDialog : DialogFragment() {
     private lateinit var binding: DialogMobileNumberOtpVerificationBinding
     private val cpd: CustomProgressDialog? = null
-    private var snackBarUtils: SnackbarUtils? = null
-    private var sessionManager: SessionManager? = null
+    private var snackBarUtils: SnackBarUtils? = null
     private var mobileNumber: String? = null
     private var accessToken: String? = null
     private var txnId: String? = null
@@ -43,44 +38,32 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     private var countDownTimer: CountDownTimer? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        snackBarUtils = SnackbarUtils()
-        sessionManager = SessionManager(context)
+        snackBarUtils = SnackBarUtils()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.dialog_mobile_number_otp_verification,
-            container,
-            false
-        )
+        binding = DialogMobileNumberOtpVerificationBinding.inflate(layoutInflater)
         resendOtp()
         resendCounterAttemptsTextDisplay()
         binding.sendOtpBtn.setOnClickListener {
             if (binding.otpBox.text.isNullOrEmpty()) {
                 snackBarUtils?.showSnackLinearLayoutParentSuccess(
-                    context, binding.llParents,
-                    StringUtils.getMessageTranslated(
-                        getString(R.string.please_enter_otp_received),
-                        sessionManager?.appLanguage
-                    ), false
+                    context,
+                    binding.llParents,
+                    getString(R.string.please_enter_otp_received),
+                    false
                 )
-            }
-            else if (binding.otpBox.text!!.length < 6)
-            {
+            } else if (binding.otpBox.text!!.length < 6) {
                 snackBarUtils?.showSnackLinearLayoutParentSuccess(
-                    context, binding.llParents,
-                    StringUtils.getMessageTranslated(
-                        getString(R.string.please_enter_6_digit_valid_otp),
-                        sessionManager?.appLanguage
-                    ), false
+                    context,
+                    binding.llParents,
+                    getString(R.string.please_enter_6_digit_valid_otp),
+                    false
                 )
-            }
-            else {
+            } else {
                 callEnrollABDMWithMobileApi(binding.otpBox.text.toString(), txnId)
             }
         }
@@ -117,115 +100,112 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     private fun callMobileVerificationApi() {
         // payload
         val aadharApiBody = AadharApiBody()
-        aadharApiBody.scope = ABDMConstant.SCOPE_MOBILE
+        aadharApiBody.scope = AbdmConstant.SCOPE_MOBILE
         aadharApiBody.value = mobileNumber
         aadharApiBody.txnId = txnId
-        val url = UrlModifiers.getAadharOTPVerificationUrl()
-        val responseBodySingle =
-            AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody)
+
+        val responseBodySingle = RetrofitProvider.apiService.getOtpForAadhar(
+            accessToken!!,
+            aadharApiBody
+        )
+
         cpd?.show()
-        Thread {
-            // api - start
-            responseBodySingle.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : DisposableSingleObserver<Response<OTPResponse>>() {
-                    override fun onSuccess(response: Response<OTPResponse>) {
-                        cpd?.dismiss()
-                        if (response.code() == 200) {
-                            val otpResponse = response.body()
-                            snackBarUtils?.showSnackLinearLayoutParentSuccess(
-                                context, binding.llParents,
-                                StringUtils.getMessageTranslated(
-                                    otpResponse?.message ?: "",
-                                    sessionManager?.appLanguage
-                                ), true
-                            )
-                            txnId = otpResponse?.txnId
-                        }
-                    }
-
-                    override fun onError(e: Throwable) {
-
-                        Toast.makeText(
+        responseBodySingle.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : DisposableSingleObserver<Response<OTPResponse>>() {
+                override fun onSuccess(response: Response<OTPResponse>) {
+                    cpd?.dismiss()
+                    if (response.code() == 200) {
+                        val otpResponse = response.body()
+                        snackBarUtils?.showSnackLinearLayoutParentSuccess(
                             context,
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_SHORT
-                        ).show()
-
-                        cpd?.dismiss()
+                            binding.llParents,
+                            otpResponse?.message ?: "",
+                            true
+                        )
+                        txnId = otpResponse?.txnId
                     }
-                })
-            // api - end
-        }.start()
+                }
+
+                override fun onError(e: Throwable) {
+
+                    Toast.makeText(
+                        context,
+                        getString(R.string.something_went_wrong),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    cpd?.dismiss()
+                }
+            })
     }
 
 
     private fun callEnrollABDMWithMobileApi(otp: String?, txnId: String?) {
-        val apiRequest =
-            EnrollNumberWithABDMRequest(otp = otp, txnId = txnId, mobileNo = mobileNumber)
-        val url = UrlModifiers.getEnrollByAbdmUrl()
+        val apiRequest = EnrollNumberWithABDMRequest(
+            otp = otp,
+            txnId = txnId,
+            mobileNo = mobileNumber
+        )
         val responseBodySingle =
-            AppConstants.apiInterface.getEnrollNumberWithABDM(url, accessToken, apiRequest)
+            RetrofitProvider.apiService.enrolNumberWithAbdm(
+                accessToken!!,
+                apiRequest
+            )
+
         cpd?.show()
-        Thread {
-            // api - start
-            responseBodySingle.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : DisposableSingleObserver<Response<OTPResponse>>() {
-                    override fun onSuccess(response: Response<OTPResponse>) {
-                        cpd?.dismiss()
-                        if (response.code() == 200) {
-                            val otpResponse = response.body()
-                            if (otpResponse != null) {
+        responseBodySingle.subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : DisposableSingleObserver<Response<OTPResponse>>() {
+                override fun onSuccess(response: Response<OTPResponse>) {
+                    cpd?.dismiss()
+                    if (response.code() == 200) {
+                        val otpResponse = response.body()
+                        if (otpResponse != null) {
 
-                                if (!otpResponse.authResult.equals("failed", true)) {
-                                    snackBarUtils?.showSnackLinearLayoutParentSuccess(
-                                        context, binding.llParents,
-                                        StringUtils.getMessageTranslated(
-                                            otpResponse.message,
-                                            sessionManager?.appLanguage
-                                        ), true
-                                    )
-                                    onMobileEnrollCompleted?.mobileRegistered(otpResponse.txnId)
-                                    dismiss()
-                                } else {
-                                    snackBarUtils?.showSnackLinearLayoutParentSuccess(
-                                        context, binding.llParents,
-                                        StringUtils.getMessageTranslated(
-                                            otpResponse.message,
-                                            sessionManager?.appLanguage
-                                        ), false
-                                    )
+                            if (!otpResponse.authResult.equals("failed", true)) {
+                                snackBarUtils?.showSnackLinearLayoutParentSuccess(
+                                    context,
+                                    binding.llParents,
+                                    otpResponse.message,
+                                    true
+                                )
+                                onMobileEnrollCompleted?.mobileRegistered(otpResponse.txnId)
+                                dismiss()
+                            } else {
+                                snackBarUtils?.showSnackLinearLayoutParentSuccess(
+                                    context,
+                                    binding.llParents,
+                                    otpResponse.message,
+                                    false
+                                )
 
-                                }
                             }
-
-                        } else {
-                            snackBarUtils?.showSnackLinearLayoutParentSuccess(
-                                context, binding.llParents,
-                                StringUtils.getMessageTranslated(
-                                    getString(R.string.please_enter_valid_otp),
-                                    sessionManager?.appLanguage
-                                ), false
-                            )
-
                         }
 
-                    }
-
-                    override fun onError(e: Throwable) {
-
-                        Toast.makeText(
+                    } else {
+                        snackBarUtils?.showSnackLinearLayoutParentSuccess(
                             context,
-                            getString(R.string.something_went_wrong),
-                            Toast.LENGTH_SHORT
-                        ).show()
+                            binding.llParents,
+                            getString(R.string.please_enter_valid_otp),
+                            false
+                        )
 
-                        cpd?.dismiss()
                     }
-                })
-            // api - end
-        }.start()
+
+                }
+
+                override fun onError(e: Throwable) {
+
+                    Toast.makeText(
+                        context,
+                        getString(R.string.something_went_wrong),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    cpd?.dismiss()
+                }
+            })
     }
 
     fun openMobileNumberVerificationDialog(
@@ -243,7 +223,12 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
 
     private fun resendOtp() {
         binding.resendBtn.isEnabled = false
-        binding.resendBtn.setTextColor(ContextCompat.getColor(requireContext(),R.color.medium_gray))
+        binding.resendBtn.setTextColor(
+            ContextCompat.getColor(
+                requireContext(),
+                R.color.medium_gray
+            )
+        )
 
         val resendTime = resources.getString(R.string.resend_otp_in)
 
@@ -252,15 +237,14 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
         countDownTimer = object : CountDownTimer(60000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 try {
-                    if (resendCounter!=0)
-                    {
+                    if (resendCounter != 0) {
                         val time =
-                            resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(R.string.seconds)
+                            resendTime + " " + millisUntilFinished / 1000 + " " + resources.getString(
+                                R.string.seconds
+                            )
                         binding.resendBtn.text = time
                     }
-                }
-                catch (e : Exception)
-                {
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
 
@@ -268,15 +252,19 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
 
             override fun onFinish() {
                 try {
-                    if ( resendCounter != 0) {
+                    if (resendCounter != 0) {
                         binding.resendBtn.isEnabled = true
-                        binding.resendBtn.setTextColor(ContextCompat.getColor(requireContext(),R.color.colorPrimary))
+                        binding.resendBtn.setTextColor(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.colorPrimary
+                            )
+                        )
                     }
 
                     binding.resendBtn.text = resources.getString(R.string.resend_otp)
                     if (cpd != null && cpd.isShowing) cpd.dismiss()
-                }catch (e : Exception)
-                {
+                } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }
@@ -287,6 +275,7 @@ class MobileNumberOtpVerificationDialog : DialogFragment() {
     interface OnMobileEnrollCompleted {
         fun mobileRegistered(txnId: String?)
     }
+
     companion object {
         fun newInstance(): MobileNumberOtpVerificationDialog {
             return MobileNumberOtpVerificationDialog()

@@ -1,7 +1,6 @@
-package org.intelehealth.app.abdm.model
+package org.intelehealth.abdm.model
 
 import com.google.gson.annotations.SerializedName
-
 
 data class EnrollNumberWithABDMRequest(
     @SerializedName("otp") var otp: String? = null,

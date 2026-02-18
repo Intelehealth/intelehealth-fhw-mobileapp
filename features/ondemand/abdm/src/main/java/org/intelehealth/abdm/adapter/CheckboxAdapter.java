@@ -6,16 +6,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.abdm.R;
+
 import com.google.android.material.checkbox.MaterialCheckBox;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.model.CheckBoxRecyclerModel;
+import org.intelehealth.abdm.model.CheckBoxRecyclerModel;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.MyView
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_checkbox_recycler, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_consent_checkbox, parent, false);
         return new MyViewHolder(view);
     }
 

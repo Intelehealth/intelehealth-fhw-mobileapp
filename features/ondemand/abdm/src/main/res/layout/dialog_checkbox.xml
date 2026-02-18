@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    app:cardCornerRadius="@dimen/margin_16"
+    app:cardElevation="@dimen/hamburger_margin_start">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_24">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_main"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/dialog_icon"
+                    android:layout_width="@dimen/margin_64"
+                    android:layout_height="@dimen/margin_64"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_32"
+                    android:contentDescription="@string/alert_icon"
+                    android:src="@drawable/ic_close_patient" />
+
+                <TextView
+                    android:id="@+id/dialog_subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_12"
+                    android:gravity="center"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/you_have_an_existing_abha_address_present"
+                    android:textAppearance="@style/dialog_subtitle"
+                    android:textColor="@null"
+                    android:textSize="@null" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_abha_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_24"
+                    android:orientation="vertical"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/layout_check_list" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/rl_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_10"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/positive_btn"
+                style="@style/positive_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_common_primary_enabled"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/margin_32"
+                android:paddingVertical="@dimen/margin_15"
+                android:text="@string/proceed" />
+
+            <Button
+                android:id="@+id/negative_btn"
+                style="@style/negative_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:background="@drawable/bg_common_primary_disabled_white"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/margin_32"
+                android:paddingVertical="@dimen/margin_15"
+                android:text="@string/create_new"
+                app:backgroundTint="@null"
+                app:backgroundTintMode="src_over" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:gravity="center"
+            android:lineSpacingExtra="3sp"
+            android:textAppearance="@style/style_error_message"
+            android:textColor="@null"
+            android:textSize="@null"
+            android:visibility="gone"
+            tools:text="@string/you_have_more_than_six_abha_addresses_error"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

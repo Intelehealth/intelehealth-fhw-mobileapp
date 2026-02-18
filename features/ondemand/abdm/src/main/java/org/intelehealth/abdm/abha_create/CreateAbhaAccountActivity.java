@@ -1,22 +1,15 @@
 package org.intelehealth.abdm.abha_create;
 
-import static org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New.PAYLOAD;
-import static org.intelehealth.app.utilities.DialogUtils.showOKDialog;
+import static org.intelehealth.abdm.constants.AbdmConstant.PAYLOAD;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Paint;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.LocaleList;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,41 +18,34 @@ import androidx.core.content.ContextCompat;
 
 import com.github.ajalt.timberkt.Timber;
 
-import org.intelehealth.app.R;
-import org.intelehealth.app.abdm.dialog.MobileNumberOtpVerificationDialog;
-import org.intelehealth.app.abdm.model.AadharApiBody;
-import org.intelehealth.app.abdm.model.EnrollSuggestionRequestBody;
-import org.intelehealth.app.abdm.model.EnrollSuggestionResponse;
+import org.intelehealth.abdm.R;
+import org.intelehealth.abdm.constants.AbdmConstant;
+import org.intelehealth.abdm.databinding.ActivityCreateAbhaBinding;
+import org.intelehealth.abdm.dialog.ChecklistDialogFragment;
+import org.intelehealth.abdm.dialog.ConsentDialog;
+import org.intelehealth.abdm.dialog.MobileNumberOtpVerificationDialog;
+import org.intelehealth.abdm.model.AadharApiBody;
+import org.intelehealth.abdm.model.EnrollSuggestionRequestBody;
+import org.intelehealth.abdm.model.EnrollSuggestionResponse;
+import org.intelehealth.abdm.model.OTPResponse;
+import org.intelehealth.abdm.model.OTPVerificationRequestBody;
+import org.intelehealth.abdm.model.OTPVerificationResponse;
+import org.intelehealth.abdm.model.TokenResponse;
+import org.intelehealth.abdm.model.UpdateIdentifierReqBody;
+import org.intelehealth.abdm.restapi.RetrofitProvider;
+import org.intelehealth.abdm.utils.AbdmManager;
+import org.intelehealth.abdm.utils.DialogUtils;
+import org.intelehealth.abdm.utils.NetworkConnection;
+import org.intelehealth.abdm.utils.SnackBarUtils;
+import org.intelehealth.abdm.utils.StringUtils;
+import org.intelehealth.abdm.utils.UuidDictionary;
+import org.intelehealth.abdm.utils.VerhoeffAlgorithm;
+import org.intelehealth.abdm.utils.WindowUtils;
+
+import org.intelehealth.abdm.dialog.CustomProgressDialog;
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse;
-import org.intelehealth.app.abdm.model.OTPResponse;
-import org.intelehealth.app.abdm.model.OTPVerificationRequestBody;
-import org.intelehealth.app.abdm.model.OTPVerificationResponse;
-import org.intelehealth.app.abdm.model.SetAbhaAddressResponse;
-import org.intelehealth.app.abdm.model.TokenResponse;
-import org.intelehealth.app.abdm.model.UpdateIdentifierReqBody;
-import org.intelehealth.app.abdm.utils.ABDMConstant;
-import org.intelehealth.app.abdm.utils.ABDMUtils;
-import org.intelehealth.app.activities.identificationActivity.IdentificationActivity_New;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.databinding.ActivityCreateAbhaBinding;
-import org.intelehealth.app.models.dto.PatientDTO;
-import org.intelehealth.app.utilities.DialogUtils;
-import org.intelehealth.app.utilities.NetworkConnection;
-import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.SnackbarUtils;
-import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.VerhoeffAlgorithm;
-import org.intelehealth.app.utilities.WindowsUtils;
-import org.intelehealth.app.widget.dialogs.ChecklistDialogFragment;
-import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -74,16 +60,14 @@ import retrofit2.Response;
 public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private final Context context = CreateAbhaAccountActivity.this;
-    public static final String TAG = AadharMobileVerificationActivity.class.getSimpleName();
+    public static final String TAG = CreateAbhaAccountActivity.class.getSimpleName();
     ActivityCreateAbhaBinding binding;
     private String accessToken = "";
     public static final String BEARER_AUTH = "Bearer ";
     private CustomProgressDialog cpd;
-    SnackbarUtils snackbarUtils;
-    SessionManager sessionManager = null;
+    SnackBarUtils snackbarUtils;
     private CountDownTimer countDownTimer;
     private int resendCounter = 2;
-    private PatientDTO patientDTO = null;
 
     private String patientName;
 
@@ -97,19 +81,19 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCreateAbhaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        WindowsUtils.setStatusBarColor(CreateAbhaAccountActivity.this);  // changing status bar color
-        cpd = new CustomProgressDialog(context);
-        snackbarUtils = new SnackbarUtils();
-        sessionManager = new SessionManager(context);
-        patientDTO = (PatientDTO) getIntent().getSerializableExtra("patientDTO");
 
-        binding.ivBackArrow.setOnClickListener(v -> finish());
-        resendCounter = 2;
-
-        // check internet - start
+        initUi();
         checkInternetConnection();
         setClickListener();
-        patientName = getIntent().getStringExtra(PrivacyPolicyActivity_New.intentPatientNameTag);
+        patientName = getIntent().getStringExtra(AbdmConstant.INTENT_PATIENT_NAME_TAG);
+    }
+
+    private void initUi() {
+        WindowUtils.setStatusBarColor(CreateAbhaAccountActivity.this);
+        cpd = new CustomProgressDialog(context);
+        snackbarUtils = new SnackBarUtils();
+        binding.ivBackArrow.setOnClickListener(v -> finish());
+        resendCounter = 2;
     }
 
     private void setClickListener() {
@@ -142,8 +126,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                 } else {
                     // ie. otp received and making call to enrollAadhaar api.
                     if (Objects.requireNonNull(binding.otpBox.getText()).toString().isEmpty()) {    // ie. OTP not entered in box.
-                        snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent,
-                                StringUtils.getMessageTranslated(getString(R.string.please_enter_otp_received), sessionManager.getAppLanguage()), false);
+                        snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, getString(R.string.please_enter_otp_received), false);
                         return;
                     }
 
@@ -156,14 +139,14 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
             }
         });
 
-        binding.layoutOnlyaadhar.cvTermsAndCondition.setOnClickListener(v -> {
+        binding.layoutOnlyAadhaar.cvTermsAndCondition.setOnClickListener(v -> {
 
         });
 
-        binding.layoutOnlyaadhar.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        binding.layoutOnlyAadhaar.cvTermsAndCondition.setOnCheckedChangeListener((buttonView, isChecked) -> {
                     if (isChecked) {
                         ConsentDialog consentDialog = new ConsentDialog(patientName);
-                        consentDialog.setListeners(isCheck -> binding.layoutOnlyaadhar.cvTermsAndCondition.setChecked(isCheck));
+                        consentDialog.setListeners(isCheck -> binding.layoutOnlyAadhaar.cvTermsAndCondition.setChecked(isCheck));
                         consentDialog.show(getSupportFragmentManager(), ConsentDialog.class.getSimpleName());
                     }
                     binding.sendOtpBtn.setEnabled(isChecked);
@@ -173,8 +156,8 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void checkInternetConnection() {
-        if (!NetworkConnection.isOnline(context)) {    // no internet.
-            showOKDialog(context, ContextCompat.getDrawable(context, R.drawable.ui2_ic_warning_internet),
+        if (!NetworkConnection.isOnline(context)) {
+            DialogUtils.showOkDialog(context, ContextCompat.getDrawable(context, R.drawable.ic_warning_internet),
                     getString(R.string.error_network), getString(R.string.you_need_an_active_internet_connection_to_use_this_feature),
                     getString(R.string.ok), action -> {
                         if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
@@ -184,9 +167,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         }
     }
 
-    /**
-     * This function is used to handle the resend counter and the necessary text to be displayed.
-     */
     private void resendCounterAttemptsTextDisplay() {
         if (resendCounter != 0)
             binding.tvResendCounter.setText(getResources().getString(R.string.number_of_retries_left, resendCounter));
@@ -200,28 +180,27 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         }
     }
 
-
-    private void callGenerateTokenApi() {   // Step 1.
+    private void callGenerateTokenApi() {
         cpd.show(getString(R.string.otp_sending));
         disableUI(false);
-        binding.sendOtpBtn.setEnabled(false);    // btn disabled.
-        binding.sendOtpBtn.setTag(null);    // resetting...
+        binding.sendOtpBtn.setEnabled(false);
+        binding.sendOtpBtn.setTag(null);
 
-        Single<TokenResponse> tokenResponse = AppConstants.apiInterface.GET_TOKEN(UrlModifiers.getABDM_TokenUrl());
+        Single<TokenResponse> tokenResponse = RetrofitProvider.getApiService().getToken();
         new Thread(() -> {
-            // api - start
             tokenResponse.subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new DisposableSingleObserver<>() {
                         @Override
                         public void onSuccess(TokenResponse tokenResponse1) {
-                            accessToken = BEARER_AUTH + tokenResponse1.getAccessToken();
-                            Timber.tag(TAG).d("onSuccess: TokenResponse: %s", tokenResponse1.toString());
-                            if (accessToken.isEmpty()) {    // if token empty
+                            String responseToken = tokenResponse1.getAccessToken();
+                            if (responseToken.isEmpty()) {
                                 Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
                                 cancelResendAndHideView();
                                 return;
                             }
+
+                            accessToken = BEARER_AUTH + tokenResponse1.getAccessToken();
                             callAadhaarMobileVerificationApi(accessToken);
                         }
 
@@ -243,16 +222,13 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
 
     private void callAadhaarMobileVerificationApi(String accessToken) {
-        // payload
         AadharApiBody aadharApiBody = new AadharApiBody();
         String aadhaarNo;
-        aadhaarNo = Objects.requireNonNull(binding.layoutOnlyaadhar.aadharNoBox.getText()).toString().trim();
-
-        aadharApiBody.setScope(ABDMConstant.SCOPE_AADHAAR);
+        aadhaarNo = Objects.requireNonNull(binding.layoutOnlyAadhaar.aadharNoBox.getText()).toString().trim();
+        aadharApiBody.setScope(AbdmConstant.SCOPE_AADHAAR);
         aadharApiBody.setValue(aadhaarNo);
-        String url = UrlModifiers.getAadharOTPVerificationUrl();
 
-        Single<Response<OTPResponse>> responseBodySingle = AppConstants.apiInterface.GET_OTP_FOR_AADHAR(url, accessToken, aadharApiBody);
+        Single<Response<OTPResponse>> responseBodySingle = RetrofitProvider.getApiService().getOtpForAadhar(accessToken, aadharApiBody);
         new Thread(() -> {
             // api - start
             responseBodySingle.subscribeOn(Schedulers.io())
@@ -265,12 +241,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
                             if (response.code() == 200) {
                                 OTPResponse otpResponse = response.body();
-                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, StringUtils.getMessageTranslated(otpResponse.getMessage(), sessionManager.getAppLanguage()), true);
-
-                                Timber.tag(TAG).d("onSuccess: AadhaarResponse: %s", otpResponse.toString());
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, otpResponse.getMessage(), true);
                                 // here, we will receive: txtID, otp
                                 // and we need to pass to another api: otp, mobileNo and txtID will go in Header.
-
                                 if (binding.flOtpBox.getVisibility() != View.VISIBLE) {
                                     binding.flOtpBox.setVisibility(View.VISIBLE);
                                     binding.rlResendOTP.setVisibility(View.VISIBLE);
@@ -284,7 +257,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 binding.sendOtpBtn.setEnabled(true);    // btn enabled -> since otp is received.
                                 disableUI(false);
                             } else if (response.code() == 429) {
-                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, StringUtils.getMessageTranslated(getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), sessionManager.getAppLanguage()), false);
+                                snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.layoutParent, getString(R.string.you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes), false);
                                 disableUI(false);
                                 binding.sendOtpBtn.setEnabled(true);
                                 binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
@@ -339,81 +312,72 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         disableUI(false);
         binding.sendOtpBtn.setEnabled(false);    // btn disabled.
 
-
-        // payload
-        String url = UrlModifiers.getOTPForVerificationUrl();
         OTPVerificationRequestBody requestBody = new OTPVerificationRequestBody();
         requestBody.setOtp(otp);
         requestBody.setTxnId(txnId);
         requestBody.setMobileNo(mobileNo);
 
-        Single<Response<OTPVerificationResponse>> otpVerificationResponseObservable =
-                AppConstants.apiInterface.PUSH_OTP_FOR_VERIFICATION(url, accessToken, requestBody);
+        Single<Response<OTPVerificationResponse>> otpVerificationResponseObservable = RetrofitProvider.getApiService().pushOtpForVerification(accessToken, requestBody);
+        otpVerificationResponseObservable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(Response<OTPVerificationResponse> otpVerificationResponse) {
+                        cpd.dismiss();
+                        Timber.tag("callOTPForVerificationApi: ").d("onSuccess: %s", otpVerificationResponse.toString());
+                        if (otpVerificationResponse.code() == 200) {
+                            binding.sendOtpBtn.setTag(null);    // resetting...
+                            OTPVerificationResponse otpResponse = otpVerificationResponse.body();
+                            String mobile = otpResponse.getABHAProfile().getMobile();
+                            boolean isMobileEmpty = TextUtils.isEmpty(mobile);
+                            boolean isNewUser = otpResponse.getIsNew();
 
-        new Thread(() -> {
-            // api - start
-            otpVerificationResponseObservable
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<>() {
-                        @Override
-                        public void onSuccess(Response<OTPVerificationResponse> otpVerificationResponse) {
-                            cpd.dismiss();
-                            Timber.tag("callOTPForVerificationApi: ").d("onSuccess: %s", otpVerificationResponse.toString());
-                            if (otpVerificationResponse.code() == 200) {
-                                binding.sendOtpBtn.setTag(null);    // resetting...
-                                OTPVerificationResponse otpResponse = otpVerificationResponse.body();
-                                String mobile = otpResponse.getABHAProfile().getMobile();
-                                boolean isMobileEmpty = TextUtils.isEmpty(mobile);
-                                boolean isNewUser = otpResponse.getIsNew();
-
-                                if (isMobileEmpty || !mobile.equalsIgnoreCase(mobileNo)) {
-                                    MobileNumberOtpVerificationDialog mobileNumberOtpVerificationDialog = getMobileNumberOtpVerificationDialog(otpResponse);
-                                    mobileNumberOtpVerificationDialog.show(getSupportFragmentManager(), "");
-                                } else {
-                                    handleUserFlow(otpResponse, accessToken);
-                                }
-                            } else if (otpVerificationResponse.code() == 400) {
-                                Toast.makeText(context, getText(R.string.entered_aadhaar_or_mobile_number_is_incorrect), Toast.LENGTH_SHORT).show();
-                                binding.sendOtpBtn.setEnabled(true);
-                                disableUI(true);
-                            } else if (otpVerificationResponse.code() == 422) {
-                                Toast.makeText(context, getText(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
-                                binding.sendOtpBtn.setEnabled(true);
-                                disableUI(false);
+                            if (isMobileEmpty || !mobile.equalsIgnoreCase(mobileNo)) {
+                                MobileNumberOtpVerificationDialog mobileNumberOtpVerificationDialog = getMobileNumberOtpVerificationDialog(otpResponse);
+                                mobileNumberOtpVerificationDialog.show(getSupportFragmentManager(), "");
                             } else {
-                                Toast.makeText(context, ABDMUtils.getErrorMessage(otpVerificationResponse), Toast.LENGTH_SHORT).show();
-                                binding.sendOtpBtn.setEnabled(true);
-                                disableUI(false);
-                            }
-
-                        }
-
-                        private @NonNull MobileNumberOtpVerificationDialog getMobileNumberOtpVerificationDialog(OTPVerificationResponse otpResponse) {
-                            MobileNumberOtpVerificationDialog mobileNumberOtpVerificationDialog = new MobileNumberOtpVerificationDialog();
-                            mobileNumberOtpVerificationDialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
-                                mobileNumberOtpVerificationDialog.dismiss();
-                                otpResponse.getABHAProfile().setMobile(mobileNo);
-                                sessionManager.setIsCommunicationNumberUsed(true);
                                 handleUserFlow(otpResponse, accessToken);
-                            });
-                            return mobileNumberOtpVerificationDialog;
+                            }
+                        } else if (otpVerificationResponse.code() == 400) {
+                            Toast.makeText(context, getText(R.string.entered_aadhaar_or_mobile_number_is_incorrect), Toast.LENGTH_SHORT).show();
+                            binding.sendOtpBtn.setEnabled(true);
+                            disableUI(true);
+                        } else if (otpVerificationResponse.code() == 422) {
+                            Toast.makeText(context, getText(R.string.please_enter_valid_otp), Toast.LENGTH_SHORT).show();
+                            binding.sendOtpBtn.setEnabled(true);
+                            disableUI(false);
+                        } else {
+                            Toast.makeText(context, StringUtils.getErrorMessage(otpVerificationResponse), Toast.LENGTH_SHORT).show();
+                            binding.sendOtpBtn.setEnabled(true);
+                            disableUI(false);
                         }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            disableUI(false);
-                            binding.sendOtpBtn.setEnabled(true);
-                            binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
-                            binding.otpBox.setText("");
-                            cpd.dismiss();
-                            Timber.tag("callOTPForVerificationApi: ").e("onError: %s", e.toString());
-                            Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            cancelResendAndHideView();
-                        }
-                    });
-            // api - end
-        }).start();
+                    }
+
+                    private @NonNull MobileNumberOtpVerificationDialog getMobileNumberOtpVerificationDialog(OTPVerificationResponse otpResponse) {
+                        MobileNumberOtpVerificationDialog mobileNumberOtpVerificationDialog = new MobileNumberOtpVerificationDialog();
+                        mobileNumberOtpVerificationDialog.openMobileNumberVerificationDialog(accessToken, otpResponse.getTxnId(), mobileNo, onMobileEnrollCompleted -> {
+                            mobileNumberOtpVerificationDialog.dismiss();
+                            otpResponse.getABHAProfile().setMobile(mobileNo);
+                            AbdmManager.setCommunicationNumberUsed(true);
+                            handleUserFlow(otpResponse, accessToken);
+                        });
+                        return mobileNumberOtpVerificationDialog;
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        disableUI(false);
+                        binding.sendOtpBtn.setEnabled(true);
+                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                        binding.otpBox.setText("");
+                        cpd.dismiss();
+                        Timber.tag("callOTPForVerificationApi: ").e("onError: %s", e.toString());
+                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        cancelResendAndHideView();
+                    }
+                });
     }
 
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken) {
@@ -438,14 +402,10 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
         cpd.show();
         ArrayList<String> addressList = new ArrayList<>();
-        // api - start
-        String url = UrlModifiers.getEnrollABHASuggestionUrl();
         EnrollSuggestionRequestBody body = new EnrollSuggestionRequestBody();
         body.setTxnId(otpVerificationResponse.getTxnId());
-
-        Single<EnrollSuggestionResponse> enrollSuggestionResponseSingle =
-                AppConstants.apiInterface.PUSH_ENROLL_ABHA_ADDRESS_SUGGESTION(url, accessToken, body);
-        new Thread(() -> enrollSuggestionResponseSingle
+        Single<EnrollSuggestionResponse> enrollSuggestionResponseSingle = RetrofitProvider.getApiService().enrollAbhaAddressSuggestion(accessToken, body);
+        enrollSuggestionResponseSingle
                 .observeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
@@ -471,8 +431,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         Timber.tag(TAG).e("onError: suggestion%s", e.toString());
                     }
-                })).start();
-        // api - end
+                });
 
     }
 
@@ -488,25 +447,25 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private boolean checkValidation() {
         boolean isValid = true;
 
-        if (Objects.requireNonNull(binding.layoutOnlyaadhar.aadharNoBox.getText()).toString().isEmpty()) {
-            binding.layoutOnlyaadhar.aadharError.setVisibility(View.VISIBLE);
-            binding.layoutOnlyaadhar.aadharError.setText(getString(R.string.error_field_required));
-            binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+        if (Objects.requireNonNull(binding.layoutOnlyAadhaar.aadharNoBox.getText()).toString().isEmpty()) {
+            binding.layoutOnlyAadhaar.aadharError.setVisibility(View.VISIBLE);
+            binding.layoutOnlyAadhaar.aadharError.setText(getString(R.string.error_field_required));
+            binding.layoutOnlyAadhaar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_error));
             isValid = false;
         } else { // ie. aadhaar no empty
-            if (binding.layoutOnlyaadhar.aadharNoBox.getText().toString().length() < 12) {
-                binding.layoutOnlyaadhar.aadharError.setVisibility(View.VISIBLE);
-                binding.layoutOnlyaadhar.aadharError.setText(getString(R.string.enter_12_digits));
-                binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+            if (binding.layoutOnlyAadhaar.aadharNoBox.getText().toString().length() < 12) {
+                binding.layoutOnlyAadhaar.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutOnlyAadhaar.aadharError.setText(getString(R.string.enter_12_digits));
+                binding.layoutOnlyAadhaar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_error));
                 isValid = false;
-            } else if (!validateAadhaarNumber(binding.layoutOnlyaadhar.aadharNoBox.getText().toString())) {
-                binding.layoutOnlyaadhar.aadharError.setVisibility(View.VISIBLE);
-                binding.layoutOnlyaadhar.aadharError.setText(R.string.aadhar_number_is_not_valid);
-                binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+            } else if (!validateAadhaarNumber(binding.layoutOnlyAadhaar.aadharNoBox.getText().toString())) {
+                binding.layoutOnlyAadhaar.aadharError.setVisibility(View.VISIBLE);
+                binding.layoutOnlyAadhaar.aadharError.setText(R.string.aadhar_number_is_not_valid);
+                binding.layoutOnlyAadhaar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_error));
                 isValid = false;
             } else {
-                binding.layoutOnlyaadhar.aadharError.setVisibility(View.GONE);
-                binding.layoutOnlyaadhar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                binding.layoutOnlyAadhaar.aadharError.setVisibility(View.GONE);
+                binding.layoutOnlyAadhaar.aadharNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_new));
             }
         }
 
@@ -522,17 +481,17 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
             if (Objects.requireNonNull(binding.mobileNoBox.getText()).toString().isEmpty()) {
                 binding.mobileError.setVisibility(View.VISIBLE);
                 binding.mobileError.setText(getString(R.string.error_field_required));
-                binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_error));
                 isValid = false;
             } else {
                 if (binding.mobileNoBox.getText().toString().length() < 10) {
                     binding.mobileError.setVisibility(View.VISIBLE);
                     binding.mobileError.setText(getString(R.string.enter_10_digits));
-                    binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.input_field_error_bg_ui2));
+                    binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_error));
                     isValid = false;
                 } else {
                     binding.mobileError.setVisibility(View.GONE);
-                    binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_fieldnew));
+                    binding.mobileNoBox.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.bg_input_field_new));
                 }
             }
         }
@@ -541,12 +500,10 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void checkIsUserExist(String abhaNumber, OTPVerificationResponse abhaProfileResponse) {
-        sessionManager = new SessionManager(context);
-        String encoded = sessionManager.getEncoded();
-        String url = UrlModifiers.getCheckExistingUserUrl();
+        String encoded = AbdmManager.getEncoded();
         cpd.show();
-        // payload - end
-        Single<ExistUserStatusResponse> abhaProfileResponseSingle = AppConstants.apiInterface.checkExistingUser(url + abhaNumber, "Basic " + encoded);
+
+        Single<ExistUserStatusResponse> abhaProfileResponseSingle = RetrofitProvider.getApiService().checkExistingUser(AbdmManager.getCheckExistingUserUrl() + abhaNumber, "Basic " + encoded);
         abhaProfileResponseSingle
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -632,22 +589,15 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void updatePatientIdentifier(OTPVerificationResponse abhaProfileResponse, String newAbhaAddress) {
-        //{
-        //"identifier":"rocketsingh@sbx",
-        //"identifierType":"59077d8f-8bee-4a6f-a1a8-64365a297da6",
-        //"location":"uuid-for-location"
-        //}
         UpdateIdentifierReqBody requestBody = new UpdateIdentifierReqBody();
         requestBody.setIdentifier(newAbhaAddress);
         requestBody.setIdentifierType(UuidDictionary.UPDATE_IDENTIFIER_TYPE_UUID);
-        requestBody.setLocation(sessionManager.getLocationUuid());
+        requestBody.setLocation(AbdmManager.getLocationUuid());
 
-        String url = UrlModifiers.getUpdatePatientIdentifierUrl(mExistingPatientUuid);
         cpd.show();
-        // post method
-        Single<Response<ResponseBody>> responseSingle = AppConstants.apiInterface.updatePatientIdentifier(
-                url,
-                "Basic " + sessionManager.getEncoded(),
+        Single<Response<ResponseBody>> responseSingle = RetrofitProvider.getApiService().updatePatientIdentifier(
+                mExistingPatientUuid,
+                "Basic " + AbdmManager.getEncoded(),
                 requestBody
         );
 
@@ -691,25 +641,6 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         intent.putExtra("accessToken", accessToken);
         startActivity(intent);
         finish();
-    }
-
-    public Context setLocale(Context context) {
-        SessionManager sessionManager1 = new SessionManager(context);
-        String appLanguage = sessionManager1.getAppLanguage();
-        Resources res = context.getResources();
-        Configuration conf = res.getConfiguration();
-        Locale locale = new Locale(appLanguage);
-        Locale.setDefault(locale);
-        conf.setLocale(locale);
-        context.createConfigurationContext(conf);
-        DisplayMetrics dm = res.getDisplayMetrics();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(new LocaleList(locale));
-        } else {
-            conf.locale = locale;
-        }
-        res.updateConfiguration(conf, dm);
-        return context;
     }
 
     private void cancelResendAndHideView() {
@@ -772,7 +703,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     }
 
     private void disableUI(boolean shouldEnable) {
-        binding.layoutOnlyaadhar.aadharNoBox.setEnabled(shouldEnable);
-        binding.layoutOnlyaadhar.cvTermsAndCondition.setEnabled(shouldEnable);
+        binding.layoutOnlyAadhaar.aadharNoBox.setEnabled(shouldEnable);
+        binding.layoutOnlyAadhaar.cvTermsAndCondition.setEnabled(shouldEnable);
     }
 }
