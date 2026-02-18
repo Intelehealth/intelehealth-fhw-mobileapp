@@ -2086,6 +2086,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             //intent.setPackage("com.whatsapp");
             String pkg = StringUtils.getWhatsAppPackage(PrescriptionActivity.this);
+            Log.d("DEBUG", "Package: " + pkg);
             Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
             Log.d("DEBUG", "File exists: " + pdfFile.exists());
             Log.d("DEBUG", "File size: " + pdfFile.length());

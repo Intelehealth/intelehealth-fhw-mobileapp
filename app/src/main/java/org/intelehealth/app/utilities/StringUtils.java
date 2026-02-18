@@ -4940,12 +4940,14 @@ public final class StringUtils {
             pm.getPackageInfo("com.whatsapp", 0);
             return "com.whatsapp";
         } catch (Exception ignored) {
+            Log.d("DEBUG", "WhatsApp not found"+ignored.getMessage());
         }
 
         try {
             pm.getPackageInfo("com.whatsapp.w4b", 0);
             return "com.whatsapp.w4b";
         } catch (Exception ignored) {
+            Log.d("DEBUG", "WhatsApp not found"+ignored.getMessage());
         }
 
         return null;

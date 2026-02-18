@@ -34,7 +34,10 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
-
+    <queries>
+        <package android:name="com.whatsapp"/>
+        <package android:name="com.whatsapp.w4b"/>
+    </queries>
     <application
         android:name=".app.IntelehealthApplication"
         android:allowBackup="false"
