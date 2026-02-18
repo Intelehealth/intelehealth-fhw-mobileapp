@@ -16,6 +16,7 @@ import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -2083,7 +2084,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("application/pdf");
             intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.setClipData(ClipData.newRawUri("PDF", uri));
+
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
             //intent.setPackage("com.whatsapp");
             String pkg = StringUtils.getWhatsAppPackage(PrescriptionActivity.this);
             Log.d("DEBUG", "Package: " + pkg);
@@ -2093,6 +2098,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             Log.d("DEBUG", "URI: " + uri.toString());
             if (pkg != null) {
                 intent.setPackage(pkg);
+                grantUriPermission(
+                        pkg,
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                );
                 startActivity(intent);
                 updateLocalPrescriptionInformations(visitID);
             } else {

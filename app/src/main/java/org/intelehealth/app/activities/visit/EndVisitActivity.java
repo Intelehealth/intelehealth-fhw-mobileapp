@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.animation.ObjectAnimator;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -468,11 +469,19 @@ public class EndVisitActivity extends BaseActivity implements NetworkUtils.Inter
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
         intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setClipData(ClipData.newRawUri("PDF", uri));
+
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         //intent.setPackage("com.whatsapp");
         String pkg = StringUtils.getWhatsAppPackage(EndVisitActivity.this);
         if (pkg != null) {
             intent.setPackage(pkg);
+            grantUriPermission(
+                    pkg,
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            );
             startActivity(intent);
             updateLocalPrescriptionInformations(model.getVisitUuid());
         } else {

@@ -3,6 +3,7 @@ package org.intelehealth.app.ui.splash.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
@@ -10,6 +11,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.LocaleList
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
@@ -48,12 +50,14 @@ import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
 import org.intelehealth.klivekit.utils.extensions.showToast
 import timber.log.Timber
+import java.util.Locale
 
 
 /**
@@ -121,9 +125,19 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     private fun initLanguageList() {
         binding.rvSelectLanguage.layoutManager = LinearLayoutManager(this)
         binding.rvSelectLanguage.itemAnimator = DefaultItemAnimator()
+        var listLanguage = StaticLanguageEnabledFieldsHelper.getEnabledLanguageFields()
+        // if app language is already set then select that language in list
+        val appLanguage = sessionManager.appLanguage
+        Log.d("Language", appLanguage)
+        if (!appLanguage.equals("", ignoreCase = true)) {
+            listLanguage.forEach {
+                it.selected = it.code.equals(appLanguage, ignoreCase = true)
+            }
+        }
+
         adapter = LanguageAdapter(
             this,
-            StaticLanguageEnabledFieldsHelper.getEnabledLanguageFields()
+            listLanguage
         ).apply {
             this.viewHolderClickListener = this@SplashActivity
             binding.rvSelectLanguage.adapter = this
@@ -441,5 +455,29 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             val lang = view.tag as ActiveLanguage
             adapter.select(position, lang)
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(setLocaleNow(newBase))
+    }
+
+    fun setLocaleNow(context: Context): Context {
+        val sessionManager1 = SessionManager(context)
+        val appLanguage = sessionManager1.getAppLanguage()
+        Log.d("Language", appLanguage)
+        val res = context.getResources()
+        val conf = res.getConfiguration()
+        val locale = Locale(appLanguage)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.getDisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.locale = locale
+        }
+        res.updateConfiguration(conf, dm)
+        return context
     }
 }

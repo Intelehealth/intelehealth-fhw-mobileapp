@@ -4241,7 +4241,6 @@ public final class StringUtils {
      *
      * @param context
      * @param genderView
-     * @param patient
      * @param sessionManager
      */
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
@@ -4362,7 +4361,6 @@ public final class StringUtils {
      *
      * @param context
      * @param genderView
-     * @param patient
      * @param sessionManager
      */
     public static void setGenderAgeLocalByCommaContact(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {

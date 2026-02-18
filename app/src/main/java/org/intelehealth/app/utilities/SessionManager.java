@@ -8,6 +8,7 @@ import android.util.Log;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
+import java.util.Locale;
 import java.util.Set;
 
 public class SessionManager {
@@ -312,7 +313,8 @@ public class SessionManager {
     }
 
     public String getCurrentLang() {
-        return pref.getString(CURRENT_LANG, "en");
+        //return pref.getString(CURRENT_LANG, "en");
+        return pref.getString(CURRENT_LANG, Locale.getDefault().getLanguage());
     }  //setting default language as english
 
     public void setCurrentLang(String lang) {
