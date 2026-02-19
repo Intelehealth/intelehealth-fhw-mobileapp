@@ -18,4 +18,7 @@ object AbdmManager {
     @JvmStatic
     var isCommunicationNumberUsed: Boolean = false
 
+    @JvmStatic
+    var isPreferredAddressSet: Boolean = false
+
 }

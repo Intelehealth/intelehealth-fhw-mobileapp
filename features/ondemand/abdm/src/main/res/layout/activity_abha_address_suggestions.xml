@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutParent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_action_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginStart="@dimen/back_arrow_margin_start"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_back_arrow_terms"
+            android:layout_width="@dimen/back_arrow_width"
+            android:layout_height="@dimen/back_arrow_height"
+            android:src="@drawable/ic_arrow_back"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/title_margin_start"
+            android:text="@string/select_an_abha_address"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/setup_privacy_screen_info"
+            android:textStyle="bold" />
+    </LinearLayout>
+    <!--toolbar end-->
+
+    <TextView
+        android:id="@+id/sub_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:gravity="top"
+        android:text="@string/please_select_an_abha_address_from_the_suggestions_below"
+        android:textAppearance="@style/style_subtitle"
+        android:textColor="@null"
+        android:textSize="@null" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGrp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/margin_14"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_weight="1"
+        android:paddingHorizontal="@dimen/margin_10"
+        app:chipSpacingHorizontal="@dimen/margin_14"
+        app:singleSelection="true" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_20"
+        app:hintEnabled="false">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAbhaAddress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/bg_textbox_outline"
+                android:hint="@string/abha_address"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLength="18"
+                android:padding="14dp"
+                android:singleLine="true"
+                android:textAppearance="@style/type_mobile_no"
+                android:textColor="@null"
+                android:textColorHint="@color/hint_color"
+                android:textSize="@null" />
+
+            <ImageView
+                android:id="@+id/ivAbhaSuggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="@dimen/margin_10"
+                android:src="@drawable/ic_blue_svg"
+                app:tint="@color/red" />
+
+        </LinearLayout>
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <Button
+        android:id="@+id/submitABHAAddressBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_common_with_state"
+        android:drawableEnd="@drawable/ic_arrow_forward"
+        android:drawableTint="@color/iconTintWhite"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</LinearLayout>

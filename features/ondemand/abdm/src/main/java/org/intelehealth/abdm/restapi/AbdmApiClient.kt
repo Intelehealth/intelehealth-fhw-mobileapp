@@ -9,6 +9,7 @@ import org.intelehealth.abdm.model.EnrollSuggestionResponse
 import org.intelehealth.abdm.model.OTPResponse
 import org.intelehealth.abdm.model.OTPVerificationRequestBody
 import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.model.SetAbhaAddressResponse
 import org.intelehealth.abdm.model.TokenResponse
 import org.intelehealth.abdm.model.UpdateIdentifierReqBody
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse
@@ -62,4 +63,10 @@ interface AbdmApiClient {
         @Header("Authorization") authHeader: String,
         @Body body: UpdateIdentifierReqBody
     ): Single<Response<ResponseBody>>
+
+    @POST("/abha/setPreferredAddress")
+    fun setPreferredAbhaAddress(
+        @Header("Authorization") accessToken: String,
+        @Body enrollSuggestionRequestBody: EnrollSuggestionRequestBody
+    ): Single<Response<SetAbhaAddressResponse>>
 }

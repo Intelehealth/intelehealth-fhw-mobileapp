@@ -21,5 +21,7 @@
     <color name="medium_gray">#9E9E9E</color>
     <color name="greyButton">#EFE8FF</color>
     <color name="colorPrimaryDark1">#098E66</color>
+    <color name="green3">#14AA00</color>
+    <color name="black">#000000</color>
 
 </resources>

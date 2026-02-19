@@ -57,5 +57,18 @@
     <string name="resend_otp"><font color='#2E1E91'>Resend</font></string>
     <string name="_6_digit_otp_sent_on_your_registered_number_please_check_and_enter_the_otp">6-digit OTP sent on your mobile number.\nPlease check and enter the OTP.</string>
     <string name="resend">Resend</string>
+    <string name="select_an_abha_address">Select an ABHA Address</string>
+    <string name="please_select_an_abha_address_from_the_suggestions_below">*Please select an ABHA address from the suggestions below.</string>
+    <string name="submit">Submit</string>
+    <string name="please_select_abha_address">Please select ABHA address.</string>
+    <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\n2. Maximum length - 18 characters\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>
+    <string name="sbx_suffix_is_only_allowed_at_the_end">\'@sbx\' is only allowed at the end</string>
+    <string name="sbx_suffix_can_only_appear_once">\'@sbx\' can appear only once</string>
+    <string name="length_validation">ABHA address must be at least 8 characters long and cannot be longer than 18 characters.</string>
+    <string name="characters_validation">ABHA address can only contain letters, numbers, one dot (.) and/or one underscore (_).</string>
+    <string name="special_characters_position_validation">Dot (.) or underscore (_) must be in the middle, not at the beginning or end.</string>
+    <string name="special_characters_count_validation">Only one dot (.) and/or one underscore (_) is allowed in the ABHA address.</string>
+    <string name="preferred_abha_address_is_set_successfully">Preferred ABHA address is set successfully!</string>
+    <string name="please_click_on_submit_button_to_proceed">Please click on submit button to proceed.</string>
 
 </resources>
