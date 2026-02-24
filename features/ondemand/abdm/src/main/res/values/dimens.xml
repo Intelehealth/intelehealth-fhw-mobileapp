@@ -36,5 +36,6 @@
     <dimen name="text_18">18sp</dimen>
 
     <dimen name="internet_dialog_width">310dp</dimen>
+    <dimen name="abha_choice_dialog_width">310dp</dimen>
 
 </resources>

@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.abdm.R;
+import org.intelehealth.abdm.R;
 
 /**
  * CustomProgressDialog

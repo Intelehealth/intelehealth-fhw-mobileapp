@@ -16,6 +16,7 @@ import org.intelehealth.abdm.adapter.CheckboxAdapter
 import org.intelehealth.abdm.model.CheckBoxRecyclerModel
 import java.util.Locale
 import org.intelehealth.abdm.R;
+import org.intelehealth.abdm.utils.AbdmManager
 
 @Suppress("DEPRECATION")
 class ConsentDialog(private val patientName: String) : DialogFragment() {
@@ -24,7 +25,7 @@ class ConsentDialog(private val patientName: String) : DialogFragment() {
     private var clickable: Clickable? = null
     private var checkboxAdapter: CheckboxAdapter? = null
     private lateinit var modelList: MutableList<CheckBoxRecyclerModel>
-    private var sessionManager: SessionManager? = null
+    private var abdmManager: AbdmManager? = null
     private lateinit var binding: DialogConsentBinding
 
     override fun onStart() {
@@ -41,7 +42,6 @@ class ConsentDialog(private val patientName: String) : DialogFragment() {
     ): View {
         // Inflate the layout for this fragment
         binding = DialogConsentBinding.inflate(layoutInflater)
-        sessionManager = SessionManager(context)
 
         // check internet - end
         modelList = ArrayList()
@@ -150,32 +150,12 @@ class ConsentDialog(private val patientName: String) : DialogFragment() {
     }
 
     private fun fetchHwFullName(): String {
-        val hwName: String = sessionManager?.hwFullName ?: ""
+        val hwName: String = abdmManager?.hwFullName ?: ""
         return if (hwName.isBlank()) {
             "(Health Worker)"
         } else {
             hwName
         }
-    }
-
-
-    fun setLocale(context: Context): Context {
-        val sessionManager1 = SessionManager(context)
-        val appLanguage = sessionManager1.appLanguage
-        val res = context.resources
-        val conf = res.configuration
-        val locale = Locale(appLanguage)
-        Locale.setDefault(locale)
-        conf.setLocale(locale)
-        context.createConfigurationContext(conf)
-        val dm = res.displayMetrics
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            conf.setLocales(LocaleList(locale))
-        } else {
-            conf.locale = locale
-        }
-        res.updateConfiguration(conf, dm)
-        return context
     }
 
     companion object {

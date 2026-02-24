@@ -21,4 +21,7 @@ object AbdmManager {
     @JvmStatic
     var isPreferredAddressSet: Boolean = false
 
+    @JvmStatic
+    var hwFullName: String = ""
+
 }

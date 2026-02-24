@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import org.intelehealth.abdm.R
+import org.intelehealth.abdm.adapter.CheckListDialogAdapter
 import org.intelehealth.abdm.databinding.DialogCheckboxBinding
 import org.intelehealth.abdm.utils.DialogUtils
 

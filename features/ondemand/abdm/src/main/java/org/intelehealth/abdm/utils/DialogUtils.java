@@ -19,6 +19,8 @@ import org.intelehealth.abdm.R;
 
 import java.util.Objects;
 
+import kotlin.jvm.JvmStatic;
+
 public class DialogUtils {
 
     public interface CustomDialogListener {
@@ -33,7 +35,8 @@ public class DialogUtils {
         void onDialogActionDone(int action, String text);
     }
 
-    private static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
+    @JvmStatic
+    public static void setAlertDialogCustomTheme(Context context, Dialog builderDialog) {
         TextView textView = builderDialog.getWindow().findViewById(android.R.id.message);
         TextView alertTitle = builderDialog.getWindow().findViewById(androidx.appcompat.R.id.alertTitle);
         Button button1 = builderDialog.getWindow().findViewById(android.R.id.button1);

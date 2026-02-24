@@ -5,6 +5,7 @@ import static org.intelehealth.abdm.constants.AbdmConstant.PAYLOAD;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -37,6 +39,7 @@ import org.intelehealth.abdm.utils.AbdmManager;
 import org.intelehealth.abdm.utils.DialogUtils;
 import org.intelehealth.abdm.utils.NetworkConnection;
 import org.intelehealth.abdm.utils.SnackBarUtils;
+import org.intelehealth.abdm.utils.StatusBarUtil;
 import org.intelehealth.abdm.utils.StringUtils;
 import org.intelehealth.abdm.utils.UuidDictionary;
 import org.intelehealth.abdm.utils.VerhoeffAlgorithm;
@@ -81,6 +84,9 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityCreateAbhaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        EdgeToEdge.enable(this);
+        StatusBarUtil.setStatusBarChanges(getWindow(), binding.rootLay);
 
         initUi();
         checkInternetConnection();
@@ -417,11 +423,11 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
 
                             if (!addressList.isEmpty()) {
-                                Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
-                                intent.putStringArrayListExtra("addressList", addressList);
-                                intent.putExtra("payload", otpVerificationResponse);
-                                intent.putExtra("accessToken", accessToken);
-                                startActivity(intent);
+//                                Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
+//                                intent.putStringArrayListExtra("addressList", addressList);
+//                                intent.putExtra("payload", otpVerificationResponse);
+//                                intent.putExtra("accessToken", accessToken);
+//                                startActivity(intent);
                                 finish();
                             }
                         }
@@ -554,15 +560,15 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     //if (mExistingPatientOpenMRSUuid != null && !mExistingPatientOpenMRSUuid.equals("NA") && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
                     // check patient with uuid and abha-address whether exist it in local or not
                     if (mExistingPatientOpenMRSId != null && !mExistingPatientOpenMRSId.equals("NA")) {
-                        boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
-
-                        // call api to update identifier
-                        if (isExistingPatientWithSelectedAbhaAddress) {
-                            navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
-                        } else {
-                            // add new identifier to existing patient
-                            updatePatientIdentifier(abhaProfileResponse, text);
-                        }
+//                        boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
+//
+//                        // call api to update identifier
+//                        if (isExistingPatientWithSelectedAbhaAddress) {
+//                            navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
+//                        } else {
+//                            // add new identifier to existing patient
+//                            updatePatientIdentifier(abhaProfileResponse, text);
+//                        }
                     } else {
 
                         navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
@@ -626,21 +632,21 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse/*, ExistUserStatusResponse response*/) {
         abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSId);
         abhaProfileResponse.setUuID(mExistingPatientUuid);
-        Intent intent = new Intent(context, IdentificationActivity_New.class);
-        intent.putExtra(PAYLOAD, abhaProfileResponse);
-        intent.putExtra("accessToken", accessToken);
-        intent.putExtra("patient_detail", true);
-        intent.putExtra("firstRequestFulfilled", true);
-        startActivity(intent);
+//        Intent intent = new Intent(context, IdentificationActivity_New.class);
+//        intent.putExtra(PAYLOAD, abhaProfileResponse);
+//        intent.putExtra("accessToken", accessToken);
+//        intent.putExtra("patient_detail", true);
+//        intent.putExtra("firstRequestFulfilled", true);
+//        startActivity(intent);
         finish();
     }
 
     private void navigateToIdentificationScreenForNewPatient(OTPVerificationResponse abhaProfileResponse) {
-        Intent intent = new Intent(context, IdentificationActivity_New.class);
-        intent.putExtra(PAYLOAD, abhaProfileResponse);
-        intent.putExtra("accessToken", accessToken);
-        startActivity(intent);
-        finish();
+//        Intent intent = new Intent(context, IdentificationActivity_New.class);
+//        intent.putExtra(PAYLOAD, abhaProfileResponse);
+//        intent.putExtra("accessToken", accessToken);
+//        startActivity(intent);
+//        finish();
     }
 
     private void cancelResendAndHideView() {

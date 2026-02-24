@@ -14,8 +14,6 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.intelehealth.app.abdm.model.Tags;
-
 public class AbhaProfileResponse implements Serializable {
 
     @SerializedName("token")

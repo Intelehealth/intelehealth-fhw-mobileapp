@@ -71,4 +71,10 @@
     <string name="preferred_abha_address_is_set_successfully">Preferred ABHA address is set successfully!</string>
     <string name="please_click_on_submit_button_to_proceed">Please click on submit button to proceed.</string>
 
+    <string name="abha">ABHA</string>
+    <string name="do_you_have_your_abha_number">Do you have an ABHA?</string>
+    <string name="yes">Yes</string>
+    <string name="create_abha">Create Abha</string>
+    <string name="continue_without_abha">Continue without ABHA</string>
+
 </resources>

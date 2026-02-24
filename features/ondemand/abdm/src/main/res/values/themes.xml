@@ -1,12 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AndroidMobileClient" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="fontFamily">@font/lato_regular</item>
-    </style>
+    <style name="Base.Theme.AndroidMobileClient" parent="Theme.AppCompat.Light.NoActionBar" />
 
-    <style name="Theme.AndroidMobileClient" parent="Base.Theme.AndroidMobileClient" />
+    <style name="Theme.AndroidMobileClient" parent="Base.Theme.AndroidMobileClient">
+        <item name="fontFamily">@font/lato_regular</item>
+        <item name="android:fontFamily">@font/lato_regular</item>
+    </style>
 
     <style name="style_subtitle">
         <item name="android:textSize">@dimen/text_13</item>
