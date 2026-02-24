@@ -15,6 +15,7 @@ import androidx.core.view.WindowCompat
 import org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity
 import org.intelehealth.abdm.dialog.AbhaChoiceDialogFragment
 import org.intelehealth.abdm.listener.AbhaChoiceListener
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
@@ -85,34 +86,41 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
         finish()
     }
 
+    @Suppress("KotlinConstantConditions")
     fun acceptCon(view: View?) {
-        AbhaChoiceDialogFragment()
-            .apply {
-                listener = object : AbhaChoiceListener {
-                    override fun onHasAbha() {
+        if (BuildConfig.FLAVOR == "idaProduction") {
+            AbhaChoiceDialogFragment()
+                .apply {
+                    listener = object : AbhaChoiceListener {
+                        override fun onHasAbha() {
 
-                    }
+                        }
 
-                    override fun onCreateAbha() {
-                        startActivity(
-                            Intent(
-                                this@PersonalConsentActivity,
-                                CreateAbhaAccountActivity::class.java
+                        override fun onCreateAbha() {
+                            startActivity(
+                                Intent(
+                                    this@PersonalConsentActivity,
+                                    CreateAbhaAccountActivity::class.java
+                                )
                             )
-                        )
-                    }
+                        }
 
-                    override fun onContinueWithoutAbha() {
-                        PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
-                        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-                        this@PersonalConsentActivity.finish()
+                        override fun onContinueWithoutAbha() {
+                            PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
+                            setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+                            this@PersonalConsentActivity.finish()
+                        }
                     }
                 }
-            }
-            .show(
-                supportFragmentManager,
-                AbhaChoiceDialogFragment.TAG
-            )
+                .show(
+                    supportFragmentManager,
+                    AbhaChoiceDialogFragment.TAG
+                )
+        } else {
+            PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
+            setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+            this@PersonalConsentActivity.finish()
+        }
     }
 
     override fun attachBaseContext(newBase: Context) {
