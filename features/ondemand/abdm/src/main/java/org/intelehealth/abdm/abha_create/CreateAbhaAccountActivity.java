@@ -21,6 +21,7 @@ import androidx.core.content.ContextCompat;
 import com.github.ajalt.timberkt.Timber;
 
 import org.intelehealth.abdm.R;
+import org.intelehealth.abdm.abha_suggestions.AbhaAddressSuggestionsActivity;
 import org.intelehealth.abdm.constants.AbdmConstant;
 import org.intelehealth.abdm.databinding.ActivityCreateAbhaBinding;
 import org.intelehealth.abdm.dialog.ChecklistDialogFragment;
@@ -423,11 +424,11 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                             addressList.addAll(enrollSuggestionResponse.getAbhaAddressList());
 
                             if (!addressList.isEmpty()) {
-//                                Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
-//                                intent.putStringArrayListExtra("addressList", addressList);
-//                                intent.putExtra("payload", otpVerificationResponse);
-//                                intent.putExtra("accessToken", accessToken);
-//                                startActivity(intent);
+                                Intent intent = new Intent(context, AbhaAddressSuggestionsActivity.class);
+                                intent.putStringArrayListExtra("addressList", addressList);
+                                intent.putExtra("payload", otpVerificationResponse);
+                                intent.putExtra("accessToken", accessToken);
+                                startActivity(intent);
                                 finish();
                             }
                         }

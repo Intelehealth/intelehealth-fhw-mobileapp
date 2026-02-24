@@ -13,7 +13,7 @@ object AbdmManager {
         get() = "$baseUrl/EMR-Middleware/webapi/check/id/"
 
     @JvmStatic
-    val locationUuid: String = ""
+    var locationUuid: String = ""
 
     @JvmStatic
     var isCommunicationNumberUsed: Boolean = false

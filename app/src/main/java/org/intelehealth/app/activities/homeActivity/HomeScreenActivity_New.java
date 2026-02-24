@@ -82,6 +82,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.abdm.utils.AbdmManager;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
@@ -397,6 +398,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setMigration(true);
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
         loadFeatureActiveStatus();
+        initializeAbdmManager();
+    }
+
+    private void initializeAbdmManager() {
+        AbdmManager.setBaseUrl(BuildConfig.SERVER_URL);
+        AbdmManager.setEncoded(sessionManager.getEncoded());
+        AbdmManager.setLocationUuid(sessionManager.getLocationUuid());
+        AbdmManager.setHwFullName(sessionManager.getChwname());
     }
 
     private void setStatusBarChanges() {
