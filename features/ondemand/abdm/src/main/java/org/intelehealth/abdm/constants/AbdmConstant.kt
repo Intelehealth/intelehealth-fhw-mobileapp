@@ -25,4 +25,7 @@ object AbdmConstant {
     const val AADHAAR_LOGIN: String = "aadhaar_login"
     const val MOBILE_LOGIN: String = "mobile_login"
 
+    const val LOCAL_PATIENT = "local_patient"
+    const val ABHA_PATIENT = "abha_patient"
+    const val MOBILE_NO = "mobile_no"
 }

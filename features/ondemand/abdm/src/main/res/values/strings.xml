@@ -109,4 +109,32 @@
     <string name="abha_user_not_found">ABHA User Not Found</string>
     <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
 
+    <string name="compare_data">Compare Data</string>
+    <string name="please_select_all_the_fields_to_continue">Please select all the fields to continue</string>
+    <string name="unable_to_update_the_patient_try_again_later">Unable to update the patient. Try again later.</string>
+
+    <string name="hmis_data">HMIS Data</string>
+    <string name="abha_data">ABHA Data</string>
+
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="row_dob">DOB</string>
+    <string name="gender">Gender</string>
+    <string name="row_address">Address</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="compare_screen_abha_address">ABHA Address</string>
+    <string name="compare_screen_abha_number">ABHA Number</string>
+    <string name="phone_number">Phone number</string>
+    <string name="confirm_and_save_selected_data">Confirm and Save Selected Data</string>
+    <string name="save_data">Save Data?</string>
+    <string name="do_you_want_to_ahead_and_save_the_patient_s_data">Do you want to go ahead and save the patient\'s data?</string>
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="patient_registered">Patient Registered!</string>
+    <string name="does_patient_start_visit_now">Does the patient want to start the visit now?</string>
+    <string name="no">No</string>
+
 </resources>
