@@ -23,5 +23,6 @@
     <color name="colorPrimaryDark1">#098E66</color>
     <color name="green3">#14AA00</color>
     <color name="black">#000000</color>
+    <color name="ui2_chat_bubble_color">#E6FFF3</color>
 
 </resources>

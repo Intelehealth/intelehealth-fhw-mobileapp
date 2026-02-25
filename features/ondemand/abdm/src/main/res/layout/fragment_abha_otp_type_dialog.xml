@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/margin_40">
+
+    <TextView
+        android:id="@+id/tvHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:gravity="start"
+        android:paddingVertical="@dimen/margin_20"
+        android:text="@string/send_otp_to_phone_number_linked_to"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/llTabSelection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/tvHeader"
+        app:layout_constraintStart_toStartOf="@id/tvHeader"
+        app:layout_constraintTop_toBottomOf="@id/tvHeader">
+
+        <Button
+            android:id="@+id/btnAadhaar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_abha_option"
+            android:paddingStart="@dimen/margin_12"
+            android:paddingTop="@dimen/margin_10"
+            android:paddingEnd="@dimen/margin_12"
+            android:paddingBottom="@dimen/margin_10"
+            android:text="@string/aadhaar"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_14" />
+
+        <Button
+            android:id="@+id/btnAbha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_abha_option_disabled"
+            android:paddingStart="@dimen/margin_12"
+            android:paddingTop="@dimen/margin_8"
+            android:paddingEnd="@dimen/margin_10"
+            android:paddingBottom="@dimen/margin_8"
+            android:text="@string/mobile"
+            android:textAllCaps="true"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_14" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnContinue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/bg_common_with_state"
+        android:drawableTint="@color/iconTintWhite"
+        android:paddingStart="@dimen/common_button_padding_left"
+        android:paddingTop="@dimen/common_button_padding_top"
+        android:paddingEnd="@dimen/common_button_padding_right"
+        android:paddingBottom="@dimen/common_button_padding_bottom"
+        android:text="@string/button_continue"
+        android:textColor="@color/iconTintWhite"
+        app:layout_constraintEnd_toEndOf="@id/tvHeader"
+        app:layout_constraintStart_toStartOf="@id/tvHeader"
+        app:layout_constraintTop_toBottomOf="@+id/llTabSelection" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

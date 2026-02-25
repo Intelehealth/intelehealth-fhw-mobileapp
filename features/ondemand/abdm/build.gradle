@@ -66,4 +66,7 @@ dependencies {
     // Timber
     implementation 'com.github.ajalt:timberkt:1.5.1'
 
+    // Country code picker
+    implementation 'com.hbb20:ccp:2.6.1'
+
 }

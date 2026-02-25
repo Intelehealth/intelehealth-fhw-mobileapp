@@ -45,6 +45,10 @@ public class CustomProgressDialog extends Dialog {
         }
     }
 
+    public void updateTitle(final String title) {
+        mTvProgressTitle.setText(title);
+    }
+
     /**
      * Shows progress dialog with custom progress title
      *

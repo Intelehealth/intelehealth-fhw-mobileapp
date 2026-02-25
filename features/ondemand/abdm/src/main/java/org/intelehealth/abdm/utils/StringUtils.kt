@@ -20,4 +20,9 @@ object StringUtils {
         }
 
     }
+
+    @JvmStatic
+    fun extractLastFour(abhaNumber: String): String {
+        return abhaNumber.substring(abhaNumber.length - 4)
+    }
 }

@@ -24,4 +24,13 @@ object AbdmManager {
     @JvmStatic
     var hwFullName: String = ""
 
+    @JvmStatic
+    var abhaLoginType: String = ""
+
+    @JvmStatic
+    var tempScope: String = ""
+
+    @JvmStatic
+    var isCreateAbha: Boolean = false
+
 }

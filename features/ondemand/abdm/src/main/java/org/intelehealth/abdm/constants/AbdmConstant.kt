@@ -21,4 +21,8 @@ object AbdmConstant {
     const val INTENT_PATIENT_NAME_TAG: String = "patientName"
     const val PAYLOAD = "payload"
 
+    const val ABHA_LOGIN: String = "abha_login"
+    const val AADHAAR_LOGIN: String = "aadhaar_login"
+    const val MOBILE_LOGIN: String = "mobile_login"
+
 }

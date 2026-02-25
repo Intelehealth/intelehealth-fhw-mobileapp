@@ -19,6 +19,9 @@
     <dimen name="margin_16">16dp</dimen>
     <dimen name="margin_32">32dp</dimen>
     <dimen name="margin_64">64dp</dimen>
+    <dimen name="margin_0">0dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_30">40dp</dimen>
 
     <dimen name="tv_resend_otp_margin_start">5dp</dimen>
     <dimen name="hamburger_margin_start">8dp</dimen>
@@ -37,5 +40,7 @@
 
     <dimen name="internet_dialog_width">310dp</dimen>
     <dimen name="abha_choice_dialog_width">310dp</dimen>
+
+    <dimen name="size_40">40dp</dimen>
 
 </resources>

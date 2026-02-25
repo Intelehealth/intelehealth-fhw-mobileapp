@@ -10,6 +10,11 @@
             android:exported="false"
             android:theme="@style/Theme.AndroidMobileClient" />
 
+        <activity
+            android:name="org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AndroidMobileClient" />
+
     </application>
 
 </manifest>

@@ -76,5 +76,37 @@
     <string name="yes">Yes</string>
     <string name="create_abha">Create Abha</string>
     <string name="continue_without_abha">Continue without ABHA</string>
+    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your AADHAAR card or Phone number or ABHA for data security and privacy.</string>
+    <string name="aadhar_number">AADHAAR number</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="enter_username2">Enter username</string>
+    <string name="enter_username_given">Please enter your username provided by Intelehealth</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
+    <string name="enter_14_digit_abha_id_number">Enter 14 Digit ABHA ID Number</string>
+    <string name="or">Or</string>
+    <string name="enter_abha_address">Enter ABHA address (e.g. address@sbx)</string>
+    <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
+    <string name="aadhaar">AADHAAR</string>
+    <string name="mobile">Mobile</string>
+    <string name="button_continue">Continue</string>
+    <string name="fetching_profiles">Fetching Profiles</string>
+    <string name="please_select_the_abha_account">Please select the ABHA account</string>
+
+    <string name="multiple_accounts_abha_index">Index: %1$s</string>
+    <string name="multiple_accounts_abha_full_name">Name: %1$s</string>
+    <string name="multiple_accounts_abha_number">ABHA Number: %1$s</string>
+    <string name="multiple_accounts_abha_gender">Gender: %1$s</string>
+    <string name="multiple_accounts_abha_positive_status">Status: Registered with Intelehealth</string>
+    <string name="multiple_accounts_abha_negative_status">Status: Not registered with Intelehealth</string>
+
+    <string name="no_abha_user_records_associated_with_this_mobile_no">No ABHA user records associated with this Mobile No. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="please_enter_valid_abha">Please enter valid ABHA</string>
+    <string name="please_enter_valid_aadhaar">Please enter valid AADHAAR</string>
+    <string name="the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number">The mobile number you have entered does not match with any of the records. Please enter a different number.</string>
+    <string name="kyc_verification_not_done_abha_address">This is a non-KYC ABHA address. Please link your ABHA address to your ABHA number to enable download.</string>
+    <string name="no_abha_user_records_associated_with_this_aadhaar">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="abha_user_not_found">ABHA User Not Found</string>
+    <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
 
 </resources>

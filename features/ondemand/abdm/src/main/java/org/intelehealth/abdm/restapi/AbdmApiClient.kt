@@ -3,16 +3,23 @@ package org.intelehealth.abdm.restapi
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.intelehealth.abdm.model.AadharApiBody
+import org.intelehealth.abdm.model.AbhaProfileRequestBody
+import org.intelehealth.abdm.model.AbhaProfileResponse
 import org.intelehealth.abdm.model.EnrollNumberWithABDMRequest
 import org.intelehealth.abdm.model.EnrollSuggestionRequestBody
 import org.intelehealth.abdm.model.EnrollSuggestionResponse
+import org.intelehealth.abdm.model.MobileLoginApiBody
+import org.intelehealth.abdm.model.MobileLoginOnOTPVerifiedResponse
 import org.intelehealth.abdm.model.OTPResponse
 import org.intelehealth.abdm.model.OTPVerificationRequestBody
 import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.model.SearchAbhaProfileResponse
 import org.intelehealth.abdm.model.SetAbhaAddressResponse
 import org.intelehealth.abdm.model.TokenResponse
 import org.intelehealth.abdm.model.UpdateIdentifierReqBody
 import org.intelehealth.app.abdm.model.ExistUserStatusResponse
+import org.intelehealth.app.abdm.model.FetchAuthModesResponse
+import org.intelehealth.app.abdm.model.SearchAbhaProfile
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -69,4 +76,37 @@ interface AbdmApiClient {
         @Header("Authorization") accessToken: String,
         @Body enrollSuggestionRequestBody: EnrollSuggestionRequestBody
     ): Single<Response<SetAbhaAddressResponse>>
+
+    @POST("/abha/searchAbhaProfiles")
+    fun searchAbhaProfile(
+        @Header("Authorization") accessToken: String,
+        @Body searchAbhaProfile: SearchAbhaProfile
+    ): Single<Response<HashMap<String, SearchAbhaProfileResponse>>>
+
+    @POST("/abha/loginOTPReq")
+    fun getOtpForMobile(
+        @Header("Authorization") accessToken: String,
+        @Body body: MobileLoginApiBody
+    ): Single<Response<OTPResponse>>
+
+    @POST("/abha/loginOTPVerify")
+    fun getOtpForMobileLoginVerification(
+        @Header("Authorization") accessToken: String,
+        @Body otpVerificationRequestBody: OTPVerificationRequestBody
+    ): Single<Response<MobileLoginOnOTPVerifiedResponse>>
+
+    @POST("/abha/fetchAuthModes")
+    fun fetchAuthModes(
+        @Body body: MutableMap<String, String>,
+        @Header("Authorization") accessToken: String,
+        @Header("X-TOKEN") xToken: String
+    ): Single<Response<FetchAuthModesResponse>>
+
+    @POST("/abha/profile")
+    fun pushAbhaProfile(
+        @Header("Authorization") accessToken: String,
+        @Header("X-TOKEN") xToken: String,
+        @Body abhaProfileRequestBody: AbhaProfileRequestBody
+    ): Single<AbhaProfileResponse>
+
 }
