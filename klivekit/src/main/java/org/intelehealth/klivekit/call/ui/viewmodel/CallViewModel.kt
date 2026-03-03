@@ -40,7 +40,7 @@ open class CallViewModel(
     private val application: Application
 ) : ViewModel() {
 
-    private var audioHandler = AudioSwitchHandler(application)
+    //private var audioHandler = AudioSwitchHandler(application)
 
 //    val room = LiveKit.create(
 //        appContext = application.applicationContext,
