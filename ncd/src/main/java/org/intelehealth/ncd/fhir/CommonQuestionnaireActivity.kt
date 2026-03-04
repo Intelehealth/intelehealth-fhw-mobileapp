@@ -77,7 +77,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             //"Abdominal distention_fhir.json",
             "hypertension_screening.json",
             "anemia_screening.json",
-            "anemia_followup.json",
+            //"anemia_followup.json",
             "diabetes_screening.json",
             "hypertension_followup.json",
             "anemia_followup.json"
@@ -87,7 +87,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             //"Abdominal distention",
             "Hypertension Screening",
             "Anemia Screening",
-            "Anemia Followup",
+            //"Anemia Followup",
             "Diabetes Screening",
             "Hypertension Followup",
             "Anemia Followup",
@@ -133,7 +133,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             //"Abdominal distention",
             getString(R.string.questionnaire_title_hypertension_screening),
             getString(R.string.questionnaire_title_anemia_screening),
-            getString(R.string.anemia_followup),
+            //getString(R.string.questionnaire_title_anemia_followup),
             getString(R.string.questionnaire_title_diabetes_screening),
             getString(R.string.questionnaire_title_hypertension_followup),
             getString(R.string.questionnaire_title_anemia_followup)

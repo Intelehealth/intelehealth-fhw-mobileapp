@@ -1346,6 +1346,23 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             lastSync = StringUtils.en__te_dob(lastSync);
         else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
             lastSync = StringUtils.en__ta_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+            lastSync = StringUtils.en__or_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
+            lastSync = StringUtils.en__bn_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+            lastSync = StringUtils.en__gu_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+            lastSync = StringUtils.en__mr_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
+            lastSync = StringUtils.en__as_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml"))
+            lastSync = StringUtils.en__ml_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
+            lastSync = StringUtils.en__kn_dob(lastSync);
+        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
+            lastSync = StringUtils.en__ru_dob(lastSync);
+
         tvAppLastSync.setText(lastSync);
 
         //ui2.0 update user details in  nav header
@@ -1459,6 +1476,22 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 lastSync = StringUtils.en__ta_dob(lastSync);
             else if(sessionManager.getAppLanguage().equalsIgnoreCase("te"))
                 lastSync = StringUtils.en__te_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+                lastSync = StringUtils.en__or_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
+                lastSync = StringUtils.en__bn_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+                lastSync = StringUtils.en__gu_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+                lastSync = StringUtils.en__mr_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
+                lastSync = StringUtils.en__as_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml"))
+                lastSync = StringUtils.en__ml_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
+                lastSync = StringUtils.en__kn_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
+                lastSync = StringUtils.en__ru_dob(lastSync);
             tvAppLastSync.setText(lastSync);
 
 

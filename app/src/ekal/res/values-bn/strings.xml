@@ -441,6 +441,10 @@
     <string name="category_anemia">অ্যানিমিয়া</string>
     <string name="category_hypertension">হাইপারটেনশন</string>
     <string name="category_diabetes">ডায়াবেটিস</string>
+
+    <string name="not_eligible_for_protocols_message">এই মুহূর্তে আপনি কোনো NCD প্রোটোকলের জন্য যোগ্য নন। আপনি যদি তবুও এগিয়ে যেতে চান, আপনার পছন্দের প্রোটোকল নির্বাচন করুন।</string>
+    <string name="yes_move_ahead">হ্যাঁ, এগিয়ে যান</string>
+    <string name="no_go_back">না, ফিরে যান</string>
 <!--
    we have this already in ncd module hence commented
     <string name="confirm_discard_changes_title">This visit is incomplete!</string>

@@ -1404,7 +1404,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             complaintInRegional = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                         }
                     }
-
+                    boolean needToShowCoreValue = true; // now we are keeping same for both data
                     String finalComplaint = "";
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                         finalComplaint = complaintInEnglish;
@@ -1421,28 +1421,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                         String visitValue = finalComplaint;
-                        boolean needToShowCoreValue = false;
-                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                            try {
-                                // isInOldFormat = false;
-                                JSONObject jsonObject = new JSONObject(visitValue);
-                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                    needToShowCoreValue = false;
-                                } else {
-                                    needToShowCoreValue = true;
-                                    visitValue = jsonObject.getString("en");
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                CustomLog.e(TAG, e.getMessage());
-                            }
-                        } else {
-                            needToShowCoreValue = true;
-                        }
+//                        boolean needToShowCoreValue = false;
+//                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+//                            try {
+//                                // isInOldFormat = false;
+//                                JSONObject jsonObject = new JSONObject(visitValue);
+//                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+//                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+//                                    needToShowCoreValue = false;
+//                                } else {
+//                                    needToShowCoreValue = true;
+//                                    visitValue = jsonObject.getString("en");
+//                                }
+//                            } catch (JSONException e) {
+//                                e.printStackTrace();
+//                                CustomLog.e(TAG, e.getMessage());
+//                            }
+//                        } else {
+//                            needToShowCoreValue = true;
+//                        }
 
                         if (visitValue != null && !visitValue.isEmpty()) {
-
+                            if(visitValue.contains("::●")){
+                                needToShowCoreValue = false;
+                            }
                             if (needToShowCoreValue) {
 
                                 visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
@@ -2833,15 +2835,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 complaintInRegional = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
                             }
                         }
-
+                        boolean needToShowCoreValue = true; // now we are keeping same for both data
                         String finalComplaint = "";
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                             finalComplaint = complaintInEnglish;
+                           // needToShowCoreValue = true;
                         } else {
                             complaintInRegional = StringUtils.getRegionalLanguageDataFromJson(complaintInRegional, sessionManager.getAppLanguage());
                             if (complaintInRegional.equalsIgnoreCase("")) {
                                 complaintInRegional = complaintInEnglish;
                                 finalComplaint = complaintInEnglish;
+                               // needToShowCoreValue = true;
                             } else {
                                 finalComplaint = complaintInRegional;
                             }
@@ -2850,25 +2854,28 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         if (previsitCursor != null && previsitCursor.moveToLast()) {
 
                             String visitValue = finalComplaint;
-                            boolean needToShowCoreValue = false;
-                            if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                                try {
-                                    // isInOldFormat = false;
-                                    JSONObject jsonObject = new JSONObject(visitValue);
-                                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                        visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                        needToShowCoreValue = false;
-                                    } else {
-                                        needToShowCoreValue = true;
-                                        visitValue = jsonObject.getString("en");
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            } else {
-                                needToShowCoreValue = true;
-                            }
+//                            boolean needToShowCoreValue = false;
+//                            if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+//                                try {
+//                                    // isInOldFormat = false;
+//                                    JSONObject jsonObject = new JSONObject(visitValue);
+//                                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+//                                        visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+//                                        needToShowCoreValue = false;
+//                                    } else {
+//                                        needToShowCoreValue = true;
+//                                        visitValue = jsonObject.getString("en");
+//                                    }
+//                                } catch (JSONException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            } else {
+//                                needToShowCoreValue = true;
+//                            }
                             if (visitValue != null && !visitValue.isEmpty()) {
+                                if(visitValue.contains("::●")){
+                                    needToShowCoreValue = false;
+                                }
 
                                 if (needToShowCoreValue) {
 

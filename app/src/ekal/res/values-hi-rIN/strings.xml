@@ -107,7 +107,7 @@
     <string name="bp_check_question">आखिरी बार आपने अपना बीपी कब चेक कराया था?</string>
     <string name="sugar_check_question">पिछली बार कब आपने अपना शुगर लेवल चेक कराया था?</string>
     <string name="bp_label">बी.पी.</string>
-    <string name="diabetes_label">मधुमेह</string>
+    <string name="diabetes_label">डायबिटीज़</string>
     <string name="arthritis_label">गठिया</string>
     <string name="anemia_label">एनीमिया</string>
     <string name="surgery_label">कोई सर्जरी?</string>
@@ -441,7 +441,7 @@
     <string name="new_ncd_sevika_visit">नया NCD/सेविका विज़िट</string>
 
     <string name="category_anemia">एनीमिया</string>
-    <string name="category_hypertension">हाइपरटेंशन</string>
+    <string name="category_hypertension">उच्च रक्तचाप</string>
     <string name="category_diabetes">डायबिटीज़</string>
 
     <string name="not_eligible_for_protocols_message">आप इस समय किसी भी NCD प्रोटोकॉल के लिए पात्र नहीं हैं। यदि आप फिर भी आगे बढ़ना चाहते हैं, तो अपनी पसंद का प्रोटोकॉल चुनें।</string>
