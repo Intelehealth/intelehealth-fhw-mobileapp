@@ -47,10 +47,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.radiobutton.MaterialRadioButton
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputEditText
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.hl7.fhir.r4.model.Enumerations
 import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
@@ -97,6 +99,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
 
     private var isRecurring = false // set to true if you want to use recurring questionnaire
+    private var isRestoringFragment = false // suppresses TextWatcher reactions during fragment reload
 
     var fragmentBuilder: QuestionnaireFragment.Builder? = null
     var questionnaireTitle: String? = null
@@ -212,9 +215,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             application.assets.open("hypertension_screening_poc_jing.json").bufferedReader()
                 .use { it.readText() }*/
 
-        if (savedInstanceState == null) {
-            loadQuestionnaireFragment(null, false, -1)
-        }
+        loadQuestionnaireFragment(null, false, -1)
         supportFragmentManager.setFragmentResultListener(
             QuestionnaireFragment.SUBMIT_REQUEST_KEY,
             this
@@ -291,13 +292,26 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         isDisableRequired: Boolean,
         index: Int
     ) {
+        if (questionnaireResponse == null) {
+            // First load — run synchronously on main thread so UI appears immediately with no delay
+            commitQuestionnaireFragment(null)
+        } else {
+            // Subsequent reloads with an existing response — offload IO to background thread
+            // since the UI is already showing content at this point
+            lifecycleScope.launch {
+                val (questionnaireJson, launchContextMap) = withContext(Dispatchers.IO) {
+                    buildQuestionnaireArgs()
+                }
+                if (isFinishing || isDestroyed) return@launch
+                commitQuestionnaireFragment(questionnaireResponse, questionnaireJson, launchContextMap)
+            }
+        }
+    }
 
+    private fun buildQuestionnaireArgs(): Pair<String, Map<String, String>> {
         val localizedContext = getLocalizedContext()
-
-        // match with the questionnaireTitles then found the file name from questionnaireFiles
         val patient = Patient().apply {
             id = "intelehealth"
-            // patientGender.equals("M") ? Enumerations.AdministrativeGender.MALE: Enumerations.AdministrativeGender.FEMALE
             gender = when (patientGender?.uppercase()) {
                 "M" -> Enumerations.AdministrativeGender.MALE
                 "F" -> Enumerations.AdministrativeGender.FEMALE
@@ -310,78 +324,72 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             )
             birthDate = SimpleDateFormat("yyyy-MM-dd").parse(patientDOB)
         }
-
-
         val patientJson = FhirContext.forR4Cached()
             .newJsonParser()
             .encodeResourceToString(patient)
-
-        val launchContextMap = mapOf("patient" to patientJson)
-        // print console log
-        println("Launch context map: $launchContextMap")
-
         val questionnaireFileName =
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
-
-        latestQuestionnaire =
+        val questionnaireJson =
             localizedContext.assets.open(questionnaireFileName).bufferedReader()
                 .use { it.readText() }
-        // need to disable the sbp & dbp fields
+        return Pair(questionnaireJson, mapOf("patient" to patientJson))
+    }
 
-        questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
-        //supportFragmentManager.commitNow {
-        if (!supportFragmentManager.isStateSaved)
-            supportFragmentManager.commitNow {
-                setReorderingAllowed(true)
-                fragmentBuilder = QuestionnaireFragment.builder()
-                    .setQuestionnaire(latestQuestionnaire!!)
-                    .setQuestionnaireLaunchContextMap(launchContextMap)
-                    .showAsterisk(true)
-                    .showRequiredText(false)
-                    .setShowSubmitAnywayButton(false)
+    private fun commitQuestionnaireFragment(
+        questionnaireResponse: Any?,
+        questionnaireJson: String? = null,
+        launchContextMap: Map<String, String>? = null
+    ) {
+        val (json, contextMap) = if (questionnaireJson != null && launchContextMap != null) {
+            Pair(questionnaireJson, launchContextMap)
+        } else {
+            buildQuestionnaireArgs()
+        }
 
+        latestQuestionnaire = json
+        questionnaireJSONObject = JSONObject(json)
 
-                // If you want your questionnaire to start with some answers already filled,
-                // include a questionnaire response in your arguments bundle for your
-                //.setQuestionnaireResponse(questionnaireResponse)
-                //.setShowCancelButton(true)
-                if (questionnaireResponse != null)
-                    fragmentBuilder!!.setQuestionnaireResponse(questionnaireResponse.toString())
+        var builder = QuestionnaireFragment.builder()
+            .setQuestionnaire(json)
+            .setQuestionnaireLaunchContextMap(contextMap)
+            .showAsterisk(true)
+            .showRequiredText(false)
+            .setShowSubmitAnywayButton(false)
 
-                questionnaireFragment = fragmentBuilder!!.build()
+        if (questionnaireResponse != null)
+            builder = builder.setQuestionnaireResponse(questionnaireResponse.toString())
 
-                replace(
-                    R.id.fragment_container_view,
-                    questionnaireFragment!!,
-                    QUESTIONNAIRE_FRAGMENT_TAG
-                )
+        questionnaireFragment = builder.build()
+        fragmentBuilder = null
+        isRestoringFragment = true
 
-                // commitNow already used earlier, so view should exist — but run in post to be safe
-                supportFragmentManager.executePendingTransactions()
+        // Safety fallback: always lift the suppression flag after 3s even if the
+        // viewLifecycleOwnerLiveData callback never fires (e.g. fragment attach failure).
+        // This prevents the user from being permanently locked out of typing in fields.
+        Handler(Looper.getMainLooper()).postDelayed({ isRestoringFragment = false }, 3000)
 
-                // Observe viewLifecycleOwnerLiveData so we run only after onCreateView/onViewCreated
-                questionnaireFragment!!.viewLifecycleOwnerLiveData.observe(this@CommonQuestionnaireActivity) { owner ->
-                    if (owner != null) {
-                        // Now it's safe to use requireView()
-                        //  questionnaireFragment!!.requireView().post {
-                        questionnaireFragment?.view?.post {
-                            val v = questionnaireFragment?.view ?: return@post
-                            rootView = v
-                            // rootView = questionnaireFragment!!.requireView()
-                            bottomActionController = QuestionnaireBottomActionController(rootView)
+        supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+            .replace(
+                R.id.fragment_container_view,
+                questionnaireFragment!!,
+                QUESTIONNAIRE_FRAGMENT_TAG
+            )
+            .commitAllowingStateLoss()
 
-                            //bottomActionController.setBottomActionsEnabled(false)
-                            bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
-                            //bottomActionController.attachAutoToggleForRequiredInputs()
-                            // hideNextButtonIn(root)
-                            if (isRecurring) updateUIComponents();
-                        }
-                    }
+        questionnaireFragment!!.viewLifecycleOwnerLiveData.observe(this@CommonQuestionnaireActivity) { owner ->
+            if (owner != null) {
+                questionnaireFragment?.view?.post {
+                    val v = questionnaireFragment?.view ?: return@post
+                    rootView = v
+                    bottomActionController = QuestionnaireBottomActionController(rootView)
+                    bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
+                    if (isRecurring) updateUIComponents()
+                    // Normal path: lift suppression after the SDK finishes populating fields
+                    v.post { isRestoringFragment = false }
                 }
-
-
             }
-
+        }
     }
 
     private fun updateUIComponents() {
@@ -433,8 +441,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             "Your Question Text",
             View.FIND_VIEWS_WITH_TEXT
         )*/
-        // collect all text inputs
-        //val matched = mutableListOf<View>()
+        // collect all text inputs — clear first to avoid stale views from previous fragment reloads
+        matchedViews.clear()
         rootView.findAllTextInputs(matchedViews)
         fun printInputDetails(view: View) {
             when (view) {
@@ -517,6 +525,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 }
                 view.addTextChangedListener(object : TextWatcher {
                     override fun afterTextChanged(s: Editable?) {
+                        if (isRestoringFragment) return
                         Log.d("FHIR", "User typed: ${s.toString()}")
                         isAllowedForBottomActionEnable = false
                         bottomActionController?.setBottomActionsEnabledSmooth(
@@ -530,6 +539,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         count: Int,
                         after: Int
                     ) {
+                        if (isRestoringFragment) return
                         Log.d("FHIR", "Before text changed: ${s.toString()}")
                         bottomActionController?.setBottomActionsEnabledSmooth(false)
                     }
@@ -540,6 +550,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         before: Int,
                         count: Int
                     ) {
+                        if (isRestoringFragment) return
                         Log.d("FHIR", "On text changed: ${s.toString()}")
                         bottomActionController?.setBottomActionsEnabledSmooth(false)
                     }
@@ -930,20 +941,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 //Log.d("FHIR", "Checking BP Reading at index $index: SBP=$sbp, DBP=$dbp")
                 val isAbnormal = (sbp > 139 || sbp < 90) || (dbp > 89 || dbp < 60)
                 if (!isAbnormal) {
-                    loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
-                    return false
-                }
-            }
-        }
-
-        if (bpReadings[1] != null) {
-            val reading = bpReadings[1]
-            if (reading != null) {
-                val sbp = reading.sbp
-                val dbp = reading.dbp
-                //Log.d("FHIR", "Checking BP Reading at index $index: SBP=$sbp, DBP=$dbp")
-                val isAbnormal = (sbp > 139 || sbp < 90) || (dbp > 89 || dbp < 60)
-                if (!isAbnormal) {
+                    reading.shownDialogOnceForTimer = true
                     loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
                     return false
                 }
@@ -963,13 +961,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 val isAbnormal = (sbp > 139 || sbp < 90) || (dbp > 89 || dbp < 60)
                 if (isAbnormal) {
                     Log.d("FHIR", "Abnormal BP detected at index $index: SBP=$sbp, DBP=$dbp")
-                    // Show dialog only once for the first abnormal reading
-                    /*if (!reading.shownDialogOnceForTimer) {
-                        reading.shownDialogOnceForTimer = true
-
-                    }*/
                 } else {
                     Log.d("FHIR", "Normal BP at index $index: SBP=$sbp, DBP=$dbp")
+                    reading.shownDialogOnceForTimer = true
+                    loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
+                    return false
                 }
                 if (isAbnormal) foundIndexedValue = index
                 return isAbnormal
