@@ -936,6 +936,20 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             }
         }
 
+        if (bpReadings[1] != null) {
+            val reading = bpReadings[1]
+            if (reading != null) {
+                val sbp = reading.sbp
+                val dbp = reading.dbp
+                //Log.d("FHIR", "Checking BP Reading at index $index: SBP=$sbp, DBP=$dbp")
+                val isAbnormal = (sbp > 139 || sbp < 90) || (dbp > 89 || dbp < 60)
+                if (!isAbnormal) {
+                    loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
+                    return false
+                }
+            }
+        }
+
         // Check from second (m2) and first (m1)
         for (index in 1 downTo 0) {
             val reading = bpReadings[index]
