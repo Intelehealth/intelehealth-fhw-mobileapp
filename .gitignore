@@ -22,6 +22,7 @@ salt.env
 /webrtc/build/
 /app/release/
 /app/src/main/assets
+/app/src/ida/assets
 /webrtc/src/main/assets/config.properties
 
 app/src/ekal/assets/font/

@@ -7,7 +7,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+
+import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -267,8 +268,8 @@ public class SyncDAO {
         String oldDate = sessionManager.getPullExcutedTime();
         Log.d(TAG, "pullData_Background: encoded : " + encoded);
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
-                sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
-                "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
+                     sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
+                     "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
         ;
 //        String url =  sessionManager.getServerUrl() + "/pulldata/" + sessionManager
 //        .getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
@@ -930,7 +931,8 @@ public class SyncDAO {
                                 Intent broadcast = new Intent();
                                 broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);
                                 broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                                broadcast.setPackage(
+                                        IntelehealthApplication.getAppContext().getPackageName());
                                 IntelehealthApplication.getAppContext().sendBroadcast(broadcast);
 
                             } catch (Exception e) {

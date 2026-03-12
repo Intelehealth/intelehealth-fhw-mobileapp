@@ -80,7 +80,7 @@ public class EncounterDAO extends BaseDao {
             values.put("sync", encounter.getSyncd());
             values.put("voided", encounter.getVoided());
             values.put("privacynotice_value", encounter.getPrivacynotice_value());
-            //CustomLog.d("VALUES:", "VALUES: " + values);
+//            CustomLog.d("VALUES:", "VALUES: " + values);
             createdRecordsCount = db.insertWithOnConflict("tbl_encounter", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;

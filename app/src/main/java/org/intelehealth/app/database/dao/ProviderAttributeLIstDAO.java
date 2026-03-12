@@ -71,11 +71,11 @@ public class ProviderAttributeLIstDAO extends BaseDao{
                     attributeListDTO.getAttributetypeuuid().equalsIgnoreCase("ed1715f5-93e2-404e-b3c9-2a2d9600f062")) {
                 createdRecordsCount = db.insertWithOnConflict("tbl_dr_speciality", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
-                /*if (createdRecordsCount != -1) {
-                    CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
-                } else {
-                    CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
-                }*/
+//                if (createdRecordsCount != -1) {
+//                    CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
+//                } else {
+//                    CustomLog.d("SPECI", "SIZEXXX: " + createdRecordsCount);
+//                }
 
             }
 
