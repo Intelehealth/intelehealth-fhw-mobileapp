@@ -3,6 +3,8 @@ package org.intelehealth.ncd.fhir
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -109,6 +111,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     lateinit var rootView: View
     val matchedViews = mutableListOf<View>()
     var appLang: String? = "en"
+    private var countDownTimer: CountDownTimer? = null
 
 
     // change the locale of the activity
@@ -116,6 +119,18 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Syncing intent lang to prefs immediately
+        val intentLang = intent.getStringExtra("appLang")
+        if (!intentLang.isNullOrEmpty()) {
+            appLang = intentLang
+            // saving to prefs so attachBaseContext uses correct value on recreation
+            getSharedPreferences("Intelehealth", Context.MODE_PRIVATE)
+                .edit()
+                .putString("CURRENT_LANG", intentLang)
+                .apply()
+        }
+
         setContentView(R.layout.activity_common_questionnaire)
         // Disable/override back button
 
@@ -211,6 +226,13 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         }
         if (isRecurring)
             startQuestionnaireMonitoring()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        countDownTimer?.cancel()
+        monitorJob?.cancel()
     }
 
 
@@ -253,11 +275,22 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
           hideKeyboard()
       }*/
 
+    private fun getLocalizedContext(): Context {
+        val lang = appLang ?: "en"
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = Configuration(resources.configuration)
+        config.setLocale(locale)
+        return createConfigurationContext(config)
+    }
+
     private fun loadQuestionnaireFragment(
         questionnaireResponse: Any?,
         isDisableRequired: Boolean,
         index: Int
     ) {
+
+        val localizedContext = getLocalizedContext()
 
         // match with the questionnaireTitles then found the file name from questionnaireFiles
         val patient = Patient().apply {
@@ -289,7 +322,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
 
         latestQuestionnaire =
-            assets.open(questionnaireFileName).bufferedReader().use { it.readText() }
+            localizedContext.assets.open(questionnaireFileName).bufferedReader().use { it.readText() }
         // need to disable the sbp & dbp fields
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
@@ -976,7 +1009,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
                 bpReadings[foundIndexedValue!!]?.shownDialogOnceForTimer = true
                 //isShownOnce = true;
-                object : CountDownTimer(FIVE_MINUTES_MILLIS, 1000) {
+                countDownTimer?.cancel()
+                countDownTimer = object : CountDownTimer(FIVE_MINUTES_MILLIS, 1000) {
                     override fun onTick(millisUntilFinished: Long) {
                         val minutes = (millisUntilFinished / 1000) / 60
                         val seconds = (millisUntilFinished / 1000) % 60
@@ -991,6 +1025,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     }
 
                     override fun onFinish() {
+                        if (isFinishing || isDestroyed) return
                         if (dialog.isShowing) {
                             dialog.dismiss()
                             hasShownDialog = false
@@ -999,11 +1034,15 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                                 isAllowedForBottomActionEnable
                             )
                             // reload the fragment to reset the state
-                            loadQuestionnaireFragment(
-                                lastQuestionnaireResponseString,
-                                true,
-                                foundIndexedValue!!
-                            )
+                            Handler(Looper.getMainLooper()).post {
+                                if (!isFinishing && !isDestroyed) {
+                                    loadQuestionnaireFragment(
+                                        lastQuestionnaireResponseString,
+                                        true,
+                                        foundIndexedValue!!
+                                    )
+                                }
+                            }
                         }
                     }
                 }.start()
@@ -1183,7 +1222,17 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         monitorJob?.cancel()
     }
     override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(setLocale(newBase))
+        val pref = newBase.getSharedPreferences("Intelehealth", Context.MODE_PRIVATE)
+        val lang = pref.getString("CURRENT_LANG", "en") ?: "en"
+        super.attachBaseContext(applyLocale(newBase, lang))
+    }
+
+    private fun applyLocale(context: Context, lang: String): Context {
+        val locale = Locale(lang)
+        Locale.setDefault(locale)
+        val config = Configuration(context.resources.configuration)
+        config.setLocale(locale)
+        return context.createConfigurationContext(config) // ← correctly returned
     }
 
     fun setLocale(context: Context): Context {
