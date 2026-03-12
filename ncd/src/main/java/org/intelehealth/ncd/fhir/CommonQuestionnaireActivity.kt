@@ -276,7 +276,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
       }*/
 
     private fun getLocalizedContext(): Context {
-        val lang = appLang ?: "en"
+        val lang = getSharedPreferences("Intelehealth", Context.MODE_PRIVATE)
+            .getString("CURRENT_LANG", "en") ?: "en"
+        appLang = lang
         val locale = Locale(lang)
         Locale.setDefault(locale)
         val config = Configuration(resources.configuration)
@@ -322,7 +324,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
 
         latestQuestionnaire =
-            localizedContext.assets.open(questionnaireFileName).bufferedReader().use { it.readText() }
+            localizedContext.assets.open(questionnaireFileName).bufferedReader()
+                .use { it.readText() }
         // need to disable the sbp & dbp fields
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
@@ -755,8 +758,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     )
 
 
-                    if (shouldShowAlertFromLatest())
+                    if (shouldShowAlertFromLatest()) {
                         showBpDialogOnceWithTimer()
+                    }
 
                 }
             }
@@ -918,6 +922,20 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             return false
         }
 
+        if (bpReadings[0] != null) {
+            val reading = bpReadings[0]
+            if (reading != null) {
+                val sbp = reading.sbp
+                val dbp = reading.dbp
+                //Log.d("FHIR", "Checking BP Reading at index $index: SBP=$sbp, DBP=$dbp")
+                val isAbnormal = (sbp > 139 || sbp < 90) || (dbp > 89 || dbp < 60)
+                if (!isAbnormal) {
+                    loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
+                    return false
+                }
+            }
+        }
+
         // Check from second (m2) and first (m1)
         for (index in 1 downTo 0) {
             val reading = bpReadings[index]
@@ -962,7 +980,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-    private val FIVE_MINUTES_MILLIS: Long = 5 * 60 * 1000
+    //private val FIVE_MINUTES_MILLIS: Long = 5 * 60 * 1000
+    private val FIVE_MINUTES_MILLIS: Long =  5 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
@@ -1036,6 +1055,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                             // reload the fragment to reset the state
                             Handler(Looper.getMainLooper()).post {
                                 if (!isFinishing && !isDestroyed) {
+                                    applyLocale(this@CommonQuestionnaireActivity, appLang ?: "en")
                                     loadQuestionnaireFragment(
                                         lastQuestionnaireResponseString,
                                         true,
@@ -1214,13 +1234,24 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        if (isRecurring) startQuestionnaireMonitoring()
+        if (isRecurring && monitorJob?.isActive != true) startQuestionnaireMonitoring()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        super.onResume()
+        applyLocale(this, appLang ?: "en")
+        // Force resources to use correct locale
+        val config = Configuration(resources.configuration)
+        config.setLocale(Locale(appLang ?: "en"))
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 
     override fun onStop() {
         super.onStop()
         monitorJob?.cancel()
     }
+
     override fun attachBaseContext(newBase: Context) {
         val pref = newBase.getSharedPreferences("Intelehealth", Context.MODE_PRIVATE)
         val lang = pref.getString("CURRENT_LANG", "en") ?: "en"
