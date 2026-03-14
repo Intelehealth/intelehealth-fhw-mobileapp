@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:autoLink="web"
-        android:buttonTint="@color/colorPrimary"
         android:checked="true"
         android:fontFamily="@font/lato_regular"
         android:gravity="top"
@@ -18,6 +17,8 @@
         android:paddingStart="@dimen/margin_10"
         android:paddingEnd="@dimen/margin_10"
         android:textSize="@dimen/text_14"
+        app:buttonIconTint="@color/iconTintWhite"
+        app:buttonTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India (“UIDAI”), and my demographic information for the purpose of

@@ -2,6 +2,7 @@ package org.intelehealth.abdm.utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.abdm.R;
+import org.intelehealth.abdm.dialog.TextViewDialogFragment;
 
 import java.util.Objects;
 
@@ -120,5 +124,39 @@ public class DialogUtils {
         });
 
         alertDialog.show();
+    }
+
+
+    public static void triggerTextViewDialogFragment(
+            AppCompatActivity activityContext,
+            Class<?> activityToLaunch,
+            String intentPatientNameTag,
+            ActivityResultLauncher<Intent> launcher
+    ) {
+
+        if (activityToLaunch == null) return;
+
+        TextViewDialogFragment dialogFragment = new TextViewDialogFragment(
+                activityContext.getString(R.string.please_enter_the_patient_name),
+                activityContext.getString(R.string.patient_name_cannot_be_empty),
+                new TextSelectedListener() {
+
+                    @Override
+                    public void onDialogActionDone(int action) {
+                        // No-op
+                    }
+
+                    @Override
+                    public void onDialogActionDone(int action, String text) {
+                        Intent intent = new Intent(activityContext, activityToLaunch);
+                        intent.putExtra(intentPatientNameTag, text);
+                        AbdmManager.setCreateAbha(true);
+                        launcher.launch(intent);
+                        activityContext.finish();
+                    }
+                }
+        );
+
+        dialogFragment.show(activityContext.getSupportFragmentManager(), TextViewDialogFragment.TAG);
     }
 }

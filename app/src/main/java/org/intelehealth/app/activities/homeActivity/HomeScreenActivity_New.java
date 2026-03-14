@@ -406,6 +406,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         AbdmManager.setEncoded(sessionManager.getEncoded());
         AbdmManager.setLocationUuid(sessionManager.getLocationUuid());
         AbdmManager.setHwFullName(sessionManager.getChwname());
+        AbdmManager.setDbClient(IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb());
     }
 
     private void setStatusBarChanges() {

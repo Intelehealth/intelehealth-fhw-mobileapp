@@ -225,7 +225,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/sendOtpBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -235,6 +235,8 @@
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
             android:background="@drawable/bg_common_with_state"
+            android:backgroundTint="@android:color/transparent"
+            android:backgroundTintMode="src_over"
             android:drawableEnd="@drawable/ic_arrow_forward"
             android:drawableTint="@color/iconTintWhite"
             android:enabled="false"
@@ -242,7 +244,8 @@
             android:paddingTop="@dimen/common_button_padding_top"
             android:paddingEnd="@dimen/common_button_padding_right"
             android:paddingBottom="@dimen/common_button_padding_bottom"
-            android:text="@string/send_otp" />
+            android:text="@string/send_otp"
+            android:textColor="@color/iconTintWhite" />
 
     </RelativeLayout>
 

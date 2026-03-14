@@ -9,18 +9,25 @@ import android.os.LocaleList
 import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity
+import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity.intentPatientNameTag
+import org.intelehealth.abdm.constants.AbdmConstant
 import org.intelehealth.abdm.dialog.AbhaChoiceDialogFragment
+import org.intelehealth.abdm.dialog.TextViewDialogFragment
+import org.intelehealth.abdm.enums.AbdmOutcomes
 import org.intelehealth.abdm.listener.AbhaChoiceListener
+import org.intelehealth.abdm.model.AbdmResult
+import org.intelehealth.abdm.utils.AbdmManager
+import org.intelehealth.abdm.utils.DialogUtils.TextSelectedListener
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
-import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.SessionManager
@@ -28,7 +35,7 @@ import org.intelehealth.app.utilities.WebViewStatus
 import java.util.Locale
 
 
-class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
+class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceListener {
     private var personal_consent_string = ""
     private var webView: WebView? = null
     var ivBack: ImageView? = null
@@ -81,6 +88,46 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
     }
 
+    private val abdmLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode != RESULT_OK) return@registerForActivityResult
+
+            val data = result.data ?: return@registerForActivityResult
+            val abdmResult: AbdmResult? = data.getParcelableExtra<AbdmResult>(
+                AbdmConstant.INTENT_ABDM_RESULT
+            ) ?: return@registerForActivityResult
+
+            val newIntent = Intent(context, PatientRegistrationActivity::class.java)
+            newIntent.putExtra("accessToken", abdmResult?.accessToken ?: "")
+
+            when (abdmResult?.outcome) {
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
+                    newIntent.putExtra("patient_detail", true)
+                    newIntent.putExtra("firstRequestFulfilled", true)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
+                    newIntent.putExtra("firstRequestFulfilled", abdmResult.firstRequestFulfilled)
+                    startActivity(newIntent)
+                }
+
+                null -> {
+
+                }
+            }
+
+            finish()
+        }
+
+
     fun declineCon(view: View?) {
         setResult(AppConstants.PERSONAL_CONSENT_DECLINE)
         finish()
@@ -91,31 +138,9 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
         if (BuildConfig.FLAVOR == "idaProduction") {
             AbhaChoiceDialogFragment()
                 .apply {
-                    listener = object : AbhaChoiceListener {
-                        override fun onHasAbha() {
-
-                        }
-
-                        override fun onCreateAbha() {
-                            startActivity(
-                                Intent(
-                                    this@PersonalConsentActivity,
-                                    CreateAbhaAccountActivity::class.java
-                                )
-                            )
-                        }
-
-                        override fun onContinueWithoutAbha() {
-                            PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
-                            setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-                            this@PersonalConsentActivity.finish()
-                        }
-                    }
+                    listener = this@PersonalConsentActivity
                 }
-                .show(
-                    supportFragmentManager,
-                    AbhaChoiceDialogFragment.TAG
-                )
+                .show(supportFragmentManager, AbhaChoiceDialogFragment.TAG)
         } else {
             PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
             setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
@@ -157,5 +182,23 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
     override fun onPageError(error: String) {
         loadingDialog?.dismiss()
+    }
+
+    override fun onHasAbha() {
+    }
+
+    override fun onCreateAbha() {
+        org.intelehealth.abdm.utils.DialogUtils.triggerTextViewDialogFragment(
+            this@PersonalConsentActivity,
+            CreateAbhaAccountActivity::class.java,
+            intentPatientNameTag,
+            abdmLauncher
+        )
+    }
+
+    override fun onContinueWithoutAbha() {
+        PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        this@PersonalConsentActivity.finish()
     }
 }

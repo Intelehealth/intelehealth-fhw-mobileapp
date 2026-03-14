@@ -7,13 +7,21 @@
 
         <activity
             android:name="org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity"
+            android:configChanges="uiMode"
             android:exported="false"
-            android:theme="@style/Theme.AndroidMobileClient" />
+            android:theme="@style/AppThemeMaterialNew" />
 
         <activity
             android:name="org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity"
+            android:configChanges="uiMode"
             android:exported="false"
-            android:theme="@style/Theme.AndroidMobileClient" />
+            android:theme="@style/AppThemeMaterialNew" />
+
+        <activity
+            android:name=".abha_suggestions.AbhaAddressSuggestionsActivity"
+            android:configChanges="uiMode"
+            android:exported="false"
+            android:theme="@style/AppThemeMaterialNew" />
 
     </application>
 

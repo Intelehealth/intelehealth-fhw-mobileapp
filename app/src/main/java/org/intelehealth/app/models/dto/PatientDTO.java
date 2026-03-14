@@ -112,6 +112,10 @@ public class PatientDTO implements Serializable {
     @SerializedName("address6")
     @Expose
     private String address6;
+
+    private String abhaNumber;
+    private String abhaAddress;
+
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
     }
@@ -640,6 +644,7 @@ public class PatientDTO implements Serializable {
     public void setHouseholdLinkingUUIDlinking(String householdLinkingUUIDlinking) {
         this.householdLinkingUUIDlinking = householdLinkingUUIDlinking;
     }
+
     private String reportDateOfPatientCreated;
 
     public String getReportDateOfPatientCreated() {
@@ -649,6 +654,7 @@ public class PatientDTO implements Serializable {
     public void setReportDateOfPatientCreated(String reportDateOfPatientCreated) {
         this.reportDateOfPatientCreated = reportDateOfPatientCreated;
     }
+
     public String getAddress3() {
         return address3;
     }
@@ -656,7 +662,24 @@ public class PatientDTO implements Serializable {
     public void setAddress3(String address3) {
         this.address3 = address3;
     }
+
     @SerializedName("address3")
     @Expose
     private String address3;
+
+    public String getAbhaAddress() {
+        return abhaAddress;
+    }
+
+    public void setAbhaAddress(String abhaAddress) {
+        this.abhaAddress = abhaAddress;
+    }
+
+    public String getAbhaNumber() {
+        return abhaNumber;
+    }
+
+    public void setAbhaNumber(String abhaNumber) {
+        this.abhaNumber = abhaNumber;
+    }
 }

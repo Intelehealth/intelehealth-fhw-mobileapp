@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
+    android:background="@color/iconTintWhite"
+    android:backgroundTint="@null"
     app:cardCornerRadius="@dimen/margin_16"
     app:cardElevation="@dimen/hamburger_margin_start">
 
@@ -74,6 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_common_primary_enabled"
+                android:backgroundTint="@null"
                 android:gravity="center"
                 android:paddingHorizontal="@dimen/margin_32"
                 android:paddingVertical="@dimen/margin_15"

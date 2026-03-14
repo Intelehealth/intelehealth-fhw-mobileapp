@@ -1,5 +1,8 @@
 package org.intelehealth.abdm.utils
 
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+
 object AbdmManager {
 
     @JvmStatic
@@ -32,5 +35,8 @@ object AbdmManager {
 
     @JvmStatic
     var isCreateAbha: Boolean = false
+
+    @JvmStatic
+    var dbClient: SQLiteDatabase? = null
 
 }

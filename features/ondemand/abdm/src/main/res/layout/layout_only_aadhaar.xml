@@ -49,7 +49,7 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <CheckBox
+    <android.widget.CheckBox
         android:id="@+id/cvTermsAndCondition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

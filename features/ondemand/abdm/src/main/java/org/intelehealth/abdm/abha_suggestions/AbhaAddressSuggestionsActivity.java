@@ -20,8 +20,11 @@ import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import org.intelehealth.abdm.constants.AbdmConstant;
 import org.intelehealth.abdm.databinding.ActivityAbhaAddressSuggestionsBinding;
 import org.intelehealth.abdm.dialog.AbhaAddressSuggestionDialogFragment;
+import org.intelehealth.abdm.enums.AbdmOutcomes;
+import org.intelehealth.abdm.model.AbdmResult;
 import org.intelehealth.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.abdm.model.OTPVerificationResponse;
 import org.intelehealth.abdm.model.SetAbhaAddressResponse;
@@ -232,12 +235,19 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     private void callSetPreferredABHAAddressAPI(String selectedChip) {
         if (!selectedChip.isEmpty()) {   // here you set this value to the Setter of the response variable and pass it to identification screen.
             if (selectedChip.equalsIgnoreCase(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0))) {
-//                Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-//                dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-//                dataIntent.putExtra("accessToken", accessToken);
-//                startActivity(dataIntent);
+                AbdmResult resultData = new AbdmResult(
+                        AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS,
+                        accessToken,
+                        null,
+                        null,
+                        otpVerificationResponse
+                );
+
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra(AbdmConstant.INTENT_ABDM_RESULT, resultData);
+                setResult(RESULT_OK, resultIntent);
                 finish();
-                return; // ie. selected is same as auto-generated than move ahead dont call setPrf api.
+                return;
             } else {
                 List<String> phrAddrList = new ArrayList<>();
                 phrAddrList.add(selectedChip);
@@ -318,12 +328,17 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                     }
 
                     phrAddresses.add(0, preferredAbhaAddress);
+                    AbdmResult resultData = new AbdmResult(
+                            AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS,
+                            accessToken,
+                            null,
+                            firstRequestFulfilled,
+                            otpVerificationResponse
+                    );
 
-//                    Intent dataIntent = new Intent(context, IdentificationActivity_New.class);
-//                    dataIntent.putExtra("payload", otpVerificationResponse);    // not using this setPreferred response and using the previous aadhar api response itself...
-//                    dataIntent.putExtra("accessToken", accessToken);
-//                    dataIntent.putExtra("firstRequestFulfilled", firstRequestFulfilled);
-//                    startActivity(dataIntent);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra(AbdmConstant.INTENT_ABDM_RESULT, resultData);
+                    setResult(RESULT_OK, resultIntent);
                     finish();
                 }
             } catch (Exception e) {

@@ -28,4 +28,8 @@ object AbdmConstant {
     const val LOCAL_PATIENT = "local_patient"
     const val ABHA_PATIENT = "abha_patient"
     const val MOBILE_NO = "mobile_no"
+
+    const val INTENT_ABDM_RESULT = "abdm_result"
+    const val MOBILE_PAYLOAD: String = "mobile_payload"
+
 }

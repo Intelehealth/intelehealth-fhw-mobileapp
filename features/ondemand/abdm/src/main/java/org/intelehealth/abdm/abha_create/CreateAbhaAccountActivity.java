@@ -3,6 +3,7 @@ package org.intelehealth.abdm.abha_create;
 import static org.intelehealth.abdm.constants.AbdmConstant.PAYLOAD;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,11 +24,14 @@ import com.github.ajalt.timberkt.Timber;
 import org.intelehealth.abdm.R;
 import org.intelehealth.abdm.abha_suggestions.AbhaAddressSuggestionsActivity;
 import org.intelehealth.abdm.constants.AbdmConstant;
+import org.intelehealth.abdm.database.dao.PatientDao;
 import org.intelehealth.abdm.databinding.ActivityCreateAbhaBinding;
 import org.intelehealth.abdm.dialog.ChecklistDialogFragment;
 import org.intelehealth.abdm.dialog.ConsentDialog;
 import org.intelehealth.abdm.dialog.MobileNumberOtpVerificationDialog;
+import org.intelehealth.abdm.enums.AbdmOutcomes;
 import org.intelehealth.abdm.model.AadharApiBody;
+import org.intelehealth.abdm.model.AbdmResult;
 import org.intelehealth.abdm.model.EnrollSuggestionRequestBody;
 import org.intelehealth.abdm.model.EnrollSuggestionResponse;
 import org.intelehealth.abdm.model.OTPResponse;
@@ -194,36 +198,33 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         binding.sendOtpBtn.setTag(null);
 
         Single<TokenResponse> tokenResponse = RetrofitProvider.getApiService().getToken();
-        new Thread(() -> {
-            tokenResponse.subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new DisposableSingleObserver<>() {
-                        @Override
-                        public void onSuccess(TokenResponse tokenResponse1) {
-                            String responseToken = tokenResponse1.getAccessToken();
-                            if (responseToken.isEmpty()) {
-                                Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                                cancelResendAndHideView();
-                                return;
-                            }
-
-                            accessToken = BEARER_AUTH + tokenResponse1.getAccessToken();
-                            callAadhaarMobileVerificationApi(accessToken);
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
+        tokenResponse.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new DisposableSingleObserver<>() {
+                    @Override
+                    public void onSuccess(TokenResponse tokenResponse1) {
+                        String responseToken = tokenResponse1.getAccessToken();
+                        if (responseToken.isEmpty()) {
                             Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
-                            Timber.tag(TAG).e("onError: callGenerateTokenApi: %s", e.toString());
-                            disableUI(true);
-                            binding.sendOtpBtn.setEnabled(true);
-                            binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
                             cancelResendAndHideView();
-                            cpd.dismiss();
+                            return;
                         }
-                    });
-            // api - end
-        }).start();
+
+                        accessToken = BEARER_AUTH + tokenResponse1.getAccessToken();
+                        callAadhaarMobileVerificationApi(accessToken);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(context, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                        Timber.tag(TAG).e("onError: callGenerateTokenApi: %s", e.toString());
+                        disableUI(true);
+                        binding.sendOtpBtn.setEnabled(true);
+                        binding.sendOtpBtn.setText(R.string.send_otp);  // Send otp.
+                        cancelResendAndHideView();
+                        cpd.dismiss();
+                    }
+                });
 
     }
 
@@ -413,7 +414,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         body.setTxnId(otpVerificationResponse.getTxnId());
         Single<EnrollSuggestionResponse> enrollSuggestionResponseSingle = RetrofitProvider.getApiService().enrollAbhaAddressSuggestion(accessToken, body);
         enrollSuggestionResponseSingle
-                .observeOn(Schedulers.io())
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new DisposableSingleObserver<>() {
                     @Override
@@ -561,17 +562,16 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                     //if (mExistingPatientOpenMRSUuid != null && !mExistingPatientOpenMRSUuid.equals("NA") && mExistingPatientABHAProfilePreferredAddress != null && !mExistingPatientABHAProfilePreferredAddress.isEmpty() && !text.equals(mExistingPatientABHAProfilePreferredAddress)) {
                     // check patient with uuid and abha-address whether exist it in local or not
                     if (mExistingPatientOpenMRSId != null && !mExistingPatientOpenMRSId.equals("NA")) {
-//                        boolean isExistingPatientWithSelectedAbhaAddress = new PatientsDAO().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
-//
-//                        // call api to update identifier
-//                        if (isExistingPatientWithSelectedAbhaAddress) {
-//                            navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
-//                        } else {
-//                            // add new identifier to existing patient
-//                            updatePatientIdentifier(abhaProfileResponse, text);
-//                        }
-                    } else {
+                        boolean isExistingPatientWithSelectedAbhaAddress = new PatientDao().isPatientExistWithAbhaAddress(mExistingPatientOpenMRSId, text);
 
+                        // call api to update identifier
+                        if (isExistingPatientWithSelectedAbhaAddress) {
+                            navigateToIdentificationScreenWithExistingDetails(abhaProfileResponse /*,response*/);
+                        } else {
+                            // add new identifier to existing patient
+                            updatePatientIdentifier(abhaProfileResponse, text);
+                        }
+                    } else {
                         navigateToIdentificationScreenForNewPatient(abhaProfileResponse);
                     }
                     dialogFragment.dismiss();
@@ -633,21 +633,33 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse/*, ExistUserStatusResponse response*/) {
         abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSId);
         abhaProfileResponse.setUuID(mExistingPatientUuid);
-//        Intent intent = new Intent(context, IdentificationActivity_New.class);
-//        intent.putExtra(PAYLOAD, abhaProfileResponse);
-//        intent.putExtra("accessToken", accessToken);
-//        intent.putExtra("patient_detail", true);
-//        intent.putExtra("firstRequestFulfilled", true);
-//        startActivity(intent);
+        AbdmResult resultData = new AbdmResult(
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS,
+                accessToken,
+                true,
+                true,
+                abhaProfileResponse
+        );
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(AbdmConstant.INTENT_ABDM_RESULT, resultData);
+        setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
 
     private void navigateToIdentificationScreenForNewPatient(OTPVerificationResponse abhaProfileResponse) {
-//        Intent intent = new Intent(context, IdentificationActivity_New.class);
-//        intent.putExtra(PAYLOAD, abhaProfileResponse);
-//        intent.putExtra("accessToken", accessToken);
-//        startActivity(intent);
-//        finish();
+        AbdmResult resultData = new AbdmResult(
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT,
+                accessToken,
+                null,
+                null,
+                abhaProfileResponse
+        );
+
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra(AbdmConstant.INTENT_ABDM_RESULT, resultData);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
     private void cancelResendAndHideView() {

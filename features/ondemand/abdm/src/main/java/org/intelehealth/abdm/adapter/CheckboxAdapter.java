@@ -50,6 +50,8 @@ public class CheckboxAdapter extends RecyclerView.Adapter<CheckboxAdapter.MyView
         holder.chkBox.setChecked(model.isChecked());
         holder.chkBox.setEnabled(model.isCheckboxEnabled());
 
+        holder.chkBox.setTextColor(model.isCheckboxEnabled() ? context.getColor(R.color.textColorBlack) : context.getColor(R.color.textColorGray));
+
         if (position == (modelList.size() - 1) || position == (modelList.size() - 2)) {
             ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(LEFT_MARGIN, 0, 0, 0);

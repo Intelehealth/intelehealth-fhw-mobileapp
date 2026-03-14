@@ -61,7 +61,7 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
             String firstName = account.getName().split(" ")[0];
             String lastName = account.getName().split(" ")[1];
 
-            boolean isPatientPresent = PatientsDAO.isPatientPresentInLocal(abhaNumberLastFourDigits, firstName, lastName);
+            boolean isPatientPresent = false; /*PatientsDAO.isPatientPresentInLocal(abhaNumberLastFourDigits, firstName, lastName);*/
             mainHandler.post(() -> {
                 if (isPatientPresent) {
                     holder.tvStatus.setText(context.getString(R.string.multiple_accounts_abha_positive_status));

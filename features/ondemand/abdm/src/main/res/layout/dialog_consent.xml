@@ -16,7 +16,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <TextView
+        <android.widget.TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -81,7 +81,7 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnDecline"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -89,16 +89,15 @@
             android:layout_marginEnd="@dimen/margin_8"
             android:layout_marginBottom="@dimen/margin_5"
             android:layout_weight="1"
-            android:background="@drawable/bg_common_primary_disabled"
+            android:background="@drawable/bg_common_primary_disabled_white"
             android:lineHeight="@dimen/margin_18"
-            android:onClick="declinePP"
             android:padding="@dimen/margin_13"
             android:text="@string/decline"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/margin_16"
             android:textStyle="bold" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btn_accept_privacy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -106,7 +105,7 @@
             android:layout_marginEnd="@dimen/margin_24"
             android:layout_marginBottom="@dimen/margin_5"
             android:layout_weight="1"
-            android:background="@drawable/bg_timeslot_disabled"
+            android:background="@drawable/bg_common_with_state"
             android:enabled="false"
             android:lineHeight="@dimen/margin_18"
             android:padding="@dimen/margin_13"

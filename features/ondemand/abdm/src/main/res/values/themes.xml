@@ -1,11 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AndroidMobileClient" parent="Theme.AppCompat.Light.NoActionBar" />
+    <!--    <style name="Base.Theme.AndroidMobileClient" parent="Theme.AppCompat.Light.NoActionBar" />-->
 
-    <style name="Theme.AndroidMobileClient" parent="Base.Theme.AndroidMobileClient">
-        <item name="fontFamily">@font/lato_regular</item>
-        <item name="android:fontFamily">@font/lato_regular</item>
-    </style>
+    <!--    <style name="Theme.AndroidMobileClient" parent="Base.Theme.AndroidMobileClient">-->
+    <!--        <item name="fontFamily">@font/lato_regular</item>-->
+    <!--        <item name="android:fontFamily">@font/lato_regular</item>-->
+    <!--        <item name="colorButtonNormal">@null</item>-->
+    <!--        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>-->
+    <!--    </style>-->
 
     <style name="style_subtitle">
         <item name="android:textSize">@dimen/text_13</item>
