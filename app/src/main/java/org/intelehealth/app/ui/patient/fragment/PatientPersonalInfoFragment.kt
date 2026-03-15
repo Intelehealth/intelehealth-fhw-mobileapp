@@ -16,7 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import org.intelehealth.abdm.constants.AbdmConstant
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
@@ -169,12 +168,9 @@ class PatientPersonalInfoFragment :
         Timber.d { Gson().toJson(patient) }
 
         if (patientViewModel.otpVerificationResponse != null) {
-            val abhaPatient = patientViewModel.getPatientFromOtpVerificationResponse()
-            super.onPatientDataLoaded(abhaPatient)
-            binding.patient = abhaPatient
-        } else {
-            binding.patient = patient
+            patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
         }
+
 
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {
@@ -182,6 +178,7 @@ class PatientPersonalInfoFragment :
             }
         }
 
+        binding.patient = patient
         fetchPersonalInfoConfig()
         binding.isEditMode = patientViewModel.isEditMode
     }

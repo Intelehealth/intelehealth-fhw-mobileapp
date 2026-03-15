@@ -7,7 +7,6 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.abdm.constants.AbdmConstant
 import org.intelehealth.abdm.model.OTPVerificationResponse
-import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
@@ -75,8 +74,8 @@ class PatientViewModel(
         )
     }
 
-    fun getPatientFromOtpVerificationResponse(): PatientDTO {
-        return PatientDTO().also { patient ->
+    fun getPatientDataFromOtpVerificationResponse(patient: PatientDTO) {
+        patient.also { patient ->
             otpVerificationResponse?.let { response ->
                 getPatientPersonalDetails(patient, response)
                 getPatientAddressDetails(patient, response)

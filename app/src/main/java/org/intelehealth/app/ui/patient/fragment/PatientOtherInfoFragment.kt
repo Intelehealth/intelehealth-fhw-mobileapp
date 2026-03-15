@@ -10,7 +10,6 @@ import com.google.gson.Gson
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.ui.filter.EmojiExcludeFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
@@ -63,13 +62,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { Gson().toJson(patient) }
 
         if (patientViewModel.otpVerificationResponse != null) {
-            val abhaPatient = patientViewModel.getPatientFromOtpVerificationResponse()
-            super.onPatientDataLoaded(abhaPatient)
-            binding.patient = abhaPatient
-        } else {
-            binding.patient = patient
+            patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
         }
 
+        binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
     }

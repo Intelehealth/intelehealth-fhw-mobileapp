@@ -1,21 +1,12 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
-import android.text.InputFilter.LengthFilter
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.core.view.isVisible
 import androidx.databinding.OnRebindCallback
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
-import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
-import com.github.ajalt.timberkt.Timber.tag
 import com.google.gson.Gson
-import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.Block
@@ -26,7 +17,6 @@ import org.intelehealth.app.activities.identificationActivity.model.Village
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
-import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
@@ -91,13 +81,10 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { Gson().toJson(patient) }
 
         if (patientViewModel.otpVerificationResponse != null) {
-            val abhaPatient = patientViewModel.getPatientFromOtpVerificationResponse()
-            super.onPatientDataLoaded(abhaPatient)
-            binding.patient = abhaPatient
-        } else {
-            binding.patient = patient
+            patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
         }
 
+        binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
     }

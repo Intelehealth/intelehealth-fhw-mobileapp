@@ -105,6 +105,10 @@ class PatientRegistrationActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
+            patientViewModel.otpVerificationResponse = it.getSerializableExtra(
+                AbdmConstant.PAYLOAD
+            ) as? OTPVerificationResponse
+
             patientId?.let { id ->
                 patientViewModel.isEditMode = true
                 binding.isEditMode = patientViewModel.isEditMode
@@ -118,15 +122,6 @@ class PatientRegistrationActivity : BaseActivity() {
             } else PatientRegStage.PERSONAL
 
             stage?.let { it1 -> navigateToStage(it1) }
-        }
-
-        intent?.let {
-            patientViewModel.otpVerificationResponse = it.getSerializableExtra(
-                AbdmConstant.PAYLOAD
-            ) as? OTPVerificationResponse
-
-            patientViewModel.isEditMode = false
-            navigateToStage(PatientRegStage.PERSONAL)
         }
     }
 
