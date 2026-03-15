@@ -89,7 +89,15 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-        binding.patient = patient
+
+        if (patientViewModel.otpVerificationResponse != null) {
+            val abhaPatient = patientViewModel.getPatientFromOtpVerificationResponse()
+            super.onPatientDataLoaded(abhaPatient)
+            binding.patient = abhaPatient
+        } else {
+            binding.patient = patient
+        }
+
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
     }
@@ -128,7 +136,9 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             if (binding.llBlock.isEnabled) {
-                if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)) {
+                if (binding.autoCompleteBlock.text.toString()
+                        .equals(getString(R.string.other_block_option), ignoreCase = true)
+                ) {
                     address3 = binding.textInputOtherBlock.text.toString()
                     cityvillage = binding.textInputCityVillage.text?.toString().toString()
                 }
@@ -170,11 +180,13 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun applyFilter() {
         binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
-     //   binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputAddress1.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Alphabets_And_Numbers)
+        //   binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress1.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Alphabets_And_Numbers)
         binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
-       // binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputOtherBlock.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others)
+        // binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputOtherBlock.filters =
+            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others)
     }
 
     private fun setInputTextChangListener() {
@@ -428,7 +440,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bVillageField = if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
-                if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
+                if (binding.autoCompleteBlock.text.toString()
+                        .equals(getString(R.string.other_block_option), ignoreCase = true)
                 ) {
                     binding.textInputLayOtherBlock.validate(binding.textInputOtherBlock, error)
                     binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error)
@@ -469,7 +482,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             if (patient.address3 != null && patient.address3.isNotEmpty()) {
                 val selected = LanguageUtils.getBlock(districtData, patient.address3)
                 if (selected == null) {
-                    val selected = LanguageUtils.getBlock(districtData, getString(R.string.other_block_option))
+                    val selected =
+                        LanguageUtils.getBlock(districtData, getString(R.string.other_block_option))
                     binding.autoCompleteBlock.setText(selected.toString(), false)
                     binding.textInputOtherBlock.setText(patient.address3)
                     enableOtherBlock()
@@ -493,7 +507,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
                 val blocksList: List<Block> = binding.textInputLayBlock.tag as List<Block>
                 val selectedBlock = blocksList[i]
-                if (i ==2) {
+                if (i == 2) {
                     binding.textInputLayOtherBlock.visibility = View.VISIBLE
                     enableOtherBlock()
                     binding.textInputCityVillage.setText("")
@@ -539,7 +553,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.autoCompleteVillageDropdown.setOnItemClickListener { adapterView, _, i, _ ->
                         binding.textInputLayVillageDropdown.hideError()
                         val selectedVillage = villages[i]
-                        if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
+                        if (binding.autoCompleteBlock.text.toString()
+                                .equals(getString(R.string.other_block_option), ignoreCase = true)
                         ) binding.textInputCityVillage.setText("")
                         else patient.cityvillage = selectedVillage.name
                     }
@@ -647,7 +662,8 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun isOtherBlockSelected() =
-        binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
+        binding.autoCompleteBlock.text.toString()
+            .equals(getString(R.string.other_block_option), ignoreCase = true)
 
     private fun eraseAllBlockFields() {
         binding.autoCompleteBlock.setText("", false)

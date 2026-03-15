@@ -125,7 +125,7 @@ class PatientRegistrationActivity : BaseActivity() {
                 AbdmConstant.PAYLOAD
             ) as? OTPVerificationResponse
 
-            patientViewModel.isEditMode = true
+            patientViewModel.isEditMode = false
             navigateToStage(PatientRegStage.PERSONAL)
         }
     }

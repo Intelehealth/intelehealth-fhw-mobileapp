@@ -77,23 +77,52 @@ class PatientViewModel(
     fun getPatientFromOtpVerificationResponse(): PatientDTO {
         return PatientDTO().also { patient ->
             otpVerificationResponse?.let { response ->
-                patient.patientPhoto = response.abhaProfile.photo
-                patient.firstname = response.abhaProfile.firstName
-                patient.middlename = response.abhaProfile.middleName
-                patient.lastname = response.abhaProfile.lastName
-                patient.gender = response.abhaProfile.gender
-                patient.phonenumber = "91${response.abhaProfile.mobile}"
-                patient.dateofbirth = DateTimeUtils.formatToLocalDate(
-                    formatPatientDob(response.abhaProfile.dob),
-                    DateTimeUtils.YYYY_MM_DD_HYPHEN
-                )
+                getPatientPersonalDetails(patient, response)
+                getPatientAddressDetails(patient, response)
             }
         }
+    }
+
+    private fun getPatientPersonalDetails(
+        patient: PatientDTO,
+        response: OTPVerificationResponse
+    ) {
+        patient.patientPhoto = response.abhaProfile.photo
+        patient.firstname = response.abhaProfile.firstName
+        patient.middlename = response.abhaProfile.middleName
+        patient.lastname = response.abhaProfile.lastName
+        patient.gender = response.abhaProfile.gender
+        patient.phonenumber = "91${response.abhaProfile.mobile}"
+        patient.dateofbirth = DateTimeUtils.formatToLocalDate(
+            formatPatientDob(response.abhaProfile.dob),
+            DateTimeUtils.YYYY_MM_DD_HYPHEN
+        )
+    }
+
+    private fun getPatientAddressDetails(
+        patient: PatientDTO,
+        response: OTPVerificationResponse
+    ) {
+        patient.postalcode = response.abhaProfile.pinCode
+        bifurcateAddress(response.abhaProfile.address, patient)
     }
 
     private fun formatPatientDob(date: String): Date {
         val pattern = AbdmConstant.ABHA_DOB_FORMAT
         val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern))
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
+    }
+
+    private fun bifurcateAddress(address: String, patientDTO: PatientDTO) {
+        val parts = address.split(",").map { it.trim() }
+        if (parts.size < 3) {
+            patientDTO.address1 = address
+            return
+        }
+
+        patientDTO.stateprovince = parts[parts.size - 1]
+        patientDTO.district = parts[parts.size - 2]
+        patientDTO.cityvillage = parts[parts.size - 3]
+        patientDTO.address1 = parts.dropLast(3).joinToString(", ")
     }
 }
