@@ -40,7 +40,7 @@
     <string name="create_new">Create New</string>
     <string name="you_have_more_than_six_abha_addresses_error">A maximum of 6 ABHA addresses are allowed. Please select an ABHA address from the list above.</string>
     <string name="abha_number">ABHA Number</string>
-    <string name="abha_address">ABHA address</string>
+    <string name="abha_address">ABHA Address</string>
     <string name="preferred_icon_text">P</string>
     <string name="please_select_an_abha_address_before_proceeding">Please select an ABHA address before proceeding.</string>
     <string name="verify">Verify</string>
@@ -139,5 +139,6 @@
     <string name="no">No</string>
     <string name="please_enter_the_patient_name">Please enter the patient\'s name</string>
     <string name="patient_name_cannot_be_empty">Patient name cannot be empty.</string>
+    <string name="view_download_abha_card">View/Download ABHA card</string>
 
 </resources>
