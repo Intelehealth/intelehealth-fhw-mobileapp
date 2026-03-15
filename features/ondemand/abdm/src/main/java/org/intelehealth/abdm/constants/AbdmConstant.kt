@@ -32,4 +32,10 @@ object AbdmConstant {
     const val INTENT_ABDM_RESULT = "abdm_result"
     const val MOBILE_PAYLOAD: String = "mobile_payload"
 
+    const val ACCESS_TOKEN = "access_token";
+    const val X_TOKEN = "xToken";
+    const val TXN_ID = "txnId";
+
+    const val ABHA_DOB_FORMAT = "dd-MM-yyyy"
+
 }

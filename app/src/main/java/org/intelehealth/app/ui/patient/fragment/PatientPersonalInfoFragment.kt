@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import org.intelehealth.abdm.constants.AbdmConstant
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
@@ -31,7 +32,6 @@ import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -167,13 +167,22 @@ class PatientPersonalInfoFragment :
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-        fetchPersonalInfoConfig()
+
+        if (patientViewModel.otpVerificationResponse != null) {
+            val abhaPatient = patientViewModel.getPatientFromOtpVerificationResponse()
+            super.onPatientDataLoaded(abhaPatient)
+            binding.patient = abhaPatient
+        } else {
+            binding.patient = patient
+        }
+
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {
                 gender = gender ?: "F"
             }
         }
-        binding.patient = patient
+
+        fetchPersonalInfoConfig()
         binding.isEditMode = patientViewModel.isEditMode
     }
 
@@ -509,17 +518,21 @@ class PatientPersonalInfoFragment :
                 )
 
             } else true
-            val bEPhone = if (it.emergencyContactNumber!!.isEnabled && binding.textInputETEMPhoneNumber.length()>0 && binding.textInputETEMPhoneNumber.length()<10) {
-                binding.textInputLayEMPhoneNumber.validate(binding.textInputETEMPhoneNumber, error)
-                    .and(
-                        binding.textInputLayEMPhoneNumber.validateDigit(
-                            binding.textInputETEMPhoneNumber,
-                            R.string.enter_10_digits,
-                            10
-                        )
+            val bEPhone =
+                if (it.emergencyContactNumber!!.isEnabled && binding.textInputETEMPhoneNumber.length() > 0 && binding.textInputETEMPhoneNumber.length() < 10) {
+                    binding.textInputLayEMPhoneNumber.validate(
+                        binding.textInputETEMPhoneNumber,
+                        error
                     )
+                        .and(
+                            binding.textInputLayEMPhoneNumber.validateDigit(
+                                binding.textInputETEMPhoneNumber,
+                                R.string.enter_10_digits,
+                                10
+                            )
+                        )
 
-            } else true
+                } else true
 
 
             val bGuardianType =

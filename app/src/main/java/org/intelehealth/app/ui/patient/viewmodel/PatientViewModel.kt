@@ -5,13 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.model.OTPVerificationResponse
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
-import org.intelehealth.klivekit.utils.Constants
+import org.intelehealth.klivekit.utils.DateTimeUtils
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 /**
  * Created by Vaghela Mithun R. on 02-07-2024 - 13:49.
@@ -30,6 +36,8 @@ class PatientViewModel(
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
     var activeStatusRosterSection = false
+
+    var otpVerificationResponse: OTPVerificationResponse? = null
 
     fun loadPatientDetails(
         patientId: String,
@@ -61,6 +69,31 @@ class PatientViewModel(
 
     fun getPregnancyVisibility(): Boolean {
         val patient = patientData.value
-        return patient?.gender.equals(FEMALE,true) && DateAndTimeUtils.isDateGreaterThan15Years(patient?.dateofbirth)
+        return patient?.gender.equals(FEMALE, true) && DateAndTimeUtils.isDateGreaterThan15Years(
+            patient?.dateofbirth
+        )
+    }
+
+    fun getPatientFromOtpVerificationResponse(): PatientDTO {
+        return PatientDTO().also { patient ->
+            otpVerificationResponse?.let { response ->
+                patient.patientPhoto = response.abhaProfile.photo
+                patient.firstname = response.abhaProfile.firstName
+                patient.middlename = response.abhaProfile.middleName
+                patient.lastname = response.abhaProfile.lastName
+                patient.gender = response.abhaProfile.gender
+                patient.phonenumber = "91${response.abhaProfile.mobile}"
+                patient.dateofbirth = DateTimeUtils.formatToLocalDate(
+                    formatPatientDob(response.abhaProfile.dob),
+                    DateTimeUtils.YYYY_MM_DD_HYPHEN
+                )
+            }
+        }
+    }
+
+    private fun formatPatientDob(date: String): Date {
+        val pattern = AbdmConstant.ABHA_DOB_FORMAT
+        val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern))
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
     }
 }

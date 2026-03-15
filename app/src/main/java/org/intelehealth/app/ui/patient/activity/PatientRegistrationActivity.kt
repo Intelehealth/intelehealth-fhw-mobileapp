@@ -20,6 +20,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.model.OTPVerificationResponse
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -116,6 +118,15 @@ class PatientRegistrationActivity : BaseActivity() {
             } else PatientRegStage.PERSONAL
 
             stage?.let { it1 -> navigateToStage(it1) }
+        }
+
+        intent?.let {
+            patientViewModel.otpVerificationResponse = it.getSerializableExtra(
+                AbdmConstant.PAYLOAD
+            ) as? OTPVerificationResponse
+
+            patientViewModel.isEditMode = true
+            navigateToStage(PatientRegStage.PERSONAL)
         }
     }
 

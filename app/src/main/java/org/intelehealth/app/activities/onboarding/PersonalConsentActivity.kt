@@ -98,7 +98,7 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
             ) ?: return@registerForActivityResult
 
             val newIntent = Intent(context, PatientRegistrationActivity::class.java)
-            newIntent.putExtra("accessToken", abdmResult?.accessToken ?: "")
+            newIntent.putExtra(AbdmConstant.ACCESS_TOKEN, abdmResult?.accessToken ?: "")
 
             when (abdmResult?.outcome) {
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS -> {

@@ -152,7 +152,6 @@ public class DialogUtils {
                         intent.putExtra(intentPatientNameTag, text);
                         AbdmManager.setCreateAbha(true);
                         launcher.launch(intent);
-                        activityContext.finish();
                     }
                 }
         );
