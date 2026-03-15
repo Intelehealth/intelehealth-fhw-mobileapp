@@ -61,7 +61,15 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-        binding.patient = patient
+
+        if (patientViewModel.otpVerificationResponse != null) {
+            val abhaPatient = patientViewModel.getPatientFromOtpVerificationResponse()
+            super.onPatientDataLoaded(abhaPatient)
+            binding.patient = abhaPatient
+        } else {
+            binding.patient = patient
+        }
+
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
     }
@@ -81,9 +89,14 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
     private fun setupEconomicCategory() {
         val marathiArray = resources.getStringArray(R.array.economic) // Get Marathi values
-        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en").getStringArray(R.array.economic)
+        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en")
+            .getStringArray(R.array.economic)
 
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, marathiArray)
+        val adapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_dropdown_item_1line,
+            marathiArray
+        )
         binding.autoCompleteEconomicCategory.setAdapter(adapter)
 
         if (!patient.economic.isNullOrEmpty()) {
@@ -117,6 +130,8 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             discipline = binding.textInputDiscipline.text?.toString()
             department = binding.textInputDepartment.text?.toString()
             relativePhoneNumber = binding.textInputRelativePhoneNumber.text?.toString()
+            abhaNumber = binding.textInputAbhaNumber.text?.toString()
+            abhaAddress = binding.textInputAbhaAddress.text?.toString()
 
             inn = binding.textInputInn.text?.toString()
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
@@ -154,7 +169,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     findNavController().navigate(it)
                     requireActivity().finish()
                 }
-           }
+            }
         }
 
     }
@@ -183,13 +198,14 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
     private fun setupEducations() {
         val marathiArray = resources.getStringArray(R.array.education)
-        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en").getStringArray(R.array.education)
+        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en")
+            .getStringArray(R.array.education)
 
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.education)
         binding.autoCompleteEducation.setAdapter(adapter)
-       /* if (patient.education != null && patient.education.isNotEmpty()) {
-            binding.autoCompleteEducation.setText(patient.education, false)
-        }*/
+        /* if (patient.education != null && patient.education.isNotEmpty()) {
+             binding.autoCompleteEducation.setText(patient.education, false)
+         }*/
         if (!patient.education.isNullOrEmpty()) {
             val index = englishArray.indexOf(patient.education)
             if (index != -1) {
@@ -207,7 +223,8 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun setupHealthFacility() {
-        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
+        val adapter =
+            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
         binding.autoCompleteHealthFacilityName.setAdapter(adapter)
         if (patient.healthFacilityName != null && patient.healthFacilityName.isNotEmpty()) {
             binding.autoCompleteHealthFacilityName.setText(patient.healthFacilityName, false)
@@ -224,13 +241,15 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.otherInfoConfig?.let {
-            val bNationalId = if (it.nationalId?.isEnabled == true && it.nationalId?.isMandatory == true) {
-                binding.textInputLayNationalId.validate(binding.textInputNationalId, error)
-            } else true
+            val bNationalId =
+                if (it.nationalId?.isEnabled == true && it.nationalId?.isMandatory == true) {
+                    binding.textInputLayNationalId.validate(binding.textInputNationalId, error)
+                } else true
 
-            val bOccuptions = if (it.occuptions?.isEnabled == true && it.occuptions?.isMandatory == true) {
-                binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
-            } else true
+            val bOccuptions =
+                if (it.occuptions?.isEnabled == true && it.occuptions?.isMandatory == true) {
+                    binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
+                } else true
 
             val bInn = if (it.inn?.isEnabled == true && it.inn?.isMandatory == true) {
                 binding.textInputLayInn.validate(binding.textInputInn, error)
@@ -238,76 +257,95 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
             val bCodeOfHealthyFacility =
                 if (it.codeOfHealthyFacility?.isEnabled == true && it.codeOfHealthyFacility?.isMandatory == true) {
-                    binding.textInputLayCodeOfHealthyFacility.validate(binding.textInputCodeOfHealthyFacility, error)
+                    binding.textInputLayCodeOfHealthyFacility.validate(
+                        binding.textInputCodeOfHealthyFacility,
+                        error
+                    )
                 } else true
 
-            val bCodeOfDepartment = if (it.codeOfDepartment?.isEnabled == true && it.codeOfDepartment?.isMandatory == true) {
-                binding.textInputLayCodeOfDepartment.validate(binding.textInputCodeOfDepartment, error)
-            } else true
-
-            val bDepartment = if (it.department?.isEnabled == true && it.department?.isMandatory == true) {
-                binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
-            } else true
-
-            val bHealthFacilityName = if (it.healthFacilityName?.isEnabled == true && it.healthFacilityName?.isMandatory == true) {
-                binding.textInputLayHealthFacilityName.validateDropDowb(
-                    binding.autoCompleteHealthFacilityName, error
-                )
-            } else true
-
-
-            val bSocialCategory = if (it.socialCategory?.isEnabled == true && it.socialCategory?.isMandatory == true) {
-                binding.textInputLaySocialCategory.validateDropDowb(
-                    binding.autoCompleteSocialCategory, error
-                )
-            } else true
-
-            val bEducation = if (it.education?.isEnabled == true && it.education?.isMandatory == true) {
-                binding.textInputLayEducation.validateDropDowb(
-                    binding.autoCompleteEducation, error
-                )
-            } else true
-
-            val bEconomic = if (it.economicCategory?.isEnabled == true && it.economicCategory?.isMandatory == true) {
-                binding.textInputLayEconomicCategory.validateDropDowb(
-                    binding.autoCompleteEconomicCategory, error
-                )
-            } else true
-
-            val tmhCaseNumber = if (it.tmhCaseNumber?.isEnabled == true && it.tmhCaseNumber?.isMandatory == true) {
-                binding.textInputLayTmhCaseNumber.validate(
-                    binding.textInputTmhCaseNumber, error
-                )
-            } else true
-
-            val requestId = if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
-                binding.textInputLayRequestId.validate(
-                    binding.textInputRequestId, error
-                )
-            } else true
-
-            val discipline = if (it.discipline?.isEnabled == true && it.discipline?.isMandatory == true) {
-                binding.textInputLayDiscipline.validate(
-                    binding.textInputDiscipline, error
-                )
-            } else true
-
-            val relativePhoneNumber = if (it.relativePhoneNumber?.isEnabled == true && it.relativePhoneNumber?.isMandatory == true) {
-                binding.textInputLayRelativePhoneNumber.validate(
-                    binding.textInputRelativePhoneNumber, error
-                ).and(
-                    binding.textInputLayRelativePhoneNumber.validateDigit(
-                        binding.textInputRelativePhoneNumber, R.string.enter_10_digits, 10
+            val bCodeOfDepartment =
+                if (it.codeOfDepartment?.isEnabled == true && it.codeOfDepartment?.isMandatory == true) {
+                    binding.textInputLayCodeOfDepartment.validate(
+                        binding.textInputCodeOfDepartment,
+                        error
                     )
-                )
+                } else true
+
+            val bDepartment =
+                if (it.department?.isEnabled == true && it.department?.isMandatory == true) {
+                    binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
+                } else true
+
+            val bHealthFacilityName =
+                if (it.healthFacilityName?.isEnabled == true && it.healthFacilityName?.isMandatory == true) {
+                    binding.textInputLayHealthFacilityName.validateDropDowb(
+                        binding.autoCompleteHealthFacilityName, error
+                    )
+                } else true
 
 
-            } else true
+            val bSocialCategory =
+                if (it.socialCategory?.isEnabled == true && it.socialCategory?.isMandatory == true) {
+                    binding.textInputLaySocialCategory.validateDropDowb(
+                        binding.autoCompleteSocialCategory, error
+                    )
+                } else true
+
+            val bEducation =
+                if (it.education?.isEnabled == true && it.education?.isMandatory == true) {
+                    binding.textInputLayEducation.validateDropDowb(
+                        binding.autoCompleteEducation, error
+                    )
+                } else true
+
+            val bEconomic =
+                if (it.economicCategory?.isEnabled == true && it.economicCategory?.isMandatory == true) {
+                    binding.textInputLayEconomicCategory.validateDropDowb(
+                        binding.autoCompleteEconomicCategory, error
+                    )
+                } else true
+
+            val tmhCaseNumber =
+                if (it.tmhCaseNumber?.isEnabled == true && it.tmhCaseNumber?.isMandatory == true) {
+                    binding.textInputLayTmhCaseNumber.validate(
+                        binding.textInputTmhCaseNumber, error
+                    )
+                } else true
+
+            val requestId =
+                if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
+                    binding.textInputLayRequestId.validate(
+                        binding.textInputRequestId, error
+                    )
+                } else true
+
+            val discipline =
+                if (it.discipline?.isEnabled == true && it.discipline?.isMandatory == true) {
+                    binding.textInputLayDiscipline.validate(
+                        binding.textInputDiscipline, error
+                    )
+                } else true
+
+            val relativePhoneNumber =
+                if (it.relativePhoneNumber?.isEnabled == true && it.relativePhoneNumber?.isMandatory == true) {
+                    binding.textInputLayRelativePhoneNumber.validate(
+                        binding.textInputRelativePhoneNumber, error
+                    ).and(
+                        binding.textInputLayRelativePhoneNumber.validateDigit(
+                            binding.textInputRelativePhoneNumber, R.string.enter_10_digits, 10
+                        )
+                    )
 
 
-            if (bOccuptions.and(bSocialCategory).and(bEducation).and(bEconomic).and(bNationalId).and(bOccuptions)
-                    .and(tmhCaseNumber).and(requestId).and(discipline).and(relativePhoneNumber).and(bInn)
-                    .and(bCodeOfHealthyFacility).and(bHealthFacilityName).and(bCodeOfDepartment).and(bDepartment)
+                } else true
+
+
+            if (bOccuptions.and(bSocialCategory).and(bEducation).and(bEconomic).and(bNationalId)
+                    .and(bOccuptions)
+                    .and(tmhCaseNumber).and(requestId).and(discipline).and(relativePhoneNumber)
+                    .and(bInn)
+                    .and(bCodeOfHealthyFacility).and(bHealthFacilityName).and(bCodeOfDepartment)
+                    .and(bDepartment)
             ) block.invoke()
         }
     }

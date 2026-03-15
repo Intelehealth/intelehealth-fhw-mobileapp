@@ -106,6 +106,8 @@ public class PatientsDAO extends BaseDao {
 
         values.put("dead", patient.getDead());
         values.put("sync", patient.getSyncd().toString());
+        values.put("abha_number", patient.getAbhaNumber());
+        values.put("abha_address", patient.getAbhaAddress());
         return values;
     }
 
@@ -151,6 +153,8 @@ public class PatientsDAO extends BaseDao {
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
+            values.put("abha_number", patient.getAbhaNumber());
+            values.put("abha_address", patient.getAbhaAddress());
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             isCreated = createdRecordsCount > 0;
         } catch (SQLException e) {
@@ -201,6 +205,8 @@ public class PatientsDAO extends BaseDao {
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
                 insertPatientAttributes(patientAttributesList, db);
@@ -263,6 +269,8 @@ public class PatientsDAO extends BaseDao {
 
             values.put("dead", false);
             values.put("sync", false);
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
 
             insertPatientAttributes(patientDTO.getPatientAttributesDTOList(), db);
             Logger.logD("pulldata", "datadumper" + values);
@@ -709,6 +717,8 @@ public class PatientsDAO extends BaseDao {
                     patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
                     patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));
                     patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                    patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                    patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
                     patientDTOList.add(patientDTO);
 
                 }
@@ -824,6 +834,8 @@ public class PatientsDAO extends BaseDao {
                     model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
                     model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
                     model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                    model.setAbhaNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_number")));
+                    model.setAbhaAddress(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_address")));
                     modelList.add(model);
                 } while (searchCursor.moveToNext());
             }
@@ -892,6 +904,8 @@ public class PatientsDAO extends BaseDao {
                             model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
                             model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
                             model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                            model.setAbhaNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_number")));
+                            model.setAbhaAddress(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_address")));
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -931,6 +945,8 @@ public class PatientsDAO extends BaseDao {
                         model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
                         model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
                         model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                        model.setAbhaNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_number")));
+                        model.setAbhaAddress(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_address")));
                         modelList.add(model);
                     } while (searchCursor.moveToNext());
                 }
@@ -1000,6 +1016,8 @@ public class PatientsDAO extends BaseDao {
                                 model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
                                 model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
                                 model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                                model.setAbhaNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_number")));
+                                model.setAbhaAddress(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_address")));
                                 modelList.add(model);
                             } while (searchCursor.moveToNext());
                         }
@@ -1039,6 +1057,8 @@ public class PatientsDAO extends BaseDao {
                             model.setContactType(searchCursor.getString(searchCursor.getColumnIndexOrThrow("contact_type")));
                             model.setEmContactName(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_name")));
                             model.setEmContactNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("em_contact_num")));
+                            model.setAbhaNumber(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_number")));
+                            model.setAbhaAddress(searchCursor.getString(searchCursor.getColumnIndexOrThrow("abha_address")));
                             modelList.add(model);
                         } while (searchCursor.moveToNext());
                     }
@@ -1174,6 +1194,8 @@ public class PatientsDAO extends BaseDao {
                 patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+                patientDTO.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
 
             }
             while (cursor.moveToNext());
@@ -1212,6 +1234,8 @@ public class PatientsDAO extends BaseDao {
                 patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
+                patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1332,7 +1356,8 @@ public class PatientsDAO extends BaseDao {
                 patientDTO.setAddress3(cursor.getString(cursor.getColumnIndexOrThrow("address3")));
                 patientDTO.setAddress6(cursor.getString(cursor.getColumnIndexOrThrow("address6")));
                 patientDTO.setDistrict(cursor.getString(cursor.getColumnIndexOrThrow("countyDistrict")));
-
+                patientDTO.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -1341,7 +1366,7 @@ public class PatientsDAO extends BaseDao {
 
     //getting followup patient count here
     public static Observable<Integer> getAllFollowupPatientCount() {
-        return  Observable.fromCallable(()->{
+        return Observable.fromCallable(() -> {
             int count = 0;
 
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -1483,7 +1508,7 @@ public class PatientsDAO extends BaseDao {
          return "tbl_patient";
      }*/
     public void setTableName(String tableName) {
-        Log.d(TAG, "setTableName: tableName  : "+tableName);
+        Log.d(TAG, "setTableName: tableName  : " + tableName);
         this.currentTableName = tableName;
     }
 
@@ -1492,7 +1517,7 @@ public class PatientsDAO extends BaseDao {
         if (currentTableName == null || currentTableName.isEmpty()) {
             throw new RuntimeException("Table name is not set");
         }
-        Log.d(TAG, "tableName: currentTableName : "+currentTableName);
+        Log.d(TAG, "tableName: currentTableName : " + currentTableName);
         return currentTableName;
     }
 
