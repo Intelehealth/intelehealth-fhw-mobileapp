@@ -15,6 +15,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -403,6 +405,14 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         }
     }
 
+    private final ActivityResultLauncher<Intent> addressSuggestionLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+        if (result.getResultCode() != RESULT_OK) return;
+
+        Intent data = result.getData();
+        setResult(RESULT_OK, data);
+        finish();
+    });
+
     private void callFetchAbhaAddressSuggestionsApi(OTPVerificationResponse otpVerificationResponse, String accessToken) {
         if (cpd.isShowing()) {
             cpd.dismiss();
@@ -429,8 +439,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                                 intent.putStringArrayListExtra("addressList", addressList);
                                 intent.putExtra("payload", otpVerificationResponse);
                                 intent.putExtra("accessToken", accessToken);
-                                startActivity(intent);
-                                finish();
+                                addressSuggestionLauncher.launch(intent);
                             }
                         }
                     }
