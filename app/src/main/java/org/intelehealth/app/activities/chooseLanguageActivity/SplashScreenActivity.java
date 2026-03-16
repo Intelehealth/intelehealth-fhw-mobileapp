@@ -115,9 +115,9 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
         sessionManager = new SessionManager(SplashScreenActivity.this);
         rvSelectLanguage = findViewById(R.id.rv_select_language);
-        layoutLanguage = findViewById(R.id.layout_panel);
+        layoutLanguage = findViewById(R.id.cl_choose_language);
         layoutParent = findViewById(R.id.layout_parent);
-        layoutHeader = findViewById(R.id.layout_child1);
+        layoutHeader = findViewById(R.id.cl_layout_child_1);
         //  startService(new Intent(getBaseContext(), OnClearFromRecentService.class));
         String appLanguage = sessionManager.getAppLanguage();
         if (!appLanguage.equalsIgnoreCase("")) {
@@ -191,7 +191,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             setLocale(appLanguage);
         }
 
-        Button btnNextToIntro = findViewById(R.id.btn_next_to_intro);
+        Button btnNextToIntro = findViewById(R.id.btn_next);
         btnNextToIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +252,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         int getAccountPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS);
         int writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
             int notificationPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS);
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
                 listPermissionsNeeded.add(Manifest.permission.POST_NOTIFICATIONS);
@@ -274,9 +273,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             listPermissionsNeeded.add(Manifest.permission.GET_ACCOUNTS);
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
-            } else {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
@@ -385,7 +382,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private void showChooseLanguageUI(boolean show) {
         Transition transition = new Slide(Gravity.BOTTOM);
         transition.setDuration(2000);
-        transition.addTarget(R.id.layout_panel);
+        transition.addTarget(R.id.cl_choose_language);
 
         TransitionManager.beginDelayedTransition(layoutParent, transition);
         layoutLanguage.setVisibility(show ? View.VISIBLE : View.GONE);

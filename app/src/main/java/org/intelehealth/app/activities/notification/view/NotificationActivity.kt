@@ -4,8 +4,10 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -26,6 +28,7 @@ import org.intelehealth.app.models.NotificationModel
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.Logger
+import org.intelehealth.app.utilities.StringUtils.getTranslatedString
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.klivekit.data.PreferenceHelper
 
@@ -62,6 +65,9 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
             mBinding.simpleAppBar.toolbar.setNavigationOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }
 
+        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightNavigationBars = true
+        controller.isAppearanceLightStatusBars = true
     }
 
     private fun initialization() {
@@ -82,20 +88,30 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     if (!notificationList.isNullOrEmpty()) {
                         mBinding.notifiHeaderTitle.text = String.format(
                             getString(
-                                R.string.five_presc_received,
-                                mViewModel.getPrescriptionCount().toString()
-                            )
+                                R.string.five_presc_received
+                            ),
+                            mViewModel.getPrescriptionCount().toString()
                         )
-
+                    } else {
+                        mBinding.notifiHeaderTitle.text = String.format(
+                            getString(
+                                R.string.five_presc_received
+                            ),
+                            notificationCloudList?.size?.toString() ?: "0"
+                        )
                     }
+                    Log.d(
+                        TAG,
+                        "data:: " + mViewModel.getPrescriptionCount()
+                            .toString() + " - " + notificationCloudList?.size?.toString()
+                    )
                 }
 
                 else -> {}
             }
         }
 
-
-        mViewModel.fetchAllCloudNotification(sessionManager.providerID,"1","100").observe(this) {
+        mViewModel.fetchAllCloudNotification(sessionManager.providerID, "1", "100").observe(this) {
             when (it) {
                 is NotificationResult.Loading -> {
                     mBinding.progressBar.visibility = VISIBLE
@@ -104,30 +120,37 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 }
 
                 is NotificationResult.Data -> {
-                    Logger.logD("TAG",it.data.toString())
+                    Logger.logD("TAG", it.data.toString())
                     mBinding.progressBar.visibility = GONE
                     mBinding.rlPrescriptionHeader.visibility = VISIBLE
                     mBinding.ibClearAll.visibility = VISIBLE
                     notificationCloudList = it.data as ArrayList<NotificationList>
+                    mBinding.notifiHeaderTitle.text = String.format(
+                        getString(
+                            R.string.five_presc_received
+                        ),
+                        notificationCloudList?.size?.toString() ?: "0"
+                    )
                     setCloudNotificationAdapter()
 
                 }
 
                 else -> {
-                    Logger.logD("TAG",it.toString())
+                    Logger.logD("TAG", it.toString())
                 }
             }
         }
 
     }
-    fun showAlertDialog(message :String) {
+
+    fun showAlertDialog(message: String) {
         val builder = AlertDialog.Builder(this)
 
-        builder.setTitle("Notification")
-        builder.setMessage(message)
+        builder.setTitle(getString(R.string.notifi_title))
+        builder.setMessage(getTranslatedString(this, message))
 
         // Add the OK button
-        builder.setPositiveButton("OK") { dialog, _ ->
+        builder.setPositiveButton(getString(R.string.ok)) { dialog, _ ->
             // User clicked OK button
             dialog.dismiss()
         }
@@ -161,6 +184,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                 LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
         }
     }
+
     private fun setCloudNotificationAdapter() {
         if (notificationList.isNullOrEmpty() && notificationCloudList.isNullOrEmpty()) {
             clearNotification()
@@ -168,7 +192,8 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
             mBinding.tvNoData.visibility = GONE
             mBinding.ibClearAll.visibility = VISIBLE
             mBinding.rvCloudNotifications.apply {
-                cloudNotificationAdapter = NotificationCloudAdapter(notificationCloudList, clickListener)
+                cloudNotificationAdapter =
+                    NotificationCloudAdapter(notificationCloudList, clickListener)
                 adapter = cloudNotificationAdapter
                 layoutManager =
                     LinearLayoutManager(this@NotificationActivity, RecyclerView.VERTICAL, false)
@@ -236,7 +261,7 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
         }
 
         override fun deleteNotification(notificationModel: NotificationList, position: Int) {
-            ToastUtil.showLongToast(this@NotificationActivity,"Work in progress..")
+            ToastUtil.showLongToast(this@NotificationActivity, getString(R.string.work_in_progress))
         }
 
         override fun updateReadStatus(notificationModel: NotificationList, position: Int) {

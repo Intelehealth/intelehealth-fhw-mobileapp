@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:fitsSystemWindows="true"
     tools:context=".activities.onboarding.CommonWebViewActivity">
 
     <LinearLayout
@@ -45,13 +46,13 @@
         android:id="@+id/error_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        android:gravity="center"
-        android:text="@string/unable_to_load_data_please_try_again"
         android:layout_above="@+id/layout_button_consent"
         android:layout_below="@+id/ll_action_bar"
         android:layout_marginStart="@dimen/content_margin_start"
-        android:layout_marginEnd="@dimen/margin_20dp" />
+        android:layout_marginEnd="@dimen/margin_20dp"
+        android:gravity="center"
+        android:text="@string/unable_to_load_data_please_try_again"
+        android:visibility="gone" />
 
 
     <LinearLayout

@@ -1,5 +1,8 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+import static org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterConstantKt.FEMALE;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
 import static org.intelehealth.app.utilities.StringUtils.en__bn_dob;
@@ -47,6 +50,7 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
+import static org.intelehealth.app.utilities.StringUtils.translateLocation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -63,8 +67,26 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.activities.identificationActivity.model.Block;
+import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
+import org.intelehealth.app.activities.identificationActivity.model.StateData;
+import org.intelehealth.app.activities.identificationActivity.model.Village;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
+
+import org.intelehealth.app.models.FamilyMemberRes;
+import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
+import org.intelehealth.app.models.pushRequestApiCall.Attribute;
+import org.intelehealth.app.ui.householdSurvey.HouseholdSurveyActivity;
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.CustomLog;
+
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -125,6 +147,7 @@ import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.HouseholdSurveyStage;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -148,10 +171,13 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 import io.reactivex.Observable;
@@ -165,12 +191,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
-            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv;
+            guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
+            tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv,
+            provinceTv, cityTv, registrationAddressOfHfTv, innTv, codeOfHealthFacilityTv, healthFacilityNameTv,
+            codeOfDepartmentTv, departmentTv, householdNumber;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
-            educationTr, economicCategoryTr;
+            educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
+            provinceTr, cityTr, registrationAddressOfHfTr,
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -300,6 +331,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             finish();
         });
 
+        // Family Member Registration
+        loadFamilyMembers();
+
+        binding.familyMemberCard.imgBtnAddFamMember.setOnClickListener(v -> {
+            addFamilyMember();
+        });
+
         cancelbtn.setOnClickListener(v -> {
             Intent i = new Intent(PatientDetailActivity2.this, HomeScreenActivity_New.class);
             startActivity(i);
@@ -387,6 +425,102 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 getOnBackPressedDispatcher().onBackPressed();
             }
         });
+
+        setClickListeners();
+
+    }
+
+    private void setClickListeners() {
+        binding.householdSurvey.tvHouseholdSurvey.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HouseholdSurveyActivity.startHouseholdSurvey(PatientDetailActivity2.this, patientDTO.getUuid(), HouseholdSurveyStage.FIRST_SCREEN);
+
+               /* Intent intent1 = new Intent(PatientDetailActivity2.this, HouseholdSurveyActivity.class);
+                intent1.putExtra("patientUuid", patientDTO.getUuid());
+                startActivity(intent1);*/
+            }
+        });
+
+        binding.rosterDetails.generalEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.GENERAL_ROSTER, isPregnancyVisible(), true);
+            finish();
+        });
+        binding.rosterDetails.pregnancyEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.PREGNANCY_ROSTER, isPregnancyVisible(), true);
+            finish();
+        });
+        binding.rosterDetails.healthServiceEdit.setOnClickListener(v -> {
+            RosterQuestionnaireMainActivity.startRosterQuestionnaire(this, patientDTO.getUuid(), RosterQuestionnaireStage.HEALTH_SERVICE, isPregnancyVisible(), true);
+            finish();
+        });
+
+    }
+
+    private boolean isPregnancyVisible() {
+        return mGender.equalsIgnoreCase(FEMALE) && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
+    }
+
+    // Family Member
+    private void loadFamilyMembers() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        Log.v("Familyyy", "load fam: " + houseHoldValue);
+
+        if (houseHoldValue != null && !houseHoldValue.equalsIgnoreCase("")) {
+            //Fetch all patient UUID from houseHoldValue
+            try {
+                List<FamilyMemberRes> listPatientNames = new ArrayList<>();
+                HashSet<String> patientUUIDs = new HashSet<>(patientsDAO.getPatientUUIDs(houseHoldValue));
+                Log.e("patientUUIDs", "" + patientUUIDs);
+
+                for (String id : patientUUIDs) {
+                    if (!id.equals(patientDTO.getUuid())) {
+
+                        listPatientNames.addAll(patientsDAO.getPatientName(id));
+                    }
+                }
+
+                //  Logger.logD("List", listPatientNames.get(0).getOpenMRSID());
+                if (!listPatientNames.isEmpty()) {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.GONE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.VISIBLE);
+
+                    FamilyMemberAdapter familyMemberAdapter = new FamilyMemberAdapter(listPatientNames, this);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+                    binding.familyMemberCard.rvFamilyMember.setLayoutManager(linearLayoutManager);
+                    binding.familyMemberCard.rvFamilyMember.setAdapter(familyMemberAdapter);
+                } else {
+                    binding.familyMemberCard.tvNoFamilyMember.setVisibility(View.VISIBLE);
+                    binding.familyMemberCard.rvFamilyMember.setVisibility(View.GONE);
+                }
+
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+    }
+
+    private void addFamilyMember() {
+        String houseHoldValue = "";
+        try {
+            houseHoldValue = patientsDAO.getHouseHoldValue(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        Log.v("Familyyy", "pat detail householdNo: " + houseHoldValue);
+
+        sessionManager.setHouseholdUuid(houseHoldValue);
+        PatientRegistrationActivity.startPatientRegistrationForFamilyMemberRegistration(
+                this,
+                patientDTO.getUuid(),
+                null,
+                PatientRegStage.PERSONAL);
     }
 
     private BroadcastReceiver mBroadcastReceiver;
@@ -426,6 +560,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     protected void onResume() {
         super.onResume();
         setDisplay(patientDTO.getUuid());
+        if (isPregnancyVisible()) {
+            binding.rosterDetails.relativePregnancyHeader.setVisibility(View.VISIBLE);
+        } else {
+            binding.rosterDetails.relativePregnancyHeader.setVisibility(View.GONE);
+        }
     }
 
     private RelativeLayout mPersonalHeaderRelativeLayout, mAddressHeaderRelativeLayout, mOthersHeaderRelativeLayout;
@@ -467,7 +606,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             encounterDAO.createEncountersToDB(encounterDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
@@ -513,7 +652,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             visitsDAO.insertPatientToDB(visitDTO);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         // visitUuid = String.valueOf(visitLong);
@@ -552,6 +691,22 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         em_contact_name_tv = findViewById(R.id.em_contact_name_tv);
         em_contact_number_tv = findViewById(R.id.em_contact_number_tv);
 
+        tmh_case_number_tv = findViewById(R.id.tmh_case_number);
+        request_id_tv = findViewById(R.id.request_id);
+        relative_phone_num_tv = findViewById(R.id.relative_phn_number);
+        discipline_tv = findViewById(R.id.discipline);
+        department_tv = findViewById(R.id.department);
+
+        provinceTv = findViewById(R.id.province);
+        cityTv = findViewById(R.id.city);
+        registrationAddressOfHfTv = findViewById(R.id.registrationAddressOfHf);
+
+        innTv = findViewById(R.id.inn);
+        codeOfHealthFacilityTv = findViewById(R.id.code_of_healthy_facility);
+        healthFacilityNameTv = findViewById(R.id.health_facility_name);
+        codeOfDepartmentTv = findViewById(R.id.code_of_department);
+        departmentTv = findViewById(R.id.department);
+
         nameTr = findViewById(R.id.name_tr);
         genderTr = findViewById(R.id.gender_tr);
         dobTr = findViewById(R.id.dob_tr);
@@ -571,12 +726,25 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
         addressTwoTr = findViewById(R.id.tr_address_2);
+        householdNumberTr = findViewById(R.id.household_no_tr);
 
         nidTr = findViewById(R.id.nid_tr);
         occupationTr = findViewById(R.id.occupation_tr);
         socialCategoryTr = findViewById(R.id.social_category_tr);
         educationTr = findViewById(R.id.education_tr);
         economicCategoryTr = findViewById(R.id.economic_category_tr);
+
+        tmhCaseNumberTr = findViewById(R.id.tmh_case_number_tr);
+        requestIdTr = findViewById(R.id.request_id_tr);
+        relativePhnNumTr = findViewById(R.id.relative_phone_number_tr);
+        disciplineTr = findViewById(R.id.discipline_tr);
+        departmentTr = findViewById(R.id.department_tr);
+
+        innTr = findViewById(R.id.inn_tr);
+        codeOfHealthFacilityTr = findViewById(R.id.code_of_healthy_facility_tr);
+        healthFacilityNameTr = findViewById(R.id.health_facility_name_tr);
+        codeOfDepartmentTr = findViewById(R.id.code_of_department_tr);
+        departmentTr = findViewById(R.id.department_tr);
 
         postalcode = findViewById(R.id.postalcode);
         patientcountry = findViewById(R.id.country);
@@ -585,6 +753,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
+        householdNumber = findViewById(R.id.household_number);
+
+        provinceTr = findViewById(R.id.province_tr);
+        cityTr = findViewById(R.id.city_tr);
+        registrationAddressOfHfTr = findViewById(R.id.registrationAddressOfHf_tr);
 
         son_daughter_wife = findViewById(R.id.son_daughter_wife);
         patientNationalID = findViewById(R.id.national_ID);
@@ -830,6 +1003,130 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 null,
                                 null
                         );
+                case PatientRegConfigKeys.HOUSEHOLD_NUMBER ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                householdNumberTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.TMH_CASE_SUMMARY ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                tmhCaseNumberTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.REQUEST_ID -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        requestIdTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.RELATIVE_PHONE_NUM ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                relativePhnNumTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.DISCIPLINE -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        disciplineTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.DEPARTMENT -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        departmentTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.PROVINCES -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        provinceTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.CITIES -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        cityTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.REGISTRATION_ADDRESS_OF_HF ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                registrationAddressOfHfTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.INN -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        innTr,
+                        null,
+                        null,
+                        null
+                );
+
+                case PatientRegConfigKeys.CODE_OF_HEALTHY_FACILITY ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                codeOfHealthFacilityTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.HEALTH_FACILITY_NAME ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                healthFacilityNameTr,
+                                null,
+                                null,
+                                null
+                        );
+
+                case PatientRegConfigKeys.CODE_OF_DEPARTMENT ->
+                        PatientRegFieldsUtils.INSTANCE.configField(
+                                false,
+                                fields,
+                                codeOfDepartmentTr,
+                                null,
+                                null,
+                                null
+                        );
+
             }
         }
     }
@@ -847,17 +1144,26 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
         mCurrentVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitSelection = "patientuuid = ?";
-        String[] visitArgs = {patientDTO.getUuid()};
-        String[] visitColumns = {"uuid", "startdate", "enddate"};
-        String visitOrderBy = "startdate";
-        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        //String visitSelection = "patientuuid = ?";
+        //String[] visitArgs = {patientDTO.getUuid()};
+        //String[] visitColumns = {"uuid", "startdate", "enddate"};
+        //String visitOrderBy = "startdate";
+        //Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
         //if (visitCursor == null || visitCursor.getCount() <= 0) {
         //     findViewById(R.id.cv_open_visits).setVisibility(View.GONE);
         //    startVisitBtn.setVisibility(View.VISIBLE);
         //} else {
         //   findViewById(R.id.cv_open_visits).setVisibility(View.VISIBLE);
         //   startVisitBtn.setVisibility(View.GONE);
+
+        String rawQuery = "SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
+                "v.uuid = e.visituuid where v.patientuuid = ? and (v.enddate IS NULL " +
+                "OR v.enddate = '')  AND e.encounter_type_uuid != ? ";
+
+        String[] selectionArgs = {patientDTO.getUuid(), UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY};
+
+        Cursor visitCursor = db.rawQuery(rawQuery, selectionArgs);
+
         if (visitCursor.moveToLast()) {
             do {
                 EncounterDAO encounterDAO = new EncounterDAO();
@@ -865,119 +1171,122 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                 String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                boolean isCompletedExitedSurvey = false;
+               /* boolean isCompletedExitedSurvey = false;
                 try {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
-                if (!isCompletedExitedSurvey) {
+                if (!isCompletedExitedSurvey) {*/
 
-                    String encounterlocalAdultintial = "";
-                    String encountervitalsLocal = null;
-                    String encounterIDSelection = "visituuid = ?";
+                String encounterlocalAdultintial = "";
+                String encountervitalsLocal = null;
+                String encounterIDSelection = "visituuid = ?";
 
-                    String[] encounterIDArgs = {visit_id};
+                String[] encounterIDArgs = {visit_id};
 
-                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                        do {
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                            }
-
-                        } while (encounterCursor.moveToNext());
-                    }
-                    encounterCursor.close();
-
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                    if (previsitCursor != null && previsitCursor.moveToLast()) {
-
-                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                        boolean needToShowCoreValue = false;
-                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                            try {
-                                // isInOldFormat = false;
-                                JSONObject jsonObject = new JSONObject(visitValue);
-                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                    needToShowCoreValue = false;
-                                } else {
-                                    needToShowCoreValue = true;
-                                    visitValue = jsonObject.getString("en");
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                CustomLog.e(TAG,e.getMessage());
-                            }
-                        } else {
-                            needToShowCoreValue = true;
+                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                    do {
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                        }
+                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                            encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
                         }
 
-                        if (visitValue != null && !visitValue.isEmpty()) {
+                    } while (encounterCursor.moveToNext());
+                }
+                encounterCursor.close();
 
-                            if (needToShowCoreValue) {
+                String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                if (previsitCursor != null && previsitCursor.moveToLast()) {
 
-                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
-
-                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
-
-                                visitValue = "";
-                                String colon = ":";
-                                if (complaints != null) {
-                                    for (String comp : complaints) {
-                                        if (!comp.trim().isEmpty() && comp.indexOf(colon) > 0) {
-                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-                                        }
-                                    }
-                                    if (!visitValue.isEmpty()) {
-                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                        visitValue = visitValue.replaceAll("<br/>", ", ");
-                                        visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                        visitValue = visitValue.replaceAll("<b>", "");
-                                        visitValue = visitValue.replaceAll("</b>", "");
-                                        visitValue = visitValue.trim();
-                                        while (visitValue.endsWith(",")) {
-                                            visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
-                                        }
-                                    }
-                                }
+                    String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                    boolean needToShowCoreValue = false;
+                    if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                        try {
+                            // isInOldFormat = false;
+                            JSONObject jsonObject = new JSONObject(visitValue);
+                            if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                needToShowCoreValue = false;
                             } else {
-                                String chiefComplain = "";
-                                visitValue = visitValue.replaceAll("<.*?>", "");
-                                System.out.println(visitValue);
-                                CustomLog.v(TAG, visitValue);
-                                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+                                needToShowCoreValue = true;
+                                visitValue = jsonObject.getString("en");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            CustomLog.e(TAG, e.getMessage());
+                        }
+                    } else {
+                        needToShowCoreValue = true;
+                    }
 
-                                String[] spt = visitValue.split("►");
-                                List<String> list = new ArrayList<>();
+                    if (visitValue != null && !visitValue.isEmpty()) {
 
-                                StringBuilder stringBuilder = new StringBuilder();
-                                for (String s : spt) {
-                                    String complainName = "";
-                                    if (s.isEmpty()) continue;
-                                    //String s1 =  new String(s.getBytes(), "UTF-8");
-                                    System.out.println(s);
-                                    String[] spt1 = s.split("::●");
-                                    complainName = spt1[0];
+                        if (needToShowCoreValue) {
 
-                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                        System.out.println(complainName);
-                                        if (!stringBuilder.toString().isEmpty())
-                                            stringBuilder.append(", ");
-                                        stringBuilder.append(complainName);
+                            visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                            String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                            visitValue = "";
+                            String colon = ":";
+                            if (complaints != null) {
+                                for (String comp : complaints) {
+                                    if (!comp.trim().isEmpty() && comp.indexOf(colon) > 0) {
+                                        visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
                                     }
-
                                 }
+                                if (!visitValue.isEmpty()) {
+                                    visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                    visitValue = visitValue.replaceAll("<br/>", ", ");
+                                    visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
+                                    //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                    visitValue = visitValue.replaceAll("<b>", "");
+                                    visitValue = visitValue.replaceAll("</b>", "");
+                                    visitValue = visitValue.trim();
+                                    while (visitValue.endsWith(",")) {
+                                        visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
+                                    }
+                                }
+                            }
+                        } else {
+                            String chiefComplain = "";
+                            visitValue = visitValue.replaceAll("<.*?>", "");
+                            System.out.println(visitValue);
+                            CustomLog.v(TAG, visitValue);
+                            //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
+
+                            String[] spt = visitValue.split("►");
+                            List<String> list = new ArrayList<>();
+                            String appLanguage = sessionManager.getAppLanguage();
+
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (String s : spt) {
+                                String complainName = "";
+                                if (s.isEmpty()) continue;
+                                if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
+                                    continue;
+                                }
+
+                                String[] spt1 = s.split("::●");
+                                complainName = spt1[0];
+
+                                //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                    System.out.println(complainName);
+                                    if (!stringBuilder.toString().isEmpty())
+                                        stringBuilder.append(", ");
+                                    stringBuilder.append(complainName);
+                                }
+
+                            }
                                 /*StringBuilder stringBuilder = new StringBuilder();
                                 int size = list.size() == 1 ? list.size() : list.size() - 1;
                                 for (int i = 0; i < size; i++) {
@@ -993,36 +1302,37 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                             stringBuilder.append(complainName);
                                         }
                                     }*/
-                                visitValue = stringBuilder.toString();
+                            visitValue = stringBuilder.toString();
 
-                            }
-                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                            try {
+                        }
+                        SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                        try {
 
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                PastVisitData pastVisitData = new PastVisitData();
-                                pastVisitData.setVisitDate(visitDate);
-                                pastVisitData.setVisitUUID(visit_id);
-                                pastVisitData.setChiefComplain(visitValue);
-                                pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                mCurrentVisitDataList.add(pastVisitData);
-                                CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+                            Date formatted = currentDate.parse(date);
+                            String visitDate = currentDate.format(formatted);
+                            //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                            PastVisitData pastVisitData = new PastVisitData();
+                            pastVisitData.setVisitDate(visitDate);
+                            pastVisitData.setVisitUUID(visit_id);
+                            pastVisitData.setChiefComplain(visitValue);
+                            pastVisitData.setEncounterVitals(encountervitalsLocal);
+                            pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                            mCurrentVisitDataList.add(pastVisitData);
+                            CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
-                            } catch (ParseException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                                CustomLog.e(TAG,e.getMessage());
-                            }
+                        } catch (ParseException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            CustomLog.e(TAG, e.getMessage());
                         }
                     }
-
-
                 }
+
+
+                //}
             } while (visitCursor.moveToPrevious());
         }
-        CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
+        //CustomLog.v(TAG, " initForOpenVisit- " +mCurrentVisitDataList.size());
+        //CustomLog.v(TAG, "initForOpenVisit - " + new Gson().toJson(mCurrentVisitDataList));
         if (!mCurrentVisitDataList.isEmpty()) {
             PastVisitListingAdapter pastVisitListingAdapter = new PastVisitListingAdapter(mCurrentVisitsRecyclerView, PatientDetailActivity2.this, mCurrentVisitDataList, new PastVisitListingAdapter.OnItemSelected() {
                 @Override
@@ -1078,7 +1388,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1104,6 +1414,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
+
+                patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));//block
+                patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));//household number
+                patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1119,7 +1433,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     name = patientsDAO.getAttributesName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("person_attribute_type_uuid")));
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (name.equalsIgnoreCase("caste")) {
@@ -1151,6 +1465,61 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 }
                 if (name.equalsIgnoreCase("providerUUID")) {
                     patientDTO.setProviderUUID(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+                /*if (name.equalsIgnoreCase("blockSurvey")) {
+                    patientDTO.setBlock(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }*/
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value)) {
+                    patientDTO.setTmhCaseNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.REQUEST_ID.value)) {
+                    patientDTO.setRequestId(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.RELATIVE_PHONE_NUMBER.value)) {
+                    patientDTO.setRelativePhoneNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DISCIPLINE.value)) {
+                    patientDTO.setDiscipline(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DEPARTMENT.value)) {
+                    patientDTO.setDepartment(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.PROVINCES.value)) {
+                    patientDTO.setProvince(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.CITIES.value)) {
+                    patientDTO.setCity(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.REGISTRATION_ADDRESS_OF_HF.value)) {
+                    patientDTO.setRegistrationAddressOfHf(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.INN.value)) {
+                    patientDTO.setInn(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.CODE_OF_HEALTH_FACILITY.value)) {
+                    patientDTO.setCodeOfHealthFacility(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.HEALTH_FACILITY_NAME.value)) {
+                    patientDTO.setHealthFacilityName(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.CODE_OF_DEPARTMENT.value)) {
+                    patientDTO.setCodeOfDepartment(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
+
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.DEPARTMENT.value)) {
+                    patientDTO.setDepartment(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
 
             } while (idCursor1.moveToNext());
@@ -1191,7 +1560,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 */
         } catch (JSONException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
 //            Issue #627
 //            added the catch exception to check the config and throwing back to setup activity
             Toast.makeText(getApplicationContext(), "JsonException" + e, Toast.LENGTH_LONG).show();
@@ -1214,7 +1583,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             profileImage = imagesDAO.getPatientProfileChangeTime(patientDTO.getUuid());
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         if (patientDTO.getPatientPhoto() == null || patientDTO.getPatientPhoto().equalsIgnoreCase("")) {
@@ -1455,7 +1824,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting district and city
 
-        String district = null;
+        String district = patientDTO.getDistrict();
         String city_village = patientDTO.getCityvillage();
         if (patientDTO.getCityvillage() != null && patientDTO.getCityvillage().length() > 0) {
             String[] district_city = patientDTO.getCityvillage().trim().split(":");
@@ -1473,7 +1842,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         if (city_village != null) {
-            village.setText(city_village);
+            //village.setText(city_village);
+            village.setText(getVillageTranslated(patientDTO.getStateprovince(), patientDTO.getDistrict(), patientDTO.getAddress3(), patientDTO.getCityvillage(), sessionManager.getAppLanguage()));
         } else {
             village.setText(getResources().getString(R.string.no_city_added));
         }
@@ -1776,11 +2146,27 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             guardianTypeTr.setVisibility(View.GONE);
 
         }
+        Set<Attribute> attributes;
+        try {
+            attributes = new HashSet<>(patientsDAO.getPatientAttributes(patientDTO.getUuid()));
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
 
+        if (TextUtils.isEmpty(patientDTO.getEmContactName())) {
+            patientDTO.setEmContactName(getValueByUuid(attributes, "9b37e244-2cf5-4bd8-af32-b85ed4f919aa"));
+        }
+
+        if (TextUtils.isEmpty(patientDTO.getEmContactNumber())) {
+            patientDTO.setEmContactNumber(getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4"));
+        }
+
+
+        if (TextUtils.isEmpty(patientDTO.getContactType())) {
+            patientDTO.setContactType(getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164"));
+        }
         //contact type
-        if (patientDTO.getContactType() != null && !patientDTO.getContactType().
-
-                equals("")) {
+        if (!TextUtils.isEmpty(patientDTO.getContactType())) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                 String type = switch_hi_contact_type_edit(patientDTO.getContactType());
                 contact_type_tv.setText(type);
@@ -1792,22 +2178,150 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         //emergency contact name
-        if (patientDTO.getEmContactName() != null && !patientDTO.getEmContactName().
-
-                equals("")) {
+        if (!TextUtils.isEmpty(patientDTO.getEmContactName())) {
             em_contact_name_tv.setText(patientDTO.getEmContactName());
         } else {
             em_contact_name_tv.setText(getString(R.string.not_provided));
         }
 
         //emergency contact number
-        if (patientDTO.getEmContactNumber() != null && !patientDTO.getEmContactNumber().
-
-                equals("")) {
+        if (!TextUtils.isEmpty(patientDTO.getEmContactNumber()) && patientDTO.getEmContactNumber().length() > 8) {
             em_contact_number_tv.setText(patientDTO.getEmContactNumber());
         } else {
             em_contact_number_tv.setText(getString(R.string.not_provided));
         }
+
+        //tmh case number
+        if (patientDTO.getTmhCaseNumber() != null && !patientDTO.getTmhCaseNumber().
+
+                equals("")) {
+            tmh_case_number_tv.setText(patientDTO.getTmhCaseNumber());
+        } else {
+            tmh_case_number_tv.setText(getString(R.string.not_provided));
+        }
+
+        //request id
+        if (patientDTO.getRequestId() != null && !patientDTO.getRequestId().
+
+                equals("")) {
+            request_id_tv.setText(patientDTO.getRequestId());
+        } else {
+            request_id_tv.setText(getString(R.string.not_provided));
+        }
+
+        //relative phone num
+        if (patientDTO.getRelativePhoneNumber() != null && !patientDTO.getRelativePhoneNumber().
+
+                equals("")) {
+            relative_phone_num_tv.setText(patientDTO.getRelativePhoneNumber());
+        } else {
+            relative_phone_num_tv.setText(getString(R.string.not_provided));
+        }
+
+        //discipline
+        if (patientDTO.getDiscipline() != null && !patientDTO.getDiscipline().
+
+                equals("")) {
+            discipline_tv.setText(patientDTO.getDiscipline());
+        } else {
+            discipline_tv.setText(getString(R.string.not_provided));
+        }
+
+        //department
+        if (patientDTO.getDepartment() != null && !patientDTO.getDepartment().
+
+                equals("")) {
+            department_tv.setText(patientDTO.getDepartment());
+        } else {
+            department_tv.setText(getString(R.string.not_provided));
+        }
+
+        //province
+        if (patientDTO.getProvince() != null && !patientDTO.getProvince().
+
+                equals("")) {
+            provinceTv.setText(patientDTO.getProvince());
+        } else {
+            provinceTv.setText(getString(R.string.not_provided));
+        }
+
+        //city
+        if (patientDTO.getCity() != null && !patientDTO.getCity().
+
+                equals("")) {
+            cityTv.setText(patientDTO.getCity());
+        } else {
+            cityTv.setText(getString(R.string.not_provided));
+        }
+
+        //registration address
+        if (patientDTO.getRegistrationAddressOfHf() != null && !patientDTO.getRegistrationAddressOfHf().
+
+                equals("")) {
+            registrationAddressOfHfTv.setText(patientDTO.getRegistrationAddressOfHf());
+        } else {
+            registrationAddressOfHfTv.setText(getString(R.string.not_provided));
+        }
+
+        //Inn
+        if (patientDTO.getInn() != null && !patientDTO.getInn().
+
+                equals("")) {
+            innTv.setText(patientDTO.getInn());
+        } else {
+            innTv.setText(getString(R.string.not_provided));
+        }
+
+        //Code of the Health Facility
+        if (patientDTO.getCodeOfHealthFacility() != null && !patientDTO.getCodeOfHealthFacility().
+
+                equals("")) {
+            codeOfHealthFacilityTv.setText(patientDTO.getCodeOfHealthFacility());
+        } else {
+            codeOfHealthFacilityTv.setText(getString(R.string.not_provided));
+        }
+
+        //Health facility name
+        if (patientDTO.getHealthFacilityName() != null && !patientDTO.getHealthFacilityName().
+
+                equals("")) {
+            healthFacilityNameTv.setText(patientDTO.getHealthFacilityName());
+        } else {
+            healthFacilityNameTv.setText(getString(R.string.not_provided));
+        }
+
+        //Code of the Department
+        if (patientDTO.getCodeOfDepartment() != null && !patientDTO.getCodeOfDepartment().
+
+                equals("")) {
+            codeOfDepartmentTv.setText(patientDTO.getCodeOfDepartment());
+        } else {
+            codeOfDepartmentTv.setText(getString(R.string.not_provided));
+        }
+
+        //department
+        if (patientDTO.getDepartment() != null && !patientDTO.getDepartment().
+
+                equals("")) {
+            departmentTv.setText(patientDTO.getDepartment());
+        } else {
+            departmentTv.setText(getString(R.string.not_provided));
+        }
+
+        if (patientDTO.getAddress6() != null && !patientDTO.getAddress6().equals("")) {
+            householdNumber.setText(patientDTO.getAddress6());
+        } else {
+            householdNumber.setText(getString(R.string.not_provided));
+        }
+    }
+
+    public String getValueByUuid(Set<Attribute> patientAttributesDTO, String targetUuid) {
+        for (Attribute dto : patientAttributesDTO) {
+            if (dto.getAttributeType().equals(targetUuid)) {
+                return dto.getValue(); // Return the value for the matching UUID
+            }
+        }
+        return null; // Return null if no match is found
     }
 
     private String getStateTranslated(String state, String language) {
@@ -1823,6 +2337,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         desiredVal = mStateDistMaster.getStateDataList().get(i).getStateHindi();
                     else if (language.equalsIgnoreCase("en"))
                         desiredVal = mStateDistMaster.getStateDataList().get(i).getState();
+                    else if (language.equalsIgnoreCase("mr"))
+                        desiredVal = mStateDistMaster.getStateDataList().get(i).getStateMarathi();
                     break;
                 }
             }
@@ -1851,6 +2367,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         desiredVal = distDataList.get(i).getNameHindi();
                     else if (language.equalsIgnoreCase("en"))
                         desiredVal = distDataList.get(i).getName();
+                    else if (language.equalsIgnoreCase("mr"))
+                        desiredVal = distDataList.get(i).getNameMarathi();
                     break;
                 }
             }
@@ -1888,7 +2406,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             updated = patientsDAO.updatePatientPhoto(patientDTO.getUuid(), AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg");
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG,e.getMessage());
+                            CustomLog.e(TAG, e.getMessage());
                         }
                         if (updated) {
                             RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
@@ -1909,7 +2427,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     patientDTO.getUuid() + ".jpg", patientDTO.getUuid());
                         } catch (DAOException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
-                            CustomLog.e(TAG,e.getMessage());
+                            CustomLog.e(TAG, e.getMessage());
                         }
                     }
                 });
@@ -1940,7 +2458,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                CustomLog.e(TAG,e.getMessage());
+                CustomLog.e(TAG, e.getMessage());
             }
         }
 
@@ -1966,7 +2484,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     syncAnimator.cancel();
                     recreate();
                 } catch (Exception e) {
-                    CustomLog.d(TAG,e.getMessage());
+                    CustomLog.d(TAG, e.getMessage());
                 }
             }
         };
@@ -2002,7 +2520,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             networkUtils.unregisterNetworkReceiver();
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            CustomLog.d(TAG,e.getMessage());
+            CustomLog.d(TAG, e.getMessage());
         }
     }
 
@@ -2167,13 +2685,22 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void initForPastVisit() {
+        if (patientDTO == null || patientDTO.getUuid() == null) {
+            return;
+        }
         mPastVisitDataList.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
-        String[] visitArgs = {patientDTO.getUuid()};
-        String[] visitColumns = {"uuid", "startdate", "enddate"};
-        String visitOrderBy = "startdate";
-        Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        // String visitSelection = "patientuuid = ? and enddate IS NOT NULL and enddate != ''";
+        //String[] visitArgs = {patientDTO.getUuid()};
+        //String[] visitColumns = {"uuid", "startdate", "enddate"};
+        //String visitOrderBy = "startdate";
+        //Cursor visitCursor = db.query("tbl_visit", visitColumns, visitSelection, visitArgs, null, null, visitOrderBy);
+        String rawQuery = "SELECT DISTINCT v.uuid, v.startdate, v.enddate from tbl_visit v  join tbl_encounter e on " +
+                "v.uuid = e.visituuid where v.patientuuid = ? and (v.enddate IS NOT NULL " +
+                "AND v.enddate != '' OR e.encounter_type_uuid = ? )";
+        String[] selectionArgs = {patientDTO.getUuid(), UuidDictionary.ENCOUNTER_PATIENT_EXIT_SURVEY};
+
+        Cursor visitCursor = db.rawQuery(rawQuery, selectionArgs);
         if (visitCursor == null || visitCursor.getCount() <= 0) {
             findViewById(R.id.cv_past_visits).setVisibility(View.GONE);
         } else {
@@ -2185,117 +2712,120 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     String end_date = visitCursor.getString(visitCursor.getColumnIndexOrThrow("enddate"));
                     String visit_id = visitCursor.getString(visitCursor.getColumnIndexOrThrow("uuid"));
 
-                    boolean isCompletedExitedSurvey = false;
+                  /*  boolean isCompletedExitedSurvey = false;
                     try {
                         isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visit_id);
                     } catch (DAOException e) {
                         e.printStackTrace();
                     }
-                    if (isCompletedExitedSurvey) {
+                    if (isCompletedExitedSurvey) {*/
 
-                        String encounterlocalAdultintial = "";
-                        String encountervitalsLocal = null;
-                        String encounterIDSelection = "visituuid = ?";
+                    String encounterlocalAdultintial = "";
+                    String encountervitalsLocal = null;
+                    String encounterIDSelection = "visituuid = ?";
 
-                        String[] encounterIDArgs = {visit_id};
+                    String[] encounterIDArgs = {visit_id};
 
-                        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                            do {
-                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                    encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                    Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+                    if (encounterCursor != null && encounterCursor.moveToFirst()) {
+                        do {
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VITALS").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encountervitalsLocal = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+                            if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                                encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                            }
+
+                        } while (encounterCursor.moveToNext());
+                    }
+                    encounterCursor.close();
+
+                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
+                    String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
+                    String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
+                    Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
+                    if (previsitCursor != null && previsitCursor.moveToLast()) {
+
+                        String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
+                        boolean needToShowCoreValue = false;
+                        if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
+                            try {
+                                // isInOldFormat = false;
+                                JSONObject jsonObject = new JSONObject(visitValue);
+                                if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
+                                    visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
+                                    needToShowCoreValue = false;
+                                } else {
+                                    needToShowCoreValue = true;
+                                    visitValue = jsonObject.getString("en");
                                 }
-                                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                                    encounterlocalAdultintial = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                                }
-
-                            } while (encounterCursor.moveToNext());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            needToShowCoreValue = true;
                         }
-                        encounterCursor.close();
+                        if (visitValue != null && !visitValue.isEmpty()) {
 
-                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? and voided !='1'";
-                        String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT};
-                        String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
-                        Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
-                        if (previsitCursor != null && previsitCursor.moveToLast()) {
+                            if (needToShowCoreValue) {
 
-                            String visitValue = previsitCursor.getString(previsitCursor.getColumnIndexOrThrow("value"));
-                            boolean needToShowCoreValue = false;
-                            if (visitValue.startsWith("{") && visitValue.endsWith("}")) {
-                                try {
-                                    // isInOldFormat = false;
-                                    JSONObject jsonObject = new JSONObject(visitValue);
-                                    if (jsonObject.has("l-" + sessionManager.getAppLanguage())) {
-                                        visitValue = jsonObject.getString("l-" + sessionManager.getAppLanguage());
-                                        needToShowCoreValue = false;
-                                    } else {
-                                        needToShowCoreValue = true;
-                                        visitValue = jsonObject.getString("en");
+                                visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
+
+                                String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
+
+                                visitValue = "";
+                                String colon = ":";
+                                if (complaints != null) {
+                                    for (String comp : complaints) {
+                                        if (!comp.trim().isEmpty() && comp.contains(colon)) {
+                                            visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+
+                                        }
                                     }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    if (!visitValue.isEmpty()) {
+                                        visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
+                                        visitValue = visitValue.replaceAll("<br/>", ", ");
+                                        visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
+                                        //visitValue = visitValue.substring(0, visitValue.length() - 2);
+                                        visitValue = visitValue.replaceAll("<b>", "");
+                                        visitValue = visitValue.replaceAll("</b>", "");
+                                        visitValue = visitValue.trim();
+                                        while (visitValue.endsWith(",")) {
+                                            visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
+                                        }
+                                    }
                                 }
                             } else {
-                                needToShowCoreValue = true;
-                            }
-                            if (visitValue != null && !visitValue.isEmpty()) {
+                                String chiefComplain = "";
+                                visitValue = visitValue.replaceAll("<.*?>", "");
+                                System.out.println(visitValue);
+                                CustomLog.v(TAG, visitValue);
+                                //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
-                                if (needToShowCoreValue) {
+                                String[] spt = visitValue.split("►");
+                                List<String> list = new ArrayList<>();
+                                String appLanguage = sessionManager.getAppLanguage();
+                                StringBuilder stringBuilder = new StringBuilder();
 
-                                    visitValue = visitValue.replace("?<b>", Node.bullet_arrow);
-
-                                    String[] complaints = org.apache.commons.lang3.StringUtils.split(visitValue, Node.bullet_arrow);
-
-                                    visitValue = "";
-                                    String colon = ":";
-                                    if (complaints != null) {
-                                        for (String comp : complaints) {
-                                            if (!comp.trim().isEmpty() && comp.contains(colon)) {
-                                                visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
-
-                                            }
-                                        }
-                                        if (!visitValue.isEmpty()) {
-                                            visitValue = visitValue.replaceAll(Node.bullet_arrow, "");
-                                            visitValue = visitValue.replaceAll("<br/>", ", ");
-                                            visitValue = visitValue.replaceAll(Node.ASSOCIATE_SYMPTOMS, "");
-                                            //visitValue = visitValue.substring(0, visitValue.length() - 2);
-                                            visitValue = visitValue.replaceAll("<b>", "");
-                                            visitValue = visitValue.replaceAll("</b>", "");
-                                            visitValue = visitValue.trim();
-                                            while (visitValue.endsWith(",")) {
-                                                visitValue = visitValue.substring(0, visitValue.length() - 1).trim();
-                                            }
-                                        }
+                                for (String s : spt) {
+                                    String complainName = "";
+                                    if (s.isEmpty()) continue;
+                                    if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
+                                        continue;
                                     }
-                                } else {
-                                    String chiefComplain = "";
-                                    visitValue = visitValue.replaceAll("<.*?>", "");
-                                    System.out.println(visitValue);
-                                    CustomLog.v(TAG, visitValue);
-                                    //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
-                                    String[] spt = visitValue.split("►");
-                                    List<String> list = new ArrayList<>();
+                                    String[] spt1 = s.split("::●");
+                                    complainName = spt1[0];
 
-                                    StringBuilder stringBuilder = new StringBuilder();
-                                    for (String s : spt) {
-                                        String complainName = "";
-                                        if (s.isEmpty()) continue;
-                                        //String s1 =  new String(s.getBytes(), "UTF-8");
-                                        System.out.println(s);
-                                        String[] spt1 = s.split("::●");
-                                        complainName = spt1[0];
-
-                                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                        if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                            System.out.println(complainName);
-                                            if (!stringBuilder.toString().isEmpty())
-                                                stringBuilder.append(", ");
-                                            stringBuilder.append(complainName);
-                                        }
-
+                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
+                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                        System.out.println(complainName);
+                                        if (!stringBuilder.toString().isEmpty())
+                                            stringBuilder.append(", ");
+                                        stringBuilder.append(complainName);
                                     }
+
+                                }
                                 /*StringBuilder stringBuilder = new StringBuilder();
                                 int size = list.size() == 1 ? list.size() : list.size() - 1;
                                 for (int i = 0; i < size; i++) {
@@ -2311,32 +2841,33 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                             stringBuilder.append(complainName);
                                         }
                                     }*/
-                                    visitValue = stringBuilder.toString();
+                                visitValue = stringBuilder.toString();
 
-                                }
-                                SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-                                try {
+                            }
+                            SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                            try {
 
-                                    Date formatted = currentDate.parse(date);
-                                    String visitDate = currentDate.format(formatted);
-                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                    PastVisitData pastVisitData = new PastVisitData();
-                                    pastVisitData.setVisitDate(visitDate);
-                                    pastVisitData.setVisitUUID(visit_id);
-                                    pastVisitData.setChiefComplain(visitValue);
-                                    pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                    pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                    mPastVisitDataList.add(pastVisitData);
-                                    CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                Date formatted = currentDate.parse(date);
+                                String visitDate = currentDate.format(formatted);
+                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                PastVisitData pastVisitData = new PastVisitData();
+                                pastVisitData.setVisitDate(visitDate);
+                                pastVisitData.setVisitUUID(visit_id);
+                                pastVisitData.setChiefComplain(visitValue);
+                                pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                mPastVisitDataList.add(pastVisitData);
+                                //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());
 
-                                } catch (ParseException e) {
-                                    FirebaseCrashlytics.getInstance().recordException(e);
-                                }
+                            } catch (ParseException e) {
+                                FirebaseCrashlytics.getInstance().recordException(e);
                             }
                         }
-
-
                     }
+
+
+                    //}
                 } while (visitCursor.moveToPrevious());
             }
 
@@ -2361,6 +2892,79 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (activeStatus != null) {
             binding.setAddressActiveStatus(activeStatus.getActiveStatusPatientAddress());
             binding.setOtherActiveStatus(activeStatus.getActiveStatusPatientOther());
+            binding.setFamilyMemberActiveStatus(activeStatus.getActiveStatusPatientFamilyMemberRegistration());
+            binding.setHouseholdSurveyActiveStatus(activeStatus.getActiveStatusPatientHouseholdSurvey());
+            binding.setRosterQuestionnaireActiveStatus(activeStatus.getActiveStatusRosterQuestionnaireSection());
         }
+    }
+
+    private String getVillageTranslated(String state, String district, String block, String village, String language) {
+        Log.d(TAG, "getVillageTranslated: state : " + state);
+        Log.d(TAG, "getVillageTranslated: block : " + block);
+        Log.d(TAG, "getVillageTranslated: village : " + village);
+        Log.d(TAG, "getVillageTranslated: language : " + language);
+
+        String json = FileUtils.encodeJSON(this, "state_district_tehsil.json").toString();
+        StateDistMaster stateDistMaster = new Gson().fromJson(json, StateDistMaster.class);
+
+        if (stateDistMaster == null || stateDistMaster.getStateDataList() == null) {
+            return village; // Return original if JSON is invalid
+        }
+
+        // Find the state
+        StateData stateData = stateDistMaster.getStateDataList().stream()
+                .filter(s -> s.getState().equalsIgnoreCase(state))
+                .findFirst()
+                .orElse(null);
+
+        if (stateData == null || stateData.getDistDataList() == null) {
+            return village; // Return original if state or districts are not found
+        }
+
+        // Find the district
+        DistData districtData = stateData.getDistDataList().stream()
+                .filter(d -> d.getName().equalsIgnoreCase(district))
+                .findFirst()
+                .orElse(null);
+
+        if (districtData == null || districtData.getBlocks() == null) {
+            return village; // Return original if district or blocks are not found
+        }
+
+        // Find the block
+        Block blockData = districtData.getBlocks().stream()
+                .filter(b -> b.getName().equalsIgnoreCase(block))
+                .findFirst()
+                .orElse(null);
+
+        if (blockData == null || blockData.getGramPanchayats() == null) {
+            return village; // Return original if block or grampanchayats are not found
+        }
+
+        // Select the first available Grampanchayat (default selection)
+        GramPanchayat grampanchayatData = blockData.getGramPanchayats().stream()
+                .findFirst()
+                .orElse(null);
+
+        if (grampanchayatData == null || grampanchayatData.getVillages() == null) {
+            return village; // Return original if no villages exist under Grampanchayat
+        }
+
+        // Find the village in the grampanchayat
+        return grampanchayatData.getVillages().stream()
+                .sorted(Comparator.comparing(Village::getName, String.CASE_INSENSITIVE_ORDER)) // Sort villages by name
+                .filter(v -> v.getName().equalsIgnoreCase(village))
+                .map(v -> {
+                    switch (language.toLowerCase()) {
+                        case "hi":
+                            return v.getNameHindi();
+                        case "mr":
+                            return v.getNameMarathi();
+                        default:
+                            return v.getName();
+                    }
+                })
+                .findFirst()
+                .orElse(village); // Return original if village not found
     }
 }

@@ -33,6 +33,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -436,7 +437,7 @@ public class ChatActivity extends AppCompatActivity {
                 Log.v(TAG, "getAllMessages - onErrorResponse - " + error.getMessage());
                 mEmptyTextView.setText(getString(R.string.you_have_no_messages_start_sending_messages_now));
             }
-        }){
+        }) {
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
@@ -570,7 +571,7 @@ public class ChatActivity extends AppCompatActivity {
             }, error -> {
                 Log.e(TAG, "postMessages - onErrorResponse - " + error.getMessage());
                 mLoadingLinearLayout.setVisibility(View.GONE);
-            }){
+            }) {
                 public Map<String, String> getHeaders() {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
@@ -592,8 +593,7 @@ public class ChatActivity extends AppCompatActivity {
 //            getAllMessages(true);
 //            SocketManager.getInstance().emit(SocketManager.EVENT_IS_READ, null);
 //                if (mSocket != null) mSocket.emit("isread");
-        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage()))
-        {
+        }, error -> Log.v(TAG, "setReadStatus - onErrorResponse - " + error.getMessage())) {
             public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Authorization", "Bearer " + preferenceHelper.getString(PreferenceHelper.AUTH_TOKEN));
@@ -745,8 +745,11 @@ public class ChatActivity extends AppCompatActivity {
             });
 
     private void galleryStart() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        mStartForGalleryResult.launch(intent);
+        pickMediaLauncher.launch(
+                new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build()
+        );
     }
 
     private void browseStartForPdf() {
@@ -842,55 +845,43 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getResultCode() == Activity.RESULT_OK) {
-                        Intent data = result.getData();
-                        String currentPhotoPath = "";
-                        if (data != null) {
-                            Uri selectedImage = data.getData();
-                            String[] filePath = {MediaStore.Images.Media.DATA};
-                            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                            c.moveToFirst();
-                            int columnIndex = c.getColumnIndex(filePath[0]);
-                            String picturePath = c.getString(columnIndex);
-                            c.close();
-                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                            Log.v("path", picturePath + "");
+    public String mImagePathRoot = "";
 
-                            // copy & rename the file
-                            String finalImageName = UUID.randomUUID().toString();
-                            currentPhotoPath = mImagePathRoot + finalImageName + ".jpg";
-                            BitmapUtils.copyFile(picturePath, currentPhotoPath);
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        String currentPhotoPath = "";
+        if (uri != null) {
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor c = getContentResolver().query(uri, filePath, null, null, null);
 
-                            // Handle the Intent
+            if (c != null) {
+                c.moveToFirst();
+                int columnIndex = c.getColumnIndex(filePath[0]);
+                String picturePath = c.getString(columnIndex);
+                c.close();
 
+                String finalImageName = UUID.randomUUID().toString();
+                currentPhotoPath = mImagePathRoot + finalImageName + ".jpg";
+                BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
-                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
-                            Log.i(TAG, currentPhotoPath);
-                            if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
-                                Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
-                                return;
-                            }
-                            ChatMessage message = new ChatMessage();
-                            message.setFromUser(mFromUUId);
-                            message.setToUser(mToUUId);
-                            message.setPatientId(mPatientUUid);
-                            message.setMessage(".jpg");
-                            message.setType("attachment");
-                            message.setLoading(true);
-                            addNewMessage(message);
-                            AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
-
-                        } else {
-                            Toast.makeText(ChatActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
-                        }
-
-                    }
+                if (!RealPathUtil.isFileLessThan512Kb(new File(currentPhotoPath))) {
+                    Toast.makeText(ChatActivity.this, getResources().getString(R.string.max_doc_size_toast), Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
+
+                ChatMessage message = new ChatMessage();
+                message.setFromUser(mFromUUId);
+                message.setToUser(mToUUId);
+                message.setPatientId(mPatientUUid);
+                message.setMessage(".jpg");
+                message.setType("attachment");
+                message.setLoading(true);
+                addNewMessage(message);
+                AwsS3Utils.saveFileToS3Cloud(ChatActivity.this, mVisitUUID, currentPhotoPath);
+            }
+        } else {
+            Toast.makeText(ChatActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+        }
+    });
 
     ActivityResultLauncher<Intent> mStartForPDFResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -942,7 +933,7 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 }
             });
-    public String mImagePathRoot = "";
+
 
     private void showImageOrPdf(String url) {
         if (url.endsWith(".pdf")) {

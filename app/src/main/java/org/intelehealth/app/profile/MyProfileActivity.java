@@ -33,7 +33,11 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
+
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -49,6 +53,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -423,6 +428,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             myProfilePOJO.setNewCountryCode(countryCodePicker.getSelectedCountryCodeWithPlus());
             shouldActivateSaveButton();
         });
+
+        etEmail.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
 
         etEmail.addTextChangedListener(new TextWatcher() {
             @Override
@@ -803,10 +810,9 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         }
     });
 
-    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
-        if (result.getResultCode() == RESULT_OK) {
-            if (result.getData() != null) pickImage(result.getData());
+    private final ActivityResultLauncher<PickVisualMediaRequest> pickMediaLauncher = registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+        if (uri != null) {
+            pickImage(uri);
         }
     });
 
@@ -821,17 +827,16 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         saveImage(mCurrentPhotoPath);
     }
 
-    private void pickImage(Intent data) {
-        if (data != null) {
-            try {
-                Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+    private void pickImage(Uri initialUri) {
+        try {
+            String[] filePath = {MediaStore.Images.Media.DATA};
+            Cursor c = getContentResolver().query(initialUri, filePath, null, null, null);
+            if (c != null) {
                 c.moveToFirst();
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
+
                 c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                 CustomLog.v("path", picturePath + "");
 
                 // copy & rename the file
@@ -843,21 +848,12 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
                 ivProfileImage.invalidate();
 
-                Thread thread = new Thread() {
-                    @Override
-                    public void run() {
-                        //run on ui thread
-                        runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
-                    }
-                };
+                Thread thread = new Thread(() -> runOnUiThread(() -> bindProfilePictureToUI(finalFilePath)));
                 thread.start();
-
                 BitmapUtils.copyFile(picturePath, finalFilePath);
                 compressImageAndSave(finalFilePath);
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
+        } catch (Exception ignored) {
 
         }
     }
@@ -875,33 +871,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     cameraIntentLauncher.launch(cameraIntent);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    galleryIntentLauncher.launch(intent);
+                    pickMediaLauncher.launch(
+                            new PickVisualMediaRequest.Builder()
+                                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                    .build()
+                    );
                 }
             }
         });
-        /*final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.select_profile_image);
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    Intent cameraIntent = new Intent(MyProfileActivity.this, CameraActivity.class);
-                    String imageName = UUID.randomUUID().toString();
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
-                    cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH);
-                    startActivityForResult(cameraIntent, CameraActivity.TAKE_IMAGE);
-
-                } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(intent, PICK_IMAGE_FROM_GALLERY);
-                } else if (options[item].equals("Cancel")) {
-                    dialog.dismiss();
-                }
-            }
-        });
-        builder.show();*/
     }
 
     private void updateProfileDetailsToLocalDb() throws DAOException {
@@ -1123,10 +1100,10 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
         Button negativeButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_NEGATIVE);
 
-        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //positiveButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 
-        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
         //negativeButton.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
         IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);
     }

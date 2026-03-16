@@ -4,15 +4,20 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMP
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+import static org.intelehealth.app.utilities.UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
+
+import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
@@ -24,10 +29,11 @@ import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class ObsDAO {
+public class ObsDAO extends BaseDao{
 
 
     private SQLiteDatabase db = null;
@@ -35,7 +41,14 @@ public class ObsDAO {
     String TAG = ObsDAO.class.getSimpleName();
 
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
-        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+        boolean isInserted = true;
+        List<HashMap<String, Object>> obsList = new ArrayList<>();
+        for (ObsDTO obsDTO : obsDTOS) {
+            if (new SessionManager(IntelehealthApplication.getAppContext()).isFirstTimeSyncExcuted() && obsDTO.getVoided() == 1) continue;
+            obsList.add(createObsMap(obsDTO));
+        }
+        executeInBackground(bulkInsert(obsList));
+       /* sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         boolean isInserted = true;
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         try {
@@ -54,7 +67,7 @@ public class ObsDAO {
             db.endTransaction();
 
         }
-
+*/
         return isInserted;
 
     }
@@ -73,6 +86,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", obsDTOS.getVoided());
             values.put("sync", "TRUE");
+            values.put("conceptsetuuid", obsDTOS.getConceptsetuuid());
             createdRecordsCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
@@ -85,6 +99,7 @@ public class ObsDAO {
     }
 
     public boolean insertObs(ObsDTO obsDTO) throws DAOException {
+        Log.d(TAG, "insertObskkk: obsdto : " + new Gson().toJson(obsDTO));
         boolean isUpdated = true;
         long insertedCount = 0;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
@@ -100,6 +115,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
+            values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
@@ -132,7 +148,7 @@ public class ObsDAO {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("voided", "0");
             values.put("sync", "false");
-
+            values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
 
             db.setTransactionSuccessful();
@@ -203,9 +219,9 @@ public class ObsDAO {
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                if(idCursor.getColumnIndex("comments") < 0){
+                if (idCursor.getColumnIndex("comments") < 0) {
                     obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
-                }else {
+                } else {
                     obsDTO.setComments("");
                 }
                 obsDTOList.add(obsDTO);
@@ -371,7 +387,7 @@ public class ObsDAO {
         encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='"+ HW_FOLLOWUP_CONCEPT_ID +"'";
+        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='" + HW_FOLLOWUP_CONCEPT_ID + "'";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
@@ -388,6 +404,51 @@ public class ObsDAO {
         return dbValue;
         // fetch dr details from local db - end
     }
+
+    /*public static String fetchDrDetailsFromLocalDb(String visitUuid) {
+        // fetch dr details from local db - start
+        String dbValue = null;
+
+        String visitnote = "";
+        EncounterDAO encounterDAO = new EncounterDAO();
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        String encounterIDSelection = "visituuid = ? ";
+        String[] encounterIDArgs = {visitUuid};
+        String encounter_type_uuid_comp = ENCOUNTER_VISIT_COMPLETE; // bd1fbfaa-f5fb-4ebd-b75c-564506fc309e // make the encounter_type_uuid as constant later on.
+        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
+
+        if (encounterCursor != null && encounterCursor.moveToFirst()) {
+            do {
+                if (encounter_type_uuid_comp.equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
+                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
+                }
+            } while (encounterCursor.moveToNext());
+
+        }
+        encounterCursor.close();
+
+        String[] columns = {"value", " conceptuuid"};
+        String visitSelection = "encounteruuid = ? and voided!='1' and conceptuuid!='" + HW_FOLLOWUP_CONCEPT_ID + "'";
+        String[] visitArgs = {visitnote};
+        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        if (visitCursor.moveToFirst()) {
+            do {
+                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
+            } while (visitCursor.moveToNext());
+        }
+        visitCursor.close();
+
+//        db.setTransactionSuccessful();
+//        db.endTransaction();
+
+        return dbValue;
+        // fetch dr details from local db - end
+    }*/
+
     public static String fetchValueFromLocalDb(String visitUuid) {
         // fetch dr details from local db - start
         String dbValue = null;
@@ -448,8 +509,49 @@ public class ObsDAO {
         // In case the vitals encounter exists
         // delete all the entries which have encounteruuid
         if (doesVitalsEncounterExist) {
-            String deleteClause = "encounteruuid = ?";
-            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid});
+            String deleteClause = "encounteruuid = ? AND conceptsetuuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, UuidDictionary.OBS_TYPE_VITAL_SET});
         }
+    }
+
+    public static void deleteExistingDiagnosticsDataIfExists(String visitUuid) {
+        boolean doesVitalsEncounterExist = false;
+        String encounterUuid = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        // Check if the vitals encounter exists
+        // If it does,fetch the vitals encounter
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?", new String[]{visitUuid, ENCOUNTER_VITALS});
+        if (cursor.moveToFirst()) {
+            doesVitalsEncounterExist = true;
+            encounterUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+        }
+        cursor.close();
+
+        // In case the vitals encounter exists
+        // delete all the entries which have encounteruuid
+        if (doesVitalsEncounterExist) {
+            String deleteClause = "encounteruuid = ? AND conceptsetuuid = ?";
+            db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, OBS_TYPE_DIAGNOSTICS_SET});
+        }
+    }
+    public HashMap<String, Object> createObsMap(ObsDTO obsDTOS) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", obsDTOS.getUuid());
+        values.put("encounteruuid", obsDTOS.getEncounteruuid());
+        values.put("creator", obsDTOS.getCreator());
+        values.put("conceptuuid", obsDTOS.getConceptuuid());
+        values.put("value", obsDTOS.getValue());
+        values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("voided", obsDTOS.getVoided());
+        values.put("sync", "TRUE");
+        values.put("conceptsetuuid", obsDTOS.getConceptsetuuid());
+        return values;
+    }
+
+    @Override
+    String tableName() {
+       return "tbl_obs";
     }
 }

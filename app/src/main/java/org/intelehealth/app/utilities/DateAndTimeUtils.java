@@ -125,42 +125,41 @@ public class DateAndTimeUtils {
     }
 
     public static String getAge_FollowUp(String s, Context context) {
-        CustomLog.d(TAG, "getAge_FollowUp: s: " + s);
-        CustomLog.d("TAG", "getAge_FollowUp: s : " + s);
-        if (s == null)
-            return "";
+//        CustomLog.d(TAG, "getAge_FollowUp: s: " + s);
+//        CustomLog.d("TAG", "getAge_FollowUp: s : " + s);
+        if (s == null) return "";
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+        String age = "";
         try {
             date = originalFormat.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            String formattedDate = targetFormat.format(date);  // 20120821
+            String[] components = formattedDate.split("\\-");
 
-        if(date == null) return "";
-        String formattedDate = targetFormat.format(date);  // 20120821
-        String[] components = formattedDate.split("\\-");
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
 
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
-
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-        String age = "";
-        String tyears = "", tmonth = "", tdays = "";
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            String tyears = "", tmonth = "", tdays = "";
 
        /* if (period.getYears() > 0) {
             tyears = String.valueOf(period.getYears());
         }*/
 
-        if (period.getValue(0) > 0) {  // o index -> years
-            tyears = String.valueOf(period.getValue(0));
-            age = tyears;
-            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
-        } else {
+            if (period.getValue(0) > 0) {  // o index -> years
+                tyears = String.valueOf(period.getValue(0));
+                age = tyears;
+                //CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
+            } else {
+                age = "0";
+            }
+
+        } catch (ParseException e) {
+            e.printStackTrace();
             age = "0";
         }
 
@@ -279,35 +278,36 @@ public class DateAndTimeUtils {
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date date = null;
+        String age = "";
         try {
             date = originalFormat.parse(s);
+            String formattedDate = targetFormat.format(date);  // 20120821
+
+            String[] components = formattedDate.split("\\-");
+
+            int year = Integer.parseInt(components[2]);
+            int month = Integer.parseInt(components[1]);
+            int day = Integer.parseInt(components[0]);
+
+            //call to function to pass this year and month for age mindmaps questions...
+            //getAge_Year_Month(year, month, day);
+
+            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
+            LocalDate now = new LocalDate();                    //Today's date
+            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+
+            String tyears = "";
+            //String xyears = "", xmonths = "";
+
+            if (period.getYears() > 0) {
+                tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
+                //xyears = String.valueOf(period.getYears());
+            }
+            age = tyears;
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
-        String[] components = formattedDate.split("\\-");
-
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
-
-        //call to function to pass this year and month for age mindmaps questions...
-        //getAge_Year_Month(year, month, day);
-
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
-        String age = "";
-        String tyears = "";
-        //String xyears = "", xmonths = "";
-
-        if (period.getYears() > 0) {
-            tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
-            //xyears = String.valueOf(period.getYears());
-        }
-        age = tyears;
         return age;
     }
 
@@ -412,10 +412,8 @@ public class DateAndTimeUtils {
         return period.getMonths();
     }
 
-    public static String formatDateFromOnetoAnother(String date, String sourceFormat,
-                                                    String anotherFormat) {
-        if (date == null || date.isEmpty())
-            return "";
+    public static String formatDateFromOnetoAnother(String date, String sourceFormat, String anotherFormat) {
+        if (date == null || date.isEmpty()) return "";
         String result = "";
         SimpleDateFormat sdf;
         SimpleDateFormat sdf1;
@@ -1202,5 +1200,43 @@ public class DateAndTimeUtils {
         SimpleDateFormat simpleFormat = new SimpleDateFormat(format, Locale.ENGLISH);
         Date date = new Date(currentTimeMillis);
         return simpleFormat.format(date);
+    }
+
+    public static String currentDateTimeFormat() {
+        Locale.setDefault(Locale.ENGLISH);
+        DateFormat date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+// you can get seconds by adding  "...:ss" to it
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
+    public static boolean isDateGreaterThan15Years(String selectedDate) {
+        // Define the date format
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        try {
+            // Parse the selected date
+            Date parsedDate = dateFormat.parse(selectedDate);
+
+            // Get the current date
+            Calendar currentDate = Calendar.getInstance();
+
+            // Set the selected date in a Calendar instance
+            Calendar selectedCalendar = Calendar.getInstance();
+            selectedCalendar.setTime(parsedDate);
+
+            // Add 15 years to the selected date
+            selectedCalendar.add(Calendar.YEAR, 15);
+
+            // Check if the modified selected date is before or after the current date
+            return selectedCalendar.before(currentDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false; // Return false if there's an error parsing the date
+        }
+    }
+    public String getVisitUploadDateTime() {
+        DateFormat date = new SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.ENGLISH);
+        return date.format(new Date());
     }
 }

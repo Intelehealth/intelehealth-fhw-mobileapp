@@ -318,7 +318,7 @@ class UpcomingAppointmentsFragment : Fragment() {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ appointments ->
-                    if (appointments.size > 0) {
+                    if (appointments.isNotEmpty()) {
                         rvUpcomingApp?.visibility = View.VISIBLE
                         noDataFoundForUpcoming?.visibility = View.GONE
                         totalUpcomingApps = appointments?.size ?: 0

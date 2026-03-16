@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -64,9 +67,14 @@ public class IntroScreensActivity_New extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro_screens_new_ui2);
+
+        WindowInsetsControllerCompat controller = new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(true);
+
         viewPager = findViewById(R.id.pager_intro_screens);
-        dotsLayout = findViewById(R.id.layoutDots_intro);
-        btnSkip = findViewById(R.id.btn_skip_intro);
+        dotsLayout = findViewById(R.id.ll_dots);
+        btnSkip = findViewById(R.id.btn_skip);
         sessionManager = new SessionManager(IntroScreensActivity_New.this);
         ImageView ivBack = findViewById(R.id.iv_back_arrow);
         /*ivBack.setOnClickListener(new View.OnClickListener() {

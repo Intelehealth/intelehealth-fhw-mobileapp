@@ -2,34 +2,34 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
+import static org.intelehealth.app.utilities.UuidDictionary.TELEMEDICINE_DIAGNOSIS;
 
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import org.intelehealth.app.utilities.CustomLog;
+import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.app.activities.visit.VisitDetailsActivity;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import timber.log.Timber;
-
-public class VisitsDAO {
+public class VisitsDAO extends BaseDao {
 
 
     private long createdRecordsCount = 0;
@@ -38,6 +38,12 @@ public class VisitsDAO {
 
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
+        List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        for (VisitDTO visitDTO : visitDTOS) {
+            visitsList.add(createVisitMap(visitDTO));
+        }
+        executeInBackground(bulkInsert(visitsList));
+        /*boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -53,7 +59,7 @@ public class VisitsDAO {
         } finally {
             db.endTransaction();
 
-        }
+        }*/
 
         return isInserted;
     }
@@ -74,7 +80,7 @@ public class VisitsDAO {
             createdRecordsCount = db.insertWithOnConflict("tbl_visit", null, values, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
         }
@@ -111,7 +117,7 @@ public class VisitsDAO {
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -132,14 +138,15 @@ public class VisitsDAO {
                 values.put("visit_attribute_type_uuid", visit.getVisit_attribute_type_uuid());
                 values.put("visituuid", visit.getVisit_uuid());
                 values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
-                values.put("sync", "true");
+                //values.put("sync", "true");
+                values.put("sync", "false"); //end visit issue in nas due to duplicate visit attrs- now we cane send only unsyncd attr to push api
                 createdRecordsCount = db.insertWithOnConflict("tbl_visit_attribute", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             }
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount);
         } catch (SQLException e) {
             isCreated = false;
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         } finally {
             db.endTransaction();
@@ -290,7 +297,7 @@ public class VisitsDAO {
         return visitDTOList;
     }
 
-    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
+    private List<VisitAttribute_Speciality> fetchVisitAttrsOld(String visit_uuid) {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         // VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
 
@@ -300,8 +307,10 @@ public class VisitsDAO {
 //        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=? LIMIT 1",
 //                new String[]{/*"0", */visit_uuid});
 
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?",
-                new String[]{/*"0", */visit_uuid});
+        /*Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?",
+                new String[]{*//*"0", *//*visit_uuid});*/
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
+                new String[]{visit_uuid, "0", "false"});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
@@ -458,7 +467,7 @@ public class VisitsDAO {
 
         } catch (SQLiteException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
             //db.setTransactionSuccessful();
@@ -506,18 +515,20 @@ public class VisitsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
-                        " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
-//                "(substr(v.startdate, 1, 4) ||'-'|| substr(v.startdate, 6,2) ||'-'|| substr(v.startdate, 9,2)) = DATE('now')" +
-                        " v.startdate > DATETIME('now', '-4 day') " +
-                        " AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
-                new String[]{String.valueOf(limit), String.valueOf(offset)});
+        String finalQuery = "SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid " +
+                "AND (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                "AND v.voided = 0 AND v.startdate > DATETIME('now', '-4 day') " +
+                "AND (v.enddate IS NULL OR v.enddate == '') ORDER BY v.startdate DESC limit ? offset ?";
+
+
+        Cursor cursor = db.rawQuery(finalQuery, new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescByConcept(visitID);
 
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
@@ -531,16 +542,15 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-
+                model.setObsservermodifieddate(modifiedDate);
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -584,7 +594,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -633,7 +643,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 //
@@ -686,7 +696,7 @@ public class VisitsDAO {
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
@@ -706,19 +716,19 @@ public class VisitsDAO {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //        db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
-                        " v.startdate " +
-                        "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
-                        "v.voided = 0 AND " +
-//                "STRFTIME('%Y',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%Y',DATE('now')) " +
-//                "AND STRFTIME('%W',date(substr(v.startdate, 1, 4)||'-'||substr(v.startdate, 6, 2)||'-'||substr(v.startdate, 9,2))) = STRFTIME('%W',DATE('now')) AND " +
-                        " v.startdate < DATETIME('now', '-4 day') AND " +
-                        "v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
+                        "AND v.startdate < DATETIME('now', '-4 day') " +
+                        "AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
                 new String[]{String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescByConcept(visitID);
 
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
@@ -732,15 +742,15 @@ public class VisitsDAO {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setObsservermodifieddate(modifiedDate);
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
                 arrayList.add(model);
-            }
-            while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
@@ -817,7 +827,7 @@ public class VisitsDAO {
                     isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitID);
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                     e.printStackTrace();
                 }
                 if (!isCompletedExitedSurvey && isPrescriptionReceived) {
@@ -827,7 +837,7 @@ public class VisitsDAO {
                         emergencyUuid = encounterDAO.getEmergencyEncounters(visitID, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                         emergencyUuid = "";
                     }
 
@@ -887,7 +897,7 @@ public class VisitsDAO {
                         CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                 } while (cursor.moveToNext());
             }
@@ -897,6 +907,57 @@ public class VisitsDAO {
         }
 
         return modifiedDate;
+    }
+
+
+    public static String fetchVisitModifiedDateForPrescByConcept(String visitUUID) {
+        String modifiedDate = "";
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        if (visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " + "p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and o.voided = 0 and " + "v.uuid = ? and " + "o.conceptuuid = ? group by p.openmrs_id", new String[]{visitUUID, TELEMEDICINE_DIAGNOSIS});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                        CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
+        }
+
+        return modifiedDate;
+    }
+
+
+    public static int getTotalActiveVisitsCount() {
+        int total = 0;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase(); // Use getReadableDatabase for SELECT queries
+
+        if (db.inTransaction()) db.endTransaction(); // Ensure no open transactions
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery("SELECT COUNT(*) FROM tbl_visit WHERE (sync = 1 OR sync = 'TRUE' OR sync = 'true') AND voided = 0 AND enddate IS NULL", null);
+            if (cursor != null && cursor.moveToFirst()) {
+                total = cursor.getInt(0); // Retrieve the count from the first column
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error
+        } finally {
+            if (cursor != null) cursor.close(); // Close the cursor to prevent memory leaks
+        }
+
+        return total; // Return the actual count
     }
 
     /**
@@ -1013,7 +1074,7 @@ public class VisitsDAO {
                     isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     e.printStackTrace();
-                    CustomLog.e(TAG,e.getMessage());
+                    CustomLog.e(TAG, e.getMessage());
                 }
 
                 if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  //
@@ -1049,12 +1110,13 @@ public class VisitsDAO {
     //sometimes app crash cause of db lock
     //that's why added the retry mechanism whenever db will be lock
     int getVisitCount = 0;
-    public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
+
+    public int getVisitCountsByStatusOld(boolean isForReceivedPrescription) {
         int count = 0;
         //we are retrying db operation for 5 times
-        if(getVisitCount > 5) return 0;
+        if (getVisitCount > 5) return 0;
 
-        try{
+        try {
             SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
             db.beginTransaction();
             Cursor cursor = null;
@@ -1088,20 +1150,20 @@ public class VisitsDAO {
                         isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(visitID);
                     } catch (DAOException e) {
                         e.printStackTrace();
-                        CustomLog.e(TAG,e.getMessage());
+                        CustomLog.e(TAG, e.getMessage());
                     }
                     //TODO: need more improvement in main query, this condition can be done by join query
                     if (isForReceivedPrescription) {
                         if (!isCompletedExitedSurvey && isPrescriptionReceived) {
                             count += 1;
-                            Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
-                                    + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+//                            Timber.tag("getVisitCountsByStatus").v("Received - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+//                                    + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                         }
                     } else {
                         if (!isCompletedExitedSurvey && !isPrescriptionReceived) {
                             count += 1;
-                            Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
-                                    + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+//                            Timber.tag("getVisitCountsByStatus").v("Pending - " + cursor.getString(cursor.getColumnIndexOrThrow("first_name"))
+//                                    + " " + cursor.getString(cursor.getColumnIndexOrThrow("last_name")) + " Gender - " + cursor.getString(cursor.getColumnIndexOrThrow("gender")));
 
                         }
                     }
@@ -1114,20 +1176,114 @@ public class VisitsDAO {
 
             //resetting count after successful db operation
             getVisitCount = 0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //if db is locked then retrying to execute db operation
-            try{
+            try {
                 Thread.sleep(2000);
                 getVisitCount++;
                 getVisitCountsByStatus(isForReceivedPrescription);
-            }catch (Exception ex){
+            } catch (Exception ex) {
                 FirebaseCrashlytics.getInstance().recordException(ex);
-                CustomLog.e(TAG,ex.getMessage());
+                CustomLog.e(TAG, ex.getMessage());
             }
-            CustomLog.e(TAG,e.getMessage());
+            CustomLog.e(TAG, e.getMessage());
         }
 
         return count;
     }
+
+
+    @Override
+    String tableName() {
+        return "tbl_visit";
+    }
+
+    public HashMap<String, Object> createVisitMap(VisitDTO visitDTO) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", visitDTO.getUuid());
+        values.put("patientuuid", visitDTO.getPatientuuid());
+        values.put("locationuuid", visitDTO.getLocationuuid());
+        values.put("visit_type_uuid", visitDTO.getVisitTypeUuid());
+        values.put("creator", visitDTO.getCreatoruuid());
+        values.put("startdate", DateAndTimeUtils.formatDateFromOnetoAnother(visitDTO.getStartdate(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd'T'HH:mm:ss.SSSZ"));
+        values.put("enddate", visitDTO.getEnddate());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", visitDTO.getSyncd().toString());
+        return values;
+    }
+
+    public int getVisitCountsByStatus(boolean isForReceivedPrescription) {
+        int count = 0;
+
+        // Retry logic: Attempt DB operation up to 5 times
+        for (int attempt = 0; attempt < 5; attempt++) {
+            try {
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                String query;
+
+                if (isForReceivedPrescription) {
+                    query = "SELECT COUNT(DISTINCT p.openmrs_id) " +
+                            "FROM tbl_patient p " +
+                            "JOIN tbl_visit v ON p.uuid = v.patientuuid " +
+                            "JOIN tbl_encounter e ON v.uuid = e.visituuid " +
+                            "JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                            "WHERE e.encounter_type_uuid = ? " +
+                            "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                            "AND o.voided = 0";
+                } else {
+                    query = "SELECT COUNT(DISTINCT p.openmrs_id) FROM tbl_patient p " +
+                            "JOIN tbl_visit v ON p.uuid = v.patientuuid " +
+                            "JOIN tbl_encounter e ON v.uuid = e.visituuid " +
+                            "JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                            "WHERE (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                            "AND o.voided = 0";
+                }
+
+                try (Cursor cursor = db.rawQuery(query, isForReceivedPrescription ? new String[]{ENCOUNTER_VISIT_COMPLETE} : new String[]{})) {
+                    if (cursor.moveToFirst()) {
+                        count = cursor.getInt(0); // Fetch the count
+                    }
+                }
+
+                // Reset retry count after success
+                getVisitCount = 0;
+                break; // Exit loop after successful execution
+
+            } catch (Exception e) {
+                CustomLog.e(TAG, "DB error: " + e.getMessage());
+                FirebaseCrashlytics.getInstance().recordException(e);
+
+                if (attempt == 4) { // Last attempt failed
+                    return 0;
+                }
+
+                try {
+                    Thread.sleep(2000); // Wait before retry
+                } catch (InterruptedException ignored) {
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private List<VisitAttribute_Speciality> fetchVisitAttrs(String visit_uuid) {
+        List<VisitAttribute_Speciality> list = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
+                new String[]{visit_uuid, "0", "false"});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
+                attribute.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                attribute.setAttributeType(cursor.getString(cursor.getColumnIndexOrThrow("visit_attribute_type_uuid")));
+                attribute.setValue(cursor.getString(cursor.getColumnIndexOrThrow("value")));
+                list.add(attribute);
+            }
+        }
+        cursor.close();
+        return list;
+    }
+
+
 }

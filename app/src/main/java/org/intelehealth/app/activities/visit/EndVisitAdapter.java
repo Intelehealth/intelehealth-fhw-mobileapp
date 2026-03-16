@@ -11,7 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +60,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,10 +83,12 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager;
+    FeatureActiveStatus featureActiveStatus;
 
-    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList) {
+    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, FeatureActiveStatus featureActiveStatus) {
         this.context = context;
         this.arrayList.addAll(arrayList);
+        this.featureActiveStatus = featureActiveStatus;
         sessionManager = new SessionManager(context);
     }
 
@@ -129,7 +134,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
             //2.
-            if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
+            /*if (model.getPatient_photo() == null || model.getPatient_photo().equalsIgnoreCase("")) {
                 if (NetworkConnection.isOnline(context)) {
                     profilePicDownloaded(model, holder);
                 }
@@ -139,21 +144,21 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 if (NetworkConnection.isOnline(context)) {
                     profilePicDownloaded(model, holder);
                 }
-            }
+            }*/
 
             if (model.getPatient_photo() != null) {
                 RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
                         .asDrawable().sizeMultiplier(0.3f);
                 Glide.with(context)
                         .load(model.getPatient_photo())
-                        .override(100, 100)
-                        .thumbnail(requestBuilder)
+                        .override(50, 50)
+                        //.thumbnail(requestBuilder)
                         .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                         .skipMemoryCache(true)
                         .into(holder.profile_image);
             } else {
-                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.avatar1));
+                holder.profile_image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
             }
             // photo - end
 
@@ -162,7 +167,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                 String startDate = model.getVisit_start_date();
                 startDate = DateAndTimeUtils.date_formatter(startDate,
                         "yyyy-MM-dd'T'HH:mm:ss.SSSZ", "dd MMM 'at' HH:mm a");    // IDA-1346
-                CustomLog.v("startdate", "startDAte: " + startDate);
+                //CustomLog.v("startdate", "startDAte: " + startDate);
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     startDate = StringUtils.en_hi_dob_three(startDate);
                 holder.fu_date_txtview.setText(startDate);
@@ -205,20 +210,28 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         if (model.isHasPrescription()) {
             triggerEndVisit(model);
         } else {
-            DialogUtils dialogUtils = new DialogUtils();
-            dialogUtils.showCommonDialog(
-                    context,
-                    R.drawable.dialog_close_visit_icon,
-                    context.getResources().getString(R.string.confirm_end_visit_reason),
-                    context.getResources().getString(R.string.confirm_end_visit_reason_message),
-                    false,
-                    context.getResources().getString(R.string.confirm),
-                    context.getResources().getString(R.string.cancel),
-                    action -> {
-                        if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
-                            checkIfAppointmentExistsForVisit(model);
-                        }
-                    });
+            if (featureActiveStatus.getRestrictEndVisit()) {
+                //added restrictEndVisit because in NAS - we cant end the visit is prescription not shared by dr -Nas-ida migration
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(context, R.drawable.dialog_close_visit_icon, context.getResources().getString(R.string.alert_label_txt), context.getResources().getString(R.string.prescription_notprovided_msg), true, context.getResources().getString(R.string.ok), context.getResources().getString(R.string.cancel), action -> {
+                });
+            } else {
+                DialogUtils dialogUtils = new DialogUtils();
+                dialogUtils.showCommonDialog(
+                        context,
+                        R.drawable.dialog_close_visit_icon,
+                        context.getResources().getString(R.string.confirm_end_visit_reason),
+                        context.getResources().getString(R.string.confirm_end_visit_reason_message),
+                        false,
+                        context.getResources().getString(R.string.confirm),
+                        context.getResources().getString(R.string.cancel),
+                        action -> {
+                            if (action == DialogUtils.CustomDialogListener.POSITIVE_CLICK) {
+                                checkIfAppointmentExistsForVisit(model);
+                            }
+                        });
+            }
+
         }
     }
 
@@ -301,10 +314,13 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
         sharebtn.setOnClickListener(v -> {
             if (!editText.getText().toString().equalsIgnoreCase("")) {
                 String phoneNumber = /*"+91" +*/ editText.getText().toString();
-                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+               /* String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
                         phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
                                 + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link + context.getResources().getString(R.string.and_enter_your_patient_id)
-                                + model.getOpenmrs_id());
+                                + model.getOpenmrs_id());*/
+                String whatsappMessage = String.format("https://api.whatsapp.com/send?phone=%s&text=%s",
+                        phoneNumber, context.getResources().getString(R.string.hello_thankyou_for_using_intelehealth_app_to_download_click_here)
+                                + partial_whatsapp_presc_url + Uri.encode("#") + prescription_link);
                 CustomLog.v("whatsappMessage", whatsappMessage);
                 context.startActivity(new Intent(Intent.ACTION_VIEW,
                         Uri.parse(whatsappMessage)));
@@ -390,10 +406,10 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                                     .asDrawable().sizeMultiplier(0.3f);
                             Glide.with(context)
                                     .load(AppConstants.IMAGE_PATH + model.getPatientUuid() + ".jpg")
-                                    .override(100, 100)
-                                    .thumbnail(requestBuilder)
+                                    .override(50, 50)
+                                    //.thumbnail(requestBuilder)
                                     .centerCrop()
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                                     .skipMemoryCache(true)
                                     .into(holder.profile_image);
                         }

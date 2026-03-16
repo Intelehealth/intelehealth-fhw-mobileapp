@@ -239,6 +239,12 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
     }
 
     @Override
+    public void onLocalConnectivityChanged(@org.jetbrains.annotations.Nullable ConnectionQuality it) {
+        super.onLocalConnectivityChanged(it);
+        getVideoCallViewModel().toggleCameraOnPoorConnection(it);
+    }
+
+    @Override
     public void onRemoteParticipantCameraChange(boolean isHide) {
         super.onRemoteParticipantCameraChange(isHide);
         binding.videoCallView.incomingSurfaceView.setVisibility(isHide ? View.GONE : View.VISIBLE);

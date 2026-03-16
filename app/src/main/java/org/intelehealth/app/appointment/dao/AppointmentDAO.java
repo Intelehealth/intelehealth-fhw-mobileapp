@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
+
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.gson.Gson;
@@ -185,10 +186,17 @@ public class AppointmentDAO {
     public void deleteAllAppointments() {
         CustomLog.v(TAG, "deleteAllAppointments ");
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        db.beginTransaction();
-        db.delete("tbl_appointments", null, null);
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        try {
+            if (db.inTransaction())
+                db.endTransaction();
+            db.beginTransaction();
+            db.delete("tbl_appointments", null, null);
+            db.setTransactionSuccessful();
+        } finally {
+            if (db.inTransaction()) {
+                db.endTransaction();
+            }
+        }
         //db.close();
     }
 

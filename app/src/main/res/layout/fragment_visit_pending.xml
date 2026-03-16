@@ -272,7 +272,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_recent"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/you_can_add"
                     android:layout_marginTop="@dimen/text_margin"
                     android:nestedScrollingEnabled="false"

@@ -5,7 +5,8 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <include
             android:id="@+id/simpleAppBar"
@@ -81,6 +82,7 @@
                     android:textSize="@dimen/fu_name_txt_size" />
 
                 <TextView
+                    android:id="@+id/tv_sent_prescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/notifi_header_title"

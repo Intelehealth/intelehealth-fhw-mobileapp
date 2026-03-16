@@ -10,7 +10,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -21,6 +20,8 @@ import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -29,18 +30,24 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class EncounterDAO {
+public class EncounterDAO extends BaseDao {
     private static final String TAG = "EncounterDAO";
 
     private String tag = EncounterDAO.class.getSimpleName();
     private long createdRecordsCount = 0;
 
     public boolean insertEncounter(List<EncounterDTO> encounterDTOS) throws DAOException {
-
         boolean isInserted = true;
+        List<HashMap<String, Object>> encountersList = new ArrayList<>();
+        for (EncounterDTO encounterDTO : encounterDTOS) {
+            encountersList.add(createEncounterMap(encounterDTO));
+        }
+        executeInBackground(bulkInsert(encountersList));
+        /*boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();
         try {
@@ -55,7 +62,7 @@ public class EncounterDAO {
         } finally {
             db.endTransaction();
 
-        }
+        }*/
         return isInserted;
     }
 
@@ -135,7 +142,7 @@ public class EncounterDAO {
         //Distinct keyword is used to remove all duplicate records.
         Cursor idCursor = db.rawQuery("SELECT distinct a.uuid,a.visituuid,a.encounter_type_uuid,a.provider_uuid,a.encounter_time,a.voided,a.privacynotice_value FROM tbl_encounter a,tbl_obs b WHERE (a.sync = ? OR a.sync=?) AND a.uuid = b.encounteruuid AND b.sync='false' AND b.voided='0' ", new String[]{"false", "0"});
         EncounterDTO encounterDTO = new EncounterDTO();
-        CustomLog.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
+        //CustomLog.d("RAINBOW: ", "RAINBOW: " + idCursor.getCount());
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
                 encounterDTO = new EncounterDTO();
@@ -156,7 +163,7 @@ public class EncounterDAO {
         db.endTransaction();
 
         Gson gson = new Gson();
-        CustomLog.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
+        //CustomLog.d("ENC_GSON: ", "ENC_GSON: " + gson.toJson(encounterDTOList));
         return encounterDTOList;
     }
 
@@ -229,10 +236,10 @@ public class EncounterDAO {
             values.put("uuid", uuid);
 
             int i = db.update("tbl_encounter", values, whereclause, whereargs);
-            Logger.logD(tag, "updated" + i);
+            //Logger.logD(tag, "updated" + i);
             db.setTransactionSuccessful();
         } catch (SQLException sql) {
-            Logger.logD(tag, "updated" + sql.getMessage());
+            //Logger.logD(tag, "updated" + sql.getMessage());
             throw new DAOException(sql.getMessage());
         } finally {
             db.endTransaction();
@@ -905,4 +912,50 @@ public class EncounterDAO {
 
         return list;
     }
+    public static String fetchEncounterUuidForEncounterDiagnostics(String visitUUID) {
+        String uuid = "";
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        if(visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select * from tbl_encounter where visituuid = ? and " +
+                    "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0 and " +
+                    "encounter_type_uuid = ?", new String[]{visitUUID, ENCOUNTER_VITALS});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        uuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                        CustomLog.v("modifiedDate", "uuid: " + uuid);
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
+
+        return uuid;
+    }
+    @Override
+    String tableName() {
+      return "tbl_encounter";
+    }
+    public HashMap<String, Object> createEncounterMap(EncounterDTO encounter) {
+        HashMap<String, Object> values = new HashMap<>();
+        values.put("uuid", encounter.getUuid());
+        values.put("visituuid", encounter.getVisituuid());
+        values.put("encounter_type_uuid", encounter.getEncounterTypeUuid());
+        values.put("provider_uuid", encounter.getProvideruuid());
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("sync", encounter.getSyncd().toString());
+        values.put("voided", encounter.getVoided());
+        values.put("privacynotice_value", encounter.getPrivacynotice_value());
+        return values;
+    }
+
 }

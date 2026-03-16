@@ -12,11 +12,16 @@ import org.intelehealth.app.utilities.SessionManager
 data class Village(
     val name: String?,
     @SerializedName("name-hi")
-    val nameHindi: String?
+    val nameHindi: String?,
+    @SerializedName("name-mr")
+    val nameMarathi: String?
 ) {
     override fun toString(): String {
         val sessionManager = SessionManager.getInstance(IntelehealthApplication.getAppContext())
-        return if (sessionManager.appLanguage.equals("hi")) nameHindi ?: name ?: "No Value"
-        else name ?: "No Value"
+        return when (sessionManager.appLanguage) {
+            "hi" -> nameHindi ?: name ?: "No Value"
+            "mr" -> nameMarathi ?: name ?: "No Value"
+            else -> name ?: "No Value"
+        }
     }
 }

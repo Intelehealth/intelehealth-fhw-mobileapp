@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
     tools:context=".activities.visit.EndVisitActivity">
@@ -71,6 +72,7 @@
                 android:id="@+id/refresh"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_weight="0.3"
                 android:background="@null"
                 android:src="@drawable/ic_refreshbtn" />

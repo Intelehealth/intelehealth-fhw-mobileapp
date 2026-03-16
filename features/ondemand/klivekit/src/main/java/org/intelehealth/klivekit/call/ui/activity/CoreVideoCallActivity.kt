@@ -1,9 +1,7 @@
 package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
-import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.os.Build
@@ -15,11 +13,9 @@ import androidx.lifecycle.lifecycleScope
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason
-import io.livekit.android.renderer.SurfaceViewRenderer
 import io.livekit.android.renderer.TextureViewRenderer
 import io.livekit.android.room.participant.ConnectionQuality
 import io.livekit.android.room.track.CameraPosition
-import io.livekit.android.room.track.Track
 import io.livekit.android.room.track.VideoTrack
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +28,6 @@ import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
 import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
 import org.intelehealth.klivekit.call.utils.CallAction
 import org.intelehealth.klivekit.call.utils.CallHandlerUtils
-import org.intelehealth.klivekit.call.utils.CallNotificationHandler
 import org.intelehealth.klivekit.call.utils.CallStatus
 import org.intelehealth.klivekit.data.PreferenceHelper
 import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
@@ -57,14 +52,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: getDataFromSharedPref()
+            ?: getDataFromSharedPref()
 
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 
     private val socketViewModel: SocketViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: getDataFromSharedPref()
+            ?: getDataFromSharedPref()
 //        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
         SocketViewModel(args)
     }
@@ -170,6 +165,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteVideoTrack.observe(this) { it?.let { it1 -> attachRemoteVideo(it1) } }
         videoCallViewModel.isSpeakingStatus.observe(this) { updateMicrophoneSpeakingStatus(it) }
         videoCallViewModel.remoteConnectionQuality.observe(this) { onConnectivityChanged(it) }
+        videoCallViewModel.localConnectionQuality.observe(this) { onLocalConnectivityChanged(it) }
         videoCallViewModel.screenshareEnabled.observe(this) {}
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
         videoCallViewModel.remoteParticipantDisconnected.observe(this) {
@@ -312,7 +308,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         if (!intent.hasExtra(RTC_ARGS)) {
             intent.putExtra(
                 RTC_ARGS,
-                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), RtcArgs::class.java)
+                Gson().fromJson(
+                    preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""),
+                    RtcArgs::class.java
+                )
             )
         }
     }
@@ -430,6 +429,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 
     open fun onConnectivityChanged(it: ConnectionQuality?) {
         Timber.d { "Connectivity => ${it}" }
+    }
+
+    open fun onLocalConnectivityChanged(it: ConnectionQuality?) {
+        Timber.d { "Local Connectivity => ${it}" }
+        videoCallViewModel.toggleCameraOnPoorConnection(it)
     }
 
     open fun onRemoteParticipantMicChange(isMuted: Boolean) {

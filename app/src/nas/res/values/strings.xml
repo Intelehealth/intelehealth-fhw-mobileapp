@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">Arogya Sampada</string>
+    <string name="intro_title_1">@string/who_are_we</string>
+    <string name="intro_tagline_1">@string/arogya_sampada_intro</string>
+    <string name="intro_title_2">@string/take_patient_visits</string>
+    <string name="intro_tagline_2">@string/ayu_digital_assistant</string>
+    <string name="intro_title_3">@string/provide_prescriptions</string>
+    <string name="intro_tagline_3">@string/cloud_based_platform</string>
+</resources>

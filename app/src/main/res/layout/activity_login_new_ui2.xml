@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fitsSystemWindows="true">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/layout_parent_login"
@@ -57,6 +58,7 @@
                         android:visibility="gone" />
 
                     <ImageView
+                        android:id="@+id/iv_logo"
                         android:layout_width="@dimen/image_intelehealth_login_width"
                         android:layout_height="@dimen/image_intelehealth_login_height"
                         android:layout_below="@+id/tv_please_continue"
@@ -106,6 +108,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/tv_login_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/tv_login_details_info_margin_end"
@@ -126,6 +129,7 @@
 
 
                     <TextView
+                        android:id="@+id/tv_user_title"
                         style="@style/TextviewInputTitleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -142,6 +146,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/et_username_login"
+                            style="@style/AppTheme.InputBox.Address1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/bg_input_fieldnew"
@@ -179,9 +184,11 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="@null"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <TextView
+                        android:id="@+id/tv_password_title"
                         style="@style/TextviewInputTitleStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -206,11 +213,11 @@
                             android:hint="@string/enter_password1"
                             android:imeOptions="actionDone"
                             android:inputType="textPassword"
+                            android:maxLength="15"
                             android:paddingStart="@dimen/common_edittext_padding_left"
                             android:paddingTop="@dimen/common_edittext_padding_top"
                             android:paddingEnd="@dimen/common_edittext_padding_right"
                             android:paddingBottom="@dimen/common_edittext_padding_bottom"
-                            android:maxLength="15"
                             android:singleLine="true"
                             android:textSize="@dimen/common_hint_text_size" />
                     </com.google.android.material.textfield.TextInputLayout>
@@ -226,7 +233,8 @@
                         android:textAppearance="@style/registr_error_msg"
                         android:textColor="@color/red"
                         android:textSize="@null"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        tools:visibility="visible" />
 
                     <TextView
                         android:id="@+id/tv_forgot_password1"

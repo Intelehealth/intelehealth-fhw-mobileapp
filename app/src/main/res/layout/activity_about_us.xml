@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/frame_10021"
+    android:fitsSystemWindows="true"
     tools:context=".activities.aboutus.AboutUsActivity">
 
     <!--    Toolbar - start -->
@@ -155,8 +156,8 @@
                     android:id="@+id/info_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:tint="?attr/colorPrimary"
-                    android:src="@drawable/info_blue_svg" />
+                    android:src="@drawable/info_blue_svg"
+                    app:tint="?attr/colorPrimary" />
 
                 <TextView
                     android:id="@+id/info_link"

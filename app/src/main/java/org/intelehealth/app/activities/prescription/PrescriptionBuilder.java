@@ -4,6 +4,7 @@ import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +18,7 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -275,7 +277,7 @@ public class PrescriptionBuilder {
     }
 
     private String generateVitalsData(VitalsObject vitalsData) {
-        if (!mFeatureActiveStatus.getVitalSection())  return "";
+        if (!mFeatureActiveStatus.getVitalSection()) return "";
         String finalVitalsData = "";
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
         String openingDataSectionTag = "<div class=\"data-section\">\n";
@@ -403,6 +405,8 @@ public class PrescriptionBuilder {
     }
 
     private String generateDiagnosisData(String diagnosisData) {
+        diagnosisData = StringUtils.formatDiagnosis(diagnosisData);
+
         String finalDiagnosisString = "";
 
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
@@ -439,11 +443,19 @@ public class PrescriptionBuilder {
 
         for (String[] array : diagnosisDataArray) {
             tableDataStringBuilder.append(tableRowOpeningTag);
-
+            Log.d("ARRRR", "" + array);
+            int rowCount = 0;
             for (String data : array) {
                 tableDataStringBuilder.append(tableDataOpeningTag);
                 tableDataStringBuilder.append(data);
                 tableDataStringBuilder.append(tableDataClosingTag);
+                rowCount++;
+                if (rowCount == 3) {
+                    tableDataStringBuilder
+                            .append(tableBodyClosingTag)
+                            .append(tableBodyOpeningTag);
+                    rowCount = 0;
+                }
             }
             tableDataStringBuilder = tableDataStringBuilder.append(tableRowClosingTag);
         }
@@ -465,7 +477,7 @@ public class PrescriptionBuilder {
 
         // For multiple diagnosis
         if (diagnosisData.contains("\n")) {
-            diagnosisList = diagnosisData.split(",\n");
+            diagnosisList = diagnosisData.split("\n");
         } else {
             diagnosisList[0] = diagnosisData;
         }
@@ -475,7 +487,11 @@ public class PrescriptionBuilder {
         for (int i = 0; i < diagnosisList.length; i++) {
             String currentDiagnosis = diagnosisList[i].trim();
             if (currentDiagnosis.contains(":") && currentDiagnosis.contains("&")) {
-                finalDiagnosisList[i] = diagnosisList[i].split("\\s*[:&]\\s*");
+                finalDiagnosisList[i] = diagnosisList[i].split("\\s*[:&]\\s*", diagnosisList.length * 3);
+            } else if (currentDiagnosis.contains(":") && !currentDiagnosis.contains("&")) {
+                finalDiagnosisList[i] = diagnosisList[i].split(":", diagnosisList.length * 3);
+            } else if (!currentDiagnosis.contains(":") && currentDiagnosis.contains("&")) {
+                finalDiagnosisList[i] = diagnosisList[i].split("&", diagnosisList.length * 3);
             }
         }
 

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="?colorPrimary"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".activities.onboarding.SetupPrivacyNoteActivity_New">
 
@@ -39,6 +40,7 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tv_hello_ayu_subtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_hello_ayu"

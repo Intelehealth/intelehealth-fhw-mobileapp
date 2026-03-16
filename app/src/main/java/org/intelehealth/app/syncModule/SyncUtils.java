@@ -32,11 +32,11 @@ public class SyncUtils {
      *
      * @param fromActivity
      */
-    public void initialSync(String fromActivity,Context context) {
+    public void initialSync(String fromActivity, Context context) {
 
         SyncDAO syncDAO = new SyncDAO();
         Logger.logD(TAG, "Pull Started");
-        syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity,0);
+        syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, 0);
         Logger.logD(TAG, "Pull ended");
         // sync data
         AppointmentSync.getAppointments(context);
@@ -60,7 +60,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0); //only this new function duplicate
         imagesPushDAO.loggedInUserProfileImagesPush();
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()
@@ -74,16 +74,16 @@ public class SyncUtils {
             public void run() {
                 //sometimes syncing happening while logout
                 //added the checking to prevent appointment api call
-                if(!sessionManager.isLogout()){
+                if (!sessionManager.isLogout()) {
                     AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 }
                 Logger.logD(TAG, "Background Image Push Started");
-                imagesPushDAO.obsImagesPush();
+//                imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Background Image Pull ended");
             }
         }, 4000);
 
-        imagesPushDAO.deleteObsImage();
+//        imagesPushDAO.deleteObsImage();
 
         IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.ALL_SYNC_DONE)
@@ -111,7 +111,7 @@ public class SyncUtils {
             @Override
             public void run() {
                 Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity,0);
+                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity, 0);
                 AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Pull ended");
             }
@@ -127,7 +127,9 @@ public class SyncUtils {
          * to fix the issue of Phy exam and additional images not showing up sometimes
          * on the webapp (doctor portal).
          * */
-        final Handler handler_foreground = new Handler();
+
+        //moved this to push data apis success bock
+      /*  final Handler handler_foreground = new Handler();
         handler_foreground.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -135,9 +137,9 @@ public class SyncUtils {
                 imagesPushDAO.obsImagesPush();
                 Logger.logD(TAG, "Image Pull ended");
             }
-        }, 3000);
+        }, 3000); */
 
-        imagesPushDAO.deleteObsImage();
+//        imagesPushDAO.deleteObsImage();
 
 
         WorkManager.getInstance(IntelehealthApplication.getAppContext())

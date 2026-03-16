@@ -124,10 +124,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.firstName.mandatory ? @string/first_name_mandatory + ` *` : @string/first_name_mandatory}"
+                        android:text="@{ personalConfig.firstName.mandatory ? @string/first_name + ` *` : @string/first_name}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/first_name_mandatory" />
+                        tools:text="@string/first_name" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayFName"
@@ -141,9 +141,10 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETFName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="text"
                             android:hint="@string/enter_first_name"
                             android:text="@{patient.firstname}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
@@ -182,7 +183,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETMName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_middle_name"
@@ -206,10 +207,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.lastName.mandatory ? @string/last_name_mandatory + ` *` : @string/last_name_mandatory}"
+                        android:text="@{ personalConfig.lastName.mandatory ? @string/last_name + ` *` : @string/last_name}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/last_name_mandatory" />
+                        tools:text="@string/last_name" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayLName"
@@ -223,7 +224,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETLName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_last_name"
@@ -247,17 +248,15 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.gender.mandatory ? @string/gender_mandatory + ` *` : @string/gender_mandatory}"
+                        android:text="@{ personalConfig.gender.mandatory ? @string/gender + ` *` : @string/gender}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/gender_mandatory" />
+                        tools:text="@string/gender" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/toggleGender"
-                        config="@{personalConfig.gender}"
-                        editMode="@{isEditMode}"
                         gender="@{patient.gender}"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -333,10 +332,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.dob.mandatory ? @string/date_of_birth_mandatory + ` *` : @string/date_of_birth_mandatory}"
+                        android:text="@{ personalConfig.dob.mandatory ? @string/date_of_birth + ` *` : @string/date_of_birth}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/date_of_birth_mandatory" />
+                        tools:text="@string/date_of_birth" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayDob"
@@ -382,10 +381,10 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/age_mandatory + ` *` : @string/age_mandatory}"
+                        android:text="@{ personalConfig.age.mandatory ? @string/age + ` *` : @string/age}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
-                        tools:text="@string/age_mandatory" />
+                        tools:text="@string/age" />
 
                     <org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout
                         android:id="@+id/textInputLayAge"
@@ -445,7 +444,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETGuardianName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_guardian_name"
@@ -644,7 +643,7 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputETECName"
-                            style="@style/AppTheme.InputBox.Name"
+                            style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_emergency_contact_name"

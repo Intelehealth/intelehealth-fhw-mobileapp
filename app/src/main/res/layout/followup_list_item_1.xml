@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/fu_cardview_item"
+    android:id="@+id/fu_liner_layout_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="@dimen/margin_10"
-    app:cardElevation="@dimen/margin_5"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="@dimen/margin_8">
+    android:elevation="2dp"
+    android:padding="@dimen/padding_8"
+    android:layout_margin="@dimen/margin_10">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -159,4 +159,4 @@
 
 
     </RelativeLayout>
-</androidx.cardview.widget.CardView>
+</LinearLayout>

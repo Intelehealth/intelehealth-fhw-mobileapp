@@ -18,6 +18,8 @@ import org.intelehealth.app.activities.notification.listeners.CloudNotificationC
 import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
 import org.intelehealth.app.database.dao.notification.NotificationDbConstants
 import org.intelehealth.app.models.NotificationModel
+import org.intelehealth.app.utilities.StringUtils
+import org.intelehealth.app.utilities.StringUtils.getTranslatedString
 
 /**
  * Created by Prajwal Waingankar on 27/09/22.
@@ -38,18 +40,15 @@ class NotificationCloudAdapter(
 
     override fun onBindViewHolder(holder: MyHolderView, position: Int) {
         patientDTOList?.get(position)?.let { model ->
-
-            model.description?.let {
-                holder.tvDescription.text = it
+            model.description?.let { description ->
+                holder.tvDescription.text = getTranslatedString(holder.itemView.context, description)
             }
-            model.title?.let {
-                holder.tvTitle.text = it
+            model.title?.let { title ->
+                holder.tvTitle.text = getTranslatedString(holder.itemView.context, title)
             }
-
         }
+
         patientDTOList?.get(position)?.let { model ->
-
-
             holder.delete_imgview.setOnClickListener { _: View? ->
                 clickListener.deleteNotification(model, holder.layoutPosition)
             }

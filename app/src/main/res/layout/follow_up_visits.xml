@@ -5,7 +5,8 @@
     android:id="@+id/parent_lay"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/follow_up_v">
+    android:background="@drawable/follow_up_v"
+    android:fitsSystemWindows="true">
 
     <!-- Frame 100217 -->
     <RelativeLayout
@@ -56,7 +57,8 @@
                 android:layout_marginEnd="@dimen/margin_10"
                 android:layout_weight="1"
                 android:background="@null"
-                android:src="@drawable/ic_refreshbtn" />
+                android:src="@drawable/ic_refreshbtn"
+                android:visibility="gone" />
 
             <ImageButton
                 android:id="@+id/filter"
@@ -80,11 +82,13 @@
         android:layout_marginStart="@dimen/fu_margin_start"
         android:layout_marginTop="@dimen/margin_32dp"
         android:layout_marginEnd="@dimen/fu_margin_start">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/filter_lay"
             android:background="@drawable/ui2_background_input_field_new">
+
             <EditText
                 android:id="@+id/searchview_received"
                 android:layout_width="match_parent"
@@ -117,20 +121,19 @@
                 tools:visibility="visible" />
         </RelativeLayout>
 
-       <!-- <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchview_received"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/filter_lay"
-            android:background="@drawable/ui2_common_input_bg"
-            android:maxLines="1"
-            android:singleLine="true"
-            android:textColorHint="@color/textColorLightGary"
-            android:textSize="@dimen/txtsize_patdetail_14sp"
-            app:iconifiedByDefault="false"
-            app:queryHint="@string/find_patients_hint" />-->
-
+        <!-- <androidx.appcompat.widget.SearchView
+             android:id="@+id/searchview_received"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:layout_alignParentStart="true"
+             android:layout_toStartOf="@+id/filter_lay"
+             android:background="@drawable/ui2_common_input_bg"
+             android:maxLines="1"
+             android:singleLine="true"
+             android:textColorHint="@color/textColorLightGary"
+             android:textSize="@dimen/txtsize_patdetail_14sp"
+             app:iconifiedByDefault="false"
+             app:queryHint="@string/find_patients_hint" />-->
 
 
         <LinearLayout
@@ -138,8 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            >
+            android:layout_centerVertical="true">
 
             <ImageView
                 android:id="@+id/filter_im"
@@ -150,8 +152,8 @@
                 android:layout_marginEnd="@dimen/ma_icon_margin_end"
                 android:background="@drawable/ui2_ic_filter_bg"
                 android:padding="@dimen/my_appointment_padding"
-                app:tint="?attr/colorPrimary"
-                android:src="@drawable/ui2_ic_filter" />
+                android:src="@drawable/ui2_ic_filter"
+                app:tint="?attr/colorPrimary" />
 
             <ImageView
                 android:id="@+id/sort_im"
@@ -160,8 +162,8 @@
                 android:layout_marginEnd="@dimen/ma_icon_margin_end"
                 android:background="@drawable/ui2_ic_filter_bg"
                 android:padding="@dimen/my_appointment_padding"
-                app:tint="?attr/colorPrimary"
-                android:src="@drawable/sort" />
+                android:src="@drawable/sort"
+                app:tint="?attr/colorPrimary" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -169,12 +171,12 @@
         android:id="@+id/tv_results_for"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/search_relative"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/search_relative"
         android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginEnd="@dimen/margin_12"
         android:layout_marginTop="@dimen/results_for_margin_top"
+        android:layout_marginEnd="@dimen/margin_12"
         android:lineHeight="@dimen/results_for_line_height"
         android:lineSpacingExtra="@dimen/title_lists_apps_line_spacing"
         android:text="@string/results_for"
@@ -186,9 +188,9 @@
         android:id="@+id/scroll_chips"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_results_for"
         android:layout_marginStart="@dimen/margin_12"
-        android:layout_marginEnd="@dimen/margin_12"
-        android:layout_below="@+id/tv_results_for">
+        android:layout_marginEnd="@dimen/margin_12">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipgroup_filter"
@@ -208,7 +210,7 @@
         android:layout_marginTop="90dp"
         android:visibility="gone" />
     <!--No Patient Found - End -->
-    
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedscrollview"
         android:layout_width="match_parent"
@@ -357,7 +359,6 @@
                     android:layout_marginTop="@dimen/margin_8"
                     android:nestedScrollingEnabled="false"
                     android:paddingVertical="@dimen/margin_5"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="4"
                     tools:listitem="@layout/followup_list_item_1" />
             </RelativeLayout>
@@ -369,8 +370,8 @@
         android:id="@+id/filter_frame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/search_relative"
+        android:layout_alignParentEnd="true"
         android:visibility="gone"
         tools:visibility="visible">
 

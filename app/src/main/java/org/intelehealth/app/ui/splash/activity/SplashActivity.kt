@@ -119,7 +119,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun handleButtonClickListener() {
-        binding.btnNextToIntro.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             adapter.getList().find { it.selected }?.let {
                 sessionManager.appLanguage = it.code
                 setupLanguage()
@@ -216,9 +216,16 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             ContextCompat.checkSelfPermission(this, Manifest.permission.GET_ACCOUNTS)
         var writeExternalStoragePermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val bluetoothPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH)
+        val bluetoothAdminPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_ADMIN)
+        val coarseLocationPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+        val fineLocationPermission =
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            writeExternalStoragePermission =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
             val notificationPermission =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
@@ -242,7 +249,6 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)
                 listPermissionsNeeded.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
             } else {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -252,6 +258,35 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         if (phoneStatePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.READ_PHONE_STATE)
         }
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            val bluetoothScanPermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_SCAN)
+            val bluetoothConnectPermission =
+                ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+
+            if (bluetoothScanPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_SCAN)
+            }
+
+            if (bluetoothConnectPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_CONNECT)
+            }
+        } else {
+            if (bluetoothPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH)
+            }
+
+            if (bluetoothAdminPermission != PackageManager.PERMISSION_GRANTED) {
+                listPermissionsNeeded.add(Manifest.permission.BLUETOOTH_ADMIN)
+            }
+        }
+        if (coarseLocationPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_COARSE_LOCATION)
+        }
+        if (fineLocationPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
         if (!listPermissionsNeeded.isEmpty()) {
             ActivityCompat.requestPermissions(
                 this,
@@ -286,7 +321,8 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun authenticateFingerprint() {
         val executor = ContextCompat.getMainExecutor(this)
-        BiometricPrompt(this, executor,
+        BiometricPrompt(
+            this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
@@ -349,16 +385,16 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
                 override fun onAnimationRepeat(animation: Animation) {}
             })
-            binding.layoutChild1.startAnimation(translateAnim)
+            binding.clLayoutChild1.startAnimation(translateAnim)
         }, 500)
     }
 
     private fun showChooseLanguageUI(show: Boolean) {
         val transition: Transition = Slide(Gravity.BOTTOM)
         transition.duration = 2000
-        transition.addTarget(R.id.layout_panel)
+        transition.addTarget(R.id.cl_choose_language)
         TransitionManager.beginDelayedTransition(binding.layoutParent, transition)
-        binding.layoutPanel.visibility = if (show) View.VISIBLE else View.GONE
+        binding.clChooseLanguage.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     companion object {
