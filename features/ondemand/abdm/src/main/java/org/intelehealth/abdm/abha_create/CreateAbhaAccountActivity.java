@@ -639,15 +639,15 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
                 });
     }
 
-    private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse abhaProfileResponse/*, ExistUserStatusResponse response*/) {
-        abhaProfileResponse.setOpenMrsId(mExistingPatientOpenMRSId);
-        abhaProfileResponse.setUuID(mExistingPatientUuid);
+    private void navigateToIdentificationScreenWithExistingDetails(OTPVerificationResponse response/*, ExistUserStatusResponse response*/) {
+        response.setOpenMrsId(mExistingPatientOpenMRSId);
+        response.setUuID(mExistingPatientUuid);
         AbdmResult resultData = new AbdmResult(
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS,
                 accessToken,
                 true,
                 true,
-                abhaProfileResponse
+                response
         );
 
         Intent resultIntent = new Intent();

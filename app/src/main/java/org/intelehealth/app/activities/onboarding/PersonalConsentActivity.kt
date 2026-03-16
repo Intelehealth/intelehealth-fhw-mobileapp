@@ -28,8 +28,10 @@ import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
+import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
 import java.util.Locale
@@ -103,8 +105,12 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
             when (abdmResult?.outcome) {
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS -> {
                     newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
-                    newIntent.putExtra("patient_detail", true)
-                    newIntent.putExtra("firstRequestFulfilled", true)
+                    newIntent.putExtra(
+                        BundleKeys.PATIENT_UUID,
+                        abdmResult.otpVerificationResponse.uuID
+                    )
+
+                    newIntent.putExtra(BundleKeys.PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
                     startActivity(newIntent)
                 }
 
