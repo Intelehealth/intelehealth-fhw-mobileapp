@@ -812,8 +812,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-        abhaAddressTv = findViewById(R.id.abhaNo);
-        abhaNumberTv = findViewById(R.id.abhaAddress);
+        abhaAddressTv = findViewById(R.id.abhaAddress);
+        abhaNumberTv = findViewById(R.id.abhaNo);
         abhaAddressTr = findViewById(R.id.trAbhaAddress);
         abhaNumberTr = findViewById(R.id.trAbhaNo);
 
@@ -2354,15 +2354,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             householdNumber.setText(getString(R.string.not_provided));
         }
 
-        if (patientDTO.getAbhaAddress() != null && !patientDTO.getAbhaAddress().isEmpty()) {
+        String abhaAddress = patientDTO.getAbhaAddress();
+        String abhaNumber = patientDTO.getAbhaNumber();
+
+        if (abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA")) {
             abhaAddressTr.setVisibility(View.VISIBLE);
             abhaAddressTv.setText(patientDTO.getAbhaAddress());
             binding.otherCard.btnViewAbhaCard.setVisibility(View.VISIBLE);
         }
 
-        if (patientDTO.getAbhaNumber() != null && !patientDTO.getAbhaNumber().isEmpty()) {
+        if (abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA")) {
             abhaNumberTr.setVisibility(View.VISIBLE);
-            abhaAddressTv.setText(patientDTO.getAbhaNumber());
+            abhaNumberTv.setText(patientDTO.getAbhaNumber());
         }
     }
 

@@ -113,7 +113,12 @@ public class PatientDTO implements Serializable {
     @Expose
     private String address6;
 
+    @SerializedName("abha_number")
+    @Expose
     private String abhaNumber;
+
+    @SerializedName("abha_address")
+    @Expose
     private String abhaAddress;
 
     public String getRelativePhoneNumber() {

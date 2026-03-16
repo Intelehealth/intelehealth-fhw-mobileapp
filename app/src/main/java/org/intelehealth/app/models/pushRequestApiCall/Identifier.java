@@ -9,12 +9,18 @@ public class Identifier {
     @SerializedName("identifierType")
     @Expose
     private String identifierType;
+
     @SerializedName("location")
     @Expose
     private String location;
+
     @SerializedName("preferred")
     @Expose
     private Boolean preferred;
+
+    @SerializedName("identifier")
+    @Expose
+    private String identifier;
 
     public String getIdentifierType() {
         return identifierType;
@@ -38,6 +44,14 @@ public class Identifier {
 
     public void setPreferred(Boolean preferred) {
         this.preferred = preferred;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 
 }
