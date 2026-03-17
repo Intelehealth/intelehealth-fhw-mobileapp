@@ -4,8 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,12 +18,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.abdm.R;
 import org.intelehealth.abdm.dialog.TextViewDialogFragment;
 
 import java.util.Objects;
+import java.util.logging.Logger;
 
 import kotlin.jvm.JvmStatic;
 
@@ -87,6 +91,7 @@ public class DialogUtils {
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
         final LayoutInflater inflater = LayoutInflater.from(context);
         View convertView = inflater.inflate(R.layout.dialog_common_message, null);
+        Timber.tag("DIALOG_DEBUG").d("View inflated: %s", (convertView != null));
         alertdialogBuilder.setView(convertView);
         ImageView icon = convertView.findViewById(R.id.dialog_icon);
         TextView dialog_title = convertView.findViewById(R.id.dialog_title);
@@ -108,10 +113,6 @@ public class DialogUtils {
         }
 
         AlertDialog alertDialog = alertdialogBuilder.create();
-        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_dialog_rounded_corners); // show rounded corner for the dialog
-        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
-        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
-        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
         negative_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
@@ -124,6 +125,14 @@ public class DialogUtils {
         });
 
         alertDialog.show();
+
+        Window window = alertDialog.getWindow();
+        if (window != null) {
+            alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.bg_dialog_rounded_corners);
+            alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+            alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        }
     }
 
 

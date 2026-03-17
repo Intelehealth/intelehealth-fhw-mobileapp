@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/button_username"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/text_14" />
 
-            <Button
+            <android.widget.Button
                 android:id="@+id/button_mobile_number"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                 android:visibility="visible" />
         </LinearLayout>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/button_abha_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

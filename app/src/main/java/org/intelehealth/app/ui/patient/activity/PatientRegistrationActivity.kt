@@ -21,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.model.AbhaProfileResponse
 import org.intelehealth.abdm.model.OTPVerificationResponse
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
@@ -105,9 +106,13 @@ class PatientRegistrationActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
-            patientViewModel.otpVerificationResponse = it.getSerializableExtra(
+            patientViewModel.otpResponse = it.getSerializableExtra(
                 AbdmConstant.PAYLOAD
             ) as? OTPVerificationResponse
+
+            patientViewModel.abhaResponse = it.getSerializableExtra(
+                AbdmConstant.MOBILE_PAYLOAD
+            ) as? AbhaProfileResponse
 
             patientId?.let { id ->
                 patientViewModel.isEditMode = true

@@ -23,6 +23,12 @@
             android:exported="false"
             android:theme="@style/AppThemeMaterialNew" />
 
+        <activity
+            android:name=".compare_data.CompareDataActivity"
+            android:configChanges="uiMode"
+            android:exported="false"
+            android:theme="@style/AppThemeMaterialNew" />
+
     </application>
 
 </manifest>

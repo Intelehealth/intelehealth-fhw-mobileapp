@@ -25,4 +25,11 @@ object StringUtils {
     fun extractLastFour(abhaNumber: String): String {
         return abhaNumber.substring(abhaNumber.length - 4)
     }
+
+    @JvmStatic
+    fun mobileNumberEmpty(value: String?): String {
+        var phoneNoVal: String? = "N/A"
+        if (value != null && !value.isEmpty()) phoneNoVal = value
+        return phoneNoVal!!
+    }
 }

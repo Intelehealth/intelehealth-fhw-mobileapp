@@ -236,11 +236,10 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         if (!selectedChip.isEmpty()) {   // here you set this value to the Setter of the response variable and pass it to identification screen.
             if (selectedChip.equalsIgnoreCase(otpVerificationResponse.getABHAProfile().getPhrAddress().get(0))) {
                 AbdmResult resultData = new AbdmResult(
-                        AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS,
+                        AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION,
                         accessToken,
-                        null,
-                        null,
-                        otpVerificationResponse
+                        otpVerificationResponse,
+                        null
                 );
 
                 Intent resultIntent = new Intent();
@@ -329,11 +328,10 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
                     phrAddresses.add(0, preferredAbhaAddress);
                     AbdmResult resultData = new AbdmResult(
-                            AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS,
+                            AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION,
                             accessToken,
-                            null,
-                            firstRequestFulfilled,
-                            otpVerificationResponse
+                            otpVerificationResponse,
+                            null
                     );
 
                     Intent resultIntent = new Intent();

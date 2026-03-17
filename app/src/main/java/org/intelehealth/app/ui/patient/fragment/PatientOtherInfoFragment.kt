@@ -61,7 +61,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
 
-        if (patientViewModel.otpVerificationResponse != null) {
+        if (patientViewModel.otpResponse != null) {
             patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
         }
 

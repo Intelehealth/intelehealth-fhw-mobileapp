@@ -15,17 +15,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity
+import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity
 import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity.intentPatientNameTag
 import org.intelehealth.abdm.constants.AbdmConstant
 import org.intelehealth.abdm.dialog.AbhaChoiceDialogFragment
-import org.intelehealth.abdm.dialog.TextViewDialogFragment
 import org.intelehealth.abdm.enums.AbdmOutcomes
 import org.intelehealth.abdm.listener.AbhaChoiceListener
 import org.intelehealth.abdm.model.AbdmResult
-import org.intelehealth.abdm.utils.AbdmManager
-import org.intelehealth.abdm.utils.DialogUtils.TextSelectedListener
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.BundleKeys
@@ -91,41 +90,49 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
     }
 
     private val abdmLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode != RESULT_OK) return@registerForActivityResult
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { contractResult ->
+            if (contractResult.resultCode != RESULT_OK) return@registerForActivityResult
 
-            val data = result.data ?: return@registerForActivityResult
-            val abdmResult: AbdmResult? = data.getParcelableExtra<AbdmResult>(
+            val data = contractResult.data ?: return@registerForActivityResult
+
+            val result: AbdmResult? = data.getParcelableExtra<AbdmResult>(
                 AbdmConstant.INTENT_ABDM_RESULT
             ) ?: return@registerForActivityResult
 
+
             val newIntent = Intent(context, PatientRegistrationActivity::class.java)
-            newIntent.putExtra(AbdmConstant.ACCESS_TOKEN, abdmResult?.accessToken ?: "")
+            newIntent.putExtra(AbdmConstant.ACCESS_TOKEN, result?.accessToken ?: "")
 
-            when (abdmResult?.outcome) {
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS -> {
-                    newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
-                    newIntent.putExtra(
-                        BundleKeys.PATIENT_UUID,
-                        abdmResult.otpVerificationResponse.uuID
-                    )
-
+            when (result?.outcome) {
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
+                    newIntent.putExtra(BundleKeys.PATIENT_UUID, result.otpResponse?.uuID)
                     newIntent.putExtra(BundleKeys.PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
                     startActivity(newIntent)
                 }
 
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT -> {
-                    newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT_FOR_CREATION -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
                     startActivity(newIntent)
                 }
 
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS -> {
-                    newIntent.putExtra(AbdmConstant.PAYLOAD, abdmResult.otpVerificationResponse)
-                    newIntent.putExtra("firstRequestFulfilled", abdmResult.firstRequestFulfilled)
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
                     startActivity(newIntent)
                 }
 
-                null -> {
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_NEW_PATIENT_FOR_VERIFICATION -> {
+                    newIntent.putExtra(AbdmConstant.MOBILE_PAYLOAD, result.abhaResponse)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON -> {
+                    val detailIntent = Intent(context, PatientDetailActivity2::class.java)
+                    detailIntent.putExtra("patientUuid", result.abhaResponse?.uuiD)
+                    startActivity(detailIntent)
+                }
+
+                else -> {
 
                 }
             }
@@ -191,6 +198,12 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
     }
 
     override fun onHasAbha() {
+        org.intelehealth.abdm.utils.DialogUtils.triggerTextViewDialogFragment(
+            this@PersonalConsentActivity,
+            AbhaCardVerificationActivity::class.java,
+            intentPatientNameTag,
+            abdmLauncher
+        )
     }
 
     override fun onCreateAbha() {

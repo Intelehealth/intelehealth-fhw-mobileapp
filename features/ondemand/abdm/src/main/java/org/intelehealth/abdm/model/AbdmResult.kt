@@ -8,7 +8,6 @@ import org.intelehealth.abdm.enums.AbdmOutcomes
 data class AbdmResult(
     val outcome: AbdmOutcomes,
     val accessToken: String?,
-    val patientDetail: Boolean?,
-    val firstRequestFulfilled: Boolean?,
-    val otpVerificationResponse: OTPVerificationResponse
+    val otpResponse: OTPVerificationResponse?,
+    val abhaResponse: AbhaProfileResponse?
 ) : Parcelable

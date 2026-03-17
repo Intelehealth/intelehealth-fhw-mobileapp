@@ -1,7 +1,5 @@
 package org.intelehealth.abdm.abha_create;
 
-import static org.intelehealth.abdm.constants.AbdmConstant.PAYLOAD;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -643,11 +641,10 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         response.setOpenMrsId(mExistingPatientOpenMRSId);
         response.setUuID(mExistingPatientUuid);
         AbdmResult resultData = new AbdmResult(
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS,
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION,
                 accessToken,
-                true,
-                true,
-                response
+                response,
+                null
         );
 
         Intent resultIntent = new Intent();
@@ -658,11 +655,10 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
 
     private void navigateToIdentificationScreenForNewPatient(OTPVerificationResponse abhaProfileResponse) {
         AbdmResult resultData = new AbdmResult(
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT,
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT_FOR_CREATION,
                 accessToken,
-                null,
-                null,
-                abhaProfileResponse
+                abhaProfileResponse,
+                null
         );
 
         Intent resultIntent = new Intent();

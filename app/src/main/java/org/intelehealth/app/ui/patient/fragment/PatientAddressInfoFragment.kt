@@ -80,8 +80,12 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
 
-        if (patientViewModel.otpVerificationResponse != null) {
+        if (patientViewModel.otpResponse != null) {
             patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
+        }
+
+        if (patientViewModel.abhaResponse != null) {
+            patientViewModel.getPatientDataFromAbhaProfileResponse(patient)
         }
 
         binding.patient = patient

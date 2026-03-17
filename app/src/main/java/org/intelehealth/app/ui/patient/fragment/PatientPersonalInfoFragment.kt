@@ -167,7 +167,7 @@ class PatientPersonalInfoFragment :
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
 
-        if (patientViewModel.otpVerificationResponse != null) {
+        if (patientViewModel.otpResponse != null) {
             patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
         }
 
