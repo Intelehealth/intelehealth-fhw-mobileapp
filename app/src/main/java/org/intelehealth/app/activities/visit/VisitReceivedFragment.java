@@ -345,8 +345,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
     public void preparePrescriptionVitals(String encounterId) {
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
-        String[] visitArgs = {encounterId, "0", "TRUE"};
+        String visitSelection = "encounteruuid = ? AND voided!='1'";
+        String[] visitArgs = {encounterId};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {

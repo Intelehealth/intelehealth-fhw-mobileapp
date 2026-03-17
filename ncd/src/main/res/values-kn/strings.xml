@@ -164,4 +164,5 @@
     <string name="confirm_discard_changes_content">ಈ ಭೇಟಿಯ ಎಲ್ಲಾ ವಿವರಗಳನ್ನು ತ್ಯಜಿಸಲು ನೀವು ಖಚಿತವಾಗಿ ಬಯಸುತ್ತೀರಾ?</string>
     <string name="confirm_discard_changes_button_dialog">ತ್ಯಜಿಸಿ</string>
     <string name="confirm_continue_changes_button_dialog">ಮುಂದುವರಿಸಿ</string>
+    <string name="no_data_found_txt">ಯಾವುದೇ ಡೇಟಾ ಕಂಡುಬಂದಿಲ್ಲ!</string>
 </resources>

@@ -167,5 +167,6 @@
     <string name="confirm_continue_changes_button_dialog">Continue</string>
 
     <string name="please_wait">Please wait...</string>
+    <string name="no_data_found_txt">No data found!</string>
 
 </resources>

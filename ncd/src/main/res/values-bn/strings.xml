@@ -167,5 +167,6 @@
     <string name="confirm_continue_changes_button_dialog">চালিয়ে যান</string>
 
     <string name="please_wait">অনুগ্রহ করে অপেক্ষা করুন...</string>
+    <string name="no_data_found_txt">কোনো ডেটা পাওয়া যায়নি!</string>
 
 </resources>

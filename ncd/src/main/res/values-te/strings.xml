@@ -166,5 +166,6 @@
     <string name="confirm_continue_changes_button_dialog">కొనసాగించు</string>
 
     <string name="please_wait">దయచేసి వేచి ఉండండి...</string>
+    <string name="no_data_found_txt">ఏ డేటా కనుగొనబడలేదు!</string>
 
 </resources>

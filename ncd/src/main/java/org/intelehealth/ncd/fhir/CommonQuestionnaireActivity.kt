@@ -54,6 +54,7 @@ import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.QuestionnaireResponse
+import org.intelehealth.ncd.BuildConfig
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 import org.json.JSONObject
@@ -907,6 +908,20 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     Log.d("FHIR", "Normal BP at index $index: SBP=$sbp, DBP=$dbp")
                 }
                 if (isAbnormal) foundIndexedValue = index
+                else {
+                    // bpReadingsHelper all null values need to set
+                    bpReadingsHelper.forEachIndexed { i, helperReading ->
+                        if (helperReading != null) {
+                            bpReadingsHelper[i] = null
+                        }
+                    }
+
+                    loadQuestionnaireFragment(
+                        lastQuestionnaireResponseString,
+                        true,
+                        foundIndexedValue!!
+                    )
+                }
                 return isAbnormal
             }
         }
@@ -929,7 +944,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-    private val FIVE_MINUTES_MILLIS: Long = 5 * 60 * 1000
+    // set 10 sec for debug and 5 min for the release build
+
+    private val FIVE_MINUTES_MILLIS: Long = if(BuildConfig.DEBUG) 10000 else 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
