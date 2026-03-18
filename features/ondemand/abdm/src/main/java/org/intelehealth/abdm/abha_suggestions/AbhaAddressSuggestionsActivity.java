@@ -174,20 +174,20 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     };
 
     public boolean isValidAbhaAddress(String text) {
-        // Check for @sbx presence
-        String suffix = "@sbx";
+        // Check for @abdm presence
+        String suffix = "@abdm";
         String prefix = text;
 
         if (text.contains(suffix)) {
             if (!text.endsWith(suffix)) {
-                // '@sbx' is somewhere in the middle
-                Toast.makeText(context, getString(R.string.sbx_suffix_is_only_allowed_at_the_end), Toast.LENGTH_SHORT).show();
+                // '@abdm' is somewhere in the middle
+                Toast.makeText(context, getString(R.string.abdm_suffix_is_only_allowed_at_the_end), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
             int count = (text.length() - text.replace(suffix, "").length()) / suffix.length();
             if (count > 1) {
-                Toast.makeText(context, getString(R.string.sbx_suffix_can_only_appear_once), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, getString(R.string.abdm_suffix_can_only_appear_once), Toast.LENGTH_SHORT).show();
                 return false;
             }
 
@@ -319,12 +319,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
                 if (setAbhaAddressResponseResponse.body() != null) {
                     String preferredAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
-                    String preferredAbhaAddressWithoutSbx = preferredAbhaAddress.replaceAll("@sbx", "");
+                    String preferredAbhaAddressWithoutSbx = preferredAbhaAddress.replaceAll("@abdm", "");
                     List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
                     phrAddresses.remove(preferredAbhaAddressWithoutSbx);
 
-                    if (!preferredAbhaAddress.endsWith("@sbx")) {
-                        preferredAbhaAddress = preferredAbhaAddress.concat("@sbx");
+                    if (!preferredAbhaAddress.endsWith("@abdm")) {
+                        preferredAbhaAddress = preferredAbhaAddress.concat("@abdm");
                     }
 
                     phrAddresses.add(0, preferredAbhaAddress);

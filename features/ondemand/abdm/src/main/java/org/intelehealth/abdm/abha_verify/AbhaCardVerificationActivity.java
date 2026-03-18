@@ -1178,7 +1178,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
             } else if (isAbhaNumber && binding.layoutHaveABHANumber.abhaDetails.etAbhaNumber.getText().length() < 14) {
                 Toast.makeText(context, getText(R.string.please_enter_valid_abha), Toast.LENGTH_SHORT).show();
                 isValid = false;
-            } else if (!isAbhaNumber && !abhaAddress.endsWith("@sbx")) {
+            } else if (!isAbhaNumber && !abhaAddress.endsWith("@abdm")) {
                 Toast.makeText(context, getText(R.string.please_enter_valid_abha_address), Toast.LENGTH_SHORT).show();
                 isValid = false;
             }

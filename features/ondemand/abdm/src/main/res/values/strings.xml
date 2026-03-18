@@ -63,8 +63,8 @@
     <string name="submit">Submit</string>
     <string name="please_select_abha_address">Please select ABHA address.</string>
     <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\n2. Maximum length - 18 characters\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>
-    <string name="sbx_suffix_is_only_allowed_at_the_end">\'@sbx\' is only allowed at the end</string>
-    <string name="sbx_suffix_can_only_appear_once">\'@sbx\' can appear only once</string>
+    <string name="abdm_suffix_is_only_allowed_at_the_end">\'@abdm\' is only allowed at the end</string>
+    <string name="abdm_suffix_can_only_appear_once">\'@abdm\' can appear only once</string>
     <string name="length_validation">ABHA address must be at least 8 characters long and cannot be longer than 18 characters.</string>
     <string name="characters_validation">ABHA address can only contain letters, numbers, one dot (.) and/or one underscore (_).</string>
     <string name="special_characters_position_validation">Dot (.) or underscore (_) must be in the middle, not at the beginning or end.</string>
@@ -86,7 +86,7 @@
     <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
     <string name="enter_14_digit_abha_id_number">Enter 14 Digit ABHA ID Number</string>
     <string name="or">Or</string>
-    <string name="enter_abha_address">Enter ABHA address (e.g. address@sbx)</string>
+    <string name="enter_abha_address">Enter ABHA address (e.g. address@abdm)</string>
     <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
     <string name="aadhaar">AADHAAR</string>
     <string name="mobile">Mobile</string>

@@ -391,7 +391,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
     private void handleUserFlow(OTPVerificationResponse otpVerificationResponse, String accessToken) {
         String abhaNumber = otpVerificationResponse.getABHAProfile().getABHANumber().replaceAll("-", "");
         String abhaAddress = otpVerificationResponse.getABHAProfile().getPhrAddress().get(0);
-        boolean isAbhaNumberTheOnlyAddress = (abhaAddress.equalsIgnoreCase(abhaNumber.concat("@sbx")));
+        boolean isAbhaNumberTheOnlyAddress = (abhaAddress.equalsIgnoreCase(abhaNumber.concat("@abdm")));
         boolean isNewUser = otpVerificationResponse.getIsNew() && isAbhaNumberTheOnlyAddress;
 
         // to determine a new user, we're checking if the abha number is the only abha addresses and if isNew is returning true.
