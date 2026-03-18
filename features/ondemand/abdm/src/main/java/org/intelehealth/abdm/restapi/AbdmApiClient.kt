@@ -3,6 +3,7 @@ package org.intelehealth.abdm.restapi
 import io.reactivex.Single
 import okhttp3.ResponseBody
 import org.intelehealth.abdm.model.AadharApiBody
+import org.intelehealth.abdm.model.AbhaCardResponseBody
 import org.intelehealth.abdm.model.AbhaProfileRequestBody
 import org.intelehealth.abdm.model.AbhaProfileResponse
 import org.intelehealth.abdm.model.EnrollNumberWithABDMRequest
@@ -26,6 +27,7 @@ import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 import retrofit2.http.Url
 
 
@@ -108,5 +110,12 @@ interface AbdmApiClient {
         @Header("X-TOKEN") xToken: String,
         @Body abhaProfileRequestBody: AbhaProfileRequestBody
     ): Single<AbhaProfileResponse>
+
+    @GET("/abha/getCard")
+    fun getAbhaCard(
+        @Header("Authorization") accessToken: String,
+        @Query("scope") scope: String,
+        @Header("X-TOKEN") xToken: String
+    ): Single<AbhaCardResponseBody>
 
 }

@@ -7,12 +7,15 @@ import android.widget.ArrayAdapter
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.utils.AbdmManager
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import org.intelehealth.app.utilities.AbhaCardDownloadUtil
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -26,6 +29,7 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -114,6 +118,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         binding.frag2BtnBack.setOnClickListener { findNavController().popBackStack() }
         binding.frag2BtnNext.setOnClickListener {
             validateForm { savePatient() }
+
         }
     }
 
@@ -137,9 +142,58 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
-                patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+                patientViewModel.handleResponse(it) { result ->
+                    if (result) {
+                        downloadAbhaCard()
+                        navigateToDetails()
+                    }
+                }
             }
         }
+    }
+
+    private fun downloadAbhaCard() {
+        if (patientViewModel.otpResponse != null || patientViewModel.abhaResponse != null) {
+            val util = AbhaCardDownloadUtil(patient, requireActivity())
+            val tokenHashMap: HashMap<String?, String?> = getTokenHashmap()
+            val token = tokenHashMap.get("token")
+            val scope = tokenHashMap.get("scope")
+
+            if (!util.isAbhaCardPresent() || AbdmManager.isCommunicationNumberUsed || AbdmManager.isPreferredAddressSet) {
+                util.downloadAbhaCard(
+                    scope,
+                    token,
+                    patientViewModel.accessToken ?: "",
+                    requireActivity()
+                )
+            }
+        }
+    }
+
+    private fun getTokenHashmap(): HashMap<String?, String?> {
+        val responseHashMap = HashMap<String?, String?>()
+        val token: String?
+        val scope: String?
+
+        val abhaResponse = patientViewModel.abhaResponse
+        val otpResponse = patientViewModel.otpResponse
+
+        if (otpResponse != null && otpResponse.tokens != null && otpResponse.tokens.token != null) {
+            val responseToken: String = otpResponse.tokens.token
+            token =
+                if (responseToken.startsWith("Bearer")) responseToken else "Bearer $responseToken"
+            scope = AbdmConstant.SCOPE_AADHAAR
+        } else if (abhaResponse != null && abhaResponse.token != null) {
+            token = abhaResponse.token
+            scope = AbdmConstant.SCOPE_MOBILE
+        } else {
+            token = patientViewModel.xToken
+            scope = AbdmManager.tempScope
+        }
+
+        responseHashMap.put("token", token)
+        responseHashMap.put("scope", scope)
+        return responseHashMap
     }
 
     private fun navigateToDetails() {

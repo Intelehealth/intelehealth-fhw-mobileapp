@@ -1040,6 +1040,7 @@ public class AbhaCardVerificationActivity extends AppCompatActivity {
         AbdmResult result = new AbdmResult(
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_NEW_PATIENT_FOR_VERIFICATION,
                 accessToken,
+                xToken,
                 null,
                 response
         );

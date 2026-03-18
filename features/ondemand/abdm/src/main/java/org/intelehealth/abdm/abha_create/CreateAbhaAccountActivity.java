@@ -643,6 +643,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         AbdmResult resultData = new AbdmResult(
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION,
                 accessToken,
+                null,
                 response,
                 null
         );
@@ -657,6 +658,7 @@ public class CreateAbhaAccountActivity extends AppCompatActivity {
         AbdmResult resultData = new AbdmResult(
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT_FOR_CREATION,
                 accessToken,
+                null,
                 abhaProfileResponse,
                 null
         );

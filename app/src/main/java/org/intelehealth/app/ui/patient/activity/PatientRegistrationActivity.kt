@@ -106,6 +106,9 @@ class PatientRegistrationActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
+            patientViewModel.accessToken = it.getStringExtra(AbdmConstant.ACCESS_TOKEN)
+            patientViewModel.xToken = it.getStringExtra(AbdmConstant.X_TOKEN)
+
             patientViewModel.otpResponse = it.getSerializableExtra(
                 AbdmConstant.PAYLOAD
             ) as? OTPVerificationResponse

@@ -238,6 +238,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 AbdmResult resultData = new AbdmResult(
                         AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION,
                         accessToken,
+                        null,
                         otpVerificationResponse,
                         null
                 );
@@ -330,6 +331,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                     AbdmResult resultData = new AbdmResult(
                             AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION,
                             accessToken,
+                            null,
                             otpVerificationResponse,
                             null
                     );

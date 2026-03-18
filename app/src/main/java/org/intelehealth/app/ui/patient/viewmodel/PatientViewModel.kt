@@ -35,6 +35,8 @@ class PatientViewModel(
 
     var otpResponse: OTPVerificationResponse? = null
     var abhaResponse: AbhaProfileResponse? = null
+    var xToken: String? = null
+    var accessToken: String? = null
 
     fun loadPatientDetails(
         patientId: String,

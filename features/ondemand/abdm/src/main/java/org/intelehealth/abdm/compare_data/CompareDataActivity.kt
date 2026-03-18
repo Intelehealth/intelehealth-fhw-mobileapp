@@ -176,6 +176,7 @@ class CompareDataActivity : AppCompatActivity() {
             val result = AbdmResult(
                 outcome = AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON,
                 accessToken = accessToken,
+                xToken = xToken,
                 otpResponse = null,
                 abhaResponse = abhaProfileResponse
             )

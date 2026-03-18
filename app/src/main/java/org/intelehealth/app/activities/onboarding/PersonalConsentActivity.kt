@@ -122,6 +122,7 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
                 }
 
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_NEW_PATIENT_FOR_VERIFICATION -> {
+                    newIntent.putExtra(AbdmConstant.X_TOKEN, result.xToken)
                     newIntent.putExtra(AbdmConstant.MOBILE_PAYLOAD, result.abhaResponse)
                     startActivity(newIntent)
                 }
