@@ -2359,7 +2359,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         if (abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA")) {
             abhaAddressTr.setVisibility(View.VISIBLE);
-            abhaAddressTv.setText(patientDTO.getAbhaAddress());
+            String finalAbhaAddress = (abhaAddress.endsWith("@abdm") ? abhaAddress : abhaAddress.concat("@abdm"));
+            abhaAddressTv.setText(finalAbhaAddress);
             binding.otherCard.btnViewAbhaCard.setVisibility(View.VISIBLE);
         }
 

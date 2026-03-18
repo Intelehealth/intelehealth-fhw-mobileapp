@@ -741,7 +741,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
-                            android:text="@{patient.abhaAddress}" />
+                            android:text="@{patient.formattedAbhaAddress}" />
 
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 

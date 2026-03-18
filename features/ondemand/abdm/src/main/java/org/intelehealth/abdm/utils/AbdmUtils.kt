@@ -49,4 +49,9 @@ object AbdmUtils {
         }
         return result.toString()
     }
+
+    @JvmStatic
+    fun formatAbhaAddress(input: String): String {
+        return if (input.contains(",")) input.split(",")[0] else input
+    }
 }

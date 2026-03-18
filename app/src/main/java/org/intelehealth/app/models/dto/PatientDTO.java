@@ -4,6 +4,8 @@ package org.intelehealth.app.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.abdm.utils.AbdmUtils;
+
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -674,6 +676,10 @@ public class PatientDTO implements Serializable {
 
     public String getAbhaAddress() {
         return abhaAddress;
+    }
+
+    public String getFormattedAbhaAddress() {
+        return AbdmUtils.formatAbhaAddress(abhaAddress);
     }
 
     public void setAbhaAddress(String abhaAddress) {

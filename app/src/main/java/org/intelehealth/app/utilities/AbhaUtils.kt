@@ -40,7 +40,7 @@ object AbhaUtils {
         response: OTPVerificationResponse
     ) {
         patient.abhaNumber = response.abhaProfile.abhaNumber
-        patient.abhaAddress = "${response.abhaProfile.phrAddress[0]}"
+        patient.abhaAddress = "${response.abhaProfile.phrAddress[0]}@abdm"
     }
 
     fun getPatientAbhaDetailsFromAbhaResponse(
