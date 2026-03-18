@@ -132,7 +132,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             department = binding.textInputDepartment.text?.toString()
             relativePhoneNumber = binding.textInputRelativePhoneNumber.text?.toString()
             abhaNumber = binding.textInputAbhaNumber.text?.toString()
-            abhaAddress = binding.textInputAbhaAddress.text?.toString()?.replace("@abdm", "")
+            abhaAddress = binding.textInputAbhaAddress.text?.toString()
 
             inn = binding.textInputInn.text?.toString()
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
