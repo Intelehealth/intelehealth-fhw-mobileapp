@@ -81,7 +81,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { Gson().toJson(patient) }
 
         if (patientViewModel.otpResponse != null) {
-            patientViewModel.getPatientDataFromOtpVerificationResponse(patient)
+            patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
         }
 
         if (patientViewModel.abhaResponse != null) {

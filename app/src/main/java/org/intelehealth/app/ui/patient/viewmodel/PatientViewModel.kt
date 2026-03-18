@@ -1,5 +1,6 @@
 package org.intelehealth.app.ui.patient.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
@@ -73,10 +74,10 @@ class PatientViewModel(
         )
     }
 
-    fun getPatientDataFromOtpVerificationResponse(patient: PatientDTO) {
+    fun getPatientDataFromOtpVerificationResponse(context: Context, patient: PatientDTO) {
         patient.also { patient ->
             otpResponse?.let { response ->
-                AbhaUtils.getPatientPersonalDetailsFromOtpResponse(patient, response)
+                AbhaUtils.getPatientPersonalDetailsFromOtpResponse(context, patient, response)
                 AbhaUtils.getPatientAddressDetailsFromOtpResponse(patient, response)
                 AbhaUtils.getPatientAbhaDetailsFromOtpResponse(patient, response)
             }
@@ -85,7 +86,9 @@ class PatientViewModel(
 
     fun getPatientDataFromAbhaProfileResponse(patient: PatientDTO) {
         patient.also { patient ->
-
+            abhaResponse?.let { response ->
+                AbhaUtils.getPatientAbhaDetailsFromAbhaResponse(patient, response)
+            }
         }
     }
 }

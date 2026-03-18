@@ -1,8 +1,10 @@
 package org.intelehealth.app.utilities
 
+import android.content.Context
 import org.intelehealth.abdm.constants.AbdmConstant
 import org.intelehealth.abdm.model.AbhaProfileResponse
 import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.utils.AbhaImageUtils
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.klivekit.utils.DateTimeUtils
 import java.time.LocalDate
@@ -12,10 +14,12 @@ import java.util.Date
 
 object AbhaUtils {
     fun getPatientPersonalDetailsFromOtpResponse(
+        context: Context,
         patient: PatientDTO,
         response: OTPVerificationResponse
     ) {
-        patient.patientPhoto = response.abhaProfile.photo
+        patient.patientPhoto =
+            AbhaImageUtils.convertEncodedToFile(context, response.abhaProfile.photo, patient.uuid)
         patient.firstname = response.abhaProfile.firstName
         patient.middlename = response.abhaProfile.middleName
         patient.lastname = response.abhaProfile.lastName

@@ -51,7 +51,10 @@ object AbdmUtils {
     }
 
     @JvmStatic
-    fun formatAbhaAddress(input: String): String {
-        return if (input.contains(",")) input.split(",")[0] else input
+    fun formatAbhaAddress(input: String?): String {
+        input?.let {
+            return if (input.contains("-")) input.split("-")[0] else input
+        }
+        return ""
     }
 }
