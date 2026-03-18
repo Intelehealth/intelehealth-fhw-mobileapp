@@ -9,25 +9,29 @@
             android:name="org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity"
             android:configChanges="uiMode"
             android:exported="false"
-            android:theme="@style/AppThemeMaterialNew" />
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name="org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity"
             android:configChanges="uiMode"
             android:exported="false"
-            android:theme="@style/AppThemeMaterialNew" />
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".abha_suggestions.AbhaAddressSuggestionsActivity"
             android:configChanges="uiMode"
             android:exported="false"
-            android:theme="@style/AppThemeMaterialNew" />
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
 
         <activity
             android:name=".compare_data.CompareDataActivity"
             android:configChanges="uiMode"
             android:exported="false"
-            android:theme="@style/AppThemeMaterialNew" />
+            android:theme="@style/AppThemeMaterialNew"
+            android:windowSoftInputMode="adjustPan" />
 
     </application>
 
