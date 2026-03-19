@@ -18,6 +18,7 @@
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
@@ -38,9 +39,11 @@
                 app:layout_collapseMode="pin"
                 app:navigationIcon="@null"
                 app:title="@{isEditMode ? @string/update_patient_identification : @string/add_new_patient}" />
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <LinearLayout
+            android:id="@+id/ll_patient_registration_tabs"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -59,6 +62,9 @@
                 android:layout_height="match_parent"
                 app:defaultNavHost="true"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
+
         </LinearLayout>
+
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>
