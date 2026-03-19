@@ -25,6 +25,7 @@
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -32,6 +33,7 @@
             android:textColor="@color/textColorBlack"
             android:textSize="@dimen/setup_privacy_screen_info"
             android:textStyle="bold" />
+
     </LinearLayout>
 
 
