@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -19,16 +20,17 @@
             android:id="@+id/iv_back_arrow_terms"
             android:layout_width="@dimen/back_arrow_width"
             android:layout_height="@dimen/back_arrow_height"
-
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
             android:text="@string/processing_personal_data"
             android:textSize="@dimen/setup_privacy_screen_info"
             android:textStyle="bold" />
+
     </LinearLayout>
 
 
@@ -54,6 +56,7 @@
         android:weightSum="2">
 
         <Button
+            android:id="@+id/btn_decline_consent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/decline_button_margin_start"
@@ -83,8 +86,6 @@
             android:text="@string/accept_new"
             android:textSize="@dimen/common_button_text_size" />
 
-
     </LinearLayout>
-
 
 </RelativeLayout>
