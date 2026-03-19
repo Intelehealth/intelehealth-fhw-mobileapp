@@ -320,4 +320,26 @@ public class PatientDao {
         }
         return isCreated;
     }
+
+    public static boolean isPatientPresentInLocal(String abhaNumber, String firstName, String lastName) {
+        String queryAbhaNumberFormat = "%" + abhaNumber + "%";
+        String patientUuid = getPatientUuidByAbhaNumber(queryAbhaNumberFormat, firstName, lastName);
+        return patientUuid != null;
+    }
+
+    public static String getPatientUuidByAbhaNumber(String abhaNumberLastDigits, String firstName, String lastName) {
+        String patientUuid = null;
+        SQLiteDatabase db = AbdmManager.getDbClient();
+        String query = "SELECT uuid FROM tbl_patient WHERE abha_number LIKE ? AND first_name = ? AND last_name = ?";
+        if (db != null) {
+            try (Cursor cursor = db.rawQuery(query, new String[]{abhaNumberLastDigits, firstName, lastName})) {
+                if (cursor.moveToFirst()) {
+                    patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"));
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        }
+        return patientUuid;
+    }
 }

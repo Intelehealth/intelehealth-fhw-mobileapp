@@ -14,6 +14,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.abdm.R;
+import org.intelehealth.abdm.database.dao.PatientDao;
 import org.intelehealth.abdm.model.Account;
 import org.intelehealth.abdm.utils.StringUtils;
 
@@ -61,7 +62,7 @@ public class MultipleAccountsAdapter extends RecyclerView.Adapter<MultipleAccoun
             String firstName = account.getName().split(" ")[0];
             String lastName = account.getName().split(" ")[1];
 
-            boolean isPatientPresent = false; /*PatientsDAO.isPatientPresentInLocal(abhaNumberLastFourDigits, firstName, lastName);*/
+            boolean isPatientPresent = PatientDao.isPatientPresentInLocal(abhaNumberLastFourDigits, firstName, lastName);
             mainHandler.post(() -> {
                 if (isPatientPresent) {
                     holder.tvStatus.setText(context.getString(R.string.multiple_accounts_abha_positive_status));

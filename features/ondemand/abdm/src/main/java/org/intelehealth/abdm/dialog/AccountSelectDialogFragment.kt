@@ -41,10 +41,7 @@ class AccountSelectDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun setAccountList() {
-
-        accountsAdapter = MultipleAccountsAdapter(
-            context, accountList
-        ) { account, isChecked ->
+        accountsAdapter = MultipleAccountsAdapter(context, accountList) { account, isChecked ->
             selectedAccount = if (isChecked) {
                 account
             } else null

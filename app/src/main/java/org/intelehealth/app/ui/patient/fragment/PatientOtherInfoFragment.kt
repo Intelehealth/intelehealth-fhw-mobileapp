@@ -69,6 +69,10 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
         }
 
+        if (patientViewModel.abhaResponse != null) {
+            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
+        }
+
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()

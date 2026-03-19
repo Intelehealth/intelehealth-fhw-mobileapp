@@ -8,6 +8,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.abdm.model.AbhaProfileResponse
 import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.utils.AbdmUtils
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
@@ -84,9 +85,11 @@ class PatientViewModel(
         }
     }
 
-    fun getPatientDataFromAbhaProfileResponse(patient: PatientDTO) {
+    fun getPatientDataFromAbhaProfileResponse(context: Context, patient: PatientDTO) {
         patient.also { patient ->
             abhaResponse?.let { response ->
+                AbhaUtils.getPatientPersonalDetailsFromAbhaResponse(context, patient, response)
+                AbhaUtils.getPatientAddressDetailsFromAbhaResponse(patient, response)
                 AbhaUtils.getPatientAbhaDetailsFromAbhaResponse(patient, response)
             }
         }

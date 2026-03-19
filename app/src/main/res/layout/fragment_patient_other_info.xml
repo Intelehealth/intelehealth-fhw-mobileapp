@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.text.TextUtils" />
+
         <import type="android.view.View" />
 
         <variable
@@ -668,7 +670,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{patient.abhaNumber != null ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{!TextUtils.isEmpty(patient.abhaNumber) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llDepartment"
@@ -688,6 +690,7 @@
                         android:id="@+id/textInputLayAbhaNumber"
                         style="@style/AppTheme.OutlineInputBox"
                         android:layout_width="match_parent"
+
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4"
                         app:hintEnabled="false">
@@ -697,7 +700,11 @@
                             style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:longClickable="false"
                             android:text="@{patient.abhaNumber}" />
 
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
@@ -711,7 +718,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{patient.abhaAddress != null ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{!TextUtils.isEmpty(patient.abhaAddress) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llAbhaNo"
@@ -740,7 +747,11 @@
                             style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:longClickable="false"
                             android:text="@{patient.formattedAbhaAddress}" />
 
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>

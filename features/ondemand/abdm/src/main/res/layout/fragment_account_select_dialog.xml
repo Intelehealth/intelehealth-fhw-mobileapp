@@ -30,13 +30,15 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/layout_abha_accounts" />
 
-    <Button
+    <android.widget.Button
         android:id="@+id/submitABHAAccountBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_20"
         android:layout_marginTop="30dp"
-        android:background="@drawable/bg_common_with_state"
+        android:background="@drawable/bg_common_primary_enabled"
+        android:backgroundTint="@android:color/transparent"
+        android:backgroundTintMode="src_over"
         android:drawableTint="@color/iconTintWhite"
         android:paddingStart="@dimen/common_button_padding_left"
         android:paddingTop="@dimen/common_button_padding_top"

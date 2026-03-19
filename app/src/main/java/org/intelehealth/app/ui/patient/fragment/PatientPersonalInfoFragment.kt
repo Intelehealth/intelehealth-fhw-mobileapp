@@ -171,6 +171,9 @@ class PatientPersonalInfoFragment :
             patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
         }
 
+        if (patientViewModel.abhaResponse != null) {
+            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
+        }
 
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {

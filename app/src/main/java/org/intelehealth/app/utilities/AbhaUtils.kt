@@ -18,15 +18,18 @@ object AbhaUtils {
         patient: PatientDTO,
         response: OTPVerificationResponse
     ) {
-        patient.patientPhoto =
-            AbhaImageUtils.convertEncodedToFile(context, response.abhaProfile.photo, patient.uuid)
+        patient.patientPhoto = AbhaImageUtils.convertEncodedToFile(
+            context,
+            response.abhaProfile.photo,
+            patient.uuid
+        )
         patient.firstname = response.abhaProfile.firstName
         patient.middlename = response.abhaProfile.middleName
         patient.lastname = response.abhaProfile.lastName
         patient.gender = response.abhaProfile.gender
         patient.phonenumber = "91${response.abhaProfile.mobile}"
         patient.dateofbirth = DateTimeUtils.formatToLocalDate(
-            formatPatientDobFromCreation(response.abhaProfile.dob),
+            formatPatientDob(response.abhaProfile.dob),
             DateTimeUtils.YYYY_MM_DD_HYPHEN
         )
     }
@@ -52,24 +55,61 @@ object AbhaUtils {
             }
     }
 
-    fun getPatientAbhaDetailsFromAbhaResponse(
+    fun getPatientPersonalDetailsFromAbhaResponse(
+        context: Context,
         patient: PatientDTO,
         response: AbhaProfileResponse
     ) {
-        patient.patientPhoto = response.profilePhoto
+        patient.patientPhoto = AbhaImageUtils.convertEncodedToFile(
+            context,
+            response.profilePhoto,
+            patient.uuid
+        )
         patient.firstname = response.firstName
         patient.middlename = response.middleName
         patient.lastname = response.lastName
         patient.gender = response.gender
         patient.phonenumber = "91${response.mobile}"
-//        patient.dateofbirth =
+        patient.dateofbirth = DateTimeUtils.formatToLocalDate(
+            formatPatientDobFromVerification(
+                response.dayOfBirth,
+                response.monthOfBirth,
+                response.yearOfBirth
+            ),
+            DateTimeUtils.YYYY_MM_DD_HYPHEN
+        )
     }
 
-//    private fun formatPatientDobFromVerification(): Date {
-//
-//    }
+    fun getPatientAddressDetailsFromAbhaResponse(
+        patient: PatientDTO,
+        response: AbhaProfileResponse
+    ) {
+        patient.postalcode = response.pincode
+        bifurcateAddress(response.address, patient)
+    }
 
-    private fun formatPatientDobFromCreation(date: String): Date {
+    fun getPatientAbhaDetailsFromAbhaResponse(
+        patient: PatientDTO,
+        response: AbhaProfileResponse
+    ) {
+        patient.abhaNumber = response.abhaNumber
+        patient.abhaAddress = if (response.preferredAbhaAddress.endsWith("@abdm")) {
+            response.preferredAbhaAddress
+        } else {
+            "${response.preferredAbhaAddress}@abdm"
+        }
+    }
+
+    private fun formatPatientDobFromVerification(
+        dayOfBirth: String,
+        monthOfBirth: String,
+        yearOfBirth: String
+    ): Date {
+        val abhaDate = "$dayOfBirth-$monthOfBirth-$yearOfBirth"
+        return formatPatientDob(abhaDate)
+    }
+
+    private fun formatPatientDob(date: String): Date {
         val pattern = AbdmConstant.ABHA_DOB_FORMAT
         val localDate = LocalDate.parse(date, DateTimeFormatter.ofPattern(pattern))
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())

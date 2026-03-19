@@ -85,7 +85,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         }
 
         if (patientViewModel.abhaResponse != null) {
-            patientViewModel.getPatientDataFromAbhaProfileResponse(patient)
+            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
         }
 
         binding.patient = patient
