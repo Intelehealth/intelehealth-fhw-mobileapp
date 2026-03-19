@@ -28,6 +28,7 @@
         android:orientation="vertical">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_parent"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/std_16dp"
@@ -40,6 +41,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_parent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -67,6 +69,7 @@
                         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize50Percent" />
 
                     <ImageView
+                        android:id="@+id/iv_add_picture"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@id/patient_imgview"
@@ -106,6 +109,7 @@
                         android:textSize="@null"
                         android:visibility="gone"
                         tools:visibility="visible" />
+
                 </RelativeLayout>
 
                 <LinearLayout
@@ -144,10 +148,11 @@
                             style="@style/AppTheme.InputBox.Name1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
                             android:hint="@string/enter_first_name"
+                            android:inputType="text"
                             android:text="@{patient.firstname}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -188,7 +193,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_middle_name"
                             android:text="@{patient.middlename}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -230,6 +237,7 @@
                             android:hint="@string/enter_last_name"
                             android:text="@{patient.lastname}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -300,6 +308,7 @@
                             android:layout_weight="1"
                             android:text="@string/other"
                             app:icon="@drawable/gender_other_svg" />
+
                     </com.google.android.material.button.MaterialButtonToggleGroup>
 
                     <com.google.android.material.textview.MaterialTextView
@@ -313,6 +322,7 @@
                         android:visibility="gone"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/toggleGender" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -363,6 +373,7 @@
                             android:importantForAutofill="no"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -408,6 +419,7 @@
                             android:importantForAutofill="no"
                             android:inputType="none" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -449,7 +461,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_guardian_name"
                             android:text="@{patient.guardianName}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -496,7 +510,9 @@
                             android:hint="@string/hint_drop_down_guardian_type"
                             android:inputType="none"
                             android:minHeight="@dimen/std_48dp" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -522,6 +538,7 @@
                         tools:text="@string/phone_number" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_phone_number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -561,6 +578,7 @@
                                 android:cursorVisible="true"
                                 android:hint="@string/phone_number" />
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </LinearLayout>
@@ -605,7 +623,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_drop_down_contact_type"
                             android:inputType="none" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -648,7 +668,9 @@
                             android:layout_height="wrap_content"
                             android:hint="@string/enter_emergency_contact_name"
                             android:text="@{patient.emContactName}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -674,6 +696,7 @@
                         tools:text="@string/emergency_contact_number_non_required" />
 
                     <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clEmContact"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -712,10 +735,15 @@
                                 android:layout_height="wrap_content"
                                 android:cursorVisible="true"
                                 android:hint="@string/emergency_contact_number" />
+
                         </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
+
                 </LinearLayout>
+
             </androidx.constraintlayout.widget.ConstraintLayout>
+
         </androidx.core.widget.NestedScrollView>
 
         <Button
@@ -732,6 +760,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+        
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
