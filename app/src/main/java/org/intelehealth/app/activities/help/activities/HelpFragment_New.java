@@ -10,7 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+
 import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +43,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class HelpFragment_New extends Fragment implements View.OnClickListener, NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HelpFragment";
@@ -238,8 +241,14 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d(TAG, "updateUIForInternetAvailability: ");
+        // for save, need to check weather all view created or not
+        if (rvSearchedVideos == null || tvOfflineHintVideosHelpFragment == null || ivInternet == null) {
+            return;
+        }
+
         layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         rvSearchedVideos.setLayoutManager(layoutManager);
+
 
         if (isInternetAvailable) {
             rvSearchedVideos.setVisibility(View.VISIBLE);
@@ -247,7 +256,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), getVideoList());
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
 
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_internet_available));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_internet_available));
 
         } else {
             rvSearchedVideos.setVisibility(View.GONE);
@@ -256,7 +265,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener, 
             MostSearchedVideosAdapter_New mostSearchedVideosAdapter_new = new MostSearchedVideosAdapter_New(getActivity(), list);
             rvSearchedVideos.setAdapter(mostSearchedVideosAdapter_new);
 
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_no_internet));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_no_internet));
 
         }
     }

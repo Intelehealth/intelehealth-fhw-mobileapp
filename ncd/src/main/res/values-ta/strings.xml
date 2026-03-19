@@ -166,5 +166,6 @@
     <string name="confirm_continue_changes_button_dialog">தொடரவும்</string>
 
     <string name="please_wait">தயவுசெய்து காத்திருக்கவும்...</string>
+    <string name="no_data_found_txt">தரவு எதுவும் கிடைக்கவில்லை!</string>
 
 </resources>

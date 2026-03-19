@@ -149,14 +149,14 @@
 </string>
     <string name="ok_btn_lbl">ठीक है</string>
 
-    <string name="questionnaire_title_hypertension_screening">हाइपरटेंशन स्क्रीनिंग</string>
+    <string name="questionnaire_title_hypertension_screening">उच्च रक्तचाप स्क्रीनिंग</string>
     <string name="questionnaire_title_anemia_screening">एनीमिया स्क्रीनिंग</string>
     <string name="questionnaire_title_diabetes_screening">डायबिटीज़ स्क्रीनिंग</string>
-    <string name="questionnaire_title_hypertension_followup">हाइपरटेंशन फॉलो-अप</string>
+    <string name="questionnaire_title_hypertension_followup">उच्च रक्तचाप फॉलो-अप</string>
 
     <string name="bp_measurement">बीपी मापन - %1$s/%2$s</string>
     <string name="tab_all">सभी</string>
-    <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
+    <string name="questionnaire_title_anemia_followup">एनीमिया फॉलोअप</string>
     <string name="years_abbr">Y</string>
     <string name="anemia_followup">एनीमिया फॉलोअप</string>
 
@@ -165,5 +165,6 @@
     <string name="confirm_discard_changes_button_dialog">रद्द करें</string>
     <string name="confirm_continue_changes_button_dialog">जारी रखें</string>
     <string name="please_wait">कृपया प्रतीक्षा करें...</string>
+    <string name="no_data_found_txt">कोई डेटा नहीं मिला!</string>
 
 </resources>

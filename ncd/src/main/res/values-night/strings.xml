@@ -3,4 +3,5 @@
     <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
     <string name="years_abbr">Y</string>
     <string name="anemia_followup">Anemia Followup</string>
+    <string name="no_data_found_txt">No data found!</string>
 </resources>

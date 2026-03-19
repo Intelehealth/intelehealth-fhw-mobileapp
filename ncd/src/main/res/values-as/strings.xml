@@ -165,5 +165,6 @@
     <string name="confirm_continue_changes_button_dialog">অব্যাহত ৰাখক</string>
 
     <string name="please_wait">অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
+    <string name="no_data_found_txt">কোনো ডাটা পোৱা নগ\'ল!</string>
 
 </resources>

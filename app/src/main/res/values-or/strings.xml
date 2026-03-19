@@ -932,15 +932,15 @@
     <string name="unknown_other">ଅଜ୍ଞାତ / ଅନ୍ୟ</string>
 
     <string name="are_you_taking_any_medication_for_bp">ଆପଣ ବର୍ତ୍ତମାନ ବିପି ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
-    <string name="are_you_taking_any_medication_for_diabetes">ଆପଣ ବର୍ତ୍ତମାନ ମଧୁମେହ ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
+    <string name="are_you_taking_any_medication_for_diabetes">ଆପଣ ବର୍ତ୍ତମାନ ଡାୟାବେଟିଜ୍ ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
     <string name="are_you_taking_any_medication_for_anemia">ଆପଣ ବର୍ତ୍ତମାନ ରକ୍ତହୀନତା ପାଇଁ କିଛି ଔଷଧ ଖାଉଛନ୍ତି କି?</string>
 
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_BP">ତୁମର ବିପି ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
-    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ତୁମର ମଧୁମେହ ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
+    <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_diabetes">ତୁମର ଡାୟାବେଟିଜ୍ ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
     <string name="have_you_been_seen_by_a_healthcare_worker_within_the_past_one_year_for_your_anemia">ତୁମର ରକ୍ତହୀନତା ପାଇଁ ଗତ 1 ବର୍ଷ ମଧ୍ୟରେ ଜଣେ ସ୍ୱାସ୍ଥ୍ୟ କର୍ମୀ ଆପଣଙ୍କୁ ଦେଖିଛନ୍ତି କି?</string>
 
     <string name="why_are_you_not_taking_your_bp_medication">ତୁମେ ତୁମର ବିପି ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
-    <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ମଧୁମେହ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
+    <string name="why_are_you_not_taking_your_diabetes_medication">ତୁମେ ତୁମର ଡାୟାବେଟିଜ୍ ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
     <string name="why_are_you_not_taking_your_anemia_medication">ତୁମେ ତୁମର ରକ୍ତହୀନତା ଔଷଧ କାହିଁକି ନେଉନାହଁ?</string>
 
     <string name="do_you_or_any_of_your_family_member_use_whatsapp">ଆପଣ କିମ୍ବା ଆପଣଙ୍କ ପରିବାରର କେହି ହ୍ୱାଟସ୍‌ଆପ୍ ବ୍ୟବହାର କରନ୍ତି କି?</string>

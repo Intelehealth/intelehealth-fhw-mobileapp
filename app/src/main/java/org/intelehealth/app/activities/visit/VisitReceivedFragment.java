@@ -8,6 +8,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.IS_NCD_VISIT_ATTRIBU
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -69,6 +70,7 @@ import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -221,18 +223,29 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
         buildAndSavePrescription(fileName, mPatient, visitStartDate, model.getVisitUuid());
 
-        try {
-            File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
-            Uri uri = FileProvider.getUriForFile(requireContext(), requireContext().getApplicationContext().getPackageName() + ".provider", pdfFile);
+        //try {
+        File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+        Uri uri = FileProvider.getUriForFile(requireContext(), requireContext().getApplicationContext().getPackageName() + ".provider", pdfFile);
 
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("application/pdf");
-            intent.putExtra(Intent.EXTRA_STREAM, uri);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            intent.setPackage("com.whatsapp");
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/pdf");
+        intent.putExtra(Intent.EXTRA_STREAM, uri);
+        intent.setClipData(ClipData.newRawUri("PDF", uri));
+
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        //intent.setPackage("com.whatsapp");
+        String pkg = StringUtils.getWhatsAppPackage(requireContext());
+        if (pkg != null) {
+            intent.setPackage(pkg);
+            requireActivity().grantUriPermission(
+                    pkg,
+                    uri,
+                    Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            );
             startActivity(intent);
             updateLocalPrescriptionInformations(model.getVisitUuid());
-        } catch (ActivityNotFoundException exception) {
+        } else {
             Toast.makeText(requireContext(), getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
         }
     }
@@ -332,8 +345,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
 
     public void preparePrescriptionVitals(String encounterId) {
         String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
-        String[] visitArgs = {encounterId, "0", "TRUE"};
+        String visitSelection = "encounteruuid = ? AND voided!='1'";
+        String[] visitArgs = {encounterId};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {

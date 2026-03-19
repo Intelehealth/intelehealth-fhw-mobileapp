@@ -10,14 +10,13 @@ import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEn
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
-import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -45,20 +44,11 @@ import android.print.PrintAttributes;
 import android.print.PrintDocumentAdapter;
 import android.print.PrintJob;
 import android.print.PrintManager;
-import android.se.omapi.Session;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
-import org.intelehealth.app.models.dto.EncounterDTO;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -69,7 +59,6 @@ import android.view.animation.LinearInterpolator;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -90,26 +79,25 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
 import org.intelehealth.app.activities.visit.adapter.PrescribedMedicineAdapter;
 import org.intelehealth.app.activities.visit.model.PrescribedMedicineModel;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
+import org.intelehealth.app.ayu.visit.notification.LocalPrescriptionInfo;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
-import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityPrescription2Binding;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -137,9 +125,7 @@ import org.intelehealth.app.utilities.RegexUtils;
 import org.intelehealth.app.utilities.SafeDialogUtil;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
-import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
-import org.intelehealth.app.utilities.VisitUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
@@ -1409,7 +1395,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
                     diagnosisReturned = diagnosisReturned + "\n\n" + Node.bullet + " " + value;
                 } else {
-                    diagnosisReturned =  Node.bullet + " " + value;
+                    diagnosisReturned = Node.bullet + " " + value;
                 }
                 diagnosis_txt.setText(diagnosisReturned);
                 break;
@@ -1466,7 +1452,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 medicalAdviceTextView.setText(Html.fromHtml(medicalAdvice_HyperLink +
                         medicalAdvice_string.replaceAll("\n", "<br><br>")));*/
 
-               // adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
+                // adviceReturned = adviceReturned.replaceAll("\n", "<br><br>");
                 //  medicalAdviceTextView.setText(Html.fromHtml(adviceReturned));
                /* medicalAdviceTextView.setText(Html.fromHtml(adviceReturned.replace("Doctor_", "Doctor")));
                 medicalAdviceTextView.setMovementMethod(LinkMovementMethod.getInstance());
@@ -1619,7 +1605,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         for (String medicine : medicationDataArray) {
             if (ParserUtils.Companion.parseMedication(medicine) instanceof String) {
-                if(!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")){
+                if (!medicine.matches(RegexUtils.getAdditionalInstructionRegex()) && medicine.contains("::")) {
                     additionalInstruction.append(Node.bullet)
                             .append(" ")
                             .append(medicine)
@@ -2091,22 +2077,35 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
             String fileName = fileNamePatientName.concat("-").concat(prescriptionString).concat("-").concat(visitStartDate).concat(".pdf");
             buildAndSavePrescription(fileName);
-            try {
-                File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
-                Uri uri = FileProvider.getUriForFile(PrescriptionActivity.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
+            //try {
+            File pdfFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
+            Uri uri = FileProvider.getUriForFile(PrescriptionActivity.this, getApplicationContext().getPackageName() + ".provider", pdfFile);
 
-                Intent intent = new Intent(Intent.ACTION_SEND);
-                intent.setType("application/pdf");
-                intent.putExtra(Intent.EXTRA_STREAM, uri);
-                intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.setPackage("com.whatsapp");
-                Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
-                Log.d("DEBUG", "File exists: " + pdfFile.exists());
-                Log.d("DEBUG", "File size: " + pdfFile.length());
-                Log.d("DEBUG", "URI: " + uri.toString());
+            Intent intent = new Intent(Intent.ACTION_SEND);
+            intent.setType("application/pdf");
+            intent.putExtra(Intent.EXTRA_STREAM, uri);
+            intent.setClipData(ClipData.newRawUri("PDF", uri));
+
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+
+            //intent.setPackage("com.whatsapp");
+            String pkg = StringUtils.getWhatsAppPackage(PrescriptionActivity.this);
+            Log.d("DEBUG", "Package: " + pkg);
+            Log.d("DEBUG", "File path: " + pdfFile.getAbsolutePath());
+            Log.d("DEBUG", "File exists: " + pdfFile.exists());
+            Log.d("DEBUG", "File size: " + pdfFile.length());
+            Log.d("DEBUG", "URI: " + uri.toString());
+            if (pkg != null) {
+                intent.setPackage(pkg);
+                grantUriPermission(
+                        pkg,
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                );
                 startActivity(intent);
                 updateLocalPrescriptionInformations(visitID);
-            } catch (ActivityNotFoundException exception) {
+            } else {
                 Toast.makeText(PrescriptionActivity.this, getString(R.string.please_install_whatsapp), Toast.LENGTH_LONG).show();
             }
         } else

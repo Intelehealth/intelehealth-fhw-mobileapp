@@ -283,6 +283,8 @@ public class ImagesDAO {
 
     public String getPatientProfileChangeTime(String patientUuid) throws DAOException {
         String datetime = "";
+        if(patientUuid==null || patientUuid.isEmpty())
+            return datetime;
         SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         try {

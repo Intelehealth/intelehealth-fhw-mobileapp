@@ -11,7 +11,7 @@
     <string name="tab_diabetes_screening">डायबिटीज़ स्क्रीनिंग</string>
     <string name="tab_diabetes_follow_up">Diabetes Follow-Up</string>
     <string name="tab_hypertension_screening">उच्च रक्तदाब तपासणी</string>
-    <string name="tab_hypertension_follow_up">उच्च रक्तदाबाचा पाठपुरावा</string>
+    <string name="tab_hypertension_follow_up">उच्च रक्तदाब पाठपुरावा</string>
     <string name="tab_general">सामान्य</string>
     <string name="search_patient">रुग्ण शोधा</string>
 
@@ -151,14 +151,14 @@
 </string>
     <string name="ok_btn_lbl">ठीक आहे</string>
 
-    <string name="questionnaire_title_hypertension_screening">हायपरटेन्शन स्क्रीनिंग</string>
-    <string name="questionnaire_title_anemia_screening">अॅनीमिया स्क्रीनिंग</string>
+    <string name="questionnaire_title_hypertension_screening">उच्च रक्तचाप स्क्रीनिंग</string>
+    <string name="questionnaire_title_anemia_screening">अ‍ॅनिमिया स्क्रीनिंग</string>
     <string name="questionnaire_title_diabetes_screening">डायबिटीज स्क्रीनिंग</string>
-    <string name="questionnaire_title_hypertension_followup">हायपरटेन्शन फॉलो-अप</string>
+    <string name="questionnaire_title_hypertension_followup">उच्च रक्तदाब पाठपुरावा</string>
 
     <string name="bp_measurement">BP मापन - %1$s/%2$s</string>
     <string name="tab_all">सर्व</string>
-    <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
+    <string name="questionnaire_title_anemia_followup">अ‍ॅनिमिया फॉलोअप</string>
     <string name="years_abbr">Y</string>
     <string name="anemia_followup">अ‍ॅनिमिया फॉलोअप</string>
 
@@ -167,5 +167,6 @@
     <string name="confirm_discard_changes_button_dialog">रद्द करा</string>
     <string name="confirm_continue_changes_button_dialog">सुरू ठेवा</string>
     <string name="please_wait">कृपया थांबा...</string>
+    <string name="no_data_found_txt">कोणताही डेटा सापडला नाही!</string>
 
 </resources>

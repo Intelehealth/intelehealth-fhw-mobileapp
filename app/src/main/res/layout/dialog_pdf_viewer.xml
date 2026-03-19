@@ -1,19 +1,54 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent">
+
 
     <org.intelehealth.app.activities.visitSummaryActivity.ncdinfo.ZoomableImageView
         android:id="@+id/pdfImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
         android:layout_marginTop="56dp"
-        android:padding="8dp"
         android:adjustViewBounds="true"
-        android:scaleType="fitCenter" />
+        android:background="@android:color/white"
+        android:padding="8dp"
+        android:scaleType="fitCenter"
+        android:visibility="visible" />
 
-    <!-- Top-right buttons -->
+    <!--<ProgressBar
+        android:id="@+id/progressBar4"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBar4"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/icon_36dp"
+            android:indeterminate="false"
+            android:max="100"
+            android:progress="0" />
+
+
+        <TextView android:id="@+id/downloading_helper_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/downloading"
+            android:textSize="12sp"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -27,7 +62,7 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ui2_icon_download"
-            android:tint="@android:color/black" />
+            app:tint="@android:color/black" />
 
         <ImageButton
             android:id="@+id/btnClose"
@@ -35,7 +70,8 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ui2_icon_close_pdf"
-            android:tint="@android:color/black" />
+            app:tint="@android:color/black" />
     </LinearLayout>
+
 
 </FrameLayout>

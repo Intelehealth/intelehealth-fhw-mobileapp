@@ -344,8 +344,8 @@
 
     <string name="medical_to_other_info">તબીબી થી અન્ય માહિતી</string>
     <string name="general_to_medical_info">સામાન્ય થી તબીબી માહિતી</string>
-    <string name="start_newadvice_confirmation_msg">શું તમે ખરેખર સેવિકા સલાહ શરૂ કરવા માંગો છો?</string>
-    <string name="start_newadvice_confirmation_title">સેવિકા સલાહ શરૂ કરો</string>
+    <string name="start_newadvice_confirmation_msg">શું તમે ખરેખર NCD સલાહ શરૂ કરવા માંગો છો?</string>
+    <string name="start_newadvice_confirmation_title">NCD સલાહ શરૂ કરો</string>
     <string name="doctor_advice_alert_title">ટેલિ-કન્સલ્ટેશન શરૂ કરો</string>
     <string name="doctor_advice_alert_msg">શું તમે ડૉક્ટર પાસેથી ટેલી-કન્સલ્ટેશન ઈચ્છો છો?</string>
     <string name="vital_alert_continue_button">હા, ચાલુ રાખો</string>

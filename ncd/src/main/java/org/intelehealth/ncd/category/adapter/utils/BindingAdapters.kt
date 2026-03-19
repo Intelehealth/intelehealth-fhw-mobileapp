@@ -63,9 +63,9 @@ fun setPatientDisplayText(textView: TextView, visitDetail: PatientVisitDetails?)
         val displayText = listOfNotNull(fullName.takeIf { it.isNotBlank() }, openmrsId)
             .joinToString(", ")
 
-        Log.d("TAG", "setPatientDisplayText: openmrsId  : "+openmrsId)
-        Log.d("TAG", "setPatientDisplayText: displayText  : "+displayText)
-        Log.d("TAG", "setPatientDisplayText: fullName  : "+fullName)
+        //Log.d("TAG", "setPatientDisplayText: openmrsId  : "+openmrsId)
+        //Log.d("TAG", "setPatientDisplayText: displayText  : "+displayText)
+        //Log.d("TAG", "setPatientDisplayText: fullName  : "+fullName)
 
         textView.text = displayText
     }

@@ -342,8 +342,8 @@
 
     <string name="medical_to_other_info">Medical to Other info</string>
     <string name="general_to_medical_info">General to medical info</string>
-    <string name="start_newadvice_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি এটা সেভিকা পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>
-    <string name="start_newadvice_confirmation_title">ছেভিকা নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
+    <string name="start_newadvice_confirmation_msg">আপুনি নিশ্চিত নেকি যে আপুনি এটা NCD পৰামৰ্শ আৰম্ভ কৰিব বিচাৰে?</string>
+    <string name="start_newadvice_confirmation_title">NCD নতুন পৰামৰ্শ আৰম্ভ কৰক</string>
     <string name="doctor_advice_alert_title">টেলি-পৰামৰ্শ আৰম্ভ কৰক</string>
     <string name="doctor_advice_alert_msg">ডাক্তৰৰ পৰা টেলি-কনছালেচন বিচাৰেনে??</string>
     <string name="vital_alert_continue_button">হয়, আগবাঢ়ি যাওক</string>
@@ -444,9 +444,13 @@
     <string name="category_hypertension">হাইপাৰটেনচন</string>
     <string name="category_diabetes">ডায়াবেটিছ</string>
 
-    <string name="confirm_discard_changes_title">This visit is incomplete!</string>
-    <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
-    <string name="confirm_discard_changes_button_dialog">Discard</string>
-    <string name="confirm_continue_changes_button_dialog">Continue</string>
+    <string name="not_eligible_for_protocols_message">আপুনি এই মুহূৰ্তত কোনো NCD প্ৰট’কলৰ বাবে যোগ্য নহয়। তথাপিও যদি আপুনি আগবাঢ়িব বিচাৰে, আপোনাৰ পছন্দৰ প্ৰট’কল বাছনি কৰক।</string>
+    <string name="yes_move_ahead">হয়, আগবাঢ়ক</string>
+    <string name="no_go_back">নাই, উভতি যাওক</string>
+
+    <string name="confirm_discard_changes_title">এই ভিজিটটো অসম্পূৰ্ণ!</string>
+    <string name="confirm_discard_changes_content">আপুনি নিশ্চিতনে এই ভিজিটৰ সকলো তথ্য বাতিল কৰিব বিচাৰে?</string>
+    <string name="confirm_discard_changes_button_dialog">বাতিল কৰক</string>
+    <string name="confirm_continue_changes_button_dialog">অব্যাহত ৰাখক</string>
 
 </resources>

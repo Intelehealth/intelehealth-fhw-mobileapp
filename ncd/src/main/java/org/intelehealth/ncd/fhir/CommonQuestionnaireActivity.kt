@@ -3,9 +3,11 @@ package org.intelehealth.ncd.fhir
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
+import android.os.LocaleList
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
@@ -52,10 +54,12 @@ import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
 import org.hl7.fhir.r4.model.Patient
 import org.hl7.fhir.r4.model.QuestionnaireResponse
+import org.intelehealth.ncd.BuildConfig
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 import org.json.JSONObject
 import java.text.SimpleDateFormat
+import java.util.Locale
 
 //import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 //import androidx.activity.OnBackPressedCallback
@@ -74,7 +78,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             //"Abdominal distention_fhir.json",
             "hypertension_screening.json",
             "anemia_screening.json",
-            "anemia_followup.json",
+            //"anemia_followup.json",
             "diabetes_screening.json",
             "hypertension_followup.json",
             "anemia_followup.json"
@@ -84,7 +88,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             //"Abdominal distention",
             "Hypertension Screening",
             "Anemia Screening",
-            "Anemia Followup",
+            //"Anemia Followup",
             "Diabetes Screening",
             "Hypertension Followup",
             "Anemia Followup",
@@ -108,6 +112,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var appLang: String? = "en"
 
 
+    // change the locale of the activity
+//    override onC
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
@@ -127,7 +134,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             //"Abdominal distention",
             getString(R.string.questionnaire_title_hypertension_screening),
             getString(R.string.questionnaire_title_anemia_screening),
-            getString(R.string.anemia_followup),
+            //getString(R.string.questionnaire_title_anemia_followup),
             getString(R.string.questionnaire_title_diabetes_screening),
             getString(R.string.questionnaire_title_hypertension_followup),
             getString(R.string.questionnaire_title_anemia_followup)
@@ -138,6 +145,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         patientDOB = intent.getStringExtra("patient_dob")
         patientGender = intent.getStringExtra("patient_gender")
         appLang = intent.getStringExtra("appLang")
+        Log.d("FHIR", "Language appLang: $appLang")
         //supportActionBar?.title = questionnaireTitle
         supportActionBar?.title =
             questionnaireTitlesResources[questionnaireTitles.indexOf(questionnaireTitle)]
@@ -900,6 +908,20 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     Log.d("FHIR", "Normal BP at index $index: SBP=$sbp, DBP=$dbp")
                 }
                 if (isAbnormal) foundIndexedValue = index
+                else {
+                    // bpReadingsHelper all null values need to set
+                    bpReadingsHelper.forEachIndexed { i, helperReading ->
+                        if (helperReading != null) {
+                            bpReadingsHelper[i] = null
+                        }
+                    }
+
+                    loadQuestionnaireFragment(
+                        lastQuestionnaireResponseString,
+                        true,
+                        foundIndexedValue!!
+                    )
+                }
                 return isAbnormal
             }
         }
@@ -922,7 +944,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-    private val FIVE_MINUTES_MILLIS: Long = 5 * 60 * 1000
+    // set 10 sec for debug and 5 min for the release build
+
+    private val FIVE_MINUTES_MILLIS: Long = if(BuildConfig.DEBUG) 10000 else 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
@@ -1175,5 +1199,30 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         super.onStop()
         monitorJob?.cancel()
     }
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(setLocale(newBase))
+    }
 
+    fun setLocale(context: Context): Context {
+        val pref = context.getSharedPreferences("Intelehealth", Context.MODE_PRIVATE)
+        appLang = pref.getString("CURRENT_LANG", "en") ?: "en"
+        // log the appLang
+        Log.d("FHIR", "Language Setting locale with appLang: $appLang")
+        //Log.d("FHIR", "Language Setting locale with appLang: ${intent.getStringExtra("appLang")}")
+        //val appLanguage: String = sessionManager1.getAppLanguage()
+        val res = context.getResources()
+        val conf = res.getConfiguration()
+        val locale = Locale(appLang)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.getDisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.locale = locale
+        }
+        res.updateConfiguration(conf, dm)
+        return context
+    }
 }

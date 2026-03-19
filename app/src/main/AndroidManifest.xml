@@ -24,6 +24,10 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+   <!-- <uses-permission android:name="android.permission.READ_MEDIA_DOCUMENTS"/>-->
+
+
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -34,7 +38,10 @@
     <uses-feature
         android:name="android.hardware.camera.autofocus"
         android:required="false" />
-
+    <queries>
+        <package android:name="com.whatsapp"/>
+        <package android:name="com.whatsapp.w4b"/>
+    </queries>
     <application
         android:name=".app.IntelehealthApplication"
         android:allowBackup="false"
@@ -54,11 +61,11 @@
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan"  />
-        <activity
+        <!--<activity
             android:name=".ui.baseline_survey.activity.MedicalMissingBaselineQuestionsActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" />-->
         <activity
             android:name=".activities.visitSummaryActivity.ncdinfo.WebviewTestActivity"
             android:exported="false" />
@@ -79,10 +86,10 @@
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
             android:windowSoftInputMode="adjustPan" />
-        <activity
+        <!--<activity
             android:name=".activities.onboarding.CommonWebviewActivity"
             android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false" />-->
         <activity
             android:name=".activities.onboarding.PersonalConsentActivity"
             android:screenOrientation="portrait"
@@ -214,7 +221,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity
+       <!-- <activity
             android:name=".activities.identificationActivity.IdentificationActivity_New"
             android:screenOrientation="portrait"
             android:exported="false"
@@ -223,7 +230,7 @@
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
-        </activity>
+        </activity>-->
         <activity
             android:name=".appointmentNew.AppointmentDetailsActivity"
             android:screenOrientation="portrait"

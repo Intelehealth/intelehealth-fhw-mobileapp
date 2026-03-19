@@ -157,7 +157,7 @@
 
     <string name="bp_measurement">BP માપ - %1$s/%2$s</string>
     <string name="tab_all">બધા</string>
-    <string name="questionnaire_title_anemia_followup">Anemia Followup</string>
+    <string name="questionnaire_title_anemia_followup">એનિમિયા ફોલોઅપ</string>
     <string name="years_abbr">Y</string>
     <string name="anemia_followup">એનિમિયા ફોલોઅપ</string>
 
@@ -167,5 +167,6 @@
     <string name="confirm_continue_changes_button_dialog">ચાલુ રાખો</string>
 
     <string name="please_wait">કૃપા કરીને રાહ જુઓ...</string>
+    <string name="no_data_found_txt">કોઈ ડેટા મળ્યો નથી!</string>
 
 </resources>

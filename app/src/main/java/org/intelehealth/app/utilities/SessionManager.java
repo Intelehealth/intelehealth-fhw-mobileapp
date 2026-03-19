@@ -3,13 +3,13 @@ package org.intelehealth.app.utilities;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
+import java.util.Locale;
 import java.util.Set;
-
-import timber.log.Timber;
 
 public class SessionManager {
     // Shared preferences file name
@@ -181,13 +181,16 @@ public class SessionManager {
     }
 
     public String getAppLanguage() {
-        return pref.getString(APP_LANGUAGE, "en");
+        //return pref.getString(APP_LANGUAGE, "en");
+        return getCurrentLang();
     }
 
     public void setAppLanguage(String lan) {
-        editor.putString(APP_LANGUAGE, lan);
-        editor.putString(CURRENT_LANG, lan);
-        editor.commit();
+        Log.e("Language", "setAppLanguage - " + lan);
+        //editor.putString(APP_LANGUAGE, lan);
+        //editor.putString(CURRENT_LANG, lan);
+        //editor.commit();
+        setCurrentLang(lan);
     }
 
     public boolean isSetupComplete() {
@@ -310,13 +313,15 @@ public class SessionManager {
     }
 
     public String getCurrentLang() {
-        return pref.getString(CURRENT_LANG, "en");
+        //return pref.getString(CURRENT_LANG, "en");
+        return pref.getString(CURRENT_LANG, Locale.getDefault().getLanguage());
     }  //setting default language as english
 
     public void setCurrentLang(String lang) {
+        Log.e("Language", "setCurrentLang - " + lang);
         editor.putString(CURRENT_LANG, lang);
-        editor.putString(APP_LANGUAGE, lang);
-        editor.commit();
+        //editor.putString(APP_LANGUAGE, lang);
+        editor.apply();
     }
 
     public String getServerUrlRest() {

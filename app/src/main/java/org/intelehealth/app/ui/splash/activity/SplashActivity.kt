@@ -3,18 +3,22 @@ package org.intelehealth.app.ui.splash.activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.LocaleList
 import android.os.Looper
 import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
 import androidx.biometric.BiometricPrompt.PromptInfo
@@ -26,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Slide
 import androidx.transition.Transition
 import androidx.transition.TransitionManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import org.intelehealth.app.BuildConfig
@@ -44,12 +49,15 @@ import org.intelehealth.app.ui.splash.adapter.LanguageAdapter
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
+import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.core.shared.ui.viewholder.BaseViewHolder
 import org.intelehealth.fcm.utils.FcmRemoteConfig.getRemoteConfig
 import org.intelehealth.fcm.utils.FcmTokenGenerator.getDeviceToken
 import org.intelehealth.klivekit.utils.extensions.showToast
 import timber.log.Timber
+import java.util.Locale
 
 
 /**
@@ -117,9 +125,19 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     private fun initLanguageList() {
         binding.rvSelectLanguage.layoutManager = LinearLayoutManager(this)
         binding.rvSelectLanguage.itemAnimator = DefaultItemAnimator()
+        var listLanguage = StaticLanguageEnabledFieldsHelper.getEnabledLanguageFields()
+        // if app language is already set then select that language in list
+        val appLanguage = sessionManager.appLanguage
+        Log.d("Language", appLanguage)
+        if (!appLanguage.equals("", ignoreCase = true)) {
+            listLanguage.forEach {
+                it.selected = it.code.equals(appLanguage, ignoreCase = true)
+            }
+        }
+
         adapter = LanguageAdapter(
             this,
-            StaticLanguageEnabledFieldsHelper.getEnabledLanguageFields()
+            listLanguage
         ).apply {
             this.viewHolderClickListener = this@SplashActivity
             binding.rvSelectLanguage.adapter = this
@@ -145,11 +163,43 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun handleFcmCall() {
-        // refresh the fcm token
-        getDeviceToken { token: String? ->
-            IntelehealthApplication.getInstance().refreshedFCMTokenID = token
+        // check network connectivity before making the call
+        if (NetworkConnection.isOnline(this)) {
+            // refresh the fcm token
+            getDeviceToken { token: String? ->
+                IntelehealthApplication.getInstance().refreshedFCMTokenID = token
+            }
+            getRemoteConfig(this) { checkForceUpdate(it) }
+        } else {
+            // show the snack bar for no internet connection
+
+            val snackbar = Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.could_not_connect_with_server),
+                Snackbar.LENGTH_LONG
+            )
+
+            // Customize colors
+            snackbar.setBackgroundTint(Color.RED)
+            snackbar.setTextColor(Color.WHITE)
+
+            // Center the text
+            val textView =
+                snackbar.view.findViewById<TextView>(
+                    com.google.android.material.R.id.snackbar_text
+                )
+            textView.gravity = Gravity.CENTER
+            textView.textAlignment = View.TEXT_ALIGNMENT_CENTER
+            textView.isSingleLine = true
+            textView.textSize = 10f
+
+            snackbar.show()
+
+
+            // if no network then directly navigate to next screen as remote config call is only for force update and it should not block user to access app if there is no internet connection
+            checkPerm(true)
+
         }
-        getRemoteConfig(this) { checkForceUpdate(it) }
     }
 
     private fun checkForceUpdate(config: FirebaseRemoteConfig) {
@@ -319,7 +369,8 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
 
     private fun authenticateFingerprint() {
         val executor = ContextCompat.getMainExecutor(this)
-        BiometricPrompt(this, executor,
+        BiometricPrompt(
+            this, executor,
             object : BiometricPrompt.AuthenticationCallback() {
                 override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                     super.onAuthenticationError(errorCode, errString)
@@ -404,5 +455,29 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
             val lang = view.tag as ActiveLanguage
             adapter.select(position, lang)
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(setLocaleNow(newBase))
+    }
+
+    fun setLocaleNow(context: Context): Context {
+        val sessionManager1 = SessionManager(context)
+        val appLanguage = sessionManager1.getAppLanguage()
+        Log.d("Language", appLanguage)
+        val res = context.getResources()
+        val conf = res.getConfiguration()
+        val locale = Locale(appLanguage)
+        Locale.setDefault(locale)
+        conf.setLocale(locale)
+        context.createConfigurationContext(conf)
+        val dm = res.getDisplayMetrics()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            conf.setLocales(LocaleList(locale))
+        } else {
+            conf.locale = locale
+        }
+        res.updateConfiguration(conf, dm)
+        return context
     }
 }

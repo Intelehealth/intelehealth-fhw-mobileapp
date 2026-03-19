@@ -448,15 +448,15 @@ class CategorySegregationUtils(private val resources: Resources) {
         patientVisitDetailsList: List<PatientVisitDetails>,
         category: String
     ): List<PatientVisitDetails> {
-        Log.d(
-            TAG,
-            "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : " + Gson().toJson(
-                patientVisitDetailsList
-            )
-        )
-        Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : " + category)
+//        Log.d(
+//            TAG,
+//            "testmulti segregateAndFetchPatientVisitDetails: patientVisitDetailsList : " + Gson().toJson(
+//                patientVisitDetailsList
+//            )
+//        )
+        //Log.d(TAG, "testmulti segregateAndFetchPatientVisitDetails: category : " + category)
         val gson = GsonBuilder().serializeNulls().create()
-        Log.d("testmulti", "newlist : " + gson.toJson(patientVisitDetailsList))
+        //Log.d("testmulti", "newlist : " + gson.toJson(patientVisitDetailsList))
 
 
         patientVisitDetailsList.forEachIndexed { index, item ->
@@ -599,8 +599,8 @@ class CategorySegregationUtils(private val resources: Resources) {
         return patientVisitDetailsList.filter { detail ->
             val age = detail.age ?: return@filter false
             val hasPreviousVisit = detail.isDiabetesFollowupGiven
-            Log.d(TAG, "filterDiabetesScreeningPatients: compalint: " + detail.chiefComplaintData)
-            Log.d(TAG, "filterDiabetesScreeningPatients: hasPreviousVisit: " + hasPreviousVisit)
+            //Log.d(TAG, "filterDiabetesScreeningPatients: compalint: " + detail.chiefComplaintData)
+            //Log.d(TAG, "filterDiabetesScreeningPatients: hasPreviousVisit: " + hasPreviousVisit)
 
             age >= Constants.DIABETES_EXCLUSION_AGE_LINE_LISTING && hasPreviousVisit != true
         }
