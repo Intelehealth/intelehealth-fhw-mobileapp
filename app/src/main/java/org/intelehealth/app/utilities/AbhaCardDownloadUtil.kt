@@ -93,7 +93,6 @@ class AbhaCardDownloadUtil(
 
         val file = File(dir, "$fileName.png")
 
-        // HARD overwrite
         FileOutputStream(file, false).use { fos ->
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
             fos.flush()
