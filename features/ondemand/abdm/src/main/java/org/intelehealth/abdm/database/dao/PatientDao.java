@@ -70,7 +70,6 @@ public class PatientDao {
                             "ON p.uuid = pa.patientuuid " +
                             "WHERE p.uuid = ? " +
                             "AND pa.person_attribute_type_uuid = ? " +
-                            "AND (p.sync = 'TRUE' or p.sync = 1 or p.sync = 'true') " +
                             "ORDER BY p.modified_date DESC",
                     new String[]{patientUuid, "14d4f066-15f5-102d-96e4-000c29c2a5d7"}
             );
