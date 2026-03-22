@@ -1,125 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootLayout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="end"
-    app:cardCornerRadius="10dp"
-    android:layout_marginTop="@dimen/margin_10"
     android:layout_marginStart="@dimen/margin_10"
-    android:layout_marginBottom="@dimen/margin_10"
+    android:layout_marginTop="@dimen/margin_10"
     android:layout_marginEnd="@dimen/margin_30"
+    android:layout_marginBottom="@dimen/margin_10"
+    app:cardCornerRadius="10dp"
     app:cardElevation="5dp">
 
-        <RadioGroup
-            android:id="@+id/rg_filter_appointments"
-            android:layout_width="match_parent"
-            android:layout_marginStart="@dimen/margin_12"
-            android:layout_marginEnd="@dimen/margin_12"
-            android:layout_marginVertical="@dimen/margin_15"
+    <RadioGroup
+        android:id="@+id/rg_filter_appointments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_15"
+        android:layout_marginStart="@dimen/margin_12"
+        android:layout_marginEnd="@dimen/margin_12"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/rb_upcoming_appointments"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <RadioButton
-                android:id="@+id/rb_upcoming_appointments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/radio_gender_margin_end"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:paddingStart="10dp"
-                android:button="@drawable/ui2_ic_circle"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:padding="@dimen/radio_gender_padding"
-                android:checked="false"
-                android:paddingEnd="@dimen/radio_gender_padding_end"
-                android:text="@string/upcoming_appointments"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/common_info_text_size" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/notifi_divider_color" />
-
-            <RadioButton
-                android:id="@+id/rb_cancelled_appointments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/radio_gender_margin_end"
-                android:checked="false"
-                android:layout_marginTop="@dimen/margin_12"
-                android:layout_marginBottom="@dimen/margin_12"
-                android:button="@drawable/ui2_ic_circle"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:paddingStart="12dp"
-                android:padding="@dimen/radio_gender_padding"
-                android:paddingEnd="@dimen/radio_gender_padding_end"
-                android:text="@string/cancelled_appointments"
-
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/common_info_text_size" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/notifi_divider_color" />
-
-            <RadioButton
-                android:id="@+id/rb_completed_appointments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/radio_gender_margin_end"
-                android:checked="false"
-                android:button="@drawable/ui2_ic_circle"
-                android:lineSpacingExtra="@dimen/profile_text_line_spacing"
-                android:paddingStart="12dp"
-                android:layout_marginTop="@dimen/margin_12"
-                android:padding="@dimen/radio_gender_padding"
-                android:paddingEnd="@dimen/radio_gender_padding_end"
-                android:text="@string/completed_appointments"
-                android:textColor="@color/textColorBlack"
-                android:textSize="@dimen/common_info_text_size" />
-        </RadioGroup>
-
-      <!--  <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/radio_gender_margin_end"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:button="@drawable/ui2_ic_circle"
+            android:checked="false"
+            android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+            android:padding="@dimen/radio_gender_padding"
+            android:paddingStart="10dp"
+            android:paddingEnd="@dimen/radio_gender_padding_end"
             android:text="@string/upcoming_appointments"
-            android:drawablePadding="12dp"
-            android:drawableStart="@drawable/ui2_ic_circle"
-            android:layout_marginBottom="@dimen/margin_12"
-            android:textSize="@dimen/fu_name_txt_size"
-            android:textColor="@color/header_title_color"/>
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/common_info_text_size" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/notifi_divider_color" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/cancelled_appointments"
-            android:layout_marginTop="@dimen/margin_12"
-            android:drawablePadding="12dp"
-            android:drawableStart="@drawable/ui2_ic_circle"
-            android:layout_marginBottom="@dimen/margin_12"
-            android:textSize="@dimen/fu_name_txt_size"
-            android:textColor="@color/header_title_color"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/notifi_divider_color" />
-
-        <TextView
+        <RadioButton
+            android:id="@+id/rb_cancelled_appointments"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/completed_appointments"
-            android:paddingEnd="@dimen/margin_50"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_12"
-            android:drawablePadding="12dp"
-            android:drawableStart="@drawable/ui2_ic_circle"
-            android:textSize="@dimen/fu_name_txt_size"
-            android:textColor="@color/header_title_color"/>-->
+            android:layout_marginEnd="@dimen/radio_gender_margin_end"
+            android:layout_marginBottom="@dimen/margin_12"
+            android:button="@drawable/ui2_ic_circle"
+            android:checked="false"
+            android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+            android:padding="@dimen/radio_gender_padding"
+            android:paddingStart="12dp"
+            android:paddingEnd="@dimen/radio_gender_padding_end"
+            android:text="@string/cancelled_appointments"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/common_info_text_size" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/notifi_divider_color" />
+
+        <RadioButton
+            android:id="@+id/rb_completed_appointments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:layout_marginEnd="@dimen/radio_gender_margin_end"
+            android:button="@drawable/ui2_ic_circle"
+            android:checked="false"
+            android:lineSpacingExtra="@dimen/profile_text_line_spacing"
+            android:padding="@dimen/radio_gender_padding"
+            android:paddingStart="12dp"
+            android:paddingEnd="@dimen/radio_gender_padding_end"
+            android:text="@string/completed_appointments"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/common_info_text_size" />
+    </RadioGroup>
+
+    <!--  <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:text="@string/upcoming_appointments"
+          android:drawablePadding="12dp"
+          android:drawableStart="@drawable/ui2_ic_circle"
+          android:layout_marginBottom="@dimen/margin_12"
+          android:textSize="@dimen/fu_name_txt_size"
+          android:textColor="@color/header_title_color"/>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/notifi_divider_color" />
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:text="@string/cancelled_appointments"
+          android:layout_marginTop="@dimen/margin_12"
+          android:drawablePadding="12dp"
+          android:drawableStart="@drawable/ui2_ic_circle"
+          android:layout_marginBottom="@dimen/margin_12"
+          android:textSize="@dimen/fu_name_txt_size"
+          android:textColor="@color/header_title_color"/>
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/notifi_divider_color" />
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent"
+          android:text="@string/completed_appointments"
+          android:paddingEnd="@dimen/margin_50"
+          android:layout_marginTop="@dimen/margin_12"
+          android:drawablePadding="12dp"
+          android:drawableStart="@drawable/ui2_ic_circle"
+          android:textSize="@dimen/fu_name_txt_size"
+          android:textColor="@color/header_title_color"/>-->
 
 
 </androidx.cardview.widget.CardView>

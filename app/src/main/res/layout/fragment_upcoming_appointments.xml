@@ -14,6 +14,7 @@
         android:scrollbars="none">
 
         <LinearLayout
+            android:id="@+id/llRoot"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="@dimen/today_apps_parent_margin_top"
@@ -21,9 +22,12 @@
             android:paddingBottom="40dp">
 
             <RelativeLayout
+                android:id="@+id/rlSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <RelativeLayout
+                    android:id="@+id/rlSearchField"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/et_search_patient_height"
                     android:layout_marginTop="@dimen/ma_icon_margin_top"
@@ -62,7 +66,6 @@
                         app:tint="@color/colorPrimary"
                         tools:visibility="visible" />
 
-
                 </RelativeLayout>
 
                 <ImageView
@@ -74,19 +77,18 @@
                     android:layout_marginTop="@dimen/ma_icon_margin_top"
                     android:layout_marginEnd="@dimen/ma_icon_margin_end"
                     android:layout_marginBottom="5dp"
-                    app:tint="?attr/colorPrimary"
                     android:background="@drawable/ui2_ic_filter_bg"
                     android:padding="@dimen/my_appointment_padding"
-                    android:src="@drawable/sort" />
-            </RelativeLayout>
+                    android:src="@drawable/sort"
+                    app:tint="?attr/colorPrimary" />
 
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/layout_parent_all"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
 
                 <LinearLayout
                     android:id="@+id/layout_upcoming"
@@ -114,15 +116,15 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:visibility="gone" />
 
-
             </LinearLayout>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginStart="@dimen/schedule_app_padding_start_end"
@@ -43,6 +44,7 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/llPrevNextMonths"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -65,6 +67,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ui2_ic_chevron_right"
                 app:tint="@color/colorPrimary" />
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -77,6 +80,7 @@
         android:layout_marginTop="@dimen/rv_hor_calview_margin_top" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_body"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_below="@+id/rv_horizontal_cal"
@@ -84,13 +88,14 @@
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/llSchedule"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="@dimen/schedule_app_margin_bottom1">
 
-
             <LinearLayout
+                android:id="@+id/llTimeSlots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">

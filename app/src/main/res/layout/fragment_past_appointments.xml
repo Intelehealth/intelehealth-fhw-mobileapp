@@ -26,7 +26,9 @@
                 android:id="@+id/top_lay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <RelativeLayout
+                    android:id="@+id/rlSearch"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/et_search_patient_height"
                     android:layout_marginTop="@dimen/ma_icon_margin_top"
@@ -65,7 +67,6 @@
                         app:tint="@color/colorPrimary"
                         tools:visibility="visible" />
 
-
                 </RelativeLayout>
 
                 <LinearLayout
@@ -85,8 +86,8 @@
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/ui2_ic_filter_bg"
                         android:padding="@dimen/my_appointment_padding"
-                        app:tint="?attr/colorPrimary"
-                        android:src="@drawable/ui2_ic_filter" />
+                        android:src="@drawable/ui2_ic_filter"
+                        app:tint="?attr/colorPrimary" />
 
                     <ImageView
                         android:id="@+id/sort_im"
@@ -97,11 +98,13 @@
                         android:layout_marginBottom="5dp"
                         android:background="@drawable/ui2_ic_filter_bg"
                         android:padding="@dimen/my_appointment_padding"
-                        app:tint="?attr/colorPrimary"
-                        android:src="@drawable/sort" />
+                        android:src="@drawable/sort"
+                        app:tint="?attr/colorPrimary" />
+
                 </LinearLayout>
 
             </RelativeLayout>
+
             <TextView
                 android:id="@+id/tv_results_for"
                 android:layout_width="match_parent"
@@ -127,14 +130,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/chip_group_apps_height"
                     android:layout_marginTop="@dimen/chip_group_apps_margin_top" />
+
             </HorizontalScrollView>
+
             <LinearLayout
                 android:id="@+id/layout_parent_past"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/scroll_chips"
                 android:orientation="vertical">
-
 
                 <LinearLayout
                     android:id="@+id/layout_upcoming"
@@ -162,13 +166,12 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="10dp"
                     android:visibility="gone"
-                    tools:visibility="visible"/>
+                    tools:visibility="visible" />
 
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:visibility="gone" />
-
 
             </LinearLayout>
 
@@ -184,6 +187,7 @@
                 <include layout="@layout/layout_filter_past_appointments_ui2" />
 
             </FrameLayout>
+
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
