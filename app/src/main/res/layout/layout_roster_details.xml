@@ -13,16 +13,18 @@
     <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="@dimen/margin_20"
-        android:visibility="@{activeStatus ? View.VISIBLE : View.GONE}"
         android:layout_marginEnd="24dp"
+        android:visibility="@{activeStatus ? View.VISIBLE : View.GONE}"
         app:cardCornerRadius="@dimen/margin_8"
         app:cardElevation="@dimen/margin_5">
 
         <LinearLayout
+            android:id="@+id/llRoot"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_12"
@@ -65,6 +67,7 @@
                     android:paddingHorizontal="4dp">
 
                     <ImageView
+                        android:id="@+id/ivGeneralEditIcon"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
                         android:layout_margin="5dp"
@@ -72,6 +75,7 @@
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
+                        android:id="@+id/tvChangeGeneral"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -86,11 +90,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/relative_pregnancy_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_20">
+                android:layout_marginTop="@dimen/margin_20"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/pregnancy_icon"
@@ -120,6 +124,7 @@
                     android:paddingHorizontal="4dp">
 
                     <ImageView
+                        android:id="@+id/ivEditIcon"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
                         android:layout_margin="5dp"
@@ -127,6 +132,7 @@
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
+                        android:id="@+id/tvChangePregnancy"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -174,6 +180,7 @@
                     android:paddingHorizontal="4dp">
 
                     <ImageView
+                        android:id="@+id/ivHealthServiceChangeIcon"
                         android:layout_width="14dp"
                         android:layout_height="14dp"
                         android:layout_margin="5dp"
@@ -181,6 +188,7 @@
                         app:tint="?attr/colorPrimary" />
 
                     <TextView
+                        android:id="@+id/tvChangeHealthService"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -195,6 +203,7 @@
             </RelativeLayout>
 
         </LinearLayout>
+
     </androidx.cardview.widget.CardView>
 
 </layout>

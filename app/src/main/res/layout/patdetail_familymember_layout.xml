@@ -1,34 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
-        <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <variable
             name="activeStatus"
             type="Boolean" />
     </data>
 
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/rootLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/other_card"
-        android:visibility="@{activeStatus ? View.VISIBLE : View.GONE}"
         android:layout_marginStart="24dp"
         android:layout_marginTop="@dimen/margin_20"
         android:layout_marginEnd="24dp"
+        android:visibility="@{activeStatus ? View.VISIBLE : View.GONE}"
         app:cardCornerRadius="@dimen/margin_8"
         app:cardElevation="@dimen/margin_5">
 
         <RelativeLayout
+            android:id="@+id/rlFamilyMembers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_12"
             android:layout_marginTop="@dimen/margin_12"
             android:layout_marginEnd="@dimen/margin_12"
             android:layout_marginBottom="@dimen/margin_16">
-
 
             <!--Personal Header-->
             <RelativeLayout
@@ -60,11 +63,11 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerInParent="true"
-                    android:paddingStart="5dp"
-                    android:paddingVertical="5dp"
                     android:background="@null"
-                    app:tint="@color/grayIcon"
-                    android:src="@drawable/white_add_svg_icon" />
+                    android:paddingVertical="5dp"
+                    android:paddingStart="5dp"
+                    android:src="@drawable/white_add_svg_icon"
+                    app:tint="@color/grayIcon" />
 
             </RelativeLayout>
 
@@ -90,7 +93,7 @@
                 android:textAppearance="@style/caption"
                 android:textColor="@color/hint_text_color"
                 android:textSize="14sp"
-                android:visibility="visible"/>
+                android:visibility="visible" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_familyMember"
@@ -98,10 +101,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/divider"
                 android:visibility="gone"
-                tools:listitem="@layout/list_item_family_member"/>
-
+                tools:listitem="@layout/list_item_family_member" />
 
         </RelativeLayout>
+
     </androidx.cardview.widget.CardView>
 
 </layout>

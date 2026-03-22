@@ -12,6 +12,7 @@
     </data>
 
     <LinearLayout
+        android:id="@+id/llRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="@{activeStatus ? View.VISIBLE : View.GONE}">
@@ -30,5 +31,7 @@
             android:text="@string/household_survey"
             android:textColor="@color/white"
             android:textSize="@dimen/txtsize_patdetail_16sp" />
+
     </LinearLayout>
+
 </layout>
