@@ -14,7 +14,8 @@
         android:id="@+id/imgview_aboutus"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/demo_imgview"
+        android:scaleType="fitXY"
+        android:src="@drawable/aboutus"
         />
 
 </androidx.cardview.widget.CardView>

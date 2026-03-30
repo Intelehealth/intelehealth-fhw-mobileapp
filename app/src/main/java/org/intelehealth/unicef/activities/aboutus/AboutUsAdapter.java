@@ -28,7 +28,7 @@ public class AboutUsAdapter extends RecyclerView.Adapter<AboutUsAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        int draw[] = {R.drawable.ui2_ic_icon_about_us};
+        int draw[] = {R.drawable.aboutus,R.drawable.demo_imgview};
 
         Drawable d = context.getResources().getDrawable(draw[position]);
         holder.imageView.setImageDrawable(d);
@@ -36,7 +36,7 @@ public class AboutUsAdapter extends RecyclerView.Adapter<AboutUsAdapter.MyViewHo
 
     @Override
     public int getItemCount() {
-        return 1;
+        return 2;
     }
 
 
