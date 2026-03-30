@@ -115,7 +115,7 @@ object AbhaUtils {
         return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant())
     }
 
-    private fun bifurcateAddress(address: String, patientDTO: PatientDTO) {
+    fun bifurcateAddress(address: String, patientDTO: PatientDTO) {
         val parts = address.split(",").map { it.trim() }
         if (parts.size < 3) {
             patientDTO.address1 = address

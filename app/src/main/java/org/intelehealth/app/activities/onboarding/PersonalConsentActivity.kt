@@ -26,10 +26,16 @@ import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.database.dao.ImagesPushDAO
+import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
+import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
@@ -99,7 +105,6 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
                 AbdmConstant.INTENT_ABDM_RESULT
             ) ?: return@registerForActivityResult
 
-
             val newIntent = Intent(context, PatientRegistrationActivity::class.java)
             newIntent.putExtra(AbdmConstant.ACCESS_TOKEN, result?.accessToken ?: "")
 
@@ -117,7 +122,9 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
                 }
 
                 AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION -> {
+                    SyncUtils.syncOnServer()
                     newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
+                    newIntent.putExtra(BundleKeys.PATIENT_UUID, result.otpResponse?.uuID)
                     startActivity(newIntent)
                 }
 
@@ -129,6 +136,7 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
                 }
 
                 AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON -> {
+                    SyncUtils.syncOnServer()
                     val detailIntent = Intent(context, PatientDetailActivity2::class.java)
                     detailIntent.putExtra("patientUuid", result.abhaResponse?.uuiD)
                     startActivity(detailIntent)
@@ -141,7 +149,6 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
 
             finish()
         }
-
 
     fun declineCon(view: View?) {
         setResult(AppConstants.PERSONAL_CONSENT_DECLINE)

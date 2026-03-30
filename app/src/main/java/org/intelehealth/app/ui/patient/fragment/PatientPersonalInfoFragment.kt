@@ -16,6 +16,8 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.utils.AbdmManager
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
@@ -24,6 +26,7 @@ import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBind
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.utilities.AbhaCardDownloadUtil
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -232,6 +235,7 @@ class PatientPersonalInfoFragment :
             patientViewModel.updatedPatient(this)
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
+                downloadAbhaCard()
             } else {
                 if (patientViewModel.activeStatusAddressSection) {
                     PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
@@ -251,6 +255,50 @@ class PatientPersonalInfoFragment :
             it ?: return@observe
             patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
         }
+    }
+
+    private fun downloadAbhaCard() {
+        if (patientViewModel.otpResponse != null || patientViewModel.abhaResponse != null) {
+            val util = AbhaCardDownloadUtil(patient, requireActivity())
+            val tokenHashMap: HashMap<String?, String?> = getTokenHashmap()
+            val token = tokenHashMap.get("token")
+            val scope = tokenHashMap.get("scope")
+
+            if (!util.isAbhaCardPresent() || AbdmManager.isCommunicationNumberUsed || AbdmManager.isPreferredAddressSet) {
+                util.downloadAbhaCard(
+                    scope,
+                    token,
+                    patientViewModel.accessToken ?: "",
+                    requireActivity()
+                )
+            }
+        }
+    }
+
+    private fun getTokenHashmap(): HashMap<String?, String?> {
+        val responseHashMap = HashMap<String?, String?>()
+        val token: String?
+        val scope: String?
+
+        val abhaResponse = patientViewModel.abhaResponse
+        val otpResponse = patientViewModel.otpResponse
+
+        if (otpResponse != null && otpResponse.tokens != null && otpResponse.tokens.token != null) {
+            val responseToken: String = otpResponse.tokens.token
+            token =
+                if (responseToken.startsWith("Bearer")) responseToken else "Bearer $responseToken"
+            scope = AbdmConstant.SCOPE_AADHAAR
+        } else if (abhaResponse != null && abhaResponse.token != null) {
+            token = abhaResponse.token
+            scope = AbdmConstant.SCOPE_MOBILE
+        } else {
+            token = patientViewModel.xToken
+            scope = AbdmManager.tempScope
+        }
+
+        responseHashMap.put("token", token)
+        responseHashMap.put("scope", scope)
+        return responseHashMap
     }
 
     private fun navigateToDetails() {

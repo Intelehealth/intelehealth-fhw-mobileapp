@@ -19,6 +19,7 @@ import org.intelehealth.abdm.model.AbdmResult
 import org.intelehealth.abdm.model.AbhaProfileResponse
 import org.intelehealth.abdm.model.PatientDTO
 import org.intelehealth.abdm.model.UserData
+import org.intelehealth.abdm.utils.AbdmUtils
 import org.intelehealth.abdm.utils.DialogUtils
 import org.intelehealth.abdm.utils.StatusBarUtil.setStatusBarChanges
 
@@ -56,6 +57,9 @@ class CompareDataActivity : AppCompatActivity() {
         addressStringBuilder
             .append(if (!patientDto.address1.isNullOrEmpty()) patientDto.address1 else "")
             .append(if (!patientDto.address2.isNullOrEmpty()) ", " + patientDto.address2 else "")
+            .append(if (!patientDto.cityvillage.isNullOrEmpty()) ", " + patientDto.cityvillage else "")
+            .append(if (!patientDto.district.isNullOrEmpty()) ", " + patientDto.district else "")
+            .append(if (!patientDto.stateprovince.isNullOrEmpty()) ", " + patientDto.stateprovince else "")
 
         val localUser = UserData(
             fName = patientDto.firstname,
@@ -221,7 +225,7 @@ class CompareDataActivity : AppCompatActivity() {
         patientDto.lastname = selectedLName
         patientDto.dateofbirth = selectedDob
         patientDto.gender = selectedGender
-        patientDto.address1 = selectedAddress
+        AbdmUtils.bifurcateAddress(selectedAddress, patientDto)
         patientDto.postalcode = selectedPinCode
         patientDto.abhaNumber = abhaProfileResponse.abhaNumber
         patientDto.abhaAddress = selectedAbhaAddress

@@ -153,6 +153,16 @@ public class SyncUtils {
         return isSynced;
     }
 
+    public static void syncOnServer() {
+        if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
+            new SyncUtils().syncForeground("visitSummary");
+//            SyncDAO syncDAO = new SyncDAO();
+//            ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+//            syncDAO.pushDataApi();
+//            imagesPushDAO.patientProfileImagesPush();
+        }
+    }
+
     /**
      * Clicking on this btn will start Sync.
      *

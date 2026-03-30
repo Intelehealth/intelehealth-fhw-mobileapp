@@ -64,7 +64,7 @@ public class PatientDao {
         SQLiteDatabase db = AbdmManager.getDbClient();
         if (db != null) {
             final Cursor cursor = db.rawQuery("SELECT DISTINCT p.uuid, p.openmrs_id, p.first_name, p.middle_name, p.last_name, p.date_of_birth, p.phone_number, p.address1, " +
-                            "p.address2, p.city_village, p.state_province, p.postal_code, p.country, p.gender, p.abha_number, p.abha_address, pa.value " +
+                            "p.address2, p.city_village, p.state_province, p.postal_code, p.country, p.gender, p.abha_number, p.abha_address, p.countyDistrict, pa.value " +
                             "FROM tbl_patient AS p " +
                             "JOIN tbl_patient_attribute AS pa " +
                             "ON p.uuid = pa.patientuuid " +
@@ -89,6 +89,7 @@ public class PatientDao {
                     patientDTO.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
                     patientDTO.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
                     patientDTO.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    patientDTO.setDistrict(cursor.getString(cursor.getColumnIndexOrThrow("countyDistrict")));
                     patientDTO.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
                     patientDTO.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
                     patientDTO.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
@@ -128,6 +129,7 @@ public class PatientDao {
                     model.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                     model.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
                     model.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+                    model.setDistrict(cursor.getString(cursor.getColumnIndexOrThrow("countyDistrict")));
                     model.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
                     model.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
                     model.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
@@ -304,6 +306,10 @@ public class PatientDao {
             values.put("date_of_birth", patientDTO.getDateofbirth());
             values.put("gender", patientDTO.getGender());
             values.put("modified_date", DateTimeUtils.getCurrentDateTime());
+            values.put("country", patientDTO.getCountry());
+            values.put("state_province", patientDTO.getStateprovince());
+            values.put("city_village", patientDTO.getCityvillage());
+            values.put("countyDistrict", patientDTO.getDistrict());
             values.put("abha_number", patientDTO.getAbhaNumber());
             values.put("abha_address", patientDTO.getAbhaAddress());
             values.put("postal_code", patientDTO.getPostalcode());

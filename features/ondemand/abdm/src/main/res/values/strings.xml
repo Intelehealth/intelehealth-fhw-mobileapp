@@ -71,6 +71,7 @@
     <string name="special_characters_count_validation">Only one dot (.) and/or one underscore (_) is allowed in the ABHA address.</string>
     <string name="preferred_abha_address_is_set_successfully">Preferred ABHA address is set successfully!</string>
     <string name="please_click_on_submit_button_to_proceed">Please click on submit button to proceed.</string>
+    <string name="abha_address_suffix_not_allowed_validation">Abha addresses should not end with the suffix(@abdm).</string>
 
     <string name="abha">ABHA</string>
     <string name="do_you_have_your_abha_number">Do you have an ABHA?</string>
@@ -140,5 +141,6 @@
     <string name="please_enter_the_patient_name">Please enter the patient\'s name</string>
     <string name="patient_name_cannot_be_empty">Patient name cannot be empty.</string>
     <string name="view_download_abha_card">View/Download ABHA card</string>
+    <string name="abdm_suffix_text">\@abdm</string>
 
 </resources>

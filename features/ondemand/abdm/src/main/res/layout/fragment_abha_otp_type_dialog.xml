@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="@id/tvHeader"
         app:layout_constraintTop_toBottomOf="@id/tvHeader">
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnAadhaar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_14" />
 
-        <Button
+        <android.widget.Button
             android:id="@+id/btnAbha"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             android:textSize="@dimen/text_14" />
     </LinearLayout>
 
-    <Button
+    <android.widget.Button
         android:id="@+id/btnContinue"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

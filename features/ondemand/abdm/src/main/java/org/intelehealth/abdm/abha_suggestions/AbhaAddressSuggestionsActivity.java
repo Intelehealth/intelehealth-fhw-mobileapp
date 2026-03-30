@@ -3,6 +3,7 @@ package org.intelehealth.abdm.abha_suggestions;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 
@@ -32,6 +34,7 @@ import org.intelehealth.abdm.model.UpdateIdentifierReqBody;
 import org.intelehealth.abdm.restapi.RetrofitProvider;
 import org.intelehealth.abdm.utils.AbdmManager;
 import org.intelehealth.abdm.utils.SnackBarUtils;
+import org.intelehealth.abdm.utils.StatusBarUtil;
 import org.intelehealth.abdm.utils.UuidDictionary;
 import org.intelehealth.abdm.utils.WindowUtils;
 
@@ -68,7 +71,9 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityAbhaAddressSuggestionsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        WindowUtils.setStatusBarColor(AbhaAddressSuggestionsActivity.this);  // changing status bar color
+        getWindow().getDecorView().setBackgroundColor(Color.WHITE);
+        EdgeToEdge.enable(this);
+        StatusBarUtil.setStatusBarChanges(getWindow(), binding.getRoot());
         snackbarUtils = new SnackBarUtils();
         abhaAddressET = binding.etAbhaAddress;
 
@@ -151,6 +156,7 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
                 }
             }
         });
+
         binding.ivAbhaSuggestion.setOnClickListener(v -> {
             AbhaAddressSuggestionDialogFragment abhaAddressSuggestionDialogFragment = new AbhaAddressSuggestionDialogFragment();
             abhaAddressSuggestionDialogFragment.show(getSupportFragmentManager(), "");
@@ -176,42 +182,30 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     public boolean isValidAbhaAddress(String text) {
         // Check for @abdm presence
         String suffix = "@abdm";
-        String prefix = text;
 
+        // if the entered text contains the @abdm suffix, do not accept
         if (text.contains(suffix)) {
-            if (!text.endsWith(suffix)) {
-                // '@abdm' is somewhere in the middle
-                Toast.makeText(context, getString(R.string.abdm_suffix_is_only_allowed_at_the_end), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            int count = (text.length() - text.replace(suffix, "").length()) / suffix.length();
-            if (count > 1) {
-                Toast.makeText(context, getString(R.string.abdm_suffix_can_only_appear_once), Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-            prefix = text.substring(0, text.length() - suffix.length());
+            snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.abha_address_suffix_not_allowed_validation), false);
+            return false;
         }
 
-
         // Validate length of the prefix
-        if (prefix.length() < 8 || prefix.length() > 18) {
+        if (text.length() < 8 || text.length() > 18) {
             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.length_validation), false);
             return false;
         }
 
-        if (!prefix.matches("^[A-Za-z0-9._]+$")) {
+        if (!text.matches("^[A-Za-z0-9._]+$")) {
             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.characters_validation), false);
             return false;
         }
 
-        if (prefix.startsWith(".") || prefix.startsWith("_") || prefix.endsWith(".") || prefix.endsWith("_")) {
+        if (text.startsWith(".") || text.startsWith("_") || text.endsWith(".") || text.endsWith("_")) {
             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.special_characters_position_validation), false);
             return false;
         }
 
-        if (!doSpecialCharactersExistOnce(prefix)) {
+        if (!doSpecialCharactersExistOnce(text)) {
             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.special_characters_count_validation), false);
             return false;
         }

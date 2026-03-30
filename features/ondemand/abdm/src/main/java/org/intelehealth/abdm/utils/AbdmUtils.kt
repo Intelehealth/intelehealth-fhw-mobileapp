@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import okhttp3.ResponseBody
 import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.model.PatientDTO
 import org.intelehealth.app.abdm.model.ABDMErrorModel
 import retrofit2.Response
 
@@ -56,5 +57,18 @@ object AbdmUtils {
             return if (input.contains("-")) input.split("-")[0] else input
         }
         return ""
+    }
+
+    fun bifurcateAddress(address: String, patientDTO: PatientDTO) {
+        val parts = address.split(",").map { it.trim() }
+        if (parts.size < 3) {
+            patientDTO.address1 = address
+            return
+        }
+
+        patientDTO.stateprovince = parts[parts.size - 1]
+        patientDTO.district = parts[parts.size - 2]
+        patientDTO.cityvillage = parts[parts.size - 3]
+        patientDTO.address1 = parts.dropLast(3).joinToString(", ")
     }
 }
