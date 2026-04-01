@@ -7,7 +7,7 @@
     <string name="hint_optional" translatable="false">Необязательно</string>
     <string name="tag_optional" translatable="false">необязательно</string>
     <string name="generic_ok">Подтвердить</string>
-    <string name="generic_cancel">Отменить</string>
+    <string name="generic_cancel">Отмена</string>
     <string name="generic_yes">Да</string>
     <string name="generic_no">Нет</string>
     <string name="generic_back" translatable="false">Назад</string>
@@ -91,7 +91,7 @@
     <string name="identification_screen_checkbox_other">других</string>
     <string name="identification_screen_prompt_birthday">Дата рождения*</string>
     <string name="identification_screen_prompt_age">Возраст:</string>
-    <string name="identification_screen_prompt_city">Село/Город</string>
+    <string name="identification_screen_prompt_city">Город/Село</string>
     <string name="identification_screen_prompt_state">Область</string>
     <string name="identification_screen_prompt_caste" translatable="false">Каста</string>
     <string name="identification_screen_prompt_economic_status" translatable="false">Экономический статус</string>
@@ -166,7 +166,7 @@
     <string name="title_activity_patient_history" translatable="false">История болезни</string>
 
     //Visit Summary Screen
-    <string name="title_activity_family_history" translatable="false">Семейная история</string>
+    <string name="title_activity_family_history" translatable="false">Семейный анамнез</string>
     <string name="title_activity_physical_exam" translatable="false">Физический осмотр</string>
     <string name="title_activity_patient_summary" translatable="false">Краткое описание визита</string>
     <string name="visit_summary_temperature" translatable="false">Температура (C)</string>
@@ -276,7 +276,7 @@
     <string name="button_allow" translatable="false">Разрешить</string>
     <string name="button_deny" translatable="false">Запретить</string>
     <string name="button_ok" translatable="false">Подтвердить</string>
-    <string name="button_cancel" translatable="false">Отменить</string>
+    <string name="button_cancel">Отмена</string>
     <string name="picture_taken" translatable="false">Снимок сделан</string>
     <string name="switch_flash" translatable="false">Переключить вспышку</string>
     <string name="switch_camera" translatable="false">Переключить камеру</string>
@@ -570,7 +570,7 @@
 
 
     <!--New UI changes 2.1-->
-    <string name="personal_information">Личная информация</string>
+    <string name="personal_information">Личные данные</string>
     <string name="address_details">Адресная информация</string>
     <string name="txt_others">Другие</string>
     <string name="do_you_need_help_please_contact_us">Вам нужна помощь? Пожалуйста свяжитесь с нами!</string>
@@ -792,7 +792,7 @@
     <string name="save_amp_proceed"><![CDATA[Сохранить и продолжить]]></string>
     <string name="please_enter_reason_txt">Пожалуйста, укажите причину</string>
 
-    <string name="reset_app">Сбросить приложение</string>
+    <string name="reset_app">Сброс приложения</string>
     <string name="app_reset_toast">Сброс приложения выполнен!</string>
     <string name="resetting_app_dialog">Сброс приложения</string>
     <string name="sure_to_reset_app">Вы уверены, что хотите сбросить настройки приложения?</string>
@@ -888,8 +888,8 @@
     <string name="one_time_setup">Пожалуйста, выполните одноразовую настройку</string>
     <string name="enter_following_details">Пожалуйста, введите следующие данные</string>
     <string name="server">Сервер</string>
-    <string name="production">Производство</string>
-    <string name="testing">Тестирование</string>
+    <string name="production">Рабочий</string>
+    <string name="testing">Тестовый</string>
     <string name="location_new">Местоположение</string>
     <string name="password">Пароль</string>
     <string name="start_typing_location">Выберите местоположение</string>
@@ -923,8 +923,8 @@
     <string name="send_visit_button">Отправить визит</string>
     <string name="appointment">Записаться</string>
     <string name="secondary_hospital_type">Вторичный</string>
-    <string name="tertial_hospital_type">третичный</string>
-    <string name="hospital_type">тип больницы</string>
+    <string name="tertial_hospital_type">Третичный </string>
+    <string name="hospital_type">Тип больницы</string>
 
     <string name="send_visit">Отправить визит?</string>
     <string name="are_you_sure_you_want_to_send_visit">Вы уверены, что хотите отправить визит к врачу?</string>
@@ -1012,10 +1012,10 @@
     <string name="last_sync">Последняя синхронизация</string>
     <string name="my_achievements">Мои достижения</string>
     <string name="educational_videos">Образовательные видео</string>
-    <string name="change_lang">Изменить язык и протокол</string>
+    <string name="change_lang">Настройки языка и протокола</string>
 
     <string name="about_us">О нас</string>
-    <string name="log_out">Выйти из системы</string>
+    <string name="log_out">Выход</string>
     <string name="language">Язык</string>
     <string name="app_language">Язык приложения</string>
     <string name="reset_to_english">Сбросьте настройки на английский язык</string>
@@ -1067,7 +1067,7 @@
 
     <string name="enter_postal_code">Введите почтовый индекс</string>
     <string name="enter_state">Введите область</string>
-    <string name="enter_village_town_city">Введите деревню/город/село</string>
+    <string name="enter_village_town_city">Введите название города/села</string>
     <string name="enter_patient_address">Введите адрес пациента</string>
     <string name="corresponding_address_1">Соответствующий адрес 1</string>
     <string name="corresponding_address_2">Соответствующий адрес 2</string>
@@ -1506,7 +1506,7 @@
     <string name="age">Возраст</string>
     <string name="country">Страна</string>
     <string name="state">Область</string>
-    <string name="village_town_city">Деревня/город/город</string>
+    <string name="village_town_city">Город/село</string>
     <string name="_corresponding_address_1">Соответствующий \nадрес 1</string>
     <string name="_corresponding_address_2">Соответствующий \nадрес 2</string>
     <string name="other_details">Другие данные</string>
@@ -1731,8 +1731,8 @@
     <string name="notes_shared_by_doctor">Заметки врача будут отображаться здесь.</string>
     <string name="add_additional_document_2">Добавить дополнительные документы (2)</string>
     <string name="info">Информация</string>
-    <string name="please_enter_text">Введите текст</string>
-    <string name="enter_data_here">Введите данные здесь</string>
+    <string name="please_enter_text">Введите данные</string>
+    <string name="enter_data_here">Введите здесь</string>
     <string name="all_visits">Все визиты</string>
     <string name="title">Заголовок</string>
     <string name="district">Район</string>
