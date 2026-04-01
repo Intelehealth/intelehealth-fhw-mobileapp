@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    app:cardCornerRadius="@dimen/margin_16"
+    app:cardElevation="@dimen/hamburger_margin_start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/dialog_icon"
+            android:layout_width="@dimen/margin_64"
+            android:layout_height="@dimen/margin_64"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_32"
+            android:src="@drawable/ic_complete" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
+
+            <TextView
+                android:id="@+id/dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal|center_vertical"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/abha"
+                android:textAppearance="@style/dialog_title"
+                android:textColor="@null"
+                android:textSize="@null"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/dialog_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dialog_title"
+                android:layout_marginTop="@dimen/margin_12"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/do_you_have_your_abha_number"
+                android:textAppearance="@style/dialog_subtitle"
+                android:textColor="@null"
+                android:textSize="@null" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/dialog_subtitle"
+                android:layout_centerInParent="true"
+                android:layout_marginHorizontal="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/yes_abha_btn"
+                    style="@style/positive_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:background="@drawable/bg_common_primary_enabled"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32"
+                    android:paddingVertical="@dimen/margin_20"
+                    android:text="@string/yes" />
+
+                <Button
+                    android:id="@+id/create_abha_btn"
+                    style="@style/negative_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_12"
+                    android:background="@drawable/bg_common_primary_disabled_white"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32"
+                    android:paddingVertical="@dimen/margin_20"
+                    android:text="@string/create_abha"
+                    app:backgroundTint="@null"
+                    app:backgroundTintMode="src_over" />
+
+                <Button
+                    android:id="@+id/continue_without_abha_btn"
+                    style="@style/negative_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_common_primary_disabled_white"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32"
+                    android:paddingVertical="@dimen/margin_20"
+                    android:text="@string/continue_without_abha"
+                    app:backgroundTint="@null"
+                    app:backgroundTintMode="src_over" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

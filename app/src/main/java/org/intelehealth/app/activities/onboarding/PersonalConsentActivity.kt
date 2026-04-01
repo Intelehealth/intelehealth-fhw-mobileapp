@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.onboarding
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -8,22 +9,40 @@ import android.os.LocaleList
 import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
+import org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity
+import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity
+import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity.intentPatientNameTag
+import org.intelehealth.abdm.constants.AbdmConstant
+import org.intelehealth.abdm.dialog.AbhaChoiceDialogFragment
+import org.intelehealth.abdm.enums.AbdmOutcomes
+import org.intelehealth.abdm.listener.AbhaChoiceListener
+import org.intelehealth.abdm.model.AbdmResult
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.database.dao.ImagesPushDAO
+import org.intelehealth.app.database.dao.SyncDAO
+import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
-import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
+import org.intelehealth.app.ui.patient.data.PatientRepository
+import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
 import java.util.Locale
 
 
-class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
+class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceListener {
     private var personal_consent_string = ""
     private var webView: WebView? = null
     var ivBack: ImageView? = null
@@ -76,36 +95,79 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
     }
 
+    private val abdmLauncher: ActivityResultLauncher<Intent> =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { contractResult ->
+            if (contractResult.resultCode != RESULT_OK) return@registerForActivityResult
+
+            val data = contractResult.data ?: return@registerForActivityResult
+
+            val result: AbdmResult? = data.getParcelableExtra<AbdmResult>(
+                AbdmConstant.INTENT_ABDM_RESULT
+            ) ?: return@registerForActivityResult
+
+            val newIntent = Intent(context, PatientRegistrationActivity::class.java)
+            newIntent.putExtra(AbdmConstant.ACCESS_TOKEN, result?.accessToken ?: "")
+
+            when (result?.outcome) {
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
+                    newIntent.putExtra(BundleKeys.PATIENT_UUID, result.otpResponse?.uuID)
+                    newIntent.putExtra(BundleKeys.PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT_FOR_CREATION -> {
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION -> {
+                    SyncUtils.syncOnServer()
+                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
+                    newIntent.putExtra(BundleKeys.PATIENT_UUID, result.otpResponse?.uuID)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_NEW_PATIENT_FOR_VERIFICATION -> {
+                    newIntent.putExtra(AbdmConstant.X_TOKEN, result.xToken)
+                    newIntent.putExtra(AbdmConstant.MOBILE_PAYLOAD, result.abhaResponse)
+                    newIntent.putExtra(BundleKeys.PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
+                    startActivity(newIntent)
+                }
+
+                AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON -> {
+                    SyncUtils.syncOnServer()
+                    val detailIntent = Intent(context, PatientDetailActivity2::class.java)
+                    detailIntent.putExtra("patientUuid", result.abhaResponse?.uuiD)
+                    startActivity(detailIntent)
+                }
+
+                else -> {
+
+                }
+            }
+
+            finish()
+        }
+
     fun declineCon(view: View?) {
         setResult(AppConstants.PERSONAL_CONSENT_DECLINE)
         finish()
     }
 
+    @Suppress("KotlinConstantConditions")
     fun acceptCon(view: View?) {
-//        startActivity(
-//            Intent(
-//                this,
-//                IdentificationActivity_New::class.java
-//            )
-//        )
-        PatientRegistrationActivity.startPatientRegistration(this)
-        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-        finish()
-
-//        startRosterQuestionnaire(
-//            this,
-//           " patient.uuid",
-//            RosterQuestionnaireStage.GENERAL_ROSTER,
-//            isPregnancyVisible = true,
-//            isEditMode = false
-//        )
-
-        /*  startRosterQuestionnaire(
-              this,
-              "hgfdhbgdshj",
-              RosterQuestionnaireStage.GENERAL_ROSTER
-          )*/
-
+        if (BuildConfig.FLAVOR == "idaProduction") {
+            AbhaChoiceDialogFragment()
+                .apply {
+                    listener = this@PersonalConsentActivity
+                }
+                .show(supportFragmentManager, AbhaChoiceDialogFragment.TAG)
+        } else {
+            PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
+            setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+            this@PersonalConsentActivity.finish()
+        }
     }
 
     override fun attachBaseContext(newBase: Context) {
@@ -142,5 +204,29 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
     override fun onPageError(error: String) {
         loadingDialog?.dismiss()
+    }
+
+    override fun onHasAbha() {
+        org.intelehealth.abdm.utils.DialogUtils.triggerTextViewDialogFragment(
+            this@PersonalConsentActivity,
+            AbhaCardVerificationActivity::class.java,
+            intentPatientNameTag,
+            abdmLauncher
+        )
+    }
+
+    override fun onCreateAbha() {
+        org.intelehealth.abdm.utils.DialogUtils.triggerTextViewDialogFragment(
+            this@PersonalConsentActivity,
+            CreateAbhaAccountActivity::class.java,
+            intentPatientNameTag,
+            abdmLauncher
+        )
+    }
+
+    override fun onContinueWithoutAbha() {
+        PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        this@PersonalConsentActivity.finish()
     }
 }

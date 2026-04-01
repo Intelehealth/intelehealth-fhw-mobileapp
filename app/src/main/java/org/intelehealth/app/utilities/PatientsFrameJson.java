@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.intelehealth.app.utilities.CustomLog;
@@ -121,6 +122,7 @@ public class PatientsFrameJson {
 
                 patient.setPerson(patientDTOList.get(i).getUuid());
 
+                // Identifier - OpenMRS ID
                 List<Identifier> identifierList = new ArrayList<>();
                 Identifier identifier = new Identifier();
                 identifier.setIdentifierType("05a29f94-c0ed-11e2-94be-8c13b969e334");
@@ -128,10 +130,27 @@ public class PatientsFrameJson {
                 identifier.setPreferred(true);
                 identifierList.add(identifier);
 
+                if (!TextUtils.isEmpty(patientDTOList.get(i).getAbhaAddress()) && !patientDTOList.get(i).getAbhaAddress().equalsIgnoreCase("NA")) {
+                    // Identifier - Abha address
+                    identifier = new Identifier();
+                    identifier.setIdentifierType("59077d8f-8bee-4a6f-a1a8-64365a297da6");
+                    identifier.setLocation(session.getLocationUuid());
+                    identifier.setIdentifier(patientDTOList.get(i).getAbhaAddress());
+                    identifierList.add(identifier);
+                }
+
+                if (!TextUtils.isEmpty(patientDTOList.get(i).getAbhaNumber()) && !patientDTOList.get(i).getAbhaNumber().equalsIgnoreCase("NA")
+                ) {
+                    // Identifier - Abha number
+                    identifier = new Identifier();
+                    identifier.setIdentifierType("6ad4e308-33aa-4afc-9879-6033d1984876");
+                    identifier.setLocation(session.getLocationUuid());
+                    identifier.setIdentifier(patientDTOList.get(i).getAbhaNumber());
+                    identifierList.add(identifier);
+                }
+
                 patient.setIdentifiers(identifierList);
                 patientList.add(patient);
-
-
             }
         }
         for (VisitDTO visitDTO : visitDTOList) {

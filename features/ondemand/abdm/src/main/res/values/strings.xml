@@ -1,0 +1,146 @@
+<resources>
+    <string name="app_name">abdm</string>
+    <string name="otp_verification">Otp Verification</string>
+    <string name="verify_your_aadhar_card_for_data_security_and_privacy">Verify your Aadhaar card for data security and privacy.</string>
+    <string name="we_will_send_you_one_time_otp_on_your_aadhar_registered_mobile_number">We will send you OTP on Phone number linked to</string>
+    <string name="no_otp_received">Didn\'t receive OTP?</string>
+    <string name="maximum_number_of_retries_exceeded_please_try_again_after_10_mins">Maximum number of retries exceeded. Please try again after 30 mins.</string>
+    <string name="enter_mobile_no">Enter mobile number</string>
+    <string name="aadhar_otp_information">It is preferable to use your Aadhaar-linked mobile number. If you choose to use a different mobile number, it will need to be validated again and will be used for all communication related to ABHA.</string>
+    <string name="this_field_is_mandatory">This field is mandatory</string>
+    <string name="send_otp">Send Otp</string>
+    <string name="enter_your_aadhar_card_number">Enter your Aadhar card number</string>
+    <string name="i_agree_terms_amp_conditions"><![CDATA[I Agree Terms & Conditions]]></string>
+
+    <string name="_appointment">Appointment!</string>
+    <string name="please_enter_otp_received">Please enter OTP received.</string>
+    <string name="abha_consent">ABHA Consent</string>
+    <string name="abdm_consent">I, hereby declare that I am voluntarily sharing my Aadhaar Number and demographic information issued by UIDAI, with National Health Authority (NHA) for the sole purpose of creation of ABHA number . \n\nI understand that my ABHA number can be used and shared for purposes as may be notified by ABDM from time to time including provision of healthcare services. Further, I am aware that my personal identifiable information (Name, Address, Age, Date of Birth, Gender and Photograph) may be made available to the entities working in the National Digital Health Ecosystem (NDHE) which inter alia includes stakeholders and entities such as healthcare professionals (e.g. doctors), facilities (e.g. hospitals, laboratories) and data fiduciaries (e.g. health programmes), which are registered with or linked to the Ayushman Bharat Digital Mission (ABDM), and various processes there under. \n\nI authorize NHA to use my Aadhaar number for performing Aadhaar based authentication with UIDAI as per the provisions of the AADHAAR (Targeted Delivery of Financial and other Subsidies, Benefits and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of “Yes” with NHA upon successful authentication. \n\nI have been duly informed about the option of using other IDs apart from AADHAAR; however, I consciously choose to use AADHAAR number for the purpose of availing benefits across the NDHE. I am aware that my personal identifiable information excluding AADHAAR number / VID number can be used and shared for purposes as mentioned above. \n\nI reserve the right to revoke the given consent at any point of time as per provisions of AADHAAR Act and Regulations.</string>
+    <string name="decline">Decline</string>
+    <string name="accept_new">Accept</string>
+    <string name="i_hereby_declare_that">I hereby declare that:</string>
+
+    <string name="abha_consent_line1"><![CDATA[I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India <b>(“UIDAI”)</b>, and my demographic information for the purpose of\n creating an Ayushman Bharat Health Account number <b>(“ABHA number”)</b> and Ayushman Bharat Health Account address <b>(“ABHA Address”)</b>. I authorize NHA to use my Aadhaar\n number / Virtual ID for performing Aadhaar based authentication with UIDAI as per the provisions of the Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits\n and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of “Yes” with NHA upon successful authentication.]]></string>
+    <string name="abha_consent_line2"><![CDATA[I intend to create Ayushman Bharat Health Account Number <b>(“ABHA number”)</b> and Ayushman Bharat Health Account address <b>(“ABHA Address”)</b> using document other than\n Aadhaar. (Click here to proceed further)]]></string>
+    <string name="abha_consent_line3">I consent to usage of my ABHA address and ABHA number for linking of my legacy (past) health records and those which will be generated during this encounter.</string>
+    <string name="abha_consent_line4">I authorize the sharing of all my health records with healthcare provider(s) for the purpose of providing healthcare services to me during this encounter</string>
+    <string name="abha_consent_line5">I consent to the anonymization and subsequent use of my health records for public health purposes.</string>
+    <string name="abha_consent_line6">I, %1$s, confirm that I have duly informed and explained the beneficiary of the\n contents of consent for aforementioned purposes.</string>
+    <string name="abha_consent_line7">I, %1$s, have been explained about the consent as stated above and hereby provide my consent for the aforementioned purposes.</string>
+    <string name="error_network" translatable="false">Network Error</string>
+    <string name="you_need_an_active_internet_connection_to_use_this_feature">You need an active internet connection to use this feature.</string>
+
+    <string name="ok">OK</string>
+    <string name="number_of_retries_left" formatted="true">Number of retries left: %1$d</string>
+    <string name="otp_sending">OTP Sending…</string>
+    <string name="something_went_wrong">Something went wrong. Please contact support</string>
+    <string name="alert_icon">Alert Icon.</string>
+    <string name="you_have_an_existing_abha_address_present">You have existing ABHA address(es) present. Please select the ABHA address that you would like to proceed with or click on Create New to create a new ABHA address.</string>
+    <string name="proceed">Proceed</string>
+    <string name="create_new">Create New</string>
+    <string name="you_have_more_than_six_abha_addresses_error">A maximum of 6 ABHA addresses are allowed. Please select an ABHA address from the list above.</string>
+    <string name="abha_number">ABHA Number</string>
+    <string name="abha_address">ABHA Address</string>
+    <string name="preferred_icon_text">P</string>
+    <string name="please_select_an_abha_address_before_proceeding">Please select an ABHA address before proceeding.</string>
+    <string name="verify">Verify</string>
+    <string name="you_have_requested_multiple_otps_or_exceeded_maximum_number_of_attempts_for_otp_match_in_this_transaction_please_try_again_in_30_minutes">You have exceeded maximum number of attempts for OTP match in this transaction. Please try again in 30 minutes.</string>
+    <string name="please_enter_6_digit_valid_otp">Please enter 6 digit valid OTP</string>
+    <string name="verifying_otp">Verifying OTP…</string>
+    <string name="entered_aadhaar_or_mobile_number_is_incorrect">Entered Aadhaar or mobile number is incorrect.</string>
+    <string name="please_enter_valid_otp">Please enter valid otp</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="aadhar_number_is_not_valid">Aadhaar number is not valid</string>
+    <string name="enter_12_digits">Enter 12 digits</string>
+    <string name="enter_10_digits">Enter 10 digits</string>
+    <string name="resend_otp_in">Resend in</string>
+    <string name="seconds">seconds</string>
+    <string name="resend_otp"><font color='#2E1E91'>Resend</font></string>
+    <string name="_6_digit_otp_sent_on_your_registered_number_please_check_and_enter_the_otp">6-digit OTP sent on your mobile number.\nPlease check and enter the OTP.</string>
+    <string name="resend">Resend</string>
+    <string name="select_an_abha_address">Select an ABHA Address</string>
+    <string name="please_select_an_abha_address_from_the_suggestions_below">*Please select an ABHA address from the suggestions below.</string>
+    <string name="submit">Submit</string>
+    <string name="please_select_abha_address">Please select ABHA address.</string>
+    <string name="the_abha_address_can_contain_alphanumeric_with_a_single_dot_and_underscore_allowed_in_the_middle_but_not_at_the_beginning_or_end">1. Minimum length - 8 characters\n2. Maximum length - 18 characters\n3. Special characters allowed - 1 dot (.) and/or 1 underscore (_)\n4. Special character dot and underscore should be in between. Special characters cannot be in the beginning or at the end\n5. Alphanumeric - only numbers, only letters or any combination of numbers and letters is allowed.</string>
+    <string name="abdm_suffix_is_only_allowed_at_the_end">\'@abdm\' is only allowed at the end</string>
+    <string name="abdm_suffix_can_only_appear_once">\'@abdm\' can appear only once</string>
+    <string name="length_validation">ABHA address must be at least 8 characters long and cannot be longer than 18 characters.</string>
+    <string name="characters_validation">ABHA address can only contain letters, numbers, one dot (.) and/or one underscore (_).</string>
+    <string name="special_characters_position_validation">Dot (.) or underscore (_) must be in the middle, not at the beginning or end.</string>
+    <string name="special_characters_count_validation">Only one dot (.) and/or one underscore (_) is allowed in the ABHA address.</string>
+    <string name="preferred_abha_address_is_set_successfully">Preferred ABHA address is set successfully!</string>
+    <string name="please_click_on_submit_button_to_proceed">Please click on submit button to proceed.</string>
+    <string name="abha_address_suffix_not_allowed_validation">Abha addresses should not end with the suffix(@abdm).</string>
+
+    <string name="abha">ABHA</string>
+    <string name="do_you_have_your_abha_number">Do you have an ABHA?</string>
+    <string name="yes">Yes</string>
+    <string name="create_abha">Create Abha</string>
+    <string name="continue_without_abha">Continue without ABHA</string>
+    <string name="verify_your_aadhar_card_and_phone_number_for_data_security_and_privacy">Verify your AADHAAR card or Phone number or ABHA for data security and privacy.</string>
+    <string name="aadhar_number">AADHAAR number</string>
+    <string name="mobile_number">Mobile Number</string>
+    <string name="enter_username2">Enter username</string>
+    <string name="enter_username_given">Please enter your username provided by Intelehealth</string>
+    <string name="enter_username">Enter your username</string>
+    <string name="enter_mobile_no_given">Please enter the mobile number registered with \nIntelehealth</string>
+    <string name="enter_14_digit_abha_id_number">Enter 14 Digit ABHA ID Number</string>
+    <string name="or">Or</string>
+    <string name="enter_abha_address">Enter ABHA address (e.g. address@abdm)</string>
+    <string name="send_otp_to_phone_number_linked_to">Send OTP to phone number linked to</string>
+    <string name="aadhaar">AADHAAR</string>
+    <string name="mobile">Mobile</string>
+    <string name="button_continue">Continue</string>
+    <string name="fetching_profiles">Fetching Profiles</string>
+    <string name="please_select_the_abha_account">Please select the ABHA account</string>
+
+    <string name="multiple_accounts_abha_index">Index: %1$s</string>
+    <string name="multiple_accounts_abha_full_name">Name: %1$s</string>
+    <string name="multiple_accounts_abha_number">ABHA Number: %1$s</string>
+    <string name="multiple_accounts_abha_gender">Gender: %1$s</string>
+    <string name="multiple_accounts_abha_positive_status">Status: Registered with Intelehealth</string>
+    <string name="multiple_accounts_abha_negative_status">Status: Not registered with Intelehealth</string>
+
+    <string name="no_abha_user_records_associated_with_this_mobile_no">No ABHA user records associated with this Mobile No. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="please_enter_valid_abha">Please enter valid ABHA</string>
+    <string name="please_enter_valid_aadhaar">Please enter valid AADHAAR</string>
+    <string name="the_mobile_number_you_have_entered_does_not_match_with_any_of_the_records_please_enter_a_different_number">The mobile number you have entered does not match with any of the records. Please enter a different number.</string>
+    <string name="kyc_verification_not_done_abha_address">This is a non-KYC ABHA address. Please link your ABHA address to your ABHA number to enable download.</string>
+    <string name="no_abha_user_records_associated_with_this_aadhaar">No ABHA user records associated with this Aadhaar. You will be guided to the Create ABHA screen to create a new record.</string>
+    <string name="abha_user_not_found">ABHA User Not Found</string>
+    <string name="please_enter_valid_abha_address">Please enter valid ABHA address.</string>
+
+    <string name="compare_data">Compare Data</string>
+    <string name="please_select_all_the_fields_to_continue">Please select all the fields to continue</string>
+    <string name="unable_to_update_the_patient_try_again_later">Unable to update the patient. Try again later.</string>
+
+    <string name="hmis_data">HMIS Data</string>
+    <string name="abha_data">ABHA Data</string>
+
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="row_dob">DOB</string>
+    <string name="gender">Gender</string>
+    <string name="row_address">Address</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="compare_screen_abha_address">ABHA Address</string>
+    <string name="compare_screen_abha_number">ABHA Number</string>
+    <string name="phone_number">Phone number</string>
+    <string name="confirm_and_save_selected_data">Confirm and Save Selected Data</string>
+    <string name="save_data">Save Data?</string>
+    <string name="do_you_want_to_ahead_and_save_the_patient_s_data">Do you want to go ahead and save the patient\'s data?</string>
+    <string name="button_save">Save</string>
+    <string name="button_delete">Delete</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="patient_registered">Patient Registered!</string>
+    <string name="does_patient_start_visit_now">Does the patient want to start the visit now?</string>
+    <string name="no">No</string>
+    <string name="please_enter_the_patient_name">Please enter the patient\'s name</string>
+    <string name="patient_name_cannot_be_empty">Patient name cannot be empty.</string>
+    <string name="view_download_abha_card">View/Download ABHA card</string>
+    <string name="abdm_suffix_text">\@abdm</string>
+
+</resources>

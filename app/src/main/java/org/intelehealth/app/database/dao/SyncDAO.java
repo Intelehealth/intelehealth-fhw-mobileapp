@@ -794,6 +794,7 @@ public class SyncDAO {
         final boolean[] isSucess = {true};
         String encoded = sessionManager.getEncoded();
         Gson gson = new Gson();
+        String temp = gson.toJson(pushRequestApiCall);
         CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));

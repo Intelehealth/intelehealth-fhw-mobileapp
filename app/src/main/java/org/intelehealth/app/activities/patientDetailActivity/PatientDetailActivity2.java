@@ -64,8 +64,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -105,6 +107,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -168,6 +171,7 @@ import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -194,14 +198,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
             tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv,
             provinceTv, cityTv, registrationAddressOfHfTv, innTv, codeOfHealthFacilityTv, healthFacilityNameTv,
-            codeOfDepartmentTv, departmentTv, householdNumber;
+            codeOfDepartmentTv, departmentTv, householdNumber, abhaAddressTv, abhaNumberTv;
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
             provinceTr, cityTr, registrationAddressOfHfTr,
-            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr;
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr,
+            abhaAddressTr, abhaNumberTr;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -369,6 +374,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     "ssss", "swwwww", "yes", "no");*/ // todo: added jsut for testing purposes...
         });
 
+        binding.otherCard.btnViewAbhaCard.setOnClickListener(view -> {
+            openAbhaCard(patientDTO.getAbhaNumber());
+        });
+
         mPersonalHeaderRelativeLayout = findViewById(R.id.relative_personal_header);
         mAddressHeaderRelativeLayout = findViewById(R.id.relative_address_header);
         mOthersHeaderRelativeLayout = findViewById(R.id.relative_others_header);
@@ -428,6 +437,30 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         setClickListeners();
 
+    }
+
+    private void openAbhaCard(String abhaNumber) {
+        File dir = new File(
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "Intelehealth_AbhaCard"
+        );
+
+        File file = new File(dir, abhaNumber + ".png");
+
+        if (!file.exists()) {
+            return;
+        }
+
+        Uri uri = FileProvider.getUriForFile(
+                this,
+                getPackageName() + ".fileprovider",
+                file
+        );
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "image/*");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(intent);
     }
 
     private void setClickListeners() {
@@ -778,6 +811,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
+        abhaAddressTv = findViewById(R.id.abhaAddress);
+        abhaNumberTv = findViewById(R.id.abhaNo);
+        abhaAddressTr = findViewById(R.id.trAbhaAddress);
+        abhaNumberTr = findViewById(R.id.trAbhaNo);
 
         fetchAllConfig();
 
@@ -1388,7 +1426,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict", "abha_number", "abha_address"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1418,6 +1456,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));//block
                 patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));//household number
                 patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -2312,6 +2352,21 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             householdNumber.setText(patientDTO.getAddress6());
         } else {
             householdNumber.setText(getString(R.string.not_provided));
+        }
+
+        String abhaAddress = patientDTO.getAbhaAddress();
+        String abhaNumber = patientDTO.getAbhaNumber();
+
+        if (abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA")) {
+            abhaAddressTr.setVisibility(View.VISIBLE);
+            String finalAbhaAddress = (abhaAddress.endsWith("@abdm") ? abhaAddress : abhaAddress.concat("@abdm"));
+            abhaAddressTv.setText(finalAbhaAddress);
+            binding.otherCard.btnViewAbhaCard.setVisibility(View.VISIBLE);
+        }
+
+        if (abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA")) {
+            abhaNumberTr.setVisibility(View.VISIBLE);
+            abhaNumberTv.setText(patientDTO.getAbhaNumber());
         }
     }
 

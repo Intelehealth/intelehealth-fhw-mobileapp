@@ -1,0 +1,106 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    app:cardCornerRadius="@dimen/margin_16"
+    app:cardElevation="@dimen/hamburger_margin_start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/dialog_icon"
+            android:layout_width="@dimen/margin_64"
+            android:layout_height="@dimen/margin_64"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/margin_32"
+            android:contentDescription="@string/alert_icon"
+            android:src="@drawable/ic_close_patient" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/dialog_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="@dimen/margin_24"
+            android:layout_marginTop="@dimen/margin_24"
+            android:layout_marginEnd="@dimen/margin_24">
+
+            <TextView
+                android:id="@+id/dialog_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:textAppearance="@style/dialog_subtitle"
+                android:textColor="@null"
+                android:textSize="@null" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dialog_subtitle"
+                android:layout_marginTop="@dimen/margin_24"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tv_entry"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_input_field_new"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:paddingStart="@dimen/margin_12"
+                    android:paddingTop="@dimen/margin_10"
+                    android:paddingEnd="@dimen/margin_12"
+                    android:paddingBottom="@dimen/margin_10"
+                    android:singleLine="true"
+                    android:textSize="@dimen/text_16" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_buttons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/til_entry"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginBottom="@dimen/margin_32"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/negative_btn"
+                    style="@style/negative_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_12"
+                    android:background="@drawable/bg_common_primary_disabled_white"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32"
+                    android:paddingVertical="@dimen/margin_20"
+                    android:text="@string/no" />
+
+                <Button
+                    android:id="@+id/positive_btn"
+                    style="@style/positive_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@id/negative_btn"
+                    android:background="@drawable/bg_common_primary_enabled"
+                    android:gravity="center"
+                    android:paddingHorizontal="@dimen/margin_32"
+                    android:paddingVertical="@dimen/margin_20"
+                    android:text="@string/yes" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

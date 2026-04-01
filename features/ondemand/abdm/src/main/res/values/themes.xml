@@ -1,0 +1,58 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <!--    <style name="Base.Theme.AndroidMobileClient" parent="Theme.AppCompat.Light.NoActionBar" />-->
+
+    <!--    <style name="Theme.AndroidMobileClient" parent="Base.Theme.AndroidMobileClient">-->
+    <!--        <item name="fontFamily">@font/lato_regular</item>-->
+    <!--        <item name="android:fontFamily">@font/lato_regular</item>-->
+    <!--        <item name="colorButtonNormal">@null</item>-->
+    <!--        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>-->
+    <!--    </style>-->
+
+    <style name="style_subtitle">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/subtitle_color</item>
+    </style>
+
+    <style name="type_mobile_no">
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/subtitle_color</item>
+    </style>
+
+    <style name="style_error_message">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/error_red</item>
+    </style>
+
+    <style name="Theme.Transparent" parent="android:Theme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="dialog_title">
+        <item name="android:textSize">@dimen/text_20</item>
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
+    <style name="dialog_subtitle">
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/textColorGray</item>
+    </style>
+
+    <style name="negative_btn">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="positive_btn">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/iconTintWhite</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

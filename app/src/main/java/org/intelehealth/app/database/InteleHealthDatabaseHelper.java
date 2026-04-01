@@ -146,7 +146,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false', " +
             "address3 TEXT," +
             "address6 TEXT," +
-            "countyDistrict TEXT" +
+            "countyDistrict TEXT," +
+            "abha_number TEXT," +
+            "abha_address TEXT" +
             ")";
 
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
@@ -157,7 +159,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "modified_date TEXT," +
             "voided TEXT DEFAULT '0'," +
             "sync TEXT DEFAULT 'false'," +
-            "UNIQUE(patientuuid, person_attribute_type_uuid)"+ // added unique constraint to prevent duplicate insert of same attribute
+            "UNIQUE(patientuuid, person_attribute_type_uuid)" + // added unique constraint to prevent duplicate insert of same attribute
             ")";
 
     public static final String CREATE_VISIT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_visit (" +
@@ -350,7 +352,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             case 3:
                 //upgrade logic from version 3 to 4
             case 4:
-                //upgrade logic from version 4
+                db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_number TEXT DEFAULT ''");
+                db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_address TEXT DEFAULT ''");
+            case 5:
+                // upgrade logic from 5 to 6
+                break;
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);

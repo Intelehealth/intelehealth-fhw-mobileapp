@@ -3,6 +3,7 @@ package org.intelehealth.app.utilities
 import android.content.Context
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.ArrayRes
 import com.google.gson.Gson
@@ -34,7 +35,9 @@ object LanguageUtils {
 
     @JvmStatic
     fun getState(state: String): StateData? {
-        return parseStatesJson().stateDataList.find {it.state == state || it.stateMarathi == state}
+        return parseStatesJson().stateDataList.find {
+            it.state == state || it.stateMarathi == state
+        }
     }
 
     @JvmStatic
@@ -83,7 +86,9 @@ object LanguageUtils {
 
     @JvmStatic
     fun getDistrict(state: StateData?, district: String): DistData? {
-        return state?.distDataList?.find { it.name == district  || it.nameMarathi == district }
+        return state?.distDataList?.find {
+            it.name == district || it.nameMarathi == district
+        }
     }
 
     @JvmStatic
@@ -98,7 +103,7 @@ object LanguageUtils {
 
     @JvmStatic
     fun getVillage(gramPanchayat: GramPanchayat?, village: String?): Village? {
-        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village || it.nameMarathi == village} }
+        return village?.let { return@let gramPanchayat?.villages?.find { it.name == village || it.nameMarathi == village } }
     }
 
     @JvmStatic
@@ -191,13 +196,14 @@ object LanguageUtils {
         // Retrieve the string resource for the desired language
         return localizedResources.getString(stringResId)
     }
+
     @JvmStatic
     fun getStateInEnglish(state: StateData): String {
-             return state.state
+        return state.state
     }
+
     @JvmStatic
     fun getDistrictInEnglish(district: DistData): String {
         return district.name
     }
-
 }

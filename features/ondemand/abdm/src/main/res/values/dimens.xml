@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="back_arrow_margin_start">24dp</dimen>
+    <dimen name="back_arrow_width">24dp</dimen>
+    <dimen name="back_arrow_height">24dp</dimen>
+    <dimen name="title_margin_start">24dp</dimen>
+    <dimen name="setup_privacy_screen_info">18sp</dimen>
+
+    <dimen name="margin_20">20dp</dimen>
+    <dimen name="margin_10">10dp</dimen>
+    <dimen name="margin_18">18dp</dimen>
+    <dimen name="margin_24">24dp</dimen>
+    <dimen name="margin_15">15dp</dimen>
+    <dimen name="margin_14">14dp</dimen>
+    <dimen name="margin_12">12dp</dimen>
+    <dimen name="margin_5">5dp</dimen>
+    <dimen name="margin_8">8dp</dimen>
+    <dimen name="margin_13">13dp</dimen>
+    <dimen name="margin_16">16dp</dimen>
+    <dimen name="margin_32">32dp</dimen>
+    <dimen name="margin_64">64dp</dimen>
+    <dimen name="margin_0">0dp</dimen>
+    <dimen name="margin_40">40dp</dimen>
+    <dimen name="margin_30">40dp</dimen>
+
+    <dimen name="tv_resend_otp_margin_start">5dp</dimen>
+    <dimen name="hamburger_margin_start">8dp</dimen>
+    <dimen name="common_button_padding_left">12dp</dimen>
+    <dimen name="common_button_padding_top">10dp</dimen>
+    <dimen name="common_button_padding_right">12dp</dimen>
+    <dimen name="common_button_padding_bottom">10dp</dimen>
+    <dimen name="corner_radius_8">8dp</dimen>
+
+    <dimen name="text_13">13sp</dimen>
+    <dimen name="text_14">14sp</dimen>
+    <dimen name="text_15">15sp</dimen>
+    <dimen name="text_20">20sp</dimen>
+    <dimen name="text_16">16sp</dimen>
+    <dimen name="text_18">18sp</dimen>
+
+    <dimen name="internet_dialog_width">310dp</dimen>
+    <dimen name="abha_choice_dialog_width">310dp</dimen>
+
+    <dimen name="size_40">40dp</dimen>
+</resources>
