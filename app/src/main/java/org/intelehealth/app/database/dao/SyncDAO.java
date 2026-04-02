@@ -266,7 +266,7 @@ public class SyncDAO {
         sessionManager = new SessionManager(context);
         String encoded = sessionManager.getEncoded();
         String oldDate = sessionManager.getPullExcutedTime();
-        Log.d(TAG, "pullData_Background: encoded : " + encoded);
+        CustomLog.d(TAG, "pullData_Background: encoded : " + encoded);
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
                      sessionManager.getLocationUuid() + "/" + sessionManager.getPullExcutedTime() +
                      "/" + pageNo + "/" + AppConstants.PAGE_LIMIT;
@@ -275,7 +275,7 @@ public class SyncDAO {
 //        .getLocationUuid() + "/" + sessionManager.getPullExcutedTime();
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
-        Log.d(TAG, "pullData_Background: pullurl : " + url);
+        CustomLog.d(TAG, "pullData_Background: pullurl : " + url);
 
         Logger.logD("Start pull request", "Started url : " + url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
@@ -304,7 +304,7 @@ public class SyncDAO {
                                 // `populatePullSuccessBackground`
                             }, throwable -> {
                                 // Handle error here, `throwable` will contain the exception
-                                Log.e("RxJavaError",
+                                CustomLog.e("RxJavaError",
                                         "Error occurred in populatePullSuccessBackground",
                                         throwable);
                                 // You can also take additional action like showing a
@@ -625,7 +625,7 @@ public class SyncDAO {
         Logger.logD(PULL_ISSUE, url);
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
-        Log.d(TAG, "pullDataBackgroundService: pullurl : " + url);
+        CustomLog.d(TAG, "pullDataBackgroundService: pullurl : " + url);
         Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
