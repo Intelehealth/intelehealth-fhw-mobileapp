@@ -87,7 +87,7 @@ public class SyncDAO {
 
         try {
             Logger.logD(TAG, "pull sync started");
-            saveConfig(responseDTO.getData().getConfigResponse());
+            //saveConfig(responseDTO.getData().getConfigResponse());
 
             patientsDAO.patinetAttributeMaster(responseDTO.getData().getPatientAttributeTypeMasterDTO());
             Logger.logD(TAG, "patinetAttributeMaster = "+responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
