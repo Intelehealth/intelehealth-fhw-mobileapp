@@ -3,14 +3,13 @@ plugins {
 }
 
 android {
-    namespace 'org.intelehealth.ihutils'
-    compileSdk 34
+    compileSdk 36
 
 //    namespace 'org.intelehealth.ihutils'
 
     defaultConfig {
         minSdk 26
-        targetSdk 34
+        targetSdk 36
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -22,9 +21,10 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
+    namespace 'org.intelehealth.ihutils'
 }
 
 dependencies {
@@ -36,12 +36,16 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
+    implementation 'com.google.firebase:firebase-crashlytics:20.0.3'
     annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
 
     //implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
 
     api 'com.google.android.material:material:1.10.0'
 
-    //camera view
-    implementation 'com.github.google:cameraview:9bbe07ba44'
-}
+    // camera x
+    def camerax_version = "1.5.2"
+    implementation "androidx.camera:camera-core:${camerax_version}"
+    implementation "androidx.camera:camera-camera2:${camerax_version}"
+    implementation "androidx.camera:camera-lifecycle:${camerax_version}"
+    implementation "androidx.camera:camera-view:${camerax_version}"}
