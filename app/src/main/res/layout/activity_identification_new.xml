@@ -172,7 +172,7 @@
             android:layout_weight="1"
             android:gravity="start"
             android:lineSpacingExtra="2sp"
-            android:text="@string/personal_identification"
+            android:text="@string/patient"
             android:textAppearance="@style/personal_txtview"
             android:textColor="@null"
             android:textSize="@null"

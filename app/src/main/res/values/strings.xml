@@ -326,7 +326,6 @@
 
     <string name="visit">Visit</string>
     <string name="visit_update">Visit Update</string>
-    <string name="patient">Patient</string>
     <string name="patient_update">Patient Update</string>
     <string name="patient_images">Patient Profile Image</string>
     <string name="visit_images">Visit Images</string>
@@ -576,6 +575,7 @@
 
     <!--New UI changes 2.1-->
     <string name="personal_information">Personal Information</string>
+    <string name="patient">Patient</string>
     <string name="address_details">Address Details</string>
     <string name="txt_others">Others</string>
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>

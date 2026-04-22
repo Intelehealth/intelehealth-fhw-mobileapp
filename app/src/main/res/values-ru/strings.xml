@@ -74,6 +74,7 @@
     <string name="menu_option_settings" translatable="false">Настройки</string>
     <string name="menu_option_end_of_day" translatable="false">Конец дня</string>
     <string name="menu_option_logout" translatable="false">Выход из системы</string>
+    <string name="reset_app">Сброс приложения</string>
 
 
     //Identification Screen
@@ -792,7 +793,6 @@
     <string name="save_amp_proceed"><![CDATA[Сохранить и продолжить]]></string>
     <string name="please_enter_reason_txt">Пожалуйста, укажите причину</string>
 
-    <string name="reset_app">Сброс приложения</string>
     <string name="app_reset_toast">Сброс приложения выполнен!</string>
     <string name="resetting_app_dialog">Сброс приложения</string>
     <string name="sure_to_reset_app">Вы уверены, что хотите сбросить настройки приложения?</string>
@@ -1006,8 +1006,8 @@
     <string name="bottom_nav_help">Помогите</string>
     <string name="bottom_nav_achievements">Достижения</string>
     <string name="bottom_nav_add_patient">Добавьте пациента</string>
-    <string name="reset_app_new">Сброс приложениe</string>
-    <string name="reset_app_new_title">Сбросить приложение?</string>
+    <string name="reset_app_new">Сброс приложения</string>
+    <string name="reset_app_new_title">Сброс приложения?</string>
     <string name="last_sync_toolbar">Последняя синхронизация:</string>
     <string name="last_sync">Последняя синхронизация</string>
     <string name="my_achievements">Мои достижения</string>
@@ -1511,7 +1511,7 @@
     <string name="_corresponding_address_2">Соответствующий \nадрес 2</string>
     <string name="other_details">Другие данные</string>
     <string name="national_ID_other_details">Идентификационный номер</string>
-
+l
     <string name="open_visit">Открытый визит</string>
     <string name="past_visits">Посещения в прошлом</string>
     <string name="reset">Сбросить</string>
