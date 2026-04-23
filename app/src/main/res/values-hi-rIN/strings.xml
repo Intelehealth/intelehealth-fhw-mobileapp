@@ -25,6 +25,7 @@
     <string name="error_incorrect_password" translatable="false">कृपया उपयोगकर्ता नाम और पासवर्ड की जाँच करें</string>
     <string name="error_field_required" translatable="false">यह फ़ील्ड आवश्यक है</string>
     <string name="error_network" translatable="false">नेटवर्क त्रुटि</string>
+    <string name="could_not_connect_with_server">सर्वर से कनेक्ट नहीं हो सका। \nकृपया अपना इंटरनेट कनेक्शन जांचें।</string>
     <string name="error_location_not_selected" translatable="false">कृपया स्थान ड्रॉपडाउन से मान का चयन करें</string>
     <string name="error_location_not_fetched" translatable="false">स्थानों को लाने में असमर्थ</string>
 
