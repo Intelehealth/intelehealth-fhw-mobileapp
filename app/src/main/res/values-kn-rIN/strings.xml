@@ -990,7 +990,7 @@
     <string name="notification">Notification</string>
 
     <string name="doctor_visits">ಡಾಕ್ಟರ್ ಭೇಟಿಗಳು</string>
-    <string name="sevika_or_ncd_visits">ಸೇವಿಕ/ಎನ್ಸಿಡಿ ಭೇಟಿಗಳು</string>
+    <string name="sevika_or_ncd_visits">ಎನ್ಸಿಡಿ ಭೇಟಿಗಳು</string>
     <string name="beneficiary_registered">ಲಾಭಾರ್ಥಿ ನೋಂದಾಯಿತ</string>
     <string name="household_registered">ಮನೆಮಂದಿ ನೋಂದಾಯಿತ</string>
     <string name="status">ಸ್ಥಿತಿ</string>

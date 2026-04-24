@@ -1025,7 +1025,7 @@
     <string name="notification">Notification</string>
 
     <string name="doctor_visits">ডাক্তার ভিজিট</string>
-    <string name="sevika_or_ncd_visits">সেভিকা/এনসিডি ভিজিট</string>
+    <string name="sevika_or_ncd_visits">এনসিডি ভিজিট</string>
     <string name="beneficiary_registered">উপকারভোগী নিবন্ধিত</string>
     <string name="household_registered">পরিবার নিবন্ধিত</string>
     <string name="status">অবস্থা</string>

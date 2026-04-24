@@ -1040,7 +1040,7 @@
     <string name="processing_personal_data">व्यक्तिगत डेटा का प्रसंस्करण</string>
 
     <string name="doctor_visits">डॉक्टर विज़िट</string>
-    <string name="sevika_or_ncd_visits">सेविका/एनसीडी विज़िट</string>
+    <string name="sevika_or_ncd_visits">एनसीडी विज़िट</string>
     <string name="beneficiary_registered">लाभार्थी पंजीकृत</string>
     <string name="household_registered">परिवार पंजीकृत</string>
     <string name="status">स्थिति</string>

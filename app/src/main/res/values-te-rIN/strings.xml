@@ -940,7 +940,7 @@
     <string name="specialty_general_physician">జనరల్ ఫిజీషియన్</string>
 
     <string name="doctor_visits">డాక్టర్ సందర్శనలు</string>
-    <string name="sevika_or_ncd_visits">సేవిక/ఎన్‌సీడీ సందర్శనలు</string>
+    <string name="sevika_or_ncd_visits">ఎన్‌సీడీ సందర్శనలు</string>
     <string name="beneficiary_registered">లబ్ధిదారు నమోదు</string>
     <string name="household_registered">గృహం నమోదు</string>
     <string name="status">స్థితి</string>

@@ -1020,7 +1020,7 @@
     <string name="notification">Notification</string>
 
     <string name="doctor_visits">डॉक्टर भेटी</string>
-    <string name="sevika_or_ncd_visits">सेविका/एनसीडी भेटी</string>
+    <string name="sevika_or_ncd_visits">एनसीडी भेटी</string>
     <string name="beneficiary_registered">लाभार्थी नोंदणीकृत</string>
     <string name="household_registered">कुटुंब नोंदणीकृत</string>
     <string name="status">स्थिती</string>

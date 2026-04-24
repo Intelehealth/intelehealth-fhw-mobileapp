@@ -1073,7 +1073,7 @@
 
 
     <string name="doctor_visits">ডাক্তৰ ভিজিট</string>
-    <string name="sevika_or_ncd_visits">সেৱিকা/এনচিডি ভিজিট</string>
+    <string name="sevika_or_ncd_visits">এনচিডি ভিজিট</string>
     <string name="beneficiary_registered">উপকৃত পঞ্জীয়ন</string>
     <string name="household_registered">পৰিয়াল পঞ্জীয়ন</string>
     <string name="status">অৱস্থা</string>

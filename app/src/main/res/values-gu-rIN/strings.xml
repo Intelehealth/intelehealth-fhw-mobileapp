@@ -1036,7 +1036,7 @@
     <string name="notification">Notification</string>
 
     <string name="doctor_visits">ડૉક્ટર મુલાકાતો</string>
-    <string name="sevika_or_ncd_visits">સેવિકા/NCD મુલાકાતો</string>
+    <string name="sevika_or_ncd_visits">NCD મુલાકાતો</string>
     <string name="beneficiary_registered">લાભાર્થી નોંધાયેલ</string>
     <string name="household_registered">લાભાર્થી નોંધાયેલ</string>
     <string name="status">સ્થિતિ</string>

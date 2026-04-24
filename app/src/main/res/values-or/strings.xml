@@ -876,7 +876,7 @@
     <string name="notification">Notification</string>
 
     <string name="doctor_visits">ଡାକ୍ତର ସାକ୍ଷାତ</string>
-    <string name="sevika_or_ncd_visits">ସେବିକା/ଏନସିଡି ସାକ୍ଷାତ</string>
+    <string name="sevika_or_ncd_visits">ଏନସିଡି ସାକ୍ଷାତ</string>
     <string name="beneficiary_registered">ଲାଭାର୍ଥୀ ପଞ୍ଜୀକୃତ</string>
     <string name="household_registered">ପରିବାର ପଞ୍ଜୀକୃତ</string>
     <string name="status">ସ୍ଥିତି</string>
