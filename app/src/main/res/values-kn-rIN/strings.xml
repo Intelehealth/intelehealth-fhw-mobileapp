@@ -557,4 +557,25 @@
     <string name="pdf_share_flow_title">Share Prescription</string>
 
     <string name="feature_not_found">Feature not found</string>
+
+
+    <!--DIGITALSETHASCOPE-->
+
+    <string name="connectdevice">Connect Device</string>
+    <string name="clinicallyRecommended">Clinically Recommended</string>
+    <string name="symptomBreathlessness">Symptom: Breathlessness</string>
+    <string name="integratedPOCDigitalstethoscoperecommendedforcomprehensiveevaluation">Integrated POC Digital stethoscope recommended for comprehensive evaluation</string>
+    <string name="heartSounds">Heart Sounds</string>
+    <string name="lungSounds">Lung Sounds</string>
+    <string name="skipfornow">Skip for now</string>
+    <string name="startRecording">Start Recording</string>
+    <string name="keepsethoscopeSteday">Keep sethoscope steday</string>
+    <string name="back">BACK</string>
+    <string name="pause">PAUSE</string>
+    <string name="stopRecording">Stop Recording</string>
+    <string name="retry">Retry</string>
+    <string name="saveRecording">Save Recording</string>
+    <string name="audioWaveForm">AUDIO WAVEFORM</string>
+    <string name="re_Record">Re-record</string>
+    <string name="digitalAusucultation">Digital Ausucultation</string>
 </resources>

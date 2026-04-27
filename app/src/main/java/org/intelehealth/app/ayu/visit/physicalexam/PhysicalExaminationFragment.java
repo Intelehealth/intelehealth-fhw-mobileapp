@@ -3,12 +3,14 @@ package org.intelehealth.app.ayu.visit.physicalexam;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,12 +23,18 @@ import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.QuestionsListingAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
+import org.intelehealth.app.ayu.visit.pocdevice.ConnectPocDeviceFragment;
+import org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment;
+import org.intelehealth.app.ayu.visit.pocdevice.SoundFragment;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -34,7 +42,7 @@ import java.util.HashMap;
  * Use the {@link PhysicalExaminationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhysicalExaminationFragment extends Fragment {
+public class PhysicalExaminationFragment extends Fragment  implements SoundFragment.OnSoundSavedListener {
 
     //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
@@ -43,6 +51,7 @@ public class PhysicalExaminationFragment extends Fragment {
     private PhysicalExam physicalExam;
     private VisitCreationActionListener mActionListener;
     private boolean mIsEditMode = false;
+    private boolean isSoundFlowCompleted = false;
 
     public PhysicalExaminationFragment() {
         // Required empty public constructor
@@ -76,6 +85,9 @@ public class PhysicalExaminationFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("PhysicalExamFragment", "OnCreate");
+
+
 
     }
 
@@ -95,9 +107,7 @@ public class PhysicalExaminationFragment extends Fragment {
                 view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
-
                     }
                 });
                 view.findViewById(R.id.btn_cancel).setOnClickListener(new View.OnClickListener() {
@@ -110,6 +120,19 @@ public class PhysicalExaminationFragment extends Fragment {
                     }
                 });
             }
+            getParentFragmentManager().setFragmentResultListener(
+                    "sound_done",
+                    this,
+                    (key, bundle) -> {
+
+                        // ✅ prevent re-trigger
+                        if (isSoundFlowCompleted) return;
+
+                        isSoundFlowCompleted = true;
+
+                        advanceToNextExam(null);
+                    }
+            );
             RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -128,10 +151,6 @@ public class PhysicalExaminationFragment extends Fragment {
             mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, requireActivity(), false, true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
-                    // avoid the scroll for old data change
-                    if (mCurrentComplainNodeOptionsIndex - index >= 1) {
-                        return;
-                    }
                     if (isSkipped) {
                         mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                         mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
@@ -148,8 +167,13 @@ public class PhysicalExaminationFragment extends Fragment {
 
                         //}
 
-
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
+                        isSoundFlowCompleted = false;
+                        Node nextExamNode = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex);
+                        Node nextOption = (nextExamNode != null) ? nextExamNode.getOption(0) : null;
+                        if (nextOption == null) nextOption = nextExamNode;
+                        if (nextOption != null) {
+                            mQuestionsListingAdapter.addItem(nextOption, physicalExam.getEngineVersion());
+                        }
                    /* recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -160,7 +184,7 @@ public class PhysicalExaminationFragment extends Fragment {
 
                         VisitUtils.scrollNow(recyclerView, 1400, 0, 1400, mIsEditMode, false);
 
-                        mActionListener.onProgress((int) 100 / physicalExam.getTotalNumberOfExams());
+                        mActionListener.onProgress((int) (100.0 / physicalExam.getTotalNumberOfExams()));
                         // }
                     } else {
                         if (!mIsEditMode)
@@ -196,19 +220,58 @@ public class PhysicalExaminationFragment extends Fragment {
                 }
 
                 @Override
-                public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+                public void onAyuDeviceRequest(Node node) {
+                    if (isSoundFlowCompleted) {
+                        // 🚫 prevent reopening
+                        return;
+                    }
+                    String examType = "heart";
+                    String id = node.getId();
+                    String text = node.getText();
+                    if (id != null && id.toLowerCase().contains("lung")) {
+                        examType = "lung";
+                    } else if (text != null && text.toLowerCase().contains("lung")) {
+                        examType = "lung";
+                    }
+                    ArrayList<String> sounds = extractSounds(examType);
+                    VisitCreationActivity activity = (VisitCreationActivity) requireActivity();
+                    ConnectPocDeviceFragment fragment =
+                            ConnectPocDeviceFragment.newInstance(
+                                    examType,
+                                    sounds,
+                                    activity.patientUuid,
+                                    activity.visitUuid,
+                                    activity.encounterVitals
+                            );
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fl_steps_body, fragment)
+                            .addToBackStack("poc_device")
+                            .commit();
+                }
 
+                @Override
+                public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                 }
             });
-
             recyclerView.setAdapter(mQuestionsListingAdapter);
-            mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
+            Node firstExamNode = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex);
+            Node firstOption = (firstExamNode != null) ? firstExamNode.getOption(0) : null;
+            if (firstOption == null) firstOption = firstExamNode;
+            if (firstOption != null) {
+                mQuestionsListingAdapter.addItem(firstOption, physicalExam.getEngineVersion());
+            }
             showSanityDialog();
             if (mIsEditMode) {
                 while (true) {
                     if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
                         mCurrentComplainNodeOptionsIndex++;
-                        mQuestionsListingAdapter.addItem(physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex).getOption(0), physicalExam.getEngineVersion());
+                        Node editExamNode = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex);
+                        Node editOption = (editExamNode != null) ? editExamNode.getOption(0) : null;
+                        if (editOption == null) editOption = editExamNode;
+                        if (editOption != null) {
+                            mQuestionsListingAdapter.addItem(editOption, physicalExam.getEngineVersion());
+                        }
 
 
                     } else {
@@ -227,6 +290,39 @@ public class PhysicalExaminationFragment extends Fragment {
         }
         return view;
     }
+    private ArrayList<String> extractSounds(String examType) {
+
+        ArrayList<String> result = new ArrayList<>();
+
+        if (physicalExam == null) return result;
+
+        for (int i = 0; i < physicalExam.getTotalNumberOfExams(); i++) {
+
+            Node examNode = physicalExam.getExamNode(i);
+            if (examNode == null) continue;
+
+            List<Node> options = examNode.getOptionsList();
+            if (options == null) continue;
+
+            for (Node node : options) {
+
+                String text = node.getText();
+                if (text == null) continue;
+
+                String lower = text.toLowerCase();
+
+                if (examType.equals("heart") && lower.contains("sound heart")) {
+                    result.add(text.replace("Sound Heart:", "").trim());
+                }
+
+                if (examType.equals("lung") && lower.contains("sound lung")) {
+                    result.add(text.replace("Sound Lung:", "").trim());
+                }
+            }
+        }
+
+        return result;
+    }
 
     private void showSanityDialog() {
         DialogUtils dialogUtils = new DialogUtils();
@@ -237,4 +333,63 @@ public class PhysicalExaminationFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onSoundSaved() {
+        advanceToNextExam(null);
+    }
+    private void advanceToNextExam(@Nullable LinearLayoutManager layoutManager) {
+
+        if (physicalExam == null) return;
+
+        if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
+
+            mCurrentComplainNodeOptionsIndex++;
+
+            Node nextExamNode = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex);
+            Node nextOption = (nextExamNode != null) ? nextExamNode.getOption(0) : null;
+
+            if (nextOption == null) nextOption = nextExamNode;
+
+            if (nextOption != null && mQuestionsListingAdapter != null) {
+                mQuestionsListingAdapter.addItem(nextOption, physicalExam.getEngineVersion());
+            }
+
+            if (layoutManager != null) {
+                layoutManager.setStackFromEnd(false);
+            }
+
+        } else {
+
+            if (!mIsEditMode) {
+                mActionListener.onFormSubmitted(
+                        VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION,
+                        mIsEditMode,
+                        null
+                );
+            } else {
+                Toast.makeText(requireActivity(),
+                        getString(R.string.please_submit_to_proceed_next_step),
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    /*private void advanceToNextExam(LinearLayoutManager layoutManager) {
+        if (mCurrentComplainNodeOptionsIndex < physicalExam.getTotalNumberOfExams() - 1) {
+            mCurrentComplainNodeOptionsIndex++;
+            Node nextExamNode = physicalExam.getExamNode(mCurrentComplainNodeOptionsIndex);
+            Node nextOption = (nextExamNode != null) ? nextExamNode.getOption(0) : null;
+            if (nextOption == null) nextOption = nextExamNode;
+            if (nextOption != null) {
+                mQuestionsListingAdapter.addItem(nextOption, physicalExam.getEngineVersion());
+            }
+            if (layoutManager != null) layoutManager.setStackFromEnd(false);
+        } else {
+            if (!mIsEditMode)
+                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION, mIsEditMode, null);
+            else
+                Toast.makeText(requireActivity(), getString(R.string.please_submit_to_proceed_next_step), Toast.LENGTH_SHORT).show();
+        }
+    }*/
 }

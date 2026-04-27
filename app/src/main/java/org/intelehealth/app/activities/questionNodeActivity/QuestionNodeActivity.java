@@ -23,6 +23,9 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Html;
+
+import org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -935,5 +938,20 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
         onListClicked(null, groupPos, childPos);
     }
 
+    public void onAyuDeviceRequest(Node node) {
+       /* String examRequirements = node.getPhysicalExams();
+        String examType = "heart"; // default
+        if (examRequirements != null) {
+            if (examRequirements.contains("heart_sound")) {
+                examType = "heart";
+            } else if (examRequirements.contains("lung_sound")) {
+                examType = "lung";
+            }
+        }
+        InteleHealthDatabaseHelper db = new InteleHealthDatabaseHelper(this);
+        String encounterUuid = db.getEncounter(visitUuid);
+        DigitalStethoscopeDialogFragment dialog = DigitalStethoscopeDialogFragment.newInstance(examType, patientUuid, visitUuid, encounterUuid);
+        dialog.show(getSupportFragmentManager(), "stethoscope_popup");*/
+    }
 
 }

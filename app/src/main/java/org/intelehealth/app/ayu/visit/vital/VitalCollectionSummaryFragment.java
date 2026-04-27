@@ -282,7 +282,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                         SyncUtils.syncNow(requireActivity(), view, syncAnimator);
                     }
                 } else {
-                   new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
+                    new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
                 }
             }
         });

@@ -101,7 +101,6 @@ public class AppConstants {
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
 
-
     //functions constants
 
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
@@ -127,7 +126,6 @@ public class AppConstants {
             new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
                     .setConstraints(MY_CONSTRAINTS)
                     .build();
-
 
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =
@@ -242,6 +240,9 @@ public class AppConstants {
 
     public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
     public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
+
+    public static final String MINIMUM_TOTAL_DIABETES_HBA1C = "3";
+    public static final String MAXIMUM_TOTAL_DIABETES_HBA1C = "16";
 
 }
 

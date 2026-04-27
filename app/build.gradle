@@ -84,15 +84,20 @@ android {
         jvmTarget = '17'
     }
 
+
 //    dynamicFeatures = [':features:ondemand:klivekit']
 }
 dependencies {
     implementation project(':features:ondemand:klivekit')
     api project(':fcm')
     api project(':config')
+    implementation 'androidx.activity:activity-ktx:1.7.2'
 //    api project(':common')
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //HBa1c
+    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
     implementation files('libs/printer_library.jar') // Thermal Printer
+
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.android.material:material:1.12.0'
@@ -102,7 +107,7 @@ dependencies {
     implementation project(path: ':ihutils')
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
-    implementation 'androidx.activity:activity:1.9.1'
+    implementation 'androidx.activity:activity:1.7.2'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
@@ -187,10 +192,16 @@ dependencies {
     implementation 'com.github.zerobranch:SwipeLayout:1.3.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
-    implementation "com.google.dagger:hilt-android:2.49" // Replace 2.x with the latest version
-    kapt "com.google.dagger:hilt-compiler:2.47"
+    implementation "com.google.dagger:hilt-android:2.46.1" // Replace 2.x with the latest version
+    kapt "com.google.dagger:hilt-compiler:2.46.1"
 
     implementation "com.ayudevices:ayudevicesdk:4.5.2"// for POC SDK
 //    implementation(name: "ayudevicesdk-4.5.2", ext: "aar")
+  //HBA1c
+    implementation"androidx.legacy:legacy-support-v4:1.0.0"
+
+/*
+    implementation 'com.amazonaws:aws-android-sdk-mobile-client:2.73.0'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.73.0'*/
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

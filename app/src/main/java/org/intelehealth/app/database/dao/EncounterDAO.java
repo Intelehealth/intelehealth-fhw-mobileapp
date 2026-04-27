@@ -958,4 +958,22 @@ public class EncounterDAO extends BaseDao {
         return values;
     }
 
+    public void saveEncounterHeartandLung(String visit,String encounter){
+        SQLiteDatabase db=IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues cv=new ContentValues();
+        cv.put("encounter_uuid",encounter);
+        db.update("records",cv,"visit_uuid=?",new String[]{visit});
+    }
+    public String getEncounterHeartandLung(String visit){
+        SQLiteDatabase db=IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor c=db.rawQuery(
+                "SELECT encounter_uuid FROM records WHERE visit_uuid=?",
+                new String[]{visit});
+        if(c.moveToFirst()){
+            return c.getString(0);
+        }
+        return null;
+    }
+
+
 }

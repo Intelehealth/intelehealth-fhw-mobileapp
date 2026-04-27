@@ -12,13 +12,8 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-
 import org.intelehealth.app.BuildConfig;
-
 import org.intelehealth.app.utilities.CustomLog;
-
-import android.util.Log;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +45,6 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -60,7 +54,6 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
@@ -286,8 +279,6 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 }, 100);
             }
             mLoadedIds.add(id);
-
-
         }
     }
 
@@ -309,8 +300,21 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", position + 1, mContext.getString(R.string.of), mPhysicalExam.getTotalNumberOfExams(), mContext.getString(R.string.questions))); //"1 of 10 questions"
 
         } else {
-            genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s %s", getCount(genericViewHolder.index, mIndexMappingHashMap.get(genericViewHolder.index)), mContext.getString(R.string.of), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getOptionSize(), mRootComplainBasicInfoHashMap.get(mIndexMappingHashMap.get(genericViewHolder.index)).getComplainNameByLocale(), mContext.getString(R.string.questions))); //"1 of 10 questions"
-
+            Integer mappedIndex = mIndexMappingHashMap.get(genericViewHolder.index);
+            if (mappedIndex != null && mRootComplainBasicInfoHashMap.containsKey(mappedIndex)) {
+                ComplainBasicInfo info = mRootComplainBasicInfoHashMap.get(mappedIndex);
+                if (info != null) {
+                    String complainLabel = info.getComplainNameByLocale();
+                    if (complainLabel == null || complainLabel.isEmpty()) {
+                        complainLabel = info.getComplainName() != null ? info.getComplainName() : "";
+                    }
+                    genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s %s", getCount(genericViewHolder.index, mappedIndex), mContext.getString(R.string.of), info.getOptionSize(), complainLabel, mContext.getString(R.string.questions))); //"1 of 10 questions"
+                } else {
+                    genericViewHolder.tvQuestionCounter.setText("");
+                }
+            } else {
+                genericViewHolder.tvQuestionCounter.setText("");
+            }
         }
         genericViewHolder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, genericViewHolder.node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
         genericViewHolder.submitButton.setBackgroundResource(genericViewHolder.node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
@@ -327,7 +331,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }*/
         if (mIsForPhysicalExam) {
 
-            Node _mNode = mPhysicalExam.getExamNode(position).getOption(0);
+            Node examNode = mPhysicalExam.getExamNode(position);
+            Node _mNode = (examNode != null) ? examNode.getOption(0) : null;
+            if (_mNode == null) _mNode = (examNode != null) ? examNode : genericViewHolder.node;
             final String parent_name = mPhysicalExam.getExamParentNodeName(position);
             String nodeText = (BuildConfig.FLAVOR_client == FlavorKeys.KCDO || BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) ? _mNode.findDisplay() : parent_name + " : " + _mNode.findDisplay();
 
@@ -346,25 +352,23 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 genericViewHolder.tvReferenceDesc.setVisibility(View.GONE);
             }
             genericViewHolder.referenceContainerLinearLayout.removeAllViews();
-            String[] imgs = genericViewHolder.node.getJobAidFile().split(",");
-            for (int i = 0; i < imgs.length; i++) {
-                View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
-                ImageView imageView = v2.findViewById(R.id.image);
-                if (genericViewHolder.node.getJobAidFile() != null || !genericViewHolder.node.getJobAidFile().isEmpty()) {
-                    String drawableName = "physicalExamAssets/" + genericViewHolder.node.getJobAidFile() + ".jpg";
+            String jobAidFile = genericViewHolder.node.getJobAidFile();
+            if (jobAidFile != null && !jobAidFile.isEmpty()) {
+                String[] imgs = jobAidFile.split(",");
+                for (String img : imgs) {
+                    if (img == null || img.trim().isEmpty()) continue;
+                    View v2 = View.inflate(mContext, R.layout.ui2_ref_image_view, null);
+                    ImageView imageView = v2.findViewById(R.id.image);
+                    String drawableName = "physicalExamAssets/" + img.trim() + ".jpg";
                     try {
-                        // get input stream
                         InputStream ims = mContext.getAssets().open(drawableName);
-                        // load image as Drawable
                         Drawable d = Drawable.createFromStream(ims, null);
-                        // set image to ImageView
                         imageView.setImageDrawable(d);
                         imageView.setMinimumHeight(150);
                         imageView.setMinimumWidth(300);
                         genericViewHolder.referenceContainerLinearLayout.addView(v2);
                     } catch (IOException ex) {
                         ex.printStackTrace();
-
                     }
                 }
             }
@@ -426,7 +430,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     CustomLog.v("showCameraView", "onBindViewHolder 2");
                     showCameraView(mItemList.get(position), genericViewHolder, position);
                     break;
-
+                case "ayu_device":
+                    showAyuDeviceDialog(mItemList.get(position));
+                    break;
                 case "options":
                     // openCamera(context, imagePath, imageName);
                     //if (mIsForPhysicalExam)
@@ -951,6 +957,9 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     CustomLog.v("showCameraView", "showOptionsData 1");
                     showCameraView(options.get(0), holder, index);
                     break;
+                case "ayu_device":
+                    showAyuDeviceDialog(options.get(0));
+                    break;
 
                 case "options":
                     // openCamera(context, imagePath, imageName);
@@ -1125,6 +1134,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     selectedNode.setDataCaptured(true);
                 }
+
+                @Override
+                public void onAyuDeviceRequest(Node node) {
+                    mOnItemSelection.onAyuDeviceRequest(node);
+                }
             });
             holder.nestedQuestionsListingAdapter.setLoadedIds(mLoadedIds);
             holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1265,7 +1279,16 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             AdapterUtils.setToDefault(holder.skipButton);
                         }
 
-                        if (node.getInputType().equalsIgnoreCase("text"))
+                        // Digital stethoscope: run before any getInputType() null-unsafe use; must use same parent as chip adapter (row node).
+                        if (!isLoadingForNestedEditData && node.isSelected()
+                                && NodeAdapterUtils.shouldOpenDigitalStethoscopeFromChip(mItemList.get(index), node)) {
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
+                            // showAyuDeviceDialog(node);
+                            return;
+                        }
+
+                        if ("text".equalsIgnoreCase(node.getInputType()))
                             holder.singleComponentContainer.setTag(node.isSelected());
                         //holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, selectedNode.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
                         //holder.submitButton.setBackgroundResource(selectedNode.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
@@ -1536,6 +1559,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 // openCamera(context, imagePath, imageName);
                                 CustomLog.v("showCameraView", "showOptionsData 2");
                                 showCameraView(node, holder, index);
+                                break;
+                            case "ayu_device":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                showAyuDeviceDialog(node);
                                 break;
 
                             case "options":
@@ -1828,6 +1856,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
                     selectedNode.setDataCaptured(true);
                 }
+
+                @Override
+                public void onAyuDeviceRequest(Node node) {
+                    mOnItemSelection.onAyuDeviceRequest(node);
+                }
             });
             holder.nestedQuestionsListingAdapter.setLoadedIds(mLoadedIds);
             holder.nestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1941,6 +1974,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                             }
                         }
                         //Toast.makeText(mContext, "Selected : " + data, Toast.LENGTH_SHORT).show();
+                        if (!isLoadingForNestedEditData && node.isSelected()
+                                && NodeAdapterUtils.shouldOpenDigitalStethoscopeFromChip(mItemList.get(index), node)) {
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
+                            showAyuDeviceDialog(node);
+                            return;
+                        }
+
                         String type = node.getInputType();
 
                         if (type == null || type.isEmpty() && (node.getOptionsList() != null && !node.getOptionsList().isEmpty())) {
@@ -2087,6 +2128,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 // openCamera(context, imagePath, imageName);
                                 CustomLog.v("showCameraView", "showOptionsData 2");
                                 showCameraView(node, holder, index);
+                                break;
+                            case "ayu_device":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // showAyuDeviceDialog(node);
                                 break;
 
                             case "options":
@@ -3073,6 +3119,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         }
 
 
+    }
+
+    private void showAyuDeviceDialog(Node node) {
+        mOnItemSelection.onAyuDeviceRequest(node);
     }
 
     private void showKnowMoreDialog(String title, String message) {

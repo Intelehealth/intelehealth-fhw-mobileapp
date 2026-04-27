@@ -1085,6 +1085,8 @@
     <string name="diagnostics_section">%1$d/%2$d Diagnostics</string>
     <string name="uric_acid_error">Uric acid should be in between %1$s and %2$s</string>
     <string name="cholestrol_acid_error">Total cholestrol should be in between %1$s and %2$s</string>
+
+    <string name="diabeteshba1c_error">Diabetes HBA1C should be in between %1$s and %2$s</string>
     <string name="reason">Reason</string>
     <string name="hint_drop_down_block">Select Block</string>
     <string name="block">Block</string>
@@ -1774,6 +1776,31 @@
     <string name="strong">Strong</string>
     <string name="list_of_device_found">List of device found</string>
     <string name="record_heart_sounds">Record Heart Sounds</string>
+    <string name="record_lung_sounds">Record Lung Sounds</string>
+
+
+    <!--DIGITALSETHASCOPE-->
+
+    <string name="connectdevice">Connect Device</string>
+    <string name="clinicallyRecommended">Clinically Recommended</string>
+    <string name="symptomBreathlessness">Symptom: Breathlessness</string>
+    <string name="integratedPOCDigitalstethoscoperecommendedforcomprehensiveevaluation">Integrated POC Digital stethoscope recommended for comprehensive evaluation</string>
+    <string name="heartSounds">Heart Sounds</string>
+    <string name="lungSounds">Lung Sounds</string>
+    <string name="skipfornow">Skip for now</string>
+    <string name="startRecording">Start Recording</string>
+    <string name="keepsethoscopeSteday">Keep sethoscope steday</string>
+    <string name="back">BACK</string>
+    <string name="pause">PAUSE</string>
+    <string name="stopRecording">Stop Recording</string>
+    <string name="retry">Retry</string>
+    <string name="saveRecording">Save Recording</string>
+    <string name="audioWaveForm">AUDIO WAVEFORM</string>
+    <string name="re_Record">Re-record</string>
+    <string name="digitalAusucultation">Digital Ausucultation</string>
+
+
+    <string name="diabetes_hba1c">Diabetes HBA1C (%)</string>
 
 
 </resources>

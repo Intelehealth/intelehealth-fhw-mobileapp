@@ -30,18 +30,57 @@
     <uses-permission
         android:name="android.permission.BLUETOOTH_ADMIN"
         android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- <uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> -->
+    <uses-permission
+        android:name="android.permission.BLUETOOTH_SCAN"
+        android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission
         android:name="android.permission.BLUETOOTH_PRIVILEGED"
         tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Optional Hardware Features for Tablet Compatibility -->
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
     <!--
  <uses-permission
            android:name="android.permission.PACKAGE_USAGE_STATS"
            tools:ignore="ProtectedPermissions" />
     -->
+    <!-- Optional Hardware Features for Tablet Compatibility -->
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location.network"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.telephony"
+        android:required="false" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" /> <!-- added support to lenova tab 2 -->
@@ -64,10 +103,28 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".ayu.visit.hba1c.BleScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ayu.visit.hba1c.ResultActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ayu.visit.hba1c.BleSearchActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ayu.visit.hba1c.Hba1cActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ayu.visit.pocdevice.HeartAndLungRecordedValuesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.initialsync.InitialSyncActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.draftsurvey.DraftSurveyActivity"
             android:exported="false"
@@ -252,7 +309,6 @@
         <activity
             android:name=".activities.forgotPasswordNew.ChangePasswordActivity_New"
             android:exported="true"
-            android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".ui.splash.activity.SplashActivity"
@@ -425,6 +481,10 @@
                 android:value="" />
         </activity>
         <activity
+            android:name=".ayu.visit.hba1c.MeasurementActivity"
+            android:exported="false"
+            android:theme="@style/AppThemeMaterialNew" />
+        <activity
             android:name=".webrtc.activity.IDAChatActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
@@ -480,6 +540,9 @@
         <!-- android:exported="false" /> -->
         <service android:name=".services.DownloadService" />
         <service android:name=".services.InitialSyncIntentService" />
+        <service
+            android:name=".ayu.visit.BluetoothLeService"
+            android:exported="false" />
         <service android:name=".services.MyIntentService" />
         <service android:name=".services.LastSyncIntentService" />
         <service android:name=".services.UpdateDownloadPrescriptionService" /> <!-- Firebase Services -->
@@ -515,8 +578,10 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
+        <meta-data
+            android:name="com.ayudevice.ayusynksdk.clientId"
+            android:value="BVKSCsqPfEqNQttE" />
 
-        <meta-data android:name="com.ayudevice.ayusynksdk.clientId" android:value="BVKSCsqPfEqNQttE" />
         <activity
             android:name=".activities.patientDetailActivity.TeleconsultationConsentActivity"
             android:exported="true"

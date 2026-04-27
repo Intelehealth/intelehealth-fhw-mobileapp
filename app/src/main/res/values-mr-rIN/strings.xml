@@ -1533,4 +1533,26 @@
     <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
     <string name="feature_not_found">Feature not found</string>
 
+     <!--DIGITALSETHASCOPE-->
+
+    <string name="connectdevice">डिव्हाइस कनेक्ट करा</string>
+    <string name="clinicallyRecommended">वैद्यकीयदृष्ट्या शिफारस केलेले</string>
+    <string name="symptomBreathlessness">लक्षण: श्वास घेण्यास त्रास होणे</string>
+    <string name="integratedPOCDigitalstethoscoperecommendedforcomprehensiveevaluation">सर्वसमावेशक मूल्यांकनासाठी इंटिग्रेटेड पीओसी डिजिटल स्टेथोस्कोपची शिफारस केली जाते.</string>
+    <string name="heartSounds">हृदयाचा आवाज</string>
+    <string name="lungSounds">फुफ्फुसाचा आवाज</string>
+    <string name="skipfornow">आतासाठी वगळा</string>
+    <string name="startRecording">रेकॉर्डिंग सुरू करा</string>
+    <string name="keepsethoscopeSteday">सेथोस्कोप स्थिर ठेवा</string>
+    <string name="back">मागे</string>
+    <string name="pause">विराम द्या</string>
+    <string name="stopRecording">रेकॉर्डिंग थांबवा</string>
+    <string name="retry">पुन्हा प्रयत्न करा</string>
+    <string name="saveRecording">रेकॉर्डिंग जतन करा</string>
+    <string name="audioWaveForm">ऑडिओ वेव्हफॉर्म</string>
+    <string name="re_Record">पुन्हा रेकॉर्ड करा</string>
+    <string name="digitalAusucultation">डिजिटल ऑस्कल्टेशन</string>
+
+
+
 </resources>

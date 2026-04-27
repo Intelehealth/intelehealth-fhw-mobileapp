@@ -45,9 +45,11 @@ import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
+import org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment;
 import org.intelehealth.app.ayu.visit.reason.adapter.OptionsChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -130,6 +132,7 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
     private int mRootIndex = 0;
     private boolean mIsAssociateSymptomsLoaded = false;
     private boolean mIsAssociateSymptomsNestedQuery = false;
+    private HashSet<String> skippedStethoscopeNodes = new HashSet<>();
     private HashMap<Integer, Integer> mIndexMappingHashMap = new HashMap<>();
 
     private int mNestedLevel = 0;
@@ -247,6 +250,21 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
 
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
+
+            String examRequirements = genericViewHolder.node.getPhysicalExams();
+            boolean hasStethoscopeExam = examRequirements != null && (examRequirements.contains("heart_sound") || examRequirements.contains("lung_sound"));
+            boolean isSkipped = skippedStethoscopeNodes.contains(genericViewHolder.node.getId());
+
+            if (hasStethoscopeExam && !isSkipped) {
+                genericViewHolder.llDigitalContainer.setVisibility(View.VISIBLE);
+                genericViewHolder.tvRecommendationReason.setText("Based on patient reporting " + genericViewHolder.node.findDisplay());
+                // Set pending counts if you have that data
+                // genericViewHolder.tvHeartPending.setText(...);
+                // genericViewHolder.tvLungPending.setText(...);
+            } else {
+                genericViewHolder.llDigitalContainer.setVisibility(View.GONE);
+            }
+
             CustomLog.v(TAG, "onBindViewHolder - rawPosition - " + rawPosition);
             CustomLog.v(TAG, "onBindViewHolder - instance - " + this);
             for (int i = 0; i < mItemList.size(); i++) {
@@ -329,6 +347,9 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         CustomLog.v(TAG, "onBindViewHolder Node - " + new Gson().toJson(currentNode));
 
         if (type.equals("text") && parentNode.isMultiChoice()) {
+            CustomLog.v(TAG, "parentNode: " + parentNode.isMultiChoice() + ", type: " + parentNode.getText());
+
+
             genericViewHolder.singleComponentContainer.setTag(currentNode.isSelected());
         }
 
@@ -364,6 +385,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 break;
             case "camera":
                 showCameraView(parentNode, currentNode, genericViewHolder.singleComponentContainer, position);
+                break;
+            case "ayu_device":
+
+                showAyuDeviceDialog(currentNode);
                 break;
             case "options":
 
@@ -771,6 +796,13 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                         CustomLog.d(TAG, "onSelect: isLoadingForNestedEditData - " + isLoadingForNestedEditData + "\n" + mItemList.toString());
                         //CustomLog.d(TAG, "onSelect selectedNode: " + new Gson().toJson(selectedNode));
                         if (index == mItemList.size()) return;
+                        if (!isLoadingForNestedEditData && node.isSelected()
+                                && NodeAdapterUtils.shouldOpenDigitalStethoscopeFromChip(mItemList.get(index), node)) {
+                            holder.submitButton.setVisibility(View.GONE);
+                            holder.skipButton.setVisibility(View.GONE);
+                            showAyuDeviceDialog(node);
+                            return;
+                        }
                         if (!isLoadingForNestedEditData)
                             VisitUtils.scrollNow(mRootRecyclerView, 1000, 0, 300, mIsEditMode, mItemList.size() <= index || mLoadedIds.contains(mItemList.get(index).getId()));
                         if (!isLoadingForNestedEditData) {
@@ -927,8 +959,8 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                                                     found = true;
                                                     // remove all the next nodes of the selected node - nested options.
                                                     //while (mItemList.size() > i) {
-                                                        mItemList.remove(i);
-                                                        notifyItemRemoved(i);
+                                                    mItemList.remove(i);
+                                                    notifyItemRemoved(i);
                                                     //}
                                                     //break;
                                                 }
@@ -1116,6 +1148,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                 mParentNode.setDataCaptured(true);
                 selectedNode.setDataCaptured(true);
             }
+
+            @Override
+            public void onAyuDeviceRequest(Node node) {
+                mOnItemSelection.onAyuDeviceRequest(node);
+            }
         });
         holder.nestedQuestionsListingAdapter.setEngineVersion(getEngineVersion());
         holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
@@ -1227,6 +1264,11 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     mParentNode.setDataCaptured(true);
                     selectedNode.setDataCaptured(true);
                 }
+
+                @Override
+                public void onAyuDeviceRequest(Node node) {
+                    mOnItemSelection.onAyuDeviceRequest(node);
+                }
             });
             holder.superNestedRecyclerView.setAdapter(holder.nestedQuestionsListingAdapter);
             if (mIsEditMode) {
@@ -1296,6 +1338,14 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
                     }
                      /*holder.submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0,  0, 0);
                     holder.submitButton.setBackgroundResource(R.drawable.ui2_common_button_bg_submit);*/
+
+                    if (!isLoadingForNestedEditData && node.isSelected()
+                            && NodeAdapterUtils.shouldOpenDigitalStethoscopeFromChip(mItemList.get(index), node)) {
+                        holder.submitButton.setVisibility(View.GONE);
+                        holder.skipButton.setVisibility(View.GONE);
+                        // showAyuDeviceDialog(node);
+                        return;
+                    }
 
                     String type = node.getInputType();
 
@@ -2212,6 +2262,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         NestedQuestionsListingAdapter nestedQuestionsListingAdapter;
         int selectedNestedOptionIndex = 0;
 
+        LinearLayout llDigitalContainer;
+        TextView tvRecommendationReason, tvUpcomingCount, tvHeartPending, tvLungPending, tvSkipStethoscope;
+        Button btnConnectDeviceItem;
+
         GenericViewHolder(View itemView) {
             super(itemView);
             knowMoreTextView = itemView.findViewById(R.id.tv_know_more);
@@ -2226,6 +2280,25 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
 
             tvQuestion = itemView.findViewById(R.id.tv_question);
             tvQuestionDesc = itemView.findViewById(R.id.tv_question_desc);
+
+            llDigitalContainer = itemView.findViewById(R.id.ll_digital_auscultation_container);
+            tvRecommendationReason = itemView.findViewById(R.id.tv_recommendation_reason);
+            tvUpcomingCount = itemView.findViewById(R.id.tv_upcoming_count);
+            tvHeartPending = itemView.findViewById(R.id.tv_heart_pending);
+            tvLungPending = itemView.findViewById(R.id.tv_lung_pending);
+            tvSkipStethoscope = itemView.findViewById(R.id.tv_skip_stethoscope);
+            btnConnectDeviceItem = itemView.findViewById(R.id.btn_connect_device_item);
+
+            btnConnectDeviceItem.setOnClickListener(v -> {
+                showAyuDeviceDialog(node);
+            });
+
+            tvSkipStethoscope.setOnClickListener(v -> {
+                if (node != null) {
+                    skippedStethoscopeNodes.add(node.getId());
+                }
+                llDigitalContainer.setVisibility(View.GONE);
+            });
 
             submitButton.setOnClickListener(view -> {
                 if (mItemList.get(index).isSelected()) {
@@ -2276,6 +2349,10 @@ public class NestedQuestionsListingAdapter extends RecyclerView.Adapter<Recycler
         }
 
 
+    }
+
+    private void showAyuDeviceDialog(Node node) {
+        mOnItemSelection.onAyuDeviceRequest(node);
     }
 
     private boolean isAnySubChildOpenedWithAction(Node node) {

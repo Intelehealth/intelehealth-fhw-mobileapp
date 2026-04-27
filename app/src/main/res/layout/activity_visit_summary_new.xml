@@ -353,12 +353,19 @@
 
 
                 <!--Vitals and Other cards - start-->
+                <!--Vitals and Other cards - end-->
+
+                <!--Vitals and Other cards - end-->
+
+                <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/vitalsRelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/cardview_head"
-                    android:layout_marginTop="@dimen/margin_20dp">
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="0dp">
 
                     <Button
                         android:id="@+id/openall_btn"
@@ -380,11 +387,7 @@
                         layout="@layout/visit_summary_itemscard" />
 
                 </RelativeLayout>
-                <!--Vitals and Other cards - end-->
 
-                <!--Vitals and Other cards - end-->
-
-                <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/add_notes_relative"
                     android:layout_width="match_parent"

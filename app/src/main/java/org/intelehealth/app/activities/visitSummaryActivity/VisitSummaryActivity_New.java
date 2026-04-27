@@ -32,6 +32,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -68,8 +69,13 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.activities.bill.VisitSummaryBillModel;
 import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
+import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
+import org.intelehealth.app.ayu.visit.pocdevice.RecordingData;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.models.UploadResponse;
+import org.intelehealth.app.networkApiCalls.ApiClient;
+import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.ui.billgeneration.models.BillDetails;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -112,6 +118,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ayudevice.ayusynksdk.AyuSynk;
+import com.ayudevice.ayusynksdk.playback.AyuFileGenerator;
+import com.ayudevice.ayusynksdk.report.HeartSoundData;
+import com.ayudevice.ayusynksdk.report.SoundFile;
+import com.ayudevice.ayusynksdk.report.constants.LocationType;
+import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -177,6 +189,7 @@ import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
+import org.intelehealth.app.utilities.PCMToWavConverter;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
@@ -208,7 +221,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.lang.reflect.Array;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -216,6 +232,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -229,7 +246,13 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
@@ -240,7 +263,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
-    Button btn_vs_sendvisit;
     private Context context;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
@@ -252,8 +274,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private ConstraintLayout btn_bottom_vs;
     private TextInputEditText etAdditionalNotesVS;
     SessionManager sessionManager, sessionManager1;
-    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "";
+    private String lastRecordedFilePath = "";
+    String appLanguage, patientUuid, visitUuid, state, patientName, patientGender, intentTag, visitUUID, medicalAdvice_string = "", medicalAdvice_HyperLink = "", isSynedFlag = "", filePath = "", position = "", type = "";
     private float float_ageYear_Month;
+    int recordingStatus;
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
@@ -398,6 +422,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
     private String visitType = "Consultation";
     private boolean isDownloadImageBroadcastRecRegisterd = false;
+
+
+
+    Map<String, RecordingData> trackerMap = new HashMap<>();
+    InteleHealthDatabaseHelper db;
+
+    String trackerId;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -494,14 +526,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupSpecialization();
 
         context = VisitSummaryActivity_New.this;
-String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
-JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
+        String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
+        JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
 
         //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
 
         initUI();
         networkUtils = new NetworkUtils(this, this);
@@ -529,7 +562,10 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         visitDiagnosticsSummary.initViews();
         setupVisibilityForSpecificFlavor();
 
+
+
         setupDiagnosticsConfig();
+
     }
 
     private void setupVisibilityForSpecificFlavor() {
@@ -554,7 +590,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     private List<PatientVital> mPatientVitalList;
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
-    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout;
+    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout, mDiabetesHBA1CLinearLayout;
     private List<Diagnostics> mPatientDiagnosticsList;
 
     private void setupVitalConfig() {
@@ -638,11 +674,11 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 }, hour, minute, true);
         timePickerDialog.show();
         Button posBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
 
         Button negBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.cancel));
+        posBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -664,7 +700,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
-        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this,R.string.cancel), (dialog, which) -> {
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this, R.string.cancel), (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
                 dialog.dismiss();
@@ -674,11 +710,11 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         datePickerDialog.show();
         // Change button colors dynamically after the dialog is shown
         Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
 
         Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        negBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -716,6 +752,14 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 mCommonVisitData = intent.getExtras().getParcelable("CommonVisitData");
 
                 visitUuid = mCommonVisitData.getVisitUuid();
+                System.out.println("visitUuidSummary" + visitUuid);
+//*// DigitalSethsope
+               /* filePath = intent.getStringExtra("filePath");
+                recodingStatus = intent.getIntExtra("recodingStatus", 0);
+                position = intent.getStringExtra("position");
+                type = intent.getStringExtra("type");
+                System.out.println("DigitaSethascope" + recodingStatus + " " + filePath + "" + position + "" + type);*/
+
 
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
                 encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
@@ -776,6 +820,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
 
             queryData(String.valueOf(patientUuid));
+
             //generateAndViewBillData();
         }
 
@@ -3243,10 +3288,10 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-                if(BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
                 else
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
 
                 if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
@@ -3464,7 +3509,27 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             //commented to stop navigation bcz navigation from appointment
           /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
-            alertDialog.dismiss();
+            InteleHealthDatabaseHelper db = new InteleHealthDatabaseHelper(this);
+            List<HeartLungRecordModel> list = db.getAllHeartLungRecords(visitUuid);
+            if (list == null || list.isEmpty()) {
+                Log.e("FLOW", "No recordings found");
+                return;
+            }
+            for (HeartLungRecordModel item : list) {
+                int recordingStatus = Integer.parseInt(item.recordingStatus);
+                Log.d("FLOW", "Processing: " + item.type + " | " + item.position);
+                if (recordingStatus <= 0) {
+                    Log.e("FLOW", "Invalid recordingStatus");
+                    continue;
+                }
+                short[] audio = AyuSynk.getBleInstance().getAudioData(recordingStatus);
+                if (audio == null || audio.length == 0) {
+                    Log.e("FLOW", "Audio NULL for status: " + recordingStatus);
+                    continue;
+                }
+                DigitalSethScopeMethod(audio, item);
+                alertDialog.dismiss();
+            }
         });
 
         alertDialog.show();
@@ -3523,7 +3588,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     // receiver download
     public void registerBroadcastReceiverDynamically() {
-        if(!isDownloadImageBroadcastRecRegisterd) {
+        if (!isDownloadImageBroadcastRecRegisterd) {
             IntentFilter filter = new IntentFilter();
             filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
             ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -4119,7 +4184,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
 
-            if(broadcastReceiverForIamgeDownlaod !=null && isDownloadImageBroadcastRecRegisterd){
+            if (broadcastReceiverForIamgeDownlaod != null && isDownloadImageBroadcastRecRegisterd) {
                 unregisterReceiver(broadcastReceiverForIamgeDownlaod);
             }
         } catch (IllegalArgumentException e) {
@@ -4420,7 +4485,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     // update image database
     private void updateImageDatabase(String imageuuid) {
-    //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
+        //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("CommonVisitData")) {
@@ -5599,7 +5664,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             if (!value.startsWith("{") && !value.endsWith("}"))
                 value = formatHtmlToJson(value);    // NAS-881
 
-          //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
+            //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
@@ -6427,7 +6492,9 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                         selectedTests[6] = true;
                     if (!mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString()))
                         selectedTests[7] = true;
-                    Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
+                    if (!mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString()))
+                        selectedTests[8] = true;
+                    Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
                 }
@@ -6447,6 +6514,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         }
         return true;
     }
+
     private void setupDiagnosticsConfig() {
         mRandomGlucoseLinearLayout = findViewById(R.id.ll_glucose_random_container);
         mFastingGlucoseLinearLayout = findViewById(R.id.ll_glucose_fasting_container);
@@ -6454,14 +6522,14 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         mHemoglobinLinearLayout = findViewById(R.id.ll_hemoglobin_container);
         mUricAcidLinearLayout = findViewById(R.id.ll_uric_acid_container);
         mCholestrolLinearLayout = findViewById(R.id.ll_total_cholestrol_container);
-
+        mDiabetesHBA1CLinearLayout = findViewById(R.id.ll_diabetes_hba1c_container);
 
         DiagnosticsRepository repository = new DiagnosticsRepository(ConfigDatabase.getInstance(this).patientDiagnosticsDao());
         DiagnosticsViewModelFactory factory = new DiagnosticsViewModelFactory(repository);
         DiagnosticsViewModel diagnosticsViewModel = new ViewModelProvider(this, factory).get(DiagnosticsViewModel.class);
         diagnosticsViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
-                    mPatientDiagnosticsList = it;
+                            mPatientDiagnosticsList = it;
                             CustomLog.v(TAG, new Gson().toJson(mPatientDiagnosticsList));
                             updateUIForDiagnostics();
                         }
@@ -6476,7 +6544,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         mHemoglobinLinearLayout.setVisibility(View.GONE);
         mUricAcidLinearLayout.setVisibility(View.GONE);
         mCholestrolLinearLayout.setVisibility(View.GONE);
-
+        mDiabetesHBA1CLinearLayout.setVisibility(View.GONE);
         for (Diagnostics diagnostics : mPatientDiagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
 
@@ -6498,8 +6566,406 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mCholestrolLinearLayout.setVisibility(View.VISIBLE);
 
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
+                mDiabetesHBA1CLinearLayout.setVisibility(View.VISIBLE);
             }
         }
     }
 
+    // Save audio
+    private String saveToFile(byte[] audioBytes) {
+        try {
+            File dir = new File(getExternalFilesDir(null), "records");
+            if (!dir.exists()) dir.mkdirs();
+
+            String fileName = "record_" + System.currentTimeMillis() + ".pcm";
+            File file = new File(dir, fileName);
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(audioBytes);
+            fos.flush();
+            fos.close();
+
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "File save error";
+        }
+    }
+
+    public static File getSaveDir(String id, Context context) {
+        File base = new File(context.getExternalFilesDir(null).getAbsolutePath(), String.format("%s%s%s",
+                "AyuData",
+                File.separator,
+                id));
+
+        if (!base.getParentFile().exists()) {
+            base.getParentFile().mkdir();
+        }
+        if (!base.exists()) {
+            base.mkdir();
+        }
+
+        File audioDir = new File(base, "audio");
+
+        if (!audioDir.exists()) {
+            audioDir.mkdir();
+        }
+
+        return audioDir;
+    }
+
+    private byte[] shortToByte(short[] shorts) {
+        ByteBuffer buffer = ByteBuffer.allocate(shorts.length * 2);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
+        for (short s : shorts) buffer.putShort(s);
+        return buffer.array();
+    }
+
+   /*public void DigitalSethScopeMethod() {
+       Log.d("DEBUG", "filePath: " + filePath);
+       Log.d("DEBUG", "visitUuid: " + visitUuid);
+       Log.d("DEBUG", "type: " + type);
+       Log.d("DEBUG", "position: " + position);
+       short[] audioShorts = AyuSynk.getBleInstance().getAudioData(recordingStatus);
+
+       // ✅ Step 1: Validate audio
+       if (audioShorts == null || audioShorts.length == 0) {
+           Log.e("ERROR", "audioShorts is null or empty");
+           return;
+       }
+
+       File file;
+
+       try {
+           // ✅ Step 2: Save PCM
+           byte[] audioBytes = shortToByte(audioShorts);
+           String pcmPath = saveToFile(audioBytes);
+
+           File pcmFile = new File(pcmPath);
+           if (!pcmFile.exists()) {
+               Log.e("UPLOAD", "PCM file not found: " + pcmPath);
+               return;
+           }
+
+           // ✅ Step 3: Convert PCM → WAV
+           String wavPath = pcmPath.replace(".pcm", ".wav");
+           PCMToWavConverter.pcmToWav(pcmPath, wavPath);
+
+           File wavFile = new File(wavPath);
+
+           if (!wavFile.exists()) {
+               Log.e("UPLOAD", "WAV conversion failed!");
+               return;
+           }
+
+           Log.d("UPLOAD", "WAV created: " + wavFile.getAbsolutePath());
+           Log.d("UPLOAD", "WAV size: " + wavFile.length());
+
+           file = wavFile; // ✅ SAFE assignment
+
+       } catch (Exception e) {
+           Log.e("UPLOAD", "Conversion error: " + e.getMessage());
+           return;
+       }
+
+       // ✅ Step 4: Final safety check
+       if (file == null || !file.exists()) {
+           Log.e("UPLOAD", "File is null or missing");
+           return;
+       }
+
+       Log.d("FILE_DEBUG", "File ready: " + file.getAbsolutePath());
+
+       // ✅ Step 5: Prepare API request
+       RequestBody requestFile =
+               RequestBody.create(MediaType.parse("audio/wav"), file);
+
+       MultipartBody.Part audioFile =
+               MultipartBody.Part.createFormData(
+                       "audio_file",
+                       file.getName(),
+                       requestFile);
+
+       RequestBody visit_uuid_body =
+               RequestBody.create(MediaType.parse("text/plain"), visitUuid);
+
+       RequestBody creator_uuid =
+               RequestBody.create(MediaType.parse("text/plain"),
+                       sessionManager.getCreatorID());
+
+       RequestBody sound_type =
+               RequestBody.create(MediaType.parse("text/plain"), type);
+
+       RequestBody position_from =
+               RequestBody.create(MediaType.parse("text/plain"), position);
+
+       ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+       Call<UploadResponse> call = apiService.uploadSound(
+               audioFile,
+               visit_uuid_body,
+               creator_uuid,
+               sound_type,
+               position_from);
+
+       // ✅ Step 6: API Call
+       call.enqueue(new Callback<UploadResponse>() {
+
+           @Override
+           public void onResponse(Call<UploadResponse> call,
+                                  Response<UploadResponse> response) {
+
+               if (response.isSuccessful() && response.body() != null) {
+
+                   UploadResponse uploadResponse = response.body();
+                   String trackerId = uploadResponse.getTracker();
+
+                   Log.d("trackerId", "Success, trackerId: " + trackerId);
+
+                   // ✅ Step 7: Generate AI report ONLY AFTER upload success
+                   generateDiagnosis(audioShorts, trackerId);
+                   System.out.println("audioShorts" + audioShorts +  trackerId);
+
+               } else {
+                   Log.e("UPLOAD", "Upload failed: " + response.code());
+                   Log.e("UPLOAD", "Upload failed: " + response.message());
+               }
+           }
+
+           @Override
+           public void onFailure(Call<UploadResponse> call, Throwable t) {
+               Log.e("UPLOAD", "Upload error: " + t.getMessage());
+           }
+       });
+   }
+    private void generateDiagnosis(short[] audioShorts, String trackerId) {
+
+        try {
+            File file0 = new File(getSaveDir("1", getApplicationContext()), "recorded.wav");
+
+            File file1 = AyuFileGenerator.saveFile(audioShorts, file0);
+
+            HeartSoundData heartSoundData =
+                    new HeartSoundData(file1, LocationType.Heart.aortic);
+
+            SoundFile<HeartSoundData> soundFile = new SoundFile<>(heartSoundData);
+
+            soundFile.setReferenceId(trackerId);
+
+            Log.d("AI_FLOW", "Reference ID: " + trackerId);
+
+            AyuSynk.getBleInstance().generateDiagnosisReport(soundFile);
+
+            // ✅ Listener
+            AyuSynk.getBleInstance().setDiagnosisReportUpdateListener(
+                    new DiagnosisReportUpdateListener() {
+
+                        @Override
+                        public void reportRequestAdded(SoundFile soundFile) {
+                            Log.d("AI_FLOW", "✅ QUEUED");
+                        }
+
+                        @Override
+                        public void reportGenerated(SoundFile soundFile) {
+                            Log.d("AI_FLOW", "🔥 REPORT GENERATED");
+
+                            System.out.println("Tracker: " + soundFile.getReferenceId());
+                            System.out.println("Data: " + soundFile.getSoundData());
+                        }
+
+                        @Override
+                        public void onReportGenerationError(String error) {
+                            Log.e("AI_FLOW", "❌ ERROR: " + error);
+                        }
+                    });
+
+            // ✅ Logs listener
+            AyuSynk.getBleInstance().setLogsListener(s ->
+                    Log.d("AYUSYNK_LOG", s)
+            );
+
+        } catch (IOException e) {
+            Log.e("AI_FLOW", "File save error: " + e.getMessage());
+        }
+    }*/
+
+
+
+    public void DigitalSethScopeMethod(short[] audio, HeartLungRecordModel item) {
+        int recordingStatus1 = Integer.parseInt(item.recordingStatus);
+        //audio = AyuSynk.getBleInstance().getAudioData(recordingStatus1);
+        short[] audioShorts = AyuSynk.getBleInstance().getAudioData(recordingStatus1);
+
+        if (audio == null || audio.length == 0) {
+            Log.e("ERROR", "audioShorts is null");
+            return;
+        }
+
+        File file;
+
+        try {
+            byte[] audioBytes = shortToByte(audio);
+            String pcmPath = saveToFile(audioBytes);
+
+            String wavPath = pcmPath.replace(".pcm", ".wav");
+            PCMToWavConverter.pcmToWav(pcmPath, wavPath);
+
+            file = new File(wavPath);
+
+            if (!file.exists()) {
+                Log.e("UPLOAD", "WAV not created");
+                return;
+            }
+
+        } catch (Exception e) {
+            Log.e("UPLOAD", "Error: " + e.getMessage());
+            return;
+        }
+        String visitUuid = item.visitUuid;
+        String type = item.type;
+        String position = item.position;
+
+        // String key = type + "_" + position; // unique key
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse("audio/wav"), file);
+
+        MultipartBody.Part audioFile =
+                MultipartBody.Part.createFormData(
+                        "audio_file",
+                        file.getName(),
+                        requestFile);
+
+        RequestBody visit_uuid_body =
+                RequestBody.create(MediaType.parse("text/plain"), visitUuid);
+
+        RequestBody creator_uuid =
+                RequestBody.create(MediaType.parse("text/plain"),
+                        sessionManager.getCreatorID());
+
+        RequestBody sound_type =
+                RequestBody.create(MediaType.parse("text/plain"), type);
+
+        RequestBody position_from =
+                RequestBody.create(MediaType.parse("text/plain"), position);
+
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<UploadResponse> call = apiService.uploadSound(
+                audioFile,
+                visit_uuid_body,
+                creator_uuid,
+                sound_type,
+                position_from);
+
+        call.enqueue(new Callback<UploadResponse>() {
+
+            @Override
+            public void onResponse(Call<UploadResponse> call,
+                                   Response<UploadResponse> response) {
+
+                if (response.isSuccessful() && response.body() != null) {
+
+                    String trackerId = response.body().getTracker();
+
+                    Log.d("UPLOAD", "trackerId: " + trackerId);
+
+                    // ✅ Store mapping
+                    RecordingData data = new RecordingData();
+                    data.trackerId = trackerId;
+                    data.position = position;
+                    data.filePath = file.getAbsolutePath();
+                    data.type = type;
+
+                    trackerMap.put(trackerId, data);
+
+                    // ✅ Call AI
+                    generateDiagnosis(audioShorts, trackerId);
+                } else {
+                    Log.e("UPLOAD", "Failed: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<UploadResponse> call, Throwable t) {
+                Log.e("UPLOAD", "Error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void generateDiagnosis(short[] audioShorts, String trackerId) {
+
+        try {
+
+            File file0 = new File(
+                    getSaveDir("1", getApplicationContext()),
+                    "recorded_" + trackerId + ".wav"   // ✅ UNIQUE FILE
+            );
+
+            File file1 = AyuFileGenerator.saveFile(audioShorts, file0);
+
+            HeartSoundData heartSoundData =
+                    new HeartSoundData(file1, LocationType.Heart.aortic);
+
+            SoundFile<HeartSoundData> soundFile = new SoundFile<>(heartSoundData);
+
+            soundFile.setReferenceId(trackerId);
+
+            Log.d("AI_FLOW", "Sending: " + trackerId);
+
+            AyuSynk.getBleInstance().generateDiagnosisReport(soundFile);
+
+            AyuSynk.getBleInstance().setDiagnosisReportUpdateListener(
+                    new DiagnosisReportUpdateListener() {
+                        @Override
+                        public void reportRequestAdded(SoundFile soundFile) {
+                            Log.d("AI_FLOW", "Queued: " + soundFile);
+                        }
+                        @Override
+                        public void reportGenerated(SoundFile soundFile) {
+
+                            String result = soundFile.getSoundData().toString();
+
+                            String trackerId = soundFile.getReferenceId();
+
+                            Log.d("AI_FLOW", "Generated: " + trackerId);
+
+                            RecordingData data = trackerMap.get(trackerId);
+
+                            if (data != null) {
+
+                                String result1 = soundFile.getSoundData().toString();
+                                data.result = result1;
+
+                                Log.d("FINAL_RESULT",
+                                        data.position + " → " + result);
+                                saveToDb(data);
+                            } else {
+                                Log.e("AI_ERROR", "No mapping for trackerId");
+                            }
+                        }
+
+                        @Override
+                        public void onReportGenerationError(String error) {
+                            Log.e("AI_FLOW", "Error: " + error);
+                        }
+                    });
+
+        } catch (IOException e) {
+            Log.e("AI_FLOW", "File error: " + e.getMessage());
+        }
+
+    }
+
+    private void saveToDb(RecordingData data) {
+
+        ContentValues values1 = new ContentValues();
+        values1.put("position", data.position);
+        values1.put("audio_path", data.filePath);
+        values1.put("type", data.type);
+        values1.put("result", data.result);
+        values1.put("recordingStatus", 1);
+
+        db.insert("tbl_follow_up_heart_lung_recoding", null, values1);
+    }
 }

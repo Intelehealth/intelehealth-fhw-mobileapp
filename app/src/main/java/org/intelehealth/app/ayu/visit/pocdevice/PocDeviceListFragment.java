@@ -21,10 +21,8 @@ import com.ayudevice.ayusynksdk.ble.listener.DeviceScanListener;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
-import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.pocdevice.adapter.DeviceListAdapter;
 import org.intelehealth.app.ayu.visit.pocdevice.adapter.DeviceListObject;
-import org.intelehealth.app.databinding.FragmentConnectPocdeviceBinding;
 import org.intelehealth.app.databinding.FragmentPocdeviceListBinding;
 import org.intelehealth.app.models.VitalsObject;
 

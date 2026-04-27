@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
@@ -221,6 +222,13 @@ public class AssociateSymptomsQueryAdapter extends RecyclerView.Adapter<Recycler
                             @Override
                             public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
 
+                            }
+
+                            @Override
+                            public void onAyuDeviceRequest(Node node) {
+                                if (mContext instanceof VisitCreationActionListener) {
+                                    ((VisitCreationActionListener) mContext).onAyuDeviceRequest(node);
+                                }
                             }
                         });
                         genericViewHolder.questionsListingAdapter.setAssociateSymptomNestedQueryFlag(true);

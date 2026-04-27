@@ -139,7 +139,6 @@ public class SyncUtils {
 
         imagesPushDAO.deleteObsImage();
 
-
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
                 .then(AppConstants.LAST_SYNC_WORK_REQUEST)
@@ -157,18 +156,24 @@ public class SyncUtils {
      * @param view Refresh button view.
      */
     public static boolean syncNow(Context context, View view, ObjectAnimator syncAnimator) {
-        boolean isSynced = false;
+        boolean isSyncedValue = false;
 
-        syncAnimator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 359f).setDuration(1200);
-        syncAnimator.setInterpolator(new LinearInterpolator());
+        final ObjectAnimator animator = ObjectAnimator.ofFloat(view, View.ROTATION, 0f, 359f).setDuration(1200);
+        animator.setInterpolator(new LinearInterpolator());
 
         if (NetworkConnection.isOnline(context)) {
             //Toast.makeText(context, context.getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
             view.clearAnimation();
-            syncAnimator.start();
-            new SyncUtils().syncBackground();
+            animator.start();
+            
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    new SyncUtils().syncBackground();
+                }
+            }).start();
 
-            isSynced = true;
+            isSyncedValue = true;
             new Handler(Looper.getMainLooper())
                     .postDelayed(new Runnable() {
                         @Override
@@ -178,11 +183,11 @@ public class SyncUtils {
                     }, 1200);
 
         } else {
-            isSynced = false;
+            isSyncedValue = false;
             Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
         }
 
-        return isSynced;
+        return isSyncedValue;
     }
 
 }

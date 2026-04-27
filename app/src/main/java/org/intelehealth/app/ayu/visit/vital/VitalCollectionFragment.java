@@ -4,7 +4,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertFtoC;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,7 +33,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codeglo.coyamore.data.PreferenceHelper;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -53,7 +51,6 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -69,8 +66,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = VitalCollectionFragment.class.getSimpleName();
@@ -106,8 +101,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private TextView mBloodGroupTextView;
     private AlertDialog mBloodGroupAlertDialog;
     private View mRootView;
-    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
-
+    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView, mHbacGroupView;
+    TextView tv_hbac_group_value,tv_hbac_group_lbl;
     private List<PatientVital> mPatientVitalList;
     private VitalPreference vitalPref;
 
@@ -226,12 +221,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mHeightErrorTextView.setVisibility(View.GONE);
         mWeightErrorTextView.setVisibility(View.GONE);
         mBpSysErrorTextView.setVisibility(View.GONE);
+        mBpSysErrorTextView.setVisibility(View.GONE);
         mBpDiaErrorTextView.setVisibility(View.GONE);
         mSpo2ErrorTextView.setVisibility(View.GONE);
         mPulseErrorTextView.setVisibility(View.GONE);
         mRespErrorTextView.setVisibility(View.GONE);
         mTemperatureErrorTextView.setVisibility(View.GONE);
         mBloodGroupErrorTextView.setVisibility(View.GONE);
+
 
         mHeightEditText.addTextChangedListener(new MyTextWatcher(mHeightEditText));
         mWeightEditText.addTextChangedListener(new MyTextWatcher(mWeightEditText));
@@ -265,7 +262,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mRespiratoryCardView = mRootView.findViewById(R.id.ll_respiratory_rate_container);
 
         mBloodGroupCardView = mRootView.findViewById(R.id.ll_blood_group_container);
-
 
         //showHeightListing();
 

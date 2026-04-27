@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity;
+import org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.knowledgeEngine.Node;
 
 
@@ -173,6 +175,19 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             textView.setText(node.findDisplay());
 
             ImageView imageView = convertView.findViewById(R.id.expandable_list_item_image);
+
+            convertView.setOnClickListener(v -> {
+                if (node.getInputType() != null && node.getInputType().equalsIgnoreCase("ayu_device")) {
+                    String patientUuid = PhysicalExamActivity.patientUuid;
+                    String visitUuid = PhysicalExamActivity.visitUuid;
+                    InteleHealthDatabaseHelper db = new InteleHealthDatabaseHelper(mContext);
+                    String encounterUuid = db.getEncounter(visitUuid);
+
+                    DigitalStethoscopeDialogFragment dialog =
+                            DigitalStethoscopeDialogFragment.newInstance(node.findDisplay(), patientUuid, visitUuid, encounterUuid);
+                    dialog.show(((androidx.appcompat.app.AppCompatActivity) mContext).getSupportFragmentManager(), "stethoscope_popup");
+                }
+            });
 
             switch (callingClass) {
 

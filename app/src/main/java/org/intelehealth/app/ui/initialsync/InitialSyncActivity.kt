@@ -71,7 +71,7 @@ class InitialSyncActivity : AppCompatActivity() {
             progressIndicator.progress = progress
             txtProgress.text = getString(R.string.sync_progress_percentage, progress)
         }
-        Logger.logD(SyncDAO.PULL_ISSUE, "% -> $progress")
+        //Logger.logD(SyncDAO.PULL_ISSUE, "% -> $progress")
     }
 
     private fun handleSyncCompletion() {

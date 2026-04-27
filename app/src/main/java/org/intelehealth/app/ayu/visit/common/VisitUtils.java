@@ -103,7 +103,7 @@ AB NEGATIVE = 1231*/
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
         CustomLog.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);
         if (!isEditMode && !isAlreadyLoaded)
-            recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
+            recyclerView.postDelayed(() -> recyclerView.scrollBy(dx, dy), delayMills);
     }
 
     public static String replaceEnglishCommonString(String data, String locale) {

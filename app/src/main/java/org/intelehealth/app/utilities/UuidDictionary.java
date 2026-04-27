@@ -90,6 +90,7 @@ public class UuidDictionary {
     public static final String HEMOGLOBIN = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";
     public static final String URIC_ACID = "366e11ae-f6a2-4c27-8285-5bc496f9dfb4";
     public static final String TOTAL_CHOLESTEROL = "24914ddd-b97a-400e-a7e1-171ec8fb77d0";
+    public static final String DIABETES_HBA1C = "f0631271-e0b3-48ca-a4e5-70959a7b76d9";
     public static final String OBS_TYPE_DIAGNOSTICS_SET = "57ab8f1b-0a7f-41ba-88b4-3bbf8234cf90";
     public static final String OBS_TYPE_VITAL_SET = "521ef8a8-ea42-4930-bd24-216e17f8c936";
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";

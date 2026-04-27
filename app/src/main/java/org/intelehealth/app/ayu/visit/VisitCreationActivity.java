@@ -108,7 +108,8 @@ import java.util.UUID;
 
 import timber.log.Timber;
 
-public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener {
+public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener, ConnectPocDeviceFragment.OnDigitalScopeCompleteListener, RecordHeartSoundsFragment.OnRecordingCompleteListener,
+        RecordLungSoundsFragment.OnRecordingCompleteListener {
 
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
     private static final String VITAL_FRAGMENT = "VITAL";
@@ -123,6 +124,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private static final String PAST_MEDICAL_HISTORY_FRAGMENT = "PAST_MEDICAL_HISTORY";
     private static final String PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT = "PAST_MEDICAL_HISTORY_SUMMARY";
     private static final String FAMILY_HISTORY_SUMMARY_FRAGMENT = "FAMILY_HISTORY_SUMMARY";
+
+    private static final String DIGITAL_SETHSCOPE_FRAGMENT = "DIGITAL_SETHA_SCOPE";
+
+    private static final String DIGITAL_SUMMARY_FRAGMENT = "DIGITAL_SUMMARY";
+
     public static final int STEP_1_VITAL = 1;
     public static final int STEP_1_VITAL_SUMMARY = 1001;
     public static final int STEP_2_DIAGNOSTICS = 2;
@@ -137,13 +143,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public static final int STEP_6_FAMILY_HISTORY = 8;
     public static final int STEP_6_HISTORY_SUMMARY = 9;
     public static final int STEP_7_VISIT_SUMMARY = 10;
+    public static final int STEP_7_VISIT_SUMMARY_FINAL = 1000;
     public static final int STEP_11_DEVICE_CONNECT = 11;
     public static final int STEP_12_DEVICE_LIST = 12;
+
+    public static final int STEP_8_DIGITAL_SETHA_SCOPE = 25;
     public static final int SELECT_HEART = 13;
     public static final int SELECT_LUNG = 14;
     public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;
     private static final String DIAGNOSTICS_FRAGMENT = "DIAGNOSTICS";
     private static final String DIAGNOSTICS_SUMMARY_FRAGMENT = "DIAGNOSTICS_SUMMARY";
+
 
     /*public static final int STEP_2_VISIT_REASON = 2;
     public static final int STEP_2_VISIT_REASON_QUESTION = 3;
@@ -167,13 +177,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private String patientGender = "";
     private String intentTag = "new";
     private String state;
-    private String patientUuid;
-    private String visitUuid;
-    private String encounterVitals;
+    public String patientUuid;
+    public String visitUuid;
+    public String encounterVitals;
     private float float_ageYear_Month;
     private int mAgeInMonth;
     private String mAgeAndMonth;
-    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
+    public String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
 
     private FrameLayout mSummaryFrameLayout;
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar, mStep5ProgressBar;
@@ -190,7 +200,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     // Past Medical History
 
-    // Family History
+    // Family History]
 
     private boolean mIsEditMode = false;
     private boolean mIsEditTriggerFromVisitSummary = false;
@@ -201,6 +211,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private boolean mHasLicence = false;
     private FeatureActiveStatus featureActiveStatus;
+
+    private boolean isHeartRecorded = false;
+    private boolean isLungRecorded = false;
+    private boolean isDigitalFlowCompleted = false;
+
 
 
     private void startVisit() {
@@ -257,7 +272,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
 
         encounterAdultIntials = "";
-            encounterAdultIntials = UUID.randomUUID().toString(); //added due to in some case the adult initial encounter is not getting saved aginst physical exam images obs
+        encounterAdultIntials = UUID.randomUUID().toString(); //added due to in some case the adult initial encounter is not getting saved aginst physical exam images obs
 
         mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         //intent2.putExtra("encounterUuidAdultIntial", "");
@@ -337,7 +352,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     Timber.tag(TAG).d("6 Feature first screen : " + mCurrentStep);
                 }
 
-        }
+            }
 
             if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
 //            getSupportFragmentManager().beginTransaction().
@@ -356,6 +371,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
         if (!sessionManager.getLicenseKey().isEmpty())
@@ -470,7 +486,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(!mIsEditTriggerFromVisitSummary){
+                if (!mIsEditTriggerFromVisitSummary) {
                     showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
                 }
             }
@@ -552,14 +568,18 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     public void backPress(View view) {
-       // finish();
-        if(!mIsEditTriggerFromVisitSummary){
+        // finish();
+        if (!mIsEditTriggerFromVisitSummary) {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
         }
     }
 
     private VitalsObject mVitalsObject;
     private DiagnosticsModel mDiagnosticsModel;
+
+    public VitalsObject getVitalsObject() {
+        return mVitalsObject;
+    }
 
     @Override
     public void onFormSubmitted(int nextAction, boolean isEditMode, Object object) {
@@ -590,10 +610,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), VITAL_FRAGMENT).
                         commit();
-
-                /*getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_body, ConnectPocDeviceFragment.newInstance(mCommonVisitData, isEditMode,mVitalsObject), POC_DEVICE_FRAGMENT).
-                        commit();*/
                 break;
             case STEP_2_DIAGNOSTICS:
                 mStep2ProgressBar.setProgress(100);
@@ -724,45 +740,84 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_7_VISIT_SUMMARY:
-                Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
-//                intent1.putExtra("patientUuid", patientUuid);
-//                intent1.putExtra("visitUuid", visitUuid);
-//                intent1.putExtra("encounterUuidVitals", encounterVitals);
-//                intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
-//                intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
-//                intent1.putExtra("state", state);
-//                intent1.putExtra("name", patientName);
-//                intent1.putExtra("gender", patientGender);
-//                intent1.putExtra("tag", intentTag);
-//                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
-//                intent1.putExtra("hasPrescription", "false");
-                // intent1.putStringArrayListExtra("exams", selectedExamsList);
+                onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null);
+
+               /* if (!isDigitalFlowCompleted) {
+                    // 🔥 Always go to Digital Screen first
+                    onFormSubmitted(STEP_8_DIGITAL_SETHA_SCOPE, isEditMode, mVitalsObject);
+                } else {
+                    // 🔥 Only after DONE
+                    onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null);
+                }*/
+                break;
+            case STEP_7_VISIT_SUMMARY_FINAL:
+                Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class);
                 mCommonVisitData.setHasPrescription(false);
                 intent1.putExtra("CommonVisitData", mCommonVisitData);
                 startActivity(intent1);
                 finish();
                 break;
+            case STEP_8_DIGITAL_SETHA_SCOPE:
+                getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_body, ConnectPocDeviceFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject), DIGITAL_SETHSCOPE_FRAGMENT).
+                        commit();
+                mSummaryFrameLayout.setVisibility(View.GONE);
+                break;
             case STEP_12_DEVICE_LIST:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 mStep1ProgressBar.setProgress(100);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, PocDeviceListFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
+                        replace(R.id.fl_steps_summary, PocDeviceListFragment.newInstance(isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
                         commit();
                 break;
             case SELECT_HEART:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 mStep1ProgressBar.setProgress(100);
+               /* ArrayList<String> heartSounds = extractHeartSounds(performPhysicalExamString);
                 getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, RecordHeartSoundsFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
-                        commit();
+                        replace(R.id.fl_steps_summary,
+                                RecordHeartSoundsFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject, visitUuid, heartSounds),
+                                POC_DEVICELIST_FRAGMENT).
+                        addToBackStack("HEART") //
+                        .commit();*/
+               /* RecordHeartSoundsFragment recordHeartSoundsFragment = RecordHeartSoundsFragment.newInstance(
+                        patientUuid,
+                        visitUuid,
+                        encounterVitals,
+                        intentTag,
+                        type,// "Heart" or "Lung"
+                        float_ageYear_Month
+                );
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fl_steps_summary, recordHeartSoundsFragment)
+                        .commit();*/
                 break;
             case SELECT_LUNG:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 mStep1ProgressBar.setProgress(100);
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, RecordLungSoundsFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
-                        commit();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fl_steps_summary,
+                                RecordLungSoundsFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject, visitUuid),
+                                POC_DEVICELIST_FRAGMENT)
+                        .addToBackStack("LUNG")
+                        .commit();
+               /* RecordLungSoundsFragment recordLungSoundsFragment = RecordLungSoundsFragment.newInstance(
+                        patientUuid,
+                        visitUuid,
+                        encounterVitals,
+                        intentTag,
+                        float_ageYear_Month// "Heart" or "Lung"
+                );
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fl_steps_summary, recordLungSoundsFragment)
+                        .commit();*/
                 break;
+              /*  getSupportFragmentManager().beginTransaction().
+                        replace(R.id.fl_steps_summary, RecordLungSoundsFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
+                        commit();*/
+
         }
     }
 
@@ -900,7 +955,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             }*/
             if (map.containsKey(filterNode.getOptionsList().get(i).getText()) && filterNode.getOptionsList().get(i).getOptionsList() != null) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
-                    optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(j).getOptionsList().get(0));
+                    Node innerNode = filterNode.getOptionsList().get(i).getOptionsList().get(j);
+                    if (innerNode.getOptionsList() != null && !innerNode.getOptionsList().isEmpty()) {
+                        optionsList.add(innerNode.getOptionsList().get(0));
+                    }
                 }
             }
         }
@@ -1115,6 +1173,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public void onImageRemoved(int nodeIndex, int imageIndex, String image) {
         deleteImageFromDatabase(nodeIndex, imageIndex, image);
     }
+
+    @Override
+    public void onAyuDeviceRequest(Node node) {
+
+    }
+
 
     boolean nodeComplete = false;
 
@@ -1773,7 +1837,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             long fileSizeInBytes = file.length();              // size in bytes
                             long fileSizeInKB = fileSizeInBytes / 1024;        // size in KB
                             long fileSizeInMB = fileSizeInKB / 1024;
-                            Log.d("TAG", "onActivityResult: "+fileSizeInMB+" "+fileSizeInKB);
+                            Log.d("TAG", "onActivityResult: " + fileSizeInMB + " " + fileSizeInKB);
                             if (fileSizeInMB > 2) {
                                 String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + "_compressed.jpg";
                                 compressImage(currentPhotoPath, compressedPath);
@@ -1915,11 +1979,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private ObjectAnimator syncAnimator;
 
     public void syncNow(View view) {
-        if(mIsEditTriggerFromVisitSummary){
+        if (mIsEditTriggerFromVisitSummary) {
             if (NetworkConnection.isOnline(this)) {
                 SyncUtils.syncNow(this, view, syncAnimator);
             }
-        }else{
+        } else {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content_on_sync));
         }
     }
@@ -1998,14 +2062,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 currentScreenIndex = visitReasonScreenIndex;
                 StringBuilder builder = new StringBuilder();
                 var reasonName = "";
-                for(int i=0;i<mSelectedComplainList.size();i++){
+                for (int i = 0; i < mSelectedComplainList.size(); i++) {
                     builder.append(mSelectedComplainList.get(i).getReasonNameLocalized());
                     if (i < mSelectedComplainList.size() - 1) {
                         builder.append(", "); // separator
                     }
                 }
                 reasonName = builder.toString();
-                Log.d(TAG, "setTitle: "+reasonName);
+                Log.d(TAG, "setTitle: " + reasonName);
                 title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen)
                         + " : " + reasonName;
                 break;
@@ -2043,18 +2107,59 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private void showConfirmationDialog(String content) {
-        Log.d(TAG, "showConfirmationDialog: visitUuid : "+visitUuid);
+        Log.d(TAG, "showConfirmationDialog: visitUuid : " + visitUuid);
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showCommonDialog(this, R.drawable.fingerprint_dialog_error, getResources().getString(R.string.confirm_discard_changes_title),
                 content, false,
                 getResources().getString(R.string.confirm_continue_changes_button_dialog), getResources().getString(R.string.confirm_discard_changes_button_dialog), action -> {
 
-            if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
-                new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid);
-            finish();
-            }
-        });
+                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
+                        new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid);
+                        finish();
+                    }
+                });
 
     }
 
+    @Override
+    public void onDigitalScopeCompleted() {
+        onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, false, null);
+    }
+
+    public void setHeartRecorded(boolean value) {
+        isHeartRecorded = value;
+    }
+
+    public void setLungRecorded(boolean value) {
+        isLungRecorded = value;
+    }
+
+    public boolean isHeartRecorded() {
+        return isHeartRecorded;
+    }
+
+    public boolean isLungRecorded() {
+        return isLungRecorded;
+    }
+    @Override
+    public void onRecordingCompleted(String type) {
+        if ("heart".equals(type)) {
+            isHeartRecorded = true;
+        } else {
+            isLungRecorded = true;
+        }
+
+        // 🔥 POP BACK instead of navigating fresh
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+            getSupportFragmentManager().popBackStack(); // 🔥 Go back to Connect screen
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
