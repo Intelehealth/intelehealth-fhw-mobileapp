@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context=".ayu.visit.pocdevice.Heart.AorticFragment">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- RECORDING LAYOUT -->
+                <LinearLayout
+                    android:id="@+id/ll_recording_aortic_heart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/imgdirection"
+                        android:layout_width="match_parent"
+                        android:layout_height="500dp"
+                        android:adjustViewBounds="true"
+                        android:src="@drawable/aortic_img" />
+                    <TextView
+                        android:id="@+id/txt_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="@string/keepsethoscopeSteday"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                    <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                        android:id="@+id/waveView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/bg_digital_lablel" />
+
+                    <TextView
+                        android:id="@+id/txtTimer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="00:00"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <!-- START BUTTONS -->
+                    <LinearLayout
+                        android:id="@+id/ll_button_start"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+
+                        <Button
+                            android:id="@+id/btn_back"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_input_bg"
+                            android:drawableTint="@color/iconTintWhite"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/back"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/common_button_text_size"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
+
+                        <Button
+                            android:id="@+id/btn_start_recording"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="@dimen/margin_16"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_primary_bg"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/startRecording"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_button_text_size" />
+                    </LinearLayout>
+
+                    <!-- STOP BUTTONS -->
+                    <LinearLayout
+                        android:id="@+id/ll_button_stop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_pause"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_input_bg"
+                            android:drawableTint="@color/iconTintWhite"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/pause"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/common_button_text_size"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
+
+                        <Button
+                            android:id="@+id/btn_stop_recording"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="@dimen/margin_16"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_digital_red_color"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/stopRecording"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_button_text_size" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_button_save_recording_main"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="16dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_retry_main"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_input_bg"
+                            android:drawableTint="@color/iconTintWhite"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/retry"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/common_button_text_size"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
+
+                        <Button
+                            android:id="@+id/btn_save_recording_main"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="@dimen/margin_16"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_input_bg"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/saveRecording"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_button_text_size" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!-- PLAYBACK LAYOUT -->
+                <LinearLayout
+                    android:id="@+id/ll_play_aortic_heart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_8"
+                    android:visibility="gone"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_digital_lablel"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/margin_8">
+
+                            <TextView
+                                android:id="@+id/txtTitle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_2dp"
+                                android:layout_weight="1"
+                                android:text="@string/audioWaveForm"
+                                android:textColor="@color/textColorLightGary"
+                                android:textSize="@dimen/margin_18"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/txtDuration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="@dimen/margin_2dp"
+                                android:text="10.0s"
+                                android:textSize="@dimen/margin_18" />
+                        </LinearLayout>
+
+
+                        <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                            android:id="@+id/waveView_Play"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:layout_margin="10dp"
+                            android:background="@drawable/bg_digital_lablel" />
+
+                        <SeekBar
+                            android:id="@+id/seekBar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/space_10dp"
+                            android:thumbTint="@color/colorPrimary" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:id="@+id/txtCurrent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0:00" />
+
+                            <TextView
+                                android:id="@+id/txtTotal"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0:10" />
+                        </LinearLayout>
+
+                        <!-- CONTROLS -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="@dimen/margin_10"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
+
+                            <ImageButton
+                                android:id="@+id/btnBack"
+                                android:layout_width="@dimen/margin_50"
+                                android:layout_height="@dimen/margin_50"
+                                android:layout_margin="@dimen/margin_18"
+                                android:background="@null"
+                                android:layout_gravity="center"
+                                android:layout_marginRight="@dimen/toolbar_top_minus_24dp"
+                                android:src="@drawable/back_arrow" />
+
+                            <ImageButton
+                                android:id="@+id/btnPlay"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:layout_margin="@dimen/margin_18"
+                                android:background="@null"
+                                android:layout_gravity="center"
+                                android:src="@drawable/play_button" />
+
+                            <ImageButton
+                                android:id="@+id/btnPause"
+                                android:layout_width="64dp"
+                                android:layout_height="64dp"
+                                android:background="@drawable/blue_border_bg"
+                                android:backgroundTint="@color/colorPrimary"
+                                android:src="@android:drawable/ic_media_pause"
+                                android:visibility="gone" />
+
+                            <ImageButton
+                                android:id="@+id/btnForward"
+                                android:layout_width="@dimen/margin_50"
+                                android:layout_height="@dimen/margin_50"
+                                android:layout_gravity="center"
+                                android:layout_margin="@dimen/margin_18"
+                                android:background="@null"
+                                android:src="@drawable/forward_arrow" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/ll_save_recoding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|bottom"
+                        android:layout_marginTop="@dimen/icon_size_100dp"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_re_cord"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_input_bg"
+                            android:drawableTint="@color/iconTintWhite"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/re_Record"
+                            android:textAllCaps="false"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/common_button_text_size"
+                            android:textStyle="bold"
+                            app:backgroundTint="@null" />
+
+                        <Button
+                            android:id="@+id/btn_save_recording"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginStart="@dimen/margin_16"
+                            android:layout_weight="1"
+                            android:background="@drawable/ui2_common_primary_bg"
+                            android:lineHeight="@dimen/button_skip_line_height"
+                            android:paddingStart="@dimen/common_button_padding_left"
+                            android:paddingTop="@dimen/common_button_padding_top"
+                            android:paddingEnd="@dimen/common_button_padding_right"
+                            android:paddingBottom="@dimen/common_button_padding_bottom"
+                            android:text="@string/saveRecording"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/common_button_text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>
