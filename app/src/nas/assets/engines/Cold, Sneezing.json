@@ -1,0 +1,276 @@
+{
+  "id": "ID_1038379814",
+  "text": "Cold, Sneezing",
+  "display-or": "ଥଣ୍ଡା ଛିଙ୍କ",
+  "engineVersion": "3.0",
+  "options": [
+    {
+      "id": "ID_313791833",
+      "text": "Duration",
+      "display": "Since when have you had this symptom?",
+      "display-or": "କେବେଠାରୁ",
+      "isRequired": true,
+      "language": "%",
+      "options": [
+        {
+          "id": "ID_826155781",
+          "text": "[Enter since when]",
+          "input-type": "duration",
+          "language": "Since",
+          "display-or": "କେବେ ଠାରୁ ଲେଖ",
+          "display-hi": "[कब से है – दर्ज करें]",
+          "display-mr": "(केव्हापासून ते भरा)"
+        }
+      ],
+      "display-hi": "यह लक्षण आपको कब से है?",
+      "display-mr": "तुम्हाला ही लक्षणे किती दिवसांपासून आहेत"
+    },
+    {
+      "id": "ID_745246252",
+      "text": "Precipitating factors",
+      "display": "Do the following cause the cold and sneezing?*",
+      "isRequired": true,
+      "multi-choice": true,
+      "options": [
+        {
+          "id": "ID_1721517486",
+          "text": "Cold weather",
+          "display-hi": "ठंडा मौसम",
+          "display-mr": "थंड हवामान"
+        },
+        {
+          "id": "ID_36403296",
+          "text": "Wind",
+          "display-hi": "हवा",
+          "display-mr": "हवा/वारे"
+        },
+        {
+          "id": "ID_651281250",
+          "text": "Smoke",
+          "display-mr": "धूर"
+        },
+        {
+          "id": "ID_774945328",
+          "text": "Dust",
+          "display-mr": "धूळ"
+        },
+        {
+          "id": "ID_142585716",
+          "text": "Rains / Season Change",
+          "display-mr": "पाऊस / ऋतू बदल"
+        },
+        {
+          "id": "ID_561189676",
+          "text": "Known allergy [describe]",
+          "input-type": "text",
+          "display-hi": "ज्ञात ऐलर्जी [वर्णन करें]",
+          "display-mr": "माहित असलेली ऍलर्जी (वर्णन करा)"
+        },
+        {
+          "id": "ID_60175849",
+          "text": "Other [describe]",
+          "language": "%",
+          "input-type": "text",
+          "display-hi": "अन्य [वर्णन करें]",
+          "display-mr": "इतर (वर्णन करा)"
+        },
+        {
+          "id": "ID_1394331224",
+          "text": "None",
+          "exclude-from-multi-choice": true,
+          "display-hi": "इनमें से कोई नहीं",
+          "display-mr": "यापैकी काहीही नाही"
+        }
+      ],
+      "display-hi": "क्या इनसे आपको ठंड लगती है या छींकें आती हैं",
+      "display-mr": "खालील कारणांमुळे सर्दी आणि शिंका येतात का?"
+    },
+    {
+      "id": "ID_294177528",
+      "text": "Associated symptoms",
+      "display": "Do you have the following symptom(s)?*",
+      "isRequired": true,
+      "display-or": "ଅନ୍ଯାନ୍ଯ ଲକ୍ଷଣ",
+      "pos-condition": "c.",
+      "neg-condition": "s.",
+      "options": [
+        {
+          "id": "ID_74520590",
+          "text": "Fever",
+          "display-or": "ଜ୍ୱର",
+          "display-hi": "बुखार",
+          "display-mr": "ताप"
+        },
+        {
+          "id": "ID_617226688",
+          "text": "Itchy throat",
+          "display-or": "ତଂଟି ଖରାପ",
+          "display-hi": "गले में खराश",
+          "display-mr": "घसा खवखवणे"
+        },
+        {
+          "id": "ID_157243198",
+          "text": "Cough",
+          "display-or": "କାଶ",
+          "options": [
+            {
+              "id": "ID_1699941000",
+              "text": "Dry",
+              "display-or": "ଶୁଖିଲା",
+              "display-hi": "सुखी खांसी",
+              "display-mr": "कोरडा"
+            },
+            {
+              "id": "ID_66542167",
+              "text": "Productive (With sputum)",
+              "display-or": "କଫି",
+              "options": [
+                {
+                  "id": "ID_40884973",
+                  "text": "Color of sputum",
+                  "display-or": "କଫ ର ରଙ୍ଗ",
+                  "options": [
+                    {
+                      "id": "ID_127709783",
+                      "text": "Clear",
+                      "display-hi": "साफ़",
+                      "display-mr": "स्वच्छ/पाण्यासारखा"
+                    },
+                    {
+                      "id": "ID_1390255618",
+                      "text": "Yellow",
+                      "display-hi": "पीला",
+                      "display-mr": "पिवळा"
+                    },
+                    {
+                      "id": "ID_1829782527",
+                      "text": "Green",
+                      "display-hi": "हरा",
+                      "display-mr": "हिरवा"
+                    },
+                    {
+                      "id": "ID_1306609508",
+                      "text": "Red or pink",
+                      "display-hi": "लाल या गुलाबी",
+                      "display-mr": "लाल किंवा गुलाबी"
+                    },
+                    {
+                      "id": "ID_254084860",
+                      "text": "Brown",
+                      "display-hi": "भूरा",
+                      "display-mr": "तपकिरी"
+                    },
+                    {
+                      "id": "ID_1146006116",
+                      "text": "Black or grey",
+                      "display-hi": "काला या स्लेटी",
+                      "display-mr": "काळा किंवा राखाडी"
+                    }
+                  ],
+                  "display-hi": "बलगम का रंग",
+                  "display-mr": "थुंकीचा रंग"
+                }
+              ],
+              "display-hi": "खांसी के साथ बलगम का आना",
+              "display-mr": "ओला (थुंकीसह)"
+            }
+          ],
+          "display-hi": "खांसी",
+          "display-mr": "खोकला"
+        },
+        {
+          "id": "ID_972051670",
+          "text": "Nasal congestion/Stuffy nose",
+          "display-or": "ନାକ ବନ୍ଦ ବା ନାକରୁ ପାଣି",
+          "display-hi": "नाक बंद होना / भरी हुई नाक",
+          "display-mr": "नाक बंद होणे/चोंदणे"
+        },
+        {
+          "id": "ID_1535512112",
+          "text": "Runny nose",
+          "display-or": "ନାକରୁ ବାର ବାର ପାଣି ବୋହି ବା",
+          "display-hi": "बहती नाक",
+          "display-mr": "नाक वाहणे"
+        },
+        {
+          "id": "ID_1309338623",
+          "text": "Headache",
+          "display-or": "ମୁଣ୍ଡ ବିନ୍ଧା",
+          "display-hi": "सिर दर्द",
+          "display-mr": "डोकेदुखी"
+        },
+        {
+          "id": "ID_368068560",
+          "text": "Body pain",
+          "display-or": "ଦେହ ବିନ୍ଧା",
+          "display-hi": "शरीर दर्द",
+          "display-mr": "अंगदुखी"
+        },
+        {
+          "id": "ID_242168035",
+          "text": "Chills",
+          "display-or": "କମ୍ପନ",
+          "display-hi": "ठंड लगना",
+          "display-mr": "थंड"
+        },
+        {
+          "id": "ID_6543523",
+          "text": "Other [describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+          "display-hi": "अन्य [वर्णन करें]",
+          "display-mr": "इतर (वर्णन करा)"
+        }
+      ],
+      "display-hi": "क्या आपको ये लक्षण हैं?",
+      "display-mr": "तुम्हाला खालीलपैकी लक्षणे आहेत का?"
+    },
+    {
+      "id": "ID_811421813",
+      "text": "Prior treatment sought",
+      "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+      "display-or": "ତମେ ଆଗରୁ କୌଣସି ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+      "options": [
+        {
+          "id": "ID_412480003",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ହାଁ (ବର୍ଣନା କର)",
+          "display-hi": "हाँ [वर्णन करें]",
+          "display-mr": "होय (वर्णन करा)"
+        },
+        {
+          "id": "ID_264450220",
+          "text": "None",
+          "display-or": "କିଛି ନାହିଁ",
+          "display-hi": "इनमें से कोई नहीं",
+          "display-mr": "यापैकी काहीही नाही"
+        }
+      ],
+      "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+      "display-mr": "आज येथे येण्यापूर्वी तुम्ही कोणतेही उपचार घेतले आहेत (स्वयं-उपचार किंवा घरगुती उपचारांसह) किंवा या समस्येसाठी कोणत्याही डॉक्टरांना दाखवले आहे का?"
+    },
+    {
+      "id": "ID_1103446377",
+      "text": "Additional information",
+      "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+      "options": [
+        {
+          "id": "ID_58175367",
+          "text": "[Enter additional information]",
+          "input-type": "text",
+          "language": "%",
+          "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+          "display-hi": "[अतिरिक्त जानकारी दर्ज करें]",
+          "display-mr": "(अजून काही माहिती असल्यास भरा)"
+        }
+      ],
+      "display-hi": "अतिरिक्त जानकारी",
+      "display-mr": "अजून काही माहिती असल्यास भरा"
+    }
+  ],
+  "display-hi": "नाक बहना, छींक",
+  "display-mr": "सर्दी, शिंका येणे"
+}

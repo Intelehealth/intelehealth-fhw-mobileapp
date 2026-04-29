@@ -1,0 +1,1480 @@
+{
+  "id": "3bdlnqpm78un86npauhh5oobq5",
+  "text": "Patient History",
+  "engineVersion": "3.0",
+  "options": [
+    {
+      "id": "ID_1421528652",
+      "text": "Pregnancy status",
+      "isRequired": true,
+      "gender": "0",
+      "age_min": "14",
+      "options": [
+        {
+          "id": "ID_686727285",
+          "text": "Patient is unmarried",
+          "display-hi": "रोगी अविवाहित है",
+          "display-mr": "रुग्ण अविाहित आहे."
+        },
+        {
+          "id": "ID_1767078340",
+          "text": "Yes",
+          "language": "Pregnant",
+          "options": [
+            {
+              "id": "ID_505838034",
+              "text": "Last menstruation period",
+              "isRequired": true,
+              "input-type": "date",
+              "display-hi": "आखरी मासिक धर्म कब आया था",
+              "display-mr": "शेवटची मासिक पाळी केव्हा झाली "
+            }
+          ],
+          "display-hi": "हाँ",
+          "display-mr": "हो"
+        },
+        {
+          "id": "ID_629184183",
+          "text": "No",
+          "language": "Not pregnant",
+          "display-hi": "नहीं आया",
+          "display-mr": "नाही"
+        },
+        {
+          "id": "ID_1296076911",
+          "text": "Don't know",
+          "language": "Pregnancy status not known",
+          "display-hi": "पता नहीं",
+          "display-mr": "माहित नाही"
+        }
+      ],
+      "display-hi": "गर्भावस्था की स्थिति",
+      "display-mr": "गर्भधारणेची अवस्था"
+    },
+    {
+      "id": "ID_1216797604",
+      "text": "Allergies",
+      "display": "Do you have any allergies?",
+      "isRequired": true,
+      "options": [
+        {
+          "id": "ID_1182630066",
+          "text": "Yes [Describe]",
+          "input-type": "text",
+          "display-hi": "हाँ (वर्णन करें)",
+          "display-mr": "हो (वर्णन करा)"
+        },
+        {
+          "id": "ID_1336561607",
+          "text": "No known allergies",
+          "display-hi": "किसी एलर्जी का पता नहीं है",
+          "display-mr": "ज्ञात एलर्जीपैकी कुठलीही नाही किंवा कुठलीही एलर्जी नाही."
+        }
+      ],
+      "display-hi": "क्या आपको कोई एलर्जी है?",
+      "display-mr": "आपल्याला कोणती एलर्जी आहे का?"
+    },
+    {
+      "id": "ID_488941477",
+      "text": "Alcohol use",
+      "isRequired": true,
+      "age_min": "16",
+      "options": [
+        {
+          "id": "ID_858796823",
+          "text": "Yes",
+          "isRequired": true,
+          "options": [
+            {
+              "id": "ID_1464551289",
+              "text": "Since",
+              "display-or": "କେବେଠାରୁ",
+              "display-hi": "कब से",
+              "display-gu": "[ક્યારથી તે લખી જણાવો]",
+              "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+              "display-bn": "[কখন থেকে লিখুন]",
+              "display-kn": "[ಯಾವಾಗಿನಿಂದ ನಮೂದಿಸಿ]",
+              "display-mr": "(कधी पासून आहे भरा)",
+              "options": [
+                {
+                  "id": "ID_1464551289_1",
+                  "text": "[Enter since when]",
+                  "input-type": "duration",
+                  "language": "Since:",
+                  "display-or": "[କେବେଠାରୁ ,ଦର୍ଶାଅ]",
+                  "display-hi": "(कब से, दर्ज करें)",
+                  "display-gu": "[ક્યારથી તે લખી જણાવો]",
+                  "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+                  "display-bn": "[কখন থেকে লিখুন]",
+                  "display-kn": "[ಯಾವಾಗಿನಿಂದ ನಮೂದಿಸಿ]",
+                  "display-mr": "(कधी पासून आहे भरा)"
+                }
+              ]
+            },
+            {
+              "id": "ID_541643837",
+              "text": "Frequency",
+              "display": "How often do you take alcohol?",
+              "display-hi": "आप कितनी बार शराब पीते हैं?",
+              "display-mr": "तुम्ही किती वेळा मद्यपान करता?",
+              "options": [
+                {
+                  "id": "ID_541643837_1",
+                  "text": "Frequency",
+                  "input-type": "text",
+                  "display": "How often do you take alcohol?",
+                  "display-or": "କେବେ ଠାରୁ ତୁମେ ମଦ୍ୟପାନ କର?",
+                  "display-hi": "आप कितनी बार शराब पीते हैं?",
+                  "display-gu": "આપ આલ્કોહોલનું સેવન કેટલી વખત કરો છો?",
+                  "display-as": "আপুনি কিমানবাৰ মাদক দ্ৰব্য গ্রহণ কৰিছে ?",
+                  "display-bn": "আপনি কত ঘন ঘন অ্যালকোহল গ্রহণ করেন?",
+                  "display-kn": "ಎಷ್ಟು ಬಾರಿ ಮಧ್ಯ ಸೇವನೆ ಮಾಡುವಿರಿ ?",
+                  "display-mr": "तुम्ही किती वेळा मद्यपान करता?"
+                }
+              ]
+            },
+            {
+              "id": "ID_449910899",
+              "text": "No. of drinks consumed in one go",
+              "isRequired": true,
+              "options": [
+                {
+                  "id": "ID_353665659",
+                  "text": "1-2",
+                  "display-hi": "1 से 2",
+                  "display-mr": "  १ ते २"
+                },
+                {
+                  "id": "ID_1083178746",
+                  "text": "3-4",
+                  "display-hi": "3 से 4",
+                  "display-mr": "३ ते ४"
+                },
+                {
+                  "id": "ID_339759237",
+                  "text": "5-6",
+                  "display-hi": "5 से 6",
+                  "display-mr": "५ ते ६"
+                },
+                {
+                  "id": "ID_1073159208",
+                  "text": ">=7",
+                  "display-hi": "7 से ज्यादा",
+                  "display-mr": "७ पेक्षा जास्त"
+                }
+              ],
+              "display-hi": "एक बार में कितने पैग शराब पीते हैं",
+              "display-mr": "एकाच वेळी किती प्रमाणात मद्यपान करता? (एका वेळी किती ग्लास)"
+            }
+          ],
+          "display-hi": "हाँ ",
+          "display-mr": "हो"
+        },
+        {
+          "id": "ID_1066408122",
+          "text": "No",
+          "display-hi": "नहीं",
+          "display-mr": "नाही"
+        },
+        {
+          "id": "ID_127454269",
+          "text": "Denied",
+          "display-hi": "मना किया",
+          "display-mr": "माहिती देण्यास नकार दिला"
+        }
+      ],
+      "display-hi": "शराब सेवन",
+      "display-mr": "मद्यपान"
+    },
+    {
+      "id": "ID_1479282969",
+      "text": "Smoking history",
+      "isRequired": true,
+      "age_min": "16",
+      "options": [
+        {
+          "id": "ID_318732760",
+          "text": "Never-smoker",
+          "language": "Patient denied/has no h/o smoking",
+          "display-hi": "कभी नहीं पिया",
+          "display-mr": "धूम्रपान कधीही केले नाही"
+        },
+        {
+          "id": "ID_1599020946",
+          "text": "Current-smoker",
+          "language": "Patient is a smoker",
+          "options": [
+            {
+              "id": "ID_815751980",
+              "text": "Since",
+              "display-or": "କେବେଠାରୁ",
+              "display-hi": "कब से",
+              "display-gu": "[ક્યારથી તે લખી જણાવો]",
+              "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+              "display-bn": "[কখন থেকে লিখুন]",
+              "display-kn": "[ಯಾವಾಗಿನಿಂದ ನಮೂದಿಸಿ]",
+              "display-mr": "(कधी पासून आहे भरा)",
+              "options": [
+                {
+                  "id": "ID_815751980_1",
+                  "text": "[Enter since when]",
+                  "input-type": "duration",
+                  "display-or": "[କେବେଠାରୁ , ଦର୍ଶାଅ]",
+                  "display-hi": "(कब से, दर्ज करें)",
+                  "display-gu": "[ક્યારથી તે લખી જણાવો]",
+                  "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+                  "display-bn": "[কখন থেকে লিখুন]",
+                  "display-kn": "[ಯಾವಾಗಿನಿಂದ ನಮೂದಿಸಿ]",
+                  "display-mr": "(कधी पासून आहे भरा)"
+                }
+              ]
+            },
+            {
+              "id": "ID_1655069807",
+              "text": "How many cigarettes per day do you smoke?",
+              "display-or": "ଦିନକୁ କେତୋଟି ସିଗାରେଟ ପିଅ?",
+              "display-hi": "एक दिन में कितनी सिगरेट पीते हैं?",
+              "display-gu": "આપ એક દિવસમાં કેટલી સિગારેટ પીવો છો?",
+              "display-as": "আপুনি কিমান দিন পৰা চিগাৰেট পান কৰিছে ?",
+              "display-bn": "আপনি প্রতিদিন কয়টি সিগারেট খান?",
+              "display-kn": "ನೀವು ದಿನಕ್ಕೆ ಎಷ್ಟು ಸಿಗರೇಟ್ ಸೇದುತ್ತೀರಿ?",
+              "display-mr": "तुम्ही दररोज किती सिगारेट पीता?",
+              "options": [
+                {
+                  "id": "ID_1655069807_1",
+                  "text": "How many cigarettes per day do you smoke?",
+                  "input-type": "number",
+                  "language": "No. of cigarettes smoked/day:",
+                  "display-or": "ଦିନକୁ କେତୋଟି ସିଗାରେଟ ପିଅ?",
+                  "display-hi": "एक दिन में कितनी सिगरेट पीते हैं?",
+                  "display-gu": "આપ એક દિવસમાં કેટલી સિગારેટ પીવો છો?",
+                  "display-as": "আপুনি কিমান দিন পৰা চিগাৰেট পান কৰিছে ?",
+                  "display-bn": "আপনি প্রতিদিন কয়টি সিগারেট খান?",
+                  "display-kn": "ನೀವು ದಿನಕ್ಕೆ ಎಷ್ಟು ಸಿಗರೇಟ್ ಸೇದುತ್ತೀರಿ?",
+                  "display-mr": "तुम्ही दररोज किती सिगारेट पीता?"
+                }
+              ]
+            }
+          ],
+          "display-hi": "अभी पी रहे हैं",
+          "display-mr": "आत्ता सेवन करत आहे"
+        },
+        {
+          "id": "ID_803362413",
+          "text": "Ex-smoker",
+          "language": "Patient was a smoker",
+          "options": [
+            {
+              "id": "ID_22359699",
+              "text": "How many cigarettes per day did you smoke?",
+              "language": "No. of cigarettes smoked/day:",
+              "display-hi": "एक दिन में कितनी सिगरेट पीते थे?",
+              "display-mr": "तुम्ही दररोज किती सिगारेट पीत होता?",
+              "options": [
+                {
+                  "id": "ID_22359699_1",
+                  "text": "How many cigarettes per day did you smoke?",
+                  "input-type": "number",
+                  "language": "No. of cigarettes smoked/day:",
+                  "display-or": "ଦିନକୁ କେତୋଟି ସିଗାରେଟ ପିଉଥିଲ?",
+                  "display-hi": "एक दिन में कितनी सिगरेट पीते थे?",
+                  "display-gu": "આપ એક દિવસમાં કેટલી સિગારેટ પીતા હતા?",
+                  "display-as": "আপুনি কিমান দিন লৈকে চিগাৰেট ধূমপান কৰিলে ?",
+                  "display-bn": "আপনি প্রতিদিন কত সিগারেট ধূমপান করেছেন?",
+                  "display-kn": "ನೀವು ದಿನಕ್ಕೆ ಎಷ್ಟು ಸಿಗರೇಟ್  ಸೇದುತ್ತಿದ್ದಿರಿ ?",
+                  "display-mr": "तुम्ही दररोज किती सिगारेट पीत होता?"
+                }
+              ]
+            },
+            {
+              "id": "ID_1515201981",
+              "text": "Since",
+              "display-or": "କେବେଠାରୁ",
+              "display-hi": "कब से",
+              "display-gu": "[ક્યારથી તે લખી જણાવો]",
+              "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+              "display-bn": "[কখন থেকে লিখুন]",
+              "display-kn": "[ಯಾವಾಗಿನಿಂದ ನಮೂದಿಸಿ]",
+              "display-mr": "(कधी पासून आहे भरा)",
+              "options": [
+                {
+                  "id": "ID_1515201981_1",
+                  "text": "[Enter since when]",
+                  "input-type": "duration",
+                  "display-or": "[କେବେଠାରୁ ,ଦର୍ଶାଅ]",
+                  "display-hi": "(कब से, दर्ज करें)",
+                  "display-gu": "[ક્યારથી તે લખી જણાવો]",
+                  "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+                  "display-bn": "[কখন থেকে লিখুন]",
+                  "display-kn": "[ಯಾವಾಗಿನಿಂದ ನಮೂದಿಸಿ]",
+                  "display-mr": "(कधी पासून आहे भरा)"
+                }
+              ]
+            }
+          ],
+          "display-hi": "पहले पीते थे",
+          "display-mr": "पूर्वी पीत होतो."
+        }
+      ],
+      "display-hi": "धूम्रपान का इतिहास",
+      "display-mr": "धुम्रपानाचा इतिहास"
+    },
+    {
+      "id": "ID_1691870327",
+      "text": "Do you have a history of any of the following?",
+      "language": "Medical History",
+      "isRequired": true,
+      "multi-choice": true,
+      "options": [
+        {
+          "id": "553uunvdc4uq9oe860n2mtbd62",
+          "text": "High Blood Pressure",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "4gnb2kln9nvarkf1hn54iih13b",
+              "text": "Diagnosed on ",
+              "input-type": "date",
+              "display-hi": "कब पता चला",
+              "display-mr": "कधी निदान झाले"
+            },
+            {
+              "id": "ID_413173969",
+              "text": "Current medication",
+              "options": [
+                {
+                  "id": "ID_188140409",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_791907009",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_559800345",
+                  "text": "Not taking any medication",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            }
+          ],
+          "display-hi": "हाई ब्लड प्रेशर",
+          "display-mr": "उच्च रक्तदाब"
+        },
+        {
+          "id": "2t624p0ss7caug21hd4efumj4n",
+          "text": "Heart Problems",
+          "multi-choice": true,
+          "isRequired": true,
+          "options": [
+            {
+              "id": "ID_1743003464",
+              "text": "Problem description",
+              "input-type": "text",
+              "language": "%",
+              "display": "What was the problem?",
+              "display-hi": "क्या परेशानी थी?",
+              "display-mr": "काय समस्या होती?"
+            },
+            {
+              "id": "0fq5omh0fjmcot6v89tmmujs45",
+              "text": "Occured/Diagnosed on",
+              "input-type": "date",
+              "display-hi": "कब पता चला",
+              "display-mr": "कधी निदान झाले"
+            },
+            {
+              "id": "5f1pjn5mukmjrsvfnkp24nlq0q",
+              "text": "Treatment",
+              "display": "How was it treated?",
+              "options": [
+                {
+                  "id": "1rsrtassckdufd1v66g679huai",
+                  "text": "Surgery",
+                  "display-hi": "सर्जरी",
+                  "display-mr": "ऑपरेशन / शस्त्रक्रिया"
+                },
+                {
+                  "id": "3ih5vrd5crs57nrsfnsl9arcot",
+                  "text": "Angioplasty",
+                  "display-hi": "एंजियोप्लास्टी",
+                  "display-mr": "अँजिओप्लास्टी"
+                },
+                {
+                  "id": "6g0frvbl14quckj6e0i2hcc7e1",
+                  "text": "Medication",
+                  "display-hi": "दवा/उपचार",
+                  "display-mr": "औषध"
+                },
+                {
+                  "id": "ID_938378473",
+                  "text": "Other [Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "अन्य (वर्णन करें)",
+                  "display-mr": "इतर ( वर्णन करा)"
+                }
+              ],
+              "display-hi": "कैसे ठीक हुआ?",
+              "display-mr": "त्यावर उपचार कसे केले गेले?"
+            },
+            {
+              "id": "ID_615919605",
+              "text": "Current medication",
+              "options": [
+                {
+                  "id": "ID_1320661699",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_869820750",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_531462972",
+                  "text": "Not taking any medication",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            }
+          ],
+          "display-hi": "दिल की बीमारी",
+          "display-mr": "हृदयाच्या समस्या"
+        },
+        {
+          "id": "52dkambh5lhqmlg9bkghn1gicb",
+          "text": "Stroke",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_545498382",
+              "text": "Occured on",
+              "input-type": "date",
+              "display-or": "କେବେ ହୋଇଥିଲା",
+              "display-hi": "कब हुआ",
+              "display-mr": "कधी झाले"
+            },
+            {
+              "id": "ID_1222999660",
+              "text": "Treatment",
+              "display": "How was it treated?",
+              "display-or": "କେମିତି ଚିକିସତ୍ା କରାହେଇଥିଲା",
+              "options": [
+                {
+                  "id": "ID_1622266745",
+                  "text": "Surgery",
+                  "display-or": "ଅପରେସନ",
+                  "display-hi": "सर्जरी",
+                  "display-mr": "ऑपरेशन / शस्त्रक्रिया"
+                },
+                {
+                  "id": "ID_1348167551",
+                  "text": "Medication",
+                  "display-or": "ଔଷଧ",
+                  "display-hi": "दवा/उपचार",
+                  "display-mr": "औषध"
+                },
+                {
+                  "id": "ID_1424803469",
+                  "text": "Other [Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-or": "ଅନ୍ୟାନ୍ୟ",
+                  "display-hi": "अन्य (वर्णन करें)",
+                  "display-mr": "इतर ( वर्णन करा)"
+                }
+              ],
+              "display-hi": "कैसे ठीक हुआ?",
+              "display-mr": "त्यावर उपचार कसे केले गेले?"
+            },
+            {
+              "id": "ID_1162336019",
+              "text": "Current medication",
+              "display-or": "ଏବେ କ’ଣ ଔଷଧ ଖାଉଛନ୍ତି",
+              "options": [
+                {
+                  "id": "ID_1104534286",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-or": "କେଉଁପରି",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_718515122",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_187354967",
+                  "text": "Not taking any medication",
+                  "display-or": "ନାଁ",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            }
+          ],
+          "display-hi": "आघात (स्ट्रोक)",
+          "display-mr": "लकवा"
+        },
+        {
+          "id": "62id4878o7nteih18eiup3j92c",
+          "text": "Diabetes",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "52bvud72kt13igfoauucsubnuv",
+              "text": "Since",
+              "display": "When were you diagnosed?",
+              "input-type": "date",
+              "display-hi": "आपको कब पता चला?",
+              "display-mr": "निदान कधी झाले"
+            },
+            {
+              "id": "ID_1870024323",
+              "text": "Current medication",
+              "options": [
+                {
+                  "id": "ID_274560179",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_655035866",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_1247339075",
+                  "text": "Not taking any medication",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            },
+            {
+              "id": "25b4es720c3ehote8hv9824tck",
+              "text": "Last measured Blood Sugar and HbA1C",
+              "options": [
+                {
+                  "id": "ID_1804659027",
+                  "text": "Not known",
+                  "display-hi": "नहीं पता",
+                  "display-mr": "माहित नाही"
+                },
+                {
+                  "id": "ID_701392638",
+                  "text": "[Enter if known]",
+                  "display-hi": "(अगर पता हैस तो दर्ज करें)",
+                  "display-mr": "( माहित असेल तर भरा)",
+                  "options": [
+                    {
+                      "id": "ID_701392638_1",
+                      "text": "[Enter if known]",
+                      "input-type": "text",
+                      "display-or": "[ଯଦି ଜାଣ ତେବେ କୁହ]",
+                      "display-hi": "(अगर पता हैस तो दर्ज करें)",
+                      "display-gu": "[જો જાણતા હો તો દાખલ કરો]",
+                      "display-as": "[জানে যদি প্রকাশ কৰা]",
+                      "display-bn": "[জানা থাকলে লিখুন]",
+                      "display-kn": "[ತಿಳಿದಿದ್ದರೆ ನಮೂದಿಸಿ]",
+                      "display-mr": "( माहित असेल तर भरा)"
+                    }
+                  ]
+                }
+              ],
+              "display-hi": "आखिरी बार ब्लड शुगर और HbA1C की जांच कब करवाई थी",
+              "display-mr": "रक्तातील साखर आणि HbA1C चे अखेरचे मोजलेले प्रमाण"
+            }
+          ],
+          "display-hi": "डायबिटीज",
+          "display-mr": "मधुमेह"
+        },
+        {
+          "id": "6f3rb25rb5q5jvgffdv2jvr8rv",
+          "text": "Asthma",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_479323452",
+              "display": "When were you diagnosed?",
+              "input-type": "date",
+              "display-hi": "आपको कब पता चला?",
+              "display-mr": "निदान कधी झाले",
+              "options": [
+                {
+                  "id": "ID_479323452_1",
+                  "text": "Since",
+                  "display": "When were you diagnosed?",
+                  "input-type": "date",
+                  "display-or": "କେବେ କେଉଁଠାରେ ତୁମେ ରୋଗର ନିରୁପଣ କରିଥିଲ?",
+                  "display-hi": "आपको कब पता चला?",
+                  "display-gu": "ક્યારે નિદાન થયું હતું?",
+                  "display-as": "আপুনি কেতিয়া নির্ণয় কৰিছিলে ?",
+                  "display-bn": "আপনি যখন নির্ণয় করা হয়েছিল?",
+                  "display-kn": "ಯಾವಾಗ ರೋಗನಿರ್ಣಯ ವಾಯಿತು ?",
+                  "display-mr": "निदान कधी झाले"
+                }
+              ]
+            },
+            {
+              "id": "ID_1533422168",
+              "text": "Current medication",
+              "options": [
+                {
+                  "id": "ID_71438631",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_787226083",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_1961136611",
+                  "text": "Not taking any medication",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            }
+          ],
+          "display-hi": "दमा",
+          "display-mr": "दमा"
+        },
+        {
+          "id": "38l21icefr40paikr5t8n4s46r",
+          "text": "Tuberculosis",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_856359070",
+              "text": "Since",
+              "display": "When were you diagnosed?",
+              "display-hi": "आपको कब पता चला?",
+              "display-mr": "निदान कधी झाले",
+              "options": [
+                {
+                  "id": "ID_856359070_1",
+                  "text": "Since",
+                  "display": "When were you diagnosed?",
+                  "input-type": "date",
+                  "display-or": "କେବେ କେଉଁଠାରେ ତୁମେ ରୋଗର ନିରୁପଣ କରିଥିଲ?",
+                  "display-hi": "आपको कब पता चला?",
+                  "display-gu": "ક્યારે નિદાન થયું હતું?",
+                  "display-as": "আপুনি কেতিয়া নির্ণয় কৰিছিলে ?",
+                  "display-bn": "আপনি যখন নির্ণয় করা হয়েছিল?",
+                  "display-kn": "ಯಾವಾಗ ರೋಗನಿರ್ಣಯ ವಾಯಿತು ?",
+                  "display-mr": "निदान कधी झाले"
+                }
+              ]
+            },
+            {
+              "id": "6q6oio9kdl9qm1ng0pnaa4t32g",
+              "text": "Treatment",
+              "display": "Did you take treatment?",
+              "options": [
+                {
+                  "id": "ID_473168257",
+                  "text": "Took treatment",
+                  "language": "%",
+                  "options": [
+                    {
+                      "id": "1grbt54tt3su55qqfdbnmhr1vu",
+                      "text": "[Describe]",
+                      "input-type": "text",
+                      "language": "%",
+                      "display-hi": "(वर्णन करें)",
+                      "display-mr": "(वर्णन करा)"
+                    },
+                    {
+                      "id": "ID_1011048331",
+                      "text": "How long did you take the treatment?",
+                      "input-type": "duration",
+                      "language": "Treatment duration",
+                      "display-hi": "कितने समय तक यह इलाज चला?",
+                      "display-mr": "किती कालावधी साठी उपचार घेतले होते"
+                    }
+                  ],
+                  "display-hi": "हाँ, इलाज करवाया",
+                  "display-mr": "उपचार घेतले होते"
+                },
+                {
+                  "id": "ID_1673676697",
+                  "text": "Did not take treatment",
+                  "display-hi": "कोई इलाज नहीं करवाया",
+                  "display-mr": "कोणतेही उपचार घेतले नाहीत"
+                }
+              ],
+              "display-hi": "क्या अपने कभी इलाज करवाया?",
+              "display-mr": "तुम्ही उपचार घेतले का"
+            }
+          ],
+          "display-hi": "टी बी (क्षय रोग)",
+          "display-mr": "क्षयरोग"
+        },
+        {
+          "id": "50rcn4m78a1baik3sm5b4solsf",
+          "text": "Cancer/Tumour",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_1789247298",
+              "text": "Cancer/Tumour type",
+              "display": "Describe the disease",
+              "display-hi": "बीमारी के बारे में बताएँ",
+              "display-mr": "रोगाचे वर्णन करा",
+              "options": [
+                {
+                  "id": "ID_1789247298_1",
+                  "text": "Cancer/Tumour type",
+                  "display": "Describe the disease",
+                  "input-type": "text",
+                  "display-or": "ରୋଗ ବିଷୟରେ ବର୍ଣ୍ଣନାକର ।",
+                  "display-hi": "बीमारी के बारे में बताएँ",
+                  "display-gu": "બીમારીને વર્ણવો",
+                  "display-as": "ৰোগ বর্ণনা কৰা",
+                  "display-bn": "রোগের বর্ণনা দাও",
+                  "display-kn": "ರೋಗದ  ಬಗ್ಗೆ ವಿವರಿಸಿ",
+                  "display-mr": "रोगाचे वर्णन करा"
+                }
+              ]
+            },
+            {
+              "id": "ID_131276372",
+              "text": "Since",
+              "display": "When were you diagnosed?",
+              "display-hi": "आपको कब पता चला?",
+              "display-mr": "निदान कधी झाले",
+              "options": [
+                {
+                  "id": "ID_131276372_1",
+                  "text": "Since",
+                  "display": "When were you diagnosed?",
+                  "input-type": "date",
+                  "display-or": "କେବେ କେଉଁଠାରେ ତୁମେ ରୋଗର ନିରୁପଣ କରିଥିଲ?",
+                  "display-hi": "आपको कब पता चला?",
+                  "display-gu": "ક્યારે નિદાન થયું હતું?",
+                  "display-as": "আপুনি কেতিয়া নির্ণয় কৰিছিলে ?",
+                  "display-bn": "আপনি যখন নির্ণয় করা হয়েছিল?",
+                  "display-kn": "ಯಾವಾಗ ರೋಗನಿರ್ಣಯ ವಾಯಿತು ?",
+                  "display-mr": "निदान कधी झाले"
+                }
+              ]
+            },
+            {
+              "id": "ID_1460526165",
+              "text": "Current medication",
+              "options": [
+                {
+                  "id": "ID_1815440872",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_049574751",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_1363444390",
+                  "text": "Not taking any medication",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            }
+          ],
+          "display-hi": "कैंसर/ट्यूमर",
+          "display-mr": "कर्करोग/ गाठ"
+        },
+        {
+          "id": "ID_795133263",
+          "text": "HIV/AIDS",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_138631831",
+              "text": "Since",
+              "display": "When were you diagnosed?",
+              "display-hi": "आपको कब पता चला?",
+              "display-mr": "निदान कधी झाले",
+              "options": [
+                {
+                  "id": "ID_138631831_1",
+                  "text": "Since",
+                  "display": "When were you diagnosed?",
+                  "input-type": "date",
+                  "display-or": "କେବେ କେଉଁଠାରେ ତୁମେ ରୋଗର ନିରୁପଣ କରିଥିଲ?",
+                  "display-hi": "आपको कब पता चला?",
+                  "display-gu": "ક્યારે નિદાન થયું હતું?",
+                  "display-as": "আপুনি কেতিয়া নির্ণয় কৰিছিলে ?",
+                  "display-bn": "আপনি যখন নির্ণয় করা হয়েছিল?",
+                  "display-kn": "ಯಾವಾಗ ರೋಗನಿರ್ಣಯ ವಾಯಿತು ?",
+                  "display-mr": "निदान कधी झाले"
+                }
+              ]
+            },
+            {
+              "id": "ID_1680905163",
+              "text": "Current medication",
+              "options": [
+                {
+                  "id": "ID_1324404695",
+                  "text": "[Describe]",
+                  "input-type": "text",
+                  "language": "%",
+                  "display-hi": "(वर्णन करें)",
+                  "display-mr": "(वर्णन करा)"
+                },
+                {
+                  "id": "ID_448556726",
+                  "text": "Can't tell the name of a medicine",
+                  "display-mr": "औषधाचे नाव सांगू शकत नाही"
+                },
+                {
+                  "id": "ID_1584603543",
+                  "text": "Not taking any medication",
+                  "display-hi": "कोई दवा नहीं ले रहे हैं",
+                  "display-mr": "कोणतेही औषध घेत नाही"
+                }
+              ],
+              "display-hi": "अभी ली जाने वाली दवा",
+              "display-mr": "सध्या चालू असणारे औषध"
+            }
+          ],
+          "display-hi": "एच.आई.वी./एड्स",
+          "display-mr": "एच् आई वी/एड्स"
+        },
+        {
+          "id": "5b04qcal4vufiuiughhpt03qi2",
+          "text": "Operation",
+          "isRequired": true,
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "6n6qdfi3hnt49qrrscul658kfl",
+              "text": "Location/Type",
+              "display": "What was the operation?",
+              "isRequired": true,
+              "multi-choice": true,
+              "options": [
+                {
+                  "id": "0gfqoo018929uap939vu824kub",
+                  "text": "Head (Eyes/Ears/Nose/Mouth)",
+                  "display-hi": "सिर (आँख/कान/नाक/मुंह)",
+                  "display-mr": "डोके (डोळे/कान/नाक/तोंड)"
+                },
+                {
+                  "id": "03nejfqipjq4c23mnt1qbldubo",
+                  "text": "Neck",
+                  "display-hi": "गर्दन",
+                  "display-mr": "गळा"
+                },
+                {
+                  "id": "1nfbsi9tkga3kdbv76g5g30lsa",
+                  "text": "Chest (Heart/Lung/Breast)",
+                  "display-hi": "छाती (दिल/फेफड़ा/स्तन)",
+                  "display-mr": "छाती (हृदय/फुफ्फुस/स्तन)"
+                },
+                {
+                  "id": "6kn2b76huhl9u3bu43prloda3t",
+                  "text": "Abdomen (Stomach/Liver/Bile/Kidney/Colon)",
+                  "display-hi": "पेट वाला हिस्सा (पेट/लीवर/पित्त/किडनी/कोलन)",
+                  "display-mr": "उदर (पोट/यकृत/पित्त/मूत्रपिंड/कोलन)"
+                },
+                {
+                  "id": "3ponp65pt9bq34bdeq8gfgs25m",
+                  "text": "Back/Spine",
+                  "display-hi": "पीठ/रीढ़",
+                  "display-mr": "पाठ/पाठीचा कणा"
+                },
+                {
+                  "id": "2crafqisr99g2t85728nmpda9s",
+                  "text": "Hip",
+                  "display-hi": "कमर",
+                  "display-mr": "कंबर"
+                },
+                {
+                  "id": "2hojliuelejcmv1m1ki2qardfl",
+                  "text": "Arms (Elbows/Wrist)",
+                  "display-hi": "बाहें (कोहनी/कलाई)",
+                  "display-mr": "हात (कोपर/मनगट)"
+                },
+                {
+                  "id": "7v5fg9qha5ftfpocc5p3j3llin",
+                  "text": "Legs (Knees/Feet)",
+                  "display-hi": "पैर (घुटना/पंजा)",
+                  "display-mr": "पाय (गुडघे/पाय)"
+                },
+                {
+                  "id": "0gaej2j5rll5ts1o3f8nm0iml4",
+                  "text": "Prostate",
+                  "display-hi": "पौरुष ग्रंथि (प्रॉस्टेट)",
+                  "display-mr": "पुर:स्थ-ग्रंथि"
+                },
+                {
+                  "id": "4obc47pd9rkcp60ae9hh3lljvr",
+                  "text": "C-Section",
+                  "display-hi": "सी-सेक्शन",
+                  "display-mr": "शस्त्रक्रियेद्वारे प्रसूती"
+                },
+                {
+                  "id": "2pdjbliq1pbkvh1vjcffrtsku6",
+                  "text": "Hysterectomy",
+                  "display-hi": "गर्भाशय निकाल देना (हिस्टरेक्टमी)",
+                  "display-mr": "गर्भाशय उच्छेदन"
+                },
+                {
+                  "id": "ID_843281245",
+                  "text": "Other [Describe]",
+                  "input-type": "text",
+                  "display-hi": "अन्य (वर्णन करें)",
+                  "display-mr": "इतर ( वर्णन करा)"
+                }
+              ],
+              "display-hi": "किसका ऑपरेशन हुआ था?",
+              "display-mr": "ऑपरेशन शरीराच्या कुठल्या अवयवाची केली?"
+            },
+            {
+              "id": "ID_904676221",
+              "text": "Occured on",
+              "display": "When did it occur?",
+              "isRequired": true,
+              "display-hi": "यह कब हुआ?",
+              "display-mr": "हे कधी झाले",
+              "options": [
+                {
+                  "id": "ID_904676221",
+                  "text": "Occured on",
+                  "display": "When did it occur?",
+                  "input-type": "date",
+                  "isRequired": true,
+                  "display-or": "ଏହା କେବେ ହୋଇଥିଲା?",
+                  "display-hi": "यह कब हुआ?",
+                  "display-gu": "તે ક્યારે થયું?",
+                  "display-as": "কেতিয়া এটো ঘটিছে?",
+                  "display-bn": "এটা কখন ঘটেছে?",
+                  "display-kn": "ಅದು ಯಾವಾಗ ಸಂಭವಿಸಿತು?",
+                  "display-mr": "हे कधी झाले"
+                }
+              ]
+            }
+          ],
+          "display-hi": "ऑपरेशन",
+          "display-mr": "ऑपरेशन"
+        },
+        {
+          "id": "533u2k4n4971j34dcvljkv53up",
+          "text": "Accident",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_948346954",
+              "text": "Occured on",
+              "display": "When did it occur?",
+              "display-hi": "यह कब हुआ?",
+              "display-mr": "हे कधी झाले",
+              "options": [
+                {
+                  "id": "ID_948346954_1",
+                  "text": "Occured on",
+                  "display": "When did it occur?",
+                  "input-type": "date",
+                  "display-or": "ଏହା କେବେ ହୋଇଥିଲା?",
+                  "display-hi": "यह कब हुआ?",
+                  "display-gu": "તે ક્યારે થયું?",
+                  "display-as": "কেতিয়া এটো ঘটিছে?",
+                  "display-bn": "এটা কখন ঘটেছে?",
+                  "display-kn": "ಅದು ಯಾವಾಗ ಸಂಭವಿಸಿತು?",
+                  "display-mr": "हे कधी झाले"
+                }
+              ]
+            }
+          ],
+          "display-hi": "एक्सीडेंट/दुर्घटना",
+          "display-mr": "अपघात"
+        },
+        {
+          "id": "ID_1217722719",
+          "text": "Hospitalization",
+          "multi-choice": true,
+          "options": [
+            {
+              "id": "ID_601054142",
+              "text": "Occured on",
+              "display": "When did it occur?",
+              "display-hi": "यह कब हुआ?",
+              "display-mr": "हे कधी झाले",
+              "options": [
+                {
+                  "id": "ID_601054142_1",
+                  "text": "Occured on",
+                  "display": "When did it occur?",
+                  "input-type": "date",
+                  "display-or": "ଏହା କେବେ ହୋଇଥିଲା?",
+                  "display-hi": "यह कब हुआ?",
+                  "display-gu": "તે ક્યારે થયું?",
+                  "display-as": "কেতিয়া এটো ঘটিছে?",
+                  "display-bn": "এটা কখন ঘটেছে?",
+                  "display-kn": "ಅದು ಯಾವಾಗ ಸಂಭವಿಸಿತು?",
+                  "display-mr": "हे कधी झाले"
+                }
+              ]
+            },
+            {
+              "id": "ID_1902903650",
+              "text": "Reason",
+              "display-hi": "कारण",
+              "display-mr": "कारण",
+              "options": [
+                {
+                  "id": "ID_1902903650_1",
+                  "text": "Reason",
+                  "input-type": "text",
+                  "display-or": "କାରଣ",
+                  "display-hi": "कारण",
+                  "display-gu": "કારણ",
+                  "display-as": "কাৰণ",
+                  "display-bn": "কারণ",
+                  "display-kn": "ಕಾರಣ",
+                  "display-mr": "कारण"
+                }
+              ]
+            },
+            {
+              "id": "ID_1440129311",
+              "text": "Duration",
+              "display": "How long were you hospitalized?",
+              "display-hi": "कितनी दिन तक आप अस्पताल में भर्ती थे?",
+              "display-mr": "किती दिवसांसाठी दवाखान्यात होतात?",
+              "options": [
+                {
+                  "id": "ID_1440129311_1",
+                  "text": "Duration",
+                  "display": "How long were you hospitalized?",
+                  "input-type": "duration",
+                  "display-or": "କେଉଁଠାରେ ଓ କେତେ ଦିନ ଡାକ୍ତରଖାନାରେ ଥିଲ?",
+                  "display-hi": "कितनी दिन तक आप अस्पताल में भर्ती थे?",
+                  "display-gu": "આપ કેટલા સમય સુધી હોસ્પિટલમાં દાખલ રહ્યાં હતાં?",
+                  "display-as": "কিমান দিন আপুনি হস্পিতলত ভর্তি হৈছিল?",
+                  "display-bn": "আপনি কতদিন হাসপাতালে ভর্তি ছিলেন?",
+                  "display-kn": "ನೀವು ಎಷ್ಟು ದಿನ ಆಸ್ಪತ್ರೆಗೆ ದಾಖಲಾಗಿದ್ದೀರಿ?",
+                  "display-mr": "किती दिवसांसाठी दवाखान्यात होतात?"
+                }
+              ]
+            }
+          ],
+          "display-hi": "अस्पताल में भर्ती",
+          "display-mr": "दवाखान्यात दाखल झाले"
+        },
+        {
+          "id": "ID_1680637083",
+          "text": "Other [Describe]",
+          "input-type": "text",
+          "display-hi": "अन्य (वर्णन करें)",
+          "display-mr": "इतर ( वर्णन करा)"
+        },
+        {
+          "id": "ID_1701827183",
+          "text": "None",
+          "display-or": "କିଛି ନାହିଁ",
+          "display-hi": "नहीं",
+          "exclude-from-multi-choice": true,
+          "display-mr": "नाही"
+        }
+      ],
+      "display-hi": "क्या आपको इनमें से किसी रोग का इतिहास है?",
+      "display-mr": "तुम्हाला खालीलपैकी कोणत्याही आजाराचा इतिहास आहे का?"
+    },
+    {
+      "id": "ID_1294148047",
+      "text": "Drug history",
+      "isRequired": true,
+      "display": "Have you recently taken any kind of medicine (including ayurvedic/homeopathic/unani/herbal)?",
+      "options": [
+        {
+          "id": "ID_1388678356",
+          "text": "No",
+          "language": "No recent medication",
+          "display-hi": "नहीं आया",
+          "display-mr": "नाही"
+        },
+        {
+          "id": "ID_465969786",
+          "text": "Yes",
+          "language": "%",
+          "display-or": "ହଁ",
+          "havingNestedQuestion": "true",
+          "options": [
+            {
+              "id": "ID_1637984611",
+              "text": "Name of Medications",
+              "multi-choice": "true",
+              "options": [
+                {
+                  "id": "ID_691177808",
+                  "text": "Medication name 1",
+                  "display-or": "ଔଷଧ ନାମ 1",
+                  "display-mr": "औषधाचे नाव १",
+                  "havingNestedQuestion": "true",
+                  "options": [
+                    {
+                      "id": "ID_405728773",
+                      "text": "Medication Name",
+                      "display-mr": "औषधाचे नाव",
+                      "options": [
+                        {
+                          "id": "ID_1618748404",
+                          "text": "[Enter Name]",
+                          "input-type": "text",
+                          "display-hi": "[नाम दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "दवा का नाम"
+                    },
+                    {
+                      "id": "ID_1832294442",
+                      "text": "From",
+                      "display-or": "କେବେଠାରୁ",
+                      "display-mr": "पासून",
+                      "options": [
+                        {
+                          "id": "ID_1100299400",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब से"
+                    },
+                    {
+                      "id": "ID_956950570",
+                      "text": "To",
+                      "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ",
+                      "display-mr": "ते",
+                      "options": [
+                        {
+                          "id": "ID_215894154",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब तक"
+                    }
+                  ],
+                  "display-hi": "दवा का नाम 1"
+                },
+                {
+                  "id": "ID_106071276",
+                  "text": "Medication name 2",
+                  "display-or": "ଔଷଧ ନାମ 2",
+                  "display-mr": "औषधाचे नाव २",
+                  "havingNestedQuestion": "true",
+                  "options": [
+                    {
+                      "id": "ID_520138284",
+                      "text": "Medication Name",
+                      "display-mr": "औषधाचे नाव",
+                      "options": [
+                        {
+                          "id": "ID_991738085",
+                          "text": "[Enter Name]",
+                          "input-type": "text",
+                          "display-hi": "[नाम दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "दवा का नाम"
+                    },
+                    {
+                      "id": "ID_1202221087",
+                      "text": "From",
+                      "display-or": "କେବେଠାରୁ",
+                      "display-mr": "पासून",
+                      "options": [
+                        {
+                          "id": "ID_395027514",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब से"
+                    },
+                    {
+                      "id": "ID_1668657592",
+                      "text": "To",
+                      "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ",
+                      "display-mr": "ते",
+                      "options": [
+                        {
+                          "id": "ID_1348966874",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब तक"
+                    }
+                  ],
+                  "display-hi": "दवा का नाम 2"
+                },
+                {
+                  "id": "ID_1452554896",
+                  "text": "Medication name 3",
+                  "display-or": "ଔଷଧ ନାମ 3",
+                  "display-mr": "औषधाचे नाव ३",
+                  "havingNestedQuestion": "true",
+                  "options": [
+                    {
+                      "id": "ID_65054636",
+                      "text": "Medication Name",
+                      "display-mr": "औषधाचे नाव",
+                      "options": [
+                        {
+                          "id": "ID_1920182446",
+                          "text": "[Enter Name]",
+                          "input-type": "text",
+                          "display-hi": "[नाम दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "दवा का नाम"
+                    },
+                    {
+                      "id": "ID_1291084761",
+                      "text": "From",
+                      "display-or": "କେବେଠାରୁ",
+                      "display-mr": "पासून",
+                      "options": [
+                        {
+                          "id": "ID_621398670",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब से"
+                    },
+                    {
+                      "id": "ID_1373847161",
+                      "text": "To",
+                      "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ",
+                      "display-mr": "ते",
+                      "options": [
+                        {
+                          "id": "ID_415646116",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब तक"
+                    }
+                  ],
+                  "display-hi": "दवा का नाम 3"
+                },
+                {
+                  "id": "ID_868542375",
+                  "text": "Medication name 4",
+                  "display-or": "ଔଷଧ ନାମ 4",
+                  "display-mr": "औषधाचे नाव ४",
+                  "havingNestedQuestion": "true",
+                  "options": [
+                    {
+                      "id": "ID_555146377",
+                      "text": "Medication Name",
+                      "display-mr": "औषधाचे नाव",
+                      "options": [
+                        {
+                          "id": "ID_267812407",
+                          "text": "[Enter Name]",
+                          "input-type": "text",
+                          "display-hi": "[नाम दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "दवा का नाम"
+                    },
+                    {
+                      "id": "ID_1692819891",
+                      "text": "From",
+                      "display-or": "କେବେଠାରୁ",
+                      "display-mr": "पासून",
+                      "options": [
+                        {
+                          "id": "ID_1554157828",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब से"
+                    },
+                    {
+                      "id": "ID_1816453954",
+                      "text": "To",
+                      "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ",
+                      "display-mr": "ते",
+                      "options": [
+                        {
+                          "id": "ID_1875598777",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब तक"
+                    }
+                  ],
+                  "display-hi": "दवा का नाम 4"
+                },
+                {
+                  "id": "ID_1779740450",
+                  "text": "Medication name 5",
+                  "display-or": "ଔଷଧ ନାମ 5",
+                  "display-mr": "औषधाचे नाव ५",
+                  "havingNestedQuestion": "true",
+                  "options": [
+                    {
+                      "id": "ID_1698952569",
+                      "text": "Medication Name",
+                      "display-mr": "औषधाचे नाव",
+                      "options": [
+                        {
+                          "id": "ID_429012709",
+                          "text": "[Enter Name]",
+                          "input-type": "text",
+                          "display-hi": "[नाम दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "दवा का नाम"
+                    },
+                    {
+                      "id": "ID_1939518798",
+                      "text": "From",
+                      "display-or": "କେବେଠାରୁ",
+                      "display-mr": "पासून",
+                      "options": [
+                        {
+                          "id": "ID_997274723",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब से"
+                    },
+                    {
+                      "id": "ID_448033427",
+                      "text": "To",
+                      "display-or": "କେଉଁ ପର୍ଯ୍ଯନ୍ତ",
+                      "display-mr": "ते",
+                      "options": [
+                        {
+                          "id": "ID_1618464859",
+                          "text": "[Enter Date]",
+                          "input-type": "date",
+                          "language": "%",
+                          "display-hi": "[तारीख दर्ज करें]"
+                        }
+                      ],
+                      "display-hi": "कब तक"
+                    }
+                  ],
+                  "display-hi": "दवा का नाम 5"
+                }
+              ],
+              "display-hi": "दवाओं का नाम",
+              "display-mr": "औषधांचे नाव"
+            },
+            {
+              "id": "ID_1705452987",
+              "text": "Medication Adherence",
+              "display": "How often do you have trouble taking medicines the way you have been told to take them?",
+              "display-or": "ଔଷଦ ନେବା ସମୟ ରେ ଅସୁବିଧା ସେମାନଂକୁ ପଚାରିଥିଲେ କି?",
+              "options": [
+                {
+                  "id": "ID_621583351",
+                  "text": "I always take them as prescribed",
+                  "language": "Patient always takes medicine as prescribed",
+                  "display-or": "ମୁ ସବୁ ବେଳେ ସେମାଙ୍କର ଚିଠା ନିଏ",
+                  "display-hi": "मैं हमेशा जैसे बताया गया वैसे लेता हु",
+                  "display-mr": "मी नेहमी ते लिहून दिल्याप्रमाणे घेतो."
+                },
+                {
+                  "id": "ID_1330901869",
+                  "text": "Sometimes I take them as prescribed",
+                  "language": "Patient sometimes takes medicines as prescribed",
+                  "display-or": "ବେଳେ ବେଳେ ସେମାଙ୍କର ଚିଠା ନିଏ",
+                  "display-hi": "मैं हमेशा जैसे बताया गया वैसे कभी कभी  लेता हु",
+                  "display-mr": "कधीकधी मी ते लिहून दिल्याप्रमाणे घेतो."
+                },
+                {
+                  "id": "ID_1896221092",
+                  "text": "I seldom take them as prescribed",
+                  "language": "Patient seldom takes medicine as prescribed",
+                  "display-or": "କିଛି ସମୟରେ ନିଏ",
+                  "display-hi": "मैं हमेशा जैसे बताया गया वैसे बहुत कम ही बार  लेता हु",
+                  "display-mr": "मी क्वचितच ते लिहून दिल्याप्रमाणे घेतो."
+                }
+              ],
+              "display-hi": "क्या आपको जैसे बताया गया वैसे दवा लेने में कितनी बार परेशानी हुई है",
+              "display-mr": "तुम्हाला सांगितलेल्या पद्धतीने औषधे घेण्यास किती वेळा त्रास होतो?"
+            }
+          ],
+          "display-hi": "हा",
+          "display-mr": "हो"
+        }
+      ],
+      "display-hi": "क्या आपने हाल में कोई दवा लिया है (आयुर्वेदिक/होम्योपैथिक/यूनानी/जड़ी-बूटी सहित)",
+      "display-mr": "तुम्ही अलीकडे कोणत्याही प्रकारचे औषध (आयुर्वेदिक/होमिओपॅथिक/युनानी/हर्बलयुक्त) घेतले आहे का?"
+    }
+  ],
+  "display-hi": "रोगी का इतिहास",
+  "display-mr": "रुग्णाचा इतिहास"
+}

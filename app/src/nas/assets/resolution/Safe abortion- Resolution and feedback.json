@@ -1,0 +1,224 @@
+{
+    "id": "ID_1662266067",
+    "text": "Safe abortion- Resolution & feedback",
+    "options": [
+        {
+            "id": "ID_1642650803",
+            "text": "Requested Referral",
+            "display": "Would you like to be referred to a safe, non-judgmental service for support?",
+            "language": "%",
+            "options": [
+                {
+                    "id": "ID_355444765",
+                    "text": "Yes",
+                    "language": "Caller requested referral",
+                    "display-hi": "हां"
+                },
+                {
+                    "id": "ID_708254628",
+                    "text": "No",
+                    "language": "Caller did not request referral",
+                    "display-hi": "नहीं"
+                },
+                {
+                    "id": "ID_623313120",
+                    "text": "Other option (Enter text)",
+                    "input-type": "text",
+                    "display-hi": "अन्य विकल्प (यहाँ लिखें)"
+                }
+            ],
+            "display-hi": "क्या आप चाहेंगे कि सहयोग पाने के लिए आपको एक सुरक्षित, गैर-न्यायिक सेवा के लिए रेफर किया जाए ?"
+        },
+        {
+            "id": "ID_329501265",
+            "text": "Referral",
+            "language": "Caller was referred to",
+            "display": "Where was the caller referred to? (Choose all that apply, if applicable)",
+            "options": [
+                {
+                    "id": "ID_1300731257",
+                    "text": "Clinic-medical provider (for follow up care post-MA)",
+                    "display-hi": "क्लिनिक-चिकित्सा प्रदाता (एमए के बाद फॉलो अप (अनुवर्ती) देखभाल के लिए)"
+                },
+                {
+                    "id": "ID_1300731259",
+                    "text": "Partner organization (for assistance with resources outside of Vikalp's reach)",
+                    "display-hi": "सहयोगी संगठन (विकल्प की पहुंच से बाहर के संसाधनों की सहायता के लिए"
+                },
+                {
+                    "id": "ID_1300731250",
+                    "text": "Website (for more information about Vikalp)",
+                    "display-hi": "वेबसाइट (विकल्प के बारे में अधिक जानकारी के लिए)"
+                },
+                {
+                    "id": "ID_1300731254",
+                    "text": "Lawyer (for domestic violence purposes)",
+                    "display-hi": "वकील (घरेलू हिंसा के उद्देश्यों के लिए)"
+                },
+                {
+                    "id": "ID_1300731258",
+                    "text": "Other (Enter text)",
+                    "input-type": "text",
+                    "display-hi": "अन्य विकल्प (यहाँ लिखें)"
+                }
+            ],
+            "display-hi": "फोन करने वाले को कहां रेफर किया गया था? (यदि लागू हो तो लागू होने वाले सभी का चयन करें)"
+        },
+        {
+            "id": "ID_1300731257",
+            "text": "Follow-up",
+            "display": "Would you like us to follow up with you over the phone in 1-2 weeks?",
+            "options": [
+                {
+                    "id": "ID_739643875",
+                    "text": "Yes",
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1730169011",
+                            "text": "Reaching Out by number",
+                            "display": "Do you own this phone/have access to it all the time and would you be comfortable with us reaching out on this number after a couple of days?",
+                            "options": [
+                                {
+                                    "id": "ID_115424552",
+                                    "text": "Yes (enter phone number)",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-hi": "हां, (फ़ोन नंबर दर्ज करें)"
+                                },
+                                {
+                                    "id": "ID_1180255651",
+                                    "text": "No, I do not own this phone and do not have access to it all the time",
+                                    "language": "Caller does not own this phone and does not have access to it all the time",
+                                    "display-hi": "यह मेरा फोन नहीं है और यह मेरे पास हर समय नहीं होता है"
+                                },
+                                {
+                                    "id": "ID_1348595148",
+                                    "text": "No I do not feel comfortable with someone calling this phone",
+                                    "language": "Caller does not feel comfortable with someone calling this phone",
+                                    "display-hi": "नहीं, जब कोई इस नंबर पर कॉल करता है, तो मैं आरामदेह महसूस नहीं करता हूं ।"
+                                }
+                            ],
+                            "display-hi": "क्या यह आपका फोन है/आपके पास हर समय होता है और कुछ दिनों के बाद हम आपको इस नंबर पर कॉल करें तो क्या आप ठीक रहेगा ?"
+                        },
+                        {
+                            "id": "ID_51342815",
+                            "text": "Other Number or email",
+                            "display": "Do you have another way for us to contact you? Would you prefer leaving another number of email?",
+                            "language": "%",
+                            "options": [
+                                {
+                                    "id": "ID_676917468",
+                                    "text": "Yes, I have another phone (enter phone number)",
+                                    "input-type": "text",
+                                    "language": "Another phone",
+                                    "display-hi": "हां, मेरे पास दूसरा फ़ोन है (फ़ोन नंबर दर्ज करें)"
+                                },
+                                {
+                                    "id": "ID_1008216524",
+                                    "text": "Yes, I have an email (enter email)",
+                                    "input-type": "text",
+                                    "language": "Another email",
+                                    "display-hi": "हां, मेरे पास ईमेल है (ईमेल दर्ज करें)"
+                                },
+                                {
+                                    "id": "ID_1403014719",
+                                    "text": "Other form of communication (enter text)",
+                                    "input-type": "text",
+                                    "language": "Other communication",
+                                    "display-hi": "संचार का अन्य रूप (यहाँ लिखें)"
+                                },
+                                {
+                                    "id": "ID_1231091919",
+                                    "text": "No ",
+                                    "language": "Does not have any other number",
+                                    "display-hi": "नहीं"
+                                }
+                            ],
+                            "display-hi": "क्या आपके पास हमारे लिए आप से संपर्क करने के लिए कोई दूसरा तरीका है? क्या आप कोई अन्य नंबर या ईमेल देना चाहेंगे करेंगे?"
+                        }
+                    ],
+                    "display-hi": "हां"
+                },
+                {
+                    "id": "ID_1381486609",
+                    "text": "No",
+                    "language": "Denied Follow-up",
+                    "display-hi": "नहीं"
+                }
+            ],
+            "display-hi": "क्या आप चाहते हैं कि हम 1-2 सप्ताह में आपसे फ़ोन पर फॉलो अप लें ?"
+        },
+        {
+            "id": "ID_1071628725",
+            "text": "Follow-up date",
+            "display": "Enter Follow-up date (If caller has agreed)",
+            "options": [
+                {
+                    "id": "ID_715674310",
+                    "text": "[Enter Date]",
+                    "input-type": "date",
+                    "display-hi": "[तारीख दर्ज करें]"
+                }
+            ],
+            "display-hi": "फिर से कॉल करने की तारीख दर्ज करें (यदि कॉलर सहमत हो गया है)"
+        },
+        {
+            "id": "ID_351310896",
+            "text": "Number of times called helpline",
+            "display": "How many times have you called the helpline?",
+            "options": [
+                {
+                    "id": "ID_1625598812",
+                    "text": "[Enter Number Given]",
+                    "input-type": "number",
+                    "display-hi": "[दिया गया नंबर दर्ज करें]"
+                }
+            ],
+            "display-hi": "आपने कितनी बार हेल्पलाइन पर कॉल किया है?"
+        },
+        {
+            "id": "ID_1473718833",
+            "text": "Felt Supported",
+            "display": "Did you feel supported by the helpline?- Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_423033503",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "क्या आपको यह हेल्पलाइन आपको मददगार लगी? - 0-5 के पैमाने का उपयोग करते हुए अंक दीजिये, जहां 0= बिल्कुल नहीं, और 5= हां, पूरी तरह से"
+        },
+        {
+            "id": "ID_1188055859",
+            "text": "Recommend to friends and family",
+            "display": "How likely are you to recommend Vikalp Helpline to a friend or family member who needs similar support?- Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_1613963786",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "आप किसी ऐसे मित्र या परिवार के सदस्य, जिनको इसी प्रकार की मदद की जरूरत है, तो क्या उनको हेल्पलाइन के बारे में बतायेंगे? - 0-5 के पैमाने का उपयोग करते हुए अंक दीजिये, जहां 0= बिल्कुल नहीं, और 5= हां, पूरी तरह से"
+        },
+        {
+            "id": "ID_1889475483",
+            "text": "Recommendation by Caller",
+            "display": "Is there anything you would recommend in order to improve the support you received?",
+            "options": [
+                {
+                    "id": "ID_1643838677",
+                    "text": "[Describe]",
+                    "input-type": "text",
+                    "display-hi": "[वर्णन करना]"
+                }
+            ],
+            "display-hi": "आपको विकल्प हेल्पलाइन से आपको जो सलाह और मदद मिली है, उसको और भी बेहतर बनाने के लिए, क्या आप कुछ सुझाव देंगे?"
+        }
+    ],
+    "display-hi": "सुरक्षित गर्भपात"
+}

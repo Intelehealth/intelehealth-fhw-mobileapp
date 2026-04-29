@@ -1,0 +1,448 @@
+{
+    "id": "ID_546002814",
+    "text": "Oedema",
+    "display-or": "ଗୋଇଠି ଫୁଲିବା",
+    "perform-physical-exam": "Abdomen:Liver;Neck:Veins;",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1892712557",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_171957737",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "କେବେ ଠାରୁ ପ୍ରବେଶ କଲା",
+                    "display-hi": "(कब से है, दर्ज करें)",
+                    "display-mr": "(केव्हा पासून ते भरा)"
+                }
+            ],
+            "display-hi": "आपको यह लक्षण कब से है?",
+            "display-mr": "आपल्याला हे लक्षण केव्हा पासून आहे"
+        },
+        {
+            "id": "ID_377465855",
+            "text": "Site",
+            "display": "Which part of the body has oedema?",
+            "display-or": "ଶରୀର କୈଣସି ଭାଗରେ ସଫ ହେଉଛି କି ?",
+            "isRequired": true,
+            "multi-choice": false,
+            "options": [
+                {
+                    "id": "ID_193663494",
+                    "text": "Generalized",
+                    "display-or": "ସାମାନ୍ୟ ଆକୃତି",
+                    "display-hi": "पूरे शरीर में",
+                    "display-mr": "पूर्ण शरीरावर"
+                },
+                {
+                    "id": "ID_391853347",
+                    "text": "Localized",
+                    "display-or": "ସ୍ଥାନୀୟ",
+                    "options": [
+                        {
+                            "id": "ID_332090047",
+                            "text": "Describe location",
+                            "input-type": "text",
+                            "language": "to",
+                            "display-or": "ଜାଗାବର୍ଣ୍ଣ  କର",
+                            "display-hi": "स्थान का वर्णन करें",
+                            "display-mr": "जागेचे वर्णन करा"
+                        }
+                    ],
+                    "display-hi": "किसी एक स्थान पर",
+                    "display-mr": "एका जागेवर"
+                }
+            ],
+            "display-hi": "शरीर के किस भाग में सूजन/शोफ है?",
+            "display-mr": "शरीराच्या कोणत्या भागावर सूज आहे"
+        },
+        {
+            "id": "ID_1717056769",
+            "text": "Onset",
+            "display": "How did the symptom start?",
+            "display-or": "କେମିତି ଅାରମ୍ଭ ହେଲା",
+            "isRequired": true,
+            "multi-choice": false,
+            "options": [
+                {
+                    "id": "ID_1042945381",
+                    "text": "Gradually increased",
+                    "display-or": "ଧୀରେ ଧୀରେ ବଢିଛି କି",
+                    "options": [
+                        {
+                            "id": "ID_407125908",
+                            "text": "Since when",
+                            "input-type": "duration",
+                            "language": "since",
+                            "display-or": "କବେ ଠାରୁ",
+                            "display-hi": "कब से",
+                            "display-mr": "केव्हा पासून"
+                        }
+                    ],
+                    "display-hi": "धीरे-धीरे बढ़ा",
+                    "display-mr": "हळू हळू वाढले"
+                },
+                {
+                    "id": "ID_220520147",
+                    "text": "Sudden onset/recently noticed",
+                    "display-or": "ଅଚାନକ ଉପସ୍ଥିତି/ବର୍ତ୍ତମାନ ଦେଖାଗଲାକି",
+                    "display-hi": "अचानक/ हाल ही में इधर ध्यान गया",
+                    "display-mr": "अचानक/ अलीकडे लक्ष गेले"
+                }
+            ],
+            "display-hi": "यह लक्षण कैसे शुरू हुआ?",
+            "display-mr": "लक्षण कसे सुरू झाले"
+        },
+        {
+            "id": "ID_658800769",
+            "text": "Swelling symptoms",
+            "multi-choice": true,
+            "options": [
+                {
+                    "id": "ID_698313958",
+                    "text": "Pain",
+                    "display": "Is there pain in the swelling?",
+                    "isRequired": true,
+                    "multi-choice": false,
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1798329366",
+                            "text": "Yes",
+                            "language": "Swelling is painful",
+                            "display-hi": "हाँ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_781910000",
+                            "text": "No",
+                            "language": "No pain in swelling",
+                            "display-hi": "नहीं ",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "क्या सूजन मे दर्द है ",
+                    "display-mr": "सुजे मध्ये वेदना होत आहे का"
+                },
+                {
+                    "id": "ID_1620631785",
+                    "text": "Surface of swelling",
+                    "display": "How is the surface of the swelling?",
+                    "isRequired": true,
+                    "multi-choice": false,
+                    "options": [
+                        {
+                            "id": "ID_1942578951",
+                            "text": "Smooth",
+                            "display-hi": "चिकना  ",
+                            "display-mr": "गुळगुळीत"
+                        },
+                        {
+                            "id": "ID_168660419",
+                            "text": "Rough",
+                            "display-hi": "रुखड़ा ",
+                            "display-mr": "कठोर"
+                        },
+                        {
+                            "id": "ID_447186070",
+                            "text": "Other [Describe]",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟ(ବର୍ଣନା କର)",
+                            "input-type": "text",
+                            "display-hi": "अन्य (वर्णन करें)",
+                            "display-mr": "इतर ( वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "सूजन को ऊपर से छूने पर कैसा महसूस होता है ",
+                    "display-mr": "सुजेवरचा पृष्ठभाग कसा आहे"
+                }
+            ],
+            "display-hi": "सूजन के लक्षण ",
+            "display-mr": "सुजेची लक्षणे"
+        },
+        {
+            "id": "ID_1600730819",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_888423698",
+                    "text": "Difficulty breathing [Describe]",
+                    "display-or": "ନିଶ୍ୱାସ ନେବାରେ କଷ୍ଟ",
+                    "options": [
+                        {
+                            "id": "ID_1235536954",
+                            "text": "During rest",
+                            "display-or": "ବିଶ୍ରାମ ସମୟରେ",
+                            "display-hi": "आराम करते समय",
+                            "display-mr": "आराम करताना"
+                        },
+                        {
+                            "id": "ID_1045889475",
+                            "text": "On exertion",
+                            "display-or": "ପରିଶ୍ରମ ସମୟରେ",
+                            "display-hi": "शारीरिक श्रम करते समय",
+                            "display-mr": "शारीरिक श्रम करताना"
+                        },
+                        {
+                            "id": "ID_768922406",
+                            "text": "At night",
+                            "display-or": "ରାତିରେ",
+                            "display-hi": "रात में",
+                            "display-mr": "रात्री"
+                        },
+                        {
+                            "id": "ID_1441617391",
+                            "text": "Other [Describe]",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟ(ବର୍ଣନା କର)",
+                            "input-type": "text",
+                            "display-hi": "अन्य (वर्णन करें)",
+                            "display-mr": "इतर (वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "सांस लेने में तकलीफ (वर्णन करें)",
+                    "display-mr": "श्वास घेण्यास अडथळा"
+                },
+                {
+                    "id": "ID_1420482092",
+                    "text": "Decreased appetite",
+                    "display-or": "ଭୋକ କମ ଲାଗିବା",
+                    "display-hi": "भूख में कमी",
+                    "display-mr": "भूक मंदावणे"
+                },
+                {
+                    "id": "ID_420762858",
+                    "text": "Puffiness of face",
+                    "display-hi": "मुँह सूज जाना ",
+                    "display-mr": "चेहऱ्यावर सूज"
+                },
+                {
+                    "id": "ID_565923432",
+                    "text": "Change in taste",
+                    "display-or": "ସ୍ୱାଦ ଅଲଗା ଲାଗିବା",
+                    "options": [
+                        {
+                            "id": "ID_893794347",
+                            "text": "Metallic",
+                            "display-or": "ଧାତୁ",
+                            "display-hi": "धातु जैसा स्वाद",
+                            "display-mr": "धातू सारखी चव"
+                        },
+                        {
+                            "id": "ID_41192607",
+                            "text": "Fishy",
+                            "display-or": "ଆମିଷ ଗନ୍ଧ",
+                            "display-hi": "मछली के गंध जैसा",
+                            "display-mr": "माशांच्या वासासारखा"
+                        },
+                        {
+                            "id": "ID_1340988170",
+                            "text": "Other (Describe)",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟ(ବର୍ଣନା କର)",
+                            "input-type": "text",
+                            "display-hi": "अन्य (वर्णन करें)",
+                            "display-mr": "इतर (वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "स्वाद में बदलाव",
+                    "display-mr": "चवी मध्ये बदल"
+                },
+                {
+                    "id": "ID_75184580",
+                    "text": "Heat / Cold intolerance",
+                    "perform-physical-exam": "Face:Swollen Face;Neck:Thyroid swelling;",
+                    "display": "Feeling uncomfortable in hot/cold environments",
+                    "display-or": "ଥଣ୍ଡା ବା ଗରମ ବାତାବରଣ ଅସହ୍ୟ",
+                    "options": [
+                        {
+                            "id": "ID_1974116495",
+                            "text": "Heat intolerance",
+                            "display": "Feels uncomfortable in hot environments",
+                            "display-or": "ଗରମ ବାତା ବରଣରେ ଠିକ ନଲାଗିବା",
+                            "display-hi": "गर्म वातावरण में असहज महसूस करना",
+                            "display-mr": "गरम वातावरणात अस्वस्थ वाटणे"
+                        },
+                        {
+                            "id": "ID_404543370",
+                            "text": "Cold intolerance",
+                            "display": "Feels uncomfortable in cold environments",
+                            "display-or": "ଥଣ୍ଡା ବାତାବରଣରେ ଠିକ ନ ଲାଗିବା",
+                            "display-hi": "ठंडे वातावरण में असहज महसूस करना",
+                            "display-mr": "थंड वातावरणात अस्वस्थ वाटणे"
+                        }
+                    ],
+                    "display-hi": "गर्म/ ठंडे वातावरण में असहज/परेशानी महसूस करना",
+                    "display-mr": "गरम/थंड वातावरणात अस्वस्थ वाटणे"
+                },
+                {
+                    "id": "ID_181726244",
+                    "text": "Difficulty in concentrating",
+                    "display-or": "ସ୍ଥିରତା ରେ କଷ୍ଟ ହେବ",
+                    "display-hi": "ध्यान केन्द्रित करने में कठिनाई",
+                    "display-mr": "लक्ष केंद्रित करण्यात अडचण"
+                },
+                {
+                    "id": "ID_385213903",
+                    "text": "Change in urine output",
+                    "display-or": "ମୂତ୍ର ଉପାଦାନରେ ପରିବର୍ତନ",
+                    "display-hi": "पेशाब की मात्रा में बदलाव",
+                    "display-mr": "लघवी च्या प्रमाणात बदल"
+                },
+                {
+                    "id": "ID_1573381783",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ଯାନ୍ଯ",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "तुम्हाला खालील पैकी लक्षण आहे का"
+        },
+        {
+            "id": "ID_54004711",
+            "text": "Prior treatment sought",
+            "isRequired": true,
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_283357963",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हां (वर्णन करें)",
+                    "display-mr": "हो (वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "या पैकी कोणतेही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने, आज यहां आने से पहले, इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टर ला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_586761854",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_952927576",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "(अन्य जानकारी दर्ज करें)",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        },
+        {
+            "id": "ID_852274290",
+            "text": "Associated conditions",
+            "display": "Do you have the following condition(s)?",
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_1074976584",
+                    "text": "Hypertension",
+                    "display-hi": "हाइपरटेंशन ",
+                    "display-mr": "उच्च रक्तदाब"
+                },
+                {
+                    "id": "ID_1352854728",
+                    "text": "Pregnancy",
+                    "gender": "0",
+                    "age_min": "14",
+                    "age_max": "120",
+                    "display-hi": "गर्भधारण",
+                    "display-mr": "गर्भावस्था"
+                },
+                {
+                    "id": "ID_1812515335",
+                    "text": "Relation with menstruation",
+                    "isRequired": true,
+                    "display": "Do you experience oedema around your period date?",
+                    "language": "%",
+                    "gender": "0",
+                    "age_min": "10",
+                    "age_max": "120",
+                    "options": [
+                        {
+                            "id": "ID_1498470554",
+                            "text": "Yes",
+                            "language": "Oedema experienced around menstruation",
+                            "display-hi": "हाँ  ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_1316903737",
+                            "text": "No",
+                            "language": "Oedema not experienced around menstruation",
+                            "display-hi": "नहीं ",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "क्या आपको माहवारी के समय सूजन महसूस होती है ",
+                    "display-mr": "तुम्हाला मासिक पाळीच्या काळात सूज जाणवते का"
+                },
+                {
+                    "id": "ID_743017222",
+                    "text": "H/o recent medication",
+                    "display": "Have you taken any medication recently?",
+                    "options": [
+                        {
+                            "id": "ID_539739668",
+                            "text": "[Describe]",
+                            "language": "Patient has recently taken",
+                            "input-type": "text",
+                            "display-hi": "[वर्णन karein]",
+                            "display-mr": "(वर्णन करा)"
+                        },
+                        {
+                            "id": "ID_1783182896",
+                            "text": "None",
+                            "display-hi": "इनमें से कोई नहीं",
+                            "display-mr": "कोणतेही नाही"
+                        },
+                        {
+                            "id": "ID_171307435",
+                            "text": "Don't know",
+                            "display-hi": "नहीं पता ",
+                            "display-mr": "माहित नाही"
+                        }
+                    ],
+                    "display-hi": "क्या आपने हाल मे कोई दवा ली है ",
+                    "display-mr": "तुम्ही अलीकडे कोणते औषध घेतले आहे का"
+                }
+            ],
+            "display-hi": "क्या आपको इनमें से कोई लक्षण हैं ",
+            "display-mr": "आपल्याला खालील पैकी कोणते आजार / अवस्था झाले आहेत का"
+        }
+    ],
+    "display-hi": "सूजन/ शोफ",
+    "display-mr": "सूज"
+}

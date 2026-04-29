@@ -1,0 +1,40 @@
+{
+    "id": "ID_856289440",
+    "text": "Follow up could not contact patient",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1813214418",
+            "text": "Type of follow up attempted",
+            "options": [
+                {
+                    "id": "ID_1556432069",
+                    "text": "In person",
+                    "language": "Could not meet the patient/caregiver in person for follow up",
+                    "display-mr": "प्रत्यक्ष रुग्ण/पालकांशी भेटून पुनर्तपासणी"
+                },
+                {
+                    "id": "ID_1138433230",
+                    "text": "Over telephone",
+                    "language": "Could not connect with patient/caregiver over phone for follow up",
+                    "display-mr": "रुग्ण/पालकांशी फोनवर बोलून पुनर्तपासणी"
+                }
+            ],
+            "display-mr": "पुनर्तपासणी साठी वापरलेली पद्धत"
+        },
+        {
+            "id": "ID_700230068",
+            "text": "Schedule another follow-up",
+            "options": [
+                {
+                    "id": "ID_117969488",
+                    "text": "Rescheduled follow-up date",
+                    "input-type": "date",
+                    "display-mr": "नव्याने ठरवलेली पुनर्तपासणीची तारीख"
+                }
+            ],
+            "display-mr": "पुनर्तपासणीची नवी तारीख ठरवा"
+        }
+    ],
+    "display-mr": "पुनर्तपासणी साठी रुग्णाशी संपर्क होऊ शकला नाही"
+}

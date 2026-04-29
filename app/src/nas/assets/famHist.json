@@ -1,0 +1,471 @@
+{
+    "id": "ID_211456448",
+    "text": "Family History",
+    "display-or": "ପରିବାର ସମ୍ବନ୍ଧୀୟ",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_315018017",
+            "text": "Do you have a family history of any of the following?",
+            "language": "%",
+            "display-or": "ପରିବାର ସମ୍ବନ୍ଧୀୟ",
+            "isRequired": true,
+            "multi-choice": true,
+            "options": [
+                {
+                    "id": "ID_1078855957",
+                    "text": "High BP",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "display-or": "ଉଚ୍ଚ ରକ୍ତଚାପ",
+                    "options": [
+                        {
+                            "id": "ID_1854447992",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_1609028547",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_839417744",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1586264392",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_1668112188",
+                            "text": "[Describe relation]",
+                            "input-type": "text",
+                            "isRequired": true,
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "उच्च रक्तचाप (हाई बी.पी.)",
+                    "display-mr": "उच्च रक्तदाब"
+                },
+                {
+                    "id": "ID_1138006551",
+                    "text": "Heart Disease",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "display-or": "ହୃଦ୍ରୋଗ",
+                    "options": [
+                        {
+                            "id": "ID_756175657",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_352913221",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_210664833",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1359181501",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_1113722262",
+                            "text": "[Describe relation]",
+                            "isRequired": true,
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "हृदय रोग",
+                    "display-mr": "हृदयरोग"
+                },
+                {
+                    "id": "ID_923819641",
+                    "text": "Stroke",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "display-or": "ପରଲିସିସ attack",
+                    "options": [
+                        {
+                            "id": "ID_235946224",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_462556614",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_694071463",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1366406172",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_1977626009",
+                            "text": "[Describe relation]",
+                            "input-type": "text",
+                            "isRequired": true,
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "आघात (स्ट्रोक)",
+                    "display-mr": "अर्धांगवायू"
+                },
+                {
+                    "id": "ID_519272944",
+                    "text": "Diabetes",
+                    "isRequired": true,
+                    "multi-choice": true,
+                    "display-or": "ମଧୁମେହ",
+                    "options": [
+                        {
+                            "id": "ID_486810641",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_652245267",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_289390649",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1725905248",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_1782077559",
+                            "text": "[Describe relation]",
+                            "input-type": "text",
+                            "isRequired": true,
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "डायबिटीज",
+                    "display-mr": "मधुमेह"
+                },
+                {
+                    "id": "ID_1502189405",
+                    "text": "Asthma",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "display-or": "ନିଶ୍ବାଶ ନେବାରେ କଷ୍ଟ",
+                    "options": [
+                        {
+                            "id": "ID_314608166",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_1457691080",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_106821929",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1118438497",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_67727267",
+                            "text": "[Describe relation]",
+                            "input-type": "text",
+                            "isRequired": true,
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "दमा",
+                    "display-mr": "दमा"
+                },
+                {
+                    "id": "ID_1031615963",
+                    "text": "Tuberculosis",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "display-or": "ଯକ୍ଷ୍ମା",
+                    "options": [
+                        {
+                            "id": "ID_272150375",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_1592939719",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_1456647623",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1619111173",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_1185424509",
+                            "text": "[Describe relation]",
+                            "input-type": "text",
+                            "isRequired": true,
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "ट्यूबरकुलोसिस (टी.बी.)",
+                    "display-mr": "क्षयरोग"
+                },
+                {
+                    "id": "ID_338016135",
+                    "text": "Jaundice",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "options": [
+                        {
+                            "id": "ID_1015038926",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_979709509",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_52222634",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_263900963",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_147471138",
+                            "text": "[Describe relation]",
+                            "isRequired": true,
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "जौनडिस",
+                    "display-mr": "काविळ"
+                },
+                {
+                    "id": "ID_645572228",
+                    "text": "Cancer",
+                    "multi-choice": true,
+                    "isRequired": true,
+                    "display-or": "କ୍ଯାନସର୍",
+                    "options": [
+                        {
+                            "id": "ID_1792917607",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_1469130675",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_718923800",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_1385116729",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_962569699",
+                            "text": "[Describe relation]",
+                            "isRequired": true,
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "कैंसर",
+                    "display-mr": "कर्करोग"
+                },
+                {
+                    "id": "ID_525209857",
+                    "text": "Other",
+                    "isRequired": true,
+                    "multi-choice": true,
+                    "input-type": "text",
+                    "display-or": "ଅନ୍ଯାନ୍ଯ",
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1935937602",
+                            "text": "Mother",
+                            "display-or": "ମା",
+                            "display-hi": "माँ",
+                            "display-mr": "आई"
+                        },
+                        {
+                            "id": "ID_1622999292",
+                            "text": "Father",
+                            "display-or": "ବାପା",
+                            "display-hi": "पिता",
+                            "display-mr": "वडील"
+                        },
+                        {
+                            "id": "ID_69280074",
+                            "text": "Sister",
+                            "display-or": "ଭଉଣୀ",
+                            "display-hi": "बहन",
+                            "display-mr": "बहीण"
+                        },
+                        {
+                            "id": "ID_258479257",
+                            "text": "Brother",
+                            "display-or": "ଭାଇ",
+                            "display-hi": "भाई",
+                            "display-mr": "भाऊ"
+                        },
+                        {
+                            "id": "ID_840659387",
+                            "text": "[Describe relation]",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ଯ ସମ୍ପର୍କୀୟ",
+                            "display-hi": "[संबंध बताएं]",
+                            "display-mr": "(नात्याचे वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "अन्य",
+                    "display-mr": "इतर"
+                },
+                {
+                    "id": "ID_1086116245",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "नहीं",
+                    "exclude-from-multi-choice": true,
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न में से किसी भी रोग का पारिवारिक इतिहास है?",
+            "display-mr": "तुमच्या कुटुंबात खालीलपैकी कोणत्याही आजाराचा इतिहास आहे का?"
+        }
+    ],
+    "display-hi": "पारिवारिक इतिहास",
+    "display-mr": "कौटुंबिक इतिहास"
+}

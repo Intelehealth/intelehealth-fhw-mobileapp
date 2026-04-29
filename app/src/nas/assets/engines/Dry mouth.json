@@ -1,0 +1,224 @@
+{
+    "id": "ID_876050683",
+    "text": "Dry mouth",
+    "perform-physical-exam": "Temperature:Fever;Face:Swollen Face;Mouth:Tongue Dryness;Any Location:Joint Examination;Any Location:Joint Tenderness;Any Location:Skin Rash;",
+    "display-or": "ଶୁଖିଲା ପାଟି",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_313791833",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "isRequired": true,
+            "display-or": "କେବେଠାରୁ",
+            "options": [
+                {
+                    "id": "ID_826155781",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "ତାରିଖ",
+                    "display-hi": "[कब से है,  दर्ज करें]",
+                    "display-mr": "( कधी पासून आहे- भरा)"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "आपल्याला हे लक्षण कधी पासून आहे"
+        },
+        {
+            "id": "ID_211021709",
+            "text": "Onset",
+            "display": "How did the symptom start?",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "କେମିତି ଆରମ୍ଭ ହେଲା",
+            "options": [
+                {
+                    "id": "ID_1696872731",
+                    "text": "Very sudden",
+                    "display-or": "ହଠାତ",
+                    "display-hi": "एकदम अचानक",
+                    "display-mr": "अचानक"
+                },
+                {
+                    "id": "ID_1753690119",
+                    "text": "Gradual",
+                    "display-or": "ଧୀରେ ଧୀରେ",
+                    "display-hi": "धीरे-धीरे",
+                    "display-mr": "हळू हळू"
+                }
+            ],
+            "display-hi": "यह लक्षण कैसे शुरू हुआ?",
+            "display-mr": "हे लक्षण कसे सुरू झाले"
+        },
+        {
+            "id": "ID_554140550",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_1051869854",
+                    "text": "Increase in quantity of urine output",
+                    "perform-physical-exam": "Mouth:Tongue Dryness;",
+                    "display-or": "ମୂତ୍ର ପରିମାଣ ଅଧିକ ହେବ.",
+                    "display-hi": "पेशाब की मात्रा का बढ़ना",
+                    "display-mr": "लघवीचे प्रमाण वाढणे"
+                },
+                {
+                    "id": "ID_47301353",
+                    "text": "Increase in frequency of urination",
+                    "perform-physical-exam": "Mouth:Tongue Dryness;",
+                    "display-or": "ବାର ବାର ପରିସ୍ରା ଯିବା",
+                    "display-hi": "पेशाब बार-बार जाना",
+                    "display-mr": "लघवीच्या वारंवारतेत वाढ"
+                },
+                {
+                    "id": "ID_1616172589",
+                    "text": "Polydipsia",
+                    "display": "Increased/excessive thirst",
+                    "perform-physical-exam": "Mouth:Tongue Dryness",
+                    "display-or": "ଅଧିକ ଶୋଷ",
+                    "display-hi": "अत्यधिक प्यास लगना",
+                    "display-mr": "अत्याधिक तहान लागणे"
+                },
+                {
+                    "id": "ID_1678910040",
+                    "text": "Polyphagia",
+                    "display": "Increased hunger",
+                    "perform-physical-exam": "Mouth:Tongue Dryness",
+                    "display-or": "ଅଧିକ ଭୋକ",
+                    "display-hi": "अत्यधिक भूख लगना",
+                    "display-mr": "भूक अत्याधिक वाढणे"
+                },
+                {
+                    "id": "ID_1681629636",
+                    "text": "Diarrhoea",
+                    "display-hi": "डायरिया ",
+                    "display-mr": "जुलाब"
+                },
+                {
+                    "id": "ID_706688255",
+                    "text": "Skin lesions",
+                    "options": [
+                        {
+                            "id": "ID_544810340",
+                            "text": "Yes [describe]",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟାନ୍ୟ",
+                            "display-hi": "हाँ[वर्णन करें ]",
+                            "display-mr": "हो ( वर्णन करा)"
+                        },
+                        {
+                            "id": "ID_199574476",
+                            "text": "No",
+                            "language": "No skin lesions",
+                            "display-hi": "नहीं ",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "त्वचा पर घाव ",
+                    "display-mr": "त्वचेवर जखमा"
+                },
+                {
+                    "id": "ID_893093220",
+                    "text": "Loss of saliva and tears",
+                    "display": "Reduction in saliva and tears",
+                    "display-hi": "आँसू और लार निकलने मे कमी ",
+                    "display-mr": "लाळ आणि अश्रू कमी येणे"
+                },
+                {
+                    "id": "ID_211539883",
+                    "text": "Anxiety",
+                    "display-hi": "चिंता",
+                    "display-mr": "चिंता"
+                },
+                {
+                    "id": "ID_261829800",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "अन्य ( वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "आपल्याला खाली दिलेली लक्षण आहेत का"
+        },
+        {
+            "id": "ID_735302560",
+            "text": "H/o anti-spasmodic drugs",
+            "isRequired": true,
+            "display": "Have you recently taken any medicine for pain in abdomen?",
+            "options": [
+                {
+                    "id": "ID_1708375052",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो ( वर्णन करा)"
+                },
+                {
+                    "id": "ID_1870366904",
+                    "text": "None",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "काही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने हाल में पेट दर्द की कोई दवा ली है ",
+            "display-mr": "अलीकडे तुम्ही पोटदुखी साठी कोणते औषध घेतले आहे का"
+        },
+        {
+            "id": "ID_1503169638",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_1367717623",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो ( वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "कुठलेही उपचार घेतले नाहीत "
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टरला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1292256661",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_1465825977",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अन्य जानकारी - दर्ज करें]",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "मुँह सूखना",
+    "display-mr": "तोंड कोरडे पडणे"
+}

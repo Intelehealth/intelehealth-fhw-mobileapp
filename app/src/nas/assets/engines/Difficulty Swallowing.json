@@ -1,0 +1,457 @@
+{
+    "id": "ID_516127614",
+    "text": "Difficulty Swallowing",
+    "perform-physical-exam": "Face:Swollen Face;Hands:Nails cyanosis;",
+    "display-or": "ଖାଦ୍ୟ ଗିଳିବାରେ କଷ୍ଟ",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1161621112",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_807554708",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "display-or": "କେବେଠାରୁ",
+                    "language": "%",
+                    "display-hi": "[कब से है,  दर्ज करें]",
+                    "display-mr": "(केव्हापासून आहे- भरा)"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "आपल्याला हे लक्षण केव्हापासून आहे"
+        },
+        {
+            "id": "ID_390835892",
+            "text": "Does it happen for solid foods, liquid foods or both?",
+            "language": "Happens for",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "କେଉଁ ଖାଦ୍ୟ ବା ପାନୀଯ",
+            "options": [
+                {
+                    "id": "ID_302826321",
+                    "text": "Solid foods",
+                    "display-or": "କାଠୁଅା ଖାଦ୍ୟ",
+                    "display-hi": "ठोस भोजन",
+                    "display-mr": "घन अन्नपदार्थ"
+                },
+                {
+                    "id": "ID_1060047114",
+                    "text": "Liquid foods",
+                    "display-or": "ପାଣି ଖାଦ୍ୟ",
+                    "display-hi": "तरल भोजन",
+                    "display-mr": "द्रवपदार्थ"
+                },
+                {
+                    "id": "ID_1006649094",
+                    "text": "Both solid and liquid food",
+                    "display-or": "ଉଭୟ",
+                    "display-hi": "ठोस और तरल दोनों प्रकार के भोजन",
+                    "display-mr": "घन अन्न आणि द्रवप्रदार्थ दोन्हीमुळे"
+                }
+            ],
+            "display-hi": "क्या यह आपको ठोस भोजन या तरल भोजन या दोनों से होता है?",
+            "display-mr": "हा त्रास आपल्याला घन अन्नपदार्थ आणि द्रवपदार्थ, दोन्ही मुळे होतो का?"
+        },
+        {
+            "id": "ID_1550907764",
+            "text": "Progress of symptom",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "ଅବସ୍ଥା ର ପରିବର୍ତନ",
+            "options": [
+                {
+                    "id": "ID_1252782770",
+                    "text": "Intermittent (occasionally there)",
+                    "language": "intermittent",
+                    "display-or": "ବେଳେ ବେଳେ",
+                    "display-hi": "रुक-रुक कर (कभी-कभी)",
+                    "display-mr": "थांबून थांबून (कधी-कधी)"
+                },
+                {
+                    "id": "ID_592855068",
+                    "text": "Constant (continuously there with every meal)",
+                    "language": "constant",
+                    "display-or": "ସବୁବେଳେ",
+                    "display-hi": "सतत बना रहना (लगातार, हर भोजन के साथ)",
+                    "display-mr": "नेहमी (दरवेळी जेवताना)"
+                },
+                {
+                    "id": "ID_1998228289",
+                    "text": "Progressive (becoming worse)",
+                    "language": "progressive",
+                    "display-or": "ବଢ଼ୁଛି",
+                    "display-hi": "बढ़ता हुआ (बदतर होता हुआ)",
+                    "display-mr": "वाढ होत आहे (त्रास वाढत आहे)"
+                }
+            ],
+            "display-hi": "लक्षण का बढ़ना",
+            "display-mr": "लक्षणामध्ये वाढ कशी होते"
+        },
+        {
+            "id": "ID_349998998",
+            "text": "Pain with swallowing",
+            "display": "Is it painful or painless while swallowing?",
+            "isRequired": true,
+            "multi-choice": false,
+            "language": "%",
+            "display-or": "ଗିଳବା ଯନ୍ତ୍ରଣା ନା ନାହିଁ",
+            "options": [
+                {
+                    "id": "ID_1878022177",
+                    "text": "Painful",
+                    "language": "Patient experiences pain while swallowing",
+                    "display-or": "ଯନ୍ତ୍ରଣା",
+                    "display-hi": "दर्द होता है",
+                    "display-mr": "वेदना होते"
+                },
+                {
+                    "id": "ID_1203052971",
+                    "text": "Painless",
+                    "language": "Patient does not experience pain while swallowing",
+                    "display-or": "ଯନ୍ତ୍ରଣା ଶୂନ୍ଯ",
+                    "display-hi": "दर्द नहीं होता",
+                    "display-mr": "वेदना होत नाही"
+                }
+            ],
+            "display-hi": "क्या निगलते समय दर्द होता है या कोई दर्द नहीं होता?",
+            "display-mr": "गिळताना वेदना होते की नाही होत?"
+        },
+        {
+            "id": "ID_1046751540",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "neg-condition": "s.",
+            "options": [
+                {
+                    "id": "ID_289216483",
+                    "text": "Acidity",
+                    "display-or": "ପେଟ ଅମ୍ଳ ଦୋଷ",
+                    "display-hi": "एसिडिटी",
+                    "display-mr": "पित्त"
+                },
+                {
+                    "id": "ID_1114228159",
+                    "text": "Heartburn",
+                    "display-or": "ଛାତି ପୋଡିବା",
+                    "options": [
+                        {
+                            "id": "ID_816294101",
+                            "text": "Aggravated by",
+                            "display": "When does the heartburn get worse?",
+                            "display-or": "କେତେ ବେଳେ ଛାତି ପୋଡା ବନ୍ଦ",
+                            "options": [
+                                {
+                                    "id": "ID_631044662",
+                                    "text": "Lying down",
+                                    "display-or": "ଶୋଇପଡ଼ିଲେ",
+                                    "display-hi": "लेटने से",
+                                    "display-mr": "झोपल्यावर"
+                                },
+                                {
+                                    "id": "ID_309396318",
+                                    "text": " spicy food intake",
+                                    "display-or": "ମସଲା ଖାଦ୍ୟ ଖାଇଲେ",
+                                    "display-hi": "मसाला युक्त भोजन करने से",
+                                    "display-mr": "मसालेदार पदार्थ खाल्ल्यावर"
+                                },
+                                {
+                                    "id": "ID_1788890884",
+                                    "text": "Other (Describe)",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                                    "display-hi": "अन्य (वर्णन करें)",
+                                    "display-mr": "इतर (वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "सीने में जलन (हार्टबर्न) कब बढ़ जाती है?",
+                            "display-mr": "छाती मध्ये जळजळ केव्हा वाढते"
+                        }
+                    ],
+                    "display-hi": "सीने में जलन (हार्टबर्न)",
+                    "display-mr": "छाती मध्ये जळजळ"
+                },
+                {
+                    "id": "ID_1937041512",
+                    "text": "Chest pain/discomfort",
+                    "display-or": "ଛାତି ଯନ୍ତ୍ରଣା",
+                    "display-hi": "सीने में दर्द/बैचैनी",
+                    "display-mr": "छाती मध्ये वेदना/अस्वस्थ वाटणे"
+                },
+                {
+                    "id": "ID_250348148",
+                    "text": "Cough",
+                    "display-or": "କାଶ",
+                    "options": [
+                        {
+                            "id": "ID_666739841",
+                            "text": "Dry",
+                            "display-or": "ଶୁଖିଲା",
+                            "display-hi": "सूखी खांसी",
+                            "display-mr": "कोरडा"
+                        },
+                        {
+                            "id": "ID_688803727",
+                            "text": "Productive (With sputum)",
+                            "display-or": "କଫି",
+                            "options": [
+                                {
+                                    "id": "ID_40884973",
+                                    "text": "Color of sputum",
+                                    "display-or": "କଫ ର ରଙ୍ଗ",
+                                    "options": [
+                                        {
+                                            "id": "ID_127709783",
+                                            "text": "Clear",
+                                            "display-or": "ସ୍ୱଚ୍ଛ କଫ",
+                                            "display-hi": "साफ",
+                                            "display-mr": "स्वच्छ"
+                                        },
+                                        {
+                                            "id": "ID_1390255618",
+                                            "text": "Yellow",
+                                            "display-or": "ହଳଦିଆ କଫ",
+                                            "display-hi": "पीला",
+                                            "display-mr": "पिवळा"
+                                        },
+                                        {
+                                            "id": "ID_1829782527",
+                                            "text": "Green",
+                                            "display-or": "ନୀଳ କଫ",
+                                            "display-hi": "हरा",
+                                            "display-mr": "हिरवा"
+                                        },
+                                        {
+                                            "id": "ID_1306609508",
+                                            "text": "Red or pink",
+                                            "display-or": "ଲାଲ ବା ଧୂସର କଫ",
+                                            "display-hi": "गुलाबी या लाल",
+                                            "display-mr": "गुलाबी किंवा लाल"
+                                        },
+                                        {
+                                            "id": "ID_254084860",
+                                            "text": "Brown",
+                                            "display-or": "ଧୂସର ବା ଫିକା କଫ",
+                                            "display-hi": "भूरा",
+                                            "display-mr": "तपकिरी"
+                                        },
+                                        {
+                                            "id": "ID_1146006116",
+                                            "text": "Black or grey",
+                                            "display-or": "କଲା ବା ଅଳପ ଧୂସର କଫ",
+                                            "display-hi": "काला या स्लेटी",
+                                            "display-mr": "काळा किंवा राखाडी"
+                                        }
+                                    ],
+                                    "display-hi": "बलगम का रंग",
+                                    "display-mr": "थुंकीचा रंग"
+                                }
+                            ],
+                            "display-hi": "बलगम वाली खांसी ",
+                            "display-mr": "थुंकीसह /ओला "
+                        }
+                    ],
+                    "display-hi": "खांसी",
+                    "display-mr": "खोकला"
+                },
+                {
+                    "id": "ID_631203527",
+                    "text": "Sensation of food being stuck when swallowing ",
+                    "display": "Do you feel like food is getting stuck when you swallow?",
+                    "display-or": "ଖାଇବା ବେଳେ ଖାଦ୍ୟ ଅଟକି ଯିବା ପରି ଲାଗିବା",
+                    "isRequired": true,
+                    "options": [
+                        {
+                            "id": "ID_515545314",
+                            "text": "Describe where it is getting stuck",
+                            "language": "%",
+                            "display-or": "କେଉଁଠି ଅଟକୁଛି",
+                            "options": [
+                                {
+                                    "id": "ID_1867036448",
+                                    "text": "Stomach level",
+                                    "language": "at the stomach level",
+                                    "display-or": "ପେଟରେ",
+                                    "display-hi": "पेट के स्तर पर",
+                                    "display-mr": "पोटाच्या जागी"
+                                },
+                                {
+                                    "id": "ID_1129186937",
+                                    "text": "Lower chest",
+                                    "language": "at the lower chest level",
+                                    "display-or": "ତଳଛାତି",
+                                    "display-hi": "निचले छाती के स्तर पर",
+                                    "display-mr": "छातीच्या खालच्या बाजूला"
+                                },
+                                {
+                                    "id": "ID_469562681",
+                                    "text": "Upper chest",
+                                    "language": "at the upper chest level",
+                                    "display-or": "ଉପର ଛାତି",
+                                    "display-hi": "उपरी छाती के स्तर पर",
+                                    "display-mr": "छातीच्या वरच्या बाजूला"
+                                },
+                                {
+                                    "id": "ID_1854288824",
+                                    "text": "Throat",
+                                    "language": "at the level of the throat",
+                                    "display-or": "ଗଳା",
+                                    "display-hi": "गले में",
+                                    "display-mr": "घश्या मध्ये"
+                                },
+                                {
+                                    "id": "ID_1935902951",
+                                    "text": "Other[describe]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                                    "display-hi": "अन्य [वर्णन करें]",
+                                    "display-mr": "इतर ( वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "कहां अटकता है, वर्णन करें",
+                            "display-mr": "कुठे अडकतो (वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "क्या आपको भोजन निगलते समय अटकता है?",
+                    "display-mr": "तुम्हाला जेवताना घास अडकल्या सारखे वाटते का?"
+                },
+                {
+                    "id": "ID_680877624",
+                    "text": "Regurgitation",
+                    "display": "Food coming back up",
+                    "isRequired": true,
+                    "language": "%",
+                    "display-or": "ଖାଦ୍ୟ ଉପରକୁ ବାହାରିବା",
+                    "options": [
+                        {
+                            "id": "ID_127463449",
+                            "text": "from nose",
+                            "display-or": "ନାକରୁ",
+                            "display-hi": "नाक से",
+                            "display-mr": "नाकामधून"
+                        },
+                        {
+                            "id": "ID_1190181422",
+                            "text": "from mouth",
+                            "display-or": "ପାଟିରୁ",
+                            "display-hi": "मुंह से",
+                            "display-mr": "तोंडातून"
+                        },
+                        {
+                            "id": "ID_1945551963",
+                            "text": "from both",
+                            "display-or": "ଉଭୟରୁ",
+                            "display-hi": "दोनों से",
+                            "display-mr": "दोन्ही मधून"
+                        }
+                    ],
+                    "display-hi": "खाना वापस निकलना",
+                    "display-mr": "अन्न माघारी येणे"
+                },
+                {
+                    "id": "ID_362965028",
+                    "text": "Weight loss",
+                    "language": "Patient has lost weight",
+                    "isRequired": true,
+                    "display-or": "ହ୍ରାସ",
+                    "options": [
+                        {
+                            "id": "ID_205295457",
+                            "text": "[Enter amount of weight lost in kgs]",
+                            "input-type": "number",
+                            "language": "Amt lost in kgs",
+                            "display-or": "ଓଜନ କମିବାର ପରିମାଣ ଲେଖ",
+                            "display-hi": "[वजन कितने किलो कम हुआ]",
+                            "display-mr": "वजन किती घटले ते लिहा ( किलो ग्रॅम मध्ये)"
+                        },
+                        {
+                            "id": "ID_582880022",
+                            "text": "",
+                            "options": [
+                                {
+                                    "id": "ID_1768966652",
+                                    "text": "[Enter duration of weight loss]",
+                                    "input-type": "duration",
+                                    "language": "over",
+                                    "display-hi": "[वजन कितने दिनों में कम हुआ]",
+                                    "display-mr": "(वजन घटण्याचा कालावधी किती ते लिहा)"
+                                }
+                            ],
+                            "display-hi": "",
+                            "display-mr": ""
+                        }
+                    ],
+                    "display-hi": "रोगी का वजन कम हुआ है",
+                    "display-mr": "वजन घटणे"
+                },
+                {
+                    "id": "ID_1458372300",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर ( वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "आपल्याला खालील पैकी कोणती लक्षणे आहेत का?"
+        },
+        {
+            "id": "ID_573035068",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_1763201920",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो ( वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "यापैकी काहीही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टरला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1962864824",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_239409896",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अन्य जानकारी दर्ज करें]",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "निगलने में परेशानी/तकलीफ",
+    "display-mr": "गिळण्यास अडचण / त्रास"
+}

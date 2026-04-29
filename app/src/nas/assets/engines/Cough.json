@@ -1,0 +1,591 @@
+{
+    "id": "ID_76884492",
+    "text": "Cough",
+    "perform-physical-exam":"Hands:Nails cyanosis;Throat;Sound Heart: Aortic;Sound Heart: Pulmonic;Sound Heart: Tricuspid;Sound Heart: Mitral;Sound Lung: Anterior-1-Left-Top;Sound Lung: Anterior-2-Right-Top;Sound Lung: Anterior-3-Left-Middle;Sound Lung: Anterior-4-Right-Middle;Sound Lung: Anterior-5-Left-Lower;Sound Lung: Anterior-6-Right-Lower;",
+    ",display-or": "କାଶ",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_580858566",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?*",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "କେବେଠାରୁ",
+            "options": [
+                {
+                    "id": "ID_1533072667",
+                    "text": "Acute (0-2 weeks)",
+                    "display-or": "କେଉଁ ସମୟରେ",
+                    "display-hi": "काफी ज्यादा[0-2 सप्ताह]",
+                    "display-mr": "सद्य/नवीन (0-2 आठवडे)"
+                },
+                {
+                    "id": "ID_1871315810",
+                    "text": "Subacute ( 2 - 8 weeks)",
+                    "display-or": "କିଛିଦିନ ହେଲା (3-8 ସପ୍ତାହ ହେବା)",
+                    "display-hi": "कभी ज्यादा कभी कम [2-8 सप्ताह]",
+                    "display-mr": "मध्यम- (2 - 8 आठवडे)"
+                },
+                {
+                    "id": "ID_1989049880",
+                    "text": "Chronic (More than 8 weeks)",
+                    "display-or": "ବହୁତ ଦିନ (8 ସପ୍ତାହର ଅଧିକ)",
+                    "display-hi": "पुराना (8 हफ्ते से ज्यादा)",
+                    "display-mr": "जुनाट (8 आठवड्यांपेक्षा जास्त)"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "तुम्हाला हे लक्षण कधीपासून आहे?"
+        },
+        {
+            "id": "ID_1487351204",
+            "text": "Timing",
+            "display": "Is there a specific time of occurence of cough?*",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "କେଉଁ ସମୟରେ",
+            "options": [
+                {
+                    "id": "ID_24292147",
+                    "text": "Day",
+                    "display-or": "ଦିନ",
+                    "display-hi": "दिन",
+                    "display-mr": "दिवसा"
+                },
+                {
+                    "id": "ID_779442626",
+                    "text": "Night",
+                    "display-or": "ରାତି",
+                    "display-hi": "रात",
+                    "display-mr": "रात्री"
+                },
+                {
+                    "id": "ID_881933791",
+                    "text": "Lying down",
+                    "display-or": "ଶୋଇଲେ",
+                    "display-hi": "सोते समय",
+                    "display-mr": "झोपताना"
+                },
+                {
+                    "id": "ID_74408888",
+                    "text": "Talking",
+                    "display-or": "କଥା ହେଲେ",
+                    "display-hi": "बात करते समय",
+                    "display-mr": "बोलताना"
+                },
+                {
+                    "id": "ID_1232137411",
+                    "text": "Seasonal",
+                    "display-or": "ଋତୁ ପରିବର୍ତ୍ତନ ହେଲେ",
+                    "options": [
+                        {
+                            "id": "ID_571298592",
+                            "text": "Which season",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "କେଉଁ ରୂତୁରେ",
+                            "display-hi": "कौन-सा मौसम",
+                            "display-mr": "कोणत्या ऋतूत"
+                        }
+                    ],
+                    "display-hi": "मौसमी",
+                    "display-mr": "ऋतू नुसार"
+                },
+                {
+                    "id": "ID_1801948043",
+                    "text": "Constant",
+                    "display-or": "ସ୍ଥିର",
+                    "display-hi": "लगातार",
+                    "display-mr": "सतत"
+                },
+                {
+                    "id": "ID_1611983507",
+                    "text": "Don't know",
+                    "display-or": "ଜାଣିନାହିଁ",
+                    "display-hi": "पता नहीं",
+                    "display-mr": "माहीत नाही"
+                },
+                {
+                    "id": "ID_1165513348",
+                    "text": "Other(Describe)",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या खांसी आने का कोई खास समय है?",
+            "display-mr": "खोकला येण्याची विशिष्ट वेळ आहे का?"
+        },
+        {
+            "id": "ID_922917272",
+            "text": "Aggravating factors",
+            "display": "What aggravates the cough?*",
+            "isRequired": true,
+            "multi-choice": true,
+            "display-or": "ଉପରୁକ୍ତ ଦ୍ୱାରା ଲକ୍ଷଣ ସବୁ ବଢ଼ୁ ଛି କି?",
+            "options": [
+                {
+                    "id": "ID_98980055",
+                    "text": "Cold weather",
+                    "display-or": "ଥଣ୍ଡା ଋତୁ",
+                    "display-hi": "ठंडा वातावरण",
+                    "display-mr": "थंड हवामान"
+                },
+                {
+                    "id": "ID_1918667485",
+                    "text": "Presence of animals eg. cat or birds",
+                    "display-or": "ପଶୁପକ୍ଷୀ",
+                    "display-hi": "जानवरों की उपस्थिति, जैसे बिल्ली या पक्षी",
+                    "display-mr": "प्राण्यांची उपस्थिती उदा. मांजर किंवा पक्षी"
+                },
+                {
+                    "id": "ID_1842407519",
+                    "text": "None",
+                    "exclude-from-multi-choice": true,
+                    "display-or": "ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "यापैकी काहीही नाही"
+                },
+                {
+                    "id": "ID_1450345498",
+                    "text": "Other(Describe)",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "खाँसी इनमें से किस कारण से बढ़ जाती है ",
+            "display-mr": "खोकला कशामुळे वाढतो?"
+        },
+        {
+            "id": "ID_487177471",
+            "text": "Type of cough",
+            "display": "Is the cough dry or wet?*",
+            "isRequired": true,
+            "multi-choice": false,
+            "options": [
+                {
+                    "id": "ID_1205905675",
+                    "text": "Dry",
+                    "display-hi": "सूखी",
+                    "display-mr": "कोरडा"
+                },
+                {
+                    "id": "ID_1977892296",
+                    "text": "Wet",
+                    "multi-choice": true,
+                    "havingNestedQuestion": true,
+                    "options": [
+                        {
+                            "id": "ID_498664790",
+                            "text": "Colour of sputum",
+                            "display": "What is the colour of the sputum?*",
+                            "isRequired": true,
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_127709783",
+                                    "text": "Clear",
+                                    "display-hi": "साफ़",
+                                    "display-mr": "स्वच्छ"
+                                },
+                                {
+                                    "id": "ID_1390255618",
+                                    "text": "Yellow",
+                                    "display-hi": "पीला",
+                                    "display-mr": "पिवळा"
+                                },
+                                {
+                                    "id": "ID_1829782527",
+                                    "text": "Green",
+                                    "display-hi": "हरा",
+                                    "display-mr": "हिरवा"
+                                },
+                                {
+                                    "id": "ID_1306609508",
+                                    "text": "Red or pink",
+                                    "display-hi": "लाल या गुलाबी",
+                                    "display-mr": "लाल किंवा गुलाबी"
+                                },
+                                {
+                                    "id": "ID_254084860",
+                                    "text": "Brown",
+                                    "display-hi": "भूरा",
+                                    "display-mr": "तपकिरी"
+                                },
+                                {
+                                    "id": "ID_1146006116",
+                                    "text": "Black or grey",
+                                    "display-hi": "काला या स्लेटी",
+                                    "display-mr": "काळा किंवा राखाडी"
+                                }
+                            ],
+                            "display-hi": "बलगम का रंग क्या है?",
+                            "display-mr": "कफाचा/थुंकीचा रंग काय आहे?"
+                        }
+                    ],
+                    "display-hi": "गीली",
+                    "display-mr": "ओला"
+                }
+            ],
+            "display-hi": "खांसी सूखी है या गीली?",
+            "display-mr": "खोकला कोरडा आहे की ओला आहे?"
+        },
+        {
+            "id": "ID_104560555",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?*",
+            "display-or": "ଅନ୍ଯ ଲକ୍ଷଣ",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "options": [
+                {
+                    "id": "ID_1944013281",
+                    "text": "Wheezing",
+                    "display-or": "ନିଶ୍ୱାସ ପ୍ରଶ୍ୱାସରେ ଶଦ୍ଦ",
+                    "display-hi": "छींक आना",
+                    "display-mr": "घरघर होणे"
+                },
+                {
+                    "id": "ID_1233597328",
+                    "text": "Shortness of breath",
+                    "display-or": "ଧଇଁ ସଇଁ",
+                    "display-hi": "सांस फूलना",
+                    "display-mr": "धाप लागणे"
+                },
+                {
+                    "id": "ID_113453077",
+                    "text": "Pain/Tightness of chest",
+                    "display-or": "ଛାତି କଷ୍ଟ ବା ଚିପି ହେବା",
+                    "display-hi": "सीने में जकड़न/दर्द",
+                    "display-mr": "छातीत वेदना / ताण"
+                },
+                {
+                    "id": "ID_1341923483",
+                    "text": "Hemoptysis",
+                    "display": "Bloody sputum",
+                    "display-or": "କଫରେ ରକ୍ତ",
+                    "display-hi": "खूनी बलगम",
+                    "display-mr": "कफातून रक्त पडणे"
+                },
+                {
+                    "id": "ID_896570466",
+                    "text": "Weight change (kg)",
+                    "language": "%",
+                    "display-or": "ଓଜନ ପରିବର୍ତନ",
+                    "options": [
+                        {
+                            "id": "ID_867149692",
+                            "text": "Weight gain",
+                            "input-type": "number",
+                            "language": "Patient has gained weight (kgs)",
+                            "display-or": "ବୃଦ୍ଧି",
+                            "display-hi": "वजन बढ़ना",
+                            "display-mr": "वजन वाढणे"
+                        },
+                        {
+                            "id": "ID_362965028",
+                            "text": "Weight loss",
+                            "input-type": "number",
+                            "language": "Patient has lost weight (kgs)",
+                            "display-or": "ହ୍ରାସ",
+                            "display-hi": "वजन घटना",
+                            "display-mr": "वजन कमी होणे"
+                        },
+                        {
+                            "id": "ID_894111749",
+                            "text": "since when",
+                            "input-type": "duration",
+                            "language": "since",
+                            "display-or": "କେବେ ଠାରୁ ଲେଖ",
+                            "display-hi": "कब से",
+                            "display-mr": "केव्हापासून"
+                        }
+                    ],
+                    "display-hi": "वजन में बदलाव (किलोग्राम)",
+                    "display-mr": "वजनात बदल"
+                },
+                {
+                    "id": "ID_629973289",
+                    "text": "Fever",
+                    "display-or": "ଜ୍ୱର",
+                    "display-hi": "बुखार",
+                    "display-mr": "ताप"
+                },
+                {
+                    "id": "ID_1414680828",
+                    "text": "Hoarseness",
+                    "display-or": "ସ୍ବର କର୍କଶ",
+                    "display-hi": "कर्कश स्वर",
+                    "display-mr": "कर्कश आवाज/ घसा बसणे"
+                },
+                {
+                    "id": "ID_1510112188",
+                    "text": "Burning feeling in a throat at night/early in the morning",
+                    "display-or": "ଗାଲରେ ଜଳାପୋଡା କରୁଛି କି",
+                    "display-hi": "रात में/या सुबह में गले में जलन",
+                    "display-mr": "रात्री / पहाटे घशात जळजळ जाणवणे"
+                },
+                {
+                    "id": "ID_972051670",
+                    "text": "Nasal congestion/Stuffy nose",
+                    "display-or": "ନାକ ବନ୍ଦ ବା ନାକରୁ ପାଣି",
+                    "display-hi": "नाक बंद होना",
+                    "display-mr": "नाक चोंदणे"
+                },
+                {
+                    "id": "ID_1535512112",
+                    "text": "Runny nose",
+                    "display-or": "ନାକରୁ ବାର ବାର ପାଣି ବୋହି ବା",
+                    "display-hi": "नाक बहना",
+                    "display-mr": "नाकातून स्त्राव येणे"
+                },
+                {
+                    "id": "ID_1250740523",
+                    "text": "Post nasal drip",
+                    "display": "Does mucous drip in the back of your throat?",
+                    "display-or": "କଫ ଗଲା ରେ ଜାମୁଛି କି?",
+                    "display-hi": "क्या बलगम वापस आपके गले मे चला तुमच्या घशाच्या मागच्या भागात श्लेष्मल ठिबक होतोजाता है  ",
+                    "display-mr": "कफ घश्याच्या मागील बाजूस वाहताना/स्रवताना जाणवतो का?"
+                },
+                {
+                    "id": "ID_842242904",
+                    "text": "Recent severe stress",
+                    "display-or": "ବର୍ତମାନ ର ସମସ୍ୟା ଜନିତ ଚିନ୍ତା",
+                    "display-hi": "हाल में गंभीर दबाव",
+                    "display-mr": "अलीकडच्या काळात ताणतणाव"
+                },
+                {
+                    "id": "ID_1807755443",
+                    "text": "Recurrent diarrhoea",
+                    "display-hi": "बार बार डायरिया होना ",
+                    "display-mr": "वारंवार होणारे जुलाब"
+                },
+                {
+                    "id": "ID_393861839",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "display-or": "ଅନ୍ଯାନ୍ଯ",
+                    "language": "%",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है?",
+            "display-mr": "तुम्हाला खालीलपैकी लक्षण (लक्षणे) आहेत का?"
+        },
+        {
+            "id": "ID_743017222",
+            "text": "Recent h/o medication",
+            "display": "Have you taken any medication recently?",
+            "options": [
+                {
+                    "id": "ID_539739668",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "होय [वर्णन करा]"
+                },
+                {
+                    "id": "ID_1783182896",
+                    "text": "None",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "काहीही नाही"
+                },
+                {
+                    "id": "ID_171307435",
+                    "text": "Don't know",
+                    "display-hi": "पता नहीं",
+                    "display-mr": "माहीत नाही"
+                }
+            ],
+            "display-hi": "क्या आपने हाल में कोई दवा ली है ",
+            "display-mr": "तुम्ही अलीकडच्या काळात काही औषधोपचार घेतले आहे का?"
+        },
+        {
+            "id": "ID_580004786",
+            "text": "Smoking",
+            "display": "Do you smoke/have ever smoked?*",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1479523026",
+                    "text": "Yes",
+                    "language": "Patient has h/o smoking",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_22350099",
+                            "text": "How many cigarettes per day did you smoke?",
+                            "display-or": "ଦିନକୁ କେତୋଟି ସିଗାରେଟ ପିଉଥିଲ?",
+                            "display-hi": "एक दिन में कितनी सिगरेट पीते थे?",
+                            "display-gu": "આપ એક દિવસમાં કેટલી સિગારેટ પીતા હતા?",
+                            "display-as": "আপুনি কিমান দিন লৈকে চিগাৰেট ধূমপান কৰিলে ?",
+                            "display-bn": "আপনি প্রতিদিন কত সিগারেট ধূমপান করেছেন?",
+                            "display-kn": "ಪ್ರತಿದಿನ ಎಷ್ಟು ಸಿಗರೇಟು ಸೇದುತ್ತಿರಿ?",
+                            "display-mr": "तुम्ही दररोज किती सिगारेट ओढता?",
+                            "options": [
+                                {
+                                    "id": "ID_22350099_1",
+                                    "text": "How many cigarettes per day did you smoke?",
+                                    "input-type": "number",
+                                    "display-or": "ଦିନକୁ କେତୋଟି ସିଗାରେଟ ପିଉଥିଲ?",
+                                    "display-hi": "एक दिन में कितनी सिगरेट पीते थे?",
+                                    "display-gu": "આપ એક દિવસમાં કેટલી સિગારેટ પીતા હતા?",
+                                    "display-as": "আপুনি কিমান দিন লৈকে চিগাৰেট ধূমপান কৰিলে ?",
+                                    "display-bn": "আপনি প্রতিদিন কত সিগারেট ধূমপান করেছেন?",
+                                    "display-kn": "ಪ್ರತಿದಿನ ಎಷ್ಟು ಸಿಗರೇಟು ಸೇದುತ್ತಿರಿ?",
+                                    "display-mr": "तुम्ही दररोज किती सिगारेट ओढता?"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "ID_1515200011",
+                            "text": "[Enter since when]",
+                            "display-or": "[କେବେଠାରୁ ,ଦର୍ଶାଅ]",
+                            "display-hi": "(कब से, दर्ज करें)",
+                            "display-gu": "[ક્યારથી તે લખી જણાવો]",
+                            "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+                            "display-bn": "[কবে থেকে লিখুন]",
+                            "display-kn": "ಯಾವಾಗಿಂದ ಸೇರುತ್ತೀರಿ ತಿಳಿಸಿರಿ",
+                            "display-mr": "[केव्हापासून प्रविष्ट करा]",
+                            "options": [
+                                {
+                                    "id": "ID_1515200011_1",
+                                    "text": "[Enter since when]",
+                                    "input-type": "duration",
+                                    "display-or": "[କେବେଠାରୁ ,ଦର୍ଶାଅ]",
+                                    "display-hi": "(कब से, दर्ज करें)",
+                                    "display-gu": "[ક્યારથી તે લખી જણાવો]",
+                                    "display-as": "[কেতিয়া পৰা ব্যৱহাৰ কৰে]",
+                                    "display-bn": "[কবে থেকে লিখুন]",
+                                    "display-kn": "ಯಾವಾಗಿಂದ ಸೇರುತ್ತೀರಿ ತಿಳಿಸಿರಿ",
+                                    "display-mr": "[केव्हापासून प्रविष्ट करा]"
+                                }
+                            ]
+                        }
+                    ],
+                    "display-hi": "हाँ",
+                    "display-mr": "होय"
+                },
+                {
+                    "id": "ID_774549467",
+                    "text": "No",
+                    "language": "No h/o of smoking",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आप सिगरेट पीते हैं / आपने कभी सिगरेट पी है ",
+            "display-mr": "तुम्ही धूम्रपान करता का/कधी धुम्रपान केले आहे का?"
+        },
+        {
+            "id": "ID_190431792",
+            "text": "Occupational history",
+            "display-or": "କାମ ର ବିବରଣ",
+            "display": "What is your occupation?*",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1591767916",
+                    "text": "Describe",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ବର୍ଣନା କର",
+                    "display-hi": "वर्णन करें",
+                    "display-mr": "वर्णन करा"
+                },
+                {
+                    "id": "ID_1089978685",
+                    "text": "Exposure to dusts/fumes",
+                    "display": "Any exposure to dusts/fumes?",
+                    "isRequired": true,
+                    "display-or": "ଧୂଳି ମଳି ସହିତ ସଂସ୍ପର୍ଶରେ ଆସିବା",
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_861046931",
+                            "text": "Yes",
+                            "display-or": "ହଁ",
+                            "language": "Patient is exposed to dust/fumes",
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        },
+                        {
+                            "id": "ID_574745846",
+                            "text": "No",
+                            "display-or": "ନା",
+                            "language": "Patient is not exposed to dust/fumes",
+                            "display-hi": "नहीं",
+                            "display-mr": "माहीत नाही"
+                        }
+                    ],
+                    "display-hi": "क्या आप धूल कणों / धुएं के संपर्क में आएं हैं?",
+                    "display-mr": "धूळ / धुराशी संपर्क येतो का?"
+                },
+                {
+                    "id": "ID_1954533537",
+                    "text": "Declined to answer",
+                    "display-or": "ଉତ୍ତର ଦେବା ପାଇଁ ମନା କରିବା",
+                    "display-hi": "जवाब नहीं दिया",
+                    "display-mr": "उत्तर द्यायचे नाही"
+                }
+            ],
+            "display-hi": "आप किस व्यवसाय में हैं?",
+            "display-mr": "तुम्ही व्यवसाय/काम काय करता?"
+        },
+        {
+            "id": "ID_573035068",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_1763201920",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "होय [वर्णन करा]"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "No",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं -दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचार) घेतले आहेत किंवा कोणत्याही डॉक्टरला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1962864824",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_239409896",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अतिरिक्त जानकारी दर्ज करें]",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अतिरिक्त जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "खांसी",
+    "display-mr": "खोकला"
+}
