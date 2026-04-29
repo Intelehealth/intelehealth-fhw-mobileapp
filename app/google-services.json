@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "683449429768",
+    "project_id": "nashik-arogya-sampada-master",
+    "storage_bucket": "nashik-arogya-sampada-master.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:683449429768:android:ee864dcdaa2073fcba06bd",
+        "android_client_info": {
+          "package_name": "org.intelehealth.nas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "683449429768-t2k6prtd8tqnqoimvrto1uhgks73bup3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPgzjo1XrX6ciT9dzF5YyLnBMKHiQKqKg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "683449429768-t2k6prtd8tqnqoimvrto1uhgks73bup3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
