@@ -134,6 +134,9 @@
                             android:singleLine="true"
                             android:textColor="@color/textColorGray"
                             android:textSize="@dimen/common_hint_text_size"
+                            android:completionThreshold="1"
+                            android:focusable="true"
+                            android:clickable="true"
                             app:endIconMode="custom"
                             tools:ignore="SpeakableTextPresentCheck" />
 
