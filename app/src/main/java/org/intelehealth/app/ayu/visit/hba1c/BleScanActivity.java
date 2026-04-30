@@ -72,9 +72,7 @@ public class BleScanActivity extends AppCompatActivity {
 
         deviceList.clear();
         adapter.clear();
-
         scanner = bluetoothAdapter.getBluetoothLeScanner();
-
         handler.postDelayed(() -> {
             isScanning = false;
             scanner.stopScan(callback);
