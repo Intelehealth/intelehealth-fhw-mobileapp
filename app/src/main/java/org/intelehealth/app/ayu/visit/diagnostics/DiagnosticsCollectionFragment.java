@@ -205,30 +205,44 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQ_BLE && resultCode == RESULT_OK) {
+        if (requestCode != REQ_BLE || resultCode != RESULT_OK || data == null) return;
 
-            String address = data.getStringExtra("device_address");
-
-            BluetoothDevice device = BluetoothAdapter
-                    .getDefaultAdapter()
-                    .getRemoteDevice(address);
-            bleManager = new BleManager(getContext(), new BleManager.Callback() {
-                @Override
-                public void onValue(String value) {
-                    updateHbA1c(value);
-                    Logger.logD(" updateHbA1c : " , value);
-                }
-
-                @Override
-                public void onConnection(boolean connected) {
-                    updateConnectionStatus(connected);
-                }
-            });
-            bleManager.connect(device);
-            //bleManager = new BleManager(getContext(), value -> updateHbA1c(value));
-
+        String address = data.getStringExtra("device_address");
+        if (address == null || address.isEmpty()) {
+            android.widget.Toast.makeText(getContext(),
+                    "No device selected", android.widget.Toast.LENGTH_SHORT).show();
+            return;
         }
 
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter == null) return;
+
+        BluetoothDevice device = adapter.getRemoteDevice(address);
+
+        // Close any previous connection before opening a new one.
+        if (bleManager != null) bleManager.disconnect();
+
+        bleManager = new BleManager(getContext(), new BleManager.Callback() {
+            @Override
+            public void onValue(String value) {
+                updateHbA1c(value);
+            }
+
+            @Override
+            public void onConnection(boolean connected) {
+                updateConnectionStatus(connected);
+            }
+        });
+        bleManager.connect(device);
+    }
+
+    @Override
+    public void onDestroyView() {
+        if (bleManager != null) {
+            try { bleManager.disconnect(); } catch (SecurityException ignored) {}
+            bleManager = null;
+        }
+        super.onDestroyView();
     }
 
     private void updateConnectionStatus(boolean isConnected) {

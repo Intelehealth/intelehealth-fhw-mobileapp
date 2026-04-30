@@ -54,6 +54,14 @@ public class BleScanActivity extends AppCompatActivity {
 
             Intent result = new Intent();
             result.putExtra("device_address", device.getAddress());
+            String name = "Unknown";
+            if (androidx.core.app.ActivityCompat.checkSelfPermission(
+                    this, android.Manifest.permission.BLUETOOTH_CONNECT)
+                    == android.content.pm.PackageManager.PERMISSION_GRANTED
+                    || android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.S) {
+                if (device.getName() != null) name = device.getName();
+            }
+            result.putExtra("device_name", name);
             setResult(RESULT_OK, result);
             finish();
         });

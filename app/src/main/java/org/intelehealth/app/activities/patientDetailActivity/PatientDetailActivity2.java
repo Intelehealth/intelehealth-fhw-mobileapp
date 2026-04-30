@@ -2343,9 +2343,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private String getDistrictTranslated(String state, String district, String language) {
-        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
-        List<DistData> distDataList = new ArrayList<>();
         String desiredVal = district;
+        JSONObject jsonObject = FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json");
+        if (jsonObject == null) return desiredVal;
+
+        StateDistMaster mStateDistMaster = new Gson().fromJson(jsonObject.toString(), StateDistMaster.class);
+        List<DistData> distDataList = new ArrayList<>();
 
         for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
             String sName = mStateDistMaster.getStateDataList().get(i).getState();

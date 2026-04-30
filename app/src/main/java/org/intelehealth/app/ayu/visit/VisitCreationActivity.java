@@ -180,6 +180,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public String patientUuid;
     public String visitUuid;
     public String encounterVitals;
+    /** Sound exam types already recorded in this visit (e.g. "heart", "lung").
+     *  Survives fragment recreation; lets us suppress the adapter's auto
+     *  showAyuDeviceDialog() trigger when returning from SoundFragment. */
+    public final java.util.Set<String> completedSoundTypes = new java.util.HashSet<>();
     private float float_ageYear_Month;
     private int mAgeInMonth;
     private String mAgeAndMonth;

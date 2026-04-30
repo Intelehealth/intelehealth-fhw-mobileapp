@@ -233,11 +233,18 @@ public class SoundDialogFragment extends DialogFragment implements RecorderListe
             // ✅ ALL DONE
             Toast.makeText(getContext(), "All sounds recorded", Toast.LENGTH_SHORT).show();
 
+            // Notify the host (PhysicalExaminationFragment) to advance to next question.
+            // Result is queued in the FragmentManager and delivered once that listener's
+            // fragment is STARTED again — i.e. after ConnectPocDeviceFragment pops back.
+            Bundle result = new Bundle();
+            result.putBoolean("completed", true);
+            getParentFragmentManager().setFragmentResult("sound_done", result);
+
             if (listener != null) {
                 listener.onCompleted();
             }
 
-            dismiss(); // 🔥 CLOSE POPUP
+            dismiss();
         }
     }
 

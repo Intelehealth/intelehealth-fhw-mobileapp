@@ -183,12 +183,12 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
             filteredSounds.add("Lower Right");
         }
 
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putString("type", type);
         args.putStringArrayList("sounds", sounds);
         args.putString("patientUuid", patientUuid);
         args.putString("visitUuid", visitUuid);
-        args.putString("encounterUuid", encounterUuid);
+        args.putString("encounterUuid", encounterUuid);*/
 
        /* SoundFragment fragment = SoundFragment.newInstance(args);
 
@@ -209,9 +209,12 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
         );
 
         dialog.setListener(() -> {
-            // ✅ After all sounds recorded
-            if (getParentFragment() instanceof SoundFragment.OnSoundSavedListener) {
-                ((SoundFragment.OnSoundSavedListener) getParentFragment()).onSoundSaved();
+            // After all sounds saved, pop this fragment so the user returns to
+            // PhysicalExaminationFragment. The "sound_done" fragment result was
+            // posted by SoundDialogFragment and will deliver to PhysicalExaminationFragment's
+            // listener once it becomes STARTED again, which advances to the next question.
+            if (isAdded() && !isStateSaved()) {
+                getParentFragmentManager().popBackStack();
             }
         });
 
