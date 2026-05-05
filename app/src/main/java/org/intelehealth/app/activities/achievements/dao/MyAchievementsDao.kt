@@ -64,8 +64,14 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
        queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''")
 
-       queryBuilder.append(" AND (speciality.value IS NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)")
+       queryBuilder.append(" AND (speciality.value IS NOT NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)")
 
+       // 🔍 Log query for debugging
+       var finalQuery = queryBuilder.toString()
+       args.forEach { arg ->
+           finalQuery = finalQuery.replaceFirst("?", "'$arg'")
+       }
+       Log.d("DB_QUERY", "Query todays doc: $finalQuery")
        val cursor = db.rawQuery(queryBuilder.toString(), args.toTypedArray())
        cursor?.use {
            if (it.moveToFirst()) {
@@ -462,7 +468,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         args.forEach { arg ->
             finalQuery = finalQuery.replaceFirst("?", "'$arg'")
         }
-        Log.d("DB_QUERY", "Query: $finalQuery")
+        Log.d("DB_QUERY", "Query today ncd count : $finalQuery")
 
         val cursor = db.rawQuery(queryBuilder.toString(), args.toTypedArray())
         cursor?.use {
@@ -509,7 +515,14 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
         queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''")
 
-        queryBuilder.append(" AND (speciality.value IS NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)")
+        queryBuilder.append(" AND (speciality.value IS NOT NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)")
+
+        // 🔍 Log query for debugging
+        var finalQuery = queryBuilder.toString()
+        args.forEach { arg ->
+            finalQuery = finalQuery.replaceFirst("?", "'$arg'")
+        }
+        Log.d("DB_QUERY", "Query doctor date range: $finalQuery")
 
         val cursor = db.rawQuery(queryBuilder.toString(), args.toTypedArray())
         cursor?.use {
@@ -543,7 +556,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
           )
     """.trimIndent()
 
-        Log.d("DB_QUERYkaveri", "Query: $query")
+        Log.d("DB_QUERY", "Query ncd date range: $query")
 
         val cursor = db.rawQuery(
             query,

@@ -1105,7 +1105,7 @@
     <string name="notification">அறிவிப்பு</string>
 
     <string name="doctor_visits">டாக்டர் வருகைகள்</string>
-    <string name="sevika_or_ncd_visits">சேவிகா/என்சிடி வருகைகள்</string>
+    <string name="sevika_or_ncd_visits">என்சிடி வருகைகள்</string>
     <string name="beneficiary_registered">பயனாளி பதிவு</string>
     <string name="household_registered">குடும்பம் பதிவு</string>
     <string name="status">நிலை</string>

@@ -1084,7 +1084,7 @@
     <string name="notification">Notification</string>
     <string name="confirm_continue_changes_button_dialog">Continue</string>
     <string name="doctor_visits">Doctor Visits</string>
-    <string name="sevika_or_ncd_visits">Sevika/ NCD Visits</string>
+    <string name="sevika_or_ncd_visits">NCD Visits</string>
     <string name="beneficiary_registered">Beneficiary Registered</string>
     <string name="household_registered">Household Registered</string>
     <string name="status">Status</string>
