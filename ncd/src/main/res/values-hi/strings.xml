@@ -129,7 +129,10 @@
 <!--    <string name="integer_format_validation_error_msg">संख्या <xliff:g id="min_value">%1$s</xliff:g> और <xliff:g id="max_value">%2$s</xliff:g> के बीच होनी चाहिए</string>-->
     <string name="integer_format_validation_error_msg">कृपया एक मान्य संख्या दर्ज करें!</string>
 
-    <string name="decimal_format_validation_error_msg">अमान्य संख्या</string>
+<!--    <string name="decimal_format_validation_error_msg">अमान्य संख्या</string>-->
+    <string name="decimal_format_validation_error_msg">
+    कृपया एक मान्य दशमलव संख्या दर्ज करें
+</string>
     <string name="optional_helper_text">वैकल्पिक</string>
     <string name="required">आवश्यक</string>
     <string name="required_text_and_new_line">आवश्यक\n</string>

@@ -1129,5 +1129,8 @@
     <string name="ncd_baseline">NCD-ಬೇಸ್‌ಲೈನ್</string>
 
     <string name="specialty_general_physician">ಸಾಮಾನ್ಯ ವೈದ್ಯ</string>
+    <string name="cleaned_incomplete_visit_data">
+    ನಿಮ್ಮ ಹಿಂದಿನ ಭೇಟಿ ಅಪೂರ್ಣವಾಗಿತ್ತು. ಈಗ ನೀವು ಮತ್ತೆ ಪ್ರಾರಂಭಿಸಬಹುದು.
+</string>
 
 </resources>

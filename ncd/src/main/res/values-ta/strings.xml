@@ -130,7 +130,10 @@
 <!--    <string name="integer_format_validation_error_msg">எண் <xliff:g id="min_value">%1$s</xliff:g> மற்றும் <xliff:g id="max_value">%2$s</xliff:g> இடைப்பட்டதாக இருக்க வேண்டும்</string>-->
     <string name="integer_format_validation_error_msg">தயவுசெய்து சரியான எண்ணை உள்ளிடுங்கள்!</string>
 
-    <string name="decimal_format_validation_error_msg">தவறான எண்</string>
+<!--    <string name="decimal_format_validation_error_msg">தவறான எண்</string>-->
+    <string name="decimal_format_validation_error_msg">
+    தயவுசெய்து செல்லுபடியாகும் தசம எண்களை உள்ளிடவும்
+</string>
     <string name="optional_helper_text">விருப்பத்தேர்வு</string>
     <string name="required">தேவையானது</string>
     <string name="required_text_and_new_line">தேவையானது\n</string>

@@ -147,4 +147,5 @@
     <string name="discard">Discard</string>
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_content_on_sync">Your visit creation process remains incomplete. You can either proceed to finalize the process or choose to discard it.</string>
+    <string name="cleaned_incomplete_visit_data">Your previous visit was incomplete. You can start again now.</string>
 </resources>

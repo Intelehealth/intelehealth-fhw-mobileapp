@@ -1165,5 +1165,8 @@
     <string name="ncd_baseline">NCD-बेसलाइन</string>
 
     <string name="specialty_general_physician">सामान्य चिकित्सक</string>
+    <string name="cleaned_incomplete_visit_data">
+    तुमची मागील भेट अपूर्ण होती. आता तुम्ही पुन्हा सुरू करू शकता.
+</string>
 
 </resources>

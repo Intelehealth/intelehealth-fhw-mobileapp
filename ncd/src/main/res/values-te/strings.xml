@@ -130,7 +130,10 @@
 <!--    <string name="integer_format_validation_error_msg">సంఖ్య <xliff:g id="min_value">%1$s</xliff:g> మరియు <xliff:g id="max_value">%2$s</xliff:g> మధ్య ఉండాలి</string>-->
     <string name="integer_format_validation_error_msg">దయచేసి సరైన సంఖ్యను నమోదు చేయండి!</string>
 
-    <string name="decimal_format_validation_error_msg">చెల్లని సంఖ్య</string>
+<!--    <string name="decimal_format_validation_error_msg">చెల్లని సంఖ్య</string>-->
+    <string name="decimal_format_validation_error_msg">
+    దయచేసి చెల్లుబాటు అయ్యే దశాంశ సంఖ్యను నమోదు చేయండి
+</string>
     <string name="optional_helper_text">ఐచ్చికం</string>
     <string name="required">అవసరం</string>
     <string name="required_text_and_new_line">అవసరం\n</string>

@@ -130,7 +130,7 @@
     <string name="date_format_validation_error_msg">Date format needs to be <xliff:g id="locale_format">%1$s</xliff:g> (e.g. %2$s)</string>
 <!--    <string name="integer_format_validation_error_msg">Number must be between <xliff:g id="min_value">%1$s</xliff:g> and <xliff:g id="max_value">%2$s</xliff:g></string>-->
     <string name="integer_format_validation_error_msg">Please enter valid number!</string>
-    <string name="decimal_format_validation_error_msg">Invalid number</string>
+    <string name="decimal_format_validation_error_msg">Please enter valid decimal number</string>
     <string name="optional_helper_text">Optional</string>
     <string name="required">Required</string>
     <string name="required_text_and_new_line">Required\n</string>a

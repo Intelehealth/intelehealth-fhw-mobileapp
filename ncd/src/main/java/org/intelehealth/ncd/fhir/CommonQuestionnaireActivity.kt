@@ -118,6 +118,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_questionnaire)
+        // Keep screen ON
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Disable/override back button
 
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -946,7 +948,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     private var lastDialogShownTime: Long = 0
     // set 10 sec for debug and 5 min for the release build
 
-    private val FIVE_MINUTES_MILLIS: Long = if(BuildConfig.DEBUG) 10000 else 5 * 60 * 1000
+    private val FIVE_MINUTES_MILLIS: Long = if(BuildConfig.DEBUG) 1*60*1000 else 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
@@ -998,13 +1000,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         val minutes = (millisUntilFinished / 1000) / 60
                         val seconds = (millisUntilFinished / 1000) % 60
                         messageView.text = getString(R.string.abnormal_bp_message, minutes, seconds)
-                        /*"Abnormal BP detected. Please recheck BP after 5 minutes.\n\n" +
-                                "This dialog will close in ${
-                                    "%02d:%02d".format(
-                                        minutes,
-                                        seconds
-                                    )
-                                }"*/
+
                     }
 
                     override fun onFinish() {

@@ -1185,4 +1185,7 @@
     <string name="confirm_discard_changes_content_on_sync">आपकी विज़िट बनाने की प्रक्रिया अधूरी है। आप इसे पूरा कर सकते हैं या त्याग सकते हैं।</string>
 
     <string name="specialty_general_physician">सामान्य चिकित्सक</string>
+    <string name="cleaned_incomplete_visit_data">
+    आपकी पिछली विज़िट अधूरी थी। अब आप फिर से शुरू कर सकते हैं।
+</string>
 </resources>

@@ -1216,5 +1216,6 @@
     <string name="msg_ekal_thank_you_ncd_report">Thank you for using Ekal Telemedicine!</string>
     <string name="ncd_questions_are_incomplete_title">NCD related questions are incomplete!</string>
     <string name="ncd_questions_are_incomplete_body">Are you sure you want to discard the answers.</string>
+    <string name="cleaned_incomplete_visit_data">Your previous visit was incomplete. You can start again now.</string>
 
 </resources>

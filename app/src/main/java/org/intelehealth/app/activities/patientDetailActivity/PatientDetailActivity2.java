@@ -244,6 +244,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     private RecyclerView rvFamilyMembers;
     private RecyclerView rvBaselineSurvey;
+    private ImageView ivAddFamilyMember ;
+    private ImageView ivAddBaselineSurvey ;
+    private LinearLayout llChangeBaselineSurvey;
     private FamilyMemberAdapter familyMemberAdapter;
     private BaselineSurveyAdapter baselineSurveyAdapter;
     private List<FamilyMemberRes> familyMemberList;
@@ -257,7 +260,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private boolean isBaselineWarningOkClicked = false;
 
     CompositeDisposable compositeDisposable = new CompositeDisposable();
-
+private MissingLineListingResult resultModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -277,9 +280,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         rvFamilyMembers = findViewById(R.id.rv_family_members);
         rvBaselineSurvey = findViewById(R.id.rv_baseline_survey);
-        ImageView ivAddFamilyMember = findViewById(R.id.iv_add_family_member);
-        ImageView ivAddBaselineSurvey = findViewById(R.id.iv_add_baseline_survey);
-        LinearLayout llChangeBaselineSurvey = findViewById(R.id.llBaselineSurvey);
+        ivAddFamilyMember = findViewById(R.id.iv_add_family_member);
+        ivAddBaselineSurvey = findViewById(R.id.iv_add_baseline_survey);
+        llChangeBaselineSurvey = findViewById(R.id.llBaselineSurvey);
 
         llEmptyFamilyMember = findViewById(R.id.ll_empty_family);
         familyMemberList = new ArrayList<>();
@@ -322,7 +325,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         initUI();
 
         fetchNcdVisitCount();
-
+        cleanIncompleteVisit();
+        initForOpenVisit();
+        initForPastVisit();
         binding.ncdVisitCountTv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -488,26 +493,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         isBaselineSurveyCompleted = new PatientsDAO().checkIfBaselineSurveyCompleted(patientDTO.getUuid());
-        MissingLineListingQuestionsHelper helper = new MissingLineListingQuestionsHelper(this);
-        Log.d(TAG, "onCreate: dob : "+patientDTO.getDateofbirth());
-        int patientAge = DateAndTimeUtils.getAgeInYear(fetchDateOfBirth(patientDTO.getUuid()), context);
-        MissingLineListingResult resultModel = helper.evaluateMedicalHistory(patientDTO.getUuid(), patientAge);
-        Log.d(TAG, "onCreate: resultModel value : "+new Gson().toJson(resultModel));
 
 
-        if (!isBaselineSurveyCompleted || !areAllVisitsEnded || resultModel.getHasAnyHistoryWithoutMedication()) {
-            startVisitBtn.setEnabled(false);
-            startSevikaVisitBtn.setEnabled(false);
-            binding.startNCDSevikaVisitBtn.setEnabled(false);
-            ivAddBaselineSurvey.setVisibility(View.VISIBLE);
-            llChangeBaselineSurvey.setVisibility(View.GONE);
-        } else {
-            startVisitBtn.setEnabled(true);
-            startSevikaVisitBtn.setEnabled(true);
-            binding.startNCDSevikaVisitBtn.setEnabled(true);
-            ivAddBaselineSurvey.setVisibility(View.GONE);
-            llChangeBaselineSurvey.setVisibility(View.VISIBLE);
-        }
+
 
         if (houseHoldValue != null && !houseHoldValue.isEmpty()) {
             populateFamilyMembers(houseHoldValue);
@@ -681,12 +669,51 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             );
         });
 
+
         populateBaselineSurveys();
 
         handleDeviceBackPress();
-        checkForOldPatientMissingNCDBaselineData(resultModel);
+
     }
 
+    private void updateActionUI(){
+        MissingLineListingQuestionsHelper helper = new MissingLineListingQuestionsHelper(this);
+        Log.d(TAG, "onCreate: dob : "+patientDTO.getDateofbirth());
+        int patientAge = DateAndTimeUtils.getAgeInYear(fetchDateOfBirth(patientDTO.getUuid()), context);
+        resultModel = helper.evaluateMedicalHistory(patientDTO.getUuid(), patientAge);
+        Log.d(TAG, "onCreate: resultModel value : "+new Gson().toJson(resultModel));
+
+        if (!isBaselineSurveyCompleted || !areAllVisitsEnded || resultModel.getHasAnyHistoryWithoutMedication()) {
+            startVisitBtn.setEnabled(false);
+            startSevikaVisitBtn.setEnabled(false);
+            binding.startNCDSevikaVisitBtn.setEnabled(false);
+            ivAddBaselineSurvey.setVisibility(View.VISIBLE);
+            llChangeBaselineSurvey.setVisibility(View.GONE);
+        } else {
+            startVisitBtn.setEnabled(true);
+            startSevikaVisitBtn.setEnabled(true);
+            binding.startNCDSevikaVisitBtn.setEnabled(true);
+            ivAddBaselineSurvey.setVisibility(View.GONE);
+            llChangeBaselineSurvey.setVisibility(View.VISIBLE);
+        }
+
+        checkForOldPatientMissingNCDBaselineData(resultModel);
+    }
+    private void cleanIncompleteVisit(){
+        // cleanup the local db for incomplete ncd visit data when having encounter but no obs records
+        // 1st check if incomplete visit data is present for the patient and then delete the encounter record if present without obs records
+        List<String> incompleteNcdVisitList = VisitsDAO.getIncompleteNcdVisitList(patientDTO.getUuid());
+        if (!incompleteNcdVisitList.isEmpty()) {
+            for (String visitUuid : incompleteNcdVisitList) {
+                VisitAttributeListDAO.deleteVisitAttributeUsingVisitUuid(visitUuid);
+                EncounterDAO.deleteEncounterUsingVisitUuid(visitUuid);
+                VisitsDAO.deleteVisitUsingVisitUuid(visitUuid);
+            }
+            // proper message toast to user
+            // message - Your previous visit was incomplete. You can start again now.
+            Toast.makeText(this, getString(R.string.cleaned_incomplete_visit_data), Toast.LENGTH_LONG).show();
+        }
+    }
     private void fetchNcdVisitCount() {
         disposables.add(
                 Single.fromCallable(() -> VisitsDAO.fetchObservationValuesCount(patientDTO.getUuid()))
@@ -902,6 +929,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onResume() {
         super.onResume();
+        cleanIncompleteVisit();
+        updateActionUI();
         setDisplay(patientDTO.getUuid());
     }
 
@@ -1097,8 +1126,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         fetchAllConfig();
 
         setFullName();
-        initForOpenVisit();
-        initForPastVisit();
+//        initForOpenVisit();
+//        initForPastVisit();
+
+
     }
 
     /**
@@ -1388,7 +1419,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     }
                     encounterCursor.close();
 
-                    String previsitSelection = "encounteruuid = ? AND conceptuuid = ? OR conceptuuid = ? and voided !='1'";
+                    String previsitSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) and voided !='1'";
                     String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT, UuidDictionary.CC_REG_LANG_VALUE};
                     String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                     Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
@@ -2818,7 +2849,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         }
                         encounterCursor.close();
 
-                        String previsitSelection = "encounteruuid = ? AND conceptuuid = ? OR conceptuuid = ? and voided !='1'";
+                        String previsitSelection = "encounteruuid = ? AND (conceptuuid = ? OR conceptuuid = ?) and voided !='1'";
                         String[] previsitArgs = {encounterlocalAdultintial, UuidDictionary.CURRENT_COMPLAINT, UuidDictionary.CC_REG_LANG_VALUE};
                         String[] previsitColumms = {"value", " conceptuuid", "encounteruuid"};
                         Cursor previsitCursor = db.query("tbl_obs", previsitColumms, previsitSelection, previsitArgs, null, null, null);
