@@ -26,7 +26,7 @@
     <string name="error_incorrect_password">প্রবেশ করানো ব্যবহারকারীর নাম এবং পাসওয়ার্ড চেক করুন</string>
     <string name="error_field_required">ঘরটি অবশ্যই পূরণ করতে হবে</string>
     <string name="error_network">নেটওয়ার্ক ত্রুটি</string>
-    <string name="could_not_connect_with_server">Couldn\'t connect with server. \nPlease check your internet \nconnection.</string>
+    <string name="could_not_connect_with_server">সার্ভারের সাথে সংযোগ করা যায়নি।\nঅনুগ্রহ করে আপনার ইন্টারনেট\nসংযোগ পরীক্ষা করুন।</string>
     <string name="error_location_not_selected">অবস্থান ড্রপডাউন ফর্ম একটি মান নির্বাচন করুন</string>
     <string name="error_location_not_fetched">অবস্থানগুলি আনতে অক্ষম৷</string>
 
