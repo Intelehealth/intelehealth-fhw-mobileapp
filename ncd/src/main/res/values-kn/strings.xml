@@ -130,7 +130,10 @@
 <!--    <string name="integer_format_validation_error_msg">ಸಂಖ್ಯೆ <xliff:g id="min_value">%1$s</xliff:g> ಮತ್ತು <xliff:g id="max_value">%2$s</xliff:g> ನಡುವೆ ಇರಬೇಕು</string>-->
     <string name="integer_format_validation_error_msg">ದಯವಿಟ್ಟು ಮಾನ್ಯ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ!</string>
 
-    <string name="decimal_format_validation_error_msg">ಅಮಾನ್ಯ ಸಂಖ್ಯೆ</string>
+<!--    <string name="decimal_format_validation_error_msg">ಅಮಾನ್ಯ ಸಂಖ್ಯೆ</string>-->
+    <string name="decimal_format_validation_error_msg">
+    ದಯವಿಟ್ಟು ಮಾನ್ಯ ದಶಮಾಂಶ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ
+</string>
     <string name="optional_helper_text">ಐಚ್ಛಿಕ</string>
     <string name="required">ಅಗತ್ಯ</string>
     <string name="required_text_and_new_line">ಅಗತ್ಯ\n</string>

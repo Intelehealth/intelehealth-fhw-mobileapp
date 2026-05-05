@@ -130,7 +130,10 @@
 <!--    <string name="integer_format_validation_error_msg">સંખ્યા <xliff:g id="min_value">%1$s</xliff:g> અને <xliff:g id="max_value">%2$s</xliff:g> ની વચ્ચે હોવી જોઈએ</string>-->
     <string name="integer_format_validation_error_msg">કૃપા કરીને માન્ય સંખ્યા દાખલ કરો!</string>
 
-    <string name="decimal_format_validation_error_msg">અમાન્ય સંખ્યા</string>
+<!--    <string name="decimal_format_validation_error_msg">અમાન્ય સંખ્યા</string>-->
+    <string name="decimal_format_validation_error_msg">
+    કૃપા કરીને માન્ય દશાંશ સંખ્યા દાખલ કરો
+</string>
     <string name="optional_helper_text">ઐચ્છિક</string>
     <string name="required">આવશ્યક</string>
     <string name="required_text_and_new_line">આવશ્યક\n</string>

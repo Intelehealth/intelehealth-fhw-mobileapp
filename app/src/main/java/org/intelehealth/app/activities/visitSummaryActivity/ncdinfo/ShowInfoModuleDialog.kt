@@ -19,6 +19,7 @@ import android.widget.Toast
 import androidx.core.net.toUri
 import org.intelehealth.app.R
 import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.ncd.constants.Constants
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
@@ -27,7 +28,7 @@ import kotlin.math.min
 
 class ShowInfoModuleDialog(
     private val context: Context,
-    private val url: String,
+    private var url: String,
     moduleName: String
 ) {
 
@@ -38,6 +39,10 @@ class ShowInfoModuleDialog(
 
     fun show() {
         Log.d("TAGkz", "show: url : " + url)
+        // reformat the url with the downloadable link
+        if(url.contains(Constants.NCD_HEALTH_INFO_MODULES_SUFFIX)){
+            url = url.replace(Constants.NCD_HEALTH_INFO_MODULES_SUFFIX, Constants.NCD_HEALTH_INFO_MODULES_SUFFIX_DOWNLOAD)
+        }
         dialog = Dialog(context)
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog?.setContentView(R.layout.dialog_pdf_viewer)
@@ -166,6 +171,10 @@ class ShowInfoModuleDialog(
             btnDownload?.setOnClickListener {
                 Thread {
                     try {
+                        // format the url for the downloadable file
+                        if(url.contains(Constants.NCD_HEALTH_INFO_MODULES_SUFFIX)){
+                            url = url.replace(Constants.NCD_HEALTH_INFO_MODULES_SUFFIX, Constants.NCD_HEALTH_INFO_MODULES_SUFFIX_DOWNLOAD)
+                        }
                         val uri = url.toUri()
                         val fileName2 = uri.lastPathSegment
 

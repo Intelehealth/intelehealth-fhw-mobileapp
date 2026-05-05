@@ -400,7 +400,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         else
             return getWritableDatabase();
     }
-
+    public SQLiteDatabase getReadDb() {
+        return getReadableDatabase();
+    }
     private static InteleHealthDatabaseHelper sInstance;
 
     public static synchronized InteleHealthDatabaseHelper getInstance(Context context) {

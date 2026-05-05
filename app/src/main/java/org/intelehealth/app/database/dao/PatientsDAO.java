@@ -483,24 +483,27 @@ public class PatientsDAO {
     //Fetch householdID value using Patient UUID
     public String getHouseHoldValue(String patientuuid) throws DAOException {
         String houseHoldID = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+        //db.beginTransaction();
+        Cursor idCursor = null;
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
+            idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE", new String[]{patientuuid, "10720d1a-1471-431b-be28-285d64767093"});
 
             if (idCursor.getCount() != 0) {
                 if (idCursor.moveToLast()) {
                     houseHoldID = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 }
             }
-            idCursor.close();
-            db.setTransactionSuccessful();
+            //idCursor.close();
+            //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+            if (idCursor != null) {
+                idCursor.close(); // ✅ always close
+            }
         }
         return houseHoldID;
     }
@@ -508,23 +511,25 @@ public class PatientsDAO {
     //Fetch all patient UUID's from HouseHoldValue
     public List<String> getPatientUUIDs(String houseHoldValue) throws DAOException {
         List<String> patientUUIDs = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+        //db.beginTransaction();
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND sync='0' COLLATE NOCASE", new String[]{houseHoldValue});
+            cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? AND sync='0' COLLATE NOCASE", new String[]{houseHoldValue});
 
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     patientUUIDs.add(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
                 }
             }
-            cursor.close();
-            db.setTransactionSuccessful();
+
         } catch (SQLException e) {
             CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
-            db.endTransaction();
+            if (cursor != null) {
+                cursor.close(); // ✅ always close
+            }
         }
         return patientUUIDs;
     }
@@ -533,10 +538,11 @@ public class PatientsDAO {
 
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
         FamilyMemberRes familyMemberRes = new FamilyMemberRes();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         //db.beginTransaction();
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            cursor = db.rawQuery("SELECT openmrs_id,first_name,middle_name,last_name FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     familyMemberRes.setOpenMRSID(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -548,39 +554,48 @@ public class PatientsDAO {
                 familyMemberRes.setName("Unknown");
                 listPatientNames.add(familyMemberRes);
             }
-            cursor.close();
+            //cursor.close();
             // db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             CustomLog.e(TAG, s.getMessage());
             throw new DAOException(s);
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // ✅ always close
+            }
         }
         return listPatientNames;
     }
 
     public List<String> getFamilyMemberIDS(String houseHoldValue, String patientUUID) throws DAOException {
         List<String> subMemberIdList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? COLLATE NOCASE", new String[]{houseHoldValue});
+            cursor = db.rawQuery("SELECT patientuuid FROM tbl_patient_attribute where value = ? COLLATE NOCASE", new String[]{houseHoldValue});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     String pid = cursor.getString(cursor.getColumnIndexOrThrow("patientuuid"));
                     if (!Objects.equals(pid, patientUUID)) subMemberIdList.add(pid);
                 }
             }
-            cursor.close();
+            //cursor.close();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             CustomLog.e(TAG, s.getMessage());
             throw new DAOException(s);
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // ✅ always close
+            }
         }
         return subMemberIdList;
     }
 
     public List<FamilyMemberRes> getFamilyMembers(List<String> patientuuids) throws DAOException {
         List<FamilyMemberRes> listPatientNames = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
 
         StringBuilder queryBuilder = new StringBuilder("SELECT openmrs_id, uuid, first_name, middle_name, last_name FROM tbl_patient WHERE uuid IN (");
         String[] queryArgs = new String[patientuuids.size()];
@@ -594,8 +609,9 @@ public class PatientsDAO {
         }
         queryBuilder.append(") COLLATE NOCASE");
 
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery(queryBuilder.toString(), queryArgs);
+            cursor = db.rawQuery(queryBuilder.toString(), queryArgs);
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     FamilyMemberRes familyMemberRes = new FamilyMemberRes();
@@ -606,38 +622,44 @@ public class PatientsDAO {
                     listPatientNames.add(familyMemberRes);
                 }
             }
-            cursor.close();
+            //cursor.close();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             CustomLog.e(TAG, s.getMessage());
             throw new DAOException(s);
+        } finally {
+            if (cursor != null) {
+                cursor.close(); // ✅ always close
+            }
         }
         return listPatientNames;
     }
 
 
     public String getAttributesName(String attributeuuid) throws DAOException {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         //db.beginTransaction();
         String name = "";
+        Cursor cursor = null;
         try {
             String query = "SELECT name from tbl_patient_attribute_master WHERE uuid= '" + attributeuuid + "'";
-            Cursor cursor = db.rawQuery(query, null, null);
+            cursor = db.rawQuery(query, null, null);
             if (cursor.moveToFirst()) {
                 while (!cursor.isAfterLast()) {
                     name = cursor.getString(cursor.getColumnIndex("name"));
                     cursor.moveToNext();
                 }
             }
-            cursor.close();
+            //cursor.close();
             //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage());
         } finally {
-            //db.endTransaction();
-
+            if (cursor != null) {
+                cursor.close(); // ✅ always close
+            }
         }
         return name;
     }
@@ -700,7 +722,6 @@ public class PatientsDAO {
     }
 
     /**
-     *
      * @param list
      * @return
      * @throws DAOException
@@ -754,7 +775,7 @@ public class PatientsDAO {
 
     public String getUuidForAttribute(String attr) {
         String attributeUuid = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_patient_attribute_master where name = ? COLLATE NOCASE", new String[]{attr});
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
@@ -797,10 +818,11 @@ public class PatientsDAO {
 
     public List<PatientDTO> unsyncedPatients() throws DAOException {
         List<PatientDTO> patientDTOList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+//        db.beginTransaction();
+        Cursor idCursor = null;
         try {
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
+            idCursor = db.rawQuery("SELECT * FROM tbl_patient where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
             PatientDTO patientDTO = new PatientDTO();
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -828,14 +850,16 @@ public class PatientsDAO {
 
                 }
             }
-            idCursor.close();
-            db.setTransactionSuccessful();
+            //idCursor.close();
+            //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+            if (idCursor != null) {
+                idCursor.close(); // ✅ always close
+            }
 
         }
 
@@ -872,16 +896,17 @@ public class PatientsDAO {
 
     public String getOpenmrsId(String patientuuid) throws DAOException {
         String id = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         //db.beginTransaction();
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("SELECT openmrs_id FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
+            cursor = db.rawQuery("SELECT openmrs_id FROM tbl_patient where uuid = ? COLLATE NOCASE", new String[]{patientuuid});
             if (cursor.getCount() != 0) {
                 while (cursor.moveToNext()) {
                     id = cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id"));
                 }
             }
-            cursor.close();
+            //cursor.close();
             //db.setTransactionSuccessful();
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
@@ -889,6 +914,9 @@ public class PatientsDAO {
             throw new DAOException(s);
         } finally {
             //db.endTransaction();
+            if (cursor != null) {
+                cursor.close(); // ✅ always close
+            }
 
         }
         return id;
@@ -897,7 +925,7 @@ public class PatientsDAO {
 
     public static String fetch_gender(String patientUuid) {
         String gender = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         Cursor cursor = db.query("tbl_patient", new String[]{"gender"}, "uuid=?",
                 new String[]{patientUuid}, null, null, null);
 
@@ -915,7 +943,7 @@ public class PatientsDAO {
     public static String fetchDateOfBirth(String patientUuid) {
         String dob = "";
 
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         Cursor cursor = db.query("tbl_patient", new String[]{"date_of_birth"}, "uuid=?",
                 new String[]{patientUuid}, null, null, null);
 
@@ -932,7 +960,7 @@ public class PatientsDAO {
 
     public static List<PatientDTO> getAllPatientsFromDB(int limit, int offset) {
         List<PatientDTO> modelList = new ArrayList<PatientDTO>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         String table = "tbl_patient";
         final Cursor searchCursor = db.rawQuery("SELECT uuid, first_name, last_name, date_of_birth, gender, patient_photo FROM " + table + " ORDER BY modified_date DESC limit ? offset ?", new String[]{String.valueOf(limit), String.valueOf(offset)});
         try {
@@ -953,15 +981,19 @@ public class PatientsDAO {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.e(TAG, e.getMessage());
+        } finally {
+            if (searchCursor != null) {
+                searchCursor.close(); // ✅ always close
+            }
         }
 
-        searchCursor.close();
+        //searchCursor.close();
         return modelList;
     }
 
     public static List<PatientDTO> getQueryPatients(String query) {
         List<PatientDTO> modelList = new ArrayList<>();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         String table = "tbl_patient";
         List<String> patientUUID_List = new ArrayList<>();
 
@@ -1041,7 +1073,7 @@ public class PatientsDAO {
 
     public static String phoneNumber(String patientuuid) throws DAOException {
         String phone = null;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? AND person_attribute_type_uuid='14d4f066-15f5-102d-96e4-000c29c2a5d7'", new String[]{patientuuid});
         try {
             if (idCursor.getCount() != 0) {
@@ -1052,14 +1084,18 @@ public class PatientsDAO {
         } catch (SQLException s) {
             FirebaseCrashlytics.getInstance().recordException(s);
             CustomLog.e(TAG, s.getMessage());
+        } finally {
+            if (idCursor != null) {
+                idCursor.close(); // ✅ always close
+            }
         }
-        idCursor.close();
+        //idCursor.close();
         return phone;
     }
 
     public static VisitDTO isVisitPresentForPatient_fetchVisitValues(String patientUUID) {
         VisitDTO visitDTO = new VisitDTO();
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         Cursor idCursor = db.rawQuery("SELECT uuid, startdate, enddate, sync FROM tbl_visit WHERE patientuuid = ?", new String[]{patientUUID});
         try {
             if (idCursor.moveToFirst()) {
@@ -1084,15 +1120,19 @@ public class PatientsDAO {
         } catch (SQLException e) {
             CustomLog.e(TAG, e.getMessage());
 
+        } finally {
+            if (idCursor != null) {
+                idCursor.close(); // ✅ always close
+            }
         }
 
-        idCursor.close();
+        //idCursor.close();
         return visitDTO;
     }
 
     public static String[] getPatientDobAgeGender(String patientUuid) {
         String[] result = new String[0];
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
                 "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
 
@@ -1112,7 +1152,7 @@ public class PatientsDAO {
 
     public String getPatientDob(String patientUuid) {
         String dateOfBirth = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         Cursor cursor = db.rawQuery("SELECT date_of_birth FROM tbl_patient WHERE uuid = ?", new String[]{patientUuid});
         if (cursor.moveToFirst()) {
             do {
@@ -1125,7 +1165,7 @@ public class PatientsDAO {
 
     public static String[] getPatientsPhoneNumber(String patientUuid) {
         String[] result = new String[0];
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
                 "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
 
@@ -1145,7 +1185,7 @@ public class PatientsDAO {
 
     public static PatientDTO getPatientDetailsByUuid(String patientUuid) {
         PatientDTO patientDTO = null;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         final Cursor cursor = db.rawQuery("select * from tbl_patient where uuid = ? and " +
                 "(sync = 1 OR sync = 'true' OR sync = 'TRUE') and voided = 0", new String[]{patientUuid});
 
@@ -1185,7 +1225,7 @@ public class PatientsDAO {
 
     public static PatientDTO getPatientDetailsByPatientUUID(String patientUuid) {
         PatientDTO patientDTO = null;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {patientUuid};
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
@@ -1316,7 +1356,7 @@ public class PatientsDAO {
         return Observable.fromCallable(() -> {
             int count = 0;
 
-            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
 
             String query = "SELECT " +
                     "a.uuid as visituuid, " +
@@ -1375,7 +1415,7 @@ public class PatientsDAO {
 
     public boolean checkIfBaselineSurveyCompleted(String patientId) {
         boolean isBaselineSurveyCompleted = false;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
         String query = "SELECT * FROM tbl_patient_attribute WHERE patientuuid = ? AND person_attribute_type_uuid = ?";
 
         final Cursor cursor = db.rawQuery(query, new String[]{patientId, "7bc0540f-6bcf-4fdd-a0c5-4068a3c922f9"});
@@ -1408,7 +1448,7 @@ public class PatientsDAO {
     public static Patient getPatientDetailsForRedirection(String patientUuid) {
         Patient patient = new Patient();
         String[] columns = {"first_name", "last_name", "date_of_birth"};
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
 
         Cursor cursor = db.query("tbl_patient", columns, "uuid=?", new String[]{patientUuid}, null, null, null);
         if (cursor.moveToFirst()) {
@@ -1427,10 +1467,11 @@ public class PatientsDAO {
     //Fetch value using Patient UUID from tbl_patient_attrb table.
     public String getValueFromPatientAttrbTable(String patientuuid, String attributeUuid) throws DAOException {
         String houseHoldID = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+        //db.beginTransaction();
+        Cursor idCursor = null;
         try {
-            Cursor idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? " +
+            idCursor = db.rawQuery("SELECT value FROM tbl_patient_attribute where patientuuid = ? " +
                             "AND person_attribute_type_uuid=? AND voided='0' COLLATE NOCASE",
                     new String[]{patientuuid, attributeUuid});
 
@@ -1439,21 +1480,23 @@ public class PatientsDAO {
                     houseHoldID = idCursor.getString(idCursor.getColumnIndexOrThrow("value"));
                 }
             }
-            idCursor.close();
-            db.setTransactionSuccessful();
+            //idCursor.close();
+            //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
-            db.endTransaction();
+            if (idCursor != null) {
+                idCursor.close(); // ✅ always close
+            }
         }
         return houseHoldID;
     }
 
     public String getPatientAttributeByPatientUuid(String patientUuid, String attributeName) throws DAOException {
         String value = "";
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        db.beginTransaction();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+        //db.beginTransaction();
         Cursor cursor = null;
         try {
             // Single query with JOIN
@@ -1471,13 +1514,13 @@ public class PatientsDAO {
                 value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
             }
 
-            db.setTransactionSuccessful();
+            //db.setTransactionSuccessful();
         } catch (SQLException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             throw new DAOException(e);
         } finally {
             if (cursor != null) cursor.close();
-            db.endTransaction();
+            //db.endTransaction();
         }
         return value;
     }
@@ -1486,7 +1529,7 @@ public class PatientsDAO {
         String medicalHistory = null;
 
         SQLiteDatabase db =
-                IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
 
         String sql = "SELECT value FROM tbl_patient_attribute a WHERE a.patientuuid = ? AND a.person_attribute_type_uuid = ? " +
                 "AND a.value IS NOT NULL AND a.modified_date = (SELECT MAX(b.modified_date) FROM tbl_patient_attribute b " +

@@ -463,6 +463,9 @@
     <string name="confirm_discard_changes_content_on_sync">നിങ്ങളുടെ സന്ദർശനം സൃഷ്ടിക്കുന്ന പ്രക്രിയ അപൂർണ്ണമാണ്. അത് പൂർത്തിയാക്കുകയോ ഉപേക്ഷിക്കുകയോ ചെയ്യാം.</string>
 
     <string name="specialty_general_physician">ജനറൽ ഫിസിഷ്യൻ</string>
+    <string name="cleaned_incomplete_visit_data">
+    നിങ്ങളുടെ മുൻ സന്ദർശനം അപൂർണ്ണമായിരുന്നു. ഇപ്പോൾ നിങ്ങൾക്ക് വീണ്ടും ആരംഭിക്കാം.
+</string>
 
 </resources>
 
