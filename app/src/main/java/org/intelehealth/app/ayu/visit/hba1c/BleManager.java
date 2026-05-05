@@ -12,7 +12,8 @@ import android.util.Log;
 
 import androidx.annotation.RequiresPermission;
 
-import org.intelehealth.app.utilities.Logger;
+// android.util.Log is used directly because Logger.logD/CustomLog.d silently
+// drops messages that don't start with "parentNode ".
 
 import java.util.UUID;
 
@@ -83,9 +84,27 @@ public class BleManager {
                 return;
             }
 
+            // Diagnostic: dump every service + characteristic the device exposes
+            // so we can identify the right UUIDs for this HbA1c device model.
+            Log.d(TAG, "=== GATT SERVICES (" + gatt.getServices().size() + ") ===");
+            for (BluetoothGattService s : gatt.getServices()) {
+                Log.d(TAG, "Service: " + s.getUuid());
+                for (BluetoothGattCharacteristic c : s.getCharacteristics()) {
+                    int p = c.getProperties();
+                    StringBuilder props = new StringBuilder();
+                    if ((p & BluetoothGattCharacteristic.PROPERTY_READ)   != 0) props.append("READ ");
+                    if ((p & BluetoothGattCharacteristic.PROPERTY_WRITE)  != 0) props.append("WRITE ");
+                    if ((p & BluetoothGattCharacteristic.PROPERTY_WRITE_NO_RESPONSE) != 0) props.append("WRITE_NO_RESPONSE ");
+                    if ((p & BluetoothGattCharacteristic.PROPERTY_NOTIFY) != 0) props.append("NOTIFY ");
+                    if ((p & BluetoothGattCharacteristic.PROPERTY_INDICATE) != 0) props.append("INDICATE ");
+                    Log.d(TAG, "  Char: " + c.getUuid() + " [" + props.toString().trim() + "]");
+                }
+            }
+            Log.d(TAG, "=== END GATT SERVICES ===");
+
             BluetoothGattService service = gatt.getService(SERVICE_UUID);
             if (service == null) {
-                Log.e(TAG, "Service " + SERVICE_UUID + " not found");
+                Log.e(TAG, "Service " + SERVICE_UUID + " not found — see GATT dump above");
                 return;
             }
 
@@ -140,15 +159,17 @@ public class BleManager {
             byte[] data = characteristic.getValue();
             if (data == null || data.length == 0) return;
 
-            Logger.logD("BLE HEX: ", bytesToHex(data));
+            // Use android.util.Log directly — Logger.logD/CustomLog.d silently
+            // drops everything that doesn't start with "parentNode ".
+            Log.d(TAG, "HEX: " + bytesToHex(data));
             String raw = new String(data).trim();
-            Logger.logD("BLE STRING: ", raw);
+            Log.d(TAG, "STRING: " + raw);
 
             String parsed = extractNumericValue(raw);
             if (parsed == null) parsed = parseFromBytes(data);
 
+            Log.d(TAG, "PARSED: " + parsed);
             if (parsed != null && callback != null) {
-                Logger.logD("BLE FINAL: ", parsed);
                 callback.onValue(parsed);
             }
         }

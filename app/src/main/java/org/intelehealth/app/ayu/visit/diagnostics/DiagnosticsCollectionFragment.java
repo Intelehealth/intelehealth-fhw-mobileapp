@@ -37,7 +37,6 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
-import org.intelehealth.app.ayu.visit.hba1c.BleManager;
 import org.intelehealth.app.ayu.visit.hba1c.BleScanActivity;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
@@ -58,11 +57,16 @@ import org.intelehealth.config.presenter.fields.viewmodel.DiagnosticsViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.Diagnostics;
 import org.intelehealth.config.utility.PatientDiagnosticsConfigKeys;
+import org.intelehealth.klivekit.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiagnosticsCollectionFragment extends Fragment implements View.OnClickListener {
+import biosense.sreyasvpariyath.com.biosenselib.helper.Communicator;
+import biosense.sreyasvpariyath.com.biosenselib.helper.ControlCentre;
+
+public class DiagnosticsCollectionFragment extends Fragment
+        implements View.OnClickListener, Communicator {
     private static final String TAG = DiagnosticsCollectionFragment.class.getSimpleName();
     private VisitCreationActionListener mActionListener;
     private String patientName = "";
@@ -85,7 +89,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     private boolean firstReadingReceived = false;
 
     private static final int REQ_BLE = 100;
-    private BleManager bleManager;
+    /** Vendor BioSense SDK driver. Replaces the custom BleManager
+     *  (which targeted FFF0/FFF1 — wrong UUIDs for the A1Chek device,
+     *  per the official HbA1c App Protocol doc which specifies FFE1
+     *  and a 3-frame IEEE 754 protocol). */
+    private ControlCentre controlCentre;
     private boolean isAutoFilling = false;
 
     public DiagnosticsCollectionFragment() {
@@ -214,38 +222,91 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             return;
         }
 
-        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-        if (adapter == null) return;
+        String deviceName = data.getStringExtra("device_name");
+        if (deviceName == null || deviceName.isEmpty()) deviceName = "HbA1c";
 
-        BluetoothDevice device = adapter.getRemoteDevice(address);
+        // Close any previous receiver before opening a new one.
+        if (controlCentre != null) {
+            try { controlCentre.stopReceiver(); } catch (Exception ignored) {}
+            controlCentre = null;
+        }
+        firstReadingReceived = false;
 
-        // Close any previous connection before opening a new one.
-        if (bleManager != null) bleManager.disconnect();
-
-        bleManager = new BleManager(getContext(), new BleManager.Callback() {
-            @Override
-            public void onValue(String value) {
-                updateHbA1c(value);
-            }
-
-            @Override
-            public void onConnection(boolean connected) {
-                updateConnectionStatus(connected);
-            }
-        });
-        bleManager.connect(device);
+        // Hand control to the BioSense vendor SDK. It handles GATT, FFE1
+        // notify subscription, and the 3-frame IEEE 754 protocol internally.
+        // Communicator callbacks land on this fragment.
+        Log.d("HBA1C_FLOW", "Initializing ControlCentre for " + deviceName + " @ " + address);
+        controlCentre = new ControlCentre(
+                this,                           // Communicator
+                requireContext(),               // Context
+                requireActivity(),              // Activity
+                address,
+                Constants.devId_A1Chek,         // device-type constant for HbA1c
+                deviceName
+        );
+        controlCentre.startReceiver();
     }
 
     @Override
     public void onDestroyView() {
-        if (bleManager != null) {
-            try { bleManager.disconnect(); } catch (SecurityException ignored) {}
-            bleManager = null;
+        if (controlCentre != null) {
+            try { controlCentre.stopReceiver(); } catch (Exception ignored) {}
+            controlCentre = null;
         }
         super.onDestroyView();
     }
 
-    private void updateConnectionStatus(boolean isConnected) {
+    // ──────────────────────────────────────────────────────────────────
+    //  BioSense Communicator callbacks
+    //  Per the HbA1c App Protocol doc, the device sends 3 frames per test
+    //  and requires the user to press its button TWICE — first press fires
+    //  go(); second press fires setHbA1cReading() with the actual value.
+    // ──────────────────────────────────────────────────────────────────
+
+    @Override
+    public void setHbA1cReading(String reading, String date, String time, String srno) {
+        Log.d("HBA1C_FLOW", "setHbA1cReading reading=" + reading
+                + " date=" + date + " time=" + time + " srno=" + srno);
+        firstReadingReceived = true;
+        updateHbA1c(reading);
+    }
+
+    @Override
+    public boolean go(String s) {
+        // Fires on the FIRST device button press (handshake frame).
+        // The library only emits setHbA1cReading on the SECOND press.
+        if (!firstReadingReceived && getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (getContext() == null) return;
+                android.widget.Toast.makeText(getContext(),
+                        "Press the device button once more to get the reading",
+                        android.widget.Toast.LENGTH_LONG).show();
+            });
+        }
+        return false;
+    }
+
+    @Override
+    public void setConnectionStatus(String status, boolean isConnected) {
+        Log.d("HBA1C_FLOW", "setConnectionStatus status=" + status + " connected=" + isConnected);
+        updateConnectionStatusUi(isConnected);
+    }
+
+    // No-op stubs for Communicator methods this screen doesn't use.
+    @Override public void setHB(String s) {}
+    @Override public void setBPReading(String systolic, String diastolic, String pulse) {}
+    @Override public void onBpDeviceError() {}
+    @Override public void setGlucoseReading(String text) {}
+    @Override public void testStarted(boolean b) {}
+    @Override public void stopNotiFication() {}
+    @Override public void setSwitchActivity() {}
+    @Override public void setBatteryLevel(int i) {}
+    @Override public void setManufacturerName(String s) {}
+    @Override public void setSerialNumber(String s) {}
+    @Override public void setModelNumber(String s) {}
+    @Override public void getOfflineResults(ArrayList<String> arrayList) {}
+
+    private void updateConnectionStatusUi(boolean isConnected) {
         if (getActivity() == null) return;
 
         getActivity().runOnUiThread(() -> {
@@ -258,34 +319,58 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     }
 
     private void updateHbA1c(String value) {
-        Logger.logD(" updateHbA1c : " , value);
-        if (value == null || value.isEmpty()) return;
+        Log.d("HBA1C_FLOW", "updateHbA1c IN value=" + value);
 
-        try {
-            double d = Double.parseDouble(value);
-
-            // Only accept valid range
-            if (d < 3.0 || d > 16.0) return;
-
-        } catch (Exception e) {
+        if (value == null || value.isEmpty()) {
+            Log.d("HBA1C_FLOW", "updateHbA1c: empty/null — abort");
             return;
         }
 
-        if (isAutoFilling) return;
+        final double d;
+        try {
+            d = Double.parseDouble(value);
+        } catch (Exception e) {
+            Log.d("HBA1C_FLOW", "updateHbA1c: parse failed — abort");
+            return;
+        }
+        if (d < 3.0 || d > 16.0) {
+            Log.d("HBA1C_FLOW", "updateHbA1c: " + d + " out of [3,16] — abort");
+            return;
+        }
 
+        // Fragment lifecycle guard. requireActivity() throws if detached;
+        // a stale callback on a background thread shouldn't crash the app.
+        if (!isAdded() || getActivity() == null) {
+            Log.d("HBA1C_FLOW", "updateHbA1c: fragment not attached — abort");
+            isAutoFilling = false;   // clear any stuck flag for next time
+            return;
+        }
+
+        // Defensive: if a previous call set isAutoFilling=true but its UI runnable
+        // never executed (activity replaced before post ran), the flag would be
+        // stuck and block forever. Force-reset rather than blocking.
+        if (isAutoFilling) {
+            Log.d("HBA1C_FLOW", "updateHbA1c: isAutoFilling stuck — resetting");
+        }
         isAutoFilling = true;
 
-        requireActivity().runOnUiThread(() -> {
-            mBinding.etvDiabetesHba1c.setText(value);
-            System.out.println("updateHbA1c1" + value);
-            Logger.logD("updateHbA1c1:  " , String.valueOf(value));
-
-            mBinding.etvDiabetesHba1c.setSelection(value.length());
-            System.out.println("updateHbA1c2" + value);
-
-            isValidForm();
-
-            isAutoFilling = false;
+        getActivity().runOnUiThread(() -> {
+            try {
+                if (mBinding == null) {
+                    Log.d("HBA1C_FLOW", "updateHbA1c UI: mBinding null — abort");
+                    return;
+                }
+                mBinding.etvDiabetesHba1c.setText(value);
+                mBinding.etvDiabetesHba1c.setSelection(value.length());
+                Log.d("HBA1C_FLOW", "updateHbA1c UI: setText(" + value + ") OK");
+                isValidForm();
+            } catch (Exception e) {
+                Log.d("HBA1C_FLOW", "updateHbA1c UI: " + e.getMessage());
+            } finally {
+                // Always release the lock — even if setText threw — so the next
+                // value from the device gets accepted.
+                isAutoFilling = false;
+            }
         });
     }
 
