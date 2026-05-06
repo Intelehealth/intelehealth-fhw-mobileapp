@@ -3,33 +3,17 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.LocaleList;
 import android.text.Html;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2;
-import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
-import org.intelehealth.app.activities.visit.model.PastVisitData;
-import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
-import org.intelehealth.app.app.AppConstants;
-import org.intelehealth.app.ayu.visit.common.VisitUtils;
-import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.models.pushRequestApiCall.Visit;
-import org.intelehealth.app.utilities.CustomLog;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -59,22 +42,15 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.PrescriptionModel;
-import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.File;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 /**
  * Created by Prajwal Waingankar on 3/11/22.
@@ -475,9 +451,16 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
                         "where  attr.visit_uuid = v.uuid " +
                         "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        // ✅ NEW doctor visit condition
+                       /* "and NOT EXISTS ( " +
+                        "    SELECT 1 FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid " +
+                        "    AND dva.value = ? " +
+                        ") " +*/
+
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});
+                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE, /*AppConstants.DOCTOR_NOT_NEEDED,*/String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -485,52 +468,55 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
+//                if (!new VisitsDAO().isDoctorVisit(vuid)) {
+//                    continue;
+//                }
 
                 //List<String> visitUuidList = new VisitsDAO().getFilteredVisits(db, puid);  // check if the visit is doctor or sevika visit
 
                 //for (String vuid : visitUuidList) {
-                    PrescriptionModel model = new PrescriptionModel();
-                    model.setHasPrescription(false);
+                PrescriptionModel model = new PrescriptionModel();
+                model.setHasPrescription(false);
 
-                    boolean isCompletedExitedSurvey = false;
-                    boolean isPrescriptionReceived = false;
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending
+
+                    String emergencyUuid = "";
+                    EncounterDAO encounterDAO = new EncounterDAO();
                     try {
-                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
-                        isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(vuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
                     }
 
-                    if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending
+                    if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                        model.setEmergency(true);
+                    else
+                        model.setEmergency(false);
+                    // emergency - end
 
-                        String emergencyUuid = "";
-                        EncounterDAO encounterDAO = new EncounterDAO();
-                        try {
-                            emergencyUuid = encounterDAO.getEmergencyEncounters(vuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            emergencyUuid = "";
-                        }
-
-                        if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
-                            model.setEmergency(true);
-                        else
-                            model.setEmergency(false);
-                        // emergency - end
-
-                        model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
-                        model.setVisitUuid(vuid);
-                        model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
-                        model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-                        model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                        model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
-                        model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
-                        model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                        model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                        model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
-                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        recentList.add(model);
-                    }
+                    model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setVisitUuid(vuid);
+                    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                    model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                    model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                    model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    recentList.add(model);
+                }
                 //}
             }
             while (cursor.moveToNext());
@@ -559,7 +545,13 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                 "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
                 "where  attr.visit_uuid = v.uuid " +
                 "and attr.visit_attribute_type_uuid = ?) <=0 " +
-                "group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE});
+                // ✅ NEW doctor visit condition
+//                "and NOT EXISTS ( " +
+//                "    SELECT 1 FROM tbl_visit_attribute dva " +
+//                "    WHERE dva.visit_uuid = v.uuid " +
+//                "    AND dva.value = ? " +
+//                ") " +
+                "group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -570,6 +562,9 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                 model.setHasPrescription(false);
                 // emergency - start
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
+//                if (!new VisitsDAO().isDoctorVisit(visitID)) {
+//                    continue;
+//                }
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
                 try {
@@ -636,61 +631,69 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
                         "where  attr.visit_uuid = v.uuid " +
                         "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        // ✅ NEW doctor visit condition
+                       /* "and NOT EXISTS ( " +
+                        "    SELECT 1 FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid " +
+                        "    AND dva.value = ? " +
+                        ") "+*/
                         "group by p.openmrs_id " +
                         "ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE, String.valueOf(limit), String.valueOf(offset)});
+                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,/* AppConstants.DOCTOR_NOT_NEEDED,*/ String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
-
+//                if (!new VisitsDAO().isDoctorVisit(vuid)) {
+//                    continue;
+//                }
                 //List<String> visitUuidList = new VisitsDAO().getFilteredVisits(db, puid);  // check if the visit is doctor or sevika visit
 
                 //for (String vuid : visitUuidList) {
-                    PrescriptionModel model = new PrescriptionModel();
-                    model.setHasPrescription(false);
+                PrescriptionModel model = new PrescriptionModel();
+                model.setHasPrescription(false);
 
-                    boolean isCompletedExitedSurvey = false;
-                    boolean isPrescriptionReceived = false;
+                boolean isCompletedExitedSurvey = false;
+                boolean isPrescriptionReceived = false;
+                try {
+                    isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
+                    isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
+                } catch (DAOException e) {
+                    e.printStackTrace();
+                }
+
+                if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending
+
+                    String emergencyUuid = "";
+                    EncounterDAO encounterDAO = new EncounterDAO();
                     try {
-                        isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(vuid);
-                        isPrescriptionReceived = new EncounterDAO().isPrescriptionReceived(vuid);
+                        emergencyUuid = encounterDAO.getEmergencyEncounters(vuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
                     } catch (DAOException e) {
-                        e.printStackTrace();
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        emergencyUuid = "";
                     }
 
-                    if (!isCompletedExitedSurvey && !isPrescriptionReceived) {  // ie. visit is active and presc is pending
+                    if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
+                        model.setEmergency(true);
+                    else
+                        model.setEmergency(false);
+                    // emergency - end
 
-                        String emergencyUuid = "";
-                        EncounterDAO encounterDAO = new EncounterDAO();
-                        try {
-                            emergencyUuid = encounterDAO.getEmergencyEncounters(vuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                        } catch (DAOException e) {
-                            FirebaseCrashlytics.getInstance().recordException(e);
-                            emergencyUuid = "";
-                        }
-
-                        if (!emergencyUuid.equalsIgnoreCase("")) // ie. visit is emergency visit.
-                            model.setEmergency(true);
-                        else
-                            model.setEmergency(false);
-                        // emergency - end
-
-                        model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
-                        model.setVisitUuid(vuid);
-                        model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
-                        model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
-                        model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
-                        model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
-                        model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
-                        model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
-                        model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
-                        model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
-                        model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
-                        olderList.add(model);
-                    }
-              //  }
+                    model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")));
+                    model.setVisitUuid(vuid);
+                    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                    model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                    model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                    model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                    model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                    model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                    model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                    model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                    olderList.add(model);
+                }
+                //  }
             }
             while (cursor.moveToNext());
         }
@@ -717,9 +720,14 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
                         "where  attr.visit_uuid = v.uuid " +
                         "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        /*"and NOT EXISTS ( " +
+                        "    SELECT 1 FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid " +
+                        "    AND dva.value = ? " +
+                        ") "+*/
                         "group by p.openmrs_id ORDER BY v.startdate DESC",
 
-                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE});
+                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -727,6 +735,9 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                 model.setHasPrescription(false);
                 String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
 
+//                if (!new VisitsDAO().isDoctorVisit(visitID)) {
+//                    continue;
+//                }
                 boolean isCompletedExitedSurvey = false;
                 boolean isPrescriptionReceived = false;
                 try {

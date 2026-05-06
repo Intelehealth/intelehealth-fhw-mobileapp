@@ -41,6 +41,71 @@ public class VisitsDAO {
 
     private static final String TAG = "VisitsDAO";
 
+    public static List<String> getIncompleteNcdVisitList(String patientUuid) {
+
+        List<String> incompleteVisitList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor visitCursor = null;
+        Cursor attrCursor = null;
+        Cursor obsCursor = null;
+
+        try {
+            // Step 1: Get latest visit
+            visitCursor = db.rawQuery(
+                    "SELECT uuid FROM tbl_visit WHERE patientuuid = ? ORDER BY startdate DESC LIMIT 1",
+                    new String[]{patientUuid}
+            );
+
+            if (visitCursor != null && visitCursor.moveToFirst()) {
+
+                String visitUuid = visitCursor.getString(
+                        visitCursor.getColumnIndexOrThrow("uuid")
+                );
+
+                // Step 2: Check if NCD visit (attribute exists)
+                attrCursor = db.rawQuery(
+                        "SELECT 1 FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? LIMIT 1",
+                        new String[]{visitUuid, IS_NCD_VISIT_ATTRIBUTE}
+                );
+
+                boolean isNcdVisit = (attrCursor != null && attrCursor.moveToFirst());
+
+                if (isNcdVisit) {
+
+                    // Step 3: Check obs count
+                    obsCursor = db.rawQuery(
+                            "SELECT COUNT(*) as obsCount FROM tbl_obs WHERE encounteruuid IN " +
+                                    "(SELECT uuid FROM tbl_encounter WHERE visituuid = ?)",
+                            new String[]{visitUuid}
+                    );
+
+                    if (obsCursor != null && obsCursor.moveToFirst()) {
+
+                        int obsCount = obsCursor.getInt(
+                                obsCursor.getColumnIndexOrThrow("obsCount")
+                        );
+
+                        if (obsCount == 0) {
+                            incompleteVisitList.add(visitUuid);
+                        }
+
+                        Logger.logD(TAG, "Obs count for visit " + visitUuid + " = " + obsCount);
+                    }
+                }
+
+                Logger.logD(TAG, "Visit " + visitUuid + " is NCD: " + isNcdVisit);
+            }
+
+        } finally {
+            if (visitCursor != null) visitCursor.close();
+            if (attrCursor != null) attrCursor.close();
+            if (obsCursor != null) obsCursor.close();
+        }
+
+        return incompleteVisitList;
+    }
+
     public boolean insertVisit(List<VisitDTO> visitDTOS) throws DAOException {
         boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -1262,8 +1327,14 @@ public class VisitsDAO {
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
                         + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
                         "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 "
-                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        "and attr.visit_attribute_type_uuid = ?) <=0 "//+
+                        // ✅ NEW doctor visit condition
+//                        "and NOT EXISTS ( " +
+//                        "    SELECT 1 FROM tbl_visit_attribute dva " +
+//                        "    WHERE dva.visit_uuid = v.uuid " +
+//                        "    AND dva.value = ? " +
+//                        ") "
+                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/  });  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
             else
                 cursor = db.rawQuery("select v.uuid as vuid,p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
                         + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
@@ -1274,12 +1345,21 @@ public class VisitsDAO {
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
                         + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
                         "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 "
-                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{IS_NCD_VISIT_ATTRIBUTE});
+                        "and attr.visit_attribute_type_uuid = ?) <=0 "//+
+                        // ✅ NEW doctor visit condition
+                        /*"and NOT EXISTS ( " +
+                        "    SELECT 1 FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid " +
+                        "    AND dva.value = ? " +
+                        ") "*/
+
+                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
             if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                 do {
 
                     String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
+                    // check the visit isDoctorVisit
+
 
                     //List<String> visitUuidList = getFilteredVisits(db, puid);
 

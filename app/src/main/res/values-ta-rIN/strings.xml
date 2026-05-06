@@ -1258,5 +1258,8 @@
     <string name="ncd_baseline">NCD-அடிப்படை</string>
 
     <string name="specialty_general_physician">பொது மருத்துவர்</string>
+    <string name="cleaned_incomplete_visit_data">
+    உங்கள் முந்தைய வருகை முழுமையடையவில்லை. இப்போது நீங்கள் மீண்டும் தொடங்கலாம்.
+</string>
 
 </resources>

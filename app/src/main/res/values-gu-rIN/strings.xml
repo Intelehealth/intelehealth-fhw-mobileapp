@@ -1172,5 +1172,8 @@
     <string name="confirm_discard_changes_content_on_sync">તમારી મુલાકાત બનાવવાની પ્રક્રિયા અધૂરી છે. તમે તેને પૂર્ણ કરી શકો અથવા રદ કરી શકો.</string>
 
     <string name="specialty_general_physician">સામાન્ય ચિકિત્સક</string>
+    <string name="cleaned_incomplete_visit_data">
+    તમારો અગાઉનો વિઝિટ અધૂરો હતો. હવે તમે ફરીથી શરૂ કરી શકો છો.
+</string>
 
 </resources>

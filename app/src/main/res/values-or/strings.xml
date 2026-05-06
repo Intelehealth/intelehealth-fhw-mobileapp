@@ -1019,5 +1019,8 @@
     <string name="ncd_baseline">NCD-ବେସଲାଇନ୍</string>
 
     <string name="specialty_general_physician">ସାଧାରଣ ଚିକିତ୍ସକ</string>
+    <string name="cleaned_incomplete_visit_data">
+    ଆପଣଙ୍କ ପୂର୍ବ ଭିଜିଟ୍ ଅସମ୍ପୂର୍ଣ୍ଣ ଥିଲା। ଏବେ ଆପଣ ପୁନର୍ବାର ଆରମ୍ଭ କରିପାରିବେ।
+</string>
 
 </resources>

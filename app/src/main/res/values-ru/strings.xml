@@ -550,5 +550,8 @@
     <string name="confirm_discard_changes_content_on_sync">Процесс создания визита не завершён. Вы можете завершить его или удалить.</string>
 
     <string name="specialty_general_physician">Врач общей практики</string>
+    <string name="cleaned_incomplete_visit_data">
+    Ваш предыдущий визит был незавершён. Теперь вы можете начать снова.
+</string>
 
 </resources>

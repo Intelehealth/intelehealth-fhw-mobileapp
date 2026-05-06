@@ -1152,4 +1152,7 @@
     <string name="msg_ekal_thank_you_ncd_report">একাল টেলিমেডিসিন ব্যবহার করার জন্য আপনাকে ধন্যবাद!</string>
 
     <string name="specialty_general_physician">সাধারণ চিকিৎসক</string>
+    <string name="cleaned_incomplete_visit_data">
+    আপনার আগের ভিজিটটি অসম্পূর্ণ ছিল। এখন আপনি আবার শুরু করতে পারেন।
+</string>
 </resources>

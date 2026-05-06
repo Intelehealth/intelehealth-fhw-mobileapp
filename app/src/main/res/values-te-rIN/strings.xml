@@ -1128,5 +1128,8 @@
     <!-- Miscellaneous -->
     <string name="severity_of_case">కేసు తీవ్రత</string>
     <string name="failed_to_load_the_page">పేజీని లోడ్ చేయడం విఫలమైంది</string>
+    <string name="cleaned_incomplete_visit_data">
+    మీ గత సందర్శనం పూర్తి కాలేదు. ఇప్పుడు మీరు మళ్లీ ప్రారంభించవచ్చు.
+</string>
 
 </resources>
