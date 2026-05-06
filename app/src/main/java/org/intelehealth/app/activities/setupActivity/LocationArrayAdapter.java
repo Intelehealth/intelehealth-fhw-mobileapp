@@ -40,7 +40,14 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
             v = super.getDropDownView(position, null, parent);
         }
 
+        v.setFocusable(true);
+        v.setClickable(true);
+        v.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         parent.setVerticalScrollBarEnabled(false);
+
+        String itemName = getItem(position);
+        v.setContentDescription("location_item_" + itemName);
+
         return v;
     }
 
