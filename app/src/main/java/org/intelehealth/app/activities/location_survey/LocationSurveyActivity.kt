@@ -237,9 +237,12 @@ class LocationSurveyActivity : AppCompatActivity() {
         binding?.autotvSelectSanch?.isEnabled = false
         binding?.autotvSelectPrimaryVillage?.isEnabled = false
         binding?.autotvSelectSecondaryVillage?.isEnabled = false
+
+        binding?.autotvSelectState?.keyListener = null;
     }
 
     private fun setListeners() {
+        binding?.autotvSelectState?.setOnClickListener({ v -> binding?.autotvSelectState?.showDropDown() });
         binding?.autotvSelectState?.onItemClickListener =
             AdapterView.OnItemClickListener { parent, _, position, _ ->
                 if (position != 0) {
@@ -251,6 +254,7 @@ class LocationSurveyActivity : AppCompatActivity() {
 
                     selectedState = parent?.getItemAtPosition(position)?.toString()
                     sessionManager?.stateName = selectedState
+                    binding?.autotvSelectState?.setText(selectedState, false)
                     districtArrayAdapter = getDistrictArrayAdapter()
 
                     if (districtArrayAdapter != null) {
