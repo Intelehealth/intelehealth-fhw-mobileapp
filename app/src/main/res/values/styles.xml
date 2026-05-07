@@ -288,7 +288,7 @@
         <item name="cornerSize">16dp</item>
     </style>
 
-    <style name="AutocompleteviewStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+    <style name="AutocompleteviewStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">0dp</item>
         <item name="hintEnabled">false</item>
         <item name="android:textColor">@color/textColorGray</item>

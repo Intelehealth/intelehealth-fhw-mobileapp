@@ -111,8 +111,7 @@
                         style="@style/AutocompleteviewStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/common_edittext_margin_top"
-                        app:endIconDrawable="@drawable/ui2_ic_new_chevron_down">
+                        android:layout_marginTop="@dimen/common_edittext_margin_top">
 
                         <AutoCompleteTextView
                             android:id="@+id/autotv_select_state"
@@ -137,7 +136,6 @@
                             android:focusableInTouchMode="true"
                             android:inputType="text"
                             android:clickable="true"
-                            app:endIconMode="custom"
                             tools:ignore="SpeakableTextPresentCheck" />
 
                     </com.google.android.material.textfield.TextInputLayout>
