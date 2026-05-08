@@ -1,6 +1,7 @@
 package org.intelehealth.app.profile;
 
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
+import static org.intelehealth.app.utilities.FileUtils.copyUriToFile;
 import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 
 import android.Manifest;
@@ -33,9 +34,6 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -46,11 +44,11 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -70,7 +68,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 import com.hbb20.CountryCodePicker;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ChangePasswordActivity_New;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -92,6 +89,7 @@ import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.ui2.calendarviewcustom.SendSelectedDateInterface;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -807,12 +805,27 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         }
     });
 
-    private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+   /* private final ActivityResultLauncher<Intent> galleryIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         Timber.tag(TAG).d("Gallery result=>%s", new Gson().toJson(result));
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) pickImage(result.getData());
         }
-    });
+    });*/
+
+    private final ActivityResultLauncher<PickVisualMediaRequest> galleryIntentLauncher =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+
+                        Timber.tag(TAG).d(
+                                "Gallery result=>%s",
+                                String.valueOf(uri)
+                        );
+
+                        if (uri != null) {
+                            pickImage(uri);
+                        }
+                    });
 
     private void bindProfilePictureToUI(String url) {
         RequestBuilder<Drawable> requestBuilder = Glide.with(this).asDrawable().sizeMultiplier(0.25f);
@@ -825,7 +838,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         saveImage(mCurrentPhotoPath);
     }
 
-    private void pickImage(Intent data) {
+   /* private void pickImage(Intent data) {
         if (data != null) {
             try {
                 Uri selectedImage = data.getData();
@@ -866,6 +879,63 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
 
 
         }
+    }*/
+
+    private void pickImage(Uri uri) {
+
+        if (uri != null) {
+
+            try {
+
+                // Generate random image name
+                String finalImageName = UUID.randomUUID().toString();
+
+                final String finalFilePath =
+                        AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+
+                copyUriToFile(MyProfileActivity.this, uri, finalFilePath);
+
+                // Compress bitmap if needed
+                Bitmap bitmap = BitmapFactory.decodeFile(finalFilePath);
+
+                if (bitmap != null) {
+
+                    ByteArrayOutputStream stream =
+                            new ByteArrayOutputStream();
+
+                    bitmap.compress(
+                            Bitmap.CompressFormat.JPEG,
+                            20,
+                            stream
+                    );
+
+                    ivProfileImage.invalidate();
+                }
+
+                // Update UI
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+
+                        if (!isFinishing() && !isDestroyed()) {
+
+                            runOnUiThread(() ->
+                                    bindProfilePictureToUI(finalFilePath)
+                            );
+                        }
+                    }
+                };
+
+                thread.start();
+
+                // Compress & save
+                compressImageAndSave(finalFilePath);
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+            }
+        }
     }
 
     private void selectImage() {
@@ -882,8 +952,14 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     cameraIntentLauncher.launch(cameraIntent);
 
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    galleryIntentLauncher.launch(intent);
+                    /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    galleryIntentLauncher.launch(intent);*/
+
+                    galleryIntentLauncher.launch(
+                            new PickVisualMediaRequest.Builder()
+                                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                    .build()
+                    );
                 }
             }
         });

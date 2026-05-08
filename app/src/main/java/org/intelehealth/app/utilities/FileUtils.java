@@ -1,6 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
+import android.net.Uri;
 import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -12,6 +13,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -123,6 +125,29 @@ public class FileUtils {
             return AppConstants.NCD_PROTOCOL_DIRECTORY;
         } else {
             return AppConstants.PROTOCOL_DIRECTORY;
+        }
+    }
+
+    public static void copyUriToFile(Context context ,Uri uri, String destinationPath) throws IOException {
+
+        InputStream inputStream =
+                context.getContentResolver().openInputStream(uri);
+
+        FileOutputStream outputStream =
+                new FileOutputStream(destinationPath);
+
+        byte[] buffer = new byte[4096];
+        int length;
+
+        while ((length = inputStream.read(buffer)) > 0) {
+            outputStream.write(buffer, 0, length);
+        }
+
+        outputStream.flush();
+        outputStream.close();
+
+        if (inputStream != null) {
+            inputStream.close();
         }
     }
 }

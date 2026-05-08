@@ -1,18 +1,14 @@
 package org.intelehealth.app.ayu.visit;
 
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
+import static org.intelehealth.app.utilities.FileUtils.copyUriToFile;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,6 +20,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -56,7 +53,6 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -84,10 +80,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1601,11 +1593,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
             });
-    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    /*ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                   /* if (result.getResultCode() == Activity.RESULT_OK) {
+                   *//* if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String currentPhotoPath = "";
                         if (data != null) {
@@ -1639,7 +1631,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
-                    }*/
+                    }*//*
 
 
                     Intent data = result.getData();
@@ -1678,9 +1670,63 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
 
-            });
-
+            });*/
     private String mLastSelectedImageName = "";
+    ImageUtilsListener imageUtilsListener;
+     ActivityResultLauncher<PickVisualMediaRequest> mStartForGalleryResult =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+
+                        if (uri != null) {
+
+                            try {
+
+                                // Generate random image name
+                                mLastSelectedImageName = UUID.randomUUID().toString();
+                                final String finalFilePath =
+                                        AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
+
+                                copyUriToFile(VisitCreationActivity.this, uri, finalFilePath);
+
+
+                                // Compress image if needed
+                                BitmapUtils.fileCompressed(finalFilePath);
+
+                                // Return image path
+                                Bundle bundle = new Bundle();
+                                bundle.putString("image", finalFilePath);
+
+                                imageUtilsListener.onImageReady(bundle);
+
+                                CustomLog.i(
+                                        TAG,
+                                        "Saved image from gallery: "
+                                                + finalFilePath
+                                );
+
+                            } catch (Exception e) {
+
+                                e.printStackTrace();
+
+                                Toast.makeText(
+                                        VisitCreationActivity.this,
+                                        "Failed to process selected image",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+
+                        } else {
+
+                            Toast.makeText(
+                                    VisitCreationActivity.this,
+                                    getResources().getString(R.string.unable_to_pick_data),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    });
+
+
 
     public void openCamera() {
         validatePermissionAndIntent();
@@ -1703,8 +1749,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private void galleryStart() {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        mStartForGalleryResult.launch(intent);
+//        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        mStartForGalleryResult.launch(intent);
+        mStartForGalleryResult.launch(
+                new PickVisualMediaRequest.Builder()
+                        .setMediaType(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE
+                        )
+                        .build()
+        );
     }
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
@@ -1773,7 +1826,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
     }
 
-    ImageUtilsListener imageUtilsListener;
+
 
     public void setImageUtilsListener(ImageUtilsListener imageUtilsListener) {
         this.imageUtilsListener = imageUtilsListener;

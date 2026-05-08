@@ -14,6 +14,7 @@ import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
+import static org.intelehealth.app.utilities.FileUtils.copyUriToFile;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.ADDITIONAL_NOTES;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_ADULTINITIAL;
@@ -98,6 +99,7 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -2698,10 +2700,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
-                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
-                }
+//                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+//                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+//                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+//                }
             } else {
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                     listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -2782,7 +2784,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     });
 
-    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+    /*ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) {
                 Uri selectedImage = result.getData().getData();
@@ -2803,8 +2805,33 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 compressImageAndSave(finalFilePath);
             }
         }
-    });
+    });*/
+    private final ActivityResultLauncher<PickVisualMediaRequest> galleryActivityResult =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+                        if (uri != null) {
 
+                            String finalImageName = UUID.randomUUID().toString();
+                            final String finalFilePath =
+                                    AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+
+                            try {
+                                copyUriToFile(VisitSummaryActivity_New.this, uri, finalFilePath);
+                                compressImageAndSave(finalFilePath);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+
+                                Toast.makeText(
+                                        VisitSummaryActivity_New.this,
+                                        getString(R.string.something_went_wrong),
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+
+                        }
+                    });
 
     // Permission - start
     private void checkPerm(int item) {
@@ -2818,8 +2845,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         } else if (item == 1) {
             if (checkAndRequestPermissions(item)) {
-                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                galleryActivityResult.launch(intent);
+               /* Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                galleryActivityResult.launch(intent);*/
+
+                galleryActivityResult.launch(
+                        new PickVisualMediaRequest.Builder()
+                                .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                .build()
+                );
             }
         }
     }
