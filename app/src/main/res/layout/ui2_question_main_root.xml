@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/margin_50"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_inner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_header"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/im_ayu"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:src="@drawable/ui2_ic_ayu_image_blue" />
@@ -36,6 +40,7 @@
 
 
         <ImageView
+            android:id="@+id/im_top_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_8"
@@ -43,7 +48,7 @@
             android:src="@drawable/chat_bubble_top" />
 
         <LinearLayout
-
+            android:id="@+id/ll_top_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/ui2_chat_bubble_square_round"
@@ -96,6 +101,7 @@
                     android:visibility="gone" />
 
                 <LinearLayout
+                    android:id="@+id/ll_know_more"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
@@ -159,6 +165,7 @@
                     android:orientation="vertical" />
 
                 <LinearLayout
+                    android:id="@+id/ll_bottom_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="@dimen/margin_8"

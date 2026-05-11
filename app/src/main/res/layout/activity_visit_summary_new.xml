@@ -24,6 +24,7 @@
 
             <!-- Frame 100167 -->
             <LinearLayout
+                android:id="@+id/ll_toolbar_inner"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/fu_toolbat_txt_height"
                 android:layout_alignParentLeft="true"
@@ -37,6 +38,7 @@
 
                 <!-- Frame 100116 -->
                 <LinearLayout
+                    android:id="@+id/ll_visit_summary_toolbar_inner"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.7"
@@ -73,6 +75,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_toolbar_btn_inner"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end"
@@ -112,6 +115,7 @@
         <!--Toolbar - end-->
 
         <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/bottom_btn_relative"
@@ -119,6 +123,7 @@
             android:fillViewport="true">
 
             <RelativeLayout
+                android:id="@+id/rl_inner_scrollview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -137,6 +142,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_inner_head_cardview"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -154,6 +160,7 @@
 
                             <!--1st-->
                             <RelativeLayout
+                                android:id="@+id/rl_inner_profile"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1">
@@ -175,6 +182,7 @@
                                 </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_inner_profile_info"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -182,6 +190,7 @@
                                     android:orientation="vertical">
 
                                     <RelativeLayout
+                                        android:id="@+id/rl_inner_name"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content">
 
@@ -214,6 +223,7 @@
                                             android:textColor="@null" />
 
                                         <ImageView
+                                            android:id="@+id/im_edit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center_vertical"
@@ -244,6 +254,7 @@
 
                             <!--2nd-->
                             <LinearLayout
+                                android:id="@+id/ll_inner_bottom_arrow"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -278,6 +289,7 @@
 
 
                             <TableLayout
+                                android:id="@+id/tl_name_visit_id"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/divider1"
@@ -287,11 +299,13 @@
                                 android:shrinkColumns="1">
 
                                 <TableRow
+                                    android:id="@+id/tr_chw_name"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="2">
 
                                     <TextView
+                                        android:id="@+id/tv_chw_title"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="2dp"
@@ -317,12 +331,14 @@
 
                                 <!--Gender-->
                                 <TableRow
+                                    android:id="@+id/tr_visit_id"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="@dimen/margin_4"
                                     android:layout_weight="2">
 
                                     <TextView
+                                        android:id="@+id/tv_visit_id_title"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="2dp"

@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -101,6 +102,7 @@
         android:layout_below="@id/toolbar">
 
         <LinearLayout
+            android:id="@+id/ll_nsv_summary_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layout_marginEnd="@dimen/margin_10"
     android:layout_marginBottom="@dimen/margin_10"
+    android:id="@+id/root_lay"
     android:background="@drawable/ui2_common_primary_bg">
 
     <TextView

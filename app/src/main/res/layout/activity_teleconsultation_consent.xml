@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
+    android:id="@+id/root_lay"
     tools:context=".activities.patientDetailActivity.TeleconsultationConsentActivity">
 
 
@@ -24,6 +25,7 @@
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
+            android:id="@+id/title_tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -76,6 +78,7 @@
         android:weightSum="2">
 
         <Button
+            android:id="@+id/decline_btn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_24"

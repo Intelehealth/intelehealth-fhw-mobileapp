@@ -12,10 +12,12 @@
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
+        android:id="@+id/rl_root_inner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/rl_profile_inner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/fu_margin_start"
@@ -42,6 +44,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_patient_info_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -181,11 +184,13 @@
                 android:layout_gravity="bottom">
 
                 <ImageView
+                    android:id="@+id/im_prescription"
                     android:layout_width="28dp"
                     android:layout_height="28dp"
                     android:src="@drawable/prescription_icon_green" />
 
                 <TextView
+                    android:id="@+id/tv_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

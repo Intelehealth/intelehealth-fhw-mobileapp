@@ -8,11 +8,13 @@
     </data>
 
     <ScrollView
+        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/openall_btn">
 
         <RelativeLayout
+            android:id="@+id/inner_scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -30,6 +32,7 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <RelativeLayout
+                    android:id="@+id/inner_vitals_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -107,6 +110,7 @@
                                 android:paddingHorizontal="4dp">
 
                                 <ImageView
+                                    android:id="@+id/im_vitals_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
@@ -114,6 +118,7 @@
                                     app:tint="?attr/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_vitals_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -128,6 +133,7 @@
                         </RelativeLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_inner_vitals_data"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/vitals_details_relative"
@@ -147,6 +153,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_height"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -180,6 +187,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_weight"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -213,6 +221,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_bmi"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -246,6 +255,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_bp"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -279,6 +289,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_pulse"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -312,6 +323,7 @@
                                 android:orientation="horizontal">
 
                                 <RelativeLayout
+                                    android:id="@+id/rl_inner_temperature_container"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -364,6 +376,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_spo2"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -478,6 +491,7 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <RelativeLayout
+                    android:id="@+id/rl_inner_diagnostics_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -556,6 +570,7 @@
                                 android:paddingHorizontal="4dp">
 
                                 <ImageView
+                                    android:id="@+id/im_diagnostics_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
@@ -563,6 +578,7 @@
                                     app:tint="?attr/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_diagnostics_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -577,6 +593,7 @@
                         </RelativeLayout>
 
                         <LinearLayout
+                            android:id="@+id/ll_inner_diagnostics_data"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/diagnostics_details_relative"
@@ -596,6 +613,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_rbs"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -629,6 +647,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_blood_sugar"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -661,6 +680,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_post_prandial"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -728,6 +748,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_hemoglobin"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -761,6 +782,7 @@
                                 android:weightSum="2">
 
                                 <TextView
+                                    android:id="@+id/tv_uric_acide"
                                     android:layout_width="0dip"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="2dp"
@@ -841,6 +863,7 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <RelativeLayout
+                    android:id="@+id/rl_inner_visitreason_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -920,6 +943,7 @@
                                 android:paddingHorizontal="4dp">
 
                                 <ImageView
+                                    android:id="@+id/im_complaint_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
@@ -927,6 +951,7 @@
                                     app:tint="?attr/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_complaint_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -1005,12 +1030,14 @@
                                 android:visibility="gone">
 
                                 <ImageView
+                                    android:id="@+id/im_cc_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
                                     android:src="@drawable/edit" />
 
                                 <TextView
+                                    android:id="@+id/tv_cc_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -1076,12 +1103,14 @@
                                 android:visibility="gone">
 
                                 <ImageView
+                                    android:id="@+id/im_ass_symp_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
                                     android:src="@drawable/edit" />
 
                                 <TextView
+                                    android:id="@+id/tv_ass_symp_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -1195,6 +1224,7 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <RelativeLayout
+                    android:id="@+id/rl_inner_physexam_card"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -1273,6 +1303,7 @@
                                 android:paddingHorizontal="4dp">
 
                                 <ImageView
+                                    android:id="@+id/im_phys_exam_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
@@ -1280,6 +1311,7 @@
                                     app:tint="?attr/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_phys_exam_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -1350,6 +1382,7 @@
 
             <!--    Medical History Card-->
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_medical_history"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/physExamCard"
@@ -1361,6 +1394,7 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <RelativeLayout
+                    android:id="@+id/rl_inner_medical_history"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
@@ -1441,6 +1475,7 @@
                                 android:paddingHorizontal="4dp">
 
                                 <ImageView
+                                    android:id="@+id/im_pat_history_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
@@ -1448,6 +1483,7 @@
                                     app:tint="?attr/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_pat_history_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"
@@ -1512,6 +1548,7 @@
                                 android:paddingHorizontal="4dp">
 
                                 <ImageView
+                                    android:id="@+id/im_fam_history_edit"
                                     android:layout_width="14dp"
                                     android:layout_height="14dp"
                                     android:layout_margin="5dp"
@@ -1519,6 +1556,7 @@
                                     app:tint="?attr/colorPrimary" />
 
                                 <TextView
+                                    android:id="@+id/tv_fam_history_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center"

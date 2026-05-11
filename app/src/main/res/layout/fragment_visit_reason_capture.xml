@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -66,16 +67,19 @@
         android:padding="@dimen/margin_24">
 
         <LinearLayout
+            android:id="@+id/ll_nsv_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/im_ayu"
                 android:layout_width="40dip"
                 android:layout_height="40dip"
                 android:src="@drawable/ui2_ic_ayu_image_blue" />
 
             <ImageView
+                android:id="@+id/im_top_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_8"
@@ -83,6 +87,7 @@
                 android:src="@drawable/chat_bubble_top" />
 
             <RelativeLayout
+                android:id="@+id/rl_visit_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/ui2_chat_bubble_square_round"

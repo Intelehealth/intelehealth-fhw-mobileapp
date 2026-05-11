@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/root_lay"
     tools:context=".ayu.visit.physicalexam.PhysicalExamSummaryFragment">
 
     <RelativeLayout
@@ -100,6 +101,7 @@
         android:layout_below="@id/toolbar">
 
         <LinearLayout
+            android:id="@+id/ll_nsv_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

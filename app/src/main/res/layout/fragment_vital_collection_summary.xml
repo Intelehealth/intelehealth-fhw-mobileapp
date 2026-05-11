@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
+    android:id="@+id/root_lay"
     tools:context=".ayu.visit.vital.VitalCollectionSummaryFragment">
 
     <RelativeLayout
@@ -99,6 +100,7 @@
         android:layout_below="@id/toolbar">
 
         <LinearLayout
+            android:id="@+id/ll_nsv_summary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -126,6 +128,7 @@
                 android:textStyle="bold" />
 
             <RelativeLayout
+                android:id="@+id/rl_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_24">
@@ -157,6 +160,7 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/ll_top_height_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/margin_8"
@@ -172,6 +176,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_height"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -181,7 +186,7 @@
                         android:id="@+id/tv_height_label"
                         style="@style/label_misc_txt_14sp_dark_1"
                         android:layout_width="0dip"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_below="@+id/toolbar"
                         android:layout_centerVertical="true"
                         android:layout_weight="1"
@@ -210,6 +215,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_weight"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -248,6 +254,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_bmi"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -286,6 +293,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_bp"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -324,6 +332,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_pulse"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -362,6 +371,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_temp"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -400,6 +410,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_spo2"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -438,6 +449,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_respiratory_rate"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"
@@ -476,6 +488,7 @@
                     android:weightSum="2">
 
                     <ImageView
+                        android:id="@+id/im_dot_blood_group"
                         android:layout_width="6dip"
                         android:layout_height="6dip"
                         android:layout_marginEnd="@dimen/padding_5"

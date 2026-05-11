@@ -8,11 +8,14 @@
     app:cardElevation="@dimen/margin_5"
     android:visibility="gone"
     tools:visibility="visible"
+    android:id="@+id/root_lay"
     >
 
         <RelativeLayout
+            android:id="@+id/rl_inner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <ImageView
                 android:id="@+id/snackbar_icon"

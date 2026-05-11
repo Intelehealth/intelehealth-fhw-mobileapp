@@ -293,14 +293,22 @@ public class VisitReasonSummaryFragment extends Fragment {
                         patientReports = patientReports.replace("●", ", ");
                         View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
                         TextView keyTextView = view.findViewById(R.id.tv_question_label);
+                        //adding unique generated id to dynamic view to support automation testing
+                        keyTextView.setId(View.generateViewId());
                         keyTextView.setText(i == 0 ? getString(R.string.patient_reports) : getString(R.string.patient_denies));
+
                         TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+
+                        //adding unique generated id to dynamic view to support automation testing
+                        valueTextView.setId(View.generateViewId());
                         valueTextView.setText(patientReports.trim());
                /* if (patientReportsDenies.isEmpty()) {
                     view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
                 } else {
                     view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
                 }*/
+                        //adding unique generated id to dynamic view to support automation testing
+                        view.setId(View.generateViewId());
                         mAssociateSymptomsLinearLayout.addView(view);
                     }
                 }
@@ -422,14 +430,24 @@ public class VisitReasonSummaryFragment extends Fragment {
                     String v = value.substring(value.indexOf(" - ") + 2).trim();
                     View view = View.inflate(getActivity(), R.layout.ui2_summary_qa_ass_sympt_row_item_view, null);
                     TextView keyTextView = view.findViewById(R.id.tv_question_label);
+
+                    //adding unique generated id to dynamic view to support automation testing
+                    keyTextView.setId(View.generateViewId());
                     keyTextView.setText(k);
+
                     TextView valueTextView = view.findViewById(R.id.tv_answer_value);
+
+                    //adding unique generated id to dynamic view to support automation testing
+                    valueTextView.setId(View.generateViewId());
                     valueTextView.setText(v);
+
                     if (v.isEmpty()) {
                         view.findViewById(R.id.iv_blt).setVisibility(View.GONE);
                     } else {
                         view.findViewById(R.id.iv_blt).setVisibility(View.VISIBLE);
                     }
+                    //adding unique generated id to dynamic view to support automation testing
+                    view.setId(View.generateViewId());
                     mAssociateSymptomsLinearLayout.addView(view);
                 } else if (value.contains(":")) {
                     System.out.println(value);

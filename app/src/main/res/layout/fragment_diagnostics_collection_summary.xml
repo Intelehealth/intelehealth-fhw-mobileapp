@@ -8,6 +8,7 @@
     </data>
 
     <RelativeLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
@@ -105,6 +106,7 @@
             android:layout_below="@id/toolbar">
 
             <LinearLayout
+                android:id="@+id/rl_nested_scroll_view_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -132,6 +134,7 @@
                     android:textStyle="bold" />
 
                 <RelativeLayout
+                    android:id="@+id/rl_details_inner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_24">
@@ -163,6 +166,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_summary_inner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/margin_8"
@@ -177,6 +181,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_rbs"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"
@@ -215,6 +220,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_fbs"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"
@@ -254,6 +260,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_ppbs"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"
@@ -295,6 +302,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_bl_glucose"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"
@@ -336,6 +344,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_hb"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"
@@ -375,6 +384,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_uric_acid"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"
@@ -414,6 +424,7 @@
                         android:weightSum="2">
 
                         <ImageView
+                            android:id="@+id/im_dot_total_cholesterol"
                             android:layout_width="6dip"
                             android:layout_height="6dip"
                             android:layout_marginEnd="@dimen/padding_5"

@@ -416,7 +416,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.WEIGHT)) {
                 mWeightCardView.setVisibility(View.VISIBLE);
                 mWeightCardView.setTag(patientVital);
-                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_wight_lbl));
+                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_weight_lbl));
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.BMI)) {
                 mBMICardView.setVisibility(View.VISIBLE);
