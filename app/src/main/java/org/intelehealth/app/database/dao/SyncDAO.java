@@ -250,7 +250,7 @@ public class SyncDAO {
 
     public boolean pullData_Background(final Context context, int pageNo) {
 
-        mDbHelper = new InteleHealthDatabaseHelper(context);
+        mDbHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         db = mDbHelper.getWriteDb();
 
         sessionManager = new SessionManager(context);
@@ -388,7 +388,7 @@ public class SyncDAO {
 
     public boolean pullData(final Context context, String fromActivity, int pageNo) {
 
-        mDbHelper = new InteleHealthDatabaseHelper(context);
+        mDbHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         if (db == null) {
             db = mDbHelper.getWriteDb();
         }
@@ -534,7 +534,7 @@ public class SyncDAO {
      */
     public boolean pullDataBackgroundService(final Context context, String fromActivity, int pageNo) {
 
-        mDbHelper = new InteleHealthDatabaseHelper(context);
+        mDbHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         if (db == null) {
             db = mDbHelper.getWriteDb();
         }

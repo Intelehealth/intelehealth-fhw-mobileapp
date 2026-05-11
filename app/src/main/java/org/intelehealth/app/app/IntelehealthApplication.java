@@ -153,9 +153,9 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         );
         CustomLog.i(TAG, "onCreate: Parse init");
 
-        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWriteDb();
-        mDbHelper.onCreate(localdb);
+//        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
+        SQLiteDatabase localdb = inteleHealthDatabaseHelper.getWriteDb();
+        inteleHealthDatabaseHelper.onCreate(localdb);
 //        }
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);

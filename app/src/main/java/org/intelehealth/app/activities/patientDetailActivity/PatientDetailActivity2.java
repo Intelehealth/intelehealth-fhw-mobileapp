@@ -762,7 +762,7 @@ private MissingLineListingResult resultModel;
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
+        InteleHealthDatabaseHelper mDatabaseHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
         String CREATOR_ID = sessionManager.getCreatorID();
@@ -988,7 +988,7 @@ private MissingLineListingResult resultModel;
             CustomLog.e(TAG, e.getMessage());
         }
 
-        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
+        InteleHealthDatabaseHelper mDatabaseHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
         String CREATOR_ID = sessionManager.getCreatorID();
