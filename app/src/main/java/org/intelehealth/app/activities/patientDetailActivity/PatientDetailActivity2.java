@@ -702,9 +702,24 @@ private MissingLineListingResult resultModel;
     private void cleanIncompleteVisit(){
         // cleanup the local db for incomplete ncd visit data when having encounter but no obs records
         // 1st check if incomplete visit data is present for the patient and then delete the encounter record if present without obs records
-        List<String> incompleteNcdVisitList = VisitsDAO.getIncompleteNcdVisitList(patientDTO.getUuid());
+       /* List<String> incompleteNcdVisitList = VisitsDAO.getIncompleteNcdVisitList(patientDTO.getUuid());
         if (!incompleteNcdVisitList.isEmpty()) {
             for (String visitUuid : incompleteNcdVisitList) {
+                VisitAttributeListDAO.deleteVisitAttributeUsingVisitUuid(visitUuid);
+                EncounterDAO.deleteEncounterUsingVisitUuid(visitUuid);
+                VisitsDAO.deleteVisitUsingVisitUuid(visitUuid);
+            }
+            // proper message toast to user
+            // message - Your previous visit was incomplete. You can start again now.
+            Toast.makeText(this, getString(R.string.cleaned_incomplete_visit_data), Toast.LENGTH_LONG).show();
+        }*/
+
+        List<String> allIncompleteVisits = new ArrayList<>();
+        allIncompleteVisits.addAll(VisitsDAO.getIncompleteNcdVisitList(patientDTO.getUuid()));
+        allIncompleteVisits.addAll(VisitsDAO.getIncompleteDoctorVisitList(patientDTO.getUuid()));
+
+        if (!allIncompleteVisits.isEmpty()) {
+            for (String visitUuid : allIncompleteVisits) {
                 VisitAttributeListDAO.deleteVisitAttributeUsingVisitUuid(visitUuid);
                 EncounterDAO.deleteEncounterUsingVisitUuid(visitUuid);
                 VisitsDAO.deleteVisitUsingVisitUuid(visitUuid);

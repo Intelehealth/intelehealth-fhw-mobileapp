@@ -42,6 +42,7 @@ public class VisitsDAO {
     private static final String TAG = "VisitsDAO";
 
     public static List<String> getIncompleteNcdVisitList(String patientUuid) {
+        // Now we are having only one visit but for future if we have multiple visit then we can add all the incomplete visit in the list and return the list.
 
         List<String> incompleteVisitList = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
@@ -101,6 +102,69 @@ public class VisitsDAO {
             if (visitCursor != null) visitCursor.close();
             if (attrCursor != null) attrCursor.close();
             if (obsCursor != null) obsCursor.close();
+        }
+
+        return incompleteVisitList;
+    }
+
+    public static List<String> getIncompleteDoctorVisitList(String patientUuid) {
+        // Now we are having only one visit but for future if we have multiple visit then we can add all the incomplete visit in the list and return the list.
+        List<String> incompleteVisitList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        Cursor visitCursor = null;
+        Cursor attrCursor = null;
+
+        try {
+            // Step 1: Get latest visit
+            visitCursor = db.rawQuery(
+                    "SELECT uuid FROM tbl_visit WHERE patientuuid = ? ORDER BY startdate DESC LIMIT 1",
+                    new String[]{patientUuid}
+            );
+
+            if (visitCursor != null && visitCursor.moveToFirst()) {
+
+                String visitUuid = visitCursor.getString(
+                        visitCursor.getColumnIndexOrThrow("uuid")
+                );
+
+                // Step 2: Check if Doctor visit (attribute exists)
+                attrCursor = db.rawQuery(
+                        "SELECT 1 FROM tbl_visit_attribute WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? LIMIT 1",
+                        new String[]{visitUuid, IS_NCD_VISIT_ATTRIBUTE}
+                );
+
+                boolean isDoctorVisit = (attrCursor == null || !attrCursor.moveToFirst());
+
+                if (isDoctorVisit) {
+                    // check theobs count adult initial encounter
+
+                        Cursor obsCursor = db.rawQuery(
+                                "SELECT COUNT(*) as obsCount FROM tbl_obs WHERE encounteruuid IN " +
+                                        "(SELECT uuid FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ?)",
+                                new String[]{visitUuid, ENCOUNTER_ADULTINITIAL}
+                        );
+                        if (obsCursor != null && obsCursor.moveToFirst()) {
+
+                            int obsCount = obsCursor.getInt(
+                                    obsCursor.getColumnIndexOrThrow("obsCount")
+                            );
+
+                            if (obsCount == 0) {
+                                incompleteVisitList.add(visitUuid);
+                            }
+
+                            Logger.logD(TAG, "Obs count for doctor visit " + visitUuid + " = " + obsCount);
+                        }
+
+                }
+
+                Logger.logD(TAG, "Visit " + visitUuid + " is Doctor Visit: " + isDoctorVisit);
+            }
+
+        } finally {
+            if (visitCursor != null) visitCursor.close();
+            if (attrCursor != null) attrCursor.close();
         }
 
         return incompleteVisitList;
