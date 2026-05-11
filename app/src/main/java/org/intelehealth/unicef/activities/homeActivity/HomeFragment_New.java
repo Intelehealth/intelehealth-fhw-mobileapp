@@ -159,6 +159,29 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         return count;
     }
 
+    /**
+     * added this function to return all unclosed visits
+     * @return
+     */
+    private int getTotalNotEndedVisits() {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = AppConstants.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        int count = 0;
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.last_name, v.startdate " +
+                "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
+                "v.voided = 0 AND " +
+                "v.enddate IS NULL", new String[]{});
+
+        count = cursor.getCount();
+
+        cursor.close();
+        db.setTransactionSuccessful();
+        db.endTransaction();
+
+        return count;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -256,7 +279,7 @@ public class HomeFragment_New extends Fragment implements NetworkUtils.InternetC
         int countReceivedPrescription = getCurrentMonthsVisits(true, sessionManager.getCreatorID());
         int total = pendingCountTotalVisits + countReceivedPrescription;
         prescriptionCountTextView.setText(countReceivedPrescription + " " + getResources().getString(R.string.out_of) + " " + total);
-        int countPendingCloseVisits = getThisMonthsNotEndedVisits();
+        int countPendingCloseVisits = getTotalNotEndedVisits();
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
         countPendingCloseVisitsTextView.setText(countPendingCloseVisits + " " + getResources().getString(R.string.unclosed_visits));
         getUpcomingAppointments();

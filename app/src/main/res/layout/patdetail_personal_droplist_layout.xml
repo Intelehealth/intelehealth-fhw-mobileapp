@@ -40,7 +40,7 @@
                 android:layout_toEndOf="@+id/personal_info_icon"
                 android:gravity="center_vertical"
                 android:lineSpacingExtra="3sp"
-                android:text="@string/personal_identification"
+                android:text="@string/patient"
                 android:textColor="@color/textview_color"
                 android:textSize="@dimen/txtsize_patdetail_16sp" />
 

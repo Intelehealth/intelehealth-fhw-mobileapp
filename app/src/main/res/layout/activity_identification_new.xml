@@ -10,7 +10,8 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/toolbar"
         android:layout_width="0dp"
-        android:layout_height="@dimen/fu_toolbat_txt_height"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/fu_toolbat_txt_height"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
@@ -47,14 +48,15 @@
             <!-- Label -->
             <TextView
                 android:id="@+id/label"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:layout_marginStart="@dimen/margin_10"
-                android:lineSpacingExtra="1sp"
                 android:gravity="center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
                 android:text="@string/add_new_patient"
                 android:textAppearance="@style/label"
-                android:textColor="@null"
                 android:textSize="@dimen/toolbar_text_size" />
 
         </LinearLayout>
@@ -170,7 +172,7 @@
             android:layout_weight="1"
             android:gravity="start"
             android:lineSpacingExtra="2sp"
-            android:text="@string/personal_identification"
+            android:text="@string/patient"
             android:textAppearance="@style/personal_txtview"
             android:textColor="@null"
             android:textSize="@null"

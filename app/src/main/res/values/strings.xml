@@ -326,7 +326,6 @@
 
     <string name="visit">Visit</string>
     <string name="visit_update">Visit Update</string>
-    <string name="patient">Patient</string>
     <string name="patient_update">Patient Update</string>
     <string name="patient_images">Patient Profile Image</string>
     <string name="visit_images">Visit Images</string>
@@ -576,6 +575,7 @@
 
     <!--New UI changes 2.1-->
     <string name="personal_information">Personal Information</string>
+    <string name="patient">Patient</string>
     <string name="address_details">Address Details</string>
     <string name="txt_others">Others</string>
     <string name="do_you_need_help_please_contact_us">Do you need help? Please contact us!</string>
@@ -2151,5 +2151,8 @@ Under no circumstances and under no legal theory, whether tort (including neglig
 
     <string name="achievements_hours">h</string>
     <string name="achievements_minutes">m</string>
+
+    <string name="this_feature_is_not_available_in_offline_mode">This feature is not available in offline mode.</string>
+
 
 </resources>

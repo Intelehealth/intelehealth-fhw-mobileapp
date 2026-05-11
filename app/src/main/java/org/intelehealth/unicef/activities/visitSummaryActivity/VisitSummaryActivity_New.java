@@ -545,9 +545,11 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
 
         showVisitID();  // display visit ID.
 
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+
         if (intentTag != null && !intentTag.isEmpty()) {
             // Edit btn visibility based on user coming from Visit Details screen - Start
-            if (intentTag.equalsIgnoreCase("VisitDetailsActivity") || intentTag.equalsIgnoreCase("AppointmentDetailsActivity")) {
+            if (isVisitSpecialityExists/*intentTag.equalsIgnoreCase("VisitDetailsActivity") || intentTag.equalsIgnoreCase("AppointmentDetailsActivity")*/) {
                 editVitals.setVisibility(View.GONE);
                 editComplaint.setVisibility(View.GONE);
                 cc_details_edit.setVisibility(View.GONE);
@@ -611,8 +613,6 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
             // Edit btn visibility based on user coming from Visit Details screen - End
 
         }
-
-        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
 
         if (!isVisitSpecialityExists) {
             doc_speciality_card.setVisibility(View.VISIBLE);
@@ -968,9 +968,9 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
 
             if (complaint.getValue().contains("►<b> Associated symptoms</b>:  <br/>")) {
                 valueArray = value.split("►<b> Associated symptoms</b>: {2}<br/>");
-            } else if(complaint.getValue().contains("►<b>Associated symptoms</b>: <br/>")){
+            } else if (complaint.getValue().contains("►<b>Associated symptoms</b>: <br/>")) {
                 valueArray = value.split("►<b>Associated symptoms</b>: <br/>");
-            }else {
+            } else {
                 valueArray = value.split("►<b>сопутствующие симптомы</b>: <br/>");
             }
 
@@ -1076,9 +1076,9 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
             String[] valueArray;
             if (value.contains("General exams: <br>")) {
                 valueArray = value.replace("General exams: <br>", "<b>General exams: </b><br/>").split("<b>General exams: </b><br/>");
-            } else if(value.contains("<b>General exams: </b><br/>")){
+            } else if (value.contains("<b>General exams: </b><br/>")) {
                 valueArray = value.split("<b>General exams: </b><br/>");
-            } else if(value.contains("<b>Общие экзамены: </b><br/>")){
+            } else if (value.contains("<b>Общие экзамены: </b><br/>")) {
                 valueArray = value.split("<b>Общие экзамены: </b><br/>");
             } else {
                 valueArray = value.replace("Общие экзамены: <br>", "<b>Общие экзамены: </b><br/>").split("<b>Общие экзамены: </b><br/>");
@@ -1492,8 +1492,8 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
                 physicalDialog.setView(convertView);
 
                 final TextView physicalText = convertView.findViewById(R.id.textView_entry);
-                if (phyExam.getValue() != null)
-                    physicalText.setText(Html.fromHtml(phyExam.getValue()));
+
+                physicalText.setText(getProcessedPhysicalExam(phyExam));
                 physicalText.setEnabled(false);
 
                 physicalDialog.setPositiveButton(getString(R.string.generic_manual_entry), new DialogInterface.OnClickListener() {
@@ -1511,7 +1511,7 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
                         sharebtn.setVisibility(View.GONE);
 
                         if (phyExam.getValue() != null)
-                            dialogEditText.setText(Html.fromHtml(phyExam.getValue()));
+                            dialogEditText.setText(getProcessedPhysicalExam(phyExam));
                         else dialogEditText.setText("");
                         //  textInput.setView(dialogEditText);
                         textInput.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
@@ -1951,6 +1951,35 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
     private void triggerHomeActivityIntent() {
         Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
         startActivity(intent);
+    }
+
+
+    private String getProcessedPhysicalExam(ObsDTO phyExam) {
+        if (phyExam.getValue() == null) return null;
+
+        String value = phyExam.getValue();
+        String[] valueArray;
+
+        if (value.contains("General exams: <br>")) {
+            valueArray = value.replace("General exams: <br>", "<b>General exams: </b><br/>")
+                    .split("<b>General exams: </b><br/>");
+        } else if (value.contains("<b>General exams: </b><br/>")) {
+            valueArray = value.split("<b>General exams: </b><br/>");
+        } else if (value.contains("<b>Общие экзамены: </b><br/>")) {
+            valueArray = value.split("<b>Общие экзамены: </b><br/>");
+        } else {
+            valueArray = value.replace("Общие экзамены: <br>", "<b>Общие экзамены: </b><br/>")
+                    .split("<b>Общие экзамены: </b><br/>");
+        }
+
+        if (valueArray.length > 1) {
+            return valueArray[1]
+                    .replaceFirst("<b>", "<br/><b>")
+                    .replace("Child", "Ребенок")
+                    .replace("Neonate", "Новорожденный");
+        }
+
+        return "";
     }
 
     // permission code - start
@@ -2816,6 +2845,8 @@ public class VisitSummaryActivity_New extends LocalConfigActivity implements Ada
                                 speciality_spinner.setEnabled(false);
                                 hospitalTypeSpinner.setEnabled(false);
                             }
+
+                            fetchingIntent();
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
 

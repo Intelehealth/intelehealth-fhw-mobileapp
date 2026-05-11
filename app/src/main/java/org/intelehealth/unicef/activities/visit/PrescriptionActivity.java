@@ -6,6 +6,7 @@ import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parseYYYYMMDDDa
 import static org.intelehealth.unicef.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.unicef.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -53,6 +54,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -98,8 +100,10 @@ import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -427,6 +431,7 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
     private void checkPerm() {
         try {
             doWebViewPrint_downloadBtn();
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -480,7 +485,7 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
     }
 
     // presc create - start
-    private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
+  /*  private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
 
         PrintManager printManager = (PrintManager) this.getSystemService(Context.PRINT_SERVICE);
 
@@ -499,8 +504,8 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            *//*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*//*
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
@@ -558,8 +563,8 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            *//*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*//*
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
@@ -617,8 +622,8 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
 
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            *//*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*//*
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
@@ -677,8 +682,8 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
             pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
             PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
 
-            /*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
-            String fileName = patientName + "_" + showVisitID() + ".pdf";*/
+            *//*String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Intelehealth_PDF/";
+            String fileName = patientName + "_" + showVisitID() + ".pdf";*//*
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS).getAbsolutePath() + "/Intelehealth_PDF";
             String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
             File dir = new File(path);
@@ -728,6 +733,67 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
 //                    new PrintAttributes.Builder().build());
 
         }
+    }*/
+
+
+    private void createWebPrintJob_downloadBtn(WebView webView, int contentHeight) {
+
+        // ✅ Pick print attributes based on content height only
+        PrintAttributes.Builder pBuilder = getBuilder(contentHeight);
+
+        String jobName = getString(R.string.app_name) + " " + getString(R.string._visit_summary);
+        String fileName = patientName.replace(" ", "_") + "_" + showVisitID() + ".pdf";
+
+        // ✅ Use app-scoped directory — no permission needed on any Android version
+        File dir;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) { // API 29+
+            dir = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Intelehealth_PDF");
+        } else {
+            dir = new File(Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_DOCUMENTS), "Intelehealth_PDF");
+        }
+
+        if (!dir.exists()) dir.mkdirs();
+
+        PdfPrint pdfPrint = new PdfPrint(pBuilder.build());
+
+        PdfPrint.CallbackPrint callback = new PdfPrint.CallbackPrint() {
+            @Override
+            public void success(String path) {
+                runOnUiThread(() ->
+                        Toast.makeText(PrescriptionActivity.this,
+                                getString(R.string.downloaded_to) + " " + path,
+                                Toast.LENGTH_SHORT).show()
+                );
+            }
+
+            @Override
+            public void onFailure() {
+                runOnUiThread(() ->
+                        Toast.makeText(PrescriptionActivity.this,
+                                getString(R.string.something_went_wrong),
+                                Toast.LENGTH_SHORT).show()
+                );
+            }
+        };
+
+        // ✅ API 21+ is the minimum supported — no need for KITKAT branch
+        pdfPrint.print(webView.createPrintDocumentAdapter(jobName), dir, fileName, callback);
+    }
+
+    private static PrintAttributes.Builder getBuilder(int contentHeight) {
+        PrintAttributes.Builder pBuilder = new PrintAttributes.Builder();
+        pBuilder.setResolution(new PrintAttributes.Resolution("pdf", "pdf", 600, 600));
+        pBuilder.setMinMargins(PrintAttributes.Margins.NO_MARGINS);
+
+        if (contentHeight > 2683 && contentHeight <= 3000) {
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.ISO_B4);
+        } else if (contentHeight > 3000 || contentHeight == 0) {
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.JIS_B4);
+        } else {
+            pBuilder.setMediaSize(PrintAttributes.MediaSize.NA_LETTER);
+        }
+        return pBuilder;
     }
 
     private String showVisitID() {
@@ -1574,11 +1640,11 @@ public class PrescriptionActivity extends LocalConfigActivity implements Network
     public void onPause() {
         super.onPause();
         if (receiver != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
             receiver = null;
         }
         if (downloadPrescriptionService != null) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(downloadPrescriptionService);
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(downloadPrescriptionService);
             downloadPrescriptionService = null;
         }
         isReceiverRegistered = false;

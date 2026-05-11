@@ -3628,48 +3628,54 @@ public final class StringUtils {
 
     public static String translateCities(String cityName) {
         if (cityName != null && !cityName.isEmpty()) {
-            if (cityName.equalsIgnoreCase("Bishkek")) return "Бишкек";
+            if (cityName.equalsIgnoreCase("Bishkek (city)")) return "г. Бишкек";
             if (cityName.equalsIgnoreCase("Tokmok")) return "Токмок";
             if (cityName.equalsIgnoreCase("Kara–Balta")) return "Кара-Балта";
-            if (cityName.equalsIgnoreCase("Chuy Oblast")) return "Чуй область";
+            if (cityName.equalsIgnoreCase("Chuy Region")) return "Чуйская область";
             if (cityName.equalsIgnoreCase("Balykchi")) return "Балыкчы";
             if (cityName.equalsIgnoreCase("Cholpon-Ata")) return "Чолпон-Ата";
             if (cityName.equalsIgnoreCase("Karakol")) return "Каракол";
             if (cityName.equalsIgnoreCase("Issyk-Kul' Oblast'")) return "Ыссык-Коль область";
-            if (cityName.equalsIgnoreCase("Talas")) return "Талас";
+            if (cityName.equalsIgnoreCase("Talas Region")) return "Таласская область";
             if (cityName.equalsIgnoreCase("Talas Oblast'")) return "Талас область";
             if (cityName.equalsIgnoreCase("Dzhalalаbad")) return "Джалал-Абад";
             if (cityName.equalsIgnoreCase("Dzhalаlabad Oblast'")) return "Джалал-Абадская область";
-            if (cityName.equalsIgnoreCase("Osh")) return "Ош";
-            if (cityName.equalsIgnoreCase("Osh Oblast'")) return "Ошская область";
-            if (cityName.equalsIgnoreCase("Naryn")) return "Нарын";
+            if (cityName.equalsIgnoreCase("Osh (city)")) return "г. Ош";
+            if (cityName.equalsIgnoreCase("Osh Region")) return "Ошская область";
+            if (cityName.equalsIgnoreCase("Naryn Region")) return "Нарынская область";
             if (cityName.equalsIgnoreCase("Naryn Oblast'")) return "Нарынская область";
-            if (cityName.equalsIgnoreCase("Batken")) return "Баткен";
-            if (cityName.equalsIgnoreCase("Batken Oblast'")) return "Баткенская область";
+            if (cityName.equalsIgnoreCase("Batken Region")) return "Баткенская область";
+            if (cityName.equalsIgnoreCase("Issyk-Kul Region")) return "Иссык-Кульская область";
+            if (cityName.equalsIgnoreCase("Jalal-Abad Region")) return "Джалал-Абадская область";
+
         }
         return cityName;
     }
 
     public static String translateCitiesEdit(String cityName) {
         if (cityName != null && !cityName.isEmpty()) {
-            if (cityName.equalsIgnoreCase("Бишкек")) return "Bishkek";
+            if (cityName.equalsIgnoreCase("г. Бишкек")) return "Bishkek (city)";
             if (cityName.equalsIgnoreCase("Токмок")) return "Tokmok";
             if (cityName.equalsIgnoreCase("Кара-Балта")) return "Kara–Balta";
-            if (cityName.equalsIgnoreCase("Чуй область")) return "Chuy Oblast";
+            if (cityName.equalsIgnoreCase("Чуйская область")) return "Chuy Region";
             if (cityName.equalsIgnoreCase("Балыкчы")) return "Balykchi";
             if (cityName.equalsIgnoreCase("Чолпон-Ата")) return "Cholpon-Ata";
             if (cityName.equalsIgnoreCase("Каракол")) return "Karakol";
             if (cityName.equalsIgnoreCase("Ыссык-Коль область")) return "Issyk-Kul' Oblast'";
-            if (cityName.equalsIgnoreCase("Талас")) return "Talas";
+            if (cityName.equalsIgnoreCase("Таласская область")) return "Talas Region";
             if (cityName.equalsIgnoreCase("Талас область")) return "Talas Oblast'";
             if (cityName.equalsIgnoreCase("Джалал-Абад")) return "Dzhalalаbad";
             if (cityName.equalsIgnoreCase("Джалал-Абадская область")) return "Dzhalаlabad Oblast'";
-            if (cityName.equalsIgnoreCase("Ош")) return "Osh";
-            if (cityName.equalsIgnoreCase("Ошская область")) return "Osh Oblast'";
-            if (cityName.equalsIgnoreCase("Нарын")) return "Naryn";
+            if (cityName.equalsIgnoreCase("г. Ош")) return "Osh (city)";
+            if (cityName.equalsIgnoreCase("Ошская область")) return "Osh Region";
+            if (cityName.equalsIgnoreCase("Нарынская область")) return "Naryn Region";
             if (cityName.equalsIgnoreCase("Нарынская область")) return "Naryn Oblast'";
-            if (cityName.equalsIgnoreCase("Баткен")) return "Batken";
+            if (cityName.equalsIgnoreCase("Баткенская область")) return "Batken Region";
             if (cityName.equalsIgnoreCase("Баткенская область")) return "Batken Oblast'";
+            if (cityName.equalsIgnoreCase("Иссык-Кульская область")) return "Issyk-Kul Region";
+            if (cityName.equalsIgnoreCase("Джалал-Абадская область")) return "Jalal-Abad Region";
+
+
         }
         return cityName;
     }

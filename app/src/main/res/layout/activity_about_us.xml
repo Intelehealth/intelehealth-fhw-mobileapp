@@ -98,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginTop="@dimen/margin_12"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:scrollIndicators="none"
                 android:scrollbars="none"
