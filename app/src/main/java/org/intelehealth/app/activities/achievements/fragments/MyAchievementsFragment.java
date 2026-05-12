@@ -157,12 +157,13 @@ public class MyAchievementsFragment extends Fragment implements NetworkUtils.Int
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d(TAG, "updateUIForInternetAvailability: ");
-        if (isInternetAvailable) {
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_internet_available));
+        if (ivInternet != null) {
+            if (isInternetAvailable) {
+                ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_internet_available));
 
-        } else {
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.ui2_ic_no_internet));
-
+            } else {
+                ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_no_internet));
+            }
         }
     }
 

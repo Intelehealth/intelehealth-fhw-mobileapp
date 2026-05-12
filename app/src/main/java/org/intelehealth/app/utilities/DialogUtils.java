@@ -179,13 +179,15 @@ public class DialogUtils {
         negative_btn.setOnClickListener(v -> {
             SafeDialogUtil.dismissDialog(context, alertDialog);
 
-            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+            if(customDialogListener != null)
+                customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
         });
 
         positive_btn.setOnClickListener(v -> {
             SafeDialogUtil.dismissDialog(context, alertDialog);
 
-            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+            if(customDialogListener != null)
+                customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
         });
 
         SafeDialogUtil.showDialog(context, alertDialog);
