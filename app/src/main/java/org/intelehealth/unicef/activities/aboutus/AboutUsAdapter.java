@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.intelehealth.unicef.R;
 
 public class AboutUsAdapter extends RecyclerView.Adapter<AboutUsAdapter.MyViewHolder> {
     private Context context;
+    int[] draw = {R.drawable.aboutus,R.drawable.demo_imgview};
 
     public AboutUsAdapter(Context context) {
         this.context = context;
@@ -28,15 +30,13 @@ public class AboutUsAdapter extends RecyclerView.Adapter<AboutUsAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        int draw[] = {R.drawable.aboutus,R.drawable.demo_imgview};
-
-        Drawable d = context.getResources().getDrawable(draw[position]);
+        Drawable d = ContextCompat.getDrawable(context, draw[position]);
         holder.imageView.setImageDrawable(d);
     }
 
     @Override
     public int getItemCount() {
-        return 2;
+        return draw.length;
     }
 
 
