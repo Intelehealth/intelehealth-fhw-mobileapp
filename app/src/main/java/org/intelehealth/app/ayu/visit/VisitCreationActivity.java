@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -253,18 +254,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         super.onFeatureActiveStatusLoaded(activeStatus);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         featureActiveStatus = activeStatus;
         if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
             CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
@@ -285,6 +274,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_creation);
+
+        // Keep screen ON
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -403,9 +395,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(!mIsEditTriggerFromVisitSummary){
-                    showConfirmationDialog( getString(R.string.confirm_discard_changes_content));
-                }else{
+                if (!mIsEditTriggerFromVisitSummary) {
+                    showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
+                } else {
                     finish();
                 }
             }
@@ -479,10 +471,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     public void backPress(View view) {
-       // finish();
-        if(!mIsEditTriggerFromVisitSummary){
+        // finish();
+        if (!mIsEditTriggerFromVisitSummary) {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
-        }else{
+        } else {
             finish();
         }
     }
@@ -701,7 +693,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertion = "";
         insertionLocale = "";
         StringBuilder stringBuilder = new StringBuilder();
-        if(mChiefComplainRootNodeList != null){
+        if (mChiefComplainRootNodeList != null) {
             for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
                 Node node = mChiefComplainRootNodeList.get(i);
                 boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
@@ -753,24 +745,24 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private List<Node> loadPhysicalExam() {
         ArrayList<String> physicalExams = new ArrayList<>();
         ArrayList<String> childNodeSelectedPhysicalExams = new ArrayList<>();
-        if(mChiefComplainRootNodeList != null
-                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+        if (mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
             childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
         }
         if (!childNodeSelectedPhysicalExams.isEmpty())
             physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
         ArrayList<String> rootNodePhysicalExams = new ArrayList<>();
-        if(mChiefComplainRootNodeList != null
-                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+        if (mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
             rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
         }
         if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
             physicalExams.addAll(rootNodePhysicalExams); //For Root Node
         Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
 
-        if(mChiefComplainRootNodeList != null
-                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+        if (mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
             mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
         }
 
@@ -946,7 +938,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 String name = mSelectedComplainList.get(0).getReasonNameLocalized();
                 if (name != null) {
-                    reasonName += " : "+name;
+                    reasonName += " : " + name;
                 }
             }
 
@@ -1673,7 +1665,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             });*/
     private String mLastSelectedImageName = "";
     ImageUtilsListener imageUtilsListener;
-     ActivityResultLauncher<PickVisualMediaRequest> mStartForGalleryResult =
+    ActivityResultLauncher<PickVisualMediaRequest> mStartForGalleryResult =
             registerForActivityResult(
                     new ActivityResultContracts.PickVisualMedia(),
                     uri -> {
@@ -1727,7 +1719,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     });
 
 
-
     public void openCamera() {
         validatePermissionAndIntent();
     }
@@ -1766,7 +1757,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void selectImage() {
         if (mImagePickerAlertDialog != null && mImagePickerAlertDialog.isShowing()) {
-            if(!isFinishing() && !isDestroyed()){
+            if (!isFinishing() && !isDestroyed()) {
                 mImagePickerAlertDialog.dismiss();
             }
         }
@@ -1827,7 +1818,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
 
-
     public void setImageUtilsListener(ImageUtilsListener imageUtilsListener) {
         this.imageUtilsListener = imageUtilsListener;
     }
@@ -1835,11 +1825,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private ObjectAnimator syncAnimator;
 
     public void syncNow(View view) {
-        if(mIsEditTriggerFromVisitSummary){
+        if (mIsEditTriggerFromVisitSummary) {
             if (NetworkConnection.isOnline(this)) {
                 SyncUtils.syncNow(this, view, syncAnimator);
             }
-        }else{
+        } else {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content_on_sync));
         }
     }
@@ -1872,9 +1862,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
 
-
     private void showConfirmationDialog(String content) {
-        Log.d(TAG, "showConfirmationDialog: visitUuid : "+visitUuid);
+        Log.d(TAG, "showConfirmationDialog: visitUuid : " + visitUuid);
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showCommonDialogNonCancelable(this, R.drawable.fingerprint_dialog_error, getString(R.string.this_visit_is_incomplete),
                 content, false,
