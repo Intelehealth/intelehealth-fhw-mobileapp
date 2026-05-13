@@ -977,25 +977,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     @Override
-    public void onTitleChange(String title) {
-        Timber.tag(TAG).d("onTitleChange=>%s", mCurrentStep);
-//        setTitle(mCurrentStep);
-//        switch (mCurrentStep) {
-//            case STEP_2_VISIT_REASON_QUESTION:
-////                if (title == null || title.isEmpty()) {
-//                setTitle(getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
-////                } else {
-////                    setTitle(title);
-////                }
-//                break;
-//            case STEP_3_PHYSICAL_EXAMINATION:
-//                setTitle(getResources().getString(R.string._phy_examination, currentScreenIndex, totalScreen));
-//                break;
-//        }
-
-    }
-
-    @Override
     public void onManualClose() {
         switch (mCurrentStep) {
             case STEP_1_VITAL_SUMMARY:
@@ -1887,4 +1868,24 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 });
 
     }
+
+    @Override
+    public void onTitleChange(String title) {
+        switch (mCurrentStep) {
+            case STEP_2_VISIT_REASON_QUESTION:
+                int currentScreenIndex = 1;
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
+                String reasonName = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+
+                if (title == null || title.isEmpty()) {
+                    reasonName += " : "+mSelectedComplainList.get(0);
+                } else {
+                    reasonName += " : "+title;
+                }
+                ((TextView) findViewById(R.id.tv_sub_title)).setText(reasonName);
+                break;
+        }
+
+    }
+
 }
