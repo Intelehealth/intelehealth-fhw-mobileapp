@@ -365,7 +365,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             genericViewHolder.tvQuestion.setText(genericViewHolder.node.findDisplay());
 
         }
-        mOnItemSelection.needTitleChange(mContext.getString(R.string.visit_reason) + " : " + mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
+        mOnItemSelection.needTitleChange(mRootComplainBasicInfoHashMap.get(mRootIndex).getComplainNameByLocale());
 
         if (genericViewHolder.node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
             //mOnItemSelection.needTitleChange("2/4 Visit reason : Associated symptoms");
