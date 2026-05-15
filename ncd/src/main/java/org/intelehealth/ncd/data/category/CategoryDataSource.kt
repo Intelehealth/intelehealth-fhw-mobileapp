@@ -23,13 +23,38 @@ class CategoryDataSource(
     suspend fun getPatientVisitRawData(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawData(age, attributeTypeUuid,visitNoteEncounterUuid)
     suspend fun getPatientVisitRawDataForFollowup(age: Int,  attributeTypeUuid: String, visitNoteEncounterUuid: String,patientUuid: String): List<PatientVisitDetails> = visitDao.getPatientVisitRawDataForFollowup(age, attributeTypeUuid,visitNoteEncounterUuid, patientUuid)
 
-    suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int, patientPhoneNoAttribute: String): List<PatientVisitDetails> = generalDao?.getPatientsAndVisitsPage(limit, offset, patientPhoneNoAttribute) ?: emptyList()
+    suspend fun getPatientsAndVisitsPage(limit: Int, offset: Int, patientPhoneNoAttribute: String): List<PatientVisitDetails> {
+        return generalDao?.getPatientsAndVisitsPage(limit, offset, patientPhoneNoAttribute) ?: emptyList()
+    }
 
-    suspend fun getVisitAttributesBatch(visitIds: List<String>): List<VisitAttributeResult> = generalDao?.getVisitAttributesBatch(
-        visitIds,
-        listOf(Constants.IS_NCD_VISIT_ATTRIBUTE, Constants.SPECIALITY)
+    suspend fun getSearchPatientsPage(
+        query: String,
+        limit: Int,
+        offset: Int,
+        encounterUuid: String,
+        ncdAttrUuid: String,
+        specialityAttrUuid: String,
+        phoneAttrUuid: String
+    ): List<PatientVisitDetails> {
+        return generalDao?.getPagedPatientsSql(
+            query,
+            encounterUuid,
+            ncdAttrUuid,
+            specialityAttrUuid,
+            phoneAttrUuid,
+            limit,
+            offset
         ) ?: emptyList()
-    suspend fun getPrescriptionExistsBatch(encounterUuid: String, visitIds: List<String>): List<PrescriptionExistsResult> =
-        generalDao?.getPrescriptionExistsBatch(encounterUuid, visitIds) ?: emptyList()
+    }
+
+    suspend fun getVisitAttributesBatch(visitIds: List<String>): List<VisitAttributeResult> {
+        return generalDao?.getVisitAttributesBatch(
+            visitIds,
+            listOf(Constants.IS_NCD_VISIT_ATTRIBUTE, Constants.SPECIALITY)
+        ) ?: emptyList()
+    }
+    suspend fun getPrescriptionExistsBatch(encounterUuid: String, visitIds: List<String>): List<PrescriptionExistsResult> {
+        return generalDao?.getPrescriptionExistsBatch(encounterUuid, visitIds) ?: emptyList()
+    }
 
 }

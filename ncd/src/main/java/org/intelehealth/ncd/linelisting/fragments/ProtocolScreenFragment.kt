@@ -7,14 +7,15 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.category.viewmodel.CommonSearchViewModel
-import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.databinding.LayoutNcdPatientCategoryBinding
 import org.intelehealth.ncd.linelisting.PatientVisitPagingAdapter
 import org.intelehealth.ncd.linelisting.adapter.PatientLoadStateAdapter
@@ -26,6 +27,7 @@ import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 import org.intelehealth.ncd.utils.PatientNavigationUtils
+import kotlinx.coroutines.launch
 
 class ProtocolScreenFragment : Fragment(), PatientClickedListener {
 
@@ -38,6 +40,7 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
     private var category: String = ""
     private var age: Int = 0
     private val searchVM: CommonSearchViewModel by activityViewModels()
+    private var latestQuery: String = ""
 
     companion object {
         private const val ARG_CATEGORY = "arg_category"
@@ -75,7 +78,7 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
 
         setupViewModel()
         setupAdapter()
-        //setupSearch()
+        observeSearchQuery()
         observePatients()
     }
 
@@ -97,24 +100,19 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         binding.recyclerView.adapter = adapter.withLoadStateFooter(
-            footer = PatientLoadStateAdapter { adapter.retry() }
+            footer = PatientLoadStateAdapter(
+                retry = { adapter.retry() },
+                mainAdapterItemCount = { adapter.itemCount },
+            )
         )
         adapter.addLoadStateListener { loadState ->
             val refresh = loadState.refresh
-            val append = loadState.append
-            val prepend = loadState.prepend
-
-            val isAllLoaded =
-                refresh is LoadState.NotLoading &&
-                        append.endOfPaginationReached &&
-                        prepend.endOfPaginationReached
-
             val isEmptyList = adapter.itemCount == 0
 
-            binding.noDataLayout.isVisible = isAllLoaded && isEmptyList
 
-            // Show progress bar when loading
-            // binding.progressBar.isVisible = refresh is LoadState.Loading
+            // Empty label after refresh completes.
+            binding.noDataLayout.isVisible =
+                refresh is LoadState.NotLoading && isEmptyList
         }
 
 
@@ -128,14 +126,27 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
          }
      }*/
 
+    private fun observeSearchQuery() {
+        // Only the visible tab is RESUMED; off-screen tabs skip DB/paging work (ViewPager keeps them STARTED).
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                searchVM.searchTextFlow.collectLatest { q ->
+                    latestQuery = q
+                }
+            }
+        }
+    }
+
     private fun observePatients() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.getPatientsPagedNew(
-                category = category,
-                searchQueryFlow = searchVM.searchTextFlow,
-                skipCategorySegregation = false
-            ).collectLatest { pagingData ->
-                adapter.submitData(pagingData)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getPatientsPagedNew(
+                    category = category,
+                    searchQueryFlow = searchVM.searchTextFlow,
+                    skipCategorySegregation = false
+                ).collectLatest { pagingData ->
+                    adapter.submitData(pagingData)
+                }
             }
         }
 

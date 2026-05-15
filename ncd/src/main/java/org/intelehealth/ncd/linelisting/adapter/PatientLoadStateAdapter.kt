@@ -8,8 +8,21 @@ import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.ncd.databinding.LayoutLoadMoreItemsBinding
 class PatientLoadStateAdapter(
-    private val retry: () -> Unit
+    private val retry: () -> Unit,
+    private val mainAdapterItemCount: () -> Int = { 0 },
 ) : LoadStateAdapter<PatientLoadStateAdapter.LoadStateVH>() {
+
+    /**
+     * Footer must not show append [LoadState.Loading] when the main list is empty — otherwise the
+     * load-more row is the only visible content and looks like a stuck full-screen loader.
+     */
+    override fun displayLoadStateAsItem(loadState: LoadState): Boolean {
+        return when (loadState) {
+            is LoadState.Error -> true
+            is LoadState.Loading -> mainAdapterItemCount() > 0
+            is LoadState.NotLoading -> false
+        }
+    }
 
     inner class LoadStateVH(private val binding: LayoutLoadMoreItemsBinding) :
         RecyclerView.ViewHolder(binding.root) {

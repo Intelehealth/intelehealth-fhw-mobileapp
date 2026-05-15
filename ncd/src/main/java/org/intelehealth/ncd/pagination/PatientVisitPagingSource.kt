@@ -1,15 +1,11 @@
 package org.intelehealth.ncd.pagination
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryDataSource
 import org.intelehealth.ncd.model.PatientVisitDetails
-import org.intelehealth.ncd.room.dao.GeneralTabDao
-import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class PatientVisitPagingSource(
     private val dataSource: CategoryDataSource,
@@ -17,29 +13,12 @@ class PatientVisitPagingSource(
     private val patientPhoneNoAttribute: String
 ) : PagingSource<Int, PatientVisitDetails>() {
 
-   /* override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
-        return try {
-            val offset = params.key ?: 0
-            val limit = params.loadSize
-
-            val data = generalTabDao.getPagedPatientsSql(query, Constants.ENCOUNTER_VISIT_COMPLETE, Constants.IS_NCD_VISIT_ATTRIBUTE, Constants.OTHER_MEDICAL_HISTORY, Constants.PATIENT_PHONE, limit, offset)
-
-            LoadResult.Page(
-                data = data,
-                prevKey = if (offset == 0) null else offset - limit,
-                nextKey = if (data.size < limit) null else offset + limit
-            )
-        } catch (e: Exception) {
-            LoadResult.Error(e)
-        }
-    }*/
-
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
+        val offset = params.key ?: 0
+        val limit = params.loadSize
         return try {
-            val offset = params.key ?: 0
-            val limit = params.loadSize
+            val trimmedQuery = query.trim()
 
-            // 1. Load main patient + latest visit
             val patients = dataSource.getPatientsAndVisitsPage(limit, offset, patientPhoneNoAttribute)
             if (offset != 0) {
                 delay(0)
@@ -47,15 +26,12 @@ class PatientVisitPagingSource(
 
             val visitIds = patients.mapNotNull { it.visitId }
 
-            // 2. Load prescriptionExists in batch
             val prescriptions = dataSource.getPrescriptionExistsBatch(Constants.ENCOUNTER_VISIT_COMPLETE, visitIds)
                 .associateBy { it.visitId }
 
-            // 3. Visit attributes in batch
             val attributes = dataSource.getVisitAttributesBatch(visitIds)
                 .groupBy { it.visitId }
 
-            // 4. Map extra fields to patients
             patients.forEach { patient ->
                 patient.isPrescriptionExist = prescriptions[patient.visitId]?.prescriptionExists
                 val attrList = attributes[patient.visitId].orEmpty()
@@ -65,12 +41,8 @@ class PatientVisitPagingSource(
                     attrList.find { it.typeUuid == Constants.SPECIALITY }?.value ?: ""
 
                 patient.startDate = patient.startDate
-                /* patient.startDate = patient.startDate?.let { rawDate ->
-                    formatVisitDateSafely(rawDate)
-                }*/
             }
 
-            // 5. Apply search query filter (keep logic unchanged otherwise)
             val filteredPatients = if (query.isBlank()) {
                 patients
             } else {
@@ -82,7 +54,6 @@ class PatientVisitPagingSource(
                 }
             }
 
-            // 6. Compute next/prev keys
             val nextKey = if (patients.size < limit) null else offset + limit
             val prevKey = if (offset == 0) null else offset - limit
 
@@ -97,33 +68,11 @@ class PatientVisitPagingSource(
         }
     }
 
-
     override fun getRefreshKey(state: PagingState<Int, PatientVisitDetails>): Int? {
         return state.anchorPosition?.let { anchor ->
             state.closestPageToPosition(anchor)?.prevKey?.plus(state.config.pageSize)
                 ?: state.closestPageToPosition(anchor)?.nextKey?.minus(state.config.pageSize)
         }
-    }
-
-    // 🟩 NEW
-    private fun formatVisitDateSafely(rawDate: String): String {
-        val formatsToTry = listOf(
-            "yyyy-MM-dd'T'HH:mm:ss.SSSZ",
-            "yyyy-MM-dd'T'HH:mm:ssZ",
-            "yyyy-MM-dd HH:mm:ss",
-            "yyyy-MM-dd"
-        )
-
-        for (format in formatsToTry) {
-            try {
-                return DateAndTimeUtils.formatStartVisitDate(rawDate, format, "dd MMM 'at' hh:mm a")
-                    .toString()
-            } catch (_: Exception) {
-                // try next format
-            }
-        }
-
-        return rawDate // fallback if no format matched
     }
 
 }
