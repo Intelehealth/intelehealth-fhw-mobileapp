@@ -18,9 +18,9 @@
     <color name="ui2_bp_default_ekal">#FF0000</color>
 
     <color name="ui2_sys1_ekal">#008000</color>
-    <color name="ui2_sys2_ekal">#d9d900</color>
+    <color name="ui2_sys2_ekal">#785b02</color>
 
     <color name="ui2_dia1_ekal">#008000</color>
-    <color name="ui2_dia2_ekal">#d9d900</color>
+    <color name="ui2_dia2_ekal">#785b02</color>
 
 </resources>
