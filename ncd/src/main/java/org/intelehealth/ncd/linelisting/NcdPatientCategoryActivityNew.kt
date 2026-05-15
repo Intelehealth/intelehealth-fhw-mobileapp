@@ -1,8 +1,10 @@
 package org.intelehealth.ncd.linelisting
 
 import android.os.Bundle
+import android.os.SystemClock
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
@@ -27,14 +29,26 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
     val searchViewModel: CommonSearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(
+            "Pooja",
+            "NcdPatientCategoryActivityNew.onCreate START | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+        )
         super.onCreate(savedInstanceState)
         binding = ActivityNcdPatientCategoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        Log.d(
+            "Pooja",
+            "NcdPatientCategoryActivityNew.setContentView DONE | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+        )
         setupSystemBar()
 
         setupBackPress()
         setupViewPager()
         setupSearchListener()
+        Log.d(
+            "Pooja",
+            "NcdPatientCategoryActivityNew.onCreate END | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+        )
     }
 
     private fun setupSystemBar() {
@@ -74,6 +88,10 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
     }
 
     private fun setupViewPager() {
+        Log.d(
+            "Pooja",
+            "NcdPatientCategoryActivityNew.setupViewPager START | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+        )
 
         val fragmentList = listOf(
             ProtocolScreenFragment.newInstance(
@@ -101,6 +119,8 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
 
         adapter = CategoryPagerAdapter(this, fragmentList)
         binding.vpCategory.adapter = adapter
+        // Smallest allowed limit (> 0); 0 crashes ViewPager2. Main win is RESUMED-only collection in ProtocolScreenFragment.
+        //binding.vpCategory.offscreenPageLimit = 1
         binding.vpCategory.isUserInputEnabled = true
         binding.vpCategory.overScrollMode = View.OVER_SCROLL_NEVER
 
@@ -116,6 +136,10 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
         TabLayoutMediator(binding.tlCategory, binding.vpCategory) { tab, position ->
             tab.text = tabTitles[position]
         }.attach()
+        Log.d(
+            "Pooja",
+            "NcdPatientCategoryActivityNew.setupViewPager END | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+        )
     }
 
     private fun setupSearchListener() {
@@ -133,6 +157,10 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
                 ivSearch.visibility = if (hasText) View.GONE else View.VISIBLE
                 ivClear.visibility = if (hasText) View.VISIBLE else View.GONE
 
+                Log.d(
+                    "Pooja",
+                    "NCD Search afterTextChanged: q='${s.toString()}' len=${s?.length ?: 0} | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+                )
                 // propagate search to ALL fragments via shared VM
                 searchViewModel.updateSearchTextNew(s.toString())
             }

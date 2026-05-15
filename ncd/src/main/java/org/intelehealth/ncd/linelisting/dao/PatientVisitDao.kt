@@ -322,7 +322,36 @@ interface PatientVisitDao {
 
     @Query(
         """
-    SELECT 
+    WITH latest_med AS (
+        SELECT
+            pa.patientuuid AS patientuuid,
+            pa.value AS attributeValue,
+            pa.person_attribute_type_uuid AS attributeTypeUuid
+        FROM tbl_patient_attribute pa
+        INNER JOIN (
+            SELECT patientuuid, MAX(rowid) AS max_rid
+            FROM tbl_patient_attribute
+            WHERE person_attribute_type_uuid = :medicalHistoryAttribute
+            GROUP BY patientuuid
+        ) lm ON lm.patientuuid = pa.patientuuid
+            AND lm.max_rid = pa.rowid
+            AND pa.person_attribute_type_uuid = :medicalHistoryAttribute
+    ),
+    latest_phone AS (
+        SELECT
+            pa.patientuuid AS patientuuid,
+            pa.value AS patientPhoneNumber
+        FROM tbl_patient_attribute pa
+        INNER JOIN (
+            SELECT patientuuid, MAX(rowid) AS max_rid
+            FROM tbl_patient_attribute
+            WHERE person_attribute_type_uuid = :patientPhoneNoAttribute
+            GROUP BY patientuuid
+        ) lp ON lp.patientuuid = pa.patientuuid
+            AND lp.max_rid = pa.rowid
+            AND pa.person_attribute_type_uuid = :patientPhoneNoAttribute
+    )
+    SELECT
         P.uuid AS patientId,
         P.first_name AS firstName,
         P.middle_name AS middleName,
@@ -332,36 +361,12 @@ interface PatientVisitDao {
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
         CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
-        
-        -- latest OTHER_MEDICAL_HISTORY attribute
-        A.value AS attributeValue,
-        A.person_attribute_type_uuid AS attributeTypeUuid,
-        -- latest phone attribute
-        phoneAttr.value AS patientPhoneNumber
+        lm.attributeValue AS attributeValue,
+        lm.attributeTypeUuid AS attributeTypeUuid,
+        lp.patientPhoneNumber AS patientPhoneNumber
     FROM tbl_patient P
-
-    -- latest OTHER_MEDICAL_HISTORY attribute
-    LEFT JOIN tbl_patient_attribute A 
-        ON A.uuid = (
-            SELECT pa.uuid
-            FROM tbl_patient_attribute pa
-            WHERE pa.patientuuid = P.uuid
-              AND pa.person_attribute_type_uuid = :medicalHistoryAttribute
-            ORDER BY pa.rowid DESC
-            LIMIT 1
-        )
-
-    -- latest phone attribute
-    LEFT JOIN tbl_patient_attribute phoneAttr
-        ON phoneAttr.uuid = (
-            SELECT pa2.uuid
-            FROM tbl_patient_attribute pa2
-            WHERE pa2.patientuuid = P.uuid
-              AND pa2.person_attribute_type_uuid = :patientPhoneNoAttribute
-            ORDER BY pa2.rowid DESC
-            LIMIT 1
-        )
-
+    LEFT JOIN latest_med lm ON lm.patientuuid = P.uuid
+    LEFT JOIN latest_phone lp ON lp.patientuuid = P.uuid
     WHERE
         (:searchQuery IS NULL
             OR :searchQuery = ''
@@ -369,7 +374,8 @@ interface PatientVisitDao {
             OR P.middle_name LIKE '%' || :searchQuery || '%'
             OR P.last_name LIKE '%' || :searchQuery || '%'
             OR P.openmrs_id LIKE '%' || :searchQuery || '%'
-            OR phoneAttr.value LIKE '%' || :searchQuery || '%')
+            OR lp.patientPhoneNumber LIKE '%' || :searchQuery || '%')
+    ORDER BY P.rowid ASC
             """
     )
     fun getAllVisitsPagedNew(

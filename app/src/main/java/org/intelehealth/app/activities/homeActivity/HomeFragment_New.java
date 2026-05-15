@@ -16,8 +16,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.utilities.CustomLog;
@@ -385,6 +387,9 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         textlayout_find_patient.setOnClickListener(v -> {
         /*    Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivity.class);
             startActivity(intent);*/
+            Log.d("Pooja", "Home->SearchPatient click: open NcdPatientCategoryActivityNew"
+                    + " | systemMs=" + System.currentTimeMillis()
+                    + " | elapsedMs=" + SystemClock.elapsedRealtime());
             Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivityNew.class);
             startActivity(intent);
         });

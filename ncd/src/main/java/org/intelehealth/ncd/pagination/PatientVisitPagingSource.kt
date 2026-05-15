@@ -1,14 +1,13 @@
 package org.intelehealth.ncd.pagination
 
+import android.os.SystemClock
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.google.gson.Gson
 import kotlinx.coroutines.delay
 import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryDataSource
 import org.intelehealth.ncd.model.PatientVisitDetails
-import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.utils.DateAndTimeUtils
 
 class PatientVisitPagingSource(
@@ -16,6 +15,10 @@ class PatientVisitPagingSource(
     private val query: String,
     private val patientPhoneNoAttribute: String
 ) : PagingSource<Int, PatientVisitDetails>() {
+
+    companion object {
+        private const val LOG_TAG = "Pooja"
+    }
 
    /* override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
         return try {
@@ -35,9 +38,15 @@ class PatientVisitPagingSource(
     }*/
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PatientVisitDetails> {
+        val loadStart = SystemClock.elapsedRealtime()
+        val offset = params.key ?: 0
+        val limit = params.loadSize
+        Log.d(
+            LOG_TAG,
+            "PatientVisitPagingSource.load START loadType=${params::class.java.simpleName} offset=$offset limit=$limit queryLen=${query.trim().length} thread=${Thread.currentThread().name} elapsedMs=$loadStart"
+        )
         return try {
-            val offset = params.key ?: 0
-            val limit = params.loadSize
+            val trimmedQuery = query.trim()
 
             // 1. Load main patient + latest visit
             val patients = dataSource.getPatientsAndVisitsPage(limit, offset, patientPhoneNoAttribute)
@@ -47,15 +56,17 @@ class PatientVisitPagingSource(
 
             val visitIds = patients.mapNotNull { it.visitId }
 
-            // 2. Load prescriptionExists in batch
+            val tRx = SystemClock.elapsedRealtime()
             val prescriptions = dataSource.getPrescriptionExistsBatch(Constants.ENCOUNTER_VISIT_COMPLETE, visitIds)
                 .associateBy { it.visitId }
+            val dtRx = SystemClock.elapsedRealtime() - tRx
 
-            // 3. Visit attributes in batch
+            val tAttr = SystemClock.elapsedRealtime()
             val attributes = dataSource.getVisitAttributesBatch(visitIds)
                 .groupBy { it.visitId }
+            val dtAttr = SystemClock.elapsedRealtime() - tAttr
 
-            // 4. Map extra fields to patients
+            val tMap = SystemClock.elapsedRealtime()
             patients.forEach { patient ->
                 patient.isPrescriptionExist = prescriptions[patient.visitId]?.prescriptionExists
                 val attrList = attributes[patient.visitId].orEmpty()
@@ -69,6 +80,7 @@ class PatientVisitPagingSource(
                     formatVisitDateSafely(rawDate)
                 }*/
             }
+            val dtMap = SystemClock.elapsedRealtime() - tMap
 
             // 5. Apply search query filter (keep logic unchanged otherwise)
             val filteredPatients = if (query.isBlank()) {
@@ -86,6 +98,10 @@ class PatientVisitPagingSource(
             val nextKey = if (patients.size < limit) null else offset + limit
             val prevKey = if (offset == 0) null else offset - limit
 
+            Log.d(
+                LOG_TAG,
+                "PatientVisitPagingSource.load END browsePath rows=${patients.size} getPatients+visits +${tRx }ms rxBatch +${dtRx}ms attrBatch +${dtAttr}ms map +${dtMap}ms totalLoad +${SystemClock.elapsedRealtime() - loadStart}ms"
+            )
             LoadResult.Page(
                 data = filteredPatients,
                 prevKey = prevKey,
@@ -93,6 +109,7 @@ class PatientVisitPagingSource(
             )
 
         } catch (e: Exception) {
+            Log.e(LOG_TAG, "PatientVisitPagingSource.load ERROR +${SystemClock.elapsedRealtime() - loadStart}ms", e)
             LoadResult.Error(e)
         }
     }

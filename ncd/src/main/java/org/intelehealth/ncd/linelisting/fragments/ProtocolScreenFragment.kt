@@ -1,14 +1,18 @@
 package org.intelehealth.ncd.linelisting.fragments
 
 import android.os.Bundle
+import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
@@ -26,6 +30,7 @@ import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.utils.CategorySegregationUtils
 import org.intelehealth.ncd.utils.PatientNavigationUtils
+import kotlinx.coroutines.launch
 
 class ProtocolScreenFragment : Fragment(), PatientClickedListener {
 
@@ -38,6 +43,9 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
     private var category: String = ""
     private var age: Int = 0
     private val searchVM: CommonSearchViewModel by activityViewModels()
+    private var latestQuery: String = ""
+    /** Monotonic time when current paging `refresh` entered Loading; used to log refresh duration. */
+    private var refreshLoadingStartElapsedMs: Long = -1L
 
     companion object {
         private const val ARG_CATEGORY = "arg_category"
@@ -75,7 +83,7 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
 
         setupViewModel()
         setupAdapter()
-        //setupSearch()
+        observeSearchQuery()
         observePatients()
     }
 
@@ -115,6 +123,27 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
 
             // Show progress bar when loading
             // binding.progressBar.isVisible = refresh is LoadState.Loading
+
+            if (refresh is LoadState.Loading) {
+                refreshLoadingStartElapsedMs = SystemClock.elapsedRealtime()
+                Log.d(
+                    "Pooja",
+                    "ProtocolScreenFragment loadState: REFRESH_LOADING category=$category q='$latestQuery' itemCount=${adapter.itemCount} | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+                )
+            } else if (refresh is LoadState.NotLoading) {
+                val refreshMs =
+                    if (refreshLoadingStartElapsedMs >= 0L) {
+                        val d = SystemClock.elapsedRealtime() - refreshLoadingStartElapsedMs
+                        refreshLoadingStartElapsedMs = -1L
+                        d
+                    } else {
+                        -1L
+                    }
+                Log.d(
+                    "Pooja",
+                    "ProtocolScreenFragment loadState: REFRESH_NOT_LOADING category=$category q='$latestQuery' itemCount=${adapter.itemCount} refreshDurationMs=$refreshMs | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+                )
+            }
         }
 
 
@@ -128,14 +157,39 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
          }
      }*/
 
+    private fun observeSearchQuery() {
+        // Only the visible tab is RESUMED; off-screen tabs skip DB/paging work (ViewPager keeps them STARTED).
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                searchVM.searchTextFlow.collectLatest { q ->
+                    latestQuery = q
+                    Log.d(
+                        "Pooja",
+                        "ProtocolScreenFragment searchTextFlow: category=$category q='$q' | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+                    )
+                }
+            }
+        }
+    }
+
     private fun observePatients() {
-        lifecycleScope.launchWhenStarted {
-            viewModel.getPatientsPagedNew(
-                category = category,
-                searchQueryFlow = searchVM.searchTextFlow,
-                skipCategorySegregation = false
-            ).collectLatest { pagingData ->
-                adapter.submitData(pagingData)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.getPatientsPagedNew(
+                    category = category,
+                    searchQueryFlow = searchVM.searchTextFlow,
+                    skipCategorySegregation = false
+                ).collectLatest { pagingData ->
+                    Log.d(
+                        "Pooja",
+                        "ProtocolScreenFragment collectLatest(pagingData): category=$category q='$latestQuery' -> submitData START | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+                    )
+                    adapter.submitData(pagingData)
+                    Log.d(
+                        "Pooja",
+                        "ProtocolScreenFragment collectLatest(pagingData): category=$category q='$latestQuery' -> submitData CALLED | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
+                    )
+                }
             }
         }
 

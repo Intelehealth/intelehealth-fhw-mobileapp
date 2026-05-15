@@ -1,5 +1,6 @@
 package org.intelehealth.ncd.data.category
 
+import android.os.SystemClock
 import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -22,6 +23,10 @@ import java.util.Locale
 class CategoryRepository(private val dataSource: CategoryDataSource) {
     private var lastQuery: String? = null
     private var lastPagerFlow: Flow<PagingData<PatientVisitDetails>>? = null
+
+    companion object {
+        private const val LOG_TAG = "Pooja"
+    }
 
     suspend fun getPatientVisitDetails(age: Int, attributeTypeUuid: String, visitNoteEncounterUuid: String): List<PatientVisitDetails> {
         val rawDataList = dataSource.getPatientVisitRawData(age, attributeTypeUuid, visitNoteEncounterUuid)
@@ -111,13 +116,19 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
 
     fun getPagedPatients(query: String,generalTabDao: GeneralTabDao): Flow<PagingData<PatientVisitDetails>> {
         val safeQuery = query.trim()
+        val t0 = SystemClock.elapsedRealtime()
 
         if (safeQuery == lastQuery && lastPagerFlow != null) {
+            Log.d(LOG_TAG, "CategoryRepository.getPagedPatients CACHE_HIT queryLen=${safeQuery.length} +${SystemClock.elapsedRealtime() - t0}ms")
             return lastPagerFlow!!
         }
 
         lastQuery = safeQuery
 
+        Log.d(
+            LOG_TAG,
+            "CategoryRepository.getPagedPatients NEW_PAGER queryLen=${safeQuery.length} pageSize=10 initialLoadSize=20 elapsedMs=$t0"
+        )
         lastPagerFlow = Pager(
             config = PagingConfig(
                 pageSize = 10,
@@ -134,6 +145,7 @@ class CategoryRepository(private val dataSource: CategoryDataSource) {
             }
         ).flow
 
+        Log.d(LOG_TAG, "CategoryRepository.getPagedPatients NEW_PAGER built +${SystemClock.elapsedRealtime() - t0}ms thread=${Thread.currentThread().name}")
         return lastPagerFlow!!
        /* return Pager(
             config = PagingConfig(
