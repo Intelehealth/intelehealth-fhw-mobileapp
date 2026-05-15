@@ -10,6 +10,8 @@ public class HeartLungRecordModel {
     public String recordingStatus;
     public String audioPath;
     public String result;
+    public transient short[] audioData;
+
 
     public HeartLungRecordModel() {
         this.id = id;
@@ -21,6 +23,14 @@ public class HeartLungRecordModel {
         this.recordingStatus = recordingStatus;
         this.audioPath = audioPath;
         this.result = result;
+    }
+
+    public short[] getAudioData() {
+        return audioData;
+    }
+
+    public void setAudioData(short[] audioData) {
+        this.audioData = audioData;
     }
 
     public String getId() {

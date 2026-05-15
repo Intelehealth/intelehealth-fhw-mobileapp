@@ -311,8 +311,10 @@ public class DiagnosticsCollectionFragment extends Fragment
 
         getActivity().runOnUiThread(() -> {
             if (isConnected) {
+                mBinding.tvConnectionStatus.setText("Connected");
                 mBinding.statusDot.setBackgroundResource(R.color.btn_background); // create drawable
             } else {
+                mBinding.tvConnectionStatus.setText("Disconnected");
                 mBinding.statusDot.setBackgroundResource(R.color.red);
             }
         });

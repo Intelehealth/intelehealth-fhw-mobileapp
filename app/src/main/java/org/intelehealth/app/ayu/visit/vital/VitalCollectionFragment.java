@@ -128,8 +128,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
         fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
         fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
-        String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
-        fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
+     /*   String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
+        fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);*/
+
+        // ✅ NEW — safe integer arithmetic
+        int years = (int) fragment.float_ageYear_Month;
+        int months = Math.round((fragment.float_ageYear_Month - years) * 100);
+        fragment.mAgeInMonth = (years * 12) + months;
         return fragment;
     }
 
@@ -343,7 +348,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mTemperatureEditText.setText(vitalPref.getTemperature());
             mSpo2EditText.setText(vitalPref.getSpO2());
             mRespEditText.setText(vitalPref.getRespiratoryRate());
-            mBloodGroupErrorTextView.setText(vitalPref.getRespiratoryRate());
+            //mBloodGroupErrorTextView.setText(vitalPref.getRespiratoryRate());
+            mRespEditText.setText(vitalPref.getRespiratoryRate());
+
         }
     }
 
@@ -586,7 +593,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
                         (Double.parseDouble(wightVal) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
                     //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                    mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                   // mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                    mWeightErrorTextView.setText(getString(R.string.weight_error,
+                            AppConstants.getMinWeightByAge(mAgeInMonth),
+                            AppConstants.getMaxWeightByAge(mAgeInMonth))
+                            + " (for age: " + mAgeInMonth + " months)");
                     mWeightErrorTextView.setVisibility(View.VISIBLE);
                     mWeightEditText.requestFocus();
                     mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);

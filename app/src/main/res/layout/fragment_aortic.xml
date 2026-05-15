@@ -34,6 +34,7 @@
                         android:layout_height="500dp"
                         android:adjustViewBounds="true"
                         android:src="@drawable/aortic_img" />
+
                     <TextView
                         android:id="@+id/txt_title"
                         android:layout_width="wrap_content"
@@ -43,12 +44,39 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+
                     <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
                         android:id="@+id/waveView"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_margin="10dp"
                         android:background="@drawable/bg_digital_lablel" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Postion :  "
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/txtPostion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=""
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/txtTimer"
@@ -214,8 +242,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_8"
-                    android:visibility="gone"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -297,19 +325,19 @@
                                 android:id="@+id/btnBack"
                                 android:layout_width="@dimen/margin_50"
                                 android:layout_height="@dimen/margin_50"
-                                android:layout_margin="@dimen/margin_18"
-                                android:background="@null"
                                 android:layout_gravity="center"
+                                android:layout_margin="@dimen/margin_18"
                                 android:layout_marginRight="@dimen/toolbar_top_minus_24dp"
+                                android:background="@null"
                                 android:src="@drawable/back_arrow" />
 
                             <ImageButton
                                 android:id="@+id/btnPlay"
                                 android:layout_width="64dp"
                                 android:layout_height="64dp"
+                                android:layout_gravity="center"
                                 android:layout_margin="@dimen/margin_18"
                                 android:background="@null"
-                                android:layout_gravity="center"
                                 android:src="@drawable/play_button" />
 
                             <ImageButton
@@ -332,6 +360,7 @@
                         </LinearLayout>
 
                     </LinearLayout>
+
                     <LinearLayout
                         android:id="@+id/ll_save_recoding"
                         android:layout_width="match_parent"

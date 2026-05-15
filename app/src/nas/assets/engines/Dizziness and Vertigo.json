@@ -1,7 +1,7 @@
 {
     "id": "ID_944694165",
     "text": "Dizziness and Vertigo",
-    "perform-physical-exam": "Head:Injury;Neurologic Exam:Neurologic Exam 1;Neurologic Exam:Neurologic Exam 2;Neurologic Exam:Neurologic Exam 3;Neurologic Exam:Neurologic Exam 4;Neurologic Exam:Neurologic Exam 5;Hands:Power 1;Hands:Power 2;Hands:Power 3;Leg:Strength;Language:Repetition;Ear:Discharge;Ear:Swelling;Ear:Redness;",
+    "perform-physical-exam": "Head:Injury;Neurologic Exam:Neurologic Exam 1;Neurologic Exam:Neurologic Exam 2;Neurologic Exam:Neurologic Exam 3;Neurologic Exam:Neurologic Exam 4;Neurologic Exam:Neurologic Exam 5;Hands:Power 1;Hands:Power 2;Hands:Power 3;Leg:Strength;Language:Repetition;Ear:Discharge;Ear:Swelling;Ear:Redness;Sound Heart: Aortic;Sound Heart: Pulmonic;Sound Heart: Tricuspid;Sound Heart: Mitral;",
     "display-or": "ମୁଣ୍ଡ ବୁଲେଇବା",
     "engineVersion": "3.0",
     "options": [

@@ -121,6 +121,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ayudevice.ayusynksdk.AyuSynk;
 import com.ayudevice.ayusynksdk.playback.AyuFileGenerator;
 import com.ayudevice.ayusynksdk.report.HeartSoundData;
+import com.ayudevice.ayusynksdk.report.LungSoundData;
 import com.ayudevice.ayusynksdk.report.SoundFile;
 import com.ayudevice.ayusynksdk.report.constants.LocationType;
 import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener;
@@ -423,12 +424,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String visitType = "Consultation";
     private boolean isDownloadImageBroadcastRecRegisterd = false;
 
-
-
     Map<String, RecordingData> trackerMap = new HashMap<>();
     InteleHealthDatabaseHelper db;
-
     String trackerId;
+    private okhttp3.OkHttpClient mStethoHttpClient;
+
+
+    // Add these two fields at the top of the class
+    private List<HeartLungRecordModel> mPendingUploadQueue = new ArrayList<>();
+    private int mCurrentUploadIndex = 0;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -458,6 +462,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(setLocale(newBase));
     }
+
 
     public Context setLocale(Context context) {
         SessionManager sessionManager1 = new SessionManager(context);
@@ -532,10 +537,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
-
-        //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-
-
+        db = new InteleHealthDatabaseHelper(this);
         initUI();
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
@@ -561,7 +563,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         this, encounterVitals, mCommonVisitData);
         visitDiagnosticsSummary.initViews();
         setupVisibilityForSpecificFlavor();
-
 
 
         setupDiagnosticsConfig();
@@ -752,15 +753,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 mCommonVisitData = intent.getExtras().getParcelable("CommonVisitData");
 
                 visitUuid = mCommonVisitData.getVisitUuid();
-                System.out.println("visitUuidSummary" + visitUuid);
-//*// DigitalSethsope
-               /* filePath = intent.getStringExtra("filePath");
-                recodingStatus = intent.getIntExtra("recodingStatus", 0);
-                position = intent.getStringExtra("position");
-                type = intent.getStringExtra("type");
-                System.out.println("DigitaSethascope" + recodingStatus + " " + filePath + "" + position + "" + type);*/
-
-
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
                 encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
                 EncounterAdultInitial_LatestVisit = mCommonVisitData.getEncounterAdultInitialLatestVisit();
@@ -3432,10 +3424,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             setAppointmentButtonStatus();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
-                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
-                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
-                            //
                             showVisitID();
                             CustomLog.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -3447,7 +3436,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
                             }
-                            fetchingIntent();
+                           // fetchingIntent();
+                            setAppointmentButtonStatus();
+                            Drawable drawable1 = ContextCompat.getDrawable(
+                                    VisitSummaryActivity_New.this,
+                                    R.drawable.dialog_visit_sent_success_icon);
+                            visitSentSuccessDialog(context, drawable1,
+                                    getResources().getString(R.string.visit_successfully_sent),
+                                    getResources().getString(R.string.patient_visit_sent),
+                                    getResources().getString(R.string.okay));
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                         }
@@ -3504,36 +3501,235 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
-
         positive_btn.setOnClickListener(v -> {
-            //commented to stop navigation bcz navigation from appointment
-          /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
-            startActivity(intent);*/
-            InteleHealthDatabaseHelper db = new InteleHealthDatabaseHelper(this);
-            List<HeartLungRecordModel> list = db.getAllHeartLungRecords(visitUuid);
+            alertDialog.dismiss();
+
+            InteleHealthDatabaseHelper dbHelper = new InteleHealthDatabaseHelper(VisitSummaryActivity_New.this);
+            List<HeartLungRecordModel> list = dbHelper.getAllHeartLungRecords(visitUuid);
+            fetchingIntent();
             if (list == null || list.isEmpty()) {
-                Log.e("FLOW", "No recordings found");
+                Log.e("FLOW", "No recordings found in DB");
                 return;
             }
-            for (HeartLungRecordModel item : list) {
-                int recordingStatus = Integer.parseInt(item.recordingStatus);
-                Log.d("FLOW", "Processing: " + item.type + " | " + item.position);
-                if (recordingStatus <= 0) {
-                    Log.e("FLOW", "Invalid recordingStatus");
-                    continue;
-                }
-                short[] audio = AyuSynk.getBleInstance().getAudioData(recordingStatus);
-                if (audio == null || audio.length == 0) {
-                    Log.e("FLOW", "Audio NULL for status: " + recordingStatus);
-                    continue;
-                }
-                DigitalSethScopeMethod(audio, item);
-                alertDialog.dismiss();
-            }
-        });
 
+            // Build valid items list with audio data
+            mPendingUploadQueue.clear();
+            mCurrentUploadIndex = 0;
+
+            for (HeartLungRecordModel item : list) {
+                int recStatus = Integer.parseInt(item.recordingStatus);
+                if (recStatus <= 0) {
+                    Log.e("FLOW", "Invalid recordingStatus for: " + item.position);
+                    continue;
+                }
+                short[] audio = AyuSynk.getBleInstance().getAudioData(recStatus);
+                if (audio == null || audio.length == 0) {
+                    Log.e("FLOW", "Audio NULL for: " + item.position   + " | recStatus=" + recStatus);
+                    continue;
+                }
+                item.audioData = audio;
+                mPendingUploadQueue.add(item);
+                Log.d("FLOW", "Queued: type=" + item.type
+                        + " | position=" + item.position
+                        + " | audioSamples=" + audio.length
+                        + " | durationSec=" + (audio.length / 4000f));
+
+            }
+
+            if (mPendingUploadQueue.isEmpty()) {
+                Log.e("FLOW", "No valid audio found");
+                return;
+            }
+
+            Log.d("FLOW", "Total queued: " + mPendingUploadQueue.size());
+
+            // FIX: Register listener ONCE — it triggers the NEXT upload
+            // after each AI report is generated, ensuring strict one-at-a-time
+            // processing. This prevents the SDK Timer thread from seeing list
+            // modifications while iterating → no ConcurrentModificationException.
+            AyuSynk.getBleInstance().setLogsListener(s -> Log.d("AYUSYNK_LOG", s));
+            AyuSynk.getBleInstance().setDiagnosisReportUpdateListener(
+                    new DiagnosisReportUpdateListener() {
+                        @Override
+                        public void reportRequestAdded(SoundFile soundFile) {
+                            Log.d("AI_FLOW", "Queued: " + soundFile.getReferenceId());
+                        }
+
+                        @Override
+                        public void reportGenerated(SoundFile soundFile) {
+                            String tid = soundFile.getReferenceId();
+                            Log.d("AI_FLOW", "Generated: " + tid);
+
+                            RecordingData data = trackerMap.get(tid);
+                            if (data != null) {
+                                data.result = soundFile.getSoundData().toString();
+                                Log.d("FINAL_RESULT", data.position + " → " + data.result);
+                                saveToDb(data);
+                            } else {
+                                Log.e("AI_ERROR", "No mapping for: " + tid);
+                            }
+
+                            // FIX: Trigger next upload AFTER this report is done
+                            // Small delay ensures SDK finishes its internal iteration
+                            // before the next generateDiagnosisReport call starts
+                            new Handler(android.os.Looper.getMainLooper()).postDelayed(() ->
+                                    processNextInQueue(), 500);
+                        }
+
+                        @Override
+                        public void onReportGenerationError(String error) {
+                            Log.e("AI_FLOW", "SDK Error: " + error);
+                            // Still advance queue on error
+                            new Handler(android.os.Looper.getMainLooper()).postDelayed(() ->
+                                    processNextInQueue(), 500);
+                        }
+                    });
+
+            // Start with first item
+            processNextInQueue();
+        });
         alertDialog.show();
     }
+
+    /**
+     * Upload and process one recording at a time.
+     * Called initially and then by reportGenerated/onReportGenerationError
+     * to advance the queue — ensuring strict sequential processing with no
+     * concurrent SDK list modifications.
+     */
+    private void processNextInQueue() {
+        if (mCurrentUploadIndex >= mPendingUploadQueue.size()) {
+            Log.d("FLOW", "All " + mPendingUploadQueue.size() + " recordings processed");
+            mPendingUploadQueue.clear();
+            mCurrentUploadIndex = 0;
+            return;
+        }
+
+        HeartLungRecordModel item = mPendingUploadQueue.get(mCurrentUploadIndex);
+        mCurrentUploadIndex++;
+
+        Log.d("FLOW", "Processing " + mCurrentUploadIndex + "/"
+                + mPendingUploadQueue.size()
+                + " → " + item.type + " | " + item.position);
+
+        short[] audio = item.audioData;
+
+        File wavFile;
+        try {
+            byte[] audioBytes = shortToByte(audio);
+            String pcmPath = saveToFile(audioBytes);
+            String wavPath = pcmPath.replace(".pcm", ".wav");
+            PCMToWavConverter.pcmToWav(pcmPath, wavPath);
+            wavFile = new File(wavPath);
+            if (!wavFile.exists()) {
+                Log.e("UPLOAD", "WAV not created for: " + item.position);
+                processNextInQueue(); // skip and continue
+                return;
+            }
+        } catch (Exception e) {
+            Log.e("UPLOAD", "Error for " + item.position + ": " + e.getMessage());
+            processNextInQueue(); // skip and continue
+            return;
+        }
+
+        String itemVisitUuid = item.visitUuid;
+        String itemType = item.type;
+        String itemPosition = item.position;
+        short[] audioShorts = audio;
+
+        String uploadUrl = BuildConfig.SERVER_URL + "/st/stethoscope/upload";
+        Log.d("UPLOAD_URL", "POST → " + uploadUrl
+                + " [" + mCurrentUploadIndex + "/" + mPendingUploadQueue.size() + "]");
+
+        okhttp3.MultipartBody multipartBody = new okhttp3.MultipartBody.Builder()
+                .setType(okhttp3.MultipartBody.FORM)
+                .addFormDataPart("audio_file", wavFile.getName(),
+                        okhttp3.RequestBody.create(
+                                okhttp3.MediaType.parse("audio/wav"), wavFile))
+                .addFormDataPart("visit_uuid", itemVisitUuid)
+                .addFormDataPart("creator_uuid", sessionManager.getCreatorID())
+                .addFormDataPart("sound_type", itemType)
+                .addFormDataPart("position", itemPosition)
+                .build();
+
+        okhttp3.Request request = new okhttp3.Request.Builder()
+                .url(uploadUrl)
+                .post(multipartBody)
+                .build();
+
+        getStethoHttpClient().newCall(request).enqueue(new okhttp3.Callback() {
+            @Override
+            public void onFailure(@NonNull okhttp3.Call call,
+                                  @NonNull IOException e) {
+                Log.e("UPLOAD_FAIL", item.position + " failed: " + e.getMessage());
+                // On network failure skip to next — don't wait for AI report
+                runOnUiThread(() -> processNextInQueue());
+            }
+
+            @Override
+            public void onResponse(@NonNull okhttp3.Call call,
+                                   @NonNull okhttp3.Response response) throws IOException {
+                String body = response.body() != null
+                        ? response.body().string() : "null";
+
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject json = new JSONObject(body);
+                        String tracker = json.optString("tracker",
+                                json.optString("trackerId",
+                                        json.optString("id", "")));
+
+                        Log.d("UPLOAD", "SUCCESS " + item.position
+                                + " | tracker=" + tracker);
+
+                        RecordingData data = new RecordingData();
+                        data.trackerId = tracker;
+                        data.position = itemPosition;
+                        data.filePath = wavFile.getAbsolutePath();
+                        data.type = itemType;
+                        trackerMap.put(tracker, data);
+
+                        // Generate AI — next item triggered by reportGenerated callback
+                        // generateDiagnosis(audioShorts, tracker);
+                        generateDiagnosis(audioShorts, tracker, itemType, itemPosition);
+
+                    } catch (JSONException e) {
+                        Log.e("UPLOAD", "JSON error: " + e.getMessage());
+                        runOnUiThread(() -> processNextInQueue());
+                    }
+                } else {
+                    Log.e("UPLOAD_ERROR", "Code: " + response.code()
+                            + " | " + item.position + " | " + body);
+                    // On server error skip to next
+                    runOnUiThread(() -> processNextInQueue());
+                }
+            }
+        });
+    }
+    private okhttp3.OkHttpClient getStethoHttpClient() {
+        if (mStethoHttpClient == null) {
+            mStethoHttpClient = new okhttp3.OkHttpClient.Builder()
+                    .connectTimeout(60, java.util.concurrent.TimeUnit.SECONDS)
+                    .readTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+                    .writeTimeout(120, java.util.concurrent.TimeUnit.SECONDS)
+                    // FIX: Strip ;charset=UTF-8 — old Spring/OpenMRS server rejects it with 500
+                    .addInterceptor(chain -> {
+                        okhttp3.Request original = chain.request();
+                        String ct = original.header("Content-Type");
+                        if (ct != null && ct.contains("multipart/form-data")) {
+                            String fixed = ct.replaceAll(";\\s*charset=[^;,\\s]*", "").trim();
+                            Log.d(TAG, "Charset fix: " + ct + " → " + fixed);
+                            return chain.proceed(original.newBuilder()
+                                    .header("Content-Type", fixed).build());
+                        }
+                        return chain.proceed(original);
+                    })
+                    .build();
+        }
+        return mStethoHttpClient;
+    }
+
+
 
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
         @Override
@@ -6454,9 +6650,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         billModel.setPatientHideVisitID(showVisitID());
         billModel.setVisitType(visitType);
         //billModel.setReceiptPaymentStatus();
-        Log.d(TAG, "kkgenerateAndViewBillData: visitUuid : " + visitUuid);
-        Log.d(TAG, "kkgenerateAndViewBillData: showVisitID() : " + showVisitID());
-        Log.d(TAG, "kkgenerateAndViewBillData: visitType : " + visitType);
+
 
         if (isVisitSpecialityExists && mFeatureActiveStatus.getGenerateBillButton()) {
             speciality_spinner.setEnabled(false);
@@ -6622,350 +6816,150 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         return buffer.array();
     }
 
-   /*public void DigitalSethScopeMethod() {
-       Log.d("DEBUG", "filePath: " + filePath);
-       Log.d("DEBUG", "visitUuid: " + visitUuid);
-       Log.d("DEBUG", "type: " + type);
-       Log.d("DEBUG", "position: " + position);
-       short[] audioShorts = AyuSynk.getBleInstance().getAudioData(recordingStatus);
 
-       // ✅ Step 1: Validate audio
-       if (audioShorts == null || audioShorts.length == 0) {
-           Log.e("ERROR", "audioShorts is null or empty");
-           return;
-       }
+    /**
+     * Maps the position string and type from DB to the correct AyuSynk LocationType.
+     * Position strings come from SoundFragment (e.g. "Aortic", "Anterior-1-Left-Top").
+     */
+    private Object getLocationForPosition(String type, String position) {
+        if (type == null || position == null) return LocationType.Heart.aortic;
 
-       File file;
+        String pos = position.toLowerCase().trim();
 
-       try {
-           // ✅ Step 2: Save PCM
-           byte[] audioBytes = shortToByte(audioShorts);
-           String pcmPath = saveToFile(audioBytes);
+        if (type.equalsIgnoreCase("heart")) {
+            if (pos.contains("aortic"))    return LocationType.Heart.aortic;
+            if (pos.contains("pulmonic")) return LocationType.Heart.pulmonic;
+            if (pos.contains("tricuspid")) return LocationType.Heart.tricuspid;
+            if (pos.contains("mitral"))   return LocationType.Heart.mitral;
+            return LocationType.Heart.aortic; // default heart
+        } else {
+            // Lung positions
+            if (pos.contains("anterior") && pos.contains("upper") && pos.contains("right"))
+                return LocationType.Lung.anterior_upper_right;
+            if (pos.contains("anterior") && pos.contains("middle") && pos.contains("right"))
+                return LocationType.Lung.anterior_middle_right;
+            if (pos.contains("anterior") && pos.contains("lower") && pos.contains("right"))
+                return LocationType.Lung.anterior_lower_right;
 
-           File pcmFile = new File(pcmPath);
-           if (!pcmFile.exists()) {
-               Log.e("UPLOAD", "PCM file not found: " + pcmPath);
-               return;
-           }
+            // ANTERIOR LEFT
+            if (pos.contains("anterior") && pos.contains("upper") && pos.contains("left"))
+                return LocationType.Lung.anterior_upper_left;
+            if (pos.contains("anterior") && pos.contains("middle") && pos.contains("left"))
+                return LocationType.Lung.anterior_middle_left;
+            if (pos.contains("anterior") && pos.contains("lower") && pos.contains("left"))
+                return LocationType.Lung.anterior_lower_left;
 
-           // ✅ Step 3: Convert PCM → WAV
-           String wavPath = pcmPath.replace(".pcm", ".wav");
-           PCMToWavConverter.pcmToWav(pcmPath, wavPath);
+            // LATERAL RIGHT
+            if (pos.contains("lateral") && pos.contains("upper") && pos.contains("right"))
+                return LocationType.Lung.lateral_upper_right;
+            if (pos.contains("lateral") && pos.contains("lower") && pos.contains("right"))
+                return LocationType.Lung.lateral_lower_right;
 
-           File wavFile = new File(wavPath);
+            // LATERAL LEFT
+            if (pos.contains("lateral") && pos.contains("upper") && pos.contains("left"))
+                return LocationType.Lung.lateral_upper_left;
+            if (pos.contains("lateral") && pos.contains("lower") && pos.contains("left"))
+                return LocationType.Lung.lateral_lower_left;
 
-           if (!wavFile.exists()) {
-               Log.e("UPLOAD", "WAV conversion failed!");
-               return;
-           }
+            // POSTERIOR RIGHT
+            if (pos.contains("posterior") && pos.contains("upper") && pos.contains("right"))
+                return LocationType.Lung.posterior_upper_right;
+            if (pos.contains("posterior") && pos.contains("middle") && pos.contains("right"))
+                return LocationType.Lung.posterior_middle_right;
+            if (pos.contains("posterior") && pos.contains("lower") && pos.contains("right"))
+                return LocationType.Lung.posterior_lower_right;
 
-           Log.d("UPLOAD", "WAV created: " + wavFile.getAbsolutePath());
-           Log.d("UPLOAD", "WAV size: " + wavFile.length());
+            // POSTERIOR LEFT
+            if (pos.contains("posterior") && pos.contains("upper") && pos.contains("left"))
+                return LocationType.Lung.posterior_upper_left;
+            if (pos.contains("posterior") && pos.contains("middle") && pos.contains("left"))
+                return LocationType.Lung.posterior_middle_left;
+            if (pos.contains("posterior") && pos.contains("lower") && pos.contains("left"))
+                return LocationType.Lung.posterior_lower_left;
 
-           file = wavFile; // ✅ SAFE assignment
+            // default lung
+            Log.w("LOCATION_MAP", "No match for position: " + position + " — defaulting to anterior_upper_left");
+            return LocationType.Lung.anterior_upper_left;
+        }
+    }
 
-       } catch (Exception e) {
-           Log.e("UPLOAD", "Conversion error: " + e.getMessage());
-           return;
-       }
-
-       // ✅ Step 4: Final safety check
-       if (file == null || !file.exists()) {
-           Log.e("UPLOAD", "File is null or missing");
-           return;
-       }
-
-       Log.d("FILE_DEBUG", "File ready: " + file.getAbsolutePath());
-
-       // ✅ Step 5: Prepare API request
-       RequestBody requestFile =
-               RequestBody.create(MediaType.parse("audio/wav"), file);
-
-       MultipartBody.Part audioFile =
-               MultipartBody.Part.createFormData(
-                       "audio_file",
-                       file.getName(),
-                       requestFile);
-
-       RequestBody visit_uuid_body =
-               RequestBody.create(MediaType.parse("text/plain"), visitUuid);
-
-       RequestBody creator_uuid =
-               RequestBody.create(MediaType.parse("text/plain"),
-                       sessionManager.getCreatorID());
-
-       RequestBody sound_type =
-               RequestBody.create(MediaType.parse("text/plain"), type);
-
-       RequestBody position_from =
-               RequestBody.create(MediaType.parse("text/plain"), position);
-
-       ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-       Call<UploadResponse> call = apiService.uploadSound(
-               audioFile,
-               visit_uuid_body,
-               creator_uuid,
-               sound_type,
-               position_from);
-
-       // ✅ Step 6: API Call
-       call.enqueue(new Callback<UploadResponse>() {
-
-           @Override
-           public void onResponse(Call<UploadResponse> call,
-                                  Response<UploadResponse> response) {
-
-               if (response.isSuccessful() && response.body() != null) {
-
-                   UploadResponse uploadResponse = response.body();
-                   String trackerId = uploadResponse.getTracker();
-
-                   Log.d("trackerId", "Success, trackerId: " + trackerId);
-
-                   // ✅ Step 7: Generate AI report ONLY AFTER upload success
-                   generateDiagnosis(audioShorts, trackerId);
-                   System.out.println("audioShorts" + audioShorts +  trackerId);
-
-               } else {
-                   Log.e("UPLOAD", "Upload failed: " + response.code());
-                   Log.e("UPLOAD", "Upload failed: " + response.message());
-               }
-           }
-
-           @Override
-           public void onFailure(Call<UploadResponse> call, Throwable t) {
-               Log.e("UPLOAD", "Upload error: " + t.getMessage());
-           }
-       });
-   }
-    private void generateDiagnosis(short[] audioShorts, String trackerId) {
-
+    private void generateDiagnosis(short[] audioShorts, String trackerId,
+                                   String type, String position) {
         try {
-            File file0 = new File(getSaveDir("1", getApplicationContext()), "recorded.wav");
+            File file0 = new File(
+                    getSaveDir("1", getApplicationContext()),
+                    "recorded_" + trackerId + ".wav"
+            );
 
             File file1 = AyuFileGenerator.saveFile(audioShorts, file0);
+            Log.d("WAV_CHECK", "trackerId=" + trackerId
+                    + " | type=" + type
+                    + " | position=" + position
+                    + " | fileSize=" + file1.length() + " bytes");
+            if (file1.length() == 0) {
+                Log.e("WAV_CHECK", "WAV file is empty — skipping AI for " + position);
+                runOnUiThread(() -> processNextInQueue());
+                return;
+            }
 
-            HeartSoundData heartSoundData =
-                    new HeartSoundData(file1, LocationType.Heart.aortic);
 
-            SoundFile<HeartSoundData> soundFile = new SoundFile<>(heartSoundData);
+            // FIX: Use actual position from DB instead of hardcoded aortic
+            Object location = getLocationForPosition(type, position);
+            Log.d("AI_FLOW", "Position mapping: type=" + type
+                    + " | position=" + position
+                    + " | location=" + location);
+
+            SoundFile soundFile;
+
+            if (type != null && type.equalsIgnoreCase("lung")) {
+                // Lung sound
+                com.ayudevice.ayusynksdk.report.LungSoundData lungSoundData =
+                        new com.ayudevice.ayusynksdk.report.LungSoundData(
+                                file1,
+                                (LocationType.Lung) location);
+                soundFile = new SoundFile<>(lungSoundData);
+            } else {
+                // Heart sound
+                HeartSoundData heartSoundData =
+                        new HeartSoundData(file1, (LocationType.Heart) location);
+                soundFile = new SoundFile<>(heartSoundData);
+            }
 
             soundFile.setReferenceId(trackerId);
 
-            Log.d("AI_FLOW", "Reference ID: " + trackerId);
+            Log.d("AI_FLOW", "Sending to SDK: " + trackerId
+                    + " | " + type + " | " + position);
 
             AyuSynk.getBleInstance().generateDiagnosisReport(soundFile);
-
-            // ✅ Listener
-            AyuSynk.getBleInstance().setDiagnosisReportUpdateListener(
-                    new DiagnosisReportUpdateListener() {
-
-                        @Override
-                        public void reportRequestAdded(SoundFile soundFile) {
-                            Log.d("AI_FLOW", "✅ QUEUED");
-                        }
-
-                        @Override
-                        public void reportGenerated(SoundFile soundFile) {
-                            Log.d("AI_FLOW", "🔥 REPORT GENERATED");
-
-                            System.out.println("Tracker: " + soundFile.getReferenceId());
-                            System.out.println("Data: " + soundFile.getSoundData());
-                        }
-
-                        @Override
-                        public void onReportGenerationError(String error) {
-                            Log.e("AI_FLOW", "❌ ERROR: " + error);
-                        }
-                    });
-
-            // ✅ Logs listener
-            AyuSynk.getBleInstance().setLogsListener(s ->
-                    Log.d("AYUSYNK_LOG", s)
-            );
 
         } catch (IOException e) {
             Log.e("AI_FLOW", "File save error: " + e.getMessage());
         }
-    }*/
+    }
+    private void saveToDb(RecordingData data) {
+        // FIX: reportGenerated() fires on a background thread — must post to main thread
+        // before touching UI or DB helper initialized on main thread.
+        runOnUiThread(() -> {
+            // FIX: initialize on demand if somehow still null
+            if (db == null) {
+                db = new InteleHealthDatabaseHelper(VisitSummaryActivity_New.this);
+            }
 
-
-
-    public void DigitalSethScopeMethod(short[] audio, HeartLungRecordModel item) {
-        int recordingStatus1 = Integer.parseInt(item.recordingStatus);
-        //audio = AyuSynk.getBleInstance().getAudioData(recordingStatus1);
-        short[] audioShorts = AyuSynk.getBleInstance().getAudioData(recordingStatus1);
-
-        if (audio == null || audio.length == 0) {
-            Log.e("ERROR", "audioShorts is null");
-            return;
-        }
-
-        File file;
-
-        try {
-            byte[] audioBytes = shortToByte(audio);
-            String pcmPath = saveToFile(audioBytes);
-
-            String wavPath = pcmPath.replace(".pcm", ".wav");
-            PCMToWavConverter.pcmToWav(pcmPath, wavPath);
-
-            file = new File(wavPath);
-
-            if (!file.exists()) {
-                Log.e("UPLOAD", "WAV not created");
+            // FIX: guard against activity being destroyed before callback fires
+            if (isFinishing() || isDestroyed()) {
+                Log.w("SOUND_FLOW", "saveToDb: activity finishing, skipping insert");
                 return;
             }
 
-        } catch (Exception e) {
-            Log.e("UPLOAD", "Error: " + e.getMessage());
-            return;
-        }
-        String visitUuid = item.visitUuid;
-        String type = item.type;
-        String position = item.position;
+            ContentValues values1 = new ContentValues();
+            values1.put("position", data.position);
+            values1.put("audio_path", data.filePath);
+            values1.put("type", data.type);
+            values1.put("result", data.result);
+            values1.put("recordingStatus", 1);
 
-        // String key = type + "_" + position; // unique key
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse("audio/wav"), file);
-
-        MultipartBody.Part audioFile =
-                MultipartBody.Part.createFormData(
-                        "audio_file",
-                        file.getName(),
-                        requestFile);
-
-        RequestBody visit_uuid_body =
-                RequestBody.create(MediaType.parse("text/plain"), visitUuid);
-
-        RequestBody creator_uuid =
-                RequestBody.create(MediaType.parse("text/plain"),
-                        sessionManager.getCreatorID());
-
-        RequestBody sound_type =
-                RequestBody.create(MediaType.parse("text/plain"), type);
-
-        RequestBody position_from =
-                RequestBody.create(MediaType.parse("text/plain"), position);
-
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-        Call<UploadResponse> call = apiService.uploadSound(
-                audioFile,
-                visit_uuid_body,
-                creator_uuid,
-                sound_type,
-                position_from);
-
-        call.enqueue(new Callback<UploadResponse>() {
-
-            @Override
-            public void onResponse(Call<UploadResponse> call,
-                                   Response<UploadResponse> response) {
-
-                if (response.isSuccessful() && response.body() != null) {
-
-                    String trackerId = response.body().getTracker();
-
-                    Log.d("UPLOAD", "trackerId: " + trackerId);
-
-                    // ✅ Store mapping
-                    RecordingData data = new RecordingData();
-                    data.trackerId = trackerId;
-                    data.position = position;
-                    data.filePath = file.getAbsolutePath();
-                    data.type = type;
-
-                    trackerMap.put(trackerId, data);
-
-                    // ✅ Call AI
-                    generateDiagnosis(audioShorts, trackerId);
-                } else {
-                    Log.e("UPLOAD", "Failed: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UploadResponse> call, Throwable t) {
-                Log.e("UPLOAD", "Error: " + t.getMessage());
-            }
+            db.insert("tbl_follow_up_heart_lung_recoding", null, values1);
+            Log.d("SOUND_FLOW", "saveToDb: saved " + data.type + " | " + data.position);
         });
-    }
-
-    private void generateDiagnosis(short[] audioShorts, String trackerId) {
-
-        try {
-
-            File file0 = new File(
-                    getSaveDir("1", getApplicationContext()),
-                    "recorded_" + trackerId + ".wav"   // ✅ UNIQUE FILE
-            );
-
-            File file1 = AyuFileGenerator.saveFile(audioShorts, file0);
-
-            HeartSoundData heartSoundData =
-                    new HeartSoundData(file1, LocationType.Heart.aortic);
-
-            SoundFile<HeartSoundData> soundFile = new SoundFile<>(heartSoundData);
-
-            soundFile.setReferenceId(trackerId);
-
-            Log.d("AI_FLOW", "Sending: " + trackerId);
-
-            AyuSynk.getBleInstance().generateDiagnosisReport(soundFile);
-
-            AyuSynk.getBleInstance().setDiagnosisReportUpdateListener(
-                    new DiagnosisReportUpdateListener() {
-                        @Override
-                        public void reportRequestAdded(SoundFile soundFile) {
-                            Log.d("AI_FLOW", "Queued: " + soundFile);
-                        }
-                        @Override
-                        public void reportGenerated(SoundFile soundFile) {
-
-                            String result = soundFile.getSoundData().toString();
-
-                            String trackerId = soundFile.getReferenceId();
-
-                            Log.d("AI_FLOW", "Generated: " + trackerId);
-
-                            RecordingData data = trackerMap.get(trackerId);
-
-                            if (data != null) {
-
-                                String result1 = soundFile.getSoundData().toString();
-                                data.result = result1;
-
-                                Log.d("FINAL_RESULT",
-                                        data.position + " → " + result);
-                                saveToDb(data);
-                            } else {
-                                Log.e("AI_ERROR", "No mapping for trackerId");
-                            }
-                        }
-
-                        @Override
-                        public void onReportGenerationError(String error) {
-                            Log.e("AI_FLOW", "Error: " + error);
-                        }
-                    });
-
-        } catch (IOException e) {
-            Log.e("AI_FLOW", "File error: " + e.getMessage());
-        }
-
-    }
-
-    private void saveToDb(RecordingData data) {
-
-        ContentValues values1 = new ContentValues();
-        values1.put("position", data.position);
-        values1.put("audio_path", data.filePath);
-        values1.put("type", data.type);
-        values1.put("result", data.result);
-        values1.put("recordingStatus", 1);
-
-        db.insert("tbl_follow_up_heart_lung_recoding", null, values1);
     }
 }

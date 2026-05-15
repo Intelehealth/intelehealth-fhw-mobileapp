@@ -147,26 +147,21 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
                 });
             }
             getParentFragmentManager().setFragmentResultListener(
-                    "sound_done",
-                    this,
+                    "sound_done", this,
                     (key, bundle) -> {
+                        if (isSoundFlowCompleted && !bundle.containsKey("type")) return;
 
-                        // prevent re-trigger within a single sound flow
-                        if (isSoundFlowCompleted) return;
-
-                        isSoundFlowCompleted = true;
-
-                        // The protocol has one exam node per position
-                        // (Sound Heart: Aortic, Sound Heart: Pulmonic, ...).
-                        // SoundFragment captured ALL positions of this type in one shot,
-                        // so skip past all remaining sibling sound nodes of the same type
-                        // before landing on the next non-matching exam node.
                         String examType = bundle.getString("type", "heart");
-                        skipPastSoundNodesAndAdvance(examType);
 
-                        // Reset so the *next* sound exam (e.g. Lung after Heart)
-                        // can open its own SoundFragment when the user taps it.
-                        isSoundFlowCompleted = false;
+                        // ✅ FIX 2: Immediately mark complete so no rebind can reopen it
+                        VisitCreationActivity vca = (VisitCreationActivity) requireActivity();
+                        vca.completedSoundTypes.add(examType);
+                        isSoundFlowCompleted = false; // reset for next sound type
+
+                        Log.d("SOUND_FLOW", "sound_done: type=" + examType
+                                + " completedSoundTypes=" + vca.completedSoundTypes);
+
+                        skipPastSoundNodesAndAdvance(examType);
                     }
             );
             RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
@@ -250,8 +245,7 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
                     mActionListener.onImageRemoved(nodeIndex, imageIndex, image);
                 }
 
-                @Override
-                public void onAyuDeviceRequest(Node node) {
+               /* public void onAyuDeviceRequest(Node node) {
                     if (isSoundFlowCompleted) {
                         // prevent reopening within the same listener run
                         return;
@@ -325,10 +319,60 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
                             .replace(R.id.fl_steps_body, fragment)
                             .addToBackStack("sound")
                             .commit();
+                }*/
+                @Override
+                public void onAyuDeviceRequest(Node node) {
+                    if (isSoundFlowCompleted) return;
+
+                    String examType = inferSoundExamType(mCurrentComplainNodeOptionsIndex);
+                    VisitCreationActivity vca = (VisitCreationActivity) requireActivity();
+
+                    if (vca.completedSoundTypes.contains(examType)
+                            || hasRecordedSoundTypeInDb(vca, examType)) {
+                        vca.completedSoundTypes.add(examType);
+                        Log.d("SOUND_FLOW", "onAyuDeviceRequest: skipped — " + examType);
+                        if (allRequiredSoundTypesCompleted(vca)) {
+                            finishPhysicalExamAndAdvance();
+                        }
+                        return;
+                    }
+
+                    ArrayList<String> sounds = extractSounds(examType);
+                    if (sounds.isEmpty()) {
+                        if ("heart".equals(examType)) {
+                            sounds.add("Aortic"); sounds.add("Pulmonic");
+                            sounds.add("Tricuspid"); sounds.add("Mitral");
+                        } else {
+                            sounds.add("Anterior-1-Left-Top"); sounds.add("Anterior-2-Right-Top");
+                            sounds.add("Anterior-3-Left-Middle"); sounds.add("Anterior-4-Right-Middle");
+                            sounds.add("Anterior-5-Left-Lower"); sounds.add("Anterior-6-Right-Lower");
+                        }
+                    }
+
+                    // ✅ FIX 1: Mark as completed BEFORE opening the fragment
+                    // so any RecyclerView rebind during the transaction is already blocked
+                    isSoundFlowCompleted = true;
+                    vca.completedSoundTypes.add(examType);
+                    Log.d("SOUND_FLOW", "Opening SoundFragment for type=" + examType);
+
+                    Bundle args = new Bundle();
+                    args.putString("type", examType);
+                    args.putStringArrayList("sounds", sounds);
+                    args.putString("patientUuid", vca.patientUuid);
+                    args.putString("visitUuid", vca.visitUuid);
+                    args.putString("encounterUuid", vca.encounterVitals);
+
+                    SoundFragment fragment = SoundFragment.newInstance(args);
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fl_steps_body, fragment)
+                            .addToBackStack("sound")
+                            .commit();
                 }
 
                 @Override
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
+
                 }
             });
             recyclerView.setAdapter(mQuestionsListingAdapter);
@@ -407,34 +451,29 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
      */
     private boolean allRequiredSoundTypesCompleted(VisitCreationActivity vca) {
         if (vca == null || physicalExam == null) return false;
-
         boolean needHeart = false, needLung = false;
         try {
             int total = physicalExam.getTotalNumberOfExams();
             for (int i = 0; i < total; i++) {
-                String title = physicalExam.getTitle(i);
-                if (title == null) continue;
-                String parent = title.split(" : ")[0].toLowerCase();
-                if (parent.contains("sound heart")) needHeart = true;
-                else if (parent.contains("sound lung")) needLung = true;
+                // ✅ FIX 3: Use getExamParentNodeName() — not getTitle().split()
+                // getTitle().split(" : ")[0] was returning wrong strings silently
+                String parent = physicalExam.getExamParentNodeName(i);
+                if (parent == null) continue;
+                String p = parent.toLowerCase();
+                if (p.contains("sound heart")) needHeart = true;
+                else if (p.contains("sound lung")) needLung = true;
             }
         } catch (Exception e) {
             Log.e("SOUND_FLOW", "Failed to compute required sound types", e);
             return false;
         }
-
-        if (!needHeart && !needLung) return false; // no sound exams in this protocol
+        if (!needHeart && !needLung) return false;
         if (needHeart && !vca.completedSoundTypes.contains("heart")
-                && !hasRecordedSoundTypeInDb(vca, "heart")) {
-            return false;
-        }
+                && !hasRecordedSoundTypeInDb(vca, "heart")) return false;
         if (needLung && !vca.completedSoundTypes.contains("lung")
-                && !hasRecordedSoundTypeInDb(vca, "lung")) {
-            return false;
-        }
+                && !hasRecordedSoundTypeInDb(vca, "lung")) return false;
         return true;
     }
-
     /**
      * Check the local DB for any saved heart/lung recording for the current visit
      * matching the given exam type. Used as a robust fallback when activity-scoped
@@ -596,11 +635,11 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
         Log.d("SOUND_FLOW", "Physical exam complete — advancing to past history");
 
         // 1) Refresh the summary side panel.
-        mActionListener.onFormSubmitted(
+    /*    mActionListener.onFormSubmitted(
                 VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION,
                 mIsEditMode,
                 null
-        );
+        );*/
 
         // 2) Move the main body to the next major step (Past Medical History).
         // Both transactions go through the FragmentManager queue and commit in

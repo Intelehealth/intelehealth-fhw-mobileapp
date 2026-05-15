@@ -28,26 +28,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 
-/**
- * Records a sequence of stethoscope sounds (e.g. Aortic, Pulmonic, ...).
- *
- * Flow:
- *   1. PhysicalExaminationFragment opens this fragment (replace into fl_steps_body
- *      with addToBackStack).
- *   2. On start, this fragment shows {@link AyuConnectDialogFragment} so the user
- *      can pair the AyuSynk device.
- *   3. When the dialog reports "connected", the recording UI is enabled and the
- *      user records each position one by one.
- *   4. After the last position is saved, this fragment posts the
- *      "sound_done" fragment result and pops itself off the back stack.
- *      PhysicalExaminationFragment's existing listener then advances to the
- *      next exam question.
- */
 public class SoundFragment extends Fragment implements RecorderListener {
 
     public static final String RESULT_SOUND_DONE = "sound_done";
 
-    /** Optional listener interface kept for backward-compat with older call sites. */
     public interface OnSoundSavedListener {
         void onSoundSaved();
     }
@@ -66,7 +50,11 @@ public class SoundFragment extends Fragment implements RecorderListener {
 
     private final Handler timerHandler = new Handler(Looper.getMainLooper());
     private long startTime = 0;
-    private static final int MAX_DURATION_MS = 10000;
+
+    // FIX: 30 seconds — SDK needs ≥30s for heart BPM calculation
+    // At 4000Hz: 30s = 120,000 samples → actual BPM returned
+    private static final int MAX_DURATION_MS = 30000;
+
     private Runnable timerRunnable;
 
     public static SoundFragment newInstance(Bundle args) {
@@ -118,20 +106,23 @@ public class SoundFragment extends Fragment implements RecorderListener {
             public void run() {
                 if (binding == null) return;
                 long elapsed = System.currentTimeMillis() - startTime;
-                binding.txtTimer.setText(String.format("%.1f / 10.0", elapsed / 1000f));
+
+                // FIX: Display 30.0 max, update every 100ms
+                binding.txtTimer.setText(String.format("%.1f / 30.0", elapsed / 1000f));
+
                 if (elapsed < MAX_DURATION_MS) {
                     timerHandler.postDelayed(this, 100);
                 } else {
+                    // FIX: Timer reached 30s — show final value then stop SDK recording
+                    binding.txtTimer.setText("30.0 / 30.0");
                     stopRecordingInternal();
                 }
             }
         };
 
-        // Recording controls are disabled until the user finishes the connect dialog.
         binding.btnStartRecording.setEnabled(false);
         binding.btnBack.setOnClickListener(v -> popBack());
 
-        // Listen for the dialog's result
         getParentFragmentManager().setFragmentResultListener(
                 AyuConnectDialogFragment.RESULT_KEY,
                 getViewLifecycleOwner(),
@@ -140,22 +131,81 @@ public class SoundFragment extends Fragment implements RecorderListener {
                             AyuConnectDialogFragment.RESULT_CONNECTED, false);
                     if (connected) {
                         binding.btnStartRecording.setEnabled(true);
+                        updatePositionUI(currentSound);
                         Toast.makeText(getContext(),
                                 "Device connected. Record: " + currentSound,
                                 Toast.LENGTH_SHORT).show();
                     } else {
-                        // user cancelled — leave the screen
                         popBack();
                     }
                 });
 
-        // Show the connect dialog right away
         if (savedInstanceState == null) {
             AyuConnectDialogFragment.newInstance()
                     .show(getParentFragmentManager(), "ayu_connect");
         }
 
         setupRecordingUi();
+    }
+
+    /**
+     * Updates txtPosition text and imgdirection image based on the current sound position.
+     * Called on connect (first position) and after every Save → next position.
+     */
+    private void updatePositionUI(String sound) {
+        if (binding == null || sound == null) return;
+        binding.txtPostion.setText(sound);
+        binding.imgdirection.setImageResource(getImageForPosition(sound));
+
+        // FIX: Clear waveform when switching to a new position
+        // so the user sees a fresh/blank waveform before next recording
+        try {
+            AyuSynk.getBleInstance().setAyuVisualizerView(null);
+            AyuSynk.getBleInstance().setAyuVisualizerView(binding.waveView);
+            AyuSynk.getBleInstance().setAyuVisualizerView(null); // detach so it resets
+        } catch (Exception ignored) {}
+    }
+
+    /**
+     * Maps position name → drawable resource ID.
+     * Heart: aortic_img, pulmanic, tricusiped, mital
+     * Lung Anterior: anterior_one … anterior_six
+     * Lung Lateral:  lateral_one … lateral_four
+     * Lung Posterior: posterior_one_img … posterior_six_img
+     */
+    private int getImageForPosition(String sound) {
+        if (sound == null) return R.drawable.aortic_img;
+        switch (sound) {
+            // ── Heart ─────────────────────────────────────────────
+            case "Aortic":    return R.drawable.aortic_img;
+            case "Pulmonic":  return R.drawable.pulmanic;
+            case "Tricuspid": return R.drawable.tricusiped;
+            case "Mitral":    return R.drawable.mital;
+
+            // ── Lung Anterior ─────────────────────────────────────
+            case "Anterior-1-Left-Top":    return R.drawable.anterior_one;
+            case "Anterior-2-Right-Top":   return R.drawable.anterior_two;
+            case "Anterior-3-Left-Middle": return R.drawable.anterior_three;
+            case "Anterior-4-Right-Middle":return R.drawable.anterior_four;
+            case "Anterior-5-Left-Lower":  return R.drawable.anterior_five;
+            case "Anterior-6-Right-Lower": return R.drawable.anterior_six;
+
+            // ── Lung Lateral ──────────────────────────────────────
+            case "Lateral-1-Left-Top":    return R.drawable.lateral_one;
+            case "Lateral-2-Left-Lower":  return R.drawable.lateral_two;
+            case "Lateral-3-Right-Top":   return R.drawable.lateral_three;
+            case "Lateral-4-Right-Lower": return R.drawable.lateral_four;
+
+            // ── Lung Posterior ────────────────────────────────────
+            case "Posterior-1-Left-Top":    return R.drawable.posterior_one_img;
+            case "Posterior-2-Right-Top":   return R.drawable.posterior_two_img;
+            case "Posterior-3-Left-Middle": return R.drawable.posterior_three_img;
+            case "Posterior-4-Right-Middle":return R.drawable.posterior_four_img;
+            case "Posterior-5-Left-Lower":  return R.drawable.posterior_five_img;
+            case "Posterior-6-Right-Lower": return R.drawable.posterior_six_img;
+
+            default: return R.drawable.aortic_img;
+        }
     }
 
     private void setupRecordingUi() {
@@ -171,11 +221,16 @@ public class SoundFragment extends Fragment implements RecorderListener {
             return;
         }
 
-        AyuSynk.getBleInstance().startRecording();
-        AyuSynk.getBleInstance().setRecorderListener(this);
+        // FIX: Attach waveview BEFORE starting recording so waveform shows for full 30s
         AyuSynk.getBleInstance().setAyuVisualizerView(binding.waveView);
+        AyuSynk.getBleInstance().setRecorderListener(this);
+        AyuSynk.getBleInstance().startRecording();
 
         startTime = System.currentTimeMillis();
+
+        // Reset timer and start 30s countdown
+        binding.txtTimer.setText("0.0 / 30.0");
+        timerHandler.removeCallbacks(timerRunnable);
         timerHandler.post(timerRunnable);
 
         binding.llButtonStart.setVisibility(View.GONE);
@@ -183,8 +238,17 @@ public class SoundFragment extends Fragment implements RecorderListener {
     }
 
     private void stopRecordingInternal() {
+        // FIX: Remove timer callbacks first
         timerHandler.removeCallbacks(timerRunnable);
-        // SDK fires recordingComplete() when the audio buffer is ready.
+
+        // FIX: Tell SDK to stop recording — this triggers recordingComplete() callback
+        // Without this call the SDK keeps running internally and fires at its own
+        // default duration (10s) causing the "save button appears at 10s" bug
+        try {
+            AyuSynk.getBleInstance().pauseRecording();
+        } catch (Exception e) {
+            Log.e("SOUND_FLOW", "stopRecording error: " + e.getMessage());
+        }
     }
 
     @Override
@@ -197,7 +261,14 @@ public class SoundFragment extends Fragment implements RecorderListener {
             if (audio != null && audio.length > 0) {
                 byte[] bytes = shortToByte(audio);
                 filePath = saveToFile(bytes);
+
+                Log.d("SOUND_FLOW", "recordingComplete: samples=" + audio.length
+                        + " | durationSec=" + (audio.length / 4000f)
+                        + " | position=" + position);
+
+                // FIX: Detach waveform after recording completes
                 AyuSynk.getBleInstance().setAyuVisualizerView(null);
+
                 if (binding != null) {
                     binding.llButtonStop.setVisibility(View.GONE);
                     binding.llButtonStart.setVisibility(View.GONE);
@@ -233,30 +304,32 @@ public class SoundFragment extends Fragment implements RecorderListener {
         filePath = "";
 
         if (currentIndex < sounds.size()) {
-            // move to next position; user records again
             currentSound = sounds.get(currentIndex);
             position = currentSound;
+
             if (binding != null) {
                 binding.llButtonSaveRecordingMain.setVisibility(View.GONE);
                 binding.llButtonStart.setVisibility(View.VISIBLE);
                 binding.llButtonStop.setVisibility(View.GONE);
+                // FIX: Reset timer display for fresh recording
+                binding.txtTimer.setText("0.0 / 30.0");
             }
+
+            // FIX: updatePositionUI clears waveform + updates image + text
+            updatePositionUI(currentSound);
+
             Toast.makeText(getContext(), "Next: " + position, Toast.LENGTH_SHORT).show();
         } else {
-            // all positions recorded — return to PhysicalExaminationFragment
             Toast.makeText(getContext(), "All sounds recorded", Toast.LENGTH_SHORT).show();
 
-            // Mark this exam type as completed for the visit so the adapter's
-            // auto-trigger in onBindViewHolder doesn't re-open SoundFragment
-            // when PhysicalExaminationFragment is reattached.
             if (getActivity() instanceof org.intelehealth.app.ayu.visit.VisitCreationActivity) {
                 ((org.intelehealth.app.ayu.visit.VisitCreationActivity) getActivity())
                         .completedSoundTypes.add(type);
             }
 
             Bundle resultBundle = new Bundle();
-            resultBundle.putString("type", type);          // "heart" or "lung"
-            resultBundle.putInt("count", sounds.size());   // 4 or 6
+            resultBundle.putString("type", type);
+            resultBundle.putInt("count", sounds.size());
             getParentFragmentManager()
                     .setFragmentResult(RESULT_SOUND_DONE, resultBundle);
             popBack();

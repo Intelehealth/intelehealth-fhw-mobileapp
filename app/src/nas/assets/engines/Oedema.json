@@ -2,7 +2,7 @@
     "id": "ID_546002814",
     "text": "Oedema",
     "display-or": "ଗୋଇଠି ଫୁଲିବା",
-    "perform-physical-exam": "Abdomen:Liver;Neck:Veins;",
+    "perform-physical-exam": "Abdomen:Liver;Neck:Veins;Sound Heart: Aortic;Sound Heart: Pulmonic;Sound Heart: Tricuspid;Sound Heart: Mitral;",
     "engineVersion": "3.0",
     "options": [
         {

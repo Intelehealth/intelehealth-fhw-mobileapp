@@ -16,9 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
-import org.intelehealth.app.ayu.visit.pocdevice.Heart.AorticFragment;
-import org.intelehealth.app.ayu.visit.pocdevice.Heart.PulmonicFragment;
-import org.intelehealth.app.ayu.visit.pocdevice.Heart.TricuspidFragment;
+
 import org.intelehealth.app.databinding.FragmentRecordHeartsoundsBinding;
 import org.intelehealth.app.models.VitalsObject;
 
@@ -130,7 +128,7 @@ public class RecordHeartSoundsFragment extends Fragment {
         // Example:
         //mBinding.tvTitle.setText(soundName);
         // You can handle logic here:
-        if (soundName.equalsIgnoreCase("Aortic")) {
+       /* if (soundName.equalsIgnoreCase("Aortic")) {
             // show Aortic UI / recording
             loadFragment(AorticFragment.newInstance(mIsEditMode, commonVisitData.getPatientName(), commonVisitData.getPatientUuid(), commonVisitData.getVisitUuid(), commonVisitData.getEncounterUuidVitals(), commonVisitData.getIntentTag(), commonVisitData.getPatientAgeYearMonth(), "heart"));
         } else if (soundName.equalsIgnoreCase("Pulmonic")) {
@@ -140,7 +138,7 @@ public class RecordHeartSoundsFragment extends Fragment {
             loadFragment(TricuspidFragment.newInstance(mIsEditMode, commonVisitData.getPatientName(), commonVisitData.getPatientUuid(), commonVisitData.getVisitUuid(), commonVisitData.getEncounterUuidVitals(), commonVisitData.getIntentTag(), commonVisitData.getPatientAgeYearMonth(), "heart"));
         } else if (soundName.equalsIgnoreCase("Mitral")) {
             loadFragment(TricuspidFragment.newInstance(mIsEditMode, commonVisitData.getPatientName(), commonVisitData.getPatientUuid(), commonVisitData.getVisitUuid(), commonVisitData.getEncounterUuidVitals(), commonVisitData.getIntentTag(), commonVisitData.getPatientAgeYearMonth(), "heart"));
-        }
+        }*/
     }
 
     /* private void setTabList() {

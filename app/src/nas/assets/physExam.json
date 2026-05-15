@@ -6401,6 +6401,56 @@
           "id": "sound_lung_anterior_6_right_lower",
           "text": " Anterior-6-Right-Lower",
           "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_lateral_1_left_top",
+          "text": " Lateral-1-Left-Top",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_lateral_2_left_lower",
+          "text": " Lateral-2-Left-Lower",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_lateral_3_right_top",
+          "text": " Lateral-3-Right-Top",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_lateral_4_right_lower",
+          "text": " Lateral-4-Right-Lower",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_posterior_1_left_top",
+          "text": " Posterior-1-Left-Top",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_posterior_2_right_top",
+          "text": " Posterior-2-Right-Top",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_posterior_3_left_middle",
+          "text": " Posterior-3-Left-Middle",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_posterior_4_right_middle",
+          "text": " Posterior-4-Right-Middle",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_posterior_5_left_lower",
+          "text": " Posterior-5-Left-Lower",
+          "input-type": "ayu_device"
+        },
+        {
+          "id": "sound_lung_posterior_6_right_lower",
+          "text": " Posterior-6-Right-Lower",
+          "input-type": "ayu_device"
         }
       ]
     }

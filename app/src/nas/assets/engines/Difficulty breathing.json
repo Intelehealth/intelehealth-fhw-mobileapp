@@ -1,7 +1,7 @@
 {
     "id": "ID_713757654",
     "text": "Difficulty breathing",
-    "perform-physical-exam": "Abdomen:Distension;Abdomen:Liver;Arm:Blood Glucose (RBS);Hands:Nails cyanosis;Any Location:Skin Bruise;Pulse:Rhythm;Chest:Audible sounds;Chest:Indrawing;Chest:Orthopnoea;Neck:Veins;",
+    "perform-physical-exam": "Abdomen:Distension;Abdomen:Liver;Arm:Blood Glucose (RBS);Hands:Nails cyanosis;Any Location:Skin Bruise;Pulse:Rhythm;Chest:Audible sounds;Chest:Indrawing;Chest:Orthopnoea;Neck:Veins;Sound Heart: Aortic;Sound Heart: Pulmonic;Sound Heart: Tricuspid;Sound Heart: Mitral;Sound Lung: Anterior-1-Left-Top;Sound Lung: Anterior-2-Right-Top;Sound Lung: Anterior-3-Left-Middle;Sound Lung: Anterior-4-Right-Middle;Sound Lung: Anterior-5-Left-Lower;Sound Lung: Anterior-6-Right-Lower;Sound Lung: Lateral-1-Left-Top;Sound Lung: Lateral-2-Left-Lower;Sound Lung: Lateral-3-Right-Top;Sound Lung: Lateral-4-Right-Lower;Sound Lung: Posterior-1-Left-Top;Sound Lung: Posterior-2-Right-Top;Sound Lung: Posterior-3-Left-Middle;Sound Lung: Posterior-4-Right-Middle;Sound Lung: Posterior-5-Left-Lower;Sound Lung: Posterior-6-Right-Lower;",
     "display": "Difficulty breathing",
     "display-or": "ନିଶ୍ୱାସ ନେବାରେ କଷ୍ଟ",
     "engineVersion": "3.0",

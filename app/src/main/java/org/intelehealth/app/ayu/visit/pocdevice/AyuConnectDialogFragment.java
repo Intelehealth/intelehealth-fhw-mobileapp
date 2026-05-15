@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,30 +26,69 @@ import com.ayudevice.ayusynksdk.ble.constants.DeviceStrength;
 import com.ayudevice.ayusynksdk.ble.listener.AyuDeviceListener;
 import com.ayudevice.ayusynksdk.ble.listener.DeviceScanListener;
 
+
 import org.intelehealth.app.R;
 
 /**
- * Standalone dialog that walks the user through scanning + connecting to an
- * AyuSynk device. When the user clicks Continue (only enabled once connected)
- * it posts a fragment result to whoever opened it.
+ * AyuConnectDialogFragment — redesigned to match the Digital Auscultation UI.
  *
- * Result key:   {@link #RESULT_KEY}
- * Result bool:  {@link #RESULT_CONNECTED}  (true = ready to record, false = cancelled)
+ * Shows:
+ *  • Header with mic icon + title + subtitle
+ *  • Description text
+ *  • Device connection status bar (dot + status text + SCAN button + spinner)
+ *  • Heart Sounds card  → launches SoundFragment for heart
+ *  • Lung Sounds card   → launches SoundFragment for lung
+ *  • "Continue without recording" button → posts result(true) i.e. skip sounds
+ *  • Cancel button → posts result(false)
+ *
+ * Cards are ENABLED only when device is connected.
+ * Status dot turns green when connected, grey when not.
  */
 public class AyuConnectDialogFragment extends DialogFragment
         implements AyuDeviceListener, DeviceScanListener {
 
-    public static final String RESULT_KEY = "ayu_connect_result";
+    public static final String RESULT_KEY       = "ayu_connect_result";
     public static final String RESULT_CONNECTED = "connected";
 
-    private TextView tvStatus;
+    // Optional: caller can pass type hint so we pre-highlight a card
+    public static final String ARG_TYPE = "type"; // "heart" | "lung" | null = both
+
+    // Views
+    private View       viewStatusDot;
+    private TextView   tvStatus, tvStatusSub;
+    private TextView   btnScan;         // styled as chip
     private ProgressBar pbScanning;
-    private Button btnScan, btnContinue, btnCancel;
+    private ViewGroup  cardHeart, cardLung;
+    private TextView   tvHeartSub, tvLungSub;
+    private Button     btnContinue, btnCancel;
 
     private boolean resultPosted = false;
 
+    public static final String RESULT_TYPE = "selected_type";
+
+
+    // Listener so parent (VisitCreationActivity / PhysExamFragment) can react
+    // to which card was tapped before device dialog posts its result
+    public interface OnSoundTypeSelectedListener {
+        void onHeartSelected();
+        void onLungSelected();
+    }
+    private OnSoundTypeSelectedListener mListener;
+
+    public void setOnSoundTypeSelectedListener(OnSoundTypeSelectedListener l) {
+        mListener = l;
+    }
+
     public static AyuConnectDialogFragment newInstance() {
         return new AyuConnectDialogFragment();
+    }
+
+    public static AyuConnectDialogFragment newInstance(String type) {
+        AyuConnectDialogFragment f = new AyuConnectDialogFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_TYPE, type);
+        f.setArguments(args);
+        return f;
     }
 
     @Override
@@ -58,6 +98,8 @@ public class AyuConnectDialogFragment extends DialogFragment
             getDialog().getWindow().setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
+            getDialog().getWindow().setBackgroundDrawableResource(
+                    R.drawable.ui2_rounded_corners_dialog_bg);
         }
     }
 
@@ -73,24 +115,70 @@ public class AyuConnectDialogFragment extends DialogFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvStatus    = view.findViewById(R.id.tvStatus);
-        pbScanning  = view.findViewById(R.id.pbScanning);
-        btnScan     = view.findViewById(R.id.btnScan);
-        btnContinue = view.findViewById(R.id.btnContinue);
-        btnCancel   = view.findViewById(R.id.btnCancel);
+        // Bind views
+        viewStatusDot = view.findViewById(R.id.viewStatusDot);
+        tvStatus      = view.findViewById(R.id.tvStatus);
+        tvStatusSub   = view.findViewById(R.id.tvStatusSub);
+        btnScan       = view.findViewById(R.id.btnScan);
+        pbScanning    = view.findViewById(R.id.pbScanning);
+        cardHeart     = view.findViewById(R.id.cardHeart);
+        cardLung      = view.findViewById(R.id.cardLung);
+        tvHeartSub    = view.findViewById(R.id.tvHeartSub);
+        tvLungSub     = view.findViewById(R.id.tvLungSub);
+        btnContinue   = view.findViewById(R.id.btnContinue);
+        btnCancel     = view.findViewById(R.id.btnCancel);
 
+        // Hide cards if caller specified a single type
+        String argType = getArguments() != null
+                ? getArguments().getString(ARG_TYPE, null) : null;
+        if ("heart".equalsIgnoreCase(argType)) {
+            cardLung.setVisibility(View.GONE);
+        } else if ("lung".equalsIgnoreCase(argType)) {
+            cardHeart.setVisibility(View.GONE);
+        }
+        // null → show both (default)
+
+        // Heart card tap
+        cardHeart.setOnClickListener(v -> {
+            if (!isDeviceConnected()) {
+                Toast.makeText(getContext(),
+                        "Please connect AyuSynk device first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (mListener != null) mListener.onHeartSelected();
+            postResult(true, "heart");   // ← pass "heart"
+            dismiss();
+        });
+
+        // Lung card tap
+        cardLung.setOnClickListener(v -> {
+            if (!isDeviceConnected()) {
+                Toast.makeText(getContext(),
+                        "Please connect AyuSynk device first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            if (mListener != null) mListener.onLungSelected();
+            postResult(true, "lung");    // ← pass "lung"
+            dismiss();
+        });
+
+        // Scan
         btnScan.setOnClickListener(v -> startScanFlow());
 
+        // Continue without recording = skip sounds, go next
         btnContinue.setOnClickListener(v -> {
-            postResult(true);
+            postResult(true, null);      // ← no type, just skip
+            // true = allow continue, skip sounds
             dismiss();
         });
 
+        // Cancel = go back
         btnCancel.setOnClickListener(v -> {
-            postResult(false);
+            postResult(false, null);      // ← no type, just skip
             dismiss();
         });
 
+        // Initial state
         renderState(AyuSynk.getBleInstance().isDeviceConnected());
     }
 
@@ -109,12 +197,16 @@ public class AyuConnectDialogFragment extends DialogFragment
 
     @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
-        // If the dialog is dismissed by other means (back button, outside touch),
-        // make sure the host always gets a result.
-        postResult(AyuSynk.getBleInstance().isDeviceConnected()
-                == DeviceConnectionState.DEVICE_CONNECTED);
+        postResult(isDeviceConnected());
         try { AyuSynk.getBleInstance().stopScan(); } catch (Exception ignored) {}
         super.onDismiss(dialog);
+    }
+
+    // ── Helpers ──────────────────────────────────────────────────────────────
+
+    private boolean isDeviceConnected() {
+        return AyuSynk.getBleInstance().isDeviceConnected()
+                == DeviceConnectionState.DEVICE_CONNECTED;
     }
 
     private void postResult(boolean connected) {
@@ -123,6 +215,43 @@ public class AyuConnectDialogFragment extends DialogFragment
         Bundle out = new Bundle();
         out.putBoolean(RESULT_CONNECTED, connected);
         getParentFragmentManager().setFragmentResult(RESULT_KEY, out);
+    }
+
+    /**
+     * Updates all status UI based on connection state.
+     * Connected  → green dot, cards enabled, subtitle shows "Ready to record"
+     * Disconnected → grey dot, cards show tap hint, subtitle shows scan prompt
+     */
+    private void renderState(DeviceConnectionState state) {
+        if (tvStatus == null) return;
+
+        boolean connected = state == DeviceConnectionState.DEVICE_CONNECTED;
+
+        // Status dot color
+        viewStatusDot.setBackgroundResource(
+                connected ? R.drawable.bg_dot_connected
+                        : R.drawable.bg_dot_disconnected);
+
+        // Status text
+        tvStatus.setText(connected ? "Device Connected" : "Device Disconnected");
+        tvStatusSub.setText(connected
+                ? "AyuSynk ready — tap a sound type below"
+                : "Scan to connect AyuSynk device");
+
+        // Scan button visibility
+        btnScan.setVisibility(connected ? View.GONE : View.VISIBLE);
+
+        // Cards — dim when not connected
+        float alpha = connected ? 1.0f : 0.5f;
+        cardHeart.setAlpha(alpha);
+        cardLung.setAlpha(alpha);
+
+        // Card subtitles
+        String cardSub = connected ? "Tap to record" : "Connect device to record";
+        tvHeartSub.setText(cardSub);
+        tvLungSub.setText(cardSub);
+
+        if (connected) pbScanning.setVisibility(View.GONE);
     }
 
     private void startScanFlow() {
@@ -136,19 +265,18 @@ public class AyuConnectDialogFragment extends DialogFragment
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter == null) {
             Toast.makeText(getContext(),
-                    R.string.bluetooth_notsupported_device,
-                    Toast.LENGTH_SHORT).show();
+                    R.string.bluetooth_notsupported_device, Toast.LENGTH_SHORT).show();
             return;
         }
         if (!adapter.isEnabled()) {
             Toast.makeText(getContext(),
-                    R.string.turn_on_bluetooth,
-                    Toast.LENGTH_SHORT).show();
+                    R.string.turn_on_bluetooth, Toast.LENGTH_SHORT).show();
             return;
         }
 
         tvStatus.setText("Scanning...");
         pbScanning.setVisibility(View.VISIBLE);
+        btnScan.setVisibility(View.GONE);
         AyuSynk.getBleInstance().startScan(this);
         AyuSynk.getBleInstance().setDeviceScanListener(this);
     }
@@ -167,16 +295,12 @@ public class AyuConnectDialogFragment extends DialogFragment
         return true;
     }
 
-    private void renderState(DeviceConnectionState state) {
-        if (tvStatus == null || btnContinue == null || pbScanning == null) return;
-        boolean connected = state == DeviceConnectionState.DEVICE_CONNECTED;
-        tvStatus.setText(connected ? "Connected" : "Disconnected");
-        btnContinue.setEnabled(connected);
-        if (connected) pbScanning.setVisibility(View.GONE);
-    }
+    // ── AyuDeviceListener ────────────────────────────────────────────────────
 
-    // --- AyuDeviceListener ---
-    @Override public void deviceConnectionStrength(DeviceStrength s) {}
+    @Override
+    public void deviceConnectionStrength(DeviceStrength deviceStrength) {
+
+    }
 
     @Override
     public void deviceConnectionState(DeviceConnectionState state) {
@@ -187,7 +311,8 @@ public class AyuConnectDialogFragment extends DialogFragment
 
     @Override public void deviceBatteryUpdate(int level) {}
 
-    // --- DeviceScanListener ---
+    // ── DeviceScanListener ───────────────────────────────────────────────────
+
     @Override public void onScanStart() {}
 
     @Override
@@ -200,17 +325,31 @@ public class AyuConnectDialogFragment extends DialogFragment
 
     @Override
     public void onScanFinish() {
-        if (getActivity() != null && pbScanning != null) {
-            getActivity().runOnUiThread(() -> pbScanning.setVisibility(View.GONE));
-        }
-    }
-
-    @Override
-    public void onScanFailed(int i) {
-        if (getActivity() != null && pbScanning != null) {
+        if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
                 pbScanning.setVisibility(View.GONE);
-                tvStatus.setText("Scan failed");
+                btnScan.setVisibility(View.VISIBLE);
+            });
+        }
+    }
+    // In postResult, add a type parameter:
+    private void postResult(boolean connected, String selectedType) {
+        if (resultPosted) return;
+        resultPosted = true;
+        Bundle out = new Bundle();
+        out.putBoolean(RESULT_CONNECTED, connected);
+        if (selectedType != null) {
+            out.putString(RESULT_TYPE, selectedType);  // ← NEW
+        }
+        getParentFragmentManager().setFragmentResult(RESULT_KEY, out);
+    }
+    @Override
+    public void onScanFailed(int i) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                pbScanning.setVisibility(View.GONE);
+                btnScan.setVisibility(View.VISIBLE);
+                tvStatus.setText("Scan failed — try again");
             });
         }
     }

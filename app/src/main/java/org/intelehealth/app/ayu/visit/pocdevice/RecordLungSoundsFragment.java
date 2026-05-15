@@ -16,9 +16,7 @@ import com.google.android.material.tabs.TabLayout;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
-import org.intelehealth.app.ayu.visit.pocdevice.Lung.AnteriorFragment;
-import org.intelehealth.app.ayu.visit.pocdevice.Lung.LateralFragment;
-import org.intelehealth.app.ayu.visit.pocdevice.Lung.PosteriorFragment;
+
 import org.intelehealth.app.databinding.FragmentRecordLungSoundsBinding;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.utilities.SessionManager;
@@ -149,7 +147,7 @@ public class RecordLungSoundsFragment extends Fragment {
     }
 
     private void setAnteriorTab() {
-        loadFragment(AnteriorFragment.newInstance(
+      /*  loadFragment(AnteriorFragment.newInstance(
                 mIsEditMode,
                 commonVisitData.getPatientName(),
                 commonVisitData.getPatientUuid(),
@@ -157,11 +155,11 @@ public class RecordLungSoundsFragment extends Fragment {
                 commonVisitData.getEncounterUuidVitals(),
                 commonVisitData.getIntentTag(),
                 commonVisitData.getPatientAgeYearMonth(),
-                "lung"));
+                "lung"));*/
     }
 
     private void setLateralTab() {
-        loadFragment(LateralFragment.newInstance(
+        /*loadFragment(LateralFragment.newInstance(
                 mIsEditMode,
                 commonVisitData.getPatientName(),
                 commonVisitData.getPatientUuid(),
@@ -169,11 +167,11 @@ public class RecordLungSoundsFragment extends Fragment {
                 commonVisitData.getEncounterUuidVitals(),
                 commonVisitData.getIntentTag(),
                 commonVisitData.getPatientAgeYearMonth(),
-                "lung"));
+                "lung"));*/
     }
 
     private void setPosteriorTab() {
-        loadFragment(PosteriorFragment.newInstance(
+        /*loadFragment(PosteriorFragment.newInstance(
                 mIsEditMode,
                 commonVisitData.getPatientName(),
                 commonVisitData.getPatientUuid(),
@@ -181,7 +179,7 @@ public class RecordLungSoundsFragment extends Fragment {
                 commonVisitData.getEncounterUuidVitals(),
                 commonVisitData.getIntentTag(),
                 commonVisitData.getPatientAgeYearMonth(),
-                "lung"));
+                "lung"));*/
     }
 
     private void loadFragment(Fragment fragment) {

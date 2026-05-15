@@ -57,9 +57,7 @@ public class ApiClient {
         return retrofit.create(serviceClass);
     }
     public static Retrofit getClient() {
-
         if (retrofit == null) {
-
             retrofit = new Retrofit.Builder()
                     .baseUrl(apiBaseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
