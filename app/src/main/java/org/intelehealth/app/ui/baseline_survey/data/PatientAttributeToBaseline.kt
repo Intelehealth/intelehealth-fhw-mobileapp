@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.baseline_survey.data
 
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import com.google.gson.reflect.TypeToken
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO.Column
@@ -172,29 +173,45 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
     }
 
     private fun extractMedicalHistoryData(baseline: Baseline, data: String) {
-        val medicalHistoryList: List<MedicalHistory> = Gson().fromJson(
-            data,
-            object : TypeToken<List<MedicalHistory>>() {}.type
-        )
-        val medicalHistory: MedicalHistory = medicalHistoryList[0]
 
-        //baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
-        baseline.anemiaValue = medicalHistory.anaemia.returnEmptyIfHyphen()
-        baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
-        baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
-        baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()
-        baseline.surgeryValue = medicalHistory.anySurgeries.returnEmptyIfHyphen()
-        baseline.surgeryReason = medicalHistory.reasonForSurgery.returnEmptyIfHyphen()
-        baseline.takingAnyMedicationForAnemia = medicalHistory.medicationForAnemia.returnEmptyIfHyphen()
-        baseline.haveYouSeenToHWinPastOneYearForAnemia = medicalHistory.healthWorkerForAnemia.returnEmptyIfHyphen()
-        baseline.reasonForNotTakingAnemiaMedication = medicalHistory.reasonForNoAnemiaMedication.returnEmptyIfHyphen()
-        baseline.takingAnyMedicationForBP = medicalHistory.medicationForBP.returnEmptyIfHyphen()
-        baseline.haveYouSeenToHWinPastOneYearForBP = medicalHistory.healthWorkerForBP.returnEmptyIfHyphen()
-        baseline.reasonForNotTakingBPMedication = medicalHistory.reasonForNoHypertensionMedication.returnEmptyIfHyphen()
-        baseline.takingAnyMedicationForDiabetes = medicalHistory.medicationForDiabetes.returnEmptyIfHyphen()
-        baseline.haveYouSeenToHWinPastOneYearForDiabetes = medicalHistory.healthWorkerForDiabetes.returnEmptyIfHyphen()
-        baseline.reasonForNotTakingDiabetesMedication = medicalHistory.reasonForNoDiabetesMedication.returnEmptyIfHyphen()
+        val jsonElement = JsonParser.parseString(data)
+        val medicalHistoryList: List<MedicalHistory> = when {
+            jsonElement.isJsonArray -> {
+                Gson().fromJson(
+                    data,
+                    object : TypeToken<List<MedicalHistory>>() {}.type
+                )
+            }
+            else -> emptyList()
+        }
+        val medicalHistory: MedicalHistory? = medicalHistoryList.firstOrNull()
 
+        if(medicalHistory != null) {
+            //baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
+            baseline.anemiaValue = medicalHistory.anaemia.returnEmptyIfHyphen()
+            baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
+            baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
+            baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()
+            baseline.surgeryValue = medicalHistory.anySurgeries.returnEmptyIfHyphen()
+            baseline.surgeryReason = medicalHistory.reasonForSurgery.returnEmptyIfHyphen()
+            baseline.takingAnyMedicationForAnemia =
+                medicalHistory.medicationForAnemia.returnEmptyIfHyphen()
+            baseline.haveYouSeenToHWinPastOneYearForAnemia =
+                medicalHistory.healthWorkerForAnemia.returnEmptyIfHyphen()
+            baseline.reasonForNotTakingAnemiaMedication =
+                medicalHistory.reasonForNoAnemiaMedication.returnEmptyIfHyphen()
+            baseline.takingAnyMedicationForBP = medicalHistory.medicationForBP.returnEmptyIfHyphen()
+            baseline.haveYouSeenToHWinPastOneYearForBP =
+                medicalHistory.healthWorkerForBP.returnEmptyIfHyphen()
+            baseline.reasonForNotTakingBPMedication =
+                medicalHistory.reasonForNoHypertensionMedication.returnEmptyIfHyphen()
+            baseline.takingAnyMedicationForDiabetes =
+                medicalHistory.medicationForDiabetes.returnEmptyIfHyphen()
+            baseline.haveYouSeenToHWinPastOneYearForDiabetes =
+                medicalHistory.healthWorkerForDiabetes.returnEmptyIfHyphen()
+            baseline.reasonForNotTakingDiabetesMedication =
+                medicalHistory.reasonForNoDiabetesMedication.returnEmptyIfHyphen()
+        }
     }
 
     private fun extractSmokingHistoryData(baseline: Baseline, data: String) {

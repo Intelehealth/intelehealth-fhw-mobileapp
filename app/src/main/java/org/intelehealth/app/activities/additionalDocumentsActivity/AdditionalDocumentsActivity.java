@@ -1,37 +1,29 @@
 package org.intelehealth.app.activities.additionalDocumentsActivity;
 
+import static org.intelehealth.app.utilities.FileUtils.copyUriToFile;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.provider.MediaStore;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.notification.AdapterInterface;
@@ -41,12 +33,18 @@ import org.intelehealth.app.models.DocumentObject;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.UuidDictionary;
-
 import org.intelehealth.app.utilities.StringUtils;
+import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.ihutils.ui.CameraActivity;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 public class AdditionalDocumentsActivity extends BaseActivity implements AdapterInterface {
 
@@ -122,7 +120,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(linearLayoutManager);
 
-            recyclerViewAdapter = new AdditionalDocumentAdapter(this,encounterAdultIntials,
+            recyclerViewAdapter = new AdditionalDocumentAdapter(this, encounterAdultIntials,
                     rowListItem, AppConstants.IMAGE_PATH, this, true);
             recyclerView.setAdapter(recyclerViewAdapter);
 
@@ -172,7 +170,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
     }
 
     /**
-     *   Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open dialog to Select douments from Image and Camera as Per the Choices
      */
     private void selectImage() {
         final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
@@ -189,8 +187,13 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
                     cameraActivityResult.launch(cameraIntent);
 
                 } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    galleryActivityResult.launch(intent);
+                    //Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    //galleryActivityResult.launch(intent);
+                    galleryActivityResult.launch(
+                            new PickVisualMediaRequest.Builder()
+                                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                                    .build()
+                    );
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
@@ -206,32 +209,59 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         }
     });
 
-    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
-            if(result.getData()!=null) {
-                Uri selectedImage = result.getData().getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-                CustomLog.v("path", picturePath + "");
+//    ActivityResultLauncher<Intent> galleryActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+//        if (result.getResultCode() == RESULT_OK) {
+//            if(result.getData()!=null) {
+//                Uri selectedImage = result.getData().getData();
+//                String[] filePath = {MediaStore.Images.Media.DATA};
+//                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
+//                c.moveToFirst();
+//                int columnIndex = c.getColumnIndex(filePath[0]);
+//                String picturePath = c.getString(columnIndex);
+//                c.close();
+//                //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+//                CustomLog.v("path", picturePath + "");
+//
+//                // copy & rename the file
+//                String finalImageName = UUID.randomUUID().toString();
+//                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+//                BitmapUtils.copyFile(picturePath, finalFilePath);
+//                compressImageAndSave(finalFilePath);
+//            }
+//        }
+//    });
 
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-                BitmapUtils.copyFile(picturePath, finalFilePath);
-                compressImageAndSave(finalFilePath);
-            }
-        }
-    });
+    private final ActivityResultLauncher<PickVisualMediaRequest> galleryActivityResult =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+                        if (uri != null) {
 
-/**
- * @param filePath Final Image path to compress.
- *
- * */
+                            String finalImageName = UUID.randomUUID().toString();
+                            final String finalFilePath =
+                                    AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+
+                            try {
+                                copyUriToFile(AdditionalDocumentsActivity.this, uri, finalFilePath);
+                                compressImageAndSave(finalFilePath);
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+
+                                Toast.makeText(
+                                        AdditionalDocumentsActivity.this,
+                                        getString(R.string.something_went_wrong),
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+
+                        }
+                    });
+
+
+    /**
+     * @param filePath Final Image path to compress.
+     */
     void compressImageAndSave(final String filePath) {
         getBackgroundHandler().post(new Runnable() {
             @Override
@@ -254,6 +284,7 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
         });
 
     }
+
     private void saveImage(String picturePath) {
         CustomLog.v("AdditionalDocuments", "picturePath = " + picturePath);
         File photo = new File(picturePath);

@@ -301,8 +301,8 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         var writeExternalStoragePermission =
             ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            writeExternalStoragePermission =
-                ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
+           // writeExternalStoragePermission =
+            //    ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
             val notificationPermission =
                 ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
             if (notificationPermission != PackageManager.PERMISSION_GRANTED) {
@@ -326,7 +326,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)
+              //  listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)
             } else {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)
                 listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)

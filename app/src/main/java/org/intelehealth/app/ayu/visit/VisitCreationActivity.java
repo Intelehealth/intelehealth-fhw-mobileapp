@@ -1,20 +1,17 @@
 package org.intelehealth.app.ayu.visit;
 
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
+import static org.intelehealth.app.utilities.FileUtils.copyUriToFile;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +21,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -56,7 +54,6 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -84,10 +81,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -261,18 +254,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         super.onFeatureActiveStatusLoaded(activeStatus);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
         featureActiveStatus = activeStatus;
         if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
             CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
@@ -293,6 +274,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit_creation);
+
+        // Keep screen ON
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -411,9 +395,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         getOnBackPressedDispatcher().addCallback(new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if(!mIsEditTriggerFromVisitSummary){
-                    showConfirmationDialog( getString(R.string.confirm_discard_changes_content));
-                }else{
+                if (!mIsEditTriggerFromVisitSummary) {
+                    showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
+                } else {
                     finish();
                 }
             }
@@ -487,10 +471,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     public void backPress(View view) {
-       // finish();
-        if(!mIsEditTriggerFromVisitSummary){
+        // finish();
+        if (!mIsEditTriggerFromVisitSummary) {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
-        }else{
+        } else {
             finish();
         }
     }
@@ -709,7 +693,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertion = "";
         insertionLocale = "";
         StringBuilder stringBuilder = new StringBuilder();
-        if(mChiefComplainRootNodeList != null){
+        if (mChiefComplainRootNodeList != null) {
             for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
                 Node node = mChiefComplainRootNodeList.get(i);
                 boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
@@ -761,24 +745,24 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private List<Node> loadPhysicalExam() {
         ArrayList<String> physicalExams = new ArrayList<>();
         ArrayList<String> childNodeSelectedPhysicalExams = new ArrayList<>();
-        if(mChiefComplainRootNodeList != null
-                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+        if (mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
             childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
         }
         if (!childNodeSelectedPhysicalExams.isEmpty())
             physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
 
         ArrayList<String> rootNodePhysicalExams = new ArrayList<>();
-        if(mChiefComplainRootNodeList != null
-                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+        if (mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
             rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
         }
         if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
             physicalExams.addAll(rootNodePhysicalExams); //For Root Node
         Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
 
-        if(mChiefComplainRootNodeList != null
-                && mChiefComplainRootNodeList.size()-1 >= mCurrentComplainNodeIndex){
+        if (mChiefComplainRootNodeList != null
+                && mChiefComplainRootNodeList.size() - 1 >= mCurrentComplainNodeIndex) {
             mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
         }
 
@@ -954,7 +938,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 String name = mSelectedComplainList.get(0).getReasonNameLocalized();
                 if (name != null) {
-                    reasonName += " : "+name;
+                    reasonName += " : " + name;
                 }
             }
 
@@ -982,25 +966,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mStep3ProgressBar.setProgress(mStep2ProgressBar.getProgress() + progress);
                 break;
         }
-    }
-
-    @Override
-    public void onTitleChange(String title) {
-        Timber.tag(TAG).d("onTitleChange=>%s", mCurrentStep);
-//        setTitle(mCurrentStep);
-//        switch (mCurrentStep) {
-//            case STEP_2_VISIT_REASON_QUESTION:
-////                if (title == null || title.isEmpty()) {
-//                setTitle(getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
-////                } else {
-////                    setTitle(title);
-////                }
-//                break;
-//            case STEP_3_PHYSICAL_EXAMINATION:
-//                setTitle(getResources().getString(R.string._phy_examination, currentScreenIndex, totalScreen));
-//                break;
-//        }
-
     }
 
     @Override
@@ -1601,11 +1566,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
             });
-    ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+    /*ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                   /* if (result.getResultCode() == Activity.RESULT_OK) {
+                   *//* if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
                         String currentPhotoPath = "";
                         if (data != null) {
@@ -1639,7 +1604,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
 
-                    }*/
+                    }*//*
 
 
                     Intent data = result.getData();
@@ -1678,9 +1643,62 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
 
-            });
-
+            });*/
     private String mLastSelectedImageName = "";
+    ImageUtilsListener imageUtilsListener;
+    ActivityResultLauncher<PickVisualMediaRequest> mStartForGalleryResult =
+            registerForActivityResult(
+                    new ActivityResultContracts.PickVisualMedia(),
+                    uri -> {
+
+                        if (uri != null) {
+
+                            try {
+
+                                // Generate random image name
+                                mLastSelectedImageName = UUID.randomUUID().toString();
+                                final String finalFilePath =
+                                        AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
+
+                                copyUriToFile(VisitCreationActivity.this, uri, finalFilePath);
+
+
+                                // Compress image if needed
+                                BitmapUtils.fileCompressed(finalFilePath);
+
+                                // Return image path
+                                Bundle bundle = new Bundle();
+                                bundle.putString("image", finalFilePath);
+
+                                imageUtilsListener.onImageReady(bundle);
+
+                                CustomLog.i(
+                                        TAG,
+                                        "Saved image from gallery: "
+                                                + finalFilePath
+                                );
+
+                            } catch (Exception e) {
+
+                                e.printStackTrace();
+
+                                Toast.makeText(
+                                        VisitCreationActivity.this,
+                                        "Failed to process selected image",
+                                        Toast.LENGTH_SHORT
+                                ).show();
+                            }
+
+                        } else {
+
+                            Toast.makeText(
+                                    VisitCreationActivity.this,
+                                    getResources().getString(R.string.unable_to_pick_data),
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    });
+
 
     public void openCamera() {
         validatePermissionAndIntent();
@@ -1703,8 +1721,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private void galleryStart() {
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        mStartForGalleryResult.launch(intent);
+//        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        mStartForGalleryResult.launch(intent);
+        mStartForGalleryResult.launch(
+                new PickVisualMediaRequest.Builder()
+                        .setMediaType(
+                                ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE
+                        )
+                        .build()
+        );
     }
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
@@ -1713,7 +1738,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void selectImage() {
         if (mImagePickerAlertDialog != null && mImagePickerAlertDialog.isShowing()) {
-            if(!isFinishing() && !isDestroyed()){
+            if (!isFinishing() && !isDestroyed()) {
                 mImagePickerAlertDialog.dismiss();
             }
         }
@@ -1773,7 +1798,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
     }
 
-    ImageUtilsListener imageUtilsListener;
 
     public void setImageUtilsListener(ImageUtilsListener imageUtilsListener) {
         this.imageUtilsListener = imageUtilsListener;
@@ -1782,11 +1806,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private ObjectAnimator syncAnimator;
 
     public void syncNow(View view) {
-        if(mIsEditTriggerFromVisitSummary){
+        if (mIsEditTriggerFromVisitSummary) {
             if (NetworkConnection.isOnline(this)) {
                 SyncUtils.syncNow(this, view, syncAnimator);
             }
-        }else{
+        } else {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content_on_sync));
         }
     }
@@ -1819,9 +1843,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
 
-
     private void showConfirmationDialog(String content) {
-        Log.d(TAG, "showConfirmationDialog: visitUuid : "+visitUuid);
+        Log.d(TAG, "showConfirmationDialog: visitUuid : " + visitUuid);
         DialogUtils dialogUtils = new DialogUtils();
         dialogUtils.showCommonDialogNonCancelable(this, R.drawable.fingerprint_dialog_error, getString(R.string.this_visit_is_incomplete),
                 content, false,
@@ -1834,4 +1857,24 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 });
 
     }
+
+    @Override
+    public void onTitleChange(String title) {
+        switch (mCurrentStep) {
+            case STEP_2_VISIT_REASON_QUESTION:
+                int currentScreenIndex = 1;
+                currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
+                String reasonName = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen);
+
+                if (title == null || title.isEmpty()) {
+                    reasonName += " : "+mSelectedComplainList.get(0);
+                } else {
+                    reasonName += " : "+title;
+                }
+                ((TextView) findViewById(R.id.tv_sub_title)).setText(reasonName);
+                break;
+        }
+
+    }
+
 }
