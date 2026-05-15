@@ -24,6 +24,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.collection:collection:1.1.0'
+        }
+    }
     namespace 'org.intelehealth.ihutils'
 }
 
@@ -42,6 +47,10 @@ dependencies {
 
     api 'com.google.android.material:material:1.10.0'
 
-    //camera view
-    implementation 'com.github.google:cameraview:9bbe07ba44'
+    // Camera
+    //implementation 'com.github.google:cameraview:9bbe07ba44'
+
+    implementation "androidx.camera:camera-camera2:1.4.2"
+    implementation "androidx.camera:camera-lifecycle:1.4.2"
+    implementation "androidx.camera:camera-view:1.4.2"
 }

@@ -1,3 +1,4 @@
+/*
 package org.intelehealth.ihutils.ui;
 
 import android.Manifest;
@@ -51,20 +52,26 @@ public class CameraActivity extends AppCompatActivity {
 
 
     public static final int TAKE_IMAGE = 205;
-    /**
+    */
+/**
      * Bundle key used for the {@link String} setting custom Image Name
      * for the file generated
-     */
+     *//*
+
     public static final String SET_IMAGE_NAME = "IMG_NAME";
-    /**
+    */
+/**
      * Bundle key used for the {@link String} setting custom FilePath for
      * storing the file generated
-     */
+     *//*
+
     public static final String SET_IMAGE_PATH = "IMG_PATH";
-    /**
+    */
+/**
      * Bundle key used for the {@link String} showing custom dialog
      * message before starting the camera.
-     */
+     *//*
+
     public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
     public static final String SEND_BROADCAST_AFTER_CAPTURE = "SEND_BROADCAST_AFTER_CAPTURE";
     private static final int[] FLASH_OPTIONS = {
@@ -334,7 +341,8 @@ public class CameraActivity extends AppCompatActivity {
         if (mCameraView != null) mCameraView.stop();
     }
 
-    /*@Override
+    */
+/*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.util_camera, menu);
         return true;
@@ -352,7 +360,8 @@ public class CameraActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }*/
+    }*//*
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
@@ -422,10 +431,12 @@ public class CameraActivity extends AppCompatActivity {
         return mBackgroundHandler;
     }
 
-    /**
+    */
+/**
      * removed onBackPressed function due to deprecation
      * and added this one to handle onBackPressed
-     */
+     *//*
+
     private void handleBackPress() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -462,5 +473,395 @@ public class CameraActivity extends AppCompatActivity {
             ((ImageView) view).setImageResource(FLASH_ICONS[mCurrentFlash]);
             mCameraView.setFlash(FLASH_OPTIONS[mCurrentFlash]);
         }
+    }
+}
+*/
+package org.intelehealth.ihutils.ui;
+
+import android.Manifest;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.Camera;
+import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageCapture;
+import androidx.camera.core.ImageCaptureException;
+import androidx.camera.core.Preview;
+import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.view.PreviewView;
+import androidx.core.content.ContextCompat;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.common.util.concurrent.ListenableFuture;
+
+import org.intelehealth.ihutils.R;
+
+import java.io.File;
+import java.util.concurrent.ExecutionException;
+
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
+public class CameraActivity extends AppCompatActivity {
+    public static final int TAKE_IMAGE = 205;
+    public static final String SET_IMAGE_NAME = "IMG_NAME";
+    public static final String SET_IMAGE_PATH = "IMG_PATH";
+    public static final String SEND_BROADCAST_AFTER_CAPTURE = "SEND_BROADCAST_AFTER_CAPTURE";
+    public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
+
+    private static final String TAG = "CameraActivity";
+
+    private PreviewView previewView;
+
+    private ImageCapture imageCapture;
+
+    private Camera camera;
+
+    private CameraSelector cameraSelector =
+            CameraSelector.DEFAULT_BACK_CAMERA;
+
+    private String mImageName = "IMG";
+
+    private String mDialogMessage = null;
+
+    private String mFilePath = null;
+
+    private String mImagePathRoot = "";
+
+    private boolean fabClickFlag = true;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        mImagePathRoot =
+                getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+                        + File.separator;
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+
+            if (extras.containsKey(SET_IMAGE_NAME)) {
+                mImageName = extras.getString(SET_IMAGE_NAME);
+            }
+
+            if (extras.containsKey(SHOW_DIALOG_MESSAGE)) {
+                mDialogMessage = extras.getString(SHOW_DIALOG_MESSAGE);
+            }
+
+            if (extras.containsKey(SET_IMAGE_PATH)) {
+                mFilePath = extras.getString(SET_IMAGE_PATH);
+            }
+        }
+
+        setContentView(R.layout.utils_activity_camera_x);
+
+        previewView = findViewById(R.id.previewView);
+
+        handleBackPress();
+
+        getWindow().setStatusBarColor(
+                ContextCompat.getColor(this, R.color.white)
+        );
+
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        CameraActivityPermissionsDispatcher
+                .startCameraWithPermissionCheck(this);
+    }
+
+    @NeedsPermission(Manifest.permission.CAMERA)
+    void startCamera() {
+
+        if (mDialogMessage != null) {
+
+            MaterialAlertDialogBuilder builder =
+                    new MaterialAlertDialogBuilder(this)
+                            .setMessage(mDialogMessage)
+                            .setNeutralButton(
+                                    getString(R.string.util_button_ok),
+                                    (dialog, which) -> {
+                                        if (!isFinishing() && !isDestroyed()) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+
+            AlertDialog dialog = builder.show();
+        }
+
+        ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
+                ProcessCameraProvider.getInstance(this);
+
+        cameraProviderFuture.addListener(() -> {
+
+            try {
+
+                ProcessCameraProvider cameraProvider =
+                        cameraProviderFuture.get();
+
+                bindCameraUseCases(cameraProvider);
+
+            } catch (ExecutionException | InterruptedException e) {
+
+                Log.e(TAG, "Camera init failed", e);
+            }
+
+        }, ContextCompat.getMainExecutor(this));
+    }
+
+    private void bindCameraUseCases(
+            @NonNull ProcessCameraProvider cameraProvider
+    ) {
+
+        Preview preview =
+                new Preview.Builder()
+                        .build();
+
+        preview.setSurfaceProvider(previewView.getSurfaceProvider());
+
+        imageCapture =
+                new ImageCapture.Builder()
+                        .setCaptureMode(
+                                ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+                        )
+                        .build();
+
+        cameraProvider.unbindAll();
+
+        camera = cameraProvider.bindToLifecycle(
+                this,
+                cameraSelector,
+                preview,
+                imageCapture
+        );
+    }
+
+    public void takeImage(View view) {
+
+        if (!fabClickFlag) {
+            return;
+        }
+
+        fabClickFlag = false;
+
+        if (imageCapture == null) {
+            return;
+        }
+
+        File photoFile =
+                new File(
+                        mImagePathRoot +
+                                mImageName +
+                                ".jpg"
+                );
+
+        ImageCapture.OutputFileOptions outputOptions =
+                new ImageCapture.OutputFileOptions.Builder(photoFile)
+                        .build();
+
+        imageCapture.takePicture(
+                outputOptions,
+                ContextCompat.getMainExecutor(this),
+                new ImageCapture.OnImageSavedCallback() {
+
+                    @Override
+                    public void onImageSaved(
+                            @NonNull ImageCapture.OutputFileResults
+                                    outputFileResults
+                    ) {
+
+                        fabClickFlag = true;
+
+                        Intent intent = new Intent();
+
+                        intent.putExtra(
+                                "RESULT",
+                                photoFile.getAbsolutePath()
+                        );
+
+                        setResult(RESULT_OK, intent);
+
+                        Toast.makeText(
+                                CameraActivity.this,
+                                R.string.util_picture_taken,
+                                Toast.LENGTH_SHORT
+                        ).show();
+
+                        finish();
+                    }
+
+                    @Override
+                    public void onError(
+                            @NonNull ImageCaptureException exception
+                    ) {
+
+                        fabClickFlag = true;
+
+                        Log.e(
+                                TAG,
+                                "Photo capture failed",
+                                exception
+                        );
+
+                        Toast.makeText(
+                                CameraActivity.this,
+                                "Capture failed",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                }
+        );
+    }
+
+    public void flipCamera(View view) {
+
+        if (cameraSelector ==
+                CameraSelector.DEFAULT_BACK_CAMERA) {
+
+            cameraSelector =
+                    CameraSelector.DEFAULT_FRONT_CAMERA;
+
+        } else {
+
+            cameraSelector =
+                    CameraSelector.DEFAULT_BACK_CAMERA;
+        }
+
+        startCamera();
+    }
+
+    public void switchFlash(View view) {
+
+        if (camera == null) {
+            return;
+        }
+
+        Integer flashState = imageCapture.getFlashMode();
+
+        if (flashState ==
+                ImageCapture.FLASH_MODE_OFF) {
+
+            imageCapture.setFlashMode(
+                    ImageCapture.FLASH_MODE_ON
+            );
+
+            ((ImageView) view)
+                    .setImageResource(R.drawable.ic_flash_on);
+
+        } else {
+
+            imageCapture.setFlashMode(
+                    ImageCapture.FLASH_MODE_OFF
+            );
+
+            ((ImageView) view)
+                    .setImageResource(R.drawable.utils_ic_flash_off);
+        }
+    }
+
+    public void endCameraSession(View view) {
+        finish();
+    }
+
+    @OnShowRationale(Manifest.permission.CAMERA)
+    void showRationaleForCamera(final PermissionRequest request) {
+
+        MaterialAlertDialogBuilder builder =
+                new MaterialAlertDialogBuilder(this)
+                        .setMessage(
+                                getString(
+                                        R.string
+                                                .util_permission_camera_rationale
+                                )
+                        )
+                        .setPositiveButton(
+                                getString(R.string.util_button_allow),
+                                (dialog, which) -> request.proceed()
+                        )
+                        .setNegativeButton(
+                                getString(R.string.util_button_deny),
+                                (dialog, which) -> request.cancel()
+                        );
+
+        builder.show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    void showDeniedForCamera() {
+
+        Toast.makeText(
+                this,
+                getString(R.string.util_permission_camera_denied),
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    void showNeverAskForCamera() {
+
+        Toast.makeText(
+                this,
+                getString(
+                        R.string.util_permission_camera_never_askagain
+                ),
+                Toast.LENGTH_SHORT
+        ).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+
+        super.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+        );
+
+        CameraActivityPermissionsDispatcher
+                .onRequestPermissionsResult(
+                        this,
+                        requestCode,
+                        grantResults
+                );
+    }
+
+    private void handleBackPress() {
+
+        getOnBackPressedDispatcher()
+                .addCallback(
+                        this,
+                        new OnBackPressedCallback(true) {
+
+                            @Override
+                            public void handleOnBackPressed() {
+                                finish();
+                            }
+                        });
     }
 }
