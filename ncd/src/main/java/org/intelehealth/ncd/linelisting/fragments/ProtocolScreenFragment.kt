@@ -1,8 +1,6 @@
 package org.intelehealth.ncd.linelisting.fragments
 
 import android.os.Bundle
-import android.os.SystemClock
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,8 +42,6 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
     private var age: Int = 0
     private val searchVM: CommonSearchViewModel by activityViewModels()
     private var latestQuery: String = ""
-    /** Monotonic time when current paging `refresh` entered Loading; used to log refresh duration. */
-    private var refreshLoadingStartElapsedMs: Long = -1L
 
     companion object {
         private const val ARG_CATEGORY = "arg_category"
@@ -120,30 +116,6 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
             val isEmptyList = adapter.itemCount == 0
 
             binding.noDataLayout.isVisible = isAllLoaded && isEmptyList
-
-            // Show progress bar when loading
-            // binding.progressBar.isVisible = refresh is LoadState.Loading
-
-            if (refresh is LoadState.Loading) {
-                refreshLoadingStartElapsedMs = SystemClock.elapsedRealtime()
-                Log.d(
-                    "Pooja",
-                    "ProtocolScreenFragment loadState: REFRESH_LOADING category=$category q='$latestQuery' itemCount=${adapter.itemCount} | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
-                )
-            } else if (refresh is LoadState.NotLoading) {
-                val refreshMs =
-                    if (refreshLoadingStartElapsedMs >= 0L) {
-                        val d = SystemClock.elapsedRealtime() - refreshLoadingStartElapsedMs
-                        refreshLoadingStartElapsedMs = -1L
-                        d
-                    } else {
-                        -1L
-                    }
-                Log.d(
-                    "Pooja",
-                    "ProtocolScreenFragment loadState: REFRESH_NOT_LOADING category=$category q='$latestQuery' itemCount=${adapter.itemCount} refreshDurationMs=$refreshMs | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
-                )
-            }
         }
 
 
@@ -163,10 +135,6 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 searchVM.searchTextFlow.collectLatest { q ->
                     latestQuery = q
-                    Log.d(
-                        "Pooja",
-                        "ProtocolScreenFragment searchTextFlow: category=$category q='$q' | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
-                    )
                 }
             }
         }
@@ -180,15 +148,7 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
                     searchQueryFlow = searchVM.searchTextFlow,
                     skipCategorySegregation = false
                 ).collectLatest { pagingData ->
-                    Log.d(
-                        "Pooja",
-                        "ProtocolScreenFragment collectLatest(pagingData): category=$category q='$latestQuery' -> submitData START | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
-                    )
                     adapter.submitData(pagingData)
-                    Log.d(
-                        "Pooja",
-                        "ProtocolScreenFragment collectLatest(pagingData): category=$category q='$latestQuery' -> submitData CALLED | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
-                    )
                 }
             }
         }

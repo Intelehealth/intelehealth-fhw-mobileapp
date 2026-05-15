@@ -1,7 +1,5 @@
 package org.intelehealth.ncd.linelisting.viewmodels
 
-import android.os.SystemClock
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
@@ -10,17 +8,17 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.paging.map
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import org.intelehealth.ncd.linelisting.datasource.PatientVisitRepository
 import org.intelehealth.ncd.linelisting.utils.ProtocolParserHelper
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.utils.CategorySegregationUtils
-import java.util.concurrent.atomic.AtomicInteger
 
 class ProtocolScreenViewModel(
      val repository: PatientVisitRepository,
@@ -146,11 +144,8 @@ class ProtocolScreenViewModel(
         // debounce + distinctUntilChanged: fewer DB runs; flatMapLatest cancels the previous Pager when query changes.
         return searchQueryFlow
             .debounce(300)
+            .distinctUntilChanged()
             .flatMapLatest { searchQuery ->
-                Log.d(
-                    "Pooja",
-                    "ProtocolScreenViewModel.getPatientsPagedNew flatMapLatest: category=$category q='$searchQuery' | systemMs=${System.currentTimeMillis()} | elapsedMs=${SystemClock.elapsedRealtime()}"
-                )
 
                 Pager(
                     config = PagingConfig(

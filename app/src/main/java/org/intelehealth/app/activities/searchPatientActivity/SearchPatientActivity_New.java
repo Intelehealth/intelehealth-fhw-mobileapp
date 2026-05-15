@@ -97,22 +97,9 @@ public class SearchPatientActivity_New extends BaseActivity {
     private boolean isFullyLoaded = false;
     List<PatientDTO> patientDTOList;
     List<PatientDTO> recent = new ArrayList<>();
-    private final long activityCreateElapsedMs = SystemClock.elapsedRealtime();
-
-    private void logPooja(String event, String extra) {
-        Log.d(
-                "Pooja",
-                "SearchPatientActivity_New " + event
-                        + (extra == null || extra.isEmpty() ? "" : (" | " + extra))
-                        + " | systemMs=" + System.currentTimeMillis()
-                        + " | elapsedMs=" + SystemClock.elapsedRealtime()
-                        + " | sinceActivityCreateMs=" + (SystemClock.elapsedRealtime() - activityCreateElapsedMs)
-        );
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        logPooja("onCreate START", "");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_patient_new);
         EdgeToEdge.enable(this);
@@ -159,9 +146,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
         previous_SearchResults();
-        logPooja("previous_SearchResults DONE", "");
         queryAllPatients();
-        logPooja("queryAllPatients DISPATCHED", "");
 
         addPatientTV.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +163,6 @@ public class SearchPatientActivity_New extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if (!mSearchEditText.getText().toString().isEmpty()) {
-                    logPooja("iconClear CLICK", "prevTextLen=" + mSearchEditText.getText().toString().length());
                     recent.clear();
                     mSearchEditText.setText("");
                 }
@@ -189,7 +173,6 @@ public class SearchPatientActivity_New extends BaseActivity {
             @Override
             public void onClick(View view) {
                 String searchText = mSearchEditText.getText().toString();
-                logPooja("iconSearch CLICK", "q='" + searchText + "' len=" + searchText.length());
                 performSearch(searchText);
             }
         });
@@ -214,7 +197,6 @@ public class SearchPatientActivity_New extends BaseActivity {
             @Override
             public void afterTextChanged(Editable editable) {
                 if (editable.toString().isEmpty()) {
-                    logPooja("afterTextChanged EMPTY", "");
                     iconClear.setVisibility(View.GONE);
                     iconSearch.setVisibility(View.VISIBLE);
                     allPatientsTV.setText(getString(R.string.all_patients_txt));
@@ -223,14 +205,11 @@ public class SearchPatientActivity_New extends BaseActivity {
                         @Override
                         public void run() {
                             query = "";
-                            logPooja("doQuery (cleared) START", "");
                             doQuery(query);
-                            logPooja("doQuery (cleared) RETURN", "");
                         }
                     }, 100);
 
                 } else {
-                    logPooja("afterTextChanged NON_EMPTY", "q='" + editable.toString() + "' len=" + editable.length());
                     iconClear.setVisibility(View.VISIBLE);
                     iconSearch.setVisibility(View.GONE);
                 }
@@ -251,7 +230,6 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     private void performSearch(String searchText) {
-        logPooja("performSearch START", "q='" + searchText + "' len=" + (searchText == null ? 0 : searchText.length()));
         if (!searchText.isEmpty()) {
             iconSearch.setVisibility(View.GONE);
             iconClear.setVisibility(View.VISIBLE);
@@ -265,15 +243,11 @@ public class SearchPatientActivity_New extends BaseActivity {
             mSearchEditText.setTextColor(ContextCompat.getColor(this, R.color.white));
             managePreviousSearchStorage(text);
             query = text;
-            logPooja("doQuery (search) START", "q='" + text + "'");
             doQuery(text);
-            logPooja("doQuery (search) RETURN", "q='" + text + "'");
         } else {
             allPatientsTV.setText(getString(R.string.all_patients_txt));
             query = "";
-            logPooja("doQuery (empty search) START", "");
             doQuery(query);
-            logPooja("doQuery (empty search) RETURN", "");
         }
     }
 
@@ -306,25 +280,18 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     private void queryAllPatients() {
         Executors.newSingleThreadExecutor().execute(() -> {
-            logPooja("queryAllPatients BG START", "limit=" + limit + " start=" + start);
-            long t0 = SystemClock.elapsedRealtime();
             patientDTOList = PatientsDAO.getAllPatientsFromDB(limit, start);   // fetch first 15 records and dont skip any records ie. start = 0 for 2nd itertion skip first 15records.
-            logPooja("queryAllPatients BG FETCH DONE", "size=" + (patientDTOList == null ? -1 : patientDTOList.size()) + " fetchMs=" + (SystemClock.elapsedRealtime() - t0));
 
             if (!patientDTOList.isEmpty()) { // ie. the entered text is present in db
-                long tTags0 = SystemClock.elapsedRealtime();
                 fetchDataforTags(patientDTOList);
-                logPooja("queryAllPatients BG fetchDataforTags DONE", "ms=" + (SystemClock.elapsedRealtime() - tTags0));
                 if (!isFinishing() && !isDestroyed()) {
                     runOnUiThread(this::searchData_Available);
                     try {
                         runOnUiThread(() -> {
-                            logPooja("initial adapter SET START", "size=" + patientDTOList.size());
                             adapter = new SearchPatientAdapter_New(this, patientDTOList);
                             search_recycelview.setAdapter(adapter);
                             start = end;
                             end += limit;
-                            logPooja("initial adapter SET END", "newStart=" + start + " newEnd=" + end + " adapterCount=" + adapter.getItemCount());
                         });
                     } catch (Exception e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
@@ -405,7 +372,6 @@ public class SearchPatientActivity_New extends BaseActivity {
     }
 
     private void doQuery(String query) {
-        logPooja("doQuery ENTER", "q='" + query + "'");
         InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
 
@@ -413,32 +379,24 @@ public class SearchPatientActivity_New extends BaseActivity {
         if (query.equalsIgnoreCase("")) {
             try {
                 searchData_Available();
-                logPooja("doQuery EMPTY -> setAdapter START", "baseListSize=" + (patientDTOList == null ? -1 : patientDTOList.size()));
                 adapter = new SearchPatientAdapter_New(this, patientDTOList);
                 fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
-                logPooja("doQuery EMPTY -> setAdapter END", "adapterCount=" + adapter.getItemCount());
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
             return;
         }
 
-        long t0 = SystemClock.elapsedRealtime();
         recent = getQueryPatients(query);  // fetches all the list of patients.
-        logPooja("doQuery getQueryPatients DONE", "q='" + query + "' size=" + (recent == null ? -1 : recent.size()) + " ms=" + (SystemClock.elapsedRealtime() - t0));
 
         if (!recent.isEmpty()) { // ie. the entered text is present in db
-            long tTags0 = SystemClock.elapsedRealtime();
             fetchDataforTags(recent);
-            logPooja("doQuery fetchDataforTags DONE", "ms=" + (SystemClock.elapsedRealtime() - tTags0));
             searchData_Available();
             try {
-                logPooja("doQuery RESULT -> setAdapter START", "resultSize=" + recent.size());
                 adapter = new SearchPatientAdapter_New(this, recent);
                 fullyLoaded = true;
                 search_recycelview.setAdapter(adapter);
-                logPooja("doQuery RESULT -> setAdapter END", "adapterCount=" + adapter.getItemCount());
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
@@ -559,20 +517,15 @@ public class SearchPatientActivity_New extends BaseActivity {
                     return;
                 }
 
-                logPooja("pagination BG START", "limit=" + limit + " start=" + start + " currentSize=" + (patientDTOList == null ? -1 : patientDTOList.size()));
-                long t0 = SystemClock.elapsedRealtime();
                 List<PatientDTO> tempList = PatientsDAO.getAllPatientsFromDB(limit, start); // for n iteration limit be fixed == 15 and start - offset will keep skipping each records.
-                logPooja("pagination BG FETCH DONE", "fetched=" + (tempList == null ? -1 : tempList.size()) + " ms=" + (SystemClock.elapsedRealtime() - t0));
                 if (!isFinishing() && !isDestroyed()) {
                     runOnUiThread(() -> {
                         if (!tempList.isEmpty()) {
-                            logPooja("pagination UI APPLY START", "beforeSize=" + patientDTOList.size());
                             patientDTOList.addAll(tempList);
                             adapter.patientDTOS.addAll(tempList);
                             adapter.notifyDataSetChanged();
                             start = end;
                             end += limit;
-                            logPooja("pagination UI APPLY END", "afterSize=" + patientDTOList.size() + " adapterCount=" + adapter.getItemCount() + " newStart=" + start + " newEnd=" + end);
                         }
                     });
                 }

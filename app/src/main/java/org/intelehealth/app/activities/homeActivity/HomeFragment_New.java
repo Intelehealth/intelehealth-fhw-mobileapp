@@ -387,9 +387,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         textlayout_find_patient.setOnClickListener(v -> {
         /*    Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivity.class);
             startActivity(intent);*/
-            Log.d("Pooja", "Home->SearchPatient click: open NcdPatientCategoryActivityNew"
-                    + " | systemMs=" + System.currentTimeMillis()
-                    + " | elapsedMs=" + SystemClock.elapsedRealtime());
             Intent intent= new Intent(requireActivity(), NcdPatientCategoryActivityNew.class);
             startActivity(intent);
         });
