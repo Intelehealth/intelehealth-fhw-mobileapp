@@ -60,8 +60,8 @@ android {
         ekal {
             dimension client
             applicationId "org.intelehealth.ekalarogya"
-            versionCode 92
-            versionName "4.2-beta-v-4"
+            versionCode 94
+            versionName "4.2-beta-v-5"
             archivesBaseName = "intelehealth_ekal-" + versionName + " - " + date
         }
 

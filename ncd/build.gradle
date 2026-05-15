@@ -95,11 +95,29 @@ dependencies {
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     // FHIR SDK - AAR dependencies
-    implementation(name: 'common-0.1.0-alpha05-build_16294515623', ext: 'aar')
-    implementation(name: 'data-capture-1.3.0-build_16294515623', ext: 'aar')
-    implementation(name: 'engine-1.2.0-build_16294515623', ext: 'aar')
-    implementation(name: 'knowledge-0.1.0-beta01-build_16294515623', ext: 'aar')
-    implementation(name: 'workflow-0.1.0-beta01-build_16294515623', ext: 'aar')
+//    implementation(name: 'common-0.1.0-alpha05-build_16294515623', ext: 'aar')
+//    implementation(name: 'data-capture-1.3.0-build_16294515623', ext: 'aar')
+//    implementation(name: 'engine-1.2.0-build_16294515623', ext: 'aar')
+//    implementation(name: 'knowledge-0.1.0-beta01-build_16294515623', ext: 'aar')
+//    implementation(name: 'workflow-0.1.0-beta01-build_16294515623', ext: 'aar')
+
+//    // Source: https://mvnrepository.com/artifact/com.google.android.fhir/data-capture
+//    implementation("com.google.android.fhir:data-capture:1.3.1")
+//    // Source: https://mvnrepository.com/artifact/com.google.android.fhir/engine
+//    implementation("com.google.android.fhir:engine:1.2.0")
+//    // Source: https://mvnrepository.com/artifact/com.google.android.fhir/knowledge
+//    implementation("com.google.android.fhir:knowledge:0.1.0-beta01")
+//    // Source: https://mvnrepository.com/artifact/com.google.android.fhir/common
+//    runtimeOnly("com.google.android.fhir:common:0.1.0-alpha05")
+//    // Source: https://mvnrepository.com/artifact/com.google.android.fhir/workflow
+//    implementation("com.google.android.fhir:workflow:0.1.0-beta01")
+
+    // build from their last release tag sdc-1.3.1
+    implementation(name: 'engine-release', ext: 'aar')
+    implementation(name: 'datacapture-release', ext: 'aar')
+    implementation(name: 'workflow-release', ext: 'aar')
+    implementation(name: 'knowledge-release', ext: 'aar')
+    implementation(name: 'common-release', ext: 'aar')
 
     // Core Library Desugaring (fixes the build error)
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"

@@ -103,7 +103,7 @@ dependencies {
 
     def hiltVersion = '2.47'
     api "com.google.dagger:hilt-android:$hiltVersion"
-    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
+//    kapt "com.google.dagger:hilt-compiler:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     // WorkManager
