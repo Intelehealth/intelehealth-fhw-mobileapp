@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
 import org.intelehealth.ncd.callbacks.PatientClickedListener
 import org.intelehealth.ncd.category.viewmodel.CommonSearchViewModel
-import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.databinding.LayoutNcdPatientCategoryBinding
 import org.intelehealth.ncd.linelisting.PatientVisitPagingAdapter
 import org.intelehealth.ncd.linelisting.adapter.PatientLoadStateAdapter
@@ -101,21 +100,19 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         binding.recyclerView.adapter = adapter.withLoadStateFooter(
-            footer = PatientLoadStateAdapter { adapter.retry() }
+            footer = PatientLoadStateAdapter(
+                retry = { adapter.retry() },
+                mainAdapterItemCount = { adapter.itemCount },
+            )
         )
         adapter.addLoadStateListener { loadState ->
             val refresh = loadState.refresh
-            val append = loadState.append
-            val prepend = loadState.prepend
-
-            val isAllLoaded =
-                refresh is LoadState.NotLoading &&
-                        append.endOfPaginationReached &&
-                        prepend.endOfPaginationReached
-
             val isEmptyList = adapter.itemCount == 0
 
-            binding.noDataLayout.isVisible = isAllLoaded && isEmptyList
+
+            // Empty label after refresh completes.
+            binding.noDataLayout.isVisible =
+                refresh is LoadState.NotLoading && isEmptyList
         }
 
 
