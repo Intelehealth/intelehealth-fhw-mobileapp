@@ -16,10 +16,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import org.intelehealth.app.activities.homeActivity.callback.CountCallback;
 import org.intelehealth.app.utilities.CustomLog;

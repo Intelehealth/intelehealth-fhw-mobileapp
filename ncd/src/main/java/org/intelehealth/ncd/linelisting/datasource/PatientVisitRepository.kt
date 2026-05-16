@@ -10,7 +10,7 @@ class PatientVisitRepository(
     fun getPagedVisits(
         searchQuery: String?
     ): PagingSource<Int, PatientVisitDetails> {
-        val inner = dataSource.getPagedVisits(
+        return dataSource.getPagedVisits(
             Constants.OTHER_MEDICAL_HISTORY,
             Constants.ENCOUNTER_VISIT_COMPLETE,
             searchQuery,
@@ -19,10 +19,6 @@ class PatientVisitRepository(
             Constants.SPECIALITY,
             Constants.ENCOUNTER_ADULTINITIAL,
             Constants.CURRENT_COMPLAINT
-        )
-        return TimedPagingSource(
-            inner,
-            "Room getAllVisitsPagedNew q='${searchQuery ?: ""}'"
         )
     }
 

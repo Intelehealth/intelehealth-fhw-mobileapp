@@ -4,23 +4,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.launch
+import org.intelehealth.ncd.constants.Constants
 import org.intelehealth.ncd.data.category.CategoryRepository
+import org.intelehealth.ncd.model.Patient
+import org.intelehealth.ncd.model.PatientAttributes
 import org.intelehealth.ncd.model.PatientVisitDetails
+import org.intelehealth.ncd.room.CategoryDatabase
 import org.intelehealth.ncd.room.dao.GeneralTabDao
 import org.intelehealth.ncd.utils.CategorySegregationUtils
+import java.util.UUID
 
-class GeneralViewModel(
-    private val repository: CategoryRepository,
-    @Suppress("unused") private val utils: CategorySegregationUtils,
-) : ViewModel() {
+class GeneralViewModel(private val repository: CategoryRepository, private val utils: CategorySegregationUtils) : ViewModel() {
 
     private val _generalMutableLiveData = MutableLiveData<List<PatientVisitDetails>>()
     val generalLiveData: LiveData<List<PatientVisitDetails>> = _generalMutableLiveData
@@ -34,10 +40,10 @@ class GeneralViewModel(
 
     fun getPatientFlow(generalTabDao: GeneralTabDao): Flow<PagingData<PatientVisitDetails>> {
         return searchQuery
-            .debounce(300)
+            .debounce(300) // wait for user to finish typing
             .distinctUntilChanged()
             .flatMapLatest { query ->
-                repository.getPagedPatients(query, generalTabDao)
+                repository.getPagedPatients(query,generalTabDao)
             }
             .cachedIn(viewModelScope)
     }

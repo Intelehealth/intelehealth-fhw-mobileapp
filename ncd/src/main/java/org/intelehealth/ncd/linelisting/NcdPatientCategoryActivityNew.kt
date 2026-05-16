@@ -7,6 +7,7 @@ import android.view.View
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.OnApplyWindowInsetsListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -100,7 +101,6 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
 
         adapter = CategoryPagerAdapter(this, fragmentList)
         binding.vpCategory.adapter = adapter
-        //binding.vpCategory.offscreenPageLimit = 1
         binding.vpCategory.isUserInputEnabled = true
         binding.vpCategory.overScrollMode = View.OVER_SCROLL_NEVER
 
@@ -133,6 +133,7 @@ class NcdPatientCategoryActivityNew : AppCompatActivity() {
                 ivSearch.visibility = if (hasText) View.GONE else View.VISIBLE
                 ivClear.visibility = if (hasText) View.VISIBLE else View.GONE
 
+                // propagate search to ALL fragments via shared VM
                 searchViewModel.updateSearchTextNew(s.toString())
             }
 
