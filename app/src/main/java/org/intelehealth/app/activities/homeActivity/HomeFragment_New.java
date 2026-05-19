@@ -2,8 +2,6 @@ package org.intelehealth.app.activities.homeActivity;
 
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitsDAO.getTotalActiveVisitsCount;
-import static org.intelehealth.app.database.dao.VisitsDAO.olderNotEndedVisits;
-import static org.intelehealth.app.database.dao.VisitsDAO.recentNotEndedVisits;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 
 import android.annotation.SuppressLint;
@@ -19,14 +17,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
-import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
-import org.intelehealth.app.utilities.AddPatientUtils;
-import org.intelehealth.app.utilities.CustomLog;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,20 +35,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
-import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.EndVisitActivity;
 import org.intelehealth.app.activities.visit.VisitActivity;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
-import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.FollowUpModel;
 import org.intelehealth.app.models.PrescriptionModel;
 import org.intelehealth.app.shared.BaseFragment;
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
+import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NetworkUtils;
@@ -243,7 +231,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private void initUI() {
-        Activity activity = getActivity();
+        Activity activity = requireActivity();
         if (!isAdded() || activity == null) return;
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
@@ -371,11 +359,11 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     StringBuilder followupCount = new StringBuilder()
                             .append(todaysCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.today))
+                            .append(requireActivity().getString(R.string.today))
                             .append("\n")
                             .append(tomorrowsCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.tomorrow));
+                            .append(requireActivity().getString(R.string.tomorrow));
 
                     mCountPendingFollowupVisitsTextView.setText(
                             followupCount
@@ -454,10 +442,10 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         if (isInternetAvailable) {
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_internet_available));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_internet_available));
 
         } else {
-            ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_no_internet));
+            ivInternet.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_no_internet));
 
         }
     }
@@ -499,7 +487,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                /* int finalTotalUpcomingApps = new AppointmentDAO().getAppointmentCountsByStatus(AppointmentTabType.UPCOMING);
 
                 if (mUpcomingAppointmentCountTextView != null) {
-                    Activity activity = getActivity();
+                    Activity activity = requireActivity();
                     if (isAdded() && activity != null) {
                         activity.runOnUiThread(() -> mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + activity.getString(R.string.upcoming)));
                     }
@@ -509,7 +497,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     int finalTotalUpcomingApps = repository.getUpcomingAppointmentCount(db);
 
                     if (mUpcomingAppointmentCountTextView != null) {
-                        Activity activity = getActivity();
+                        Activity activity = requireActivity();
                         if (isAdded() && activity != null) {
                             activity.runOnUiThread(() ->
                                     mUpcomingAppointmentCountTextView.setText(finalTotalUpcomingApps + " " + activity.getString(R.string.upcoming))

@@ -1,8 +1,5 @@
 package org.intelehealth.app.activities.patientSurveyActivity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,13 +11,14 @@ import android.os.Bundle;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Toast;
+
+import androidx.core.content.ContextCompat;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -35,6 +33,7 @@ import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.NotificationSchedulerUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -251,7 +250,7 @@ public class PatientSurveyActivity_New extends BaseActivity implements NetworkUt
 
         sessionManager.removeVisitSummary(patientUuid, visitUuid);
         Intent i = new Intent(this, HomeScreenActivity_New.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         i.putExtra("intentTag", tag);
         startActivity(i);
     }

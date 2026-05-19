@@ -1325,6 +1325,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
 
+            // replace -<br/> with <br/> to avoid extra bullet when description is there in physicalString
+            physicalString = physicalString.replaceAll("-<br/>", "<br/>");
+
 
             for (int i = 0; i < physicalExamMap.getTotalNumberOfExams(); i++) {
                 Node l1Node = physicalExamMap.getExamNode(i);
