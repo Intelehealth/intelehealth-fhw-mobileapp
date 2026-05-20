@@ -254,7 +254,7 @@
     // Relation with household
     <string name="spouse">पति / पत्नी</string>
     <string name="son_or_daughter">बेटा / बेटी</string>
-    <string name="son_or_daughter_in_law">पोता</string>
+    <string name="son_or_daughter_in_law">बेटा या बहू</string>
     <string name="grandchild">पोता</string>
     <string name="father_mother">पिता / माता</string>
     <string name="father_mother_in_law">ससुर / सास</string>
