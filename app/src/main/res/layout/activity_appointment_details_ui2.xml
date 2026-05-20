@@ -29,7 +29,7 @@
         <androidx.cardview.widget.CardView
             android:id="@+id/cardview_head"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/apps_details_profile_card_height"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar_common"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
@@ -43,14 +43,14 @@
             <LinearLayout
                 android:id="@+id/frame_10034"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/apps_details_profile_margin"
                 android:orientation="horizontal"
                 android:weightSum="1">
 
                 <RelativeLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1">
 
                     <androidx.cardview.widget.CardView
@@ -70,7 +70,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/card_profile_details_margin_start"
                         android:layout_toStartOf="@+id/call_chat_action_ll"
                         android:layout_toEndOf="@+id/ivAppointmentProfile"
@@ -132,13 +132,25 @@
                             android:textAppearance="@style/caption_fu_openmrsId"
                             android:textColor="@null"
                             android:textSize="@dimen/cp_openmrsid_text_size" />
+                        <TextView
+                            android:id="@+id/mpiID_txt"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/margin_4"
+                            android:gravity="center_vertical"
+                            android:text="@string/fu_openmrsID"
+                            android:textAppearance="@style/caption_fu_openmrsId"
+                            android:textColor="@null"
+                            android:textSize="@dimen/find_patient_hint_size"
+                            />
 
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/call_chat_action_ll"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:gravity="center"

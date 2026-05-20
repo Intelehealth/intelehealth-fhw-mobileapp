@@ -42,6 +42,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -95,44 +96,56 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
 
                 .enqueue(new Callback<AppointmentListingResponse>() {
                     @Override
-                    public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
+                    public void onResponse(Call<AppointmentListingResponse> call,
+                                           retrofit2.Response<AppointmentListingResponse> response) {
+
                         if (response.body() == null) return;
-                        CustomLog.v(TAG, "onResponse - " + new Gson().toJson(response.body()));
+
                         AppointmentListingResponse slotInfoResponse = response.body();
-                        AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
 
+                        int tabIndex = tabLayout.getSelectedTabPosition();
 
-                        if (slotInfoResponse.getData().size() > 0) {
-                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+                        Executors.newSingleThreadExecutor().execute(() -> {
 
-                                try {
-                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                            try {
 
-                                } catch (DAOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
 
-                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse.getCancelledAppointments().size() > 0) {
+                                // 🔥 SAFE DELETE
+                                appointmentDAO.deleteAllAppointments();
 
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
+                                // 🔥 SAFE INSERT
+                                if (slotInfoResponse.getData() != null) {
 
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+                                    for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
+                                        try {
+                                            appointmentDAO.insert(
+                                                    slotInfoResponse.getData().get(i)
+                                            );
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
-                            }
-                        }*/
 
-                        //getAppointments();
-                        CustomLog.v(TAG, "onFinished - " + new Gson().toJson(slotInfoResponse));
-                        Objects.requireNonNull(mUpdateFragmentOnEventHashMap.get(tabIndex)).onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            // 🔥 UI update BACK ON MAIN THREAD
+                            runOnUiThread(() -> {
+
+                                CustomLog.v(TAG, "DB Sync Completed");
+
+                                if (mUpdateFragmentOnEventHashMap.containsKey(tabIndex)) {
+                                    mUpdateFragmentOnEventHashMap
+                                            .get(tabIndex)
+                                            .onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+                                }
+                            });
+
+                        });
                     }
 
                     @Override

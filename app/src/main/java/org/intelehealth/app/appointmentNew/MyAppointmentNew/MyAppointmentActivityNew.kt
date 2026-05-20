@@ -20,6 +20,10 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
@@ -103,29 +107,48 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
                 .enqueue(object : Callback<AppointmentListingResponse?> {
                     override fun onResponse(
                         call: Call<AppointmentListingResponse?>,
-                        response: Response<AppointmentListingResponse?>,
+                        response: Response<AppointmentListingResponse?>
                     ) {
+
                         if (response.body() == null) return
-                        Log.v(TAG, "onResponse - " + Gson().toJson(response.body()))
-                        val slotInfoResponse = response.body()
-                        val appointmentDAO = AppointmentDAO()
-                        appointmentDAO.deleteAllAppointments()
-                        if (slotInfoResponse!!.data.size > 0) {
-                            for (i in slotInfoResponse.data.indices) {
-                                try {
-                                    appointmentDAO.insert(slotInfoResponse.data[i])
-                                } catch (e: DAOException) {
-                                    e.printStackTrace()
+
+                        val slotInfoResponse = response.body()!!
+
+                        CoroutineScope(Dispatchers.IO).launch {
+
+                            try {
+
+                                val appointmentDAO = AppointmentDAO()
+
+                                // 🔥 SAFE DELETE
+                                appointmentDAO.deleteAllAppointments()
+
+                                // 🔥 SAFE INSERT
+                                slotInfoResponse.data?.forEach { item ->
+                                    try {
+                                        appointmentDAO.insert(item)
+                                    } catch (e: DAOException) {
+                                        e.printStackTrace()
+                                    }
                                 }
+
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                            }
+
+                            // 🔥 BACK TO MAIN THREAD (UI update)
+                            withContext(Dispatchers.Main) {
+
+                                Log.v(TAG, "Sync completed")
+
+                                if (!isFinishing && !isDestroyed) {
+                                    setTabCount()
+                                }
+
+                                mUpdateFragmentOnEventHashMap[tabIndex]
+                                    ?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
                             }
                         }
-
-                        Log.v(TAG, "onFinished - " + Gson().toJson(slotInfoResponse))
-                        if (!isFinishing && !isDestroyed) {
-                            setTabCount()
-                        }
-
-                        mUpdateFragmentOnEventHashMap[tabIndex]?.onFinished(AppConstants.EVENT_FLAG_SUCCESS)
                     }
 
                     override fun onFailure(call: Call<AppointmentListingResponse?>, t: Throwable) {

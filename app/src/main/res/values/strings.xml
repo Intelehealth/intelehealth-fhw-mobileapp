@@ -584,6 +584,8 @@
     <string name="search_hint_text">Previously searched</string>
     <string name="search_date_txt">24 May, at 3:15 pm</string>
     <string name="search_gender">M 22</string>
+    <string name="score">0.05</string>
+    <string name="source">Local</string>
     <string name="search_pat_not_found_txt">Patient not found!</string>
     <string name="search_pat_hint_txt">Use correct Username or ID to search or you can register a new patient.</string>
     <string name="notifi_title">Notification</string>

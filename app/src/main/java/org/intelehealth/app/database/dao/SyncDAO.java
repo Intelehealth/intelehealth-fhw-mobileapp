@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -1019,7 +1020,7 @@ public class SyncDAO {
 
     private void loadConfig() {
         ConfigSyncWorker.Companion.startConfigSyncWorker(IntelehealthApplication.getAppContext(), it -> {
-            Timber.d("Worker state sync " + it);
+            Logger.logD(TAG, "Worker state sync " + it);
             return Unit.INSTANCE;
         });
         isTheConfigUpdated = true;

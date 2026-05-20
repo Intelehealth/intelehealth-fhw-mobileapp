@@ -249,6 +249,7 @@ class UpcomingMyAppointmentsAdapter(
                         putExtra("visit_speciality", appointmentInfoModel.speciality)
                         putExtra("appointment_id", appointmentInfoModel.id)
                         putExtra("app_start_day", appointmentInfoModel.slotDay)
+                        putExtra("mpi_id", appointmentInfoModel.mpiId)
                         putExtra(
                             "prescription_received_time",
                             DateAndTimeUtils.getDisplayDateAndTime(

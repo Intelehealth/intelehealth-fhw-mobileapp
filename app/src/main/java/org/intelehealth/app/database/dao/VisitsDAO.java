@@ -515,7 +515,7 @@ public class VisitsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
 
-        String finalQuery = "SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+        String finalQuery = "SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id,p.mpi_id,v.startdate " +
                 "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid " +
                 "AND (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
                 "AND v.voided = 0 AND v.startdate > DATETIME('now', '-4 day') " +
@@ -542,6 +542,7 @@ public class VisitsDAO extends BaseDao {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 model.setObsservermodifieddate(modifiedDate);
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
@@ -614,7 +615,7 @@ public class VisitsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id," +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number,p.date_of_birth,p.gender,p.openmrs_id,p.mpi_id," +
                         " v.startdate " +
                         "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                         "v.voided = 0 AND" +
@@ -639,6 +640,7 @@ public class VisitsDAO extends BaseDao {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
 
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
@@ -667,7 +669,7 @@ public class VisitsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 //        db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id," +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id,p.mpi_id," +
                         " v.startdate " +
                         "FROM tbl_patient p, tbl_visit v WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') AND " +
                         "v.voided = 0 AND " +
@@ -693,6 +695,7 @@ public class VisitsDAO extends BaseDao {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -716,7 +719,7 @@ public class VisitsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 //        db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id,p.mpi_id,v.startdate " +
                         "FROM tbl_patient p, tbl_visit v " +
                         "WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
                         "AND v.voided = 0 " +
@@ -742,6 +745,7 @@ public class VisitsDAO extends BaseDao {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 model.setObsservermodifieddate(modifiedDate);
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
@@ -805,7 +809,7 @@ public class VisitsDAO extends BaseDao {
         db.beginTransaction();
 
         // ie. visit is active and presc is given.
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid " +
                         //" and v.enddate is null " +
@@ -862,6 +866,7 @@ public class VisitsDAO extends BaseDao {
                     model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                    model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id,")));
                     recentList.add(model);
 
                 }

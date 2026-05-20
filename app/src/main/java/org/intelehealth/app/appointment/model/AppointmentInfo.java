@@ -64,7 +64,7 @@ public class AppointmentInfo implements Serializable {
 
     private String patientDob;
     private String patientGender;
-
+    private String mpiId;
 
     public List<RescheduledAppointmentsModel> getRescheduledAppointments() {
         return rescheduledAppointments;
@@ -299,5 +299,12 @@ public class AppointmentInfo implements Serializable {
 
     public void setPatientGender(String patientGender) {
         this.patientGender = patientGender;
+    }
+    public String getMpiId() {
+        return mpiId;
+    }
+
+    public void setMpiId(String mpiId) {
+        this.mpiId = mpiId;
     }
 }

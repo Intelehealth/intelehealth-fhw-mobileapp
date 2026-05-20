@@ -320,7 +320,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     // new
     TextView nameView;
     TextView genderView;
-    TextView idView;
+    TextView idView, mpiIdTv;
     TextView visitView;
     TextView heightView;
     TextView weightView;
@@ -1280,7 +1280,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } else {
             idView.setText(getString(R.string.patient_not_registered));
         }
-
+        if (patient.getMpiId() != null && !patient.getMpiId().isEmpty()) {
+            mpiIdTv.setVisibility(View.VISIBLE);
+            mpiIdTv.setText(patient.getMpiId());
+        } else {
+            mpiIdTv.setVisibility(View.GONE);
+        }
         mCHWname = findViewById(R.id.chw_details);
         mCHWname.setText(sessionManager.getChwname()); //session manager provider
         // header title set - end
@@ -2718,6 +2723,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         genderView = findViewById(R.id.textView_gender_value);
         //OpenMRS Id
         idView = findViewById(R.id.textView_id_value);
+        mpiIdTv = findViewById(R.id.mpiID_txt);
         visitView = findViewById(R.id.textView_visit_value);
 
         tilAdditionalNotesVS = findViewById(R.id.tilAdditionalNotesVS);
@@ -2895,6 +2901,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 in.putExtra("tag", "VISITSUMMARY");
                 in.putExtra("followupDate", "");
                 in.putExtra("openmrsID", patient.getOpenmrs_id());
+                in.putExtra("mpi_id", patient.getMpiId());
 
                 startActivity(in);
             }
@@ -3859,7 +3866,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String[] patientArgs = {dataString};
 
         String table = "tbl_patient";
-        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        String[] columnsToReturn = {"openmrs_id", "mpi_id","first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
@@ -3881,6 +3888,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 patient.setSdw(idCursor.getString(idCursor.getColumnIndexOrThrow("sdw")));
                 patient.setOccupation(idCursor.getString(idCursor.getColumnIndexOrThrow("occupation")));
                 patient.setPatient_photo(idCursor.getString(idCursor.getColumnIndex("patient_photo")));
+                patient.setMpiId(idCursor.getString(idCursor.getColumnIndex("mpi_id")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -5511,7 +5519,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         idCursor1.close();
 
-        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
 //        intent2.putExtra("patientUuid", patientDTO.getUuid());
 //        intent2.putExtra("ScreenEdit", "personal_edit");

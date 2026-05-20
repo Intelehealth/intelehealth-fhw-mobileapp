@@ -103,6 +103,9 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.7.7'
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     implementation 'androidx.activity:activity:1.9.1'
+    implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.7'
+    implementation 'androidx.compose.ui:ui-text:1.11.1'
+    implementation 'androidx.compose.material3:material3:1.4.0'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
@@ -188,5 +191,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.57.2" // Replace 2.x with the latest version
     kapt "com.google.dagger:hilt-compiler:2.57.2"
 
+    implementation 'info.debatty:java-string-similarity:2.0.0'
+    implementation 'commons-codec:commons-codec:1.16.0'
+    implementation 'org.apache.commons:commons-text:1.10.0'
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

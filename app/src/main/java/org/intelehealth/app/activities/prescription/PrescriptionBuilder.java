@@ -179,7 +179,10 @@ public class PrescriptionBuilder {
         } else {
             patientPhoneNumber = activityContext.getString(R.string.not_provided);
         }
-
+        String mpiId = "";
+        if (patient.getMpiId() != null && !patient.getMpiId().equalsIgnoreCase("")) {
+            mpiId = patient.getMpiId();
+        }
         return "<div class=\"row patient-info-wrapper\">\n"
                 + "<div class=\"col-md-3 patient-info-section p-3\">\n"
                 + "<div class=\"patient-img-item mb-2\">\n"
@@ -192,6 +195,7 @@ public class PrescriptionBuilder {
                 + patient.getFirst_name() + " " + ((!TextUtils.isEmpty(patient.getMiddle_name())) ? patient.getMiddle_name() : "") + " " + patient.getLast_name() + "\n"
                 + "</h6>\n"
                 + "<p>" + patient.getOpenmrs_id() + "</p>\n"
+                + "<p>" + mpiId + "</p>\n"
                 + "</div>\n"
                 + "</div>\n"
                 + "</div>\n"

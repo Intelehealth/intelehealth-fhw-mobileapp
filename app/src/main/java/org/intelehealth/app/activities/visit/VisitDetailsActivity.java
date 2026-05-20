@@ -120,7 +120,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private String patientName, patientUuid, gender, age, dob, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
+    private TextView patName_txt, gender_age_txt, openmrsID_txt,mpiID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
     private ImageView profile_image, icon_presc_details;
     LinearLayout priorityTag;
@@ -141,6 +141,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private RecyclerView mPastVisitsRecyclerView;
     private Context context;
     private FeatureActiveStatus mFeatureActiveStatus;
+    private String mpiId = "";
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
@@ -178,6 +179,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
 
                 openmrsID = intent.getStringExtra("openmrsID");
+                mpiId = intent.getStringExtra("mpi_id");
                 visitID = intent.getStringExtra("visit_ID");
                 visit_startDate = intent.getStringExtra("visit_startDate");
                 visit_speciality = intent.getStringExtra("visit_speciality");
@@ -368,6 +370,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     in.putExtra("tag", "VisitDetailsActivity");
                     in.putExtra("followupDate", followUpDate_format);
                     in.putExtra("openmrsID", openmrsID);
+                    in.putExtra("mpi_id", mpiId);
                     startActivity(in);
                 });
             } else {
@@ -411,7 +414,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
 
             openmrsID_txt = findViewById(R.id.openmrsID_txt);
             openmrsID_txt.setText(openmrsID);
-
+            mpiID_txt = findViewById(R.id.mpiID_txt);
+// setting mpi id
+            if (!mpiId.isEmpty()) {
+                mpiID_txt.setVisibility(View.VISIBLE);
+                mpiID_txt.setText(mpiId);
+            } else {
+                mpiID_txt.setVisibility(View.GONE);
+            }
             // priority - start
             priorityTag = findViewById(R.id.llPriorityTagVisitDetails);
             if (isEmergency)
@@ -1120,7 +1130,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             }
             idCursor1.close();
 
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
 //        intent2.putExtra("patientUuid", patientDTO.getUuid());
 //        intent2.putExtra("ScreenEdit", "personal_edit");

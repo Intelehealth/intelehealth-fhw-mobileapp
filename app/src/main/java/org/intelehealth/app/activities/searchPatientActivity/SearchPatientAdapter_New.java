@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -95,6 +96,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("patientUuid", patientDTO.getUuid());
+                intent.putExtra("mpi_id", patientDTO.getMpiId());
                 context.startActivity(intent);
             }
         });

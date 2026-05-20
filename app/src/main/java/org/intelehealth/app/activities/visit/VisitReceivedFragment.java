@@ -635,7 +635,7 @@ public class VisitReceivedFragment extends Fragment {
         Cursor cursor = db.rawQuery("select p.patient_photo, " +
                         "p.first_name, p.middle_name, p.last_name, " +
                         "p.first_name || " + middleName + " || p.last_name as patient_name_new," +
-                        "p.openmrs_id, p.date_of_birth, " +
+                        "p.openmrs_id,p.mpi_id, p.date_of_birth, " +
                         "p.phone_number, " +
                         "p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
@@ -710,6 +710,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 recentList.add(model);
 
                 //  }
@@ -734,7 +735,7 @@ public class VisitReceivedFragment extends Fragment {
 
         //added sub query to handle isCompletedExitedSurvey and isPrescriptionReceived logic
 
-        String query = "select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        String query = "select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                 " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
                 "CASE " +
                 "WHEN EXISTS (" +
@@ -809,6 +810,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 recentList.add(model);
 
                 // }
@@ -851,7 +853,7 @@ public class VisitReceivedFragment extends Fragment {
 
         String query = "SELECT p.patient_photo, p.first_name, p.middle_name, p.last_name, " +
                 "p.first_name || " + middleName + " || p.last_name as patient_name_new," +
-                "p.openmrs_id, " +
+                "p.openmrs_id, " +"p.mpi_id,"+
                 "p.date_of_birth, p.phone_number, p.gender, v.startdate, " +
                 "v.patientuuid, e.visituuid, " +
                 "e.uuid AS euid, o.uuid AS ouid, o.obsservermodifieddate, o.sync AS osync, " +
@@ -939,6 +941,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 olderList.add(model);
                 // }
             }
@@ -958,7 +961,7 @@ public class VisitReceivedFragment extends Fragment {
         // ie. visit is active and presc is given.
 
         //added sub query to handle isCompletedExitedSurvey and isPrescriptionReceived logic
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
                         "CASE " +
                         "WHEN EXISTS (" +
@@ -1032,6 +1035,7 @@ public class VisitReceivedFragment extends Fragment {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                 olderList.add(model);
                 // }
             }

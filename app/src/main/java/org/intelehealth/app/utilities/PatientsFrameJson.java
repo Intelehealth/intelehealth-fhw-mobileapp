@@ -122,11 +122,23 @@ public class PatientsFrameJson {
                 patient.setPerson(patientDTOList.get(i).getUuid());
 
                 List<Identifier> identifierList = new ArrayList<>();
+                String sourceId = patientDTOList.get(i).getSourceId();
                 Identifier identifier = new Identifier();
                 identifier.setIdentifierType("05a29f94-c0ed-11e2-94be-8c13b969e334");
                 identifier.setLocation(session.getLocationUuid());
                 identifier.setPreferred(true);
+                identifier.setIdentifier("");
                 identifierList.add(identifier);
+
+                if (sourceId != null && !sourceId.isEmpty()) {
+                    Identifier sourceIdentifier = new Identifier();
+                    sourceIdentifier.setIdentifierType("Source Patient Id");
+                    sourceIdentifier.setLocation(session.getLocationUuid());
+                    sourceIdentifier.setPreferred(false);
+                    sourceIdentifier.setIdentifier(sourceId);
+
+                    identifierList.add(sourceIdentifier);
+                }
 
                 patient.setIdentifiers(identifierList);
                 patientList.add(patient);

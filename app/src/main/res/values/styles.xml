@@ -482,7 +482,22 @@
             @color/textview_color
         </item>
     </style>
-
+    <string name="filter_patient">Search Existing Patient</string>
+    <string name="filter_hint_first_name">First Name <!--<font color='red'>*</font>--></string>
+    <string name="filter_hint_type_first_name">Type First Name</string>
+    <string name="filter_hint_last_name">Last Name</string>
+    <string name="filter_hint_type_last_name">Type Last Name</string>
+    <string name="filter_hint_gender">Gender <!--<font color='red'>*</font>--></string>
+    <string name="filter_hint_phone">Phone</string>
+    <string name="filter_hint_type_phone">Type Phone Number</string>
+    <string name="filter_hint_dob">DoB</string>
+    <string name="filter_hint_date_of_birth">Date of Birth</string>
+    <string name="filter_hint_dob_dd">DD</string>
+    <string name="filter_hint_dob_mm">MM</string>
+    <string name="filter_hint_dob_yy">YYYY</string>
+    <string name="go_with_existing_patient">Proceed with selected Patient</string>
+    <string name="continue_to_registry_check">Continue to Registry Check</string>
+    <string name="go_create_new_patient"><![CDATA[Reject & create new Patient]]></string>
 
     <style name="AppTheme.switchColorStyle" parent="Theme.AppCompat.Light">
         <!-- colorAccent is used as the default value for colorControlActivated,

@@ -152,12 +152,12 @@ import java.util.Objects;
 @SuppressLint("Range")
 public class PrescriptionActivity extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "PrescriptionActivity";
-    private String patientName, patientUuid, gender, age, openmrsID, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
+    private String patientName, patientUuid, gender, age, openmrsID,mpiId, vitalsUUID, adultInitialUUID, intentTag, visitID, visit_startDate, visit_speciality, patient_photo_path, chief_complaint_value;
     private ImageButton btn_up_header, btnup_drdetails_header, btnup_diagnosis_header, btnup_medication_header, btnup_test_header, btnup_speciality_header, btnup_followup_header, no_btn, yes_btn, downloadBtn;
     private LinearLayout presc_profile_header;
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, mpiIdTv,chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private ActivityPrescription2Binding mBinding;
     private SessionManager sessionManager;
@@ -343,6 +343,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         profile_image = findViewById(R.id.profile_image);
         gender_age_txt = findViewById(R.id.textView_gender_value);
         openmrsID_txt = findViewById(R.id.textView_id_value);
+        mpiIdTv = findViewById(R.id.mpiID_txt);
         mCHWname = findViewById(R.id.chw_details);
         visitID_txt = findViewById(R.id.textView_visit_value);
 
@@ -416,6 +417,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             age = intent.getStringExtra("age");
 //            CustomLog.d("TAG", "getAge_FollowUp: s : " + age);
             openmrsID = intent.getStringExtra("openmrsID");
+            mpiId = intent.getStringExtra("mpi_id");
             visitID = intent.getStringExtra("visit_ID");
             vitalsUUID = intent.getStringExtra("encounterUuidVitals");
             adultInitialUUID = intent.getStringExtra("encounterUuidAdultIntial");
@@ -463,6 +465,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         gender_age_txt.setText(gender + " " + age);
         openmrsID_txt.setText(openmrsID);
         mCHWname.setText(sessionManager.getChwname()); //session manager provider
+        if(mpiId!=null && !mpiId.isEmpty()){
+            mpiIdTv.setVisibility(View.VISIBLE);
+            mpiIdTv.setText(mpiId);
+        }else {
+            mpiIdTv.setVisibility(View.GONE);
+        }
 
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
@@ -2874,12 +2882,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String[] patientArgs = {dataString};
 
         String table = "tbl_patient";
-        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        String[] columnsToReturn = {"openmrs_id", "mpi_id","first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
                 patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                patient.setMpiId(idCursor.getString(idCursor.getColumnIndex("mpi_id")));
                 patient.setFirst_name(idCursor.getString(idCursor.getColumnIndex("first_name")));
                 patient.setMiddle_name(idCursor.getString(idCursor.getColumnIndex("middle_name")));
                 patient.setLast_name(idCursor.getString(idCursor.getColumnIndex("last_name")));
@@ -3117,7 +3126,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
         idCursor1.close();
 
-        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
 //        intent2.putExtra("patientUuid", patientDTO.getUuid());
 //        intent2.putExtra("ScreenEdit", "personal_edit");

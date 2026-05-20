@@ -188,7 +188,7 @@ import okhttp3.ResponseBody;
 
 public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
-    TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
+    TextView name_txtview, openmrsID_txt,mpiID_tex, patientname, gender, patientdob, patientage, phone,
             postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
@@ -237,6 +237,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
     String tag = "";
+    String mpi_id = "";
     RegFieldViewModel regFieldViewModel;
 
     List<PatientRegistrationFields> patientAllFields;
@@ -278,13 +279,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         Intent intent = getIntent();
         if (intent != null) {
+          mpi_id= intent.getStringExtra("mpi_id");
             tag = intent.getStringExtra("tag");
             if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
+                patientDTO.setMpiId(intent.getStringExtra("mpi_id"));
             } else {
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
+                patientDTO.setMpiId(intent.getStringExtra("mpi_id"));
             }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
         }
@@ -293,7 +297,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
 
         personal_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "personal_edit");
@@ -306,7 +310,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         address_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS,null, null, null, null, null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "address_edit");
@@ -319,7 +323,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         others_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER,null, null, null, null, null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "others_edit");
@@ -678,6 +682,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         profile_image = findViewById(R.id.profile_image);
         name_txtview = findViewById(R.id.name_txtview);
         openmrsID_txt = findViewById(R.id.openmrsID_txt);
+        mpiID_tex = findViewById(R.id.mpiID_text);
 
         patientname = findViewById(R.id.name);
         gender = findViewById(R.id.gender);
@@ -1610,9 +1615,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         // setting openmrs id
         if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty()) {
-            openmrsID_txt.setText(patientDTO.getOpenmrsId());
+            openmrsID_txt.setText(patientDTO.getOpenmrsId() );
         } else {
             openmrsID_txt.setText(getString(R.string.patient_not_registered));
+        }
+        if (mpi_id != null && !mpi_id.isEmpty()) {
+            mpiID_tex.setVisibility(View.VISIBLE);
+            mpiID_tex.setText("MPI ID: " + mpi_id);
+        } else {
+            mpiID_tex.setVisibility(View.GONE);
         }
 
         // setTitle(patientDTO.getOpenmrs_id());

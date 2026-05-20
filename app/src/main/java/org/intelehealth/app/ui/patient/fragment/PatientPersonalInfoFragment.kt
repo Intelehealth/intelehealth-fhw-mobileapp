@@ -2,6 +2,7 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.app.Activity
 import android.content.Context
+import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -9,30 +10,46 @@ import android.os.LocaleList
 import android.text.InputFilter.LengthFilter
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.filterPatientActivity.FilterPatientAdapter
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
+import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
+import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
 import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
@@ -64,11 +81,193 @@ class PatientPersonalInfoFragment :
     private val permissionRegistry by lazy {
         PermissionRegistry(requireContext(), requireActivity().activityResultRegistry)
     }
+    private lateinit var filterRecyclerView: RecyclerView
+    private var selectedPatient: PatientDTO? = null
+    private var patientList = mutableListOf<PatientSearchResult>()
+    private val subscriptions: CompositeDisposable = CompositeDisposable()
+    private lateinit var patientAdapter: PatientFilterAdapter
+    private var selectedDates: Long = System.currentTimeMillis()
+    private var offset = 0
+    private var isFullyLoaded: Boolean = false
+    private var isDataLoading: Boolean = false
+    private val defaultPageSize: Int = 50
+    private var currentFirstName = ""
+    private var currentLastName = ""
+    private var currentPhone = ""
+    private var currentGender = ""
+    private var currentDob = ""
+    private lateinit var loadingDialog: AlertDialog
+    private var runnable: Runnable? = null
+
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPatientPersonalInfoOldDesignBinding.bind(view)
         patientViewModel.updatePatientStage(PatientRegStage.PERSONAL)
+        patientAdapter = PatientFilterAdapter(
+            patientList,
+            requireContext()
+        )
+        //filterRecyclerView = binding.filter_patient_container
+        filterRecyclerView = binding.filterPatientContainer
+
+
+        filterRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        filterRecyclerView.adapter = patientAdapter
+        loadingDialog = DialogUtils().showCommonLoadingDialog(
+            requireContext(),
+            getString(R.string.loading),
+            getString(R.string.please_wait),
+        ).apply {
+            dismiss()
+        }
+        binding.textInputETFName.addTextChangedListener {
+
+            Toast.makeText(context, "Clicked"+it.toString().trim(), Toast.LENGTH_SHORT).show()
+            doFilterLocal(firstName = it.toString().trim(), lastName = "", gender = "", phone = "", dob = "")
+
+           /* currentFirstName = it.toString().trim()
+            triggerFilter()*/
+        }
+    }
+    /*private fun triggerFilter() {
+
+        runnable?.let { handler.removeCallbacks(it) }
+
+        runnable = Runnable {
+            doFilterLocal(
+                firstName = currentFirstName,
+                lastName = currentLastName,
+                phone = currentPhone,
+                gender = currentGender,
+                dob = currentDob
+            )
+        }
+
+        handler.postDelayed(runnable!!, 700)
+    }*/
+    private fun doFilterLocal(
+        firstName: String,
+        lastName: String,
+        gender: String,
+        phone: String,
+        dob: String
+    ) {
+        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE)?.let { imm ->
+            view?.let {
+                (imm as InputMethodManager)
+                    .hideSoftInputFromWindow(it.windowToken, 0)
+            }
+        }
+
+        offset = 0
+        isFullyLoaded = false
+        initRecyclerScrollListener(firstName, lastName,  phone, gender,dob)
+
+        subscriptions.add(
+            Observable.fromCallable {
+            }
+                .concatMap {
+                    Observable.just(
+                        PatientsDAO.getFilteredPatients1(
+                            firstName,
+                            lastName,
+                            gender,
+                            phone,
+                            dob,
+                            offset,
+                            defaultPageSize
+                        )
+                    )
+                }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe { loadingDialog.show() }
+                .doOnTerminate { loadingDialog.dismiss() }
+                .subscribe(
+                    {
+                        updatePatientsAdapter(it) },
+                    {
+                        ToastUtil.showLongToast(
+                            requireContext(),
+                            "Error finding patients"
+                        )
+                    }
+                )
+        )
+    }
+    private fun updatePatientsAdapter(patients: MutableList<PatientSearchResult>) {
+        if (patients.isNotEmpty()) {
+            selectedPatient = null
+            //goWithSelectedButton.isEnabled = false
+
+            patientAdapter.updatePatientList(patients)
+            binding.filterPatientFailedLl.visibility = View.GONE
+            binding.filterPatientSuccessLl.visibility = View.VISIBLE
+
+        } else {
+
+            binding.filterPatientSuccessLl.visibility = View.GONE
+
+            binding.filterPatientFailedLl.visibility = View.VISIBLE
+        }
+    }
+    private fun initRecyclerScrollListener(
+        firstName: String,
+        lastName: String,
+        phone: String,
+        gender: String,
+        dob: String
+    ) {
+        val scrollListener = object : RecyclerView.OnScrollListener() {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if (isFullyLoaded) {
+                    return
+                }
+
+                val layoutManager = recyclerView.layoutManager as LinearLayoutManager
+
+                if (layoutManager.findLastVisibleItemPosition() == patientAdapter.itemCount - 1) {
+                    Toast.makeText(
+                        requireContext(),
+                        R.string.loading_more,
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    offset += defaultPageSize
+                    loadMorePatientsAndUpdateAdapter(firstName, lastName, phone,gender,dob)
+                }
+            }
+        }
+
+        filterRecyclerView.removeOnScrollListener(scrollListener)
+        filterRecyclerView.addOnScrollListener(scrollListener)
+    }
+    private fun loadMorePatientsAndUpdateAdapter(
+        firstName: String,
+        lastName: String,
+        phone: String,
+        gender: String,
+        dob: String
+        ) {
+        isDataLoading = true
+        val patients = PatientsDAO.getFilteredPatients1(
+            firstName,
+            lastName, gender,
+            phone, dob,
+            offset,
+            defaultPageSize
+        )
+
+        if (patients.size < defaultPageSize) {
+            isFullyLoaded = true
+        }
+
+        patientAdapter.addMorePatients(patients)
+        isDataLoading = false
     }
 
     private fun setupAge() {

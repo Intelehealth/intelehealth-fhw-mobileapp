@@ -100,6 +100,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 intent.putExtra("visit_startDate", model.getVisit_start_date());
                 intent.putExtra("patient_photo", model.getPatient_photo());
                 intent.putExtra("obsservermodifieddate", model.getObsservermodifieddate());
+                intent.putExtra("mpi_id", model.getMpiId());
                 context.startActivity(intent);
             }
         });

@@ -533,7 +533,7 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor = db.rawQuery("select p.patient_photo," +
                         " p.first_name, p.middle_name, p.last_name, " +
                         "p.first_name || " + middleName + " || p.last_name as patient_name_new," +
-                        "p.openmrs_id, p.date_of_birth, p.phone_number, " +
+                        "p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number, " +
                         "p.gender, v.startdate, v.patientuuid, e.visituuid, " +
                         "e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
@@ -609,6 +609,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                     boolean isExist = false;
                     for (PrescriptionModel item : recentList) {
                         if (item.getOpenmrs_id().equals(model.getOpenmrs_id())) {
@@ -644,7 +645,7 @@ public class VisitPendingFragment extends Fragment {
         Cursor cursor = db.rawQuery("select p.patient_photo, " +
                 "p.first_name, p.middle_name, p.last_name, " +
                 "p.first_name || " + middleName + " || p.last_name as patient_name_new," +
-                "p.openmrs_id, p.date_of_birth, p.phone_number, " +
+                "p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number, " +
                 "p.gender, v.startdate, v.patientuuid, e.visituuid, " +
                 "e.uuid as euid," +
                 " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
@@ -719,6 +720,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                     boolean isExist = false;
                     for (PrescriptionModel item : recentList) {
                         if (item.getOpenmrs_id().equals(model.getOpenmrs_id())) {
@@ -751,7 +753,7 @@ public class VisitPendingFragment extends Fragment {
         db.beginTransaction();
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name," +
-                        " p.openmrs_id, p.date_of_birth, p.phone_number," +
+                        " p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number," +
                         "p.first_name || " + middleName + " || p.last_name as patient_name_new," +
                         " p.gender, v.startdate, v.patientuuid, e.visituuid," +
                         " e.uuid as euid," +
@@ -825,6 +827,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                     olderList.add(model);
                // }
             }
@@ -841,7 +844,7 @@ public class VisitPendingFragment extends Fragment {
         List<PrescriptionModel> olderList = new ArrayList<>();
         db.beginTransaction();
 
-        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
+        Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id,p.mpi_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
                         "CASE " +
                         "WHEN EXISTS (" +
@@ -913,6 +916,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                     model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
                     olderList.add(model);
                 }
             //}

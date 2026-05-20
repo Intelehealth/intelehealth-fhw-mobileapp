@@ -98,7 +98,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     private static final String TAG = "AppointmentDetailsActiv";
     RelativeLayout stateAppointmentPrescription, layoutPrevScheduledOn, layoutPatientHistory, layoutVisitSummary, stateAppointmentStarted;
     LinearLayout layoutPrescButtons, layoutContactAction, layoutEndVisit;
-    TextView tvPrescStatus, tvRescheduleOnTitle, tvAppointmentTime, tvPatientName, tvOpenMrsID, tvGenderAgeText, tvChiefComplaintTxt, tvVisitId, tvVisitStartDate, tvVisitStartTime, tvDrSpeciality, tvPrevAppDate, tvPrevAppTime;
+    TextView tvPrescStatus, tvRescheduleOnTitle, tvAppointmentTime, tvPatientName, tvOpenMrsID, mpiIdTv,tvGenderAgeText, tvChiefComplaintTxt, tvVisitId, tvVisitStartDate, tvVisitStartTime, tvDrSpeciality, tvPrevAppDate, tvPrevAppTime;
     ImageView ivPrescription, ivDrawerPrescription, ivProfileImage, ivDrawerVisitSummary, ivCallPatient, ivWhatsappPatient, ivWhatsappDoctor, ivCallDoctor;
     Button btnEndVisit, btnRescheduleAppointment, btnCancelAppointment;
     View layoutSummaryBtns;
@@ -106,7 +106,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
     int appointment_id = 0;
     private LinearLayout priorityTag;
     private boolean isEmergency, hasPrescription;
-    private String patientName, patientUuid, gender, age, openmrsID, dob, visitID, visit_speciality, followupDate, patient_photo_path, app_start_date, app_start_time, app_start_day, prescription_received_time, appointmentStatus;
+    private String patientName, patientUuid, gender, age, openmrsID, dob, visitID, visit_speciality, followupDate, patient_photo_path, app_start_date, app_start_time, app_start_day, prescription_received_time, appointmentStatus,mpiId;
     SQLiteDatabase db;
     boolean isVisitStartsIn = false;
     private String vitalsUUID, adultInitialUUID;
@@ -195,6 +195,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         priorityTag = findViewById(R.id.llPriorityTagAppointmentDetails);
         tvPatientName = findViewById(R.id.patname_txt);
         tvOpenMrsID = findViewById(R.id.openmrsID_txt);
+        mpiIdTv = findViewById(R.id.mpiID_txt);
         tvGenderAgeText = findViewById(R.id.gender_age_txt);
         tvChiefComplaintTxt = findViewById(R.id.chief_complaint_txt);
         tvVisitId = findViewById(R.id.visitID_appointment);
@@ -232,6 +233,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
             isEmergency = intent.getBooleanExtra("priority_tag", false);
             hasPrescription = intent.getBooleanExtra("hasPrescription", false);
             appointmentStatus = intent.getStringExtra("status");
+            mpiId = intent.getStringExtra("mpi_id");
             PatientDTO patientDTO = PatientsDAO.getPatientDetailsByUuid(patientUuid);
             patient_photo_path = patientDTO.getPatientPhoto();
 
@@ -271,6 +273,12 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
 
         tvPatientName.setText(patientName);
         tvOpenMrsID.setText(openmrsID);
+        if (mpiId != null && !mpiId.isEmpty()) {
+            mpiIdTv.setText(mpiId);
+            mpiIdTv.setVisibility(View.VISIBLE);
+        } else {
+            mpiIdTv.setVisibility(View.GONE);
+        }
         String hideVisitUUID = visitID;
         hideVisitUUID = hideVisitUUID.substring(hideVisitUUID.length() - 4, hideVisitUUID.length());
         tvVisitId.setText(getResources().getString(R.string.visitID) + " XXXX" + hideVisitUUID);
@@ -447,6 +455,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
                 in.putExtra("tag", "AppointmentDetailsActivity");
                 in.putExtra("followupDate", followupDate);
                 in.putExtra("openmrsID", openmrsID);
+                in.putExtra("mpi_id", mpiId);
                 startActivity(in);
             });
 
@@ -1149,7 +1158,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         }
         idCursor1.close();
 
-        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
 //        intent2.putExtra("patientUuid", patientDTO.getUuid());
 //        intent2.putExtra("ScreenEdit", "personal_edit");

@@ -140,7 +140,7 @@ public class SyncUtils {
         }, 3000); */
 
 //        imagesPushDAO.deleteObsImage();
-
+        syncMpiId();
 
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
                 .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
@@ -152,7 +152,9 @@ public class SyncUtils {
 
         return isSynced;
     }
-
+    void syncMpiId() {
+        new MpiIdSyncHelper(IntelehealthApplication.getAppContext()).sync();
+    }
     /**
      * Clicking on this btn will start Sync.
      *

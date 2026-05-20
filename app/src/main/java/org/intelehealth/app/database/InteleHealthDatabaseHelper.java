@@ -112,9 +112,14 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final String CREATE_PATIENT_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient(" +
             "uuid TEXT PRIMARY KEY," +
             "openmrs_id TEXT," +
+            "source_id TEXT," +
+            "mpi_id TEXT,"+
             "first_name TEXT," +
             "middle_name TEXT," +
             "last_name TEXT," +
+            "first_name_sdx TEXT," +
+            "middle_name_sdx TEXT," +
+            "last_name_sdx TEXT," +
             "date_of_birth TEXT," +
             "phone_number TEXT," +
             "address1 TEXT," +
@@ -265,6 +270,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "visit_uuid TEXT," +
             "request_code TEXT" +
             ")";
+    public static final String PATIENT_MPI_ID_SYNC_QUEUE = "CREATE TABLE IF NOT EXISTS tbl_mpi_id_sync_queue (" +
+            "patient_uuid TEXT," +
+            "first_name TEXT," +
+            "last_name TEXT," +
+            "dob TEXT,"+
+            "phone_number TEXT,"+
+            "gender TEXT,"+
+            "created_time LONG,"+
+            "sync_status Integer)";
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -335,6 +349,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
+        db.execSQL(PATIENT_MPI_ID_SYNC_QUEUE);
         uuidInsert(db);
         database = db;
 

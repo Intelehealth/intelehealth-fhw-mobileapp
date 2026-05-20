@@ -4237,21 +4237,33 @@ public final class StringUtils {
      */
     public static void setGenderAgeLocal(Context context, TextView genderView, String dob, String gender, SessionManager sessionManager) {
         // 1. Calculate Age
-        String age = !dob.isEmpty() ? DateAndTimeUtils.getAge_FollowUp(dob, context) : "";
+        String age = (dob != null && !dob.isEmpty())
+                ? DateAndTimeUtils.getAge_FollowUp(dob, context)
+                : "";
         // 2. Get Localized Gender String
+        // 2. SAFE GENDER
+        if (gender == null) {
+            gender = "";
+        }
+
         int genderStringResId;
         switch (gender.toUpperCase()) {
             case "M":
+            case "male":
                 genderStringResId = R.string.identification_screen_checkbox_male;
                 break;
             case "F":
+            case "female":
                 genderStringResId = R.string.identification_screen_checkbox_female;
                 break;
             case "O":
+            case "other":
                 genderStringResId = R.string.identification_screen_checkbox_other;
                 break;
             default:
-                genderView.setText(gender + " " + age);
+                String safeGender = gender != null ? gender : "";
+                String safeAge = age != null ? age : "";
+                genderView.setText(safeGender + " " + safeAge);
                 return;
         }
 

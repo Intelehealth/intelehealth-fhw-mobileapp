@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/frame_10021"
+    android:orientation="vertical"
+    tools:context=".activities.filterPatientActivity.FilterPatientActivity">
+
+    <!--    Toolbar - start -->
+    <RelativeLayout
+        android:id="@+id/toolbar_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/my_appointment_parent_padding"
+        android:paddingEnd="@dimen/my_appointment_parent_padding"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/iv_back_arrow"
+            android:layout_width="@dimen/hamburger_width"
+            android:layout_height="@dimen/hamburger_height"
+            android:layout_marginTop="@dimen/hamburger_margin_top"
+            android:layout_marginEnd="@dimen/hamburger_margin_top"
+            android:foregroundGravity="center_horizontal"
+            app:srcCompat="@drawable/ui2_ic_arrow_back_new" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_screen_title_common"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/custom_tool_title_margin_top"
+            android:layout_toEndOf="@+id/iv_back_arrow"
+            android:text="New Patient"
+            android:textColor="@color/textColorBlack"
+            android:textSize="@dimen/common_header_text_size"
+            android:textStyle="bold" />
+    </RelativeLayout>
+    <!--    Toolbar - end -->
+
+    <LinearLayout
+        android:id="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/back_arrow_margin_start"
+        android:layout_marginVertical="@dimen/margin_10"
+        android:paddingBottom="@dimen/margin_10"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_relative"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_margin_top"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:textStyle="bold"
+                android:text="@string/filter_hint_first_name"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/filter_txt_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ui2_common_input_bg"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColorHint="@color/textColorLightGary"
+                android:gravity="center_vertical"
+                android:hint="@string/filter_hint_type_first_name"
+                android:lineSpacingExtra="3sp"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:inputType="text"
+                android:padding="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_10"
+                android:imeOptions="actionNext" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_margin_top"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:textStyle="bold"
+                android:text="@string/filter_hint_last_name"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/filter_txt_last_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ui2_common_input_bg"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColorHint="@color/textColorLightGary"
+                android:gravity="center_vertical"
+                android:hint="@string/filter_hint_type_last_name"
+                android:lineSpacingExtra="3sp"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:inputType="text"
+                android:padding="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_10"
+                android:imeOptions="actionNext" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_margin_top"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:textStyle="bold"
+                android:text="@string/filter_hint_gender"/>
+            <androidx.appcompat.widget.AppCompatSpinner
+                style="@style/SpinnerTheme"
+                android:id="@+id/filter_txt_gender"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:lineSpacingExtra="3sp"
+                android:spinnerMode="dropdown"
+                android:dropDownVerticalOffset="40dp"
+                android:popupBackground="@drawable/spinner_popup"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:entries="@array/patient_gender"
+                android:layout_marginStart="@dimen/margin_10" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_margin_top"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:textStyle="bold"
+                android:text="@string/filter_hint_phone"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/filter_txt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/ui2_common_input_bg"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColorHint="@color/textColorLightGary"
+                android:gravity="center_vertical"
+                android:hint="@string/filter_hint_type_phone"
+                android:lineSpacingExtra="3sp"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:inputType="phone"
+                android:padding="@dimen/margin_10"
+                android:layout_marginStart="@dimen/margin_10"
+                android:imeOptions="actionNext" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/toolbar_margin_top"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="90dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:textSize="@dimen/fu_name_txt_size"
+                android:textStyle="bold"
+                android:text="@string/filter_hint_dob"/>
+
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/filter_text_dob"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ui2_common_input_bg"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:textColorHint="@color/textColorLightGary"
+                    android:gravity="center_vertical"
+                    android:hint="@string/filter_hint_date_of_birth"
+                    android:lineSpacingExtra="3sp"
+                    android:textSize="@dimen/fu_name_txt_size"
+                    android:inputType="text"
+                    android:padding="@dimen/margin_10"
+                    android:layout_marginStart="@dimen/margin_10"
+                    android:imeOptions="actionNext" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/filter_layout"
+        app:layout_constraintBottom_toTopOf="@+id/success_action_layout">
+
+        <LinearLayout
+            android:id="@+id/filter_patient_success_ll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/filter_patient_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/filter_patient_item_layout"
+                tools:itemCount="5"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="@dimen/margin_20" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/filter_patient_failed_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/search_bg_icon"
+                android:layout_width="@dimen/search_icon_bg_dimens"
+                android:layout_height="@dimen/search_icon_bg_dimens"
+                android:src="@drawable/ic_search_icon_background" />
+
+            <TextView
+                android:id="@+id/search_pat_not_found_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:lineSpacingExtra="4sp"
+                android:text="@string/search_pat_not_found_txt"
+                android:textAppearance="@style/you_can_add"
+                android:textColor="@null"
+                android:textSize="@dimen/search_pat_notfound_txtsize"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/add_new_patient_ll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_end_visit"
+                android:layout_marginTop="@dimen/toolbar_margin_right"
+                android:layout_marginBottom="@dimen/margin_20dp"
+                android:clickable="true"
+                android:paddingHorizontal="15dp"
+                android:paddingVertical="10dp">
+
+                <!--<ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/user_plus"
+                    android:layout_gravity="center"/>-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="None Match"
+                    android:textColor="@color/white"
+                    android:fontFamily="@font/dm_sans"
+                    android:textStyle="bold"
+                    android:textSize="14sp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/success_action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="@dimen/fu_margin_start">
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_continue_to_registry_check"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:enabled="true"
+            android:padding="@dimen/margin_10"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:layout_marginHorizontal="@dimen/fu_margin_start"
+            android:text="@string/continue_to_registry_check"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txtsize_patdetail_14sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
+    <!--<LinearLayout
+        android:id="@+id/success_action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="@dimen/fu_margin_start">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_with_selected_patient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:enabled="false"
+            android:padding="@dimen/margin_10"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:layout_marginHorizontal="@dimen/fu_margin_start"
+            android:text="@string/go_with_existing_patient"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txtsize_patdetail_14sp"
+            android:textStyle="bold"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_create_new_patient"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:padding="@dimen/margin_10"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:backgroundTint="@color/red"
+            android:layout_marginHorizontal="@dimen/fu_margin_start"
+            android:text="@string/go_create_new_patient"
+            android:textColor="@color/white"
+            android:textSize="@dimen/txtsize_patdetail_14sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

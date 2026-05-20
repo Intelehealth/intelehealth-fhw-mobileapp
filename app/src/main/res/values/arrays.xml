@@ -20,7 +20,12 @@
         <item>701</item>
         <item>699</item>
     </string-array>
-
+    <string-array name="patient_gender">
+        <item>Select Gender</item>
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
     <string-array name="language_names">
         <item>English</item>
         <item>हिंदी</item>

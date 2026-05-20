@@ -3,6 +3,7 @@ package org.intelehealth.app.models;
 public class Patient {
     private String uuid;
     private String openmrs_id;
+    private String mpiId;
     private String first_name;
     private String middle_name;
     private String last_name;
@@ -200,5 +201,12 @@ public class Patient {
 
     public void setNationalID(String nationalID) {
         this.nationalID = nationalID;
+    }
+    public String getMpiId() {
+        return mpiId;
+    }
+
+    public void setMpiId(String mpiId) {
+        this.mpiId = mpiId;
     }
 }

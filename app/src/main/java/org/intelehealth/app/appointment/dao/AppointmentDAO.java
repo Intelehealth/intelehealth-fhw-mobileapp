@@ -462,7 +462,7 @@ public class AppointmentDAO {
 
         idCursor = db.rawQuery("select p.patient_photo, p.first_name || " + middleName + " || p.last_name as patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                         + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, "
-                        + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "a.patient_id, a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id,a.mpi_id "
                         + "from tbl_patient p, tbl_appointments a "
                         + "where p.uuid = a.patient_id "
                         + "AND (" + filterQuery + ")"
@@ -490,6 +490,7 @@ public class AppointmentDAO {
                 appointmentInfo.setPatientId(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_id")));
                 appointmentInfo.setPatientName(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_name_new")));
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
+                appointmentInfo.setMpiId(idCursor.getString(idCursor.getColumnIndexOrThrow("mpi_id")));
                 appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));
@@ -1511,7 +1512,7 @@ public class AppointmentDAO {
 
         idCursor = db.rawQuery("SELECT p.patient_photo, p.first_name || " + middleName + " || p.last_name AS patient_name_new, p.openmrs_id, p.date_of_birth, p.gender, a.uuid, "
                         + "a.appointment_id,a.slot_date, a.slot_day, a.slot_duration,a.slot_duration_unit, a.slot_time, a.speciality, a.user_uuid, a.dr_name, a.visit_uuid, a.patient_id, "
-                        + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id "
+                        + "a.created_at, a.updated_at, a.status, a.visit_uuid, a.open_mrs_id  p.mpi_id"
                         + "FROM tbl_patient p, tbl_appointments a "
                         + "WHERE p.uuid = a.patient_id "
                         + "AND a.status = 'booked'"
@@ -1542,6 +1543,7 @@ public class AppointmentDAO {
                 appointmentInfo.setOpenMrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("open_mrs_id")));
                 appointmentInfo.setPatientDob(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
                 appointmentInfo.setPatientGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                appointmentInfo.setMpiId(idCursor.getString(idCursor.getColumnIndexOrThrow("mpi_id")));
                 try {
                     if (!encounterDAO.isCompletedOrExited(idCursor.getString(idCursor.getColumnIndexOrThrow("visit_uuid")))) {
                         appointmentInfo.setStatus(idCursor.getString(idCursor.getColumnIndexOrThrow("status")));

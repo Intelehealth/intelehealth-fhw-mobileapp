@@ -16,6 +16,12 @@ public class PatientDTO implements Serializable {
     @SerializedName("openmrs_id")
     @Expose
     private String openmrsId;
+    @SerializedName("source_id")
+    @Expose
+    private String sourceId;
+    @SerializedName("mpi_id")
+    @Expose
+    private String mpiId;
     @SerializedName("firstname")
     @Expose
     private String firstname;
@@ -112,6 +118,7 @@ public class PatientDTO implements Serializable {
     @SerializedName("address6")
     @Expose
     private String address6;
+    private Long createdTime;
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
     }
@@ -268,6 +275,15 @@ public class PatientDTO implements Serializable {
 
     public void setOpenmrsId(String openmrsId) {
         this.openmrsId = openmrsId;
+    }
+    public  String getSourceId(){return sourceId;}
+    public void setSourceId(String sourceId){this.sourceId=sourceId;}
+    public String getMpiId() {
+        return mpiId;
+    }
+
+    public void setMpiId(String mpiId) {
+        this.mpiId = mpiId;
     }
 
     public String getFirstname() {
@@ -548,6 +564,13 @@ public class PatientDTO implements Serializable {
     public void setEmContactNumber(String emContactNumber) {
         this.emContactNumber = emContactNumber;
     }
+    public Long getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Long createdTime) {
+        this.createdTime = createdTime;
+    }
 
     public String getEmMobileNumber() {
         if (emContactNumber != null && emContactNumber.length() == 13) {
@@ -601,6 +624,7 @@ public class PatientDTO implements Serializable {
         return "PatientDTO{" +
                 "uuid='" + uuid + '\'' +
                 ", openmrsId='" + openmrsId + '\'' +
+                ", mpiId='" + mpiId + '\'' +
                 ", firstname='" + firstname + '\'' +
                 ", middlename='" + middlename + '\'' +
                 ", lastname='" + lastname + '\'' +

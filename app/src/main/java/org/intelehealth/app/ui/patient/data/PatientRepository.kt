@@ -30,8 +30,9 @@ class PatientRepository(
         bindPatientAttributes(patient).let {
             val flag = patientsDao.insertPatientToDB(it, it.uuid)
             val flag2 = ImagesDAO().insertPatientProfileImages(it.patientPhoto, it.uuid)
+            val flag3 = patientsDao.insertPatientToSyncMpiId(it, it.uuid)
             syncOnServer()
-            return flag && flag2
+            return flag && flag2 && flag3
         }
     }
 

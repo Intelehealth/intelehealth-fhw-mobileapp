@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -610,48 +611,76 @@ public class TodaysMyAppointmentsFragment extends Fragment {
     }
 
     private void getSlots() {
+
         String serverUrl = BuildConfig.SERVER_URL + ":3004";
 
-        ApiClientAppointment.getInstance(serverUrl).getApi().getSlotsAll(DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(), new SessionManager(getActivity()).getLocationUuid()).enqueue(new Callback<AppointmentListingResponse>() {
-            @Override
-            public void onResponse(Call<AppointmentListingResponse> call, retrofit2.Response<AppointmentListingResponse> response) {
-                if (response.body() == null) return;
-                AppointmentListingResponse slotInfoResponse = response.body();
-                AppointmentDAO appointmentDAO = new AppointmentDAO();
-                appointmentDAO.deleteAllAppointments();
-                for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+        ApiClientAppointment.getInstance(serverUrl)
+                .getApi()
+                .getSlotsAll(
+                        DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        DateAndTimeUtils.getCurrentDateInDDMMYYYYFormat(),
+                        new SessionManager(getActivity()).getLocationUuid()
+                )
+                .enqueue(new Callback<AppointmentListingResponse>() {
 
-                    try {
-                        appointmentDAO.insert(slotInfoResponse.getData().get(i));
-                    } catch (DAOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                        /*if (slotInfoResponse.getCancelledAppointments() != null) {
-                            if (slotInfoResponse != null && slotInfoResponse.getCancelledAppointments().size() > 0) {
-                                for (int i = 0; i < slotInfoResponse.getCancelledAppointments().size(); i++) {
-                                    try {
-                                        appointmentDAO.insert(slotInfoResponse.getCancelledAppointments().get(i));
+                    @Override
+                    public void onResponse(
+                            Call<AppointmentListingResponse> call,
+                            retrofit2.Response<AppointmentListingResponse> response
+                    ) {
 
-                                    } catch (DAOException e) {
-                                        e.printStackTrace();
+                        if (response.body() == null) return;
+
+                        AppointmentListingResponse slotInfoResponse = response.body();
+
+                        // 🔥 MOVE DB WORK TO BACKGROUND THREAD
+                        Executors.newSingleThreadExecutor().execute(() -> {
+
+                            try {
+
+                                AppointmentDAO appointmentDAO = new AppointmentDAO();
+
+                                // SAFE DELETE
+                                appointmentDAO.deleteAllAppointments();
+
+                                // SAFE INSERT
+                                if (slotInfoResponse.getData() != null) {
+
+                                    for (int i = 0;
+                                         i < slotInfoResponse.getData().size();
+                                         i++) {
+
+                                        try {
+                                            appointmentDAO.insert(
+                                                    slotInfoResponse.getData().get(i)
+                                            );
+                                        } catch (DAOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-                        } else {
-                        }*/
 
+                            // 🔥 AFTER DB COMPLETE → UI THREAD
+                            if (getActivity() != null) {
 
-                getAppointments();
-            }
+                                getActivity().runOnUiThread(() -> {
+                                    getAppointments();
+                                });
+                            }
 
-            @Override
-            public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
-                CustomLog.v("onFailure", t.getMessage());
-                //log out operation if response code is 401
-                new NavigationUtils().logoutOperation(getActivity(), t);
-            }
-        });
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Call<AppointmentListingResponse> call, Throwable t) {
+                        CustomLog.v("onFailure", t.getMessage());
+                        new NavigationUtils().logoutOperation(getActivity(), t);
+                    }
+                });
     }
 
     private void searchOperation(String query) {

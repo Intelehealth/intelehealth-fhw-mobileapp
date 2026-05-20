@@ -46,7 +46,7 @@ public class ApiClient {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
 
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         client.addInterceptor(loggingInterceptor);
         client.addInterceptor(new TokenSetupInterceptor());
         client.connectTimeout(60, TimeUnit.SECONDS);

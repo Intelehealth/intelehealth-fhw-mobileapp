@@ -10,6 +10,7 @@ public class PrescriptionModel {
     String visitUuid;
     String patientUuid;
     String openmrs_id;
+    String mpiId;
     String first_name;
     String middle_name;
     String last_name;
@@ -176,5 +177,12 @@ public class PrescriptionModel {
 
     public void setObsservermodifieddate(String obsservermodifieddate) {
         this.obsservermodifieddate = obsservermodifieddate;
+    }
+    public String getMpiId() {
+        return mpiId;
+    }
+
+    public void setMpiId(String mpiId) {
+        this.mpiId = mpiId;
     }
 }

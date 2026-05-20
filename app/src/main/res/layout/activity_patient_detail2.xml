@@ -180,6 +180,16 @@
                                 android:textAppearance="@style/caption_fu_openmrsId"
                                 android:textColor="@null"
                                 android:textSize="@dimen/find_patient_hint_size" />
+                            <TextView
+                                android:id="@+id/mpiID_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/margin_4"
+                                android:gravity="center_vertical"
+                                android:text="@string/fu_openmrsID"
+                                android:textAppearance="@style/caption_fu_openmrsId"
+                                android:textColor="@null"
+                                android:textSize="@dimen/find_patient_hint_size" />
                         </LinearLayout>
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>

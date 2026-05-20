@@ -25,9 +25,14 @@ import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.BundleKeys.Companion.DOB
+import org.intelehealth.app.utilities.BundleKeys.Companion.FIRST_NAME
+import org.intelehealth.app.utilities.BundleKeys.Companion.GENDER
+import org.intelehealth.app.utilities.BundleKeys.Companion.LAST_NAME
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.BundleKeys.Companion.PARENT_PATIENT_UUID
+import org.intelehealth.app.utilities.BundleKeys.Companion.PHONE
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -107,7 +112,13 @@ class PatientRegistrationActivity : BaseActivity() {
                 patientViewModel.isEditMode = true
                 binding.isEditMode = patientViewModel.isEditMode
                 fetchPatientDetails(id)
-            } ?: generatePatientId()
+            } ?: generatePatientId(
+                firstName = it.getStringExtra(FIRST_NAME),
+                lastName = it.getStringExtra(LAST_NAME),
+                phone = it.getStringExtra(PHONE),
+                dob = it.getStringExtra(DOB),
+                gen = it.getIntExtra(GENDER, 0),
+            )
 
             val stage = if (it.hasExtra(PATIENT_CURRENT_STAGE)) {
                 IntentCompat.getSerializableExtra(
@@ -134,7 +145,13 @@ class PatientRegistrationActivity : BaseActivity() {
         navController.graph = navGraph
     }
 
-    private fun generatePatientId() {
+    private fun generatePatientId(
+        firstName: String?,
+        lastName: String?,
+        phone: String?,
+        dob: String?,
+        gen: Int?
+    ) {
         PatientDTO().apply {
             uuid = UUID.randomUUID().toString()
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
@@ -166,6 +183,16 @@ class PatientRegistrationActivity : BaseActivity() {
                             )
                         }
                     }
+            }
+            if ((firstName ?: "").isNotEmpty()) firstname = firstName
+            if ((lastName ?: "").isNotEmpty()) lastname = lastName
+            if ((phone ?: "").isNotEmpty()) phonenumber = phone
+            if ((dob ?: "").isNotEmpty()) dateofbirth = dob
+            gender = when (gen) {
+                1 -> "M"
+                2 -> "F"
+                3 -> "O"
+                else -> ""
             }
 
         }.also { patientViewModel.updatedPatient(it) }
@@ -275,10 +302,20 @@ class PatientRegistrationActivity : BaseActivity() {
             context: Context,
             patientId: String? = null,
             stage: PatientRegStage = PatientRegStage.PERSONAL,
+            firstName: String? = null,
+            lastName: String? = null,
+            gender: Int? = null,
+            phone: String? = null,
+            dob: String? = null
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
+                putExtra(FIRST_NAME, firstName)
+                putExtra(LAST_NAME, lastName)
+                putExtra(GENDER, gender)
+                putExtra(PHONE, phone)
+                putExtra(DOB, dob)
             }.also { context.startActivity(it) }
         }
 

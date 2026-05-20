@@ -17,6 +17,7 @@ import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
+import org.intelehealth.app.models.dto.PatientSearchDTO;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
@@ -41,6 +42,7 @@ import org.json.JSONObject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -80,7 +82,20 @@ public interface ApiInterface {
     @GET
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url,
                                         @Header("Authorization") String authHeader);
-
+    @GET
+    Call<ResponseDTO> RESPONSE_DTO_CALL_FOR_FILTER(@Url String url,
+                                                   @Header("Authorization") String authHeader);
+    @POST("openmrs/ws/rest/v1/ihmodule/patient/$match")
+    Single<PatientSearchDTO> searchPatientOpenMRS(
+            @Header("Authorization") String auth,
+            @Body RequestBody body
+    );
+    @POST
+    Single<PatientSearchDTO> searchPatientFhir(
+            @Url String url,
+            @Header("Authorization") String auth,
+            @Body RequestBody body
+    );
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
                                                   @Header("Authorization") String authHeader);
