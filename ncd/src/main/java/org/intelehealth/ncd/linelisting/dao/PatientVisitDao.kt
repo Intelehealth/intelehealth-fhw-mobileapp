@@ -551,7 +551,7 @@ interface PatientVisitDao {
                   AND E.encounter_type_uuid = :visitNoteEncounterUuid
             ) THEN 1 
             ELSE 0 
-        END AS isPrescriptionExist,
+        END AS prescriptionExists,
 
         -- visit isncd
         (
@@ -571,7 +571,7 @@ interface PatientVisitDao {
               AND VA2.visit_attribute_type_uuid = :visitSpecialityAttribute
             ORDER BY VA2.rowid DESC
             LIMIT 1
-        ) AS visitSpeciality,
+        ) AS visit_speciality,
 
         -- chief complaint
         (
