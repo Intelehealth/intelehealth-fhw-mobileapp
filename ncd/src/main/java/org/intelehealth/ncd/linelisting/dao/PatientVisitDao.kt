@@ -19,7 +19,8 @@ interface PatientVisitDao {
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
-        CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        --CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        CAST(strftime('%Y', 'now') - strftime('%Y', P.date_of_birth) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.date_of_birth)) AS INT) AS age,
         
         -- latest OTHER_MEDICAL_HISTORY attribute
         A.value AS attributeValue,
@@ -194,7 +195,8 @@ interface PatientVisitDao {
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
-        CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        --CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        CAST(strftime('%Y', 'now') - strftime('%Y', P.date_of_birth) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.date_of_birth)) AS INT) AS age,
         
         -- latest OTHER_MEDICAL_HISTORY attribute
         A.value AS attributeValue,
@@ -360,7 +362,8 @@ interface PatientVisitDao {
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
-        CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        --CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        CAST(strftime('%Y', 'now') - strftime('%Y', P.date_of_birth) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.date_of_birth)) AS INT) AS age,
         lm.attributeValue AS attributeValue,
         lm.attributeTypeUuid AS attributeTypeUuid,
         lp.patientPhoneNumber AS patientPhoneNumber
@@ -395,7 +398,8 @@ interface PatientVisitDao {
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
-        CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        --CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        CAST(strftime('%Y', 'now') - strftime('%Y', P.date_of_birth) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.date_of_birth)) AS INT) AS age,
         
         -- latest OTHER_MEDICAL_HISTORY attribute
         A.value AS attributeValue,
@@ -523,7 +527,8 @@ interface PatientVisitDao {
         P.gender AS gender,
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
-        CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        --CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        CAST(strftime('%Y', 'now') - strftime('%Y', P.date_of_birth) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.date_of_birth)) AS INT) AS age,
         
         -- latest OTHER_MEDICAL_HISTORY attribute
         A.value AS attributeValue,

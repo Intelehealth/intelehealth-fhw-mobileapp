@@ -97,7 +97,8 @@ WHERE (julianday('now') - julianday(P.date_of_birth)) / 365.25 >= :age
         P.patient_photo AS patientPhoto,
         P.openmrs_id AS openmrs_id,
         -- calculated age (in years)
-        CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        --CAST((julianday('now') - julianday(P.date_of_birth)) / 365.25 AS INT) AS age,
+        CAST(strftime('%Y', 'now') - strftime('%Y', P.date_of_birth) - (strftime('%m-%d', 'now') < strftime('%m-%d', P.date_of_birth)) AS INT) AS age,
         -- latest patient attribute
         A.value AS attributeValue,
         A.person_attribute_type_uuid AS attributeTypeUuid,
