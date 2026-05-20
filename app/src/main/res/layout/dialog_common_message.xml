@@ -5,9 +5,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
     app:cardCornerRadius="@dimen/margin_16dp"
-    app:cardElevation="@dimen/hamburger_margin_start">
+    app:cardElevation="@dimen/hamburger_margin_start"
+    android:id="@+id/root_card">
 
     <RelativeLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,6 +22,7 @@
             android:src="@drawable/close_patient_svg" />
 
         <RelativeLayout
+            android:id="@+id/rl_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialog_icon"

@@ -57,6 +57,9 @@ public class ReasonChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        //added to support automation testing
+        holder.itemView.setContentDescription("reason_list_item_"+position);
+
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.index = position;

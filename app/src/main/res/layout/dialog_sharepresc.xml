@@ -5,9 +5,12 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
     app:cardCornerRadius="@dimen/corner_radius_8dp"
-    app:cardElevation="@dimen/hamburger_margin_start">
+    app:cardElevation="@dimen/hamburger_margin_start"
+    android:id="@+id/root_cv"
+    >
 
     <RelativeLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="@dimen/fu_margin_start">

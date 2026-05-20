@@ -59,12 +59,13 @@ public class SelectedChipsGridAdapter extends RecyclerView.Adapter<RecyclerView.
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        //added to support automation testing
+        holder.itemView.setContentDescription("selected_list_item_"+position);
+
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.index = position;
             genericViewHolder.tvName.setText(mItemList.get(position).getReasonNameLocalized());
-
-
         }
     }
 

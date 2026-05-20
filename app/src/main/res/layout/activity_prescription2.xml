@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/frame_10021"
@@ -27,6 +28,7 @@
 
             <!-- Frame 100116 -->
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ll_title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8"
@@ -62,6 +64,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_toolbar_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.2"
@@ -99,6 +102,7 @@
         <!--Toolbar - end -->
 
         <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/btn_bottom"
@@ -108,6 +112,7 @@
             android:scrollbars="none">
 
             <RelativeLayout
+                android:id="@+id/rl_scrollview_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -126,6 +131,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_header_expand_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -143,6 +149,7 @@
 
                             <!--1st-->
                             <RelativeLayout
+                                android:id="@+id/rl_profile"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1">
@@ -164,6 +171,7 @@
                                 </androidx.cardview.widget.CardView>
 
                                 <LinearLayout
+                                    android:id="@+id/ll_profile_content"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -171,6 +179,7 @@
                                     android:orientation="vertical">
 
                                     <LinearLayout
+                                        android:id="@+id/ll_name_gender"
                                         android:layout_width="wrap_content"
                                         android:layout_height="0dp"
                                         android:layout_weight="1"
@@ -201,6 +210,7 @@
                                             android:textSize="@dimen/txtsize_patdetail_14sp" />
 
                                         <ImageView
+                                            android:id="@+id/im_profile_edit"
                                             android:layout_width="wrap_content"
                                             android:layout_height="wrap_content"
                                             android:layout_gravity="center_vertical"
@@ -228,6 +238,7 @@
 
                             <!--2nd-->
                             <LinearLayout
+                                android:id="@+id/ll_btn_up_header"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -262,6 +273,7 @@
 
 
                             <TableLayout
+                                android:id="@+id/tl_chw_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/divider"
@@ -271,6 +283,7 @@
                                 android:shrinkColumns="1">
 
                                 <TableRow
+                                    android:id="@+id/tr_chw_name"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="2">
@@ -301,6 +314,7 @@
 
                                 <!--Gender-->
                                 <TableRow
+                                    android:id="@+id/tr_visit_id"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="@dimen/margin_4"
@@ -350,6 +364,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_dr_details"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -431,12 +446,14 @@
                                     android:visibility="gone">
 
                                     <ImageView
+                                        android:id="@+id/im_vital_edit"
                                         android:layout_width="14dp"
                                         android:layout_height="14dp"
                                         android:layout_margin="5dp"
                                         android:src="@drawable/edit" />
 
                                     <TextView
+                                        android:id="@+id/tv_vital_edit"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center"
@@ -451,6 +468,7 @@
                             </RelativeLayout>
 
                             <TableLayout
+                                android:id="@+id/tl_vitals_details"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/vitals_details_relative"
@@ -462,11 +480,13 @@
 
                                 <!--height-->
                                 <TableRow
+                                    android:id="@+id/tr_dr_name"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_weight="2">
 
                                     <TextView
+                                        android:id="@+id/tv_dr_name"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="2dp"
@@ -492,6 +512,7 @@
 
                                 <!--Age - start -->
                                 <TableRow
+                                    android:id="@+id/tr_age_gender"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="@dimen/margin_4"
@@ -499,6 +520,7 @@
                                     android:visibility="visible">
 
                                     <TextView
+                                        android:id="@+id/tv_age_gender"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="2dp"
@@ -526,12 +548,14 @@
 
                                 <!--weight-->
                                 <TableRow
+                                    android:id="@+id/tr_qualification"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="@dimen/margin_4"
                                     android:layout_weight="2">
 
                                     <TextView
+                                        android:id="@+id/tv_qualification"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="2dp"
@@ -557,12 +581,14 @@
 
                                 <!--BMI-->
                                 <TableRow
+                                    android:id="@+id/tr_speciality"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:layout_marginTop="@dimen/margin_4"
                                     android:layout_weight="2">
 
                                     <TextView
+                                        android:id="@+id/tv_speciality"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginStart="2dp"
@@ -607,6 +633,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_diagnosis"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -820,6 +847,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_advice_card"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -848,6 +876,7 @@
                                 android:text="@string/advice" />
 
                             <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/im_advice_bottom_arrow"
                                 android:layout_width="@dimen/fu_icon_width"
                                 android:layout_height="@dimen/fu_icon_height"
                                 android:layout_alignParentEnd="true"
@@ -905,6 +934,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_test"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -991,6 +1021,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_speciality"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -1065,6 +1096,7 @@
 
                 <!--Follow up - start -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_followup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/specialityCard"
@@ -1077,6 +1109,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rl_followup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -1175,6 +1208,7 @@
                                         android:textStyle="bold" />
 
                                     <LinearLayout
+                                        android:id="@+id/ll_yes_no_btn"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_alignParentTop="true"

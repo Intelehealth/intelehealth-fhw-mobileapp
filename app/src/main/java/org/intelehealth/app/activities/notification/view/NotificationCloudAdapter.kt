@@ -1,24 +1,18 @@
 package org.intelehealth.app.activities.notification.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.notification.NotificationList
 import org.intelehealth.app.activities.notification.listeners.CloudNotificationClickListener
-import org.intelehealth.app.activities.notification.listeners.NotificationClickListener
 import org.intelehealth.app.database.dao.notification.NotificationDbConstants
-import org.intelehealth.app.models.NotificationModel
-import org.intelehealth.app.utilities.StringUtils
 import org.intelehealth.app.utilities.StringUtils.getTranslatedString
 
 /**
@@ -39,6 +33,10 @@ class NotificationCloudAdapter(
     }
 
     override fun onBindViewHolder(holder: MyHolderView, position: Int) {
+
+        //added to support automation testing
+        holder.itemView.contentDescription = "list_item_$position"
+
         patientDTOList?.get(position)?.let { model ->
             model.description?.let { description ->
                 holder.tvDescription.text = getTranslatedString(holder.itemView.context, description)

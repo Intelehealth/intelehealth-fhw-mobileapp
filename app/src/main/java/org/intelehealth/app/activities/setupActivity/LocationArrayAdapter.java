@@ -33,15 +33,22 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
     public View getDropDownView(int position, View convertView, ViewGroup parent) {
         View v = super.getDropDownView(position, convertView, parent);
 
-        TextView textView = v.findViewById(R.id.text1);
+        if (v != null) {
+            String description = "location_dropdown_item_" + position;
 
-        if (textView != null) {
-            textView.setContentDescription("location_dropdown_item_" + position);
-        }
+            v.setContentDescription(description);
+            v.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
-        if (position == 0) {
-            v.setVisibility(View.GONE);
-            v.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+            TextView textView = v.findViewById(R.id.text1);
+            if (textView != null) {
+                textView.setContentDescription(description);
+                textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            }
+
+            if (position == 0) {
+                v.setVisibility(View.GONE);
+                v.setLayoutParams(new ViewGroup.LayoutParams(0, 0));
+            }
         }
 
         parent.setVerticalScrollBarEnabled(false);

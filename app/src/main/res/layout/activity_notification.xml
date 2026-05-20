@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true">
@@ -13,6 +14,7 @@
             layout="@layout/simple_white_appbar" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/root_body_lay"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"

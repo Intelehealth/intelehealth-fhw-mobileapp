@@ -49,12 +49,17 @@ public class PastVisitListingAdapter extends RecyclerView.Adapter<RecyclerView.V
          */
         //mAnimator.onCreateViewHolder(itemView);
 
+
         return new GenericViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         CustomLog.v("ImageGridAdapter", "onBindViewHolder - " + position);
+
+        //added to support automation testing
+        holder.itemView.setContentDescription("list_item_"+position);
+
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
 

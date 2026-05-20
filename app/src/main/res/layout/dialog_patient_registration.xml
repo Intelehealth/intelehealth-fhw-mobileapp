@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_cv"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_5"
@@ -8,6 +9,7 @@
     app:cardElevation="@dimen/hamburger_margin_start">
 
     <RelativeLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -20,6 +22,7 @@
             android:src="@drawable/close_patient_svg" />
 
         <RelativeLayout
+            android:id="@+id/rl_body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/dialog_icon"
@@ -55,6 +58,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/rl_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/dialog_subtitle"

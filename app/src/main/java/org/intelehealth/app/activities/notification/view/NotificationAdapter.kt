@@ -37,6 +37,10 @@ class NotificationAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyHolderView, position: Int) {
+
+        //added to support automation testing
+        holder.itemView.contentDescription = "list_item_$position"
+
         patientDTOList?.get(position)?.let { model ->
 
             model.description?.let {

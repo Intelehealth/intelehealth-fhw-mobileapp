@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="@color/white"
@@ -24,6 +25,7 @@
 
         <!-- Label -->
         <TextView
+            android:id="@+id/tv_feedback_title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -115,6 +117,7 @@
 
     <!--Comments  - start-->
     <RelativeLayout
+        android:id="@+id/rl_survey_et"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/head_relative"

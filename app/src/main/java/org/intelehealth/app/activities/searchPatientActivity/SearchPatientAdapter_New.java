@@ -105,6 +105,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
     public void onBindViewHolder(@NonNull SearchPatientAdapter_New.SearchHolderView holder, int position) {
         final PatientDTO model = patientDTOS.get(position);
         holder.patientDTO = model;
+        //added to support automation testing
+        holder.itemView.setContentDescription("list_item_"+position);
         holder.bind(model);
     }
 

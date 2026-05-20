@@ -13,14 +13,17 @@
     app:cardElevation="@dimen/margin_5">
 
     <RelativeLayout
+        android:id="@+id/rl_inner_one"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/rl_inner_two"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <RelativeLayout
+                android:id="@+id/rl_profile_info"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fu_margin_start"
@@ -43,6 +46,7 @@
                 </androidx.cardview.widget.CardView>
 
                 <RelativeLayout
+                    android:id="@+id/rl_personal_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/fu_margin_start"
@@ -145,6 +149,7 @@
                         app:cardCornerRadius="3dp">
 
                         <LinearLayout
+                            android:id="@+id/ll_presc_received_inner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/cardTintLightGreen"
@@ -152,11 +157,13 @@
                             android:paddingHorizontal="3dp">
 
                             <ImageView
+                                android:id="@+id/im_prescription"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/prescription_icon_blue" />
 
                             <TextView
+                                android:id="@+id/tv_pres_received"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -182,6 +189,7 @@
                         app:cardCornerRadius="3dp">
 
                         <LinearLayout
+                            android:id="@+id/ll_vis_not_up_cv_inner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/cardTintLightOrange"
@@ -189,12 +197,14 @@
                             android:paddingHorizontal="3dp">
 
                             <ImageView
+                                android:id="@+id/im_error"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:padding="5dp"
                                 android:src="@drawable/fingerprint_dialog_error" />
 
                             <TextView
+                                android:id="@+id/tv_vis_not_up"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -221,6 +231,7 @@
                         app:cardCornerRadius="3dp">
 
                         <LinearLayout
+                            android:id="@+id/ll_presc_pending_inner"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@color/cardTintLightOrange"
@@ -228,11 +239,13 @@
                             android:paddingHorizontal="3dp">
 
                             <ImageView
+                                android:id="@+id/im_prescription_pending"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:src="@drawable/prescription_icon_blue" />
 
                             <TextView
+                                android:id="@+id/tv_pres_pending"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"

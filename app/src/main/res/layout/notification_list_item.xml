@@ -58,6 +58,7 @@
                 tools:ignore="ContentDescription" />
 
             <RelativeLayout
+                android:id="@+id/rl_inner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/search_presTag_margin_top"
@@ -109,6 +110,7 @@
                             android:textStyle="bold" />
 
                         <ImageView
+                            android:id="@+id/im_arrow_forward"
                             android:layout_width="18dp"
                             android:layout_height="18dp"
                             android:src="@drawable/arrow_forward_blue"

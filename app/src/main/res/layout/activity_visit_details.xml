@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_lay"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
@@ -20,6 +21,7 @@
 
         <!-- Frame 100167 -->
         <LinearLayout
+            android:id="@+id/ll_inner_title_one"
             android:layout_width="0dp"
             android:layout_height="@dimen/fu_toolbat_txt_height"
             android:layout_alignParentLeft="true"
@@ -33,6 +35,7 @@
 
             <!-- Frame 100116 -->
             <LinearLayout
+                android:id="@+id/ll_inner_title_two"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2.8"
@@ -80,12 +83,14 @@
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/frame_10021"
         android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/ll_nv_inner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -114,6 +119,7 @@
 
                     <!--1st-->
                     <RelativeLayout
+                        android:id="@+id/rl_card_user_profile"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1">
@@ -135,6 +141,7 @@
                         </androidx.cardview.widget.CardView>
 
                         <LinearLayout
+                            android:id="@+id/ll_user_profile"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/fu_margin_start"
@@ -142,6 +149,7 @@
                             android:orientation="vertical">
 
                             <RelativeLayout
+                                android:id="@+id/rl_name_gender"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
@@ -175,6 +183,7 @@
                                     tools:text="पुरुष 50" />
 
                                 <ImageView
+                                    android:id="@+id/im_profile_edit"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_centerVertical="true"
@@ -205,6 +214,7 @@
 
                     <!--2nd-->
                     <LinearLayout
+                        android:id="@+id/ll_contact"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="bottom"
@@ -234,6 +244,7 @@
 
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cv_visit_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cardview_head"
@@ -248,6 +259,7 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/rl_visit_details_inner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/fu_card_margin_updown">
@@ -402,6 +414,7 @@
 
                         <!--1st-->
                         <RelativeLayout
+                            android:id="@+id/rl_speciality_inner"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="2">
@@ -415,6 +428,7 @@
                                 android:src="@drawable/ic_grp_general_phys" />
 
                             <LinearLayout
+                                android:id="@+id/ll_speciality"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -450,6 +464,7 @@
 
                         <!--2nd-->
                         <LinearLayout
+                            android:id="@+id/ll_speciality_contact"
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
@@ -511,6 +526,7 @@
 
                         <!-- label-text -->
                         <TextView
+                            android:id="@+id/tv_visit_summary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
@@ -572,6 +588,7 @@
 
                             <!-- label-text -->
                             <LinearLayout
+                                android:id="@+id/ll_prescription"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/fu_margin_start"
@@ -769,6 +786,7 @@
 
                             <!--Button - start -->
                             <LinearLayout
+                                android:id="@+id/ll_followup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/followup_accept_text"
@@ -873,12 +891,14 @@
                 app:cardElevation="@dimen/margin_5">
 
                 <LinearLayout
+                    android:id="@+id/ll_past_visit_inner_one"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingBottom="@dimen/padding_20">
 
                     <LinearLayout
+                        android:id="@+id/ll_past_visit_inner_two"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/padding_12"
@@ -925,6 +945,7 @@
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_video_call"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

@@ -5,13 +5,16 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="@dimen/fu_vs_margin_top"
     android:visibility="gone"
-    tools:visibility="visible">
+    tools:visibility="visible"
+    android:id="@+id/root_lay">
 
     <FrameLayout
+        android:id="@+id/fl_inner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <RelativeLayout
+            android:id="@+id/rl_inner"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal">
@@ -67,12 +70,14 @@
                 android:paddingVertical="10dp">
 
                 <ImageView
+                    android:id="@+id/im_add_patient"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/user_plus"
                     android:layout_gravity="center"/>
 
                 <TextView
+                    android:id="@+id/tv_add_patient"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/title_activity_identification"
