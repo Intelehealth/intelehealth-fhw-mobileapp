@@ -126,6 +126,12 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
             prevRefreshLoadState = refresh
         }
 
+        adapter.addOnPagesUpdatedListener {
+            if (adapter.itemCount > 0) {
+                b.noDataLayout.isVisible = false
+            }
+        }
+
         val context = requireContext()
         val database = CategoryDatabase.getInstance(context)
         val generalTabDao = database.generalTabDao()
