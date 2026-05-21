@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -43,6 +44,7 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
     override lateinit var viewModel: GeneralViewModel
+    private var prevRefreshLoadState: LoadState? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,7 +93,8 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
     }
 
     private fun setObservers() {
-        val recyclerView = binding?.recyclerView ?: return
+        val b = binding ?: return
+        val recyclerView = b.recyclerView
 
         recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
@@ -111,6 +114,18 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         recyclerView.adapter = adapter.withLoadStateFooter(
             footer = PatientLoadStateAdapter { adapter.retry() }
         )
+
+        adapter.addLoadStateListener { loadState ->
+            val refresh = loadState.refresh
+            val append = loadState.append
+            if (refresh is LoadState.NotLoading && append.endOfPaginationReached) {
+                val itemCount = adapter.itemCount
+                val showNoData = itemCount == 0
+                b.noDataLayout.isVisible = showNoData
+            }
+            prevRefreshLoadState = refresh
+        }
+
         val context = requireContext()
         val database = CategoryDatabase.getInstance(context)
         val generalTabDao = database.generalTabDao()
