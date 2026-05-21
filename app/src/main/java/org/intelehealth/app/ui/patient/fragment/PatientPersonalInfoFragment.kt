@@ -68,7 +68,8 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-
+import android.os.Handler
+import android.os.Looper
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
  * Email : mithun@intelehealth.org
@@ -97,6 +98,7 @@ class PatientPersonalInfoFragment :
     private var currentGender = ""
     private var currentDob = ""
     private lateinit var loadingDialog: AlertDialog
+    private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
 
 
@@ -124,14 +126,33 @@ class PatientPersonalInfoFragment :
         }
         binding.textInputETFName.addTextChangedListener {
 
-            Toast.makeText(context, "Clicked"+it.toString().trim(), Toast.LENGTH_SHORT).show()
-            doFilterLocal(firstName = it.toString().trim(), lastName = "", gender = "", phone = "", dob = "")
+           // Toast.makeText(context, "Clicked"+it.toString().trim(), Toast.LENGTH_SHORT).show()
+           // doFilterLocal(firstName = it.toString().trim(), lastName = "", gender = "", phone = "", dob = "")
 
            /* currentFirstName = it.toString().trim()
             triggerFilter()*/
         }
+        binding.textInputETFName.addTextChangedListener {
+            currentFirstName = it.toString().trim()
+            triggerFilter()
+        }
+        binding.textInputETLName.addTextChangedListener {
+            currentLastName = it.toString().trim()
+            triggerFilter()
+        }
+        binding.textInputETPhoneNumber.addTextChangedListener {
+            currentPhone = it.toString().trim()
+            triggerFilter()
+        }
     }
-    /*private fun triggerFilter() {
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        runnable?.let {
+            handler.removeCallbacks(it)
+        }
+    }
+    private fun triggerFilter() {
 
         runnable?.let { handler.removeCallbacks(it) }
 
@@ -146,7 +167,7 @@ class PatientPersonalInfoFragment :
         }
 
         handler.postDelayed(runnable!!, 700)
-    }*/
+    }
     private fun doFilterLocal(
         firstName: String,
         lastName: String,
@@ -465,12 +486,15 @@ class PatientPersonalInfoFragment :
     }
 
     private fun bindGenderValue() {
-        patient.gender = when (binding.toggleGender.checkedButtonId) {
+        currentGender = when (binding.toggleGender.checkedButtonId) {
             R.id.btnMale -> "M"
             R.id.btnFemale -> "F"
             R.id.btnOther -> "O"
             else -> "O"
         }
+
+        patient.gender = currentGender
+        triggerFilter()
     }
 
     private fun requestPermission() {
@@ -519,6 +543,7 @@ class PatientPersonalInfoFragment :
 
     private fun setupDOB() {
         patient.dateofbirth?.let {
+            currentDob = it
             parseDob(it, DateTimeUtils.YYYY_MM_DD_HYPHEN)
 
             DateTimeUtils.formatToLocalDate(
@@ -584,6 +609,7 @@ class PatientPersonalInfoFragment :
             updateDob()
             binding.textInputETDob.setText(value)
             binding.textInputLayDob.hideError()
+            triggerFilter()
         }
     }
 

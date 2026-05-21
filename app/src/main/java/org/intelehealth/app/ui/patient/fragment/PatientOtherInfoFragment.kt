@@ -1,5 +1,6 @@
 package org.intelehealth.app.ui.patient.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,7 @@ import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.EmojiExcludeFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.filter.PatientSearchingActivity
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
 import org.intelehealth.app.utilities.ArrayAdapterUtils
@@ -122,12 +124,20 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
             codeOfDepartment = binding.textInputCodeOfDepartment.text?.toString()
             department = binding.textInputDepartment.text?.toString()
+            val intent = Intent(
+                requireContext(),
+                PatientSearchingActivity::class.java
+            )
 
-            patientViewModel.updatedPatient(this)
+            intent.putExtra("patientDTO", patient)
+
+            startActivity(intent)
+
+            /*patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
                 patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
-            }
+            }*/
         }
     }
 

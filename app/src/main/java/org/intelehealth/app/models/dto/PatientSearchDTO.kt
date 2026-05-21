@@ -64,7 +64,8 @@ data class Address(
     val line: List<String>? = null,
     val city: String? = null,
     val state: String? = null,
-    val country: String? = null
+    val country: String? = null,
+    val postalCode: String? = null
 )
 data class Search(
     val mode: String? = null,

@@ -63,6 +63,18 @@
         tools:ignore="UnusedAttribute, LockedOrientationActivity"
         tools:replace="allowBackup">
         <activity
+            android:name=".ui.patient.activity.filter.MatchResultActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
+        />
+        <activity
+            android:name=".ui.patient.activity.filter.PatientSearchingActivity"
+            android:exported="false"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustNothing|adjustPan"
+            />
+        <activity
             android:name=".activities.filterPatientActivity.FilterResultActivity"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar"

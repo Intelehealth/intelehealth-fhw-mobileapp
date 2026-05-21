@@ -96,21 +96,23 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     }
 
     fun acceptCon(view: View?) {
-
-        /*PatientRegistrationActivity.startPatientRegistration(
+       /* PatientRegistrationActivity.startPatientRegistration(
             this,
             firstName = firstName,
             lastName = lastName,
             gender = gender,
             phone = phone,
             dob = dob
-        )*/
-        val intent = Intent(this, FilterPatientActivity::class.java)
+        )
+        //val intent = Intent(this, FilterPatientActivity::class.java)
 
         intent.putExtra("intentType", "navigateFurther")
         intent.putExtra("add_patient", "add_patient")
 
         startActivity(intent)
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        finish()*/
+        PatientRegistrationActivity.startPatientRegistration(this)
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
         finish()
 
