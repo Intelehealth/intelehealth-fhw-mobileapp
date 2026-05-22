@@ -153,23 +153,9 @@ object ProtocolParserHelper {
         allVisits: List<PatientVisitDetails>
     ): PatientVisitDetails {
 
-        //  NO visits - return patient as-is
-        if (allVisits.isEmpty()) return basePatient
-
-        val latestVisit =
-            allVisits.maxByOrNull { parseDateSafe(it.startDate) }
-                ?: return basePatient
-
-        //  Merge visit info into existing patient
-        val result = basePatient.copy(
-            visitId = latestVisit.visitId,
-            startDate = latestVisit.startDate,
-            visitEndDate = latestVisit.visitEndDate,
-            isPrescriptionExist = latestVisit.isPrescriptionExist,
-            isNcdVisit = latestVisit.isNcdVisit,
-            chiefComplaintData = latestVisit.chiefComplaintData,
-            visitSpeciality = latestVisit.visitSpeciality
-        )
+        // Keep visit / prescription / NCD flags from the paged row (same visit as General tab).
+        // allVisits is only used to compute protocol follow-up flags below.
+        val result = basePatient.copy()
 
         // Reset protocol flags
         result.isHypertensionFollowupGiven = null
