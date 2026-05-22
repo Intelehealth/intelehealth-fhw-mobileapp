@@ -2,11 +2,12 @@ package org.intelehealth.app.ui.patient.fragment
 
 import android.app.Activity
 import android.content.Context
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.os.LocaleList
+import android.os.Looper
 import android.text.InputFilter.LengthFilter
 import android.view.View
 import android.view.WindowManager
@@ -15,9 +16,9 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +31,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
-import org.intelehealth.app.activities.filterPatientActivity.FilterPatientAdapter
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
@@ -47,7 +47,6 @@ import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
-import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
@@ -56,6 +55,11 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
+import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory
+import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel
+import org.intelehealth.config.room.ConfigDatabase
+import org.intelehealth.config.room.entity.FeatureActiveStatus
 import org.intelehealth.core.registry.PermissionRegistry
 import org.intelehealth.core.registry.PermissionRegistry.Companion.CAMERA
 import org.intelehealth.ihutils.ui.CameraActivity
@@ -68,8 +72,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
-import android.os.Handler
-import android.os.Looper
+
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
  * Email : mithun@intelehealth.org
@@ -100,9 +103,15 @@ class PatientPersonalInfoFragment :
     private lateinit var loadingDialog: AlertDialog
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
+    private var isFhirEnableds = false   // FHIR FLAG
 
-
-
+    // VIEWMODEL (FHIR STATUS)
+    private val featureStatusViewModel by viewModels<FeatureActiveStatusViewModel> {
+        val db = ConfigDatabase.getInstance(requireContext())
+        val repository = FeatureActiveStatusRepository(db.featureActiveStatusDao())
+        FeatureActiveStatusViewModelFactory(repository)
+    }
+    private var mFeatureActiveStatus: FeatureActiveStatus? = null
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPatientPersonalInfoOldDesignBinding.bind(view)
@@ -111,6 +120,7 @@ class PatientPersonalInfoFragment :
             patientList,
             requireContext()
         )
+        setupFeatureFlagObserver()   //  FHIR OBSERVE
         //filterRecyclerView = binding.filter_patient_container
         filterRecyclerView = binding.filterPatientContainer
 
@@ -132,17 +142,66 @@ class PatientPersonalInfoFragment :
            /* currentFirstName = it.toString().trim()
             triggerFilter()*/
         }
+       // if (isFhirEnabled){
+            binding.textInputETFName.addTextChangedListener {
+                if (!isFhirEnabled) return@addTextChangedListener
+                currentFirstName = it.toString().trim()
+                triggerFilter()
+            }
+            binding.textInputETLName.addTextChangedListener {
+                if (!isFhirEnabled) return@addTextChangedListener
+                currentLastName = it.toString().trim()
+                triggerFilter()
+            }
+            binding.textInputETPhoneNumber.addTextChangedListener {
+                currentPhone = it.toString().trim()
+                triggerFilter()
+            }
+       // }
+    }
+    private fun setupPatientSearch() {
+
+        patientAdapter = PatientFilterAdapter(patientList, requireContext())
+
+        binding.filterPatientContainer.layoutManager =
+            LinearLayoutManager(requireContext())
+
+        binding.filterPatientContainer.adapter = patientAdapter
+
         binding.textInputETFName.addTextChangedListener {
             currentFirstName = it.toString().trim()
             triggerFilter()
         }
+
         binding.textInputETLName.addTextChangedListener {
             currentLastName = it.toString().trim()
             triggerFilter()
         }
+
         binding.textInputETPhoneNumber.addTextChangedListener {
             currentPhone = it.toString().trim()
             triggerFilter()
+        }
+
+        binding.toggleGender.addOnButtonCheckedListener { _, _, _ ->
+            bindGenderValue()
+        }
+    }
+    private fun setupFeatureFlagObserver() {
+        featureStatusViewModel.featureStatus.observe(viewLifecycleOwner) { status ->
+            status?.let {
+                isFhirEnabled = it.activeStatusFhir
+
+                Timber.d { "FHIR STATUS => $isFhirEnabled" }
+                onFhirStatusChanged(isFhirEnabled)
+                // Example usage
+                /*if (isFhirEnabled) {
+                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
+                    //enableFhirFeatures()
+                } else {
+                   //disableFhirFeatures()
+                 }*/
+            }
         }
     }
 
@@ -157,6 +216,15 @@ class PatientPersonalInfoFragment :
         runnable?.let { handler.removeCallbacks(it) }
 
         runnable = Runnable {
+
+            // prevent empty search
+            if (currentFirstName.isBlank() &&
+                currentLastName.isBlank() &&
+                currentPhone.isBlank() &&
+                currentGender.isBlank() &&
+                currentDob.isBlank()
+            ) return@Runnable
+
             doFilterLocal(
                 firstName = currentFirstName,
                 lastName = currentLastName,
@@ -166,7 +234,7 @@ class PatientPersonalInfoFragment :
             )
         }
 
-        handler.postDelayed(runnable!!, 700)
+        handler.postDelayed(runnable!!, 500)
     }
     private fun doFilterLocal(
         firstName: String,
@@ -184,31 +252,26 @@ class PatientPersonalInfoFragment :
 
         offset = 0
         isFullyLoaded = false
-        initRecyclerScrollListener(firstName, lastName,  phone, gender,dob)
+        initRecyclerScrollListener(firstName, lastName, phone, gender, dob)
 
         subscriptions.add(
             Observable.fromCallable {
+                PatientsDAO.getFilteredPatients1(
+                    firstName,
+                    lastName,
+                    gender,
+                    phone,
+                    dob,
+                    offset,
+                    defaultPageSize
+                )
             }
-                .concatMap {
-                    Observable.just(
-                        PatientsDAO.getFilteredPatients1(
-                            firstName,
-                            lastName,
-                            gender,
-                            phone,
-                            dob,
-                            offset,
-                            defaultPageSize
-                        )
-                    )
-                }
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { loadingDialog.show() }
-                .doOnTerminate { loadingDialog.dismiss() }
                 .subscribe(
-                    {
-                        updatePatientsAdapter(it) },
+                    { result ->
+                        updatePatientsAdapter(result)
+                    },
                     {
                         ToastUtil.showLongToast(
                             requireContext(),

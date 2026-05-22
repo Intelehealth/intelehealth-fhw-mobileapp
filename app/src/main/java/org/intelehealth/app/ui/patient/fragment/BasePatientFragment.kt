@@ -21,6 +21,7 @@ import org.intelehealth.config.room.ConfigDatabase
  **/
 abstract class BasePatientFragment(@LayoutRes layoutResId: Int) : Fragment(layoutResId) {
     protected var patient: PatientDTO = PatientDTO()
+    protected var isFhirEnabled = false   // FHIR FLAG
     protected val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(requireActivity(), requireActivity())
     }
@@ -37,5 +38,8 @@ abstract class BasePatientFragment(@LayoutRes layoutResId: Int) : Fragment(layou
 
     open fun onPatientDataLoaded(patient: PatientDTO) {
         this.patient = patient
+    }
+    open fun onFhirStatusChanged(enabled: Boolean) {
+        this.isFhirEnabled=enabled
     }
 }

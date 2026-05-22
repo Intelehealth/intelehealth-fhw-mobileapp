@@ -71,4 +71,6 @@ data class FeatureActiveStatus(
 
     @SerializedName("patient_draft_survey")
     var activeStatusPatientDraftSurvey: Boolean = true
+    @SerializedName("fhir_module")
+    var activeStatusFhir: Boolean = false
 }

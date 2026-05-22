@@ -66,18 +66,13 @@ class PatientSearchingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_patient_searching)
-        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }*/
-        loadingDialog = DialogUtils().showCommonLoadingDialog(
+       /* loadingDialog = DialogUtils().showCommonLoadingDialog(
             this,
             getString(R.string.loading),
             getString(R.string.please_wait),
         ).apply {
             dismiss()
-        }
+        }*/
 
         progressBarIH = findViewById(R.id.progressBarIH)
         progressBarNational = findViewById(R.id.progressBarNational)
@@ -98,7 +93,6 @@ class PatientSearchingActivity : AppCompatActivity() {
         val name ="${patientDTO?.firstname} ${patientDTO?.middlename} ${patientDTO?.lastname}"
         val gender = patientDTO?.gender
         val dob =patientDTO?.dateofbirth;
-        val  address=patientDTO?.address1
         val  phone=patientDTO?.phonenumber
         nameTv.text=name
         infoTv.text = "$gender . DOB $dob. $phone"
@@ -111,6 +105,19 @@ class PatientSearchingActivity : AppCompatActivity() {
 
     }
     private fun callIHNetworkApi() {
+
+        progressBarIH.visibility = View.VISIBLE
+        isIHApiDone = false
+
+        doFilterLocal(
+            patientDTO?.firstname ?: "",
+            patientDTO?.lastname ?: "",
+            patientDTO?.gender ?: "",
+            patientDTO?.phonenumber ?: "",
+            patientDTO?.dateofbirth ?: ""
+        )
+    }
+    private fun callIHNetworkApis() {
 
         progressBarIH.visibility = View.VISIBLE
 
@@ -140,6 +147,44 @@ class PatientSearchingActivity : AppCompatActivity() {
         }
     }
     private fun doFilterFhir(
+        firstName: String,
+        lastName: String,
+        gender: String,
+        phone: String,
+        dob: String
+    ) {
+
+        subscriptions.add(
+            fetchFhirPatients(firstName, lastName, phone, gender, dob, 0)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ list ->
+
+                    progressBarNational.visibility = View.GONE  // ✅ STOP
+
+                    filteredPatientFhirList.clear()
+                    filteredPatientFhirList.addAll(list)
+
+                    isFhirDone = true
+
+                    nrNetworkTv.text =
+                        if (list.isEmpty()) "No match found"
+                        else "Matches found"
+
+                    checkAndMerge()
+
+                }, {
+
+                    progressBarNational.visibility = View.GONE
+
+                    isFhirDone = true
+                    nrNetworkTv.text = "No match found"
+
+                    checkAndMerge()
+                })
+        )
+    }
+    private fun doFilterFhirs(
         firstName: String,
         lastName: String,
         gender: String,
@@ -235,6 +280,164 @@ class PatientSearchingActivity : AppCompatActivity() {
         }
     }
     private fun mergeFinalPatientList() {
+
+        val map = LinkedHashMap<String, PatientSearchResult>()
+
+        var nullIdCounter = 0
+
+        fun generateKey(item: PatientSearchResult): String {
+            return item.patient?.uuid ?: "NULL_${nullIdCounter++}"
+        }
+
+        // =========================
+        // LOCAL FIRST
+        // =========================
+        filteredPatientList.forEach { local ->
+
+            val key = local.patient?.uuid ?: generateKey(local)
+
+            map[key] = local
+        }
+
+        // =========================
+        // FHIR MERGE (REMOTE PRIORITY)
+        // =========================
+        filteredPatientFhirList.forEach { fhir ->
+
+            val key = fhir.patient?.uuid ?: generateKey(fhir)
+
+            val local = map[key]
+
+            map[key] = if (local != null) {
+
+                // SAME PATIENT → MERGE
+                fhir.copy(
+                    patient = fhir.patient, // REMOTE PRIORITY DATA
+
+                    // LOCAL DATA KEEP
+                    isIHNetwork = local.isIHNetwork,
+                    ihscore = local.ihscore,
+
+                    // FHIR DATA KEEP
+                    isNRNetwork = fhir.isNRNetwork,
+                    nrscore = fhir.nrscore
+                )
+
+            } else {
+                // NEW PATIENT
+                fhir
+            }
+        }
+
+        // =========================
+        // FINAL LIST
+        // =========================
+        filteredPatientFinalList.clear()
+
+        filteredPatientFinalList.addAll(map.values)
+        val sortedList = filteredPatientFinalList
+            .distinctBy { it.patient?.uuid ?: it.patient?.phonenumber }
+            .sortedByDescending { it.score }
+            .toMutableList()
+        filteredPatientFinalList.addAll(sortedList)
+
+        totalNetworkTv.visibility = View.VISIBLE
+        totalNetworkTv.text = "${filteredPatientFinalList.size} matches found"
+
+        checkAllApisCompleted()
+    }
+    private fun mergeFinalPatientLists1() {
+
+        val map = LinkedHashMap<String, PatientSearchResult>()
+
+        filteredPatientList.forEach {
+            it.patient?.uuid?.let { id -> map[id] = it }
+        }
+
+        filteredPatientFhirList.forEach { fhir ->
+            val id = fhir.patient?.uuid ?: return@forEach
+
+            val local = map[id]
+
+            map[id] = if (local != null) {
+                fhir.copy(
+                    phoneMatched = local.phoneMatched,
+                    isIHNetwork = local.isIHNetwork,
+                    ihscore = local.ihscore,
+                    isNRNetwork = fhir.isNRNetwork,
+                    nrscore = fhir.nrscore
+                )
+            } else {
+                fhir
+            }
+        }
+
+        filteredPatientFinalList.clear()
+        filteredPatientFinalList.addAll(map.values)
+
+        totalNetworkTv.visibility = View.VISIBLE
+        totalNetworkTv.text = "${filteredPatientFinalList.size} matches found"
+
+        checkAllApisCompleted()
+    }
+    private fun mergeFinalPatientLists() {
+
+        val map = LinkedHashMap<String, PatientSearchResult>()
+
+        // LOCAL FIRST
+        filteredPatientList.forEach { localItem ->
+
+            val uuid = localItem.patient?.uuid ?: return@forEach
+
+            map[uuid] = localItem
+        }
+
+        // FHIR MERGE
+        filteredPatientFhirList.forEach { fhirItem ->
+
+            val uuid = fhirItem.patient?.uuid ?: return@forEach
+
+            val localItem = map[uuid]
+
+            if (localItem != null) {
+                // UUID MATCH → FIELD SPLIT MERGE
+
+                val merged = fhirItem.copy(
+                    patient = fhirItem.patient, // FHIR patient data (FULL DETAILS)
+
+                    //  FROM LOCAL LIST
+                    phoneMatched = localItem.phoneMatched,
+                    isIHNetwork = localItem.isIHNetwork,
+                    ihscore = localItem.ihscore,
+
+                    //  FROM FHIR LIST
+                    isNRNetwork = fhirItem.isNRNetwork,
+                    nrscore = fhirItem.nrscore
+                )
+
+                map[uuid] = merged
+
+            } else {
+                // ONLY FHIR PATIENT
+                map[uuid] = fhirItem
+            }
+        }
+        // FINAL LIST
+        filteredPatientFinalList.clear()
+        filteredPatientFinalList.addAll(map.values)
+
+        totalNetworkTv.visibility = View.VISIBLE
+        totalNetworkTv.text =
+            "${filteredPatientFinalList.size} matches found"
+
+        Log.d(
+            "FINAL_MERGE",
+            "Final Count = ${filteredPatientFinalList.size}"
+        )
+
+        checkAllApisCompleted()
+    }
+    private fun mergeFinalPatientList1() {
 
         val map = LinkedHashMap<String, PatientSearchResult>()
 
@@ -344,6 +547,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                         education =getExtensionValueByEndPoint(extension,"Education-Level")
                         economic =getExtensionValueByEndPoint(extension,"Economic-Status")
                         caste =getExtensionValueByEndPoint(extension,"Caste")
+                        syncd=true
                     }
 
                     resultList.add(
@@ -359,7 +563,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                     )
                 }
 
-                resultList.toList()   // 🔥 IMPORTANT FIX
+                resultList.toList()   //  IMPORTANT FIX
             }
             .subscribeOn(Schedulers.io())
     }
@@ -477,6 +681,71 @@ class PatientSearchingActivity : AppCompatActivity() {
         dob: String
     ) {
 
+        subscriptions.add(
+            Single.fromCallable {
+                PatientsDAO.getFilteredPatients1(
+                    firstName,
+                    lastName,
+                    gender,
+                    phone,
+                    dob,
+                    0,
+                    defaultPageSize
+                )
+            }
+                .subscribeOn(Schedulers.io())
+                .flatMap { localList ->
+
+                    val isNetwork = CheckInternetAvailability.isNetworkAvailable(this)
+
+                    if (!isNetwork) {
+                        Single.just(localList)
+                    } else {
+                        fetchOpenMRSPatients(
+                            firstName, lastName, phone,
+                            getFullGenderStr(gender), dob, 0
+                        )
+                            .map { remote ->
+                                mergePatientList(localList, remote)
+                            }
+                            .onErrorReturn { localList }
+                    }
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ patientList ->
+
+                    progressBarIH.visibility = View.GONE   // ✅ STOP LOADING
+
+                    filteredPatientList.clear()
+                    filteredPatientList.addAll(patientList)
+
+                    isLocalDone = true
+
+                    ihNetworkTv.text =
+                        if (patientList.isEmpty()) "No match found"
+                        else "Matches found"
+
+                    checkAndMerge()
+
+                }, {
+
+                    progressBarIH.visibility = View.GONE
+
+                    isLocalDone = true
+                    ihNetworkTv.text = "No match found"
+
+                    checkAndMerge()
+                })
+        )
+    }
+    /*private fun doFilterLocals(
+        firstName: String,
+        lastName: String,
+        gender: String,
+        phone: String,
+        dob: String
+    ) {
+
         ihNetworkTv.visibility = View.VISIBLE
 
         subscriptions.add(
@@ -579,7 +848,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                     )
                 })
         )
-    }
+    }*/
     private fun mergePatientList(
         localList: List<PatientSearchResult>,
         remoteList: List<PatientSearchResult>
@@ -659,6 +928,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                     education =getExtensionValueByEndPoint(extension,"Education-Level")
                     economic =getExtensionValueByEndPoint(extension,"Economic-Status")
                     caste =getExtensionValueByEndPoint(extension,"Caste")
+                    syncd=false
                 }
 
                 val result = PatientSearchResult().apply {
@@ -667,6 +937,8 @@ class PatientSearchingActivity : AppCompatActivity() {
                     this.score = item.search?.score ?: 0.0
                     this.grade = MatchGrade.CERTAIN
                     this.localDbResult = false
+                    this.isIHNetwork=true
+                    this.ihscore = item.search?.score ?: 0.0
                 }
 
                 resultList.add(result)
@@ -794,8 +1066,19 @@ class PatientSearchingActivity : AppCompatActivity() {
             requestBody
         )
     }
-
     private fun callNationalRegistryApi() {
+
+        progressBarNational.visibility = View.VISIBLE
+        isNationalApiDone = false
+
+        doFilterFhir(
+            patientDTO?.firstname ?: "",
+            patientDTO?.lastname ?: "",
+            patientDTO?.gender ?: "",
+            patientDTO?.phonenumber ?: "",
+            patientDTO?.dateofbirth ?: ""
+        )}
+            private fun callNationalRegistryApis() {
 
         progressBarNational.visibility = View.VISIBLE
 
@@ -817,14 +1100,31 @@ class PatientSearchingActivity : AppCompatActivity() {
 
         }, 5000)
     }
-
     private fun checkAllApisCompleted() {
 
         if (isLocalDone && isFhirDone) {
 
-            lifecycleScope.launch {
+            val intent = Intent(
+                this,
+                MatchResultActivity::class.java
+            )
 
-                delay(1000)
+            intent.putExtra("patientDTO", patientDTO)
+            intent.putExtra(
+                "finalPatientList",
+                ArrayList(filteredPatientFinalList)
+            )
+
+            startActivity(intent)
+            finish()
+        }
+    }
+
+    private fun checkAllApisCompleteds() {
+
+        if (isLocalDone && isFhirDone) {
+
+            lifecycleScope.launch {
 
                 val intent = Intent(
                     this@PatientSearchingActivity,

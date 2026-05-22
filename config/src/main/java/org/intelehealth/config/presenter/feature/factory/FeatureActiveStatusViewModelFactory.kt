@@ -10,8 +10,10 @@ import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusVi
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class FeatureActiveStatusViewModelFactory(private val repository: FeatureActiveStatusRepository) :
-    ViewModelProvider.Factory {
+class FeatureActiveStatusViewModelFactory(
+    private val repository: FeatureActiveStatusRepository
+) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return FeatureActiveStatusViewModel(repository) as T
     }

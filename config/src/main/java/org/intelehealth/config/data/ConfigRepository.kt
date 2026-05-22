@@ -68,6 +68,7 @@ class ConfigRepository(
                 activeStatusRosterQuestionnaireSection = config.rosterQuestionnaireSection
                 activeStatusDiagnosticsSection = config.patientDiagnosticsSection
                 activeStatusPatientDraftSurvey = config.patientDraftSurvey
+                activeStatusFhir = config.fhirModule?.fhir ?: false
             }.also { configDb.featureActiveStatusDao().add(it) }
             onCompleted.invoke()
         }

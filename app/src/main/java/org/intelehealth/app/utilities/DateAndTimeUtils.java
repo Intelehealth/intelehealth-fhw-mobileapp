@@ -233,82 +233,92 @@ public class DateAndTimeUtils {
     }
 
     public static String getAgeInYearMonth(String s) {
-        if (s == null)
-            return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
-        try {
-            date = originalFormat.parse(s);
-        } catch (ParseException e) {
-            e.printStackTrace();
+
+        if (s == null || s.trim().isEmpty()) {
+            return "--";
         }
-        String formattedDate = targetFormat.format(date);  // 20120821
 
-        String[] components = formattedDate.split("\\-");
-
-        int year = Integer.parseInt(components[2]);
-        int month = Integer.parseInt(components[1]);
-        int day = Integer.parseInt(components[0]);
-
-        LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-        LocalDate now = new LocalDate();                    //Today's date
-        Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
-
-        String age = "";
-        String tyears = "0", tmonth = "0", tdays = "0";
-
-        if (period.getYears() > 0)
-            tyears = "" + period.getYears();
-
-        if (period.getMonths() > 0)
-            tmonth = "" + period.getMonths();
-
-        if (period.getDays() > 0)
-            tdays = "" + period.getDays();
-
-        age = tyears + " " + tmonth + " " + tdays;
-
-        return age;
-    }
-
-    public static String getAgeInYears(String s, Context context) {
-        if (s == null)
-            return "";
-        DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-        DateFormat targetFormat = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = null;
-        String age = "";
         try {
-            date = originalFormat.parse(s);
-            String formattedDate = targetFormat.format(date);  // 20120821
+
+            DateFormat originalFormat =
+                    new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+            DateFormat targetFormat =
+                    new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+
+            Date date = originalFormat.parse(s);
+
+            if (date == null) {
+                return "--";
+            }
+
+            String formattedDate = targetFormat.format(date);
 
             String[] components = formattedDate.split("\\-");
+
+            if (components.length < 3) {
+                return "--";
+            }
 
             int year = Integer.parseInt(components[2]);
             int month = Integer.parseInt(components[1]);
             int day = Integer.parseInt(components[0]);
 
-            //call to function to pass this year and month for age mindmaps questions...
-            //getAge_Year_Month(year, month, day);
+            LocalDate birthdate = new LocalDate(year, month, day);
+            LocalDate now = new LocalDate();
 
-            LocalDate birthdate = new LocalDate(year, month, day);          //Birth date
-            LocalDate now = new LocalDate();                    //Today's date
-            Period period = new Period(birthdate, now, PeriodType.yearMonthDay());
+            Period period =
+                    new Period(birthdate, now, PeriodType.yearMonthDay());
 
-            String tyears = "";
-            //String xyears = "", xmonths = "";
+            int years = period.getYears();
+            int months = period.getMonths();
+            int days = period.getDays();
 
-            if (period.getYears() > 0) {
-                tyears = period.getYears() + " " + context.getResources().getString(R.string.years);
-                //xyears = String.valueOf(period.getYears());
-            }
-            age = tyears;
-        } catch (ParseException e) {
+            return years + " " + months + " " + days;
+
+        } catch (Exception e) {
             e.printStackTrace();
+            return "--";
+        }
+    }
+
+    public static String getAgeInYears(String s, Context context) {
+
+        if (s == null || s.trim().isEmpty()) {
+            return "--";
         }
 
-        return age;
+        try {
+
+            DateFormat originalFormat =
+                    new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+
+            Date date = originalFormat.parse(s);
+
+            if (date == null) {
+                return "--";
+            }
+
+            Calendar dob = Calendar.getInstance();
+            dob.setTime(date);
+
+            Calendar today = Calendar.getInstance();
+
+            int age =
+                    today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+            if (today.get(Calendar.DAY_OF_YEAR)
+                    < dob.get(Calendar.DAY_OF_YEAR)) {
+                age--;
+            }
+
+            return age + " " +
+                    context.getResources().getString(R.string.years);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "--";
+        }
     }
 
     public static String getFormatedDateOfBirth(String oldformatteddate) {

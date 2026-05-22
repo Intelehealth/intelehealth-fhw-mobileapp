@@ -1,6 +1,7 @@
 package org.intelehealth.config.network.response
 
 import com.google.gson.annotations.SerializedName
+import org.intelehealth.config.room.entity.ActiveFhirModule
 import org.intelehealth.config.room.entity.ActiveLanguage
 import org.intelehealth.config.room.entity.ActiveSection
 import org.intelehealth.config.room.entity.Diagnostics
@@ -54,4 +55,6 @@ data class ConfigResponse(
     val patientVisitSection: List<ActiveSection>,
     @SerializedName("home_screen")
     val homeScreen: List<ActiveSection>,
+    @SerializedName("fhir_module")
+    val fhirModule: ActiveFhirModule? = null
 )

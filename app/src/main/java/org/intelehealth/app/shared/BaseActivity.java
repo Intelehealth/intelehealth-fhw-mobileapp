@@ -56,7 +56,7 @@ public class BaseActivity extends LanguageActivity implements SocketManager.Noti
         FeatureActiveStatusRepository repository = new FeatureActiveStatusRepository(ConfigDatabase.getInstance(this).featureActiveStatusDao());
         FeatureActiveStatusViewModelFactory factory = new FeatureActiveStatusViewModelFactory(repository);
         FeatureActiveStatusViewModel featureActiveStatusViewModel = new ViewModelProvider(this, factory).get(FeatureActiveStatusViewModel.class);
-        featureActiveStatusViewModel.fetchFeaturesActiveStatus().observe(this, featureActiveStatus -> {
+        featureActiveStatusViewModel.getFeatureStatus().observe(this, featureActiveStatus -> {
             if (featureActiveStatus != null) onFeatureActiveStatusLoaded(featureActiveStatus);
         });
     }

@@ -26,7 +26,7 @@ open class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        featureStatusViewModel.fetchFeaturesActiveStatus().observe(viewLifecycleOwner) {
+        featureStatusViewModel.featureStatus.observe(viewLifecycleOwner) {
             it ?: return@observe
             onFeatureStatusLoaded(it)
         }

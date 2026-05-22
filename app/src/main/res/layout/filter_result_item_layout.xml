@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Amara Diallo"
-                    android:textSize="28sp"
+                    android:textSize="18sp"
                     android:textStyle="bold"
                     android:textColor="#1E1E1E"/>
 
@@ -42,39 +42,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
                     android:text="F · 32 yrs · DOB 12 Mar 1994"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textColor="#8A8A8A"/>
             </LinearLayout>
 
-            <!-- Status Badge -->
-            <TextView
-                android:id="@+id/tvStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:background="@drawable/bg_status"
-                android:paddingHorizontal="18dp"
-                android:paddingVertical="8dp"
-                android:text="Certain"
-                android:textColor="#496A1A"
-                android:textSize="16sp"
-                android:textStyle="bold"/>
-        </RelativeLayout>
-       <!-- <TextView
-            android:id="@+id/soreTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>-->
 
-        <!-- Match -->
-        <!--<TextView
-            android:id="@+id/tvMatch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"x
-            android:text="97% match"
-            android:textColor="#355F14"
-            android:textSize="22sp"
-            android:textStyle="bold"/>-->
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,18 +59,18 @@
                 android:id="@+id/tvIHScoreTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="97% match"
+                android:text=""
                 android:textColor="#355F14"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tvNrScoreTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="14dp"
-                android:text="97% match"
+                android:text=""
                 android:textColor="#355F14"
-                android:textSize="18sp"
+                android:textSize="15sp"
                 android:textStyle="bold"/>
         </LinearLayout>
 
@@ -114,7 +88,7 @@
                 android:text="IH Network"
                 android:textColor="#0E5B4C"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:paddingHorizontal="18dp"
                 android:paddingVertical="8dp"
                 android:background="@drawable/bg_tag_green"/>
@@ -127,7 +101,7 @@
                 android:text="National Registry"
                 android:textColor="#7A2741"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:paddingHorizontal="18dp"
                 android:paddingVertical="8dp"
                 android:background="@drawable/bg_tag_pink"/>
@@ -139,7 +113,7 @@
                 android:text="No registry ID"
                 android:textColor="#A2521E"
                 android:textStyle="bold"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:visibility="gone"
                 android:paddingHorizontal="18dp"
                 android:paddingVertical="8dp"
@@ -166,7 +140,7 @@
             android:layout_marginTop="20dp"
             android:text="Link &amp; Continue"
             android:textAllCaps="false"
-            android:textSize="20sp"
+            android:textSize="17sp"
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:background="@drawable/button_bg"/>

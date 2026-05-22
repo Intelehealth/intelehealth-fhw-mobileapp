@@ -9,6 +9,7 @@ apply from: "whitelabel.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'com.google.dagger.hilt.android'
+apply plugin:  'kotlin-parcelize'
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -106,6 +107,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:3.0.7'
     implementation 'androidx.compose.ui:ui-text:1.11.1'
     implementation 'androidx.compose.material3:material3:1.4.0'
+    implementation 'androidx.room:room-ktx:2.8.4'
     testImplementation 'junit:junit:4.13.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'

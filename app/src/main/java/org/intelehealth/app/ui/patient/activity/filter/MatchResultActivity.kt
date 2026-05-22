@@ -1,48 +1,56 @@
 package org.intelehealth.app.ui.patient.activity.filter
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.util.copy
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.filterPatientActivity.FilterResultAdapter
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
+import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
+import org.intelehealth.app.ui.patient.fragment.PatientOtherInfoFragmentDirections
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.ToastUtil
+import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 
 class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickListener{
-    private var patientDTO: PatientDTO? = null
+    private var patientDTO= PatientDTO()
 
     private lateinit var filterRecyclerView: RecyclerView
     private lateinit var loadingDialog: AlertDialog
     private lateinit var filterSuccessLayout: LinearLayout
     private var patientList = mutableListOf<PatientSearchResult>()
-    private var firstName=""
-    private var lastName=""
-    private var phone=""
-    private var dob=""
-    private var gender=""
     private lateinit var patientAdapter: FilterResultAdapter
+    private lateinit var noneMatch: TextView
+    private lateinit var emptyLayout: LinearLayout
+
+    protected val patientViewModel by lazy {
+        return@lazy PatientViewModelFactory.create(this, this)
+    }
    // private val patientAdapter = FilterResultAdapter(patientList, this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_match_result)
-        /*ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }*/
+
         patientDTO = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra(
                 "patientDTO",
@@ -50,19 +58,23 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
             )
         } else {
             intent.getSerializableExtra("patientDTO") as? PatientDTO
-        }
-        patientList =
-            intent.getSerializableExtra(
-                "finalPatientList"
-            ) as ArrayList<PatientSearchResult>
+        }?: PatientDTO()
 
-       patientAdapter =
-           FilterResultAdapter(patientList, this)
+       intent.getParcelableArrayListExtra<PatientSearchResult>("finalPatientList")
+           ?.let {
+               patientList = it.toMutableList()
+           }
+
 
        filterRecyclerView = findViewById(R.id.filter_patient_container)
-
+       noneMatch = findViewById(R.id.noneMatch)
+       emptyLayout = findViewById(R.id.filter_patient_failed_ll)
        filterRecyclerView.layoutManager =
            LinearLayoutManager(this@MatchResultActivity)
+       filterRecyclerView.setHasFixedSize(true)
+       filterRecyclerView.isNestedScrollingEnabled = false
+       patientAdapter =
+           FilterResultAdapter(patientList, this)
 
        filterRecyclerView.adapter = patientAdapter
 
@@ -86,9 +98,106 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
         findViewById<ImageView>(R.id.iv_back_arrow)?.setOnClickListener {
             finish()
         }
+       noneMatch.setOnClickListener {
+           patientViewModel.updatedPatient(patientDTO)
+           patientViewModel.savePatient().observe(this) {
+               it ?: return@observe
+               patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails(patientDTO) }
+           }
+       }
+    }
+    override fun onItemClick(selectedItem: Any) {
+        if (selectedItem is PatientDTO) {
+
+            val finalPatient = mergePatient(selectedItem, patientDTO)
+
+            patientViewModel.updatedPatient(finalPatient)
+            patientViewModel.savePatient().observe(this) {
+                it ?: return@observe
+                patientViewModel.handleResponse(it) { result ->
+                    if (result) navigateToDetails(finalPatient)
+                }
+            }
+
+        } else {
+            ToastUtil.showShortToast(this, "Failed to select patient")
+        }
+    }
+    private fun mergePatient(
+        primary: PatientDTO,
+        fallback: PatientDTO
+    ): PatientDTO {
+
+        val result = PatientDTO()
+
+        // IDs
+        result.uuid = primary.uuid ?: fallback.uuid
+        result.openmrsId = primary.openmrsId ?: fallback.openmrsId
+        result.sourceId = primary.sourceId ?: fallback.sourceId
+        result.mpiId = primary.mpiId ?: fallback.mpiId
+
+        // Name
+        result.firstname = primary.firstname ?: fallback.firstname
+        result.middlename = primary.middlename ?: fallback.middlename
+        result.lastname = primary.lastname ?: fallback.lastname
+
+        // Basic info
+        result.dateofbirth = primary.dateofbirth ?: fallback.dateofbirth
+        result.gender = primary.gender ?: fallback.gender
+        result.phonenumber = primary.phonenumber ?: fallback.phonenumber
+
+        // Address
+        result.address1 = primary.address1 ?: fallback.address1
+        result.address2 = primary.address2 ?: fallback.address2
+        result.address3 = primary.address3 ?: fallback.address3
+        result.cityvillage = primary.cityvillage ?: fallback.cityvillage
+        result.stateprovince = primary.stateprovince ?: fallback.stateprovince
+        result.postalcode = primary.postalcode ?: fallback.postalcode
+        result.country = primary.country ?: fallback.country
+        result.district = primary.district ?: fallback.district
+
+        // Social / extra info
+        result.education = primary.education ?: fallback.education
+        result.economic = primary.economic ?: fallback.economic
+        result.caste = primary.caste ?: fallback.caste
+        result.occupation = primary.occupation ?: fallback.occupation
+        result.nationalID = primary.nationalID ?: fallback.nationalID
+
+        // Guardian / contact
+        result.guardianName = primary.guardianName ?: fallback.guardianName
+        result.guardianType = primary.guardianType ?: fallback.guardianType
+        result.contactType = primary.contactType ?: fallback.contactType
+        result.emContactName = primary.emContactName ?: fallback.emContactName
+        result.emContactNumber = primary.emContactNumber ?: fallback.emContactNumber
+
+        // Patient metadata
+        result.patientPhoto = primary.patientPhoto ?: fallback.patientPhoto
+        result.patientImageFromImageDao = primary.patientImageFromImageDao ?: fallback.patientImageFromImageDao
+        result.patientImageFromDownload = primary.patientImageFromDownload ?: fallback.patientImageFromDownload
+
+        // Flags
+        result.dead = primary.dead ?: fallback.dead
+        result.syncd = primary.syncd ?: fallback.syncd
+
+        result.setEmergency(primary.isEmergency || fallback.isEmergency)
+        result.setPrescription_exists(primary.isPrescription_exists || fallback.isPrescription_exists)
+
+        // Misc
+        result.createdDate = primary.createdDate ?: fallback.createdDate
+        result.createdTime = primary.createdTime ?: fallback.createdTime
+        result.providerUUID = primary.providerUUID ?: fallback.providerUUID
+
+        return result
+    }
+    private fun navigateToDetails(patient: PatientDTO) {
+        Intent(this@MatchResultActivity, PatientDetailActivity2::class.java).apply {
+            putExtra("patientUuid", patient.uuid)
+            putExtra("tag", "searchPatient")
+            putExtra("privacy", "false")
+            startActivity(this)
+            finish()
+
+        }
     }
 
-    override fun onItemClick(selectedItem: Any) {
-        TODO("Not yet implemented")
-    }
 }

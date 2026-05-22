@@ -1,7 +1,11 @@
 package org.intelehealth.app.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import org.intelehealth.app.models.dto.PatientDTO
+import java.io.Serializable
 
+@Parcelize
 data class PatientSearchResult(
 
     var patient: PatientDTO? = null,
@@ -19,7 +23,7 @@ data class PatientSearchResult(
     var localDbResult: Boolean = false,
     var openmrsUuid: String? = null,
     var cruid: String? = null
-) {
+) :  Parcelable{
 
     fun isCertainMatch(): Boolean {
         return score >= 0.95

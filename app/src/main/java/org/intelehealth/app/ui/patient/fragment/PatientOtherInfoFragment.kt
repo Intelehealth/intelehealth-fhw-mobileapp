@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
@@ -29,6 +30,11 @@ import org.intelehealth.app.utilities.extensions.hideErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
+import org.intelehealth.config.presenter.feature.data.FeatureActiveStatusRepository
+import org.intelehealth.config.presenter.feature.factory.FeatureActiveStatusViewModelFactory
+import org.intelehealth.config.presenter.feature.viewmodel.FeatureActiveStatusViewModel
+import org.intelehealth.config.room.ConfigDatabase
+import kotlin.getValue
 
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
@@ -37,13 +43,29 @@ import org.intelehealth.app.utilities.extensions.validateDropDowb
  **/
 class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_other_info) {
     private lateinit var binding: FragmentPatientOtherInfoBinding
-
+    private var featureLoaded = false
+    private var isFhirEnabledLocal = false
+    private val featureStatusViewModel by viewModels<FeatureActiveStatusViewModel> {
+        val db = ConfigDatabase.getInstance(requireContext())
+        val repository = FeatureActiveStatusRepository(db.featureActiveStatusDao())
+        FeatureActiveStatusViewModelFactory(repository)
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPatientOtherInfoBinding.bind(view)
         patientViewModel.updatePatientStage(PatientRegStage.OTHER)
         super.onViewCreated(view, savedInstanceState)
+        setupFeatureFlagObserver()
     }
+    private fun setupFeatureFlagObserver() {
+        featureStatusViewModel.featureStatus.observe(viewLifecycleOwner) { status ->
+            status?.let {
+                isFhirEnabled = it.activeStatusFhir
 
+                Timber.d { "FHIR STATUS => $isFhirEnabled" }
+                onFhirStatusChanged(isFhirEnabled)
+            }
+        }
+    }
     private fun setupSocialCategory() {
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.caste)
         binding.autoCompleteSocialCategory.setAdapter(adapter)
@@ -124,20 +146,23 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
             codeOfDepartment = binding.textInputCodeOfDepartment.text?.toString()
             department = binding.textInputDepartment.text?.toString()
-            val intent = Intent(
-                requireContext(),
-                PatientSearchingActivity::class.java
-            )
 
-            intent.putExtra("patientDTO", patient)
+            if (isFhirEnabled){
+                val intent = Intent(
+                    requireContext(),
+                    PatientSearchingActivity::class.java
+                )
 
-            startActivity(intent)
+                intent.putExtra("patientDTO", patient)
 
-            /*patientViewModel.updatedPatient(this)
-            patientViewModel.savePatient().observe(viewLifecycleOwner) {
-                it ?: return@observe
-                patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
-            }*/
+                startActivity(intent)
+            }else{
+                patientViewModel.updatedPatient(this)
+                patientViewModel.savePatient().observe(viewLifecycleOwner) {
+                    it ?: return@observe
+                    patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+                }
+            }
         }
     }
 

@@ -719,6 +719,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
+                    android:layout_marginTop="@dimen/margin_10"
                     app:layout_constraintTop_toBottomOf="@id/llEmContactPhoneNumber">
 
                     <LinearLayout
@@ -734,6 +735,7 @@
                             android:layout_height="wrap_content"
                             tools:listitem="@layout/filter_patient_item_layout"
                             tools:itemCount="5"
+                            android:layout_marginTop="@dimen/margin_10"
                             android:clipToPadding="false"
                             android:nestedScrollingEnabled="false"
                             android:paddingBottom="@dimen/margin_20" />
@@ -752,6 +754,7 @@
                             android:id="@+id/search_bg_icon"
                             android:layout_width="@dimen/search_icon_bg_dimens"
                             android:layout_height="@dimen/search_icon_bg_dimens"
+                            android:visibility="gone"
                             android:src="@drawable/ic_search_icon_background" />
 
                         <TextView
@@ -763,7 +766,7 @@
                             android:text="@string/search_pat_not_found_txt"
                             android:textAppearance="@style/you_can_add"
                             android:textColor="@null"
-                            android:textSize="@dimen/search_pat_notfound_txtsize"
+                            android:textSize="@dimen/txtsize_patdetail_16sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 

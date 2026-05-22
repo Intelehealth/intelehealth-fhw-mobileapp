@@ -8,6 +8,9 @@ import org.intelehealth.core.shared.ui.viewmodel.BaseViewModel
  * Email : mithun@intelehealth.org
  * Mob   : +919727206702
  **/
-class FeatureActiveStatusViewModel(private val repository: FeatureActiveStatusRepository) : BaseViewModel() {
-    fun fetchFeaturesActiveStatus() = repository.getFeaturesActiveStatus()
+class FeatureActiveStatusViewModel(
+    private val repository: FeatureActiveStatusRepository
+) : BaseViewModel() {
+
+    val featureStatus = repository.getFeaturesActiveStatus()
 }

@@ -92,7 +92,7 @@ class FilterResultAdapter(
                     postalcode=p.patient?.postalcode
                     syncd=false
                 }
-                patientsDAO.insertPatients(listOf(patient))
+                listener.onItemClick(patient)
                 //Toast.makeText(itemView.context, "Clicked"+patient.firstname, Toast.LENGTH_SHORT).show()
             }
 
@@ -109,7 +109,23 @@ class FilterResultAdapter(
             ""
         }
     }
-    fun calculateAge(dob: String): Int {
+    fun calculateAge(dob: String?): Int {
+        if (dob.isNullOrEmpty()) return 0
+
+        return try {
+            val sdf = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+            val birthDate = sdf.parse(dob) ?: return 0
+
+            val today = java.util.Calendar.getInstance().time
+            val diff = today.time - birthDate.time
+
+            (diff / (1000L * 60 * 60 * 24 * 365)).toInt()
+
+        } catch (e: Exception) {
+            0
+        }
+    }
+    fun calculateAges(dob: String): Int {
         val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val birthDate = sdf.parse(dob) ?: return 0
 
