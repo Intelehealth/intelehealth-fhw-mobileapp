@@ -109,7 +109,10 @@ interface PatientVisitDao {
             FROM tbl_visit v2
             WHERE v2.patientuuid = P.uuid
               AND v2.startdate IS NOT NULL
-            ORDER BY substr(v2.startdate, 1, 19) DESC, v2.uuid DESC
+            -- Removed end date to get all visit to check prescription
+            -- AND v2.enddate IS NOT NULL
+            -- ORDER BY substr(v2.enddate,1,19) DESC
+            ORDER BY substr(v2.startdate,1,19) DESC
             LIMIT 1
         )
 
