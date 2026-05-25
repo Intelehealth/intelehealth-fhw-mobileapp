@@ -619,6 +619,7 @@ public class PatientsDAO {
                     familyMemberRes.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                     familyMemberRes.setName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")) + " " +
                             cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                    familyMemberRes.setHeadOfHousehold(isHeadOfHousehold(familyMemberRes.getUuid()));
                     listPatientNames.add(familyMemberRes);
                 }
             }
@@ -1491,6 +1492,66 @@ public class PatientsDAO {
             }
         }
         return houseHoldID;
+    }
+
+    private static final String HOUSEHOLD_ID_ATTRIBUTE_UUID = "10720d1a-1471-431b-be28-285d64767093";
+
+    /**
+     * True when another member in the same household is already marked head (hohRelationship).
+     */
+    public boolean householdHasAnotherHead(String currentPatientUuid) {
+        String householdId;
+        try {
+            householdId = getHouseHoldValue(currentPatientUuid);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return false;
+        }
+        if (householdId == null || householdId.trim().isEmpty()) {
+            return false;
+        }
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadDb();
+        String sql = "SELECT COUNT(DISTINCT pa.patientuuid) AS total "
+                + "FROM tbl_patient_attribute pa "
+                + "INNER JOIN tbl_patient_attribute_master pam "
+                + "    ON pa.person_attribute_type_uuid = pam.uuid "
+                + "INNER JOIN tbl_patient_attribute hh "
+                + "    ON hh.patientuuid = pa.patientuuid "
+                + "   AND hh.person_attribute_type_uuid = ? "
+                + "   AND hh.value = ? "
+                + "   AND hh.voided = '0' "
+                + "WHERE pam.name = '"+PatientAttributesDTO.Column.HOH_RELATIONSHIP.value+"' "
+                + "  AND pa.voided = '0' "
+                + "  AND (TRIM(pa.value) = '-' OR LOWER(TRIM(pa.value)) = 'yes') "
+                + "  AND pa.patientuuid != ?";
+
+        try (Cursor cursor = db.rawQuery(
+                sql,
+                new String[]{HOUSEHOLD_ID_ATTRIBUTE_UUID, householdId, currentPatientUuid}
+        )) {
+            if (cursor.moveToFirst()) {
+                return cursor.getInt(cursor.getColumnIndexOrThrow("total")) > 0;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Baseline stores head-of-household on {@code hohRelationship}: "-" means Yes (head).
+     */
+    public boolean isHeadOfHousehold(String patientUuid) {
+        try {
+            String value = getPatientAttributeByPatientUuid(patientUuid, "hohRelationship");
+            if (value == null) {
+                return false;
+            }
+            String trimmed = value.trim();
+            return "-".equals(trimmed) || "Yes".equalsIgnoreCase(trimmed);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return false;
+        }
     }
 
     public String getPatientAttributeByPatientUuid(String patientUuid, String attributeName) throws DAOException {

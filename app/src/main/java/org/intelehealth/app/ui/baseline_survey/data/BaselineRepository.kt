@@ -55,6 +55,9 @@ class BaselineRepository(
         return DateAndTimeUtils.getAgeInYears(dateOfBirth)
     }
 
+    fun householdHasAnotherHead(patientId: String): Boolean =
+        patientsDAO.householdHasAnotherHead(patientId)
+
     fun syncOnServer() {
         if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
             val syncDAO = SyncDAO()
