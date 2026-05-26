@@ -48,7 +48,7 @@ open class SocketManager @Inject constructor() {
     }
 
     fun connect(url: String?) {
-        Timber.d { "Connect => $url" }
+        Timber.d { "$TAG Connect => $url" }
         if (isConnected()) return
         try {
             url?.let {
@@ -74,16 +74,16 @@ open class SocketManager @Inject constructor() {
                 socket?.on(EVENT_CALL_CANCEL_BY_DR, emitter(EVENT_CALL_CANCEL_BY_DR))
                 socket?.on(EVENT_MSG_DELIVERED, emitter(EVENT_MSG_DELIVERED))
                 socket?.on(EVENT_CALL_TIME_UP, emitter(EVENT_CALL_TIME_UP))
-                socket?.connect() ?: Timber.e { "Socket is null" }
-            } ?: Timber.e { "Socket url must not be empty" }
+                socket?.connect() ?: Timber.e { "$TAG Socket is null" }
+            } ?: Timber.e { "$TAG Socket url must not be empty" }
         } catch (e: SocketIOException) {
-            Timber.e { "Invalid Socket url" }
+            Timber.e { "$TAG Invalid Socket url" }
         }
     }
 
     private fun emitter(event: String) = Emitter.Listener {
         val json: String? = Gson().toJson(it)
-        Timber.e { "$TAG => $event" }
+        Timber.e { "$TAG emitter => $event ${socket?.id()}" }
         if (event == EVENT_CALL_TIME_UP) {
             isCallTimeUp = true
         }
@@ -100,15 +100,15 @@ open class SocketManager @Inject constructor() {
                 };
             }
         } else {
-            if (isCallTimeUp && event == EVENT_CALL_CANCEL_BY_DR) return@Listener
-            invokeListeners(event, it)
+            if (isCallTimeUp || event == EVENT_CALL_CANCEL_BY_DR || event == EVENT_DISCONNECT) //return@Listener
+                invokeListeners(event, it)
 //            emitterListener?.invoke(event)?.call(it)
         }
 //        if (event == EVENT_ALL_USER) Timber.e { "Online users ${Gson().toJson(it)}" }
     }
 
     private fun invokeListeners(event: String, args: Any?) {
-        Timber.d { "No of listener => ${emitterListeners.size}" }
+        Timber.d { "$TAG No of listener => ${emitterListeners.size}" }
         emitterListeners.forEach { it.invoke(event).call(args) }
 
 //        if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_CANCEL_BY_DR) {
@@ -120,8 +120,8 @@ open class SocketManager @Inject constructor() {
         if (jsonArray.length() > 0 && jsonArray.getJSONObject(0).has("nameValuePairs")) {
             val json = jsonArray.getJSONObject(0).getJSONObject("nameValuePairs").toString()
             Gson().fromJson(json, ChatMessage::class.java)?.let {
-                Timber.e { "activeRoomId => $activeRoomId" }
-                Timber.e { "roomId => ${it.roomId}" }
+                Timber.e { "$TAG activeRoomId => $activeRoomId" }
+                Timber.e { "$TAG roomId => ${it.roomId}" }
 
                 activeRoomId?.let { roomId ->
                     if (isUnknownDoctorMessage(it, roomId)) block.invoke(it)
@@ -196,16 +196,18 @@ open class SocketManager @Inject constructor() {
     }
 
     fun emit(event: String, args: Any? = null) {
-        Timber.e { "Socket $event args $args" }
+        Timber.e { "$TAG Socket emit $event args $args" }
         if (isConnected()) {
-            socket?.emit(event, args) ?: Timber.e { "$event fail due to socket not connected " }
-        } else Timber.e { "$event fail due to socket not connected " }
+            socket?.emit(event, args)
+                ?: Timber.e { "$TAG $event fail due to socket not connected " }
+        } else Timber.e { "$TAG $event fail due to socket not connected " }
     }
 
     fun emitLocalEvent(event: String, args: Any? = null) {
-        Timber.e { "emitLocalEvent $event args $args" }
+        Timber.e { "$TAG Socket emitLocalEvent $event args $args" }
         invokeListeners(event, args)
         if (CallNotificationHandler.isAppInBackground() && event == EVENT_CALL_HANG_UP) {
+            Timber.e { "$TAG Emit local event => $event" }
             emit(EVENT_BYE, "app")
         }
     }
@@ -231,7 +233,7 @@ open class SocketManager @Inject constructor() {
         socket?.off(EVENT_MSG_DELIVERED)
         socket?.off(EVENT_CALL_TIME_UP)
         socket?.disconnect()
-        Timber.e { "Socket disconnected => ${socket?.connected()}" }
+        Timber.e { "$TAG Socket disconnected => ${socket?.connected()}" }
     }
 
     fun reconnect() = socket?.connect()
