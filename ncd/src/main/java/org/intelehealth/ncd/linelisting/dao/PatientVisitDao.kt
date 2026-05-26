@@ -102,15 +102,17 @@ interface PatientVisitDao {
             LIMIT 1
         )
 
-    -- latest completed visit (skip non-ended)
+    -- latest visit by start date (same rule as General tab)
     LEFT JOIN tbl_visit V
         ON V.uuid = (
             SELECT v2.uuid
             FROM tbl_visit v2
             WHERE v2.patientuuid = P.uuid
               AND v2.startdate IS NOT NULL
-              AND v2.enddate IS NOT NULL
-            ORDER BY substr(v2.enddate,1,19) DESC
+            -- Removed end date to get all visit to check prescription
+            -- AND v2.enddate IS NOT NULL
+            -- ORDER BY substr(v2.enddate,1,19) DESC
+            ORDER BY substr(v2.startdate,1,19) DESC
             LIMIT 1
         )
 
@@ -551,7 +553,7 @@ interface PatientVisitDao {
                   AND E.encounter_type_uuid = :visitNoteEncounterUuid
             ) THEN 1 
             ELSE 0 
-        END AS isPrescriptionExist,
+        END AS prescriptionExists,
 
         -- visit isncd
         (
@@ -571,7 +573,7 @@ interface PatientVisitDao {
               AND VA2.visit_attribute_type_uuid = :visitSpecialityAttribute
             ORDER BY VA2.rowid DESC
             LIMIT 1
-        ) AS visitSpeciality,
+        ) AS visit_speciality,
 
         -- chief complaint
         (

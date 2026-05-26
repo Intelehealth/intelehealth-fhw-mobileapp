@@ -19,8 +19,16 @@ class PatientVisitDataSource(
         chiefComplaintObsConceptUuid: String
     ): PagingSource<Int, PatientVisitDetails> {
         val safeSearchQuery = searchQuery ?: ""
-        return dao.getAllVisitsPagedNew(attributeTypeUuid,
-            safeSearchQuery, patientPhoneNoAttribute)
+        return dao.getAllVisitsPaged(
+            attributeTypeUuid,
+            visitNoteEncounterUuid,
+            safeSearchQuery,
+            ncdVisitAttribute,
+            patientPhoneNoAttribute,
+            visitSpecialityAttribute,
+            chiefComplaintEncounterConceptUuid,
+            chiefComplaintObsConceptUuid
+        )
     }
 
     suspend fun getAllVisitsForPatient(
