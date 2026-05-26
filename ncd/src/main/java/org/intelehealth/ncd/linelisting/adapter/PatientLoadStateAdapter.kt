@@ -19,7 +19,7 @@ class PatientLoadStateAdapter(
     override fun displayLoadStateAsItem(loadState: LoadState): Boolean {
         return when (loadState) {
             is LoadState.Error -> true
-            is LoadState.Loading -> mainAdapterItemCount() > 0
+            is LoadState.Loading -> true
             is LoadState.NotLoading -> false
         }
     }
@@ -28,12 +28,16 @@ class PatientLoadStateAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(loadState: LoadState) {
-            binding.progressBar.isVisible = loadState is LoadState.Loading
-            binding.errorMsg.isVisible = loadState is LoadState.Error
-            binding.retryButton.isVisible = loadState is LoadState.Error
-            binding.loadMoreText.isVisible = loadState is LoadState.Loading
+            val showLoading = loadState is LoadState.Loading && mainAdapterItemCount() > 0
+            val showError = loadState is LoadState.Error
 
-            if (loadState is LoadState.Error) {
+            binding.root.isVisible = showLoading || showError
+            binding.progressBar.isVisible = showLoading
+            binding.loadMoreText.isVisible = showLoading
+            binding.errorMsg.isVisible = showError
+            binding.retryButton.isVisible = showError
+
+            if (showError) {
                 binding.errorMsg.text = loadState.error.localizedMessage
             }
 

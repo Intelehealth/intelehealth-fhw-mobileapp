@@ -107,12 +107,17 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
         )
         adapter.addLoadStateListener { loadState ->
             val refresh = loadState.refresh
-            val isEmptyList = adapter.itemCount == 0
+            val append = loadState.append
+            if (refresh is LoadState.NotLoading && append.endOfPaginationReached) {
+                binding.noDataLayout.isVisible = adapter.itemCount == 0
+            }
+        }
 
 
-            // Empty label after refresh completes.
-            binding.noDataLayout.isVisible =
-                refresh is LoadState.NotLoading && isEmptyList
+        adapter.addOnPagesUpdatedListener {
+            if (adapter.itemCount > 0) {
+                binding.noDataLayout.isVisible = false
+            }
         }
 
 
