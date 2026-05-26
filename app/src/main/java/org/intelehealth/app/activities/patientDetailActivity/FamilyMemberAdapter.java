@@ -42,7 +42,7 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
         FamilyMemberRes member = listPatientNames.get(position);
         String patientUUID = member.getUuid();
         boolean isHead = member.isHeadOfHousehold();
-        holder.ivHeadOfHousehold.setVisibility(isHead ? View.VISIBLE : View.GONE);
+        holder.ivHeadOfHousehold.setVisibility(isHead ? View.VISIBLE : View.INVISIBLE);
 
         holder.tvFamilyName.setText(member.getName());
         holder.tvOpenMRSID.setText(member.getOpenMRSID());
