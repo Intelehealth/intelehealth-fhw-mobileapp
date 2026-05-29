@@ -451,5 +451,5 @@
     <string name="confirm_discard_changes_content">Are you sure want to discard all the details of this visit?</string>
     <string name="confirm_discard_changes_button_dialog">Discard</string>
     <string name="confirm_continue_changes_button_dialog">Continue</string>-->
-
+    <string name="saved_to_downloads">ফাইল ডাউনলোডে সংরক্ষিত</string>
 </resources>

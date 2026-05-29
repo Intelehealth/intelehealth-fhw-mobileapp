@@ -22,7 +22,7 @@
             android:id="@+id/et_mobileno_info"
             style="@style/edittext_textcolor"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="42dp"
             android:layout_below="@+id/tv_message_info"
             android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/edittext_border"
@@ -32,9 +32,8 @@
             android:inputType="phone"
             android:maxLength="10"
             android:paddingStart="@dimen/fu_margin_start"
-            android:paddingTop="@dimen/fu_margin_start"
             android:paddingEnd="@dimen/margin_16dp"
-            android:paddingBottom="@dimen/margin_10"
+            android:paddingVertical="@dimen/margin_10"
             android:textSize="@dimen/edittext_textsize_16sp" />
 
         <TextView

@@ -693,17 +693,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             while (isActive && !isFinishing) {
                 delay(1000) // Check every 5 second (adjust as needed)
                 // updateUIComponents()
-                Log.d("BP_MONITOR", "bpReadings = $bpReadings")
-                Log.d("BP_MONITOR", "bpReadingsHelper = $bpReadingsHelper")
+                Log.d("FHIR", "bpReadings = $bpReadings")
+                Log.d("FHIR", "bpReadingsHelper = $bpReadingsHelper")
                 // check if bpReadings all  shownDialogOnceForTimer done then not need to refresh again and again
                 // also check last item have false value for shownDialogOnceForTimer
-                if (isAllowedForBottomActionEnable) {
-                    Log.d("FHIR", "All BP readings have shown dialog once. Stopping monitoring.")
-                    bottomActionController?.setBottomActionsEnabledSmooth(
-                        isAllowedForBottomActionEnable
-                    )
-                    continue
-                }
+
 
                 val fragment =
                     supportFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as? QuestionnaireFragment
@@ -718,15 +712,24 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 }
                 lastQuestionnaireResponse?.let {
                     extractTimedBpReadings(it)
-
                     isAllowedForBottomActionEnable = bpReadingsHelper.all { it == null }
                     bottomActionController?.setBottomActionsEnabledSmooth(
                         isAllowedForBottomActionEnable
                     )
 
+                    if (isAllowedForBottomActionEnable) {
+                        Log.d(
+                            "FHIR",
+                            "All BP readings have shown dialog once. Stopping monitoring."
+                        )
+                        bottomActionController?.setBottomActionsEnabledSmooth(
+                            isAllowedForBottomActionEnable
+                        )
 
-                    if (shouldShowAlertFromLatest())
-                        showBpDialogOnceWithTimer()
+                    } else {
+                        if (shouldShowAlertFromLatest())
+                            showBpDialogOnceWithTimer()
+                    }
 
                 }
             }
@@ -773,6 +776,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
             val sbp = extractAnswer(response, sbpId)
             val dbp = extractAnswer(response, dbpId)
+            Log.d("FHIR", "Extracted Reading at index $index: SBP=$sbp, DBP=$dbp")
+
+
 
 
             if (sbp == null || dbp == null) {
@@ -801,13 +807,28 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
                 // check sbp > dbp an also check the range of dbp & sbp
 
-
+                //bpReadingsHelper[index] = null
                 if (bpReadings[index] != null) {
+                    // ned to check the older value and compare with current value if different then need to update the falgs
+                    // check old values are changed or not if changed then only update the timestamp
+
                     bpReadings[index]?.sbp = sbp
                     bpReadings[index]?.dbp = dbp
                     bpReadings[index]?.timestamp = System.currentTimeMillis()
                     bpReadings[index]?.isValidData = true
+
+                    if (bpReadings[index]?.sbp != sbp || bpReadings[index]?.dbp != dbp) {
+                        bpReadings[index]?.shownDialogOnceForTimer = false
+                        isAllowedForBottomActionEnable = false
+                        bpReadingsHelper[index] = bpReadings[index]
+                    }
+
                 } else {
+
+
+                    /*if (bpReadingsHelper[index] != null && bpReadingsHelper[index]?.validationDialogShownOnce!!) {
+                        bpReadingsHelper[index] = null
+                    }*/
                     // create new TimedBpReading object
                     bpReadings[index] = TimedBpReading(
                         sbp = sbp,
@@ -815,8 +836,25 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         timestamp = System.currentTimeMillis(),
                         isValidData = true
                     )
+                    if ((bpReadings[index]?.sbp != sbp || bpReadings[index]?.dbp != dbp) && !bpReadings[index]?.shownDialogOnceForTimer!!) {
+                        isAllowedForBottomActionEnable = false
+                        bpReadingsHelper[index] = bpReadings[index]
+                    }
+
+
                 }
-                bpReadingsHelper[index] = null
+                if(index==2){
+                    bpReadingsHelper[index] = null
+                    if(bpReadings[index]?.shownDialogOnceForTimer == false){
+                        bpReadings[index]?.shownDialogOnceForTimer = true
+                        loadQuestionnaireFragment(
+                            lastQuestionnaireResponseString,
+                            true,
+                            foundIndexedValue!!
+                        )
+                    }
+                }
+
             } else {
                 if (sbp != null && dbp != null) {
                     if (bpReadingsHelper[index] != null) {
@@ -946,15 +984,15 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-    // set 10 sec for debug and 5 min for the release build
+// set 10 sec for debug and 5 min for the release build
 
-    private val FIVE_MINUTES_MILLIS: Long = if(BuildConfig.DEBUG) 1*60*1000 else 5 * 60 * 1000
+    private val FIVE_MINUTES_MILLIS: Long = if (BuildConfig.DEBUG) 1 * 10 * 1000 else 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
-    // create array to keep flag
-    // to check if dialog is shown once
-    // and then show dialog only once
+// create array to keep flag
+// to check if dialog is shown once
+// and then show dialog only once
 
     private fun showBpDialogOnceWithTimer() {
         /* if (isShownOnce0 && foundIndexedValue == 0)
@@ -1005,6 +1043,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
                     override fun onFinish() {
                         if (dialog.isShowing) {
+                            bpReadingsHelper[foundIndexedValue!!]=null
                             dialog.dismiss()
                             hasShownDialog = false
                             isAllowedForBottomActionEnable = false
@@ -1145,7 +1184,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
           }
           return null
       }
-  */
+    */
     fun showConfirmDialog() {
         Log.d("FHIR", "Showing confirm dialog...")
         val alertdialogBuilder = MaterialAlertDialogBuilder(this)
@@ -1195,6 +1234,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         super.onStop()
         monitorJob?.cancel()
     }
+
     override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(setLocale(newBase))
     }
