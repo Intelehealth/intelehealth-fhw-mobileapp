@@ -451,6 +451,51 @@ public class VisitsDAO {
 
     //update - end....
 
+    /** Check whether visit is NCD visit. */
+    private static boolean isNcdVisit(List<VisitAttribute_Speciality> attributes) {
+        if (attributes == null) return false;
+        for (VisitAttribute_Speciality attribute : attributes) {
+            if (attribute != null
+                    && attribute.getAttributeType() != null
+                    && attribute.getAttributeType().equalsIgnoreCase(IS_NCD_VISIT_ATTRIBUTE)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** Unsynced, non-voided encounter rows for this visit. */
+    private static boolean hasUnsyncedEncounterForVisit(SQLiteDatabase db, String visitUuid) {
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) AS cnt FROM tbl_encounter "
+                        + "WHERE visituuid = ? AND voided = '0' "
+                        + "AND (sync = 'false' OR sync = '0') COLLATE NOCASE",
+                new String[]{visitUuid});
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(cursor.getColumnIndexOrThrow("cnt"));
+        }
+        cursor.close();
+        return count > 0;
+    }
+
+    /** Unsynced, non-empty obs linked to this visit. */
+    private static boolean hasUnsyncedNonEmptyObsForVisit(SQLiteDatabase db, String visitUuid) {
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) AS cnt FROM tbl_obs o "
+                        + "INNER JOIN tbl_encounter e ON o.encounteruuid = e.uuid "
+                        + "WHERE e.visituuid = ? AND o.voided = '0' "
+                        + "AND (o.sync = 'false' OR o.sync = '0') COLLATE NOCASE "
+                        + "AND o.value IS NOT NULL AND TRIM(o.value) != ''",
+                new String[]{visitUuid});
+        int count = 0;
+        if (cursor.moveToFirst()) {
+            count = cursor.getInt(cursor.getColumnIndexOrThrow("cnt"));
+        }
+        cursor.close();
+        return count > 0;
+    }
+
     public List<VisitDTO> unsyncedVisits() {
         String patternToCheck = "MMM dd, yyyy hh:mm:ss a";
         String patternTarget = "yyyy-MM-dd'T'HH:mm:ss.SSSZ";
@@ -460,8 +505,12 @@ public class VisitsDAO {
         db.beginTransaction();
         Cursor idCursor = db.rawQuery("SELECT * FROM tbl_visit where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
         VisitDTO visitDTO = new VisitDTO();
+        int emptyAttrCount = 0;
+        int skippedNoEncounterObsCount = 0;
+        int total = 0;
         if (idCursor.getCount() != 0) {
             while (idCursor.moveToNext()) {
+                total++;
                 visitDTO = new VisitDTO();
                 visitDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 visitDTO.setPatientuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("patientuuid")));
@@ -489,20 +538,34 @@ public class VisitsDAO {
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttrs(visitDTO.getUuid());
                 visitDTO.setAttributes(list);
-//                visitDTOList.add(visitDTO);
+                if (list == null || list.isEmpty()) {
+                    emptyAttrCount++;
+                    android.util.Log.d(
+                            "VisitSyncLogs",
+                            "VisitsDAO.unsyncedVisits: visit has NO attributes; it may be skipped in push payload. visitUuid="
+                                    + visitDTO.getUuid()
+                                    + " patientUuid=" + visitDTO.getPatientuuid()
+                                    + " locationUuid=" + visitDTO.getLocationuuid()
+                                    + " enddate=" + visitDTO.getEnddate()
+                    );
+                }
 
-                //adding visit attribute list in the visit data.
-//               List<VisitAttribute_Speciality> list = new ArrayList<>();
-//               VisitAttribute_Speciality speciality = new VisitAttribute_Speciality();
-//               speciality.setAttributeType("3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d");
-//               speciality.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("speciality_value")));
-//               list.add(speciality);
-//
-//
-//                visitDTO.setAttributes(list);
-                //need a return value as list so that I can then add it to visitDTO.setAttributes(list);
-//               list =  fetchVisitAttr_Speciality();
-//               visitDTO.setAttributes(list);
+                // NCD visits: only include when unsynced encounter + non-empty obs exist.
+                if (isNcdVisit(list)) {
+                    boolean hasEncounter = hasUnsyncedEncounterForVisit(db, visitDTO.getUuid());
+                    boolean hasObs = hasUnsyncedNonEmptyObsForVisit(db, visitDTO.getUuid());
+                    if (!hasEncounter || !hasObs) {
+                        skippedNoEncounterObsCount++;
+                        android.util.Log.d(
+                                "VisitSyncLogs",
+                                "VisitsDAO.unsyncedVisits: SKIP NCD visit (missing encounter/obs). visitUuid="
+                                        + visitDTO.getUuid()
+                                        + " hasEncounter=" + hasEncounter
+                                        + " hasObs=" + hasObs
+                        );
+                        continue;
+                    }
+                }
 
                 visitDTOList.add(visitDTO);
             }
@@ -510,6 +573,14 @@ public class VisitsDAO {
         idCursor.close();
         db.setTransactionSuccessful();
         db.endTransaction();
+
+        android.util.Log.d(
+                "VisitSyncLogs",
+                "VisitsDAO.unsyncedVisits: totalUnsyncedVisits=" + total
+                        + " returned=" + visitDTOList.size()
+                        + " emptyAttributeVisits=" + emptyAttrCount
+                        + " skippedNcdNoEncounterObs=" + skippedNoEncounterObsCount
+        );
 
 //        List<VisitAttribute_Speciality> list = new ArrayList<>();
 //        list = fetchVisitAttr_Speciality();
