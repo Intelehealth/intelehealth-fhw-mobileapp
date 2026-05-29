@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,9 +39,13 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
 
     @Override
     public void onBindViewHolder(@NonNull FamilyMemberAdapter.FamilyMemberViewHolder holder, int position) {
-        String patientUUID = listPatientNames.get(position).getUuid();
-        holder.tvFamilyName.setText(listPatientNames.get(position).getName());
-        holder.tvOpenMRSID.setText(listPatientNames.get(position).getOpenMRSID());
+        FamilyMemberRes member = listPatientNames.get(position);
+        String patientUUID = member.getUuid();
+        boolean isHead = member.isHeadOfHousehold();
+        holder.ivHeadOfHousehold.setVisibility(isHead ? View.VISIBLE : View.INVISIBLE);
+
+        holder.tvFamilyName.setText(member.getName());
+        holder.tvOpenMRSID.setText(member.getOpenMRSID());
         holder.tvOpenMRSID.setPaintFlags(holder.tvOpenMRSID.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         holder.tvOpenMRSID.setOnClickListener(view -> {
@@ -57,11 +62,13 @@ public class FamilyMemberAdapter extends RecyclerView.Adapter<FamilyMemberAdapte
     }
 
     public class FamilyMemberViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivHeadOfHousehold;
         private TextView tvFamilyName;
         private TextView tvOpenMRSID;
 
         public FamilyMemberViewHolder(@NonNull View itemView) {
             super(itemView);
+            ivHeadOfHousehold = itemView.findViewById(R.id.iv_head_of_household);
             tvFamilyName = itemView.findViewById(R.id.tv_name);
             tvOpenMRSID = itemView.findViewById(R.id.tv_openMRSID);
         }

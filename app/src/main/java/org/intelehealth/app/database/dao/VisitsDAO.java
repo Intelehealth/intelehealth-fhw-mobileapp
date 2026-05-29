@@ -1616,7 +1616,7 @@ public class VisitsDAO {
         }
 
         queryBuilder.append(" AND attr.value IS NOT NULL AND TRIM(attr.value) <> ''");
-        queryBuilder.append(" AND (speciality.value IS NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)");
+        queryBuilder.append(" AND (speciality.value IS NOT NULL OR speciality.value NOT LIKE '%doctor%' COLLATE NOCASE)");
 
         try (Cursor cursor = db.rawQuery(queryBuilder.toString(), args.toArray(new String[0]))) {
             if (cursor.moveToFirst()) {

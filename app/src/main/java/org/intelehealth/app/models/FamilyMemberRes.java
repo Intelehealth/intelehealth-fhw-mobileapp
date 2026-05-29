@@ -16,6 +16,8 @@ public class FamilyMemberRes {
     @Expose
     private String uuid;
 
+    private boolean headOfHousehold;
+
     public String getOpenMRSID() {
         return openMRSID;
     }
@@ -38,5 +40,13 @@ public class FamilyMemberRes {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean isHeadOfHousehold() {
+        return headOfHousehold;
+    }
+
+    public void setHeadOfHousehold(boolean headOfHousehold) {
+        this.headOfHousehold = headOfHousehold;
     }
 }

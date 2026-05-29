@@ -8,6 +8,7 @@
     android:weightSum="1">
 
     <View
+        android:id="@+id/v_list_bullet"
         android:layout_width="8dp"
         android:layout_height="8dp"
         android:layout_gravity="center_vertical"
@@ -33,21 +34,42 @@
         android:textSize="@dimen/card_content_sub_text_size"
         tools:text="5MTY8-8" />
 
-    <TextView
-        android:id="@+id/tv_name"
+    <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.65"
-        android:ellipsize="end"
-        android:fontFamily="@font/lato_bold"
-        android:includeFontPadding="false"
-        android:lines="1"
-        android:paddingStart="10dp"
-        android:paddingTop="5dp"
-        android:paddingEnd="10dp"
-        android:paddingBottom="5dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="@dimen/card_content_sub_text_size"
-        tools:text="Sagar Shimpi" />
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/lato_bold"
+            android:includeFontPadding="false"
+            android:lines="1"
+            android:paddingStart="10dp"
+            android:layout_toStartOf="@id/iv_head_of_household"
+            android:paddingTop="5dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="5dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="@dimen/card_content_sub_text_size"
+            tools:text="Sagar Shimpi" />
+
+        <ImageView
+            android:id="@+id/iv_head_of_household"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_head_of_household"
+            android:visibility="gone"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            tools:visibility="visible" />
+    </RelativeLayout>
+
+
 
 </LinearLayout>

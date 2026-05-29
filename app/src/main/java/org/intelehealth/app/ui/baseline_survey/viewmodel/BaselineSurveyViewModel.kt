@@ -51,6 +51,9 @@ class BaselineSurveyViewModel(
         return@executeLocalQuery baselineRepository.getPatientAge(patientId)
     }.asLiveData()
 
+    fun householdHasAnotherHead(patientId: String): Boolean =
+        baselineRepository.householdHasAnotherHead(patientId)
+
     fun savePatient() = executeLocalInsertUpdateQuery {
         return@executeLocalInsertUpdateQuery baselineData.value?.let {
             baselineRepository.createPatientAttributes(it, patientId)

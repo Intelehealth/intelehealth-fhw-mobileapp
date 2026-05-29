@@ -42,6 +42,10 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
     private lateinit var binding: FragmentBaselineSurveyOtherBinding
 
     private var isLandlessOptionChosen: Boolean = false
+    private var isHeadOfHouseholdLockedToNo: Boolean = false
+    private var isUpdatingHohSelection: Boolean = false
+    private var isViewInitialized: Boolean = false
+    private var isSavingSurvey: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,9 +64,13 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
     override fun onBaselineDataLoaded(baselineData: Baseline) {
         super.onBaselineDataLoaded(baselineData)
-        fetchOtherBaselineConfig()
+        if (isSavingSurvey) return
         binding.baseline = baselineData
         binding.baselineEditMode = baselineSurveyViewModel.baselineEditMode
+        if (!isViewInitialized) {
+            fetchOtherBaselineConfig()
+            isViewInitialized = true
+        }
     }
 
     private fun fetchOtherBaselineConfig() {
@@ -70,6 +78,7 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         binding.otherConfig = PatientRegFieldsUtils.buildOtherBaselineConfig(it)
         setValues()
         setClickListener()
+        binding.root.post { applyHeadOfHouseholdRestrictionIfNeeded() }
     }
 
     private fun getStaticPatientRegistrationFields() =
@@ -137,17 +146,57 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
         }
     }
 
+    /**
+     * If another household member is already head, force "No" and lock the question.
+     */
+    private fun applyHeadOfHouseholdRestrictionIfNeeded() {
+        val patientId = baselineSurveyViewModel.patientId
+        if (patientId.isBlank()) return
+        if (!baselineSurveyViewModel.householdHasAnotherHead(patientId)) return
+
+        isHeadOfHouseholdLockedToNo = true
+        baselineSurveyData.headOfHousehold = "No"
+        binding.baseline = baselineSurveyData
+
+        isUpdatingHohSelection = true
+        binding.radioHOHNo.isChecked = true
+        isUpdatingHohSelection = false
+        updateHohSections(isHeadOfHousehold = false)
+
+        binding.rgHOHOptions.isEnabled = false
+        binding.radioHOHYes.isEnabled = false
+        binding.radioHOHNo.isEnabled = false
+        binding.llHeadOfHousehold.alpha = 0.6f
+    }
+
+    private fun enforceHeadOfHouseholdLockedState() {
+        if (!isHeadOfHouseholdLockedToNo) return
+        updateHohSections(isHeadOfHousehold = false)
+        binding.rgHOHOptions.isEnabled = false
+        binding.radioHOHYes.isEnabled = false
+        binding.radioHOHNo.isEnabled = false
+        binding.llHeadOfHousehold.alpha = 0.6f
+    }
+
+    private fun updateHohSections(isHeadOfHousehold: Boolean) {
+        binding.llHohYes.visibility = if (isHeadOfHousehold) View.VISIBLE else View.GONE
+        binding.llRelationWithHOH.visibility = if (isHeadOfHousehold) View.GONE else View.VISIBLE
+    }
+
     private fun setupHohCheck() {
         binding.rgHOHOptions.setOnCheckedChangeListener { _, checkedId ->
+            if (isUpdatingHohSelection) return@setOnCheckedChangeListener
+            if (isHeadOfHouseholdLockedToNo) {
+                updateHohSections(isHeadOfHousehold = false)
+                return@setOnCheckedChangeListener
+            }
             when (checkedId) {
                 binding.radioHOHYes.id -> {
-                    binding.llHohYes.visibility = View.VISIBLE
-                    binding.llRelationWithHOH.visibility = View.GONE
+                    updateHohSections(isHeadOfHousehold = true)
                 }
 
                 else -> {
-                    binding.llHohYes.visibility = View.GONE
-                    binding.llRelationWithHOH.visibility = View.VISIBLE
+                    updateHohSections(isHeadOfHousehold = false)
                 }
             }
         }
@@ -300,7 +349,9 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
 
         binding.otherConfig?.let {
             val headOfHousehold =
-                if (it.headOfHousehold!!.isEnabled && it.headOfHousehold!!.isMandatory) {
+                if (isHeadOfHouseholdLockedToNo) {
+                    true
+                } else if (it.headOfHousehold!!.isEnabled && it.headOfHousehold!!.isMandatory) {
                     binding.rgHOHOptions.validate()
                 } else true
 
@@ -621,10 +672,16 @@ class BaselineOtherFragment : BaseFragmentBaselineSurvey(R.layout.fragment_basel
                     .getSelectedDataInEnglishLocale(requireContext())
             }
 
+            isSavingSurvey = true
+            enforceHeadOfHouseholdLockedState()
             baselineSurveyViewModel.updateBaselineData(this)
             baselineSurveyViewModel.savePatient().observe(viewLifecycleOwner) {
-                it ?: return@observe
+                it ?: run {
+                    isSavingSurvey = false
+                    return@observe
+                }
                 baselineSurveyViewModel.handleResponse(it) { result ->
+                    isSavingSurvey = false
                     if (result) {
                         Toast.makeText(
                             requireContext(),
