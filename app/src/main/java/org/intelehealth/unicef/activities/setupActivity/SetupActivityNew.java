@@ -596,6 +596,8 @@ public class SetupActivityNew extends LocalConfigActivity {
         autotvLocations.setEnabled(false);
         isLocationFetched = false;
         String BASE_URL = "https://tele.med.kg/openmrs/ws/rest/v1/";
+        // URLUtil.isValidUrl(BASE_URL) its taking long time to validate.
+        // Since we have hardcoded valid base url, no need of it
         if (/*URLUtil.isValidUrl(BASE_URL) && */!isLocationFetched) {
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);
