@@ -596,12 +596,17 @@ public class SetupActivityNew extends LocalConfigActivity {
         autotvLocations.setEnabled(false);
         isLocationFetched = false;
         String BASE_URL = "https://tele.med.kg/openmrs/ws/rest/v1/";
-        if (URLUtil.isValidUrl(BASE_URL) && !isLocationFetched) {
+        // URLUtil.isValidUrl(BASE_URL) its taking long time to validate.
+        // Since we have hardcoded valid base url, no need of it
+        if (/*URLUtil.isValidUrl(BASE_URL) && */!isLocationFetched) {
             ApiClient.changeApiBaseUrl(BASE_URL);
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);
             try {
                 Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
-                resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Results<Location>>() {
+                resultsObservable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableObserver<Results<Location>>() {
                     @Override
                     public void onNext(Results<Location> locationResults) {
                         if (locationResults.getResults() != null) {
@@ -649,7 +654,10 @@ public class SetupActivityNew extends LocalConfigActivity {
             ApiInterface apiService = ApiClient.createService(ApiInterface.class);
             try {
                 Observable<Results<Location>> resultsObservable = apiService.LOCATION_OBSERVABLE(null);
-                resultsObservable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<Results<Location>>() {
+                resultsObservable
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new DisposableObserver<Results<Location>>() {
                     @Override
                     public void onNext(Results<Location> locationResults) {
                         if (locationResults.getResults() != null) {
