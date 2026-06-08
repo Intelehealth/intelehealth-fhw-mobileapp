@@ -45,6 +45,11 @@ public class VisitsDAO {
         // Now we are having only one visit but for future if we have multiple visit then we can add all the incomplete visit in the list and return the list.
 
         List<String> incompleteVisitList = new ArrayList<>();
+        if (patientUuid == null || patientUuid.trim().isEmpty()) {
+            Logger.logD(TAG, "getIncompleteNcdVisitList aborted: patientUuid is null or empty");
+            return incompleteVisitList;
+        }
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor visitCursor = null;
@@ -1497,6 +1502,9 @@ public class VisitsDAO {
     }
 
     public static boolean isPatientHasOldVisit(String patientUuid) {
+        if (patientUuid == null || patientUuid.trim().isEmpty()) {
+            return false;
+        }
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = ? AND sync = 1";
         Cursor cursor = db.rawQuery(query, new String[]{patientUuid});

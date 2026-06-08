@@ -167,7 +167,7 @@ class UpcomingAppointmentsFragment : Fragment() {
             )
         }
         sessionManager!!.currentLang = resources.configuration.locale.toString()
-        db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
 
         //initialize all the views
         rvUpcomingApp = upcommingView.findViewById(R.id.rv_upcoming_appointments)
@@ -392,7 +392,7 @@ class UpcomingAppointmentsFragment : Fragment() {
 
 
     private fun getPatientProfile(patientUuid: String): String {
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         var imagePath = ""
         val idCursor =
             db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ", arrayOf(patientUuid))

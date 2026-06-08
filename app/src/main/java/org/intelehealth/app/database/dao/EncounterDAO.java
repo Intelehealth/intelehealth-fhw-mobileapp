@@ -533,6 +533,11 @@ public class EncounterDAO {
     }
 
     public boolean isCompletedOrExited(String visitUUID) throws DAOException {
+
+        if (visitUUID == null || visitUUID.trim().isEmpty()) {
+            return false;
+        }
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         try {
@@ -553,6 +558,10 @@ public class EncounterDAO {
     }
 
     public boolean isCompletedExitedSurvey(String visitUUID) throws DAOException {
+        if (visitUUID == null || visitUUID.trim().isEmpty()) {
+            return false;
+        }
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         try {

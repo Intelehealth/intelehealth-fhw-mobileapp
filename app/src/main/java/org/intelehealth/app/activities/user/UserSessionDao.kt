@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.InteleHealthDatabaseHelper
 import org.intelehealth.app.utilities.DeviceUtils
 import org.intelehealth.app.utilities.UuidDictionary
@@ -15,11 +16,11 @@ import java.util.Locale
 
 class UserSessionDao(private val context: Context) {
     private val BATCH_SIZE = DeviceUtils.getOptimalBatchSize();
-    private val dbHelper = InteleHealthDatabaseHelper(context)
+    private val dbHelper = IntelehealthApplication.inteleHealthDatabaseHelper
 
     fun add(userSession: UserSession) {
 
-        val db = dbHelper.writableDatabase
+        val db = dbHelper.writeDb
         val values = ContentValues().apply {
             put("userId", userSession.userId)
             put("startTime", userSession.startTime) // string in "yyyy-MM-dd HH:mm:ss"
@@ -29,12 +30,12 @@ class UserSessionDao(private val context: Context) {
 
         }
         db.insert("tbl_user_session", null, values)
-        db.close()
+        //db.close()
     }
 
     fun getUnsyncedSessions(): List<UserSession> {
         val unsyncedSessions = mutableListOf<UserSession>()
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         val cursor = db.rawQuery("SELECT * FROM tbl_user_session WHERE sync = ? OR sync = ? COLLATE NOCASE", arrayOf("0", "false"))
         if (cursor.moveToFirst()) {
             do {
@@ -56,7 +57,7 @@ class UserSessionDao(private val context: Context) {
     fun updateSessionsSynced(sessionIds: List<Int>) {
         if (sessionIds.isEmpty()) return
 
-        val db = dbHelper.writableDatabase
+        val db = dbHelper.writeDb
         db.beginTransaction()
         try {
             val sql = "UPDATE tbl_user_session SET sync = 1 WHERE sessionId = ?"
@@ -70,14 +71,14 @@ class UserSessionDao(private val context: Context) {
             e.printStackTrace()
         } finally {
             db.endTransaction()
-            db.close()
+            //db.close()
         }
     }
     fun markSessionsAsSynced(sessionIds: List<Int?>) {
-        val db = InteleHealthDatabaseHelper(context).writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         val idsString = sessionIds.joinToString(",")
         db.execSQL("UPDATE tbl_user_session SET sync = 1 WHERE sessionId IN ($idsString)")
-        db.close()
+        //db.close()
     }
 
     fun calculateEndTime(startTime: String, sessionDurationMillis: String): String {
@@ -158,7 +159,7 @@ class UserSessionDao(private val context: Context) {
 
         if (sessions.isEmpty()) return
 
-        val db = dbHelper.writableDatabase
+        val db = dbHelper.writeDb
         val values = ContentValues()
 
         try {
@@ -189,7 +190,7 @@ class UserSessionDao(private val context: Context) {
                 }
             }
         } finally {
-            db.close()
+            //db.close()
         }
     }
 
@@ -241,7 +242,7 @@ class UserSessionDao(private val context: Context) {
    }
 
     fun existsByStartTimeAndDuration(startTime: String, duration: String): Boolean {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         val query = "SELECT COUNT(*) FROM tbl_user_session WHERE startTime = ? AND sessionDuration = ?"
         val cursor = db.rawQuery(query, arrayOf(startTime, duration))
         var exists = false
@@ -253,7 +254,7 @@ class UserSessionDao(private val context: Context) {
     }
 
     fun getAverageSessionDurationByDate(userId: String, date: String): Long {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         val cursor = db.rawQuery(
             """
         SELECT SUM(sessionDuration) 
@@ -265,7 +266,7 @@ class UserSessionDao(private val context: Context) {
 
         val totalMillis = if (cursor.moveToFirst()) cursor.getLong(0) else 0L
         cursor.close()
-        db.close()
+        //db.close()
 
         return totalMillis
     }
@@ -274,7 +275,7 @@ class UserSessionDao(private val context: Context) {
         fromDate: String,
         toDate: String
     ): Long {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
 
         val sql = """
         SELECT
@@ -293,7 +294,7 @@ class UserSessionDao(private val context: Context) {
         }
 
         cursor.close()
-        db.close()
+        //db.close()
 
         return totalDurationMillis
     }

@@ -1019,7 +1019,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         builder.setView(customLayout);
         dialogRefreshInProgress = builder.create();
         dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialogRefreshInProgress.show();
+        SafeDialogUtil.showDialog(context, dialogRefreshInProgress);
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         new Handler().postDelayed(new Runnable() {
@@ -1040,7 +1040,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         builder.setView(customLayout);
         dialogRefreshInProgress = builder.create();
         dialogRefreshInProgress.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialogRefreshInProgress.show();
+        SafeDialogUtil.showDialog(context, dialogRefreshInProgress);
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogRefreshInProgress.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         new Handler().postDelayed(new Runnable() {
@@ -1111,7 +1111,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         dialogLoginSuccess = builder.create();
         dialogLoginSuccess.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg);
-        dialogLoginSuccess.show();
+        SafeDialogUtil.showDialog(context, dialogLoginSuccess);
         int width = getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         dialogLoginSuccess.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
 
@@ -1331,53 +1331,55 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //register receiver for internet check
         networkUtils.callBroadcastReceiver();
 
+        getWindow().getDecorView().post(() -> {
+            if (isFinishing() || isDestroyed()) return;
+            if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
+                SafeDialogUtil.dismissDialog(this, dialogRefreshInProgress);
 
-        if (mIsFirstTimeSyncDone && dialogRefreshInProgress != null && dialogRefreshInProgress.isShowing()) {
-            SafeDialogUtil.dismissDialog(this, dialogRefreshInProgress);
+            }
+            CustomLog.d(TAG, "check11onResume: home");
+            restoreFragmentIfNeeded();
+            //toolbarHome.setVisibility(View.VISIBLE);
+            String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
+                lastSync = StringUtils.en__hi_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
+                lastSync = StringUtils.en__te_dob(lastSync);
+            else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
+                lastSync = StringUtils.en__ta_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
+                lastSync = StringUtils.en__or_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
+                lastSync = StringUtils.en__bn_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
+                lastSync = StringUtils.en__gu_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
+                lastSync = StringUtils.en__mr_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
+                lastSync = StringUtils.en__as_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml"))
+                lastSync = StringUtils.en__ml_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
+                lastSync = StringUtils.en__kn_dob(lastSync);
+            else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
+                lastSync = StringUtils.en__ru_dob(lastSync);
 
-        }
-        CustomLog.d(TAG, "check11onResume: home");
-        loadLastSelectedFragment();
-        //toolbarHome.setVisibility(View.VISIBLE);
-        String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
-        if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
-            lastSync = StringUtils.en__hi_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("te"))
-            lastSync = StringUtils.en__te_dob(lastSync);
-        else if(sessionManager.getAppLanguage().equalsIgnoreCase("ta"))
-            lastSync = StringUtils.en__ta_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("or"))
-            lastSync = StringUtils.en__or_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("bn"))
-            lastSync = StringUtils.en__bn_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("gu"))
-            lastSync = StringUtils.en__gu_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("mr"))
-            lastSync = StringUtils.en__mr_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("as"))
-            lastSync = StringUtils.en__as_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ml"))
-            lastSync = StringUtils.en__ml_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("kn"))
-            lastSync = StringUtils.en__kn_dob(lastSync);
-        else if (sessionManager.getAppLanguage().equalsIgnoreCase("ru"))
-            lastSync = StringUtils.en__ru_dob(lastSync);
+            tvAppLastSync.setText(lastSync);
 
-        tvAppLastSync.setText(lastSync);
+            //ui2.0 update user details in  nav header
+            updateNavHeaderUserDetails();
+            firstLogin = getIntent().getStringExtra("firstLogin");
+            CustomLog.d(TAG, "onCreate: firstLogin : " + firstLogin);
+            if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
+                firstLogin = "";
+                getIntent().putExtra("firstLogin", "");
 
-        //ui2.0 update user details in  nav header
-        updateNavHeaderUserDetails();
-        firstLogin = getIntent().getStringExtra("firstLogin");
-        CustomLog.d(TAG, "onCreate: firstLogin : " + firstLogin);
-        if (sessionManager.getIsLoggedIn() && firstLogin != null && !firstLogin.isEmpty() && firstLogin.equalsIgnoreCase("firstLogin")) {
-            firstLogin = "";
-            getIntent().putExtra("firstLogin", "");
+                showLoggingInDialog();
 
-            showLoggingInDialog();
-
-        }
-        checkAppVer();  //auto-update feature.
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+            }
+            checkAppVer();  //auto-update feature.
+            bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        });
     }
 
     private void checkAppVer() {
@@ -1783,12 +1785,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     //update ui as per internet availability
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        if (isInternetAvailable) {
-            imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
+        if(imageViewIsInternet != null) {
+            if (isInternetAvailable) {
+                imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
 
-        } else {
-            imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
+            } else {
+                imageViewIsInternet.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
 
+            }
         }
     }
 
@@ -1806,6 +1810,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         // get values from saved state
         currentFragment = savedInstanceState.getString("currentFragment");
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void restoreFragmentIfNeeded() {
+        if (isFinishing() || isDestroyed()) return;
+        Fragment existing = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        String tag = getTopFragmentTag();
+        if (existing != null && existing.isAdded() && tag.equals(existing.getTag())) {
+            return; // already showing correct fragment
+        }
+        loadLastSelectedFragment();
     }
 
     private void loadLastSelectedFragment() {

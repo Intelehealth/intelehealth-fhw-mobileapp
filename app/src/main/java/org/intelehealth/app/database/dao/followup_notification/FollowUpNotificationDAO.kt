@@ -77,7 +77,7 @@ class FollowUpNotificationDAO {
 
     fun getFollowupNotification(): List<FollowUpNotificationShData> {
         val notifications: MutableList<FollowUpNotificationShData> = ArrayList()
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.readDb
         try {
             db.query(
                 FollowUpNotificationDbConstant.TABLE,
@@ -133,7 +133,7 @@ class FollowUpNotificationDAO {
      * get followup by id
      */
     fun getFollowupNotificationById(id: String): FollowUpNotificationShData? {
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.readDb
             try {
             db.query(
                 FollowUpNotificationDbConstant.TABLE,

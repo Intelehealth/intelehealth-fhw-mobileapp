@@ -12,7 +12,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     private  val TAG = "MyAchievementsDao"
    /* fun getTodaysDoctorVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
 
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
 
         val queryBuilder = StringBuilder(""" SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid WHERE v.creator = ? AND substr(v.startdate, 1, 10) = ? AND v.sync IN (1, 'TRUE') COLLATE NOCASE """.trimIndent())
@@ -37,7 +37,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
        visitAttributeType: String?,
        todaysDate: String
    ): Int {
-       val db = dbHelper.readableDatabase
+       val db = dbHelper.readDb
        var count = 0
 
        val queryBuilder = StringBuilder(
@@ -83,7 +83,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
 
   /*  fun getTodaysNCDVisitsCount(creatorUuid: String, visitAttributeType: String?, todaysDate: String): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
 
         val queryBuilder = StringBuilder("""SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid WHERE v.creator = ? AND substr(v.startdate, 1, 10) = ? AND v.sync IN (1, 'TRUE') COLLATE NOCASE """.trimIndent())
@@ -107,7 +107,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
 
     fun getPatientsRegisteredTodayByLoggedInHw(creatorUuidValue: String, todaysDate: String): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
         val query = """
     SELECT COUNT(DISTINCT p.uuid) AS total
@@ -147,7 +147,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
 
     fun getHWTodaysActiveStatus(creatorUuid: String, todaysDate: String): Boolean {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         val query = """SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v WHERE v.creator = ? AND v.sync IN (1, 'TRUE') COLLATE NOCASE AND substr(v.startdate, 1, 10) = ?"""
         db.rawQuery(query, arrayOf(creatorUuid, todaysDate)).use { cursor ->
             if (cursor.moveToFirst()) {
@@ -166,7 +166,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     ): Int {
         if (startDate.isBlank() || endDate.isBlank())
             return 0
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
 
         val queryBuilder = StringBuilder(""" SELECT COUNT(DISTINCT v.uuid) AS total FROM tbl_visit v LEFT JOIN tbl_visit_attribute attr ON v.uuid = attr.visit_uuid WHERE v.creator = ? AND substr(v.startdate, 1, 10) BETWEEN ? AND ? AND v.sync IN (1, 'TRUE') COLLATE NOCASE """.trimIndent())
@@ -196,7 +196,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         startDate: String,
         endDate: String
     ): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
         val query = """
         SELECT COUNT(DISTINCT v.uuid) AS total
@@ -222,7 +222,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         startDate: String,
         endDate: String
     ): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
         val convertedAttrDateValue = buildSqlDateConversionExpr("attr_date.value")
 
@@ -265,7 +265,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
 
     fun getHWActiveStatusInDateRange(creatorUuid: String, startDate: String, endDate: String): Int {
 
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
         val query = """
         SELECT COUNT(DISTINCT substr(v.startdate, 1, 10)) AS total
@@ -289,7 +289,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         startDate: String,
         endDate: String
     ): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
         val convertedAttrDateValue = buildSqlDateConversionExpr("attr1.value")
 
@@ -365,7 +365,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
     }
 
     fun getBaselineSurveyRegisteredTodaysPatients(creatorUuid: String, todaysDate: String): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
 
         val query = """
@@ -414,7 +414,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         visitAttributeType: String?,
         todaysDate: String
     ): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
 
         val queryBuilder = StringBuilder(
@@ -488,7 +488,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         if (startDate.isBlank() || endDate.isBlank())
             return 0
 
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
 
         val queryBuilder = StringBuilder(
@@ -538,7 +538,7 @@ class MyAchievementsDao(private val dbHelper: InteleHealthDatabaseHelper) {
         startDate: String,
         endDate: String
     ): Int {
-        val db = dbHelper.readableDatabase
+        val db = dbHelper.readDb
         var count = 0
         val query = """
         SELECT COUNT(DISTINCT v.uuid) AS total
