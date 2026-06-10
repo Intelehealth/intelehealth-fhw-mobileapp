@@ -76,7 +76,7 @@ public class NotificationUtils {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             String channelid = String.valueOf(notificationId);
-            NotificationChannel mChannel = new NotificationChannel(channelid, channelName, importance);
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
