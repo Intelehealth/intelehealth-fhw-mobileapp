@@ -366,9 +366,9 @@ public class PhysicalExam extends Node {
                 CustomLog.i(TAG, "rootStrings: " + rootStrings);
                 if (checkSet)
                     //stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
-                    stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay());
+                    stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay(localeCode));
                     //else stringsList.add(bullet + " " + node.getLanguage());
-                else stringsList.add(bullet + " " + node.findDisplay());
+                else stringsList.add(bullet + " " + node.findDisplay(localeCode));
                 CustomLog.i(TAG, "stringsList: " + stringsList);
                 if (!node.isTerminal()) {
                     //String lang = node.formLanguage();

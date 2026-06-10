@@ -96,4 +96,7 @@ public class UuidDictionary {
     public static final String OBS_TYPE_VITAL_SET = "521ef8a8-ea42-4930-bd24-216e17f8c936";
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";
 
+    public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
+
+
 }

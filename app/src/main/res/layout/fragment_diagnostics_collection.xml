@@ -138,7 +138,7 @@
                                 android:layout_marginTop="@dimen/hamburger_margin_start"
                                 android:background="@drawable/input_edittext_border"
                                 android:hint="@string/uric_acid_eg"
-                                android:inputType="number"
+                                android:inputType="numberDecimal"
                                 android:maxLength="3"
                                 android:padding="@dimen/padding_10"
                                 android:textColorHint="@color/edittext_hint_color"
@@ -197,6 +197,50 @@
                                 android:textColorHint="@color/edittext_hint_color"
                                 android:textSize="14sp" />
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/tv_glusose_fasting_lbl"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="@dimen/margin_16"
+                                    android:lineSpacingExtra="1sp"
+                                    android:text="@string/blood_glucose_fasting"
+                                    android:textColor="@color/gray_3"
+                                    android:textSize="@dimen/common_label_text_size"
+                                    android:textStyle="normal" />
+
+                                <EditText
+                                    android:id="@+id/etv_glucose_fasting"
+                                    style="@style/edittext_textcolor"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/edittext_height_44dp"
+                                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                                    android:background="@drawable/input_edittext_border"
+                                    android:hint="@string/glucose_fasting_eg"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:padding="@dimen/padding_10"
+                                    android:textColorHint="@color/edittext_hint_color"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/tv_glucose_fasting_error"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end"
+                                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                                    android:lineSpacingExtra="0sp"
+                                    android:text="@string/this_field_is_mandatory"
+                                    android:textAppearance="@style/registr_error_msg"
+                                    android:textColor="@color/red"
+                                    android:textSize="@null"
+                                    android:visibility="visible" />
+                            </LinearLayout>
+
                             <TextView
                                 android:id="@+id/tv_glucose_random_error"
                                 android:layout_width="wrap_content"
@@ -220,49 +264,6 @@
                         app:cardElevation="0dp"
                         app:cardUseCompatPadding="true">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/tv_glusose_fasting_lbl"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/margin_16"
-                                android:lineSpacingExtra="1sp"
-                                android:text="@string/blood_glucose_fasting"
-                                android:textColor="@color/gray_3"
-                                android:textSize="@dimen/common_label_text_size"
-                                android:textStyle="normal" />
-
-                            <EditText
-                                android:id="@+id/etv_glucose_fasting"
-                                style="@style/edittext_textcolor"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/edittext_height_44dp"
-                                android:layout_marginTop="@dimen/hamburger_margin_start"
-                                android:background="@drawable/input_edittext_border"
-                                android:hint="@string/glucose_fasting_eg"
-                                android:inputType="number"
-                                android:maxLength="3"
-                                android:padding="@dimen/padding_10"
-                                android:textColorHint="@color/edittext_hint_color"
-                                android:textSize="14sp" />
-
-                            <TextView
-                                android:id="@+id/tv_glucose_fasting_error"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_marginTop="@dimen/hamburger_margin_start"
-                                android:lineSpacingExtra="0sp"
-                                android:text="@string/this_field_is_mandatory"
-                                android:textAppearance="@style/registr_error_msg"
-                                android:textColor="@color/red"
-                                android:textSize="@null"
-                                android:visibility="visible" />
-                        </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView

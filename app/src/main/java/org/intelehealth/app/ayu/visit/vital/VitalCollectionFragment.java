@@ -4,7 +4,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertCtoF;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.convertFtoC;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -17,7 +17,6 @@ import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -34,7 +33,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.codeglo.coyamore.data.PreferenceHelper;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
@@ -53,7 +51,6 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -69,8 +66,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import timber.log.Timber;
 
 public class VitalCollectionFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = VitalCollectionFragment.class.getSimpleName();
@@ -106,8 +101,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     private TextView mBloodGroupTextView;
     private AlertDialog mBloodGroupAlertDialog;
     private View mRootView;
-    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView;
-
+    private CardView mHeightCardView, mWeightCardView, mBMICardView, mSBPCardView, mDBPCardView, mPulseCardView, mTemperatureCardView, mSpo2CardView, mRespiratoryCardView, mBloodGroupCardView, mHbacGroupView;
+    TextView tv_hbac_group_value,tv_hbac_group_lbl;
     private List<PatientVital> mPatientVitalList;
     private VitalPreference vitalPref;
 
@@ -133,8 +128,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
         fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
         fragment.float_ageYear_Month = commonVisitData.getPatientAgeYearMonth();//intent.getFloatExtra("float_ageYear_Month", 0);
-        String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
-        fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
+     /*   String[] temp = String.valueOf(fragment.float_ageYear_Month).split("\\.");
+        fragment.mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);*/
+
+        // ✅ NEW — safe integer arithmetic
+        int years = (int) fragment.float_ageYear_Month;
+        int months = Math.round((fragment.float_ageYear_Month - years) * 100);
+        fragment.mAgeInMonth = (years * 12) + months;
         return fragment;
     }
 
@@ -226,12 +226,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mHeightErrorTextView.setVisibility(View.GONE);
         mWeightErrorTextView.setVisibility(View.GONE);
         mBpSysErrorTextView.setVisibility(View.GONE);
+        mBpSysErrorTextView.setVisibility(View.GONE);
         mBpDiaErrorTextView.setVisibility(View.GONE);
         mSpo2ErrorTextView.setVisibility(View.GONE);
         mPulseErrorTextView.setVisibility(View.GONE);
         mRespErrorTextView.setVisibility(View.GONE);
         mTemperatureErrorTextView.setVisibility(View.GONE);
         mBloodGroupErrorTextView.setVisibility(View.GONE);
+
 
         mHeightEditText.addTextChangedListener(new MyTextWatcher(mHeightEditText));
         mWeightEditText.addTextChangedListener(new MyTextWatcher(mWeightEditText));
@@ -265,7 +267,6 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         mRespiratoryCardView = mRootView.findViewById(R.id.ll_respiratory_rate_container);
 
         mBloodGroupCardView = mRootView.findViewById(R.id.ll_blood_group_container);
-
 
         //showHeightListing();
 
@@ -347,7 +348,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mTemperatureEditText.setText(vitalPref.getTemperature());
             mSpo2EditText.setText(vitalPref.getSpO2());
             mRespEditText.setText(vitalPref.getRespiratoryRate());
-            mBloodGroupErrorTextView.setText(vitalPref.getRespiratoryRate());
+            //mBloodGroupErrorTextView.setText(vitalPref.getRespiratoryRate());
+            mRespEditText.setText(vitalPref.getRespiratoryRate());
+
         }
     }
 
@@ -590,7 +593,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
                         (Double.parseDouble(wightVal) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
                     //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                    mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                    // mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                    mWeightErrorTextView.setText(getString(R.string.weight_error,
+                            AppConstants.getMinWeightByAge(mAgeInMonth),
+                            AppConstants.getMaxWeightByAge(mAgeInMonth))
+                            + " (for age: " + mAgeInMonth + " months)");
                     mWeightErrorTextView.setVisibility(View.VISIBLE);
                     mWeightEditText.requestFocus();
                     mWeightEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);

@@ -715,6 +715,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_7_VISIT_SUMMARY:
+                insertLocalEnFormatQAValues();
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
 //                intent1.putExtra("patientUuid", patientUuid);
 //                intent1.putExtra("visitUuid", visitUuid);
@@ -784,7 +785,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //**********
         insertion = "";
         insertionLocale = "";
+        insertionLocaleEn = "";
         StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilderEn = new StringBuilder();
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
             CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
@@ -793,13 +796,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, "val- " + val);
             String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
             CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
+            String answerInLocaleEn = bullet_arrow + node.findDisplay("en") + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType, "en");
+            CustomLog.v(TAG, "answerInLocaleEn " + answerInLocaleEn);
 
             stringBuilder.append(answerInLocale);
+            stringBuilderEn.append(answerInLocaleEn);
             if (val == null) {
                 return false;
             }
         }
         insertionLocale = stringBuilder.toString();
+        insertionLocaleEn = stringBuilderEn.toString();
 
 
         if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>")) {
@@ -808,6 +815,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject = new JSONObject();
         try {
             insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
+            insertionLocaleEn = VisitUtils.replaceEnglishCommonString(insertionLocaleEn, "en");
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
             if (matchDate != null) {
                 for (String date : matchDate) {
@@ -1094,6 +1102,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     String insertion = "";
     String insertionLocale = "";
+    String insertionLocaleEn ="";
     String insertionWithLocaleJsonString = "";
 
     //new code for the one by one complain data capture
@@ -1304,6 +1313,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     String physicalString;
     String physicalStringLocale = "";
+
+    String physicalStringLocaleEn = "";
+
+
     String physicalStringWithLocaleJsonString = "";
     Boolean complaintConfirmed = false;
     PhysicalExam physicalExamMap;
@@ -1321,7 +1334,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
             //       physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             physicalStringLocale = physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            physicalStringLocaleEn = physicalExamMap.generateFindingsByLocale("en");
+
             CustomLog.v(TAG, "physicalStringLocale -" + physicalStringLocale);
+            CustomLog.v(TAG, "physicalStringLocaleEn" + physicalStringLocaleEn);
+
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
 
@@ -1356,6 +1373,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
+                physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
+
                 if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
                     Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
                     physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
@@ -1387,6 +1406,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private String patientHistory, familyHistory;
     String patientHistoryLocale = "", familyHistoryLocale = "";
+    String patientHistoryLocaleEn = "", familyHistoryLocaleEn = "";
     String patientHistoryWithLocaleJsonString = "", familyHistoryWithLocaleJsonString = "";
 
     /**
@@ -1403,12 +1423,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0, false);
+        patientHistoryLocaleEn = mPastMedicalHistoryNode.formQuestionAnswer(0, false, "en");
+
         while (patientHistory != null && patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
 
-        familyHistory = generateFamilyHistoryAns(false);
+        familyHistory = generateFamilyHistoryAns(false, "en");
         CustomLog.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             DialogUtils dialogUtils = new DialogUtils();
@@ -1424,7 +1446,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             return false;
         }
-        familyHistoryLocale = generateFamilyHistoryAns(true);
+        familyHistoryLocale = generateFamilyHistoryAns(true,sessionManager.getAppLanguage());
+        familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
 
         familyHistory = familyHistory.replaceAll("null.", "");
 
@@ -1444,6 +1467,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject1 = new JSONObject();
         try {
             patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
+            patientHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(patientHistoryLocaleEn, "en");
 
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(patientHistoryLocale);
             if (matchDate != null) {
@@ -1461,6 +1485,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, patientHistoryWithLocaleJsonString);
 
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
+            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
@@ -1495,7 +1520,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
 
-        familyHistory = generateFamilyHistoryAns(false);
+        familyHistory = generateFamilyHistoryAns(false,"en");
         CustomLog.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             DialogUtils dialogUtils = new DialogUtils();
@@ -1511,7 +1536,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             return false;
         }
-        familyHistoryLocale = generateFamilyHistoryAns(true);
+        familyHistoryLocale = generateFamilyHistoryAns(true,sessionManager.getAppLanguage());
+        familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
+
 
         familyHistory = familyHistory.replaceAll("null.", "");
 
@@ -1531,6 +1558,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject1 = new JSONObject();
         try {
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
+            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
@@ -1554,7 +1582,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         return insertDbPastHistory(null, familyHistoryWithLocaleJsonString);
     }
 
-    private String generateFamilyHistoryAns(boolean isLocale) {
+    private String generateFamilyHistoryAns(boolean isLocale, String locale) {
         String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
         for (Node node : mFamilyHistoryNode.getOptionsList()) {
@@ -1568,8 +1596,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false);
-                    String toInsert = (!isLocale ? node.getText() : node.findDisplay()) + " : " + familyString;
+                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false, locale);
+                    String toInsert = (!isLocale ? node.getText() : node.findDisplay(locale)) + " : " + familyString;
                     //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
@@ -2097,5 +2125,38 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         });
 
     }
+
+    private boolean insertLocalEnFormatQAValues() {
+        CustomLog.i(TAG, "insertLocalEnFormatQAValues");
+        boolean isInserted = false;
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+            String insertDbEnValue = "Visit Reason (Chief Complaint):\n"  + insertionLocaleEn + "\n" + "Physical Examination:\n"+ physicalStringLocaleEn + "\n" + "Patient Medical History:\n"+ patientHistoryLocaleEn + "\n"  + "Family History:\n"+ familyHistoryLocaleEn;
+
+            String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
+            ObsDTO obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(insertDbEnValue));
+
+            if (uuidOBS1 != null) {
+                obsDTO.setUuid(uuidOBS1);
+                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        return isInserted;
+    }
+
 
 }
