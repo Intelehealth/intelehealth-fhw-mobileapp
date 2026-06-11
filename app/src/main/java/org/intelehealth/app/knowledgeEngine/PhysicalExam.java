@@ -1,8 +1,7 @@
 package org.intelehealth.app.knowledgeEngine;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -233,7 +232,7 @@ public class PhysicalExam extends Node {
         for (Node selectedNode : selectedNodes) {
             if (selectedNode.getText().equals(split[0])) {
                 parent_node = selectedNode.findDisplay();
-              //  parent_node = selectedNode.getText();
+                //  parent_node = selectedNode.getText();
             }
         }
         return parent_node;
@@ -272,17 +271,17 @@ public class PhysicalExam extends Node {
     }
 
     /**
-     *
      * @param node
      */
-    private void cleanUpTheImages(Node node){
-        if(!node.isDataCaptured()){
+    private void cleanUpTheImages(Node node) {
+        if (!node.isDataCaptured()) {
             for (int i = 0; i < node.getImagePathList().size(); i++) {
                 String image = node.getImagePathList().get(i);
                 getImagePathList().remove(image);
             }
         }
     }
+
     //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
@@ -355,7 +354,8 @@ public class PhysicalExam extends Node {
             Node node = getExamNode(i);
             CustomLog.v(TAG, "getExamNode - " + node.toString());
 
-            String title = getPageTitlesLocale().get(i);
+            //String title = getPageTitlesLocale().get(i);
+            String title = getPageTitlesByLocale(localeCode).get(i);
             CustomLog.v(TAG, "getPageTitlesLocale - " + node.toString());
             String[] split = title.split(" : ");
             String levelOne = split[0];
@@ -431,9 +431,20 @@ public class PhysicalExam extends Node {
         return pageTitlesLocale;
     }
 
+    public List<String> getPageTitlesByLocale(String localeCode) {
+        if(localeCode == null || localeCode.trim().isEmpty()){
+            return pageTitlesLocale;
+        }
+        if (localeCode.equals("en"))
+            return pageTitles;
+        else
+            return pageTitlesLocale;
+    }
+
     public void setPageTitlesLocale(List<String> pageTitlesLocale) {
         this.pageTitlesLocale = pageTitlesLocale;
     }
+
     /*Node Engine - 3.0 support with new UI*/
     public String getEngineVersion() {
         return engineVersionRoot;
