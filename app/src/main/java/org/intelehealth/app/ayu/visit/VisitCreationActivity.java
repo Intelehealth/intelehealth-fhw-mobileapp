@@ -2164,9 +2164,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         boolean isInserted = false;
         try {
             // ✅ In edit mode, restore any ...En vars that were NOT re-saved this session
-            if (mIsEditMode) {
+            /*if (mIsEditMode) {
                 loadExistingAiSummaryIntoEnVars();
-            }
+            }*/
             ObsDAO obsDAO = new ObsDAO();
             String insertDbEnValue = "Visit Reason (Chief Complaint):\n"  + insertionLocaleEn + "\n" + "Physical Examination:\n"+ physicalStringLocaleEn + "\n" + "Patient Medical History:\n"+ patientHistoryLocaleEn + "\n"  + "Family History:\n"+ familyHistoryLocaleEn;
 
