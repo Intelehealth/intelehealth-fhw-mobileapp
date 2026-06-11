@@ -38,6 +38,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
+import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -448,19 +449,19 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "and o.voided = 0 " +
                         "and v.startdate > DATETIME('now', '-4 day') " +
-                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
-                        "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+//                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+//                        "where  attr.visit_uuid = v.uuid " +
+//                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         // ✅ NEW doctor visit condition
-                       /* "and NOT EXISTS ( " +
-                        "    SELECT 1 FROM tbl_visit_attribute dva " +
-                        "    WHERE dva.visit_uuid = v.uuid " +
-                        "    AND dva.value = ? " +
-                        ") " +*/
+                        "and  ( " +
+                        "    SELECT count(*) FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
+                        "    AND dva.value != ? " +
+                        ")  >0 " +
 
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE, /*AppConstants.DOCTOR_NOT_NEEDED,*/String.valueOf(limit), String.valueOf(offset)});
+                new String[]{/*UuidDictionary.IS_NCD_VISIT_ATTRIBUTE*/UuidDictionary.SPECIALITY, AppConstants.DOCTOR_NOT_NEEDED, String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -542,16 +543,16 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                 "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                 "and o.voided = 0 " +
                 "and v.startdate > DATETIME('now', '-4 day') " +
-                "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
-                "where  attr.visit_uuid = v.uuid " +
-                "and attr.visit_attribute_type_uuid = ?) <=0 " +
+//                "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+//                "where  attr.visit_uuid = v.uuid " +
+//                "and attr.visit_attribute_type_uuid = ?) <=0 " +
                 // ✅ NEW doctor visit condition
-//                "and NOT EXISTS ( " +
-//                "    SELECT 1 FROM tbl_visit_attribute dva " +
-//                "    WHERE dva.visit_uuid = v.uuid " +
-//                "    AND dva.value = ? " +
-//                ") " +
-                "group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/});
+                "and  ( " +
+                "    SELECT count(*) FROM tbl_visit_attribute dva " +
+                "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
+                "    AND dva.value != ? " +
+                ")  >0 " +
+                "group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{/*UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,*/ UuidDictionary.SPECIALITY, AppConstants.DOCTOR_NOT_NEEDED});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -628,19 +629,19 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         " and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "and o.voided = 0 " +
                         "and v.startdate <= DATETIME('now', '-4 day') " +
-                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
-                        "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+//                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+//                        "where  attr.visit_uuid = v.uuid " +
+//                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
                         // ✅ NEW doctor visit condition
-                       /* "and NOT EXISTS ( " +
-                        "    SELECT 1 FROM tbl_visit_attribute dva " +
-                        "    WHERE dva.visit_uuid = v.uuid " +
-                        "    AND dva.value = ? " +
-                        ") "+*/
+                        "and  ( " +
+                        "    SELECT count(*) FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
+                        "    AND dva.value != ? " +
+                        ")  >0 " +
                         "group by p.openmrs_id " +
                         "ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,/* AppConstants.DOCTOR_NOT_NEEDED,*/ String.valueOf(limit), String.valueOf(offset)});
+                new String[]{/*UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,*/ UuidDictionary.SPECIALITY, AppConstants.DOCTOR_NOT_NEEDED, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
@@ -717,17 +718,17 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         //" v.enddate is null and" +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +
                         "and v.startdate <= DATETIME('now', '-4 day') " +
-                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
-                        "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
-                        /*"and NOT EXISTS ( " +
-                        "    SELECT 1 FROM tbl_visit_attribute dva " +
-                        "    WHERE dva.visit_uuid = v.uuid " +
-                        "    AND dva.value = ? " +
-                        ") "+*/
+//                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+//                        "where  attr.visit_uuid = v.uuid " +
+//                        "and attr.visit_attribute_type_uuid = ?) <=0 " +
+                        "and  ( " +
+                        "    SELECT count(*) FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
+                        "    AND dva.value != ? " +
+                        ")  >0 " +
                         "group by p.openmrs_id ORDER BY v.startdate DESC",
 
-                new String[]{UuidDictionary.IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/});
+                new String[]{/*UuidDictionary.IS_NCD_VISIT_ATTRIBUTE,*/ UuidDictionary.SPECIALITY, AppConstants.DOCTOR_NOT_NEEDED});
 
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {

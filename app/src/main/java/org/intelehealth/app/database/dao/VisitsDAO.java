@@ -1460,16 +1460,17 @@ public class VisitsDAO {
                         //+ " and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
                         //+ " STRFTIME('%m',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
-                        + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
-                        "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 "//+
+
+//                        + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+//                        "where  attr.visit_uuid = v.uuid " +
+//                        "and attr.visit_attribute_type_uuid = ?) <=0 "+
                         // ✅ NEW doctor visit condition
-//                        "and NOT EXISTS ( " +
-//                        "    SELECT 1 FROM tbl_visit_attribute dva " +
-//                        "    WHERE dva.visit_uuid = v.uuid " +
-//                        "    AND dva.value = ? " +
-//                        ") "
-                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE, IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/  });  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+                        + "and  ( " +
+                        "    SELECT count(*) FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
+                        "    AND dva.value != ? " +
+                        ")  >0"
+                        + " group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{ENCOUNTER_VISIT_COMPLETE, UuidDictionary.SPECIALITY,/*IS_NCD_VISIT_ATTRIBUTE,*/ AppConstants.DOCTOR_NOT_NEEDED  });  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
             else
                 cursor = db.rawQuery("select v.uuid as vuid,p.uuid as puid, p.patient_photo, p.first_name, p.last_name, p.openmrs_id, p.date_of_birth, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid,"
                         + " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" + " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
@@ -1478,21 +1479,108 @@ public class VisitsDAO {
                         //+ "and STRFTIME('%Y',date(substr(o.obsservermodifieddate, 1, 10))) = STRFTIME('%Y',DATE('now')) AND "
                         //+ " STRFTIME('%m',date(substr(o.obsserverm----------------------------------------odifieddate, 1, 10))) = STRFTIME('%m',DATE('now'))"
 //                    +" and v.startdate <= DATETIME('now', '-4 day') "
-                        + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
-                        "where  attr.visit_uuid = v.uuid " +
-                        "and attr.visit_attribute_type_uuid = ?) <=0 "//+
-                        // ✅ NEW doctor visit condition
-                        /*"and NOT EXISTS ( " +
-                        "    SELECT 1 FROM tbl_visit_attribute dva " +
-                        "    WHERE dva.visit_uuid = v.uuid " +
-                        "    AND dva.value = ? " +
-                        ") "*/
 
-                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{IS_NCD_VISIT_ATTRIBUTE/*, AppConstants.DOCTOR_NOT_NEEDED*/});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+//                        + "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
+//                        "where  attr.visit_uuid = v.uuid " +
+//                        "and attr.visit_attribute_type_uuid = ?) <=0 "+
+                        // ✅ NEW doctor visit condition
+                       + "and  ( " +
+                        "    SELECT count(*) FROM tbl_visit_attribute dva " +
+                        "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
+                        "    AND dva.value != ? " +
+                        ")  >0"
+
+                        + "  group by p.openmrs_id ORDER BY v.startdate DESC", new String[]{UuidDictionary.SPECIALITY,/*IS_NCD_VISIT_ATTRIBUTE,*/ AppConstants.DOCTOR_NOT_NEEDED});  // 537bb20d-d09d-4f88-930b-cc45c7d662df -> Diagnosis conceptID.
+
+            /*String sql;
+            String[] args;
+            if (isForReceivedPrescription){
+                sql = "SELECT DISTINCT\n" +
+                        "    p.openmrs_id,\n" +
+                        "    p.uuid AS puid,\n" +
+                        "    p.patient_photo,\n" +
+                        "    p.first_name,\n" +
+                        "    p.last_name,\n" +
+                        "    p.date_of_birth,\n" +
+                        "    p.gender,\n" +
+                        "    v.uuid AS vuid,\n" +
+                        "    v.startdate,\n" +
+                        "    v.patientuuid\n" +
+                        "FROM tbl_patient p\n" +
+                        "INNER JOIN tbl_visit v\n" +
+                        "    ON v.uuid = (\n" +
+                        "        SELECT v2.uuid\n" +
+                        "        FROM tbl_visit v2\n" +
+                        "        WHERE v2.patientuuid = p.uuid\n" +
+                        "        ORDER BY v2.startdate DESC\n" +
+                        "        LIMIT 1\n" +
+                        "    )\n" +
+                        "WHERE EXISTS (\n" +
+                        "    SELECT 1\n" +
+                        "    FROM tbl_encounter e\n" +
+                        "    INNER JOIN tbl_obs o\n" +
+                        "        ON e.uuid = o.encounteruuid\n" +
+                        "    WHERE e.visituuid = v.uuid\n" +
+                        "      AND e.encounter_type_uuid = ?\n" +
+                        "      AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true')\n" +
+                        "      AND o.voided = 0\n" +
+                        ")\n" +
+                        "AND EXISTS (\n" +
+                        "    SELECT 1\n" +
+                        "    FROM tbl_visit_attribute dva\n" +
+                        "    WHERE dva.visit_uuid = v.uuid\n" +
+                        "      AND dva.visit_attribute_type_uuid = ?\n" +
+                        "      AND dva.value <> ?\n" +
+                        ")\n" +
+                        "ORDER BY v.startdate DESC;";
+                args = new String[]{ENCOUNTER_VISIT_COMPLETE, UuidDictionary.SPECIALITY, AppConstants.DOCTOR_NOT_NEEDED};
+            }else{
+                sql = "SELECT DISTINCT\n" +
+                        "    p.openmrs_id,\n" +
+                        "    p.uuid AS puid,\n" +
+                        "    p.first_name,\n" +
+                        "    p.last_name,\n" +
+                        "    p.patient_photo,\n" +
+                        "    p.gender,\n" +
+                        "    p.date_of_birth,\n" +
+                        "    v.uuid AS vuid,\n" +
+                        "    v.startdate\n" +
+                        "FROM tbl_patient p\n" +
+                        "INNER JOIN tbl_visit v\n" +
+                        "    ON v.uuid = (\n" +
+                        "        SELECT v2.uuid\n" +
+                        "        FROM tbl_visit v2\n" +
+                        "        WHERE v2.patientuuid = p.uuid\n" +
+                        "        ORDER BY v2.startdate DESC\n" +
+                        "        LIMIT 1\n" +
+                        "    )\n" +
+                        "WHERE EXISTS (\n" +
+                        "    SELECT 1\n" +
+                        "    FROM tbl_encounter e\n" +
+                        "    INNER JOIN tbl_obs o\n" +
+                        "        ON e.uuid = o.encounteruuid\n" +
+                        "    WHERE e.visituuid = v.uuid\n" +
+                        "      AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true')\n" +
+                        "      AND o.voided = 0\n" +
+                        ")\n" +
+                        "AND EXISTS (\n" +
+                        "    SELECT 1\n" +
+                        "    FROM tbl_visit_attribute dva\n" +
+                        "    WHERE dva.visit_uuid = v.uuid\n" +
+                        "      AND dva.visit_attribute_type_uuid = ?\n" +
+                        "      AND dva.value <> ?\n" +
+                        ")\n" +
+                        "ORDER BY v.startdate DESC;";
+                args = new String[]{UuidDictionary.SPECIALITY, AppConstants.DOCTOR_NOT_NEEDED};
+
+            }
+            cursor = db.rawQuery(sql, args);*/
+
             if (cursor.getCount() > 0 && cursor.moveToFirst()) {
                 do {
 
                     String vuid = cursor.getString(cursor.getColumnIndexOrThrow("vuid"));
+                    String openmrsId = cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id"));
                     // check the visit isDoctorVisit
 
 

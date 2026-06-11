@@ -30,6 +30,8 @@
             android:gravity="center_vertical"
             android:hint="@string/enter_mobile_no"
             android:inputType="phone"
+            android:singleLine="true"
+            android:maxLines="1"
             android:maxLength="10"
             android:paddingStart="@dimen/fu_margin_start"
             android:paddingEnd="@dimen/margin_16dp"

@@ -746,16 +746,23 @@ public class SyncDAO {
                                         CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
-
+                                ObsDAO obsDAO = new ObsDAO();
                                 for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                                     try {
-                                        encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                        String uuid = pushResponseApiCall.getData().getEncounterlist().get(i).getUuid();
+                                        String syncd = pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString();
+                                        encounterDAO.updateEncounterSync(syncd, uuid);
                                         CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                                        // obs of encounters also need to be updated for sync status
+                                        obsDAO.updateSyncForEncounter(syncd, uuid);
+
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                         CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
+                                // update sync status after push
+
 
                                 for (int i = 0; i < pushResponseApiCall.getData().getAppointmentList().size(); i++) {
                                     try {
@@ -893,11 +900,19 @@ public class SyncDAO {
                                         CustomLog.e(TAG, e.getMessage());
                                     }
                                 }
-
+                                ObsDAO obsDAO = new ObsDAO();
                                 for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist().size(); i++) {
                                     try {
-                                        encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                        /*encounterDAO.updateEncounterSync(pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getEncounterlist().get(i).getUuid());
+                                        CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());*/
+
+                                        String uuid = pushResponseApiCall.getData().getEncounterlist().get(i).getUuid();
+                                        String syncd = pushResponseApiCall.getData().getEncounterlist().get(i).getSyncd().toString();
+                                        encounterDAO.updateEncounterSync(syncd, uuid);
                                         CustomLog.d("SYNC", "Encounter Data: " + pushResponseApiCall.getData().getEncounterlist().get(i).toString());
+                                        // obs of encounters also need to be updated for sync status
+                                        obsDAO.updateSyncForEncounter(syncd, uuid);
+
                                     } catch (DAOException e) {
                                         FirebaseCrashlytics.getInstance().recordException(e);
                                         CustomLog.e(TAG, e.getMessage());
@@ -1031,11 +1046,13 @@ public class SyncDAO {
         lastProgress = progress;
         liveDataSync.updateProgress(progress);
     }
+
     // call only before FIRST sync page
     public static void resetProgress() {
         lastProgress = 0;
         liveDataSync.updateProgress(0);
     }
+
     public static SyncProgress getSyncProgress_LiveData() {
         return liveDataSync;
     }

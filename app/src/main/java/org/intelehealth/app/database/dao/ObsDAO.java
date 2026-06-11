@@ -579,4 +579,12 @@ public class ObsDAO {
 
         return visitReason;
     }
+
+    public void updateSyncForEncounter(String syncd, String uuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        ContentValues values = new ContentValues();
+        values.put("sync", syncd);
+        String whereClause = "encounteruuid = ?";
+        db.update("tbl_obs", values, whereClause, new String[]{uuid});
+    }
 }
