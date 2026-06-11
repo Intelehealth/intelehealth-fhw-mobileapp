@@ -815,7 +815,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject = new JSONObject();
         try {
             insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
-            insertionLocaleEn = VisitUtils.replaceEnglishCommonString(insertionLocaleEn, "en");
+            //insertionLocaleEn = VisitUtils.replaceEnglishCommonString(insertionLocaleEn, "en");
+            insertionLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(insertionLocaleEn, sessionManager.getAppLanguage());
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
             if (matchDate != null) {
                 for (String date : matchDate) {
@@ -1373,7 +1374,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
-                physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
+                //physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
+                physicalStringLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(physicalStringLocaleEn, sessionManager.getAppLanguage());
 
                 if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
                     Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
@@ -1467,7 +1469,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject1 = new JSONObject();
         try {
             patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
-            patientHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(patientHistoryLocaleEn, "en");
+            //patientHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(patientHistoryLocaleEn, "en");
+            patientHistoryLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(patientHistoryLocaleEn, sessionManager.getAppLanguage());
 
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(patientHistoryLocale);
             if (matchDate != null) {
@@ -1485,7 +1488,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, patientHistoryWithLocaleJsonString);
 
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
-            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            //familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            familyHistoryLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(familyHistoryLocaleEn, sessionManager.getAppLanguage());
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
@@ -1558,7 +1562,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject1 = new JSONObject();
         try {
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
-            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            //familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            familyHistoryLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(familyHistoryLocaleEn, sessionManager.getAppLanguage());
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
