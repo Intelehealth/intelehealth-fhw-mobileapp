@@ -554,4 +554,29 @@ public class ObsDAO extends BaseDao{
     String tableName() {
        return "tbl_obs";
     }
+
+
+    /**
+     * Fetches the value column for a given conceptUuid + encounterUuid.
+     * Returns null if no matching obs found.
+     */
+    public String getObsValue(String encounterUuid, String conceptUuid) throws DAOException {
+        String value = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT value FROM tbl_obs WHERE conceptuuid = ? AND encounteruuid = ? AND voided = '0' ORDER BY created_date, obsservermodifieddate DESC LIMIT 1",
+                new String[]{conceptUuid, encounterUuid}
+        );
+        try {
+            if (cursor.moveToFirst()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        } finally {
+            cursor.close();
+        }
+        return value;
+    }
 }

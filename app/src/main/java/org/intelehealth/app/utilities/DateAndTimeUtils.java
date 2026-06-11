@@ -68,7 +68,7 @@ public class DateAndTimeUtils {
         // xmonths=10 → "0.10" → Float.parseFloat("0.10") → 0.10f ✅
 // xmonths=7  → "0.07" → Float.parseFloat("0.07") → 0.07f ✅
 // xmonths=1  → "0.01" → Float.parseFloat("0.01") → 0.01f ✅
-        x_format = xyears + "." + String.format("%02d", xmonths);
+        x_format = xyears + "." + String.format(Locale.ENGLISH,"%02d", xmonths);
 
         year_month = Float.parseFloat(x_format);
 

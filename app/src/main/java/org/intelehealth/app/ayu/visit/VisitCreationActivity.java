@@ -1207,6 +1207,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                 isInserted = obsDAO.insertObs(obsDTO);
             }
+
+            // ✅ Edit mode: refresh the consolidated AI summary with updated CC
+            if (isInserted && mIsEditMode) {
+                insertLocalEnFormatQAValues();
+            }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -1304,6 +1309,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             } else {
                 CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                 isInserted = obsDAO.insertObs(obsDTO);
+            }
+
+            // ✅ Edit mode: refresh the consolidated AI summary with updated PE
+            if (isInserted && mIsEditMode) {
+                insertLocalEnFormatQAValues();
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -1674,6 +1684,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                     isInserted = obsDAO.insertObs(obsDTO);
                 }
+            }
+            // ✅ Edit mode: refresh the consolidated AI summary with updated PMH/FH
+            if (isInserted && mIsEditMode) {
+                insertLocalEnFormatQAValues();
             }
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -2135,6 +2149,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         CustomLog.i(TAG, "insertLocalEnFormatQAValues");
         boolean isInserted = false;
         try {
+            // ✅ In edit mode, restore any ...En vars that were NOT re-saved this session
+            if (mIsEditMode) {
+                loadExistingAiSummaryIntoEnVars();
+            }
             ObsDAO obsDAO = new ObsDAO();
             String insertDbEnValue = "Visit Reason (Chief Complaint):\n"  + insertionLocaleEn + "\n" + "Physical Examination:\n"+ physicalStringLocaleEn + "\n" + "Patient Medical History:\n"+ patientHistoryLocaleEn + "\n"  + "Family History:\n"+ familyHistoryLocaleEn;
 
@@ -2162,6 +2180,48 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         return isInserted;
     }
+    /**
+     * Fetches the existing VISIT_AI_SUPPORT_DATA obs value for this visit
+     * and splits it back into the four ...LocaleEn member variables.
+     * Call this at the top of insertLocalEnFormatQAValues() when in edit mode.
+     */
+    private void loadExistingAiSummaryIntoEnVars() {
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+            String raw = obsDAO.getObsValue(encounterAdultIntials, UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars raw => " + raw);
+            if (raw == null || raw.isEmpty()) return;
 
+            final String MARKER_CC  = "Visit Reason (Chief Complaint):\n";
+            final String MARKER_PE  = "\nPhysical Examination:\n";
+            final String MARKER_PMH = "\nPatient Medical History:\n";
+            final String MARKER_FH  = "\nFamily History:\n";
 
+            int idxCC  = raw.indexOf(MARKER_CC);
+            int idxPE  = raw.indexOf(MARKER_PE);
+            int idxPMH = raw.indexOf(MARKER_PMH);
+            int idxFH  = raw.indexOf(MARKER_FH);
+
+            if (idxCC != -1 && idxPE != -1) {
+                insertionLocaleEn = raw.substring(idxCC + MARKER_CC.length(), idxPE).trim();
+            }
+            if (idxPE != -1 && idxPMH != -1) {
+                physicalStringLocaleEn = raw.substring(idxPE + MARKER_PE.length(), idxPMH).trim();
+            }
+            if (idxPMH != -1 && idxFH != -1) {
+                patientHistoryLocaleEn = raw.substring(idxPMH + MARKER_PMH.length(), idxFH).trim();
+            }
+            if (idxFH != -1) {
+                familyHistoryLocaleEn = raw.substring(idxFH + MARKER_FH.length()).trim();
+            }
+
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars CC  => " + insertionLocaleEn);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars PE  => " + physicalStringLocaleEn);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars PMH => " + patientHistoryLocaleEn);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars FH  => " + familyHistoryLocaleEn);
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
 }
