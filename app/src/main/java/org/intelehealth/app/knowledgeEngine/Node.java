@@ -3216,7 +3216,7 @@ public class Node implements Serializable {
 
                     Timber.tag(TAG).i("ipt: nested question %s", question);
                     Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
-                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType, locale);
 
                     Timber.tag(TAG).i("ipt: nested answer %s", temp1);
                     temp1 = temp1.replaceAll("<br/>•", ",");
@@ -3250,7 +3250,7 @@ public class Node implements Serializable {
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay(locale) + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType,locale));
                 }
 
                 if (mOptions.get(i).getOptionsList().size() > 0) {
@@ -3262,7 +3262,7 @@ public class Node implements Serializable {
 
                             if (!mOptions.get(i).isTerminal()) {
                                 stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay(locale) + next_line);
-                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType,locale));
                             }
                         }
                     }
