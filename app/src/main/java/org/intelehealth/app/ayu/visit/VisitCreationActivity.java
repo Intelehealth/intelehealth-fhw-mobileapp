@@ -778,6 +778,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private boolean isSavedVisitReason() {
+        // load the existing AI summary into en vars before saving the new one
+        //
+        if(mIsEditMode){
+            loadExistingAiSummaryIntoEnVars();
+        }
 
         // save to cache
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid, new Gson().toJson(mSelectedComplainList));
@@ -1333,6 +1338,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     PhysicalExam physicalExamMap;
 
     private boolean savePhysicalExamData() {
+        // load the existing AI summary into en vars before saving the new one,
+        if(mIsEditMode){
+            loadExistingAiSummaryIntoEnVars();
+        }
         CustomLog.v(TAG, "savePhysicalExamData");
         // save to cache
         sessionManager.setVisitEditCache(SessionManager.PHY_EXAM + visitUuid, new Gson().toJson(physicalExamMap));
@@ -1425,6 +1434,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
      * @return
      */
     private boolean savePastHistoryData() {
+        // load the existing AI summary into en vars before saving the new one,
+
+        if(mIsEditMode){
+            loadExistingAiSummaryIntoEnVars();
+        }
         //for UNFPA, saving only family history
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             return saveOnlyFamilyHistory();
