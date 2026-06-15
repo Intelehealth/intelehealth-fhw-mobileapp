@@ -97,7 +97,7 @@ class FcmNotification private constructor(val context: Context) {
         private fun getNotification(): Notification {
             val ringToneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             appNotification.notBuilder = notBuilder.apply {
-                setCategory(Notification.CATEGORY_SERVICE)
+                setCategory(Notification.CATEGORY_MESSAGE)
                 setVibrate(longArrayOf(VIBRATE, VIBRATE, VIBRATE, VIBRATE))
                 setAutoCancel(true)
                 setVisibility(NotificationCompat.VISIBILITY_PUBLIC)

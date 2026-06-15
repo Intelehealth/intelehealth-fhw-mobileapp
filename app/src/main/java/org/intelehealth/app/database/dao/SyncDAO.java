@@ -650,12 +650,13 @@ public class SyncDAO {
             for (int i = 0; i < listPatientUUID.size(); i++) {
                 for (int j = 0; j < activePatientList.size(); j++) {
                     if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
-                        CustomLog.e("GET-ID", "" + NotificationID.getID());
+                        int syncNotificationId = NotificationID.getID();
+                        CustomLog.e("GET-ID", "" + syncNotificationId);
                         AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " +
                                         activePatientList.get(j).getFirst_name() + " " +
                                         activePatientList.get(j).getLast_name(),
                                 IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription),
-                                NotificationID.getID(), IntelehealthApplication.getAppContext());
+                                syncNotificationId, IntelehealthApplication.getAppContext());
                         NotificationBroadCast.initialize(IntelehealthApplication.getAppContext());
                     }
                 }
