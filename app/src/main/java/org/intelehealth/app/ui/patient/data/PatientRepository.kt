@@ -7,7 +7,6 @@ import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.database.dao.SyncDAO
-import org.intelehealth.app.models.dto.PatientAttributeTypeMasterDTO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.utilities.NetworkConnection
@@ -28,6 +27,8 @@ class PatientRepository(
 
     fun createNewPatient(patient: PatientDTO): Boolean {
         bindPatientAttributes(patient).let {
+            var syncState = "LOCAL_ONLY"
+            it.crSyncState=syncState;
             val flag = patientsDao.insertPatientToDB(it, it.uuid)
             val flag2 = ImagesDAO().insertPatientProfileImages(it.patientPhoto, it.uuid)
             val flag3 = patientsDao.insertPatientToSyncMpiId(it, it.uuid)

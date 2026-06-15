@@ -122,6 +122,26 @@ public class PatientsDAO extends BaseDao {
         return null; // Return null if no match is found
     }
 
+    public boolean isMpiIdExists(SQLiteDatabase db, String mpiId) {
+        Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) FROM tbl_patient WHERE mpi_id = ?",
+                new String[]{mpiId}
+        );
+
+        boolean exists = false;
+        if (cursor.moveToFirst()) {
+            exists = cursor.getInt(0) > 0;
+        }
+        cursor.close();
+
+        return exists;
+    }
+    public static String normalizePhone(String phone) {
+        if (phone == null) {
+            return "";
+        }
+        return phone.replaceAll("[^0-9]", "");
+    }
     public boolean createPatients(PatientDTO patient, SQLiteDatabase db) throws DAOException {
         boolean isCreated = true;
         ContentValues values = new ContentValues();
@@ -131,6 +151,14 @@ public class PatientsDAO extends BaseDao {
             middleNameSdx = SoundexHelper.encode(patient.getMiddlename());
         }
         String lastNameSdx = SoundexHelper.encode(patient.getLastname());
+        String syncState="SYNCED_PENDING_CR";
+        String mpiId = patient.getMpiId();
+        boolean mpiIdDuplicate=false;
+
+        if (mpiId != null && !mpiId.isEmpty()) {
+            mpiIdDuplicate = isMpiIdExists(db, mpiId);
+            syncState = mpiIdDuplicate ? "CR_DUPLICATE_OF" : "CR_ASSIGNED";
+        }
 
         try {
             values.put("uuid", patient.getUuid());
@@ -140,6 +168,7 @@ public class PatientsDAO extends BaseDao {
             values.put("first_name", patient.getFirstname());
             values.put("middle_name", patient.getMiddlename());
             values.put("last_name", patient.getLastname());
+            values.put("phone_number",patient.getPhonenumber());
 
             values.put("first_name_sdx", firstNameSdx);
             values.put("middle_name_sdx", middleNameSdx);
@@ -147,6 +176,7 @@ public class PatientsDAO extends BaseDao {
 
             values.put("address1", patient.getAddress1());
             values.put("address2", patient.getAddress2());
+            values.put("address6", patient.getAddress6());
             values.put("country", patient.getCountry());
             values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
             values.put("gender", patient.getGender());
@@ -163,6 +193,13 @@ public class PatientsDAO extends BaseDao {
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
+            values.put("cr_sync_state", syncState);
+            if (mpiIdDuplicate){
+                values.put("cr_merge_target_uuid", mpiId);
+            }
+            values.put("cr_last_attempt_at",patient.getCrLastAttemptAt());
+            values.put("cr_sync_attempts",patient.getCrSyncAttemptAt());
+            values.put("phone_normalized", normalizePhone(patient.getPhonenumber()));
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             isCreated = createdRecordsCount > 0;
         } catch (SQLException e) {
@@ -193,6 +230,7 @@ public class PatientsDAO extends BaseDao {
             values.put("phone_number", patientDTO.getPhonenumber());
             values.put("address1", patientDTO.getAddress1());
             values.put("address2", patientDTO.getAddress2());
+            values.put("address6", patientDTO.getAddress6());
             values.put("country", patientDTO.getCountry());
             values.put("date_of_birth", patientDTO.getDateofbirth());
             values.put("gender", patientDTO.getGender());
@@ -210,11 +248,13 @@ public class PatientsDAO extends BaseDao {
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
+            values.put("cr_sync_state", patientDTO.getCrSyncState());
+            values.put("phone_normalized", normalizePhone(patientDTO.getPhonenumber()));
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
                 insertPatientAttributes(patientAttributesList, db);
             Logger.logD("pulldata", "datadumper" + values);
-            createdRecordsCount1 = db.insert("tbl_patient", null, values);
+            createdRecordsCount1 = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             db.setTransactionSuccessful();
             Logger.logD("created records", "created records count" + createdRecordsCount1);
         } catch (SQLException e) {
@@ -314,6 +354,10 @@ public class PatientsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         String whereclause = "Uuid=?";
+        String state="LOCAL_ONLY";
+        if( patientDTO.getCrSyncState()!=null && !patientDTO.getCrSyncState().isEmpty()){
+            state = patientDTO.getCrSyncState();
+        }
         db.beginTransaction();
         try {
 
@@ -350,6 +394,10 @@ public class PatientsDAO extends BaseDao {
             values.put("countyDistrict", patientDTO.getDistrict());
             values.put("address3", patientDTO.getAddress3());
             values.put("address6", patientDTO.getAddress6());
+
+            values.put("cr_sync_state", state);
+            values.put("cr_merge_target_uuid", patientDTO.getCrMergeTargetUuid());
+            values.put("phone_normalized", patientDTO.getPhone_normalized());
 
             values.put("dead", false);
             values.put("sync", false);
@@ -747,6 +795,7 @@ public class PatientsDAO extends BaseDao {
             values.put("openmrs_id", openmrsId);
             values.put("sync", synced);
             values.put("uuid", uuid);
+            values.put("cr_sync_state", "SYNCED_PENDING_CR");
             int i = db.update("tbl_patient", values, whereclause, whereargs);
             Logger.logD("patient", "description" + i);
             db.setTransactionSuccessful();
@@ -762,6 +811,62 @@ public class PatientsDAO extends BaseDao {
         Intent intent = new Intent(IntelehealthApplication.getAppContext(), MyIntentService.class);
         IntelehealthApplication.getAppContext().startService(intent);
         return isUpdated;
+    }
+
+    public List<PatientDTO> localOnlyPatients() throws DAOException {
+        List<PatientDTO> patientDTOList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            Cursor idCursor = db.rawQuery(
+                    "SELECT * FROM tbl_patient WHERE cr_sync_state = ?",
+                    new String[]{"LOCAL_ONLY"}
+            );
+            PatientDTO patientDTO = new PatientDTO();
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    patientDTO = new PatientDTO();
+                    patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                    patientDTO.setSourceId(idCursor.getString(idCursor.getColumnIndexOrThrow("source_id")));
+                    patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
+                    patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
+                    patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
+                    patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
+                    patientDTO.setDateofbirth(idCursor.getString(idCursor.getColumnIndexOrThrow("date_of_birth")));
+                    patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
+                    patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
+                    patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
+                    patientDTO.setCityvillage(idCursor.getString(idCursor.getColumnIndexOrThrow("city_village")));
+                    patientDTO.setAddress1(idCursor.getString(idCursor.getColumnIndexOrThrow("address1")));
+                    patientDTO.setAddress2(idCursor.getString(idCursor.getColumnIndexOrThrow("address2")));
+                    patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
+                    patientDTO.setGuardianType(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_type")));
+                    patientDTO.setGuardianName(idCursor.getString(idCursor.getColumnIndexOrThrow("guardian_name")));
+                    // Patient contatct type
+                    patientDTO.setContactType(idCursor.getString(idCursor.getColumnIndexOrThrow("contact_type")));
+                    patientDTO.setEmContactName(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_name")));
+                    patientDTO.setEmContactNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("em_contact_num")));
+
+                    patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
+                    patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));
+                    patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                    patientDTOList.add(patientDTO);
+
+                }
+            }
+            idCursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+
+        }
+
+        return patientDTOList;
     }
 
     public List<PatientDTO> unsyncedPatients() throws DAOException {
@@ -2221,6 +2326,11 @@ public class PatientsDAO extends BaseDao {
                         )
                 )
         );
+        model.setCrSyncAttemptAt(cursor.getInt(cursor.getColumnIndexOrThrow("cr_sync_attempts")));
+        model.setCrLastAttemptAt(cursor.getString(cursor.getColumnIndexOrThrow("cr_last_attempt_at")));
+        model.setCrReviewPayload(cursor.getString(cursor.getColumnIndexOrThrow("cr_review_payload")));
+        model.setCrMergeTargetUuid(cursor.getString(cursor.getColumnIndexOrThrow("cr_merge_target_uuid")));
+        model.setPhone_normalized(cursor.getString(cursor.getColumnIndexOrThrow("phone_normalized")));
 
         return model;
     }

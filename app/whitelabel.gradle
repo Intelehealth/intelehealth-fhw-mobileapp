@@ -155,6 +155,7 @@ def buildVariantConfigField(clientServer, variant) {
     def liveKitUrl = "LIVE_KIT_URL"
     def socketUrl = "SOCKET_URL"
     def fbRtDb = "FB_RT_INSTANCE"
+    def fhir = "FHIR_URL"
 
     def endPointPropertyFile = file('../endpoint.properties')
     def property = new Properties()
@@ -168,10 +169,12 @@ def buildVariantConfigField(clientServer, variant) {
     def buildLiveKitUrl = property[clientServer + liveKitUrl].toString()
     def buildSocketUrl = property[clientServer + socketUrl].toString()
     def buildFbRtDb = property[clientServer + fbRtDb].toString()
+    def buildFhirRtDb = property[clientServer + fhir].toString()
 
     variant.buildConfigField "String", serverUrl, buildServerUrl
     variant.buildConfigField "String", realTimeFbUrl, buildRealTimeFbUrl
     variant.buildConfigField 'String', liveKitUrl, buildLiveKitUrl
     variant.buildConfigField 'String', socketUrl, buildSocketUrl
     variant.buildConfigField 'String', fbRtDb, buildFbRtDb
+    variant.buildConfigField 'String', fhir, buildFhirRtDb
 }

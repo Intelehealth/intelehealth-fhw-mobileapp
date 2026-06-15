@@ -125,23 +125,7 @@ class FilterResultAdapter(
             0
         }
     }
-    fun calculateAges(dob: String): Int {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val birthDate = sdf.parse(dob) ?: return 0
 
-        val dobCal = Calendar.getInstance()
-        dobCal.time = birthDate
-
-        val today = Calendar.getInstance()
-
-        var age = today.get(Calendar.YEAR) - dobCal.get(Calendar.YEAR)
-
-        if (today.get(Calendar.DAY_OF_YEAR) < dobCal.get(Calendar.DAY_OF_YEAR)) {
-            age--
-        }
-
-        return age
-    }
     override fun onBindViewHolder(holder: FilterResultViewHolder, position: Int) {
         holder.onBindView(patientList[position])
     }

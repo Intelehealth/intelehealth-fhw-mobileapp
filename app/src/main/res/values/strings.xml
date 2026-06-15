@@ -246,6 +246,7 @@
     <string name="occupation">Occupation</string>
     <string name="accept">Accept</string>
     <string name="next">Next</string>
+    <string name="registry_check">Registry Check</string>
     <string name="choose_an_option_for_protocols">Choose an option for protocols</string>
     <string name="respiratory_rate">Respiratory Rate</string>
     <string name="click_to_download_the_images">Click to download the images</string>

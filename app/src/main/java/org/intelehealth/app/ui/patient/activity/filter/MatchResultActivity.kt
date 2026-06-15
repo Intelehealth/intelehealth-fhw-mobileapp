@@ -1,37 +1,31 @@
 package org.intelehealth.app.ui.patient.activity.filter
 
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.util.copy
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.filterPatientActivity.FilterResultAdapter
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
-import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
-import org.intelehealth.app.ui.patient.fragment.PatientOtherInfoFragmentDirections
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 
-class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickListener{
+class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInterface, FilterResultAdapter.AdapterClickListener{
     private var patientDTO= PatientDTO()
 
     private lateinit var filterRecyclerView: RecyclerView
@@ -41,6 +35,10 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
     private lateinit var patientAdapter: FilterResultAdapter
     private lateinit var noneMatch: TextView
     private lateinit var emptyLayout: LinearLayout
+    private lateinit var refresh: ImageView
+    private lateinit var syncAnimator: ObjectAnimator
+    private lateinit var networkUtils: NetworkUtils
+    private var isFhirEnabled = false
 
     protected val patientViewModel by lazy {
         return@lazy PatientViewModelFactory.create(this, this)
@@ -65,9 +63,10 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
                patientList = it.toMutableList()
            }
 
-
+       isFhirEnabled = intent.getBooleanExtra("isFhir",false)
        filterRecyclerView = findViewById(R.id.filter_patient_container)
        noneMatch = findViewById(R.id.noneMatch)
+       refresh = findViewById(R.id.refresh)
        emptyLayout = findViewById(R.id.filter_patient_failed_ll)
        filterRecyclerView.layoutManager =
            LinearLayoutManager(this@MatchResultActivity)
@@ -77,6 +76,9 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
            FilterResultAdapter(patientList, this)
 
        filterRecyclerView.adapter = patientAdapter
+       networkUtils = NetworkUtils(this, this)
+       // initial UI state
+       updateUIForInternetAvailability(networkUtils.isNetworkAvailable(this))
 
         filterSuccessLayout = findViewById(R.id.filter_patient_success_ll)
 
@@ -110,7 +112,7 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
         if (selectedItem is PatientDTO) {
 
             val finalPatient = mergePatient(selectedItem, patientDTO)
-
+          //  Toast.makeText(this, "Check Final"+finalPatient.firstname, Toast.LENGTH_SHORT).show()
             patientViewModel.updatedPatient(finalPatient)
             patientViewModel.savePatient().observe(this) {
                 it ?: return@observe
@@ -150,6 +152,8 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
         result.address1 = primary.address1 ?: fallback.address1
         result.address2 = primary.address2 ?: fallback.address2
         result.address3 = primary.address3 ?: fallback.address3
+        result.address6 = primary.address6?:fallback.address6
+        result.registrationAddressOfHf = primary.registrationAddressOfHf?:fallback.registrationAddressOfHf
         result.cityvillage = primary.cityvillage ?: fallback.cityvillage
         result.stateprovince = primary.stateprovince ?: fallback.stateprovince
         result.postalcode = primary.postalcode ?: fallback.postalcode
@@ -162,6 +166,16 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
         result.caste = primary.caste ?: fallback.caste
         result.occupation = primary.occupation ?: fallback.occupation
         result.nationalID = primary.nationalID ?: fallback.nationalID
+        result.tmhCaseNumber=primary.tmhCaseNumber?:fallback.tmhCaseNumber
+        result.requestId = primary.requestId?:fallback.requestId
+        result.discipline = primary.discipline?:fallback.discipline
+        result.department = primary.department?:fallback.department
+        result.relativePhoneNumber = primary.relativePhoneNumber?:fallback.relativePhoneNumber
+        result.inn = primary.inn?:fallback.inn
+        result.codeOfHealthFacility = primary.codeOfHealthFacility?:fallback.codeOfHealthFacility
+        result.codeOfDepartment = primary.codeOfDepartment?:fallback.codeOfDepartment
+        result.householdLinkingUUIDlinking=primary.householdLinkingUUIDlinking?:fallback.householdLinkingUUIDlinking
+
 
         // Guardian / contact
         result.guardianName = primary.guardianName ?: fallback.guardianName
@@ -194,10 +208,44 @@ class MatchResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickList
             putExtra("patientUuid", patient.uuid)
             putExtra("tag", "searchPatient")
             putExtra("privacy", "false")
+            putExtra("isFhir",isFhirEnabled)
             startActivity(this)
             finish()
 
         }
     }
+    override fun onStart() {
+        super.onStart()
+        networkUtils.callBroadcastReceiver()
+        updateUIForInternetAvailability(
+            networkUtils.isNetworkAvailable(this)
+        )
+    }
+    override fun onStop() {
+        super.onStop()
+        networkUtils.unregisterNetworkReceiver()
+    }
+    fun syncNow(view: View?) {
+        if (NetworkConnection.isOnline(this)) {
+            refresh.clearAnimation()
+            val intent = Intent(
+                this@MatchResultActivity,
+                PatientSearchingActivity::class.java
+            )
 
+            intent.putExtra("patientDTO", patientDTO)
+
+            startActivity(intent)
+
+        }
+    }
+    override fun updateUIForInternetAvailability(isInternetAvailable: Boolean) {
+        runOnUiThread {
+            if (isInternetAvailable) {
+                refresh.setImageResource(R.drawable.ui2_ic_internet_available)
+            } else {
+                refresh.setImageResource(R.drawable.ui2_ic_no_internet)
+            }
+        }
+    }
 }

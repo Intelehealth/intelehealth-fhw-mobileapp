@@ -8,7 +8,13 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
+import android.util.Pair;
 
+import org.intelehealth.app.models.MatchSource;
+import org.intelehealth.app.models.PatientSearchResult;
+import org.intelehealth.app.models.dto.MpiDataDTO;
+import org.intelehealth.app.models.dto.MpiResponseDTO;
+import org.intelehealth.app.models.dto.PatientSearchDTO;
 import org.intelehealth.app.utilities.CustomLog;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -41,13 +47,18 @@ import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
 import org.intelehealth.config.worker.ConfigSyncWorker;
 import org.intelehealth.klivekit.data.PreferenceHelper;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -56,6 +67,9 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
+import okhttp3.Credentials;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -420,7 +434,98 @@ public class SyncDAO {
         //   return null;
         return "";  // avoid null return
     }
+    public void pullMPIID(
+            final Context context,
+            String openmrsId,
+            final PatientDTO patientDTO) {
 
+        sessionManager = new SessionManager(context);
+
+        String encoded = sessionManager.getEncoded();
+
+        final PatientsDAO patientsDAO = new PatientsDAO();
+
+        String url = BuildConfig.SERVER_URL
+                + "/EMR-Middleware/webapi/pull/pulldata/mpi/"
+                + openmrsId + "/"
+                + patientDTO.getUuid();
+
+        Call<MpiResponseDTO> call =
+                AppConstants.apiInterface.RESPONSE_DTO_CALL_FOR_MPI(
+                        url,
+                        "Basic " + encoded);
+
+        call.enqueue(new Callback<MpiResponseDTO>() {
+
+            @Override
+            public void onResponse(
+                    Call<MpiResponseDTO> call,
+                    Response<MpiResponseDTO> response) {
+
+                try {
+
+                    MpiResponseDTO body = response.body();
+
+                    if (response.isSuccessful()
+                            && body != null
+                            && body.getData() != null) {
+
+                        MpiDataDTO data = body.getData();
+
+                        String mpiId = data.getMpi();
+
+                        int attemptNumber =
+                                data.getAttemptNumber();
+
+                        String lastTry =
+                                data.getLastTry();
+
+                        String mpiStatus =
+                                data.getStatus();
+
+                        patientDTO.setMpiId(mpiId);
+                        patientDTO.setCrLastAttemptAt(lastTry);
+                        patientDTO.setCrSyncAttemptAt(attemptNumber);
+
+                        patientsDAO.insertPatients(
+                                Collections.singletonList(patientDTO));
+
+                        Logger.logD(
+                                "MPI_UPDATE",
+                                "MPI: " + mpiId
+                                        + " Status: " + mpiStatus
+                                        + " Attempt: " + attemptNumber
+                                        + " Last Try: " + lastTry+
+                                        "Date OF "+patientDTO.getDateofbirth());
+
+                    } else {
+
+                        Logger.logD(
+                                "MPI_UPDATE",
+                                "Empty response");
+                    }
+
+                } catch (Exception e) {
+
+                    FirebaseCrashlytics.getInstance()
+                            .recordException(e);
+                }
+            }
+
+            @Override
+            public void onFailure(
+                    Call<MpiResponseDTO> call,
+                    Throwable t) {
+
+                FirebaseCrashlytics.getInstance()
+                        .recordException(t);
+
+                Logger.logD(
+                        "MPI_UPDATE",
+                        "Failed : " + t.getMessage());
+            }
+        });
+    }
 
     public boolean pullData(final Context context, String fromActivity, int pageNo) {
 
@@ -779,7 +884,414 @@ public class SyncDAO {
         }
         cursor.close();
     }
+    public Single<List<PatientSearchResult>> checkLocalOnlyData() {
 
+        PatientsDAO patientsDAO = new PatientsDAO();
+
+        try {
+
+            List<PatientDTO> patientDTOList = patientsDAO.localOnlyPatients();
+
+            List<Single<List<PatientSearchResult>>> tasks = new ArrayList<>();
+
+            for (PatientDTO patient : patientDTOList) {
+
+                Single<List<PatientSearchResult>> singleTask =
+                        Single.zip(
+                                fetchOpenMrsPatients(patient),
+                                fetchFhirPatients(patient),
+
+                                (openMrsList, fhirList) -> {
+
+                                    List<PatientSearchResult> merged =
+                                            new ArrayList<>();
+
+                                    merged.addAll(openMrsList);
+                                    merged.addAll(fhirList);
+
+                                    List<PatientSearchResult> finalList =
+                                            removeDuplicates(merged);
+
+                                    for (PatientSearchResult result : finalList) {
+
+                                        if (result.getPatient() != null) {
+                                            patient.setCrReviewPayload(
+                                                    result.getPatient().toString()
+                                            );
+                                        }
+                                    }
+
+                                    return finalList;
+                                }
+                        );
+                patientsDAO.insertPatients(
+                        Collections.singletonList(patient));
+                tasks.add(singleTask);
+            }
+
+            return Single.zip(
+                    tasks,
+                    objects -> {
+
+                        List<PatientSearchResult> finalList =
+                                new ArrayList<>();
+
+                        for (Object obj : objects) {
+
+                            List<PatientSearchResult> list =
+                                    (List<PatientSearchResult>) obj;
+
+                            finalList.addAll(list);
+                        }
+
+                        return finalList;
+                    }
+            );
+
+        } catch (DAOException e) {
+            return Single.error(e);
+        }
+    }
+    private Single<List<PatientSearchResult>> fetchOpenMrsPatients(PatientDTO patient) {
+
+        return searchPatientOpenMRSObservable(
+                patient.getFirstname(),
+                patient.getLastname(),
+                patient.getPhonenumber(),
+                getFullGenderStr(patient.getGender()),
+                patient.getDateofbirth(),
+                0
+        ).map(response -> {
+
+            List<PatientSearchResult> list = new ArrayList<>();
+
+            if (response != null && response.getEntry() != null) {
+
+                for (Object entry : response.getEntry()) {
+
+                    PatientSearchResult result = new PatientSearchResult();
+
+                    result.setSource(MatchSource.OPENMRS);
+                    result.setLocalDbResult(false);
+                    result.setScore(1.0);
+
+                    result.setPatient(patient); // optional mapping
+
+                    list.add(result);
+                }
+            }
+
+            return list;
+        });
+    }
+    private Single<List<PatientSearchResult>> fetchFhirPatients(PatientDTO patient) {
+
+        return searchPatientFhirObservable(
+                patient.getFirstname(),
+                patient.getLastname(),
+                patient.getPhonenumber(),
+                getFullGenderStr(patient.getGender()),
+                patient.getDateofbirth(),
+                0
+        ).map(response -> {
+
+            List<PatientSearchResult> list = new ArrayList<>();
+
+            if (response != null && response.getEntry() != null) {
+
+                for (Object entry : response.getEntry()) {
+
+                    PatientSearchResult result = new PatientSearchResult();
+
+                    result.setSource(MatchSource.FHIR);
+                    result.setLocalDbResult(false);
+                    result.setScore(0.8);
+
+                    result.setPatient(patient); // optional mapping
+
+                    list.add(result);
+                }
+            }
+
+            return list;
+        });
+    }
+    private List<PatientSearchResult> removeDuplicates(List<PatientSearchResult> list) {
+
+        Map<String, PatientSearchResult> map = new LinkedHashMap<>();
+
+        for (PatientSearchResult item : list) {
+
+            PatientDTO patient = item.getPatient();
+
+            String key = null;
+
+            if (patient != null && patient.getMpiId() != null && !patient.getMpiId().isEmpty()) {
+                key = patient.getMpiId();
+            } else if (patient != null) {
+                key = patient.getUuid();
+            }
+
+            if (key != null) {
+                map.putIfAbsent(key, item);
+            }
+        }
+
+        return new ArrayList<>(map.values());
+    }
+
+    private String getFullGenderStr(String gender) {
+
+        if (gender == null) {
+            return "Other";
+        }
+
+        switch (gender.toLowerCase(Locale.getDefault())) {
+            case "f":
+                return "Female";
+
+            case "m":
+                return "Male";
+
+            default:
+                return "Other";
+        }
+    }
+    private Single<PatientSearchDTO> searchPatientOpenMRSObservable(
+            String firstName,
+            String lastName,
+            String phone,
+            String gender,
+            String dob,
+            int pageNo
+    ) {
+
+        Log.e("TEST", "FUNCTION ENTERED");
+
+        int offset = pageNo * 50;
+
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+
+            JSONArray parameterArray = new JSONArray();
+
+            // resource parameter
+            JSONObject resourceObject = new JSONObject();
+            resourceObject.put("resourceType", "Patient");
+
+            // name
+            JSONArray nameArray = new JSONArray();
+            JSONObject nameObject = new JSONObject();
+
+            if (lastName != null && !lastName.isEmpty()) {
+                nameObject.put("family", lastName);
+            }
+
+            JSONArray givenArray = new JSONArray();
+            givenArray.put(firstName);
+
+            nameObject.put("given", givenArray);
+            nameArray.put(nameObject);
+
+            resourceObject.put("name", nameArray);
+
+            // gender
+            if (gender != null && !gender.isEmpty()) {
+                resourceObject.put("gender", gender.toLowerCase());
+            }
+
+            // dob
+            if (dob != null && !dob.isEmpty()) {
+                resourceObject.put("birthDate", dob);
+            }
+
+            // telecom
+            JSONArray telecomArray = new JSONArray();
+            JSONObject telecomObject = new JSONObject();
+
+            telecomObject.put("system", "phone");
+            telecomObject.put("value", phone);
+
+            telecomArray.put(telecomObject);
+
+            resourceObject.put("telecom", telecomArray);
+
+            JSONObject resourceParam = new JSONObject();
+            resourceParam.put("name", "resource");
+            resourceParam.put("resource", resourceObject);
+
+            parameterArray.put(resourceParam);
+
+            // resourceType
+            JSONObject resourceTypeParam = new JSONObject();
+            resourceTypeParam.put("name", "resourceType");
+            resourceTypeParam.put("valueString", "Patient");
+
+            parameterArray.put(resourceTypeParam);
+
+            // count
+            JSONObject countParam = new JSONObject();
+            countParam.put("name", "count");
+            countParam.put("valueInteger", 50);
+
+            parameterArray.put(countParam);
+
+            // offset
+            JSONObject offsetParam = new JSONObject();
+            offsetParam.put("name", "offset");
+            offsetParam.put("valueInteger", offset);
+
+            parameterArray.put(offsetParam);
+
+            // onlyCertainMatches
+            JSONObject matchParam = new JSONObject();
+            matchParam.put("name", "onlyCertainMatches");
+            matchParam.put("valueBoolean", false);
+
+            parameterArray.put(matchParam);
+
+            jsonObject.put("resourceType", "Parameters");
+            jsonObject.put("parameter", parameterArray);
+
+            RequestBody requestBody = RequestBody.create(
+                    MediaType.parse("application/json"),
+                    jsonObject.toString()
+            );
+
+            String auth = Credentials.basic(
+                    "admin",
+                    "apple@1Mango"
+            );
+
+            return AppConstants.apiInterface.searchPatientOpenMRS(
+                    auth,
+                    requestBody
+            );
+
+        } catch (Exception e) {
+            return Single.error(e);
+        }
+    }
+    private Single<PatientSearchDTO> searchPatientFhirObservable(
+            String firstName,
+            String lastName,
+            String phone,
+            String gender,
+            String dob,
+            int pageNo
+    ) {
+
+        Log.e("TEST", "FHIR FUNCTION ENTERED");
+
+        int offset = pageNo * 50;
+
+        try {
+
+            JSONObject jsonObject = new JSONObject();
+            JSONArray parameterArray = new JSONArray();
+
+            // resource
+            JSONObject resourceObject = new JSONObject();
+            resourceObject.put("resourceType", "Patient");
+
+            // name
+            JSONArray nameArray = new JSONArray();
+            JSONObject nameObject = new JSONObject();
+
+            if (lastName != null && !lastName.isEmpty()) {
+                nameObject.put("family", lastName);
+            }
+
+            if (firstName != null && !firstName.isEmpty()) {
+                JSONArray givenArray = new JSONArray();
+                givenArray.put(firstName);
+                nameObject.put("given", givenArray);
+            }
+
+            nameArray.put(nameObject);
+            resourceObject.put("name", nameArray);
+
+            // gender
+            if (gender != null && !gender.isEmpty()) {
+                resourceObject.put("gender", gender.toLowerCase());
+            }
+
+            // dob
+            if (dob != null && !dob.isEmpty()) {
+                resourceObject.put("birthDate", dob);
+            }
+
+            // telecom
+            if (phone != null && !phone.isEmpty()) {
+
+                JSONArray telecomArray = new JSONArray();
+                JSONObject telecomObject = new JSONObject();
+
+                telecomObject.put("system", "phone");
+                telecomObject.put("value", phone);
+
+                telecomArray.put(telecomObject);
+                resourceObject.put("telecom", telecomArray);
+            }
+
+            // resource param
+            JSONObject resourceParam = new JSONObject();
+            resourceParam.put("name", "resource");
+            resourceParam.put("resource", resourceObject);
+
+            parameterArray.put(resourceParam);
+
+            // resourceType
+            JSONObject resourceTypeParam = new JSONObject();
+            resourceTypeParam.put("name", "resourceType");
+            resourceTypeParam.put("valueString", "Patient");
+
+            parameterArray.put(resourceTypeParam);
+
+            // count
+            JSONObject countParam = new JSONObject();
+            countParam.put("name", "count");
+            countParam.put("valueInteger", 50);
+
+            parameterArray.put(countParam);
+
+            // offset
+            JSONObject offsetParam = new JSONObject();
+            offsetParam.put("name", "offset");
+            offsetParam.put("valueInteger", offset);
+
+            parameterArray.put(offsetParam);
+
+            // onlyCertainMatches
+            JSONObject matchParam = new JSONObject();
+            matchParam.put("name", "onlyCertainMatches");
+            matchParam.put("valueBoolean", false);
+
+            parameterArray.put(matchParam);
+
+            jsonObject.put("resourceType", "Parameters");
+            jsonObject.put("parameter", parameterArray);
+
+            RequestBody requestBody = RequestBody.create(
+                    MediaType.parse("application/json"),
+                    jsonObject.toString()
+            );
+
+            String auth = Credentials.basic("admin", "apple@1Mango");
+
+            String url = BuildConfig.FHIR_URL + "/$mdm-match";
+
+            return AppConstants.apiInterface.searchPatientFhir(
+                    url,
+                    auth,
+                    requestBody
+            );
+
+        } catch (Exception e) {
+            return Single.error(e);
+        }
+    }
     public boolean pushDataApi() {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();

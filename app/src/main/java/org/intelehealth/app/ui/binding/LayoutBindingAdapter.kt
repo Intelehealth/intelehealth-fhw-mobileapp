@@ -20,11 +20,20 @@ import org.intelehealth.config.room.entity.PatientRegistrationFields
 
 @BindingAdapter("gender")
 fun genderViewBinding(btnToggleGroup: MaterialButtonToggleGroup?, gender: String?) {
-    if (btnToggleGroup != null && gender != null) {
+    btnToggleGroup ?: return
+
+    when (gender?.uppercase()) {
+        "M" -> btnToggleGroup.check(R.id.btnMale)
+        "F" -> btnToggleGroup.check(R.id.btnFemale)
+        "O" -> btnToggleGroup.check(R.id.btnOther)
+        else -> btnToggleGroup.clearChecked()
+    }
+
+    /*if (btnToggleGroup != null && gender != null) {
         if (gender.equals("M", ignoreCase = true)) btnToggleGroup.check(R.id.btnMale)
         else if (gender.equals("F", ignoreCase = true)) btnToggleGroup.check(R.id.btnFemale)
         else btnToggleGroup.check(R.id.btnOther)
-    }
+    }*/
 }
 
 @BindingAdapter("minNumber")

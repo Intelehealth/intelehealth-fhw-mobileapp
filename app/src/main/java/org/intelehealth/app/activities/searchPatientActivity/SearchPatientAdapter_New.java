@@ -96,7 +96,6 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 args.putSerializable("patientDTO", (Serializable) patientDTO);
                 intent.putExtra("BUNDLE", args);
                 intent.putExtra("patientUuid", patientDTO.getUuid());
-                intent.putExtra("mpi_id", patientDTO.getMpiId());
                 context.startActivity(intent);
             }
         });

@@ -118,6 +118,24 @@ public class PatientDTO implements Serializable {
     @SerializedName("address6")
     @Expose
     private String address6;
+    @SerializedName("cr_sync_state")
+    @Expose
+    private String crSyncState;
+    @SerializedName("phone_normalized")
+    @Expose
+    private String phone_normalized;
+    @SerializedName("cr_sync_attempt_at")
+    @Expose
+    private Integer crSyncAttemptAt;
+    @SerializedName("cr_last_attempt_at")
+    @Expose
+    private String crLastAttemptAt;
+    @SerializedName("cr_review_payload")
+    @Expose
+    private String crReviewPayload;
+    @SerializedName("cr_merge_target_uuid")
+    @Expose
+    private String crMergeTargetUuid;
     private Long createdTime;
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
@@ -683,4 +701,16 @@ public class PatientDTO implements Serializable {
     @SerializedName("address3")
     @Expose
     private String address3;
+    public String getPhone_normalized(){return phone_normalized;}
+    public void setPhone_normalized(String phone_normalized){this.phone_normalized=phone_normalized;}
+    public String getCrSyncState(){return crSyncState;}
+    public void setCrSyncState(String syncState){this.crSyncState=syncState;}
+    public Integer getCrSyncAttemptAt(){return crSyncAttemptAt;}
+    public void setCrSyncAttemptAt(Integer crSyncAttemptAt){this.crSyncAttemptAt=crSyncAttemptAt;}
+    public String getCrLastAttemptAt(){return crLastAttemptAt;}
+    public void setCrLastAttemptAt(String crLastAttemptAt){this.crLastAttemptAt=crLastAttemptAt;}
+    public String getCrReviewPayload(){return crReviewPayload;}
+    public void setCrReviewPayload(String crReviewPayload){this.crReviewPayload=this.crReviewPayload;}
+    public String getCrMergeTargetUuid(){return crMergeTargetUuid;}
+    public void setCrMergeTargetUuid(String crMergeTargetUuid){this.crMergeTargetUuid=crMergeTargetUuid;}
 }

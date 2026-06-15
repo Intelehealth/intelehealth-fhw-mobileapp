@@ -74,6 +74,7 @@ import org.intelehealth.app.activities.identificationActivity.model.Block;
 import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
 import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.identificationActivity.model.Village;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.dto.PatientAttributesDTO;
 
 import org.intelehealth.app.models.FamilyMemberRes;
@@ -237,11 +238,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private ImageView refresh, cancelbtn;
     private NetworkUtils networkUtils;
     String tag = "";
-    String mpi_id = "";
     RegFieldViewModel regFieldViewModel;
 
     List<PatientRegistrationFields> patientAllFields;
     private ActivityPatientDetail2Binding binding;
+    private boolean isFhirEnabled ;
+    private boolean hasTriggeredSync = false;
+    SyncDAO syncDAO = new SyncDAO();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -279,23 +282,26 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         Intent intent = getIntent();
         if (intent != null) {
-          mpi_id= intent.getStringExtra("mpi_id");
+            isFhirEnabled = intent.getBooleanExtra("isFhir",false);
             tag = intent.getStringExtra("tag");
             if (intent.hasExtra("BUNDLE")) {
                 Bundle args = intent.getBundleExtra("BUNDLE");
                 patientDTO = (PatientDTO) args.getSerializable("patientDTO");
-                patientDTO.setMpiId(intent.getStringExtra("mpi_id"));
             } else {
                 patientDTO = new PatientDTO();
                 patientDTO.setUuid(intent.getStringExtra("patientUuid"));
-                patientDTO.setMpiId(intent.getStringExtra("mpi_id"));
             }
             privacy_value_selected = intent.getStringExtra("privacy"); //intent value from IdentificationActivity.
         }
 
         initUI();
+        if (isFhirEnabled &&
+                NetworkConnection.isOnline(this)
+                ) {
 
-
+            new SyncUtils().syncBackground();
+            setDisplay(patientDTO.getUuid());
+        }
         personal_edit.setOnClickListener(v -> {
             PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
@@ -1390,15 +1396,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientDTO = new PatientDTO();
         String patientSelection = "uuid = ?";
         String[] patientArgs = {dataString};
-        String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
+        String[] patientColumns = {"uuid", "openmrs_id","mpi_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict",
+                "cr_sync_state","cr_sync_attempts","cr_last_attempt_at","cr_review_payload","cr_merge_target_uuid","phone_normalized"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
                 patientDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
                 patientDTO.setOpenmrsId(idCursor.getString(idCursor.getColumnIndexOrThrow("openmrs_id")));
+                patientDTO.setMpiId(idCursor.getString(idCursor.getColumnIndexOrThrow("mpi_id")));
                 patientDTO.setFirstname(idCursor.getString(idCursor.getColumnIndexOrThrow("first_name")));
                 patientDTO.setMiddlename(idCursor.getString(idCursor.getColumnIndexOrThrow("middle_name")));
                 patientDTO.setLastname(idCursor.getString(idCursor.getColumnIndexOrThrow("last_name")));
@@ -1423,6 +1431,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));//block
                 patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));//household number
                 patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                patientDTO.setCrSyncState(idCursor.getString(idCursor.getColumnIndexOrThrow("cr_sync_state")));
+                patientDTO.setCrSyncAttemptAt(idCursor.getInt(idCursor.getColumnIndexOrThrow("cr_sync_attempts")));
+                patientDTO.setCrLastAttemptAt(idCursor.getString(idCursor.getColumnIndexOrThrow("cr_last_attempt_at")));
+                patientDTO.setCrReviewPayload(idCursor.getString(idCursor.getColumnIndexOrThrow("cr_review_payload")));
+                patientDTO.setCrMergeTargetUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("cr_merge_target_uuid")));
+                patientDTO.setPhone_normalized(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_normalized")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -1619,9 +1633,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             openmrsID_txt.setText(getString(R.string.patient_not_registered));
         }
-        if (mpi_id != null && !mpi_id.isEmpty()) {
+        if (patientDTO.getMpiId() != null && !patientDTO.getMpiId().isEmpty()) {
             mpiID_tex.setVisibility(View.VISIBLE);
-            mpiID_tex.setText("MPI ID: " + mpi_id);
+            mpiID_tex.setText("MPI ID: " + patientDTO.getMpiId());
         } else {
             mpiID_tex.setVisibility(View.GONE);
         }
@@ -1631,7 +1645,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         CustomLog.e(TAG, "patientDTO - " + new Gson().toJson(patientDTO));
         int mAgeYears = -1, mAgeMonths = 0, mAgeDays = 0;
         // setting age
-        if (patientDTO.getDateofbirth() != null) {
+        if (patientDTO.getDateofbirth() != null && !patientDTO.getDateofbirth().isEmpty()) {
             String[] ymdData = DateAndTimeUtils.getAgeInYearMonth(patientDTO.getDateofbirth()).split(" ");
             mAgeYears = Integer.parseInt(ymdData[0]);
             mAgeMonths = Integer.parseInt(ymdData[1]);
@@ -2455,6 +2469,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             refresh.clearAnimation();
             syncAnimator.start();
             new SyncUtils().syncBackground();
+            if (/*(patientDTO.getMpiId() == null || patientDTO.getMpiId().isEmpty())
+                    &&*/ patientDTO.getOpenmrsId() != null) {
+
+                syncDAO.pullMPIID(context, patientDTO.getOpenmrsId(),patientDTO);
+            }
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
@@ -2493,7 +2512,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 try {
                     refresh.clearAnimation();
                     syncAnimator.cancel();
-                    recreate();
+                    setDisplay(patientDTO.getUuid());
+                   // recreate();
                 } catch (Exception e) {
                     CustomLog.d(TAG, e.getMessage());
                 }

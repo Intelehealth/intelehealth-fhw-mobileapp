@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
@@ -62,6 +63,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 isFhirEnabled = it.activeStatusFhir
 
                 Timber.d { "FHIR STATUS => $isFhirEnabled" }
+                updateRegistryButton()
                 onFhirStatusChanged(isFhirEnabled)
             }
         }
@@ -87,9 +89,17 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
+        updateRegistryButton()
         fetchPersonalInfoConfig()
     }
-
+    private fun updateRegistryButton() {
+        binding.frag2BtnNext.text =
+            if (isFhirEnabled) {
+                getString(R.string.registry_check)
+            } else {
+                getString(R.string.next)
+            }
+    }
     private fun fetchPersonalInfoConfig() {
         patientViewModel.fetchOtherRegFields().observe(viewLifecycleOwner) {
             binding.otherInfoConfig = PatientRegFieldsUtils.buildPatientOtherInfoConfig(it)
@@ -154,6 +164,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 )
 
                 intent.putExtra("patientDTO", patient)
+                intent.putExtra("isFhir",isFhirEnabled)
 
                 startActivity(intent)
             }else{

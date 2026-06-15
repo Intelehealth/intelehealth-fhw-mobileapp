@@ -134,15 +134,6 @@ class PatientPersonalInfoFragment :
         ).apply {
             dismiss()
         }
-        binding.textInputETFName.addTextChangedListener {
-
-           // Toast.makeText(context, "Clicked"+it.toString().trim(), Toast.LENGTH_SHORT).show()
-           // doFilterLocal(firstName = it.toString().trim(), lastName = "", gender = "", phone = "", dob = "")
-
-           /* currentFirstName = it.toString().trim()
-            triggerFilter()*/
-        }
-       // if (isFhirEnabled){
             binding.textInputETFName.addTextChangedListener {
                 if (!isFhirEnabled) return@addTextChangedListener
                 currentFirstName = it.toString().trim()
@@ -157,35 +148,6 @@ class PatientPersonalInfoFragment :
                 currentPhone = it.toString().trim()
                 triggerFilter()
             }
-       // }
-    }
-    private fun setupPatientSearch() {
-
-        patientAdapter = PatientFilterAdapter(patientList, requireContext())
-
-        binding.filterPatientContainer.layoutManager =
-            LinearLayoutManager(requireContext())
-
-        binding.filterPatientContainer.adapter = patientAdapter
-
-        binding.textInputETFName.addTextChangedListener {
-            currentFirstName = it.toString().trim()
-            triggerFilter()
-        }
-
-        binding.textInputETLName.addTextChangedListener {
-            currentLastName = it.toString().trim()
-            triggerFilter()
-        }
-
-        binding.textInputETPhoneNumber.addTextChangedListener {
-            currentPhone = it.toString().trim()
-            triggerFilter()
-        }
-
-        binding.toggleGender.addOnButtonCheckedListener { _, _, _ ->
-            bindGenderValue()
-        }
     }
     private fun setupFeatureFlagObserver() {
         featureStatusViewModel.featureStatus.observe(viewLifecycleOwner) { status ->
@@ -194,13 +156,6 @@ class PatientPersonalInfoFragment :
 
                 Timber.d { "FHIR STATUS => $isFhirEnabled" }
                 onFhirStatusChanged(isFhirEnabled)
-                // Example usage
-                /*if (isFhirEnabled) {
-                    Toast.makeText(context, "Clicked", Toast.LENGTH_SHORT).show()
-                    //enableFhirFeatures()
-                } else {
-                   //disableFhirFeatures()
-                 }*/
             }
         }
     }
@@ -216,14 +171,6 @@ class PatientPersonalInfoFragment :
         runnable?.let { handler.removeCallbacks(it) }
 
         runnable = Runnable {
-
-            // prevent empty search
-            if (currentFirstName.isBlank() &&
-                currentLastName.isBlank() &&
-                currentPhone.isBlank() &&
-                currentGender.isBlank() &&
-                currentDob.isBlank()
-            ) return@Runnable
 
             doFilterLocal(
                 firstName = currentFirstName,
@@ -553,7 +500,7 @@ class PatientPersonalInfoFragment :
             R.id.btnMale -> "M"
             R.id.btnFemale -> "F"
             R.id.btnOther -> "O"
-            else -> "O"
+            else -> ""
         }
 
         patient.gender = currentGender

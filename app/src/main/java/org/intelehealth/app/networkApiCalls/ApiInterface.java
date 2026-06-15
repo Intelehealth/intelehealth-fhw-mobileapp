@@ -17,6 +17,7 @@ import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
+import org.intelehealth.app.models.dto.MpiResponseDTO;
 import org.intelehealth.app.models.dto.PatientSearchDTO;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.hwprofile.Profile;
@@ -82,6 +83,9 @@ public interface ApiInterface {
     @GET
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url,
                                         @Header("Authorization") String authHeader);
+    @GET
+    Call<MpiResponseDTO> RESPONSE_DTO_CALL_FOR_MPI(@Url String url,
+                                                   @Header("Authorization") String authHeader);
     @GET
     Call<ResponseDTO> RESPONSE_DTO_CALL_FOR_FILTER(@Url String url,
                                                    @Header("Authorization") String authHeader);

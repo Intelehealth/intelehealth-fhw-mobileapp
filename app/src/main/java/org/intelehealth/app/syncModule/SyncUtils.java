@@ -32,6 +32,15 @@ public class SyncUtils {
      *
      * @param fromActivity
      */
+    private static boolean syncStarted = false;
+
+    public static boolean isSyncStarted() {
+        return syncStarted;
+    }
+
+    public static void setSyncStarted(boolean value) {
+        syncStarted = value;
+    }
     public void initialSync(String fromActivity, Context context) {
 
         SyncDAO syncDAO = new SyncDAO();
@@ -47,6 +56,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
+        syncDAO.checkLocalOnlyData();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0);
         imagesPushDAO.loggedInUserProfileImagesPush();
         if (!sessionManager.isLogout()) {
@@ -60,6 +70,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
+        syncDAO.checkLocalOnlyData();
         syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0); //only this new function duplicate
         imagesPushDAO.loggedInUserProfileImagesPush();
         /*
@@ -105,6 +116,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
         isSynced = syncDAO.pushDataApi();
+        syncDAO.checkLocalOnlyData();
         Logger.logD(TAG, "Push ended");
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
