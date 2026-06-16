@@ -296,7 +296,12 @@ class PatientSearchingActivity : AppCompatActivity() {
                     val address = resource?.address?.firstOrNull()
                     val extension = resource?.extension
 
-
+                    val openMrsId = resource?.identifier
+                        ?.firstOrNull {
+                            it.use == "official" ||
+                                    it.system?.contains("OpenMRS-ID", ignoreCase = true) == true
+                        }
+                        ?.value
                     val patient = PatientDTO().apply {
                         uuid = resource.identifier
                             ?.firstOrNull { identifier ->
@@ -307,6 +312,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                             }
                             ?.value
                         sourceId=resource.id
+                        openmrsId =openMrsId
                         firstname = given
                         lastname = family
                         gender = resource.gender ?: ""
@@ -579,6 +585,12 @@ class PatientSearchingActivity : AppCompatActivity() {
                 val given = name?.given?.firstOrNull().orEmpty()
                 val family = name?.family.orEmpty()
                 val extension = resource?.extension
+                val openMrsId = resource?.identifier
+                    ?.firstOrNull {
+                        it.use == "official" ||
+                                it.system?.contains("OpenMRS-ID", ignoreCase = true) == true
+                    }
+                    ?.value
 
                 val patient = PatientDTO().apply {
                     uuid = id
@@ -591,6 +603,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                     postalcode=address?.postalCode?:""
                     stateprovince=address?.state
                     city=address?.city
+                    openmrsId =openMrsId
                     address1=address?.line.toString()
                     contactType =getExtensionValueByEndPoint(extension,"Emergency-Contact-Type")
                     education =getExtensionValueByEndPoint(extension,"Education-Level")

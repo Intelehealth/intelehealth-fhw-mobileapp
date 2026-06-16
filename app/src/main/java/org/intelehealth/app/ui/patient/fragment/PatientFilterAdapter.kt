@@ -59,12 +59,12 @@ class PatientFilterAdapter(
         val dob =patients.patient?.dateofbirth
         holder.filterInfoTv.text = "$name . $gender . DOB $dob. Similarity score: $sc"
         holder.filterPossibleTv.text =
-            if (patients.score > 0.95)
+            if (patients.score > 0.94)
                 "Patient may already exist"
             else
                 "Possible Duplicate Found locally"
         holder.filterPossibleTv.setTextColor(
-            if (patients.score > 0.95)
+            if (patients.score > 0.94)
                 Color.parseColor("#6F2623")
             else
                 Color.parseColor("#7E521E")

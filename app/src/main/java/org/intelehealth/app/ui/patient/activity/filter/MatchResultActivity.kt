@@ -34,6 +34,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
     private var patientList = mutableListOf<PatientSearchResult>()
     private lateinit var patientAdapter: FilterResultAdapter
     private lateinit var noneMatch: TextView
+    private lateinit var matchFound: TextView
     private lateinit var emptyLayout: LinearLayout
     private lateinit var refresh: ImageView
     private lateinit var syncAnimator: ObjectAnimator
@@ -66,6 +67,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
        isFhirEnabled = intent.getBooleanExtra("isFhir",false)
        filterRecyclerView = findViewById(R.id.filter_patient_container)
        noneMatch = findViewById(R.id.noneMatch)
+       matchFound = findViewById(R.id.match_foundTv)
        refresh = findViewById(R.id.refresh)
        emptyLayout = findViewById(R.id.filter_patient_failed_ll)
        filterRecyclerView.layoutManager =
@@ -77,6 +79,9 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
 
        filterRecyclerView.adapter = patientAdapter
        networkUtils = NetworkUtils(this, this)
+       if(patientList.isEmpty()){
+           matchFound.visibility= View.GONE
+       }
        // initial UI state
        updateUIForInternetAvailability(networkUtils.isNetworkAvailable(this))
 

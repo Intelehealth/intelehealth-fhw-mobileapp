@@ -114,7 +114,8 @@ public class SyncDAO {
             Logger.logD(TAG, "patinetAttributeMaster = " +
                     responseDTO.getData().getPatientAttributeTypeMasterDTO().size());
 
-            patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+            //patientsDAO.insertPatients(responseDTO.getData().getPatientDTO());
+            patientsDAO.insertPatientsPullData(responseDTO.getData().getPatientDTO(),responseDTO.getData().getPatientAttributesDTO());
             Logger.logD(TAG, "insertPatients = " + responseDTO.getData().getPatientDTO().size());
 
             patientAttributesDaoNew.patientAttributes(responseDTO.getData().getPatientAttributesDTO());

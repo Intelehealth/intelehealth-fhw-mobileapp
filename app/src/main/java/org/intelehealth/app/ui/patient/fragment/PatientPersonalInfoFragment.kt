@@ -144,10 +144,17 @@ class PatientPersonalInfoFragment :
                 currentLastName = it.toString().trim()
                 triggerFilter()
             }
-            binding.textInputETPhoneNumber.addTextChangedListener {
-                currentPhone = it.toString().trim()
-                triggerFilter()
-            }
+        val countryCode = binding.countrycodeSpinner.selectedCountryCodeWithPlus
+        binding.countrycodeSpinner.registerCarrierNumberEditText(
+            binding.textInputETPhoneNumber
+        )
+        binding.textInputETPhoneNumber.addTextChangedListener {
+            if (!isFhirEnabled) return@addTextChangedListener
+
+            currentPhone = countryCode + it.toString().trim()
+
+            triggerFilter()
+        }
     }
     private fun setupFeatureFlagObserver() {
         featureStatusViewModel.featureStatus.observe(viewLifecycleOwner) { status ->
@@ -629,6 +636,7 @@ class PatientPersonalInfoFragment :
         }.also {
             DateTimeUtils.formatToLocalDate(it.time, DateTimeUtils.YYYY_MM_DD_HYPHEN).apply {
                 patient.dateofbirth = this
+                currentDob=this
             }
         }
     }

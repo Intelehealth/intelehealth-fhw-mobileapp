@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.intelehealth.app.models.MatchGrade;
 import org.intelehealth.app.models.MatchSource;
@@ -25,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.intelehealth.app.models.FamilyMemberRes;
@@ -57,6 +60,60 @@ public class PatientsDAO extends BaseDao {
     private static final String TAG = "PatientsDAO";
     private String currentTableName;
 
+    public boolean insertPatientsPullData(
+            List<PatientDTO> patientDTOs,
+            List<PatientAttributesDTO> patientAttributesDTOs)
+            throws DAOException {
+
+        boolean isInserted = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        final String PHONE_ATTRIBUTE_UUID =
+                "14d4f066-15f5-102d-96e4-000c29c2a5d7";
+
+        db.beginTransaction();
+
+        try {
+
+            // patientUuid -> phoneNumber
+            Map<String, String> patientPhoneMap = new HashMap<>();
+
+            for (PatientAttributesDTO attr : patientAttributesDTOs) {
+
+                if (PHONE_ATTRIBUTE_UUID.equals(attr.getPersonAttributeTypeUuid())
+                        && attr.getPatientuuid() != null
+                        && attr.getValue() != null) {
+
+                    patientPhoneMap.put(
+                            attr.getPatientuuid(),
+                            attr.getValue()
+                    );
+                }
+            }
+
+            for (PatientDTO patient : patientDTOs) {
+
+                String phoneNumber = patientPhoneMap.get(patient.getUuid());
+
+                if (phoneNumber != null) {
+                    patient.setPhonenumber(phoneNumber);
+                }
+
+                createPatients(patient, db);
+            }
+
+            db.setTransactionSuccessful();
+
+        } catch (Exception e) {
+            isInserted = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        return isInserted;
+    }
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
 
         boolean isInserted = true;
@@ -2068,7 +2125,9 @@ public class PatientsDAO extends BaseDao {
         List<PatientSearchResult> resultList = new ArrayList<>();
 
         SQLiteDatabase db =
-                IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                IntelehealthApplication.inteleHealthDatabaseHelper
+                        .getReadableDatabase();
+
 
         StringBuilder query = new StringBuilder();
         List<String> args = new ArrayList<>();
@@ -2078,32 +2137,26 @@ public class PatientsDAO extends BaseDao {
         /**
          * First Name
          */
-        if (firstName != null && !firstName.trim().isEmpty()) {
+        /*if (firstName != null && !firstName.trim().isEmpty()) {
 
             query.append(" AND (LOWER(first_name) LIKE LOWER(?) OR first_name_sdx LIKE ?) ");
             args.add("%" + firstName.trim() + "%");
             args.add("%" + SoundexHelper.encode(firstName.trim()) + "%");
-        }
-
-        /**
-         * Last Name
-         */
+        }*/
         if (lastName != null && !lastName.trim().isEmpty()) {
 
             query.append(" AND (LOWER(last_name) LIKE LOWER(?) OR last_name_sdx LIKE ?) ");
             args.add("%" + lastName.trim() + "%");
             args.add("%" + SoundexHelper.encode(lastName.trim()) + "%");
         }
-
         /**
          * Gender
          */
-        if (gender != null && !gender.trim().isEmpty()) {
+        /*if (gender != null && !gender.trim().isEmpty()) {
 
             query.append(" AND gender = ? ");
             args.add(gender.trim());
-        }
-
+        }*/
         /**
          * DOB
          */
@@ -2112,16 +2165,14 @@ public class PatientsDAO extends BaseDao {
             query.append(" AND date_of_birth = ? ");
             args.add(dob.trim());
         }
-
         /**
          * Phone
          */
         if (phone != null && !phone.trim().isEmpty()) {
 
-            query.append(" AND uuid IN (SELECT DISTINCT patientuuid FROM tbl_patient_attribute WHERE value LIKE ?) ");
-            args.add("%" + phone.trim() + "%");
+            query.append(" AND phone_normalized = ? ");
+            args.add( normalizePhone(phone.trim()) );
         }
-
         /**
          * Pagination
          */
@@ -2135,12 +2186,13 @@ public class PatientsDAO extends BaseDao {
 
         try {
 
+
             cursor = db.rawQuery(query.toString(), args.toArray(new String[0]));
 
-            if (cursor.moveToFirst()) {
+            JaroWinklerSimilarity jw = new JaroWinklerSimilarity();
 
+            if (cursor.moveToNext()){
                 do {
-
                     PatientDTO patient = mapPatient(cursor);
 
                     PatientSearchResult result = new PatientSearchResult();
@@ -2154,61 +2206,58 @@ public class PatientsDAO extends BaseDao {
                      */
                     double totalScore = 0.0;
                     int fields = 0;
+                    double firstNameScore=0.0;
+                    double lastNameScore=0.0;
 
-                    if (firstName != null && !firstName.trim().isEmpty()) {
-                        totalScore += calculateNameScore(firstName, patient.getFirstname());
+                    if (!TextUtils.isEmpty(firstName)) {
+                        Log.d("CheckScore First Name",""+calculateNameScore(firstName, patient.getFirstname()));
+                        firstNameScore = 0.5*(calculateNameScore(firstName, patient.getFirstname()));
+                        totalScore += 0.5*(calculateNameScore(firstName, patient.getFirstname()));
+
                         fields++;
                     }
 
-                    if (lastName != null && !lastName.trim().isEmpty()) {
-                        totalScore += calculateNameScore(lastName, patient.getLastname());
+                    if (!TextUtils.isEmpty(lastName)) {
+                        Log.d("CheckScore Last Name",""+calculateNameScore(lastName, patient.getLastname()));
+                        lastNameScore = 0.5*(calculateNameScore(lastName, patient.getLastname()));
+                        totalScore += 0.5*(calculateNameScore(lastName, patient.getLastname()));
                         fields++;
                     }
-
-                    if (gender != null && !gender.trim().isEmpty()) {
-                        totalScore += gender.equalsIgnoreCase(patient.getGender()) ? 1.0 : 0.0;
-                        fields++;
-                    }
-
-                    if (dob != null && !dob.trim().isEmpty()) {
-                        totalScore += dob.equals(patient.getDateofbirth()) ? 1.0 : 0.0;
-                        fields++;
-                    }
-
-                    if (phone != null && !phone.trim().isEmpty()) {
+                    if (!TextUtils.isEmpty(phone)) {
                         boolean phoneMatch =
                                 patient.getPhonenumber() != null &&
-                                        patient.getPhonenumber().contains(phone.trim());
+                                        patient.getPhonenumber().equals(normalizePhone(phone.trim()));
 
-                        totalScore += phoneMatch ? 1.0 : 0.0;
-                        fields++;
+                        totalScore += phoneMatch ? 0.05 : 0.0;
                         result.setPhoneMatched(phoneMatch);
                     }
-
-                    double finalScore = (fields > 0) ? (totalScore / fields) : 0.0;
-
+                    double finalScore = Math.min(totalScore, 1.0);
+                    //double finalScore = (fields > 0) ? (totalScore / fields) : 0.0;
+                    Log.d("CheckScore Final Score",""+fields);
+                    Log.d("CheckScore Final Score",""+totalScore);
+                    Log.d("CheckScore Final Score F",""+firstNameScore);
+                    Log.d("CheckScore Final Score L",""+lastNameScore);
                     /**
                      * Grade
                      */
                     MatchGrade grade;
 
-                    if (finalScore >= 0.95) grade = MatchGrade.CERTAIN;
-                    else if (finalScore >= 0.80) grade = MatchGrade.PROBABLE;
-                    else if (finalScore >= 0.60) grade = MatchGrade.POSSIBLE;
+                    if (totalScore >= 0.95) grade = MatchGrade.CERTAIN;
+                    else if (totalScore >= 0.80) grade = MatchGrade.PROBABLE;
+                    else if (totalScore >= 0.60) grade = MatchGrade.POSSIBLE;
                     else grade = MatchGrade.NOT_MATCHED;
 
-                    result.setScore(finalScore);
-                    result.setIhscore(finalScore);
+                    result.setScore(totalScore);
+                    result.setIhscore(totalScore);
                     result.setIHNetwork(true);
                     result.setGrade(grade);
                     result.setFirstNameScore(0);
                     result.setLastNameScore(0);
 
-                    if (finalScore >= 0.60) {
+                   // if (totalScore >= 0.60) {
                         resultList.add(result);
-                    }
-
-                } while (cursor.moveToNext());
+                   // }
+                }while (cursor.moveToNext());
             }
 
         } catch (Exception e) {
@@ -2217,21 +2266,19 @@ public class PatientsDAO extends BaseDao {
             CustomLog.e("PatientDAO", e.getMessage());
 
         } finally {
-
             if (cursor != null) cursor.close();
         }
 
-        /**
-         * Sort by score
-         */
-        Collections.sort(resultList, (o1, o2) ->
-                Double.compare(o2.getScore(), o1.getScore())
-        );
+        // SORT BY SCORE
+        Collections.sort(resultList,
+                (a, b) -> Double.compare(b.getScore(), a.getScore()));
 
         return resultList;
     }
 
-
+    private static String safe(String value) {
+        return value == null ? "" : value.trim();
+    }
     /**
      * Cursor -> PatientDTO Mapper
      */

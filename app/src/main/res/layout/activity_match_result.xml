@@ -81,7 +81,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/checkTv"
+                    android:id="@+id/match_foundTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Registry Matches Found"
@@ -157,7 +157,7 @@
                     android:gravity="center"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="14dp"
-                    android:text="None match - Register as New Patient"
+                    android:text="Proceed with new registration"
                     android:textColor="@color/gray"
                     android:textSize="17sp"
                     android:textStyle="bold" />
