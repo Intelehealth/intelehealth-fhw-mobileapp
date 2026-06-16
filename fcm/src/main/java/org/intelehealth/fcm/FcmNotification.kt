@@ -28,15 +28,10 @@ class FcmNotification private constructor(val context: Context) {
     }
 
     fun startNotify() {
-        //for greater than oreo we need to create a notification channel
-        println("startNotify")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.createNotificationChannel(notificationChannel!!)
             notificationManager.notify(notificationId, notification)
-            println("Build.VERSION_CODES.O")
-            println("startNotify->notificationId=$notificationId")
         } else {
-            println("startNotify->notificationId=$notificationId")
             notificationManager.notify(notificationId, notification)
         }
     }
@@ -98,6 +93,8 @@ class FcmNotification private constructor(val context: Context) {
             val ringToneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
             appNotification.notBuilder = notBuilder.apply {
                 setCategory(Notification.CATEGORY_MESSAGE)
+                setGroup("$NOTIFICATION_GROUP_FCM.$notificationId")
+                setGroupSummary(false)
                 setVibrate(longArrayOf(VIBRATE, VIBRATE, VIBRATE, VIBRATE))
                 setAutoCancel(true)
                 setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -131,6 +128,7 @@ class FcmNotification private constructor(val context: Context) {
         const val VIBRATE = 1000L
         private const val RAN_NUM_MAX = 10000
         private const val CHANNEL_ID_SUFFIX = "_channel"
+        private const val NOTIFICATION_GROUP_FCM = "intelehealth.fcm"
         var notificationId = Random(System.currentTimeMillis()).nextInt(RAN_NUM_MAX)
 
         fun cancelNotification(context: Context, notificationId: Int) {
