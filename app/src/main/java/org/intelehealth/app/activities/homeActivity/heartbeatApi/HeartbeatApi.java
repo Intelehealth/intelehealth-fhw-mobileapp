@@ -85,8 +85,12 @@ public class HeartbeatApi {
         request.setLastSyncTimestamp(lastSyncTime);
         request.setName(sessionManager.getChwname());
         request.setStatus("Online");
-        request.setVillage(sessionManager.getCurrentLocationName());
-        request.setSecondaryVillage(sessionManager.getSecondaryLocationName());
+        /*Commenting below code to resolve location type
+         * mismatch issue in monitoring sheet and village reports
+         * as sending location while sync updating location type at server
+         * (AEAT-2322) */
+//        request.setVillage(sessionManager.getCurrentLocationName());
+//        request.setSecondaryVillage(sessionManager.getSecondaryLocationName());
         request.setSanch(sessionManager.getSanchName());
 
         return request;
