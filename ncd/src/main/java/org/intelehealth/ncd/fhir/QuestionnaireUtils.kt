@@ -2,6 +2,7 @@ package org.intelehealth.ncd.fhir
 
 import android.content.Context
 import org.hl7.fhir.r4.model.Questionnaire
+import org.hl7.fhir.r4.model.QuestionnaireResponse
 import org.intelehealth.ncd.R
 import org.json.JSONObject
 import org.json.JSONArray
@@ -301,7 +302,11 @@ object QuestionnaireUtils {
         // fallback
         return Pair(valueString, valueString)
     }
-    fun getQuestionnaireTitle(questionnaire: JSONObject, locale: String = "en"): Pair<String, String> {
+
+    fun getQuestionnaireTitle(
+        questionnaire: JSONObject,
+        locale: String = "en"
+    ): Pair<String, String> {
         // Default English title
         val titleEn = questionnaire.optString("title")
 
@@ -324,7 +329,10 @@ object QuestionnaireUtils {
                                     "content" -> content = e.optString("valueString")
                                 }
                             }
-                            if (langCode.equals(locale, ignoreCase = true)) return Pair(titleEn, content ?: titleEn)
+                            if (langCode.equals(locale, ignoreCase = true)) return Pair(
+                                titleEn,
+                                content ?: titleEn
+                            )
                         }
                     }
                 }
@@ -357,8 +365,16 @@ object QuestionnaireUtils {
 
                 var questionText = obj.optString("text").ifEmpty { obj.optString("linkId") }
                 var questionTextLocal =
-                    getLocalText(questionnaire, obj.optString("linkId"), localeLang).takeIf { it.isNotEmpty() } ?: questionText
-                var questionTextEnglish = getLocalText(questionnaire, obj.optString("linkId"), "en").takeIf { it.isNotEmpty() } ?: questionText
+                    getLocalText(
+                        questionnaire,
+                        obj.optString("linkId"),
+                        localeLang
+                    ).takeIf { it.isNotEmpty() } ?: questionText
+                var questionTextEnglish = getLocalText(
+                    questionnaire,
+                    obj.optString("linkId"),
+                    "en"
+                ).takeIf { it.isNotEmpty() } ?: questionText
                 // Skip parent title if it ends with _page
                 val effectiveParent =
                     if (parentTitle?.endsWith("_page") == true) null else parentTitle
@@ -525,7 +541,7 @@ object QuestionnaireUtils {
             }.let { adjustedLocal.addAll(it) }
 
             // return both
-            Pair (adjustedEnglish,adjustedLocal)
+            Pair(adjustedEnglish, adjustedLocal)
 
 
         } else {
@@ -888,5 +904,40 @@ object QuestionnaireUtils {
         return ""
     }*/
 
+
+    fun extractSelectedLinkIdFromResponse(response: QuestionnaireResponse, linkId: String) {
+        println("QuestionnaireUtils, extractSelectedLinkIdFromResponse" + "linkId: $linkId")
+        println("QuestionnaireUtils, extractSelectedLinkIdFromResponse" + "response: $response.")
+        // get the link id i.e. health_seeking_history details
+        val items = response.item.filter { it.linkId == linkId }
+        if (items.isNotEmpty()) {
+            val selectedLinkId = items[0].answer?.firstOrNull()?.valueCoding?.code
+            // Do something with the selectedLinkId, e.g., log it or store it
+            println("QuestionnaireUtils Selected linkId for $linkId: $selectedLinkId")
+        } else {
+            println("QuestionnaireUtils No items found for linkId: $linkId")
+        }
+
+    }
+
+    fun clearAnswersExceptFirstPage(
+        items: MutableList<QuestionnaireResponse.QuestionnaireResponseItemComponent>
+    ) {
+        items.forEachIndexed { index, item ->
+            if (index > 0) {
+                clearItemAnswers(item)
+            }
+        }
+    }
+
+    fun clearItemAnswers(
+        item: QuestionnaireResponse.QuestionnaireResponseItemComponent
+    ) {
+        item.answer.clear()
+
+        item.item.forEach {
+            clearItemAnswers(it)
+        }
+    }
 
 }

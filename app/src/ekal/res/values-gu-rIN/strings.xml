@@ -451,4 +451,5 @@
     <string name="confirm_continue_changes_button_dialog">Continue</string>-->
 
     <string name="saved_to_downloads">ફાઇલ ડાઉનલોડ્સમાં સાચવી</string>
+    <string name="failed_to_save_downloads">PDF સાચવવામાં નિષ્ફળ થયાં</string>
 </resources>

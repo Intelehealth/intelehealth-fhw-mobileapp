@@ -139,7 +139,7 @@ private fun getMedicalHistory(
             bp = bpCheck.storeHyphenIfEmpty(),
             diabetes = diabetesCheck.storeHyphenIfEmpty(),
             arthritis = arthritisCheck.storeHyphenIfEmpty(),
-            //anemia = anemiaCheck.storeHyphenIfEmpty(),
+            anemia = anemiaCheck.storeHyphenIfEmpty(),
             anaemia = anemiaCheck.storeHyphenIfEmpty(),
             anySurgeries = surgeryCheck.storeHyphenIfEmpty(),
             reasonForSurgery = reasonForSurgery.storeHyphenIfEmpty(),

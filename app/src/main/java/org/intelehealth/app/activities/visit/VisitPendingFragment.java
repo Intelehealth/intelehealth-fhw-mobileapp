@@ -219,7 +219,7 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
         fetchOlderData();
 
         int totalCount = totalCounts_recent + totalCounts_older;
-        CustomLog.d("rece", "defaultData: pending" + totalCount);
+        CustomLog.d("VisitPendingFragment", "defaultData: pending" + totalCount);
 
         // loaded month data 1st for showing the count in main ui
 //        thisMonths_Visits();
@@ -233,7 +233,7 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
     private void fetchOlderData() {
         // pagination - start
         olderList = olderVisits(olderLimit, olderStart);
-        CustomLog.d("TAG", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
+        CustomLog.d("VisitPendingFragment", "setPendingOlderMoreDataIntoRecyclerView: " + olderList.size());
         older_adapter = new VisitAdapter(getActivity(), olderList, this);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
@@ -448,6 +448,15 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         //" v.enddate is null and" +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "and o.voided = 0 " +
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
+
                         "and v.startdate > DATETIME('now', '-4 day') " +
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                        "where  attr.visit_uuid = v.uuid " +
@@ -542,6 +551,14 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                 //" v.enddate is null and" +
                 "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                 "and o.voided = 0 " +
+                //-- Only latest visit of the patient
+                "AND v.uuid = (" +
+                "        SELECT v2.uuid" +
+                "        FROM tbl_visit v2" +
+                "        WHERE v2.patientuuid = v.patientuuid" +
+                "        ORDER BY v2.startdate DESC" +
+                "        LIMIT 1" +
+                "  )" +
                 "and v.startdate > DATETIME('now', '-4 day') " +
 //                "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                "where  attr.visit_uuid = v.uuid " +
@@ -628,6 +645,14 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         //" v.enddate is null and" +
                         " and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "and o.voided = 0 " +
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
                         "and v.startdate <= DATETIME('now', '-4 day') " +
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                        "where  attr.visit_uuid = v.uuid " +
@@ -717,6 +742,14 @@ public class VisitPendingFragment extends Fragment implements VisitAdapter.OnVis
                         "and euid = o.encounteruuid " +
                         //" v.enddate is null and" +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 " +
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
                         "and v.startdate <= DATETIME('now', '-4 day') " +
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                        "where  attr.visit_uuid = v.uuid " +

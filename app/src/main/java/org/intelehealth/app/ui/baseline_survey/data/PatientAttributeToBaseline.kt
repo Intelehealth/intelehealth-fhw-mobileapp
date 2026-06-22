@@ -182,13 +182,17 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
                     object : TypeToken<List<MedicalHistory>>() {}.type
                 )
             }
+
             else -> emptyList()
         }
         val medicalHistory: MedicalHistory? = medicalHistoryList.firstOrNull()
 
-        if(medicalHistory != null) {
-            //baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
-            baseline.anemiaValue = medicalHistory.anaemia.returnEmptyIfHyphen()
+        if (medicalHistory != null) {
+            baseline.anemiaValue = medicalHistory.anemia.returnEmptyIfHyphen()
+            if (baseline.anemiaValue.isEmpty() || baseline.anemiaValue == "-") {
+
+                baseline.anemiaValue = medicalHistory.anaemia.returnEmptyIfHyphen()
+            }
             baseline.bpValue = medicalHistory.hypertension.returnEmptyIfHyphen()
             baseline.diabetesValue = medicalHistory.diabetes.returnEmptyIfHyphen()
             baseline.arthritisValue = medicalHistory.arthritis.returnEmptyIfHyphen()

@@ -446,4 +446,5 @@
     <string name="prescription_disclaimer">గమనిక: చికిత్స తర్వాత కూడా మీ ఆరోగ్య పరిస్థితి మెరుగుపడకపోతే, దయచేసి మీ దగ్గరలోని ఆసుపత్రిని సందర్శించండి లేదా వెంటనే ఒక డాక్టరును సంప్రదించండి. టెలిమెడిసిన్ సేవలు పరిమిత సలహాలకి మాత్రమే ,  ప్రత్యక్ష పరిశీలనకు అనుకూలముగా ఉండవు.</string>
     <string name="decline">తిరస్కరించు</string>
     <string name="saved_to_downloads">ఫైల్ డౌన్‌లోడ్‌లకు సేవ్ చేయబడింది</string>
+    <string name="failed_to_save_downloads">PDFని సేవ్ చేయడం విఫలమైంది</string>
 </resources>

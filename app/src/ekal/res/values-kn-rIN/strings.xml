@@ -449,4 +449,5 @@
     <string name="confirm_discard_changes_button_dialog">Discard</string>
     <string name="confirm_continue_changes_button_dialog">Continue</string>-->
     <string name="saved_to_downloads">ಫೈಲ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗೆ ಉಳಿಸಲಾಗಿದೆ</string>
+    <string name="failed_to_save_downloads">PDF ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
 </resources>

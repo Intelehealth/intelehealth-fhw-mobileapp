@@ -390,4 +390,31 @@ class QuestionnaireBottomActionController(private val rootView: View) {
             enableBottomActionsWithSimpleDelay()
         }
     }
+    fun isNextButtonVisible(): Boolean {
+        return findViewByName("pagination_next_button")?.visibility == View.VISIBLE
+    }
+
+    fun isPreviousButtonVisible(): Boolean {
+        return findViewByName("pagination_previous_button")?.visibility == View.VISIBLE
+    }
+
+    fun isNextButtonEnabled(): Boolean {
+        return findViewByName("pagination_next_button")?.isEnabled == true
+    }
+
+    fun isPreviousButtonEnabled(): Boolean {
+        return findViewByName("pagination_previous_button")?.isEnabled == true
+    }
+
+    fun isLastPage(): Boolean {
+        return !isNextButtonVisible()
+    }
+
+    fun isFirstPage(): Boolean {
+        return !isPreviousButtonVisible()
+    }
+
+    fun getNextButton(): View? {
+        return findViewByName("pagination_next_button")
+    }
 }
