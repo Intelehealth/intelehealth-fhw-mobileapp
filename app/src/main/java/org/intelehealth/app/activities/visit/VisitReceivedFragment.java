@@ -1155,6 +1155,14 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         "and e.encounter_type_uuid = ? " +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and " +
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
                         "and v.startdate > DATETIME('now', '-4 day') " +
 
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
@@ -1243,6 +1251,14 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         "and e.encounter_type_uuid = ? " +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and "+
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
                         "and v.startdate > DATETIME('now', '-4 day') " +
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                        "where  attr.visit_uuid = v.uuid " +
@@ -1329,6 +1345,14 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         "and e.encounter_type_uuid = ? " +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0 " +//and" + " o.conceptuuid = ?  "+
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
                         "and v.startdate <= DATE('now', '-4 day') " +
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                        "where  attr.visit_uuid = v.uuid " +
@@ -1415,6 +1439,14 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnVi
                         "and e.encounter_type_uuid = ? " +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0 " +//and" + " o.conceptuuid = ? and "+
+                        //-- Only latest visit of the patient
+                        "AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
                         "and v.startdate <= DATE('now', '-4 day') " +
 //                        "and (select count(*) from tbl_visit_attribute as attr " + //added sub query to fetch doctor visits only
 //                        "where  attr.visit_uuid = v.uuid " +

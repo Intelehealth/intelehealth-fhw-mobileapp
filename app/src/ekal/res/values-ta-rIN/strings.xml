@@ -459,4 +459,5 @@
     <string name="gp_txt">பொது மருத்துவர்</string>
 
     <string name="saved_to_downloads">கோப்பு பதிவிறக்கங்களில் சேமிக்கப்பட்டது</string>
+    <string name="failed_to_save_downloads">PDF-ஐச் சேமிக்க முடியவில்லை</string>
 </resources>

@@ -40,7 +40,7 @@ class MissingLineListingQuestionsHelper(private val context: Context) {
 
         val anemiaStatus = ComplaintStatus(
             //hasHistory = isApplicableForAnemia &&  isHistoryPresent(history.anemia),
-            hasHistory = isApplicableForAnemia &&  isHistoryPresent(history.anaemia),
+            hasHistory = isApplicableForAnemia &&  isHistoryPresent(history.anaemia)|| isApplicableForAnemia &&  isHistoryPresent(history.anemia),
             onMedication = isApplicableForAnemia && isMedicationPresent(history.medicationForAnemia),
           /*  isHwForComplaintPresent = isHwForComplaintPresent(history.healthWorkerForAnemia),
             isReasonForNoMedicationPresent = isReasonForNoMedicationPresent(history.healthWorkerForAnemia)*/
@@ -56,10 +56,15 @@ class MissingLineListingQuestionsHelper(private val context: Context) {
             onMedication = isApplicableForDiabetes && isMedicationPresent(history.medicationForDiabetes)
         )
 
+        val anemiaVal = if (history.anemia.isNullOrEmpty() || history.anemia == "-") {
+            history.anaemia
+        } else {
+            history.anemia
+        }
         // ---------- MISSING MEDICATION CHECK (AGE-SAFE) ----------
         val hasAnyHistoryWithoutMedication = listOf(
             //Triple(anemiaStatus, history.anemia, isApplicableForAnemia),
-            Triple(anemiaStatus, history.anaemia, isApplicableForAnemia),
+            Triple(anemiaStatus, anemiaVal , isApplicableForAnemia),
             Triple(bpStatus, history.hypertension, isApplicableForBP),
             Triple(diabetesStatus, history.diabetes, isApplicableForDiabetes)
         ).any { (status, historyValue, isAgeEligible) ->

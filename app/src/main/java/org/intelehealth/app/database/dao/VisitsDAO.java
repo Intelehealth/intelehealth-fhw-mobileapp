@@ -1540,7 +1540,16 @@ public class VisitsDAO {
 //                        "where  attr.visit_uuid = v.uuid " +
 //                        "and attr.visit_attribute_type_uuid = ?) <=0 "+
                         // ✅ NEW doctor visit condition
-                        + "and  ( " +
+
+                        //-- Only latest visit of the patient
+                        +"AND v.uuid = (" +
+                                "        SELECT v2.uuid" +
+                                "        FROM tbl_visit v2" +
+                                "        WHERE v2.patientuuid = v.patientuuid" +
+                                "        ORDER BY v2.startdate DESC" +
+                                "        LIMIT 1" +
+                                "  )" +
+                         "and  ( " +
                         "    SELECT count(*) FROM tbl_visit_attribute dva " +
                         "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
                         "    AND dva.value != ? " +
@@ -1559,7 +1568,15 @@ public class VisitsDAO {
 //                        "where  attr.visit_uuid = v.uuid " +
 //                        "and attr.visit_attribute_type_uuid = ?) <=0 "+
                         // ✅ NEW doctor visit condition
-                       + "and  ( " +
+                        +"AND v.uuid = (" +
+                        "        SELECT v2.uuid" +
+                        "        FROM tbl_visit v2" +
+                        "        WHERE v2.patientuuid = v.patientuuid" +
+                        "        ORDER BY v2.startdate DESC" +
+                        "        LIMIT 1" +
+                        "  )" +
+
+                         "and  ( " +
                         "    SELECT count(*) FROM tbl_visit_attribute dva " +
                         "    WHERE dva.visit_uuid = v.uuid and dva.visit_attribute_type_uuid = ?" +
                         "    AND dva.value != ? " +
