@@ -16,6 +16,7 @@ import java.util.Calendar;
 
 public class NotificationUtils {
 
+    private static final String NOTIFICATION_GROUP_SYNC = "intelehealth.sync";
 
     private String channelId = "1";
     private String channelName = "intelehealth";
@@ -76,14 +77,19 @@ public class NotificationUtils {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             int importance = NotificationManager.IMPORTANCE_HIGH;
             String channelid = String.valueOf(notificationId);
-            NotificationChannel mChannel = new NotificationChannel(channelid, channelName, importance);
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
-                .setSmallIcon(R.drawable.ic_cloud_upload);
+                .setSmallIcon(R.drawable.ic_cloud_upload)
+                .setCategory(Notification.CATEGORY_MESSAGE)
+                .setGroup(NOTIFICATION_GROUP_SYNC + "." + notificationId)
+                .setGroupSummary(false)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH);
         mNotifyManager.notify(notificationId, mBuilder.build());
 
     }

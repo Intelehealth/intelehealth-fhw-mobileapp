@@ -20,6 +20,8 @@ import org.intelehealth.app.database.dao.RTCConnectionDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.models.dto.ProviderDTO
 import org.intelehealth.app.models.dto.RTCConnectionDTO
+import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -99,6 +101,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                                 visitUuid = data["visitUuid"] ?: "",
                             )
                         )
+                        triggerPrescriptionSync(context)
                     } else {
 
                     }
@@ -106,6 +109,12 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     parseMessage(notification, context, data)
                 }
             }
+        }
+    }
+
+    private fun triggerPrescriptionSync(context: Context) {
+        if (NetworkConnection.isOnline(context)) {
+            SyncUtils().syncBackgroundAfterFCM()
         }
     }
 

@@ -118,6 +118,12 @@ class NotificationActivity : BaseActivity(), ClearNotificationListener {
                     setCloudNotificationAdapter()
 
                 }
+                is NotificationResult.Error -> {
+                    Logger.logD("TAG",it.error)
+                    mBinding.progressBar.visibility = GONE
+                    mBinding.rlPrescriptionHeader.visibility = VISIBLE
+                    mBinding.ibClearAll.visibility = VISIBLE
+                }
 
                 else -> {
                     Logger.logD("TAG",it.toString())

@@ -799,7 +799,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
     private AlertDialog mImagePickerAlertDialog;
 
     private final ActivityResultLauncher<Intent> cameraIntentLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
+//      Timber.tag(TAG).d("Camera result=>%s", new Gson().toJson(result));
         if (result.getResultCode() == RESULT_OK) {
             if (result.getData() != null) captureImage(result.getData());
         }

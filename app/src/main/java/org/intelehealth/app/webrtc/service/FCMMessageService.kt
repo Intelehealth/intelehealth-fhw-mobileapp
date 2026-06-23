@@ -47,6 +47,6 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
             return
         }
         super.onMessageReceived(message)
-        Timber.d { "Remote message ${Gson().toJson(message)}" }
+//        Timber.d { "Remote message ${Gson().toJson(message)}" }
     }
 }
