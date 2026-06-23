@@ -23,7 +23,7 @@ import java.util.Locale
 
 class DailyMyAchievementsViewModel(application: IntelehealthApplication) : BaseViewModel() {
 
-    private val dbHelper = InteleHealthDatabaseHelper(application)
+    private val dbHelper = IntelehealthApplication.inteleHealthDatabaseHelper
     private val repository = MyAchievementsRepository(dbHelper)
 
     private val _doctorVisitCount = MutableLiveData<Int>()

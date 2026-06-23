@@ -45,6 +45,11 @@ public class VisitsDAO {
         // Now we are having only one visit but for future if we have multiple visit then we can add all the incomplete visit in the list and return the list.
 
         List<String> incompleteVisitList = new ArrayList<>();
+        if (patientUuid == null || patientUuid.trim().isEmpty()) {
+            Logger.logD(TAG, "getIncompleteNcdVisitList aborted: patientUuid is null or empty");
+            return incompleteVisitList;
+        }
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
 
         Cursor visitCursor = null;
@@ -797,6 +802,73 @@ public class VisitsDAO {
         return model;
     }
 
+    /**
+     * Recent Visits that are not Ended and has prescription.
+     */
+    public static List<PrescriptionModel> recentNotEndedVisitsWithPrescription(int limit, int offset) {
+        List<PrescriptionModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        //db.beginTransaction();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name, p.middle_name, p.last_name, p.phone_number, p.date_of_birth, p.gender, p.openmrs_id, " +
+                        " v.startdate " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid " +
+                        "AND (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
+                        "AND v.startdate > DATETIME('now', '-4 day') " +
+                        "AND v.enddate IS NULL " +
+                        "AND (SELECT count(*) FROM tbl_visit_attribute AS attr " +
+                        "     WHERE attr.visit_uuid = v.uuid " +
+                        "     AND attr.visit_attribute_type_uuid = ?) <= 0 " +
+                        "AND EXISTS ( " +
+                        "     SELECT 1 FROM tbl_encounter e " +
+                        "     WHERE e.visituuid = v.uuid " +
+                        "     AND e.encounter_type_uuid = ? " +
+                        ") " +
+                        "ORDER BY v.startdate DESC LIMIT ? OFFSET ?",
+                new String[]{
+                        IS_NCD_VISIT_ATTRIBUTE,
+                        UuidDictionary.ENCOUNTER_VISIT_COMPLETE,  // or ENCOUNTER_VISIT_COMPLETE if imported static
+                        String.valueOf(limit),
+                        String.valueOf(offset)
+                });
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                PrescriptionModel model = new PrescriptionModel();
+
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirst_name(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddle_name(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setPhone_number(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setLast_name(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                //    model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")).substring(0, 10));  // IDA-1350
+                model.setVisit_start_date(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+
+                try {
+                    model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
+                } catch (DAOException e) {
+                    CustomLog.e(TAG, e.getMessage());
+                    throw new RuntimeException(e);
+                }
+                arrayList.add(model);
+            }
+            while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        //db.setTransactionSuccessful();
+        //db.endTransaction();
+
+        return arrayList;
+    }
 
     /**
      * Todays Visits that are not Ended.
@@ -1430,6 +1502,9 @@ public class VisitsDAO {
     }
 
     public static boolean isPatientHasOldVisit(String patientUuid) {
+        if (patientUuid == null || patientUuid.trim().isEmpty()) {
+            return false;
+        }
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         String query = "SELECT uuid FROM tbl_visit WHERE patientuuid = ? AND sync = 1";
         Cursor cursor = db.rawQuery(query, new String[]{patientUuid});

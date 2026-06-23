@@ -15,7 +15,7 @@ class NotificationDAO {
 
     fun insertNotifications(notificationModels: List<NotificationModel>) {
 
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         try {
             db.beginTransaction()
             for (model in notificationModels) {
@@ -63,7 +63,7 @@ class NotificationDAO {
 
     fun nonDeletedNotifications(): List<NotificationModel> {
         val nonDeletedNotifications: MutableList<NotificationModel> = ArrayList()
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.readDb
         try {
             db.query(
                 NotificationDbConstants.NOTIFICATION_TABLE,
@@ -101,7 +101,7 @@ class NotificationDAO {
     }
 
     fun deleteNotification(uuid: String): Boolean {
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         return try {
             val values = ContentValues()
             values.put(NotificationDbConstants.IS_DELETED, true)
@@ -119,7 +119,7 @@ class NotificationDAO {
     }
 
     fun markAllNotificationsAsDeleted(): Boolean {
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         return try {
             val values = ContentValues()
             values.put(NotificationDbConstants.IS_DELETED, true)
@@ -138,7 +138,7 @@ class NotificationDAO {
 
     fun fetchAllFrom_NotificationTbl(model: NotificationModel): Boolean {
         var value = false
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         //db.beginTransaction();
         val cursor_count = db.rawQuery("SELECT * FROM tbl_notifications", arrayOf())
         if (cursor_count.count > 0) {
@@ -181,7 +181,7 @@ class NotificationDAO {
     val allNotifications: List<NotificationModel>
         get() {
             val allNotifications: MutableList<NotificationModel> = ArrayList()
-            val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
+            val db = IntelehealthApplication.inteleHealthDatabaseHelper.readDb
             var cursor: Cursor? = null
             try {
                 cursor = db.query(

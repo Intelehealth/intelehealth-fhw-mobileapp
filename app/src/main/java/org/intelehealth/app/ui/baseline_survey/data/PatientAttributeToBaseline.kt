@@ -215,16 +215,24 @@ class PatientAttributeToBaseline(private val patientsDAO: PatientsDAO) {
     }
 
     private fun extractSmokingHistoryData(baseline: Baseline, data: String) {
-        val smokingHistoryList: List<SmokingHistory> = Gson().fromJson(
-            data,
-            object : TypeToken<List<SmokingHistory>>() {}.type
-        )
-        val smokingHistory: SmokingHistory = smokingHistoryList[0]
+        val jsonElement = JsonParser.parseString(data)
+        val smokingHistoryList: List<SmokingHistory> = when {
+            jsonElement.isJsonArray -> {
+                Gson().fromJson(
+                    data,
+                    object : TypeToken<List<SmokingHistory>>() {}.type
+                )
+            }
+            else -> emptyList()
+        }
+        val smokingHistory: SmokingHistory? = smokingHistoryList.firstOrNull()
 
-        baseline.smokingHistory = smokingHistory.smokingStatus
-        baseline.smokingRate = smokingHistory.rateOfSmoking
-        baseline.smokingDuration = smokingHistory.durationOfSmoking
-        baseline.smokingFrequency = smokingHistory.frequencyOfSmoking
+        if (smokingHistory != null) {
+            baseline.smokingHistory = smokingHistory.smokingStatus
+            baseline.smokingRate = smokingHistory.rateOfSmoking
+            baseline.smokingDuration = smokingHistory.durationOfSmoking
+            baseline.smokingFrequency = smokingHistory.frequencyOfSmoking
+        }
     }
 
     private fun extractAlcoholHistoryData(baseline: Baseline, data: String) {

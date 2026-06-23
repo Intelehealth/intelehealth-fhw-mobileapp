@@ -69,7 +69,7 @@ class NotificationRepository {
 
     fun fetchNonDeletedNotification(): List<NotificationModel> {
         syncUtils.syncInBackground()
-        val allVisitList = VisitsDAO.recentNotEndedVisits(LIMIT, OFFSET)
+        val allVisitList = VisitsDAO.recentNotEndedVisitsWithPrescription(LIMIT, OFFSET)
         val notificationList = ArrayList<NotificationModel>()
 
         allVisitList.forEach { prescriptionModel ->

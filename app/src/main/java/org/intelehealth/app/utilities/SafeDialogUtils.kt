@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities
 
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
 import android.util.Log
@@ -23,6 +24,27 @@ object SafeDialogUtil {
      */
     @JvmStatic
     fun showDialog(context: Context?, dialog: AlertDialog) {
+        try {
+            if (context is Activity) {
+                if (!context.isFinishing && !context.isDestroyed) {
+                    dialog.show()
+                } else {
+                    CustomLog.d("SafeDialogUtil", "Activity is finishing or destroyed, dialog not shown.")
+                }
+            } else {
+                CustomLog.d("SafeDialogUtil", "Context is not an Activity, dialog not shown.")
+            }
+        } catch (e: Exception) {
+            CustomLog.d("SafeDialogUtil", "Failed to show dialog safely", e)
+        }
+    }
+
+    /**
+     * this is a safe dialog class to handle WindowManagerGlobal.findViewLocked (AEAT-1982)
+     * to handle AlertDialog
+     */
+    @JvmStatic
+    fun showDialog(context: Context?, dialog: Dialog) {
         try {
             if (context is Activity) {
                 if (!context.isFinishing && !context.isDestroyed) {

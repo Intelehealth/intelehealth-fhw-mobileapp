@@ -570,7 +570,7 @@ class PastAppointmentsFragment :
 
     private fun getPatientProfile(patientUuid: String): String {
         CustomLog.d(TAG, "getPatientProfile: patientUuid : $patientUuid")
-        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writableDatabase
+        val db = IntelehealthApplication.inteleHealthDatabaseHelper.writeDb
         var imagePath = ""
         val idCursor =
             db.rawQuery("SELECT * FROM tbl_patient where uuid = ? ", arrayOf(patientUuid))

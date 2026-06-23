@@ -16,6 +16,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = AppConstants.DATABASE_NAME;
     public static SQLiteDatabase database;
 
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.enableWriteAheadLogging();
+    }
 
     /**
      * This take will keep the log of the connection info wrt the visit-uuid

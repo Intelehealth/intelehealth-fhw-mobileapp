@@ -37,6 +37,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.data.ConfigRepository;
 import org.intelehealth.config.network.response.ConfigResponse;
+import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.text.ParsePosition;
@@ -655,6 +656,7 @@ public class SyncDAO {
                                         activePatientList.get(j).getLast_name(),
                                 IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription),
                                 NotificationID.getID(), IntelehealthApplication.getAppContext());
+                        NotificationBroadCast.initialize(IntelehealthApplication.getAppContext());
                     }
                 }
             }
