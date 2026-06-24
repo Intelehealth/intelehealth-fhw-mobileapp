@@ -7,7 +7,7 @@ import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb
 import static org.intelehealth.app.database.dao.ObsDAO.getFollowupDataForVisitUUID;
 import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.database.dao.VisitAttributeListDAO.fetchSpecialityValue;
-import static org.intelehealth.app.database.dao.VisitsDAO.fetchVisitModifiedDateForPrescPending;
+import static org.intelehealth.app.database.dao.VisitsDAO.resolveObsModifiedDateForVisit;
 import static org.intelehealth.app.database.dao.VisitsDAO.isVisitNotEnded;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.timeAgoFormat;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
@@ -182,6 +182,9 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             patient_photo_path = intent.getStringExtra("patient_photo");
             chief_complaint_value = intent.getStringExtra("chief_complaint");
             obsservermodifieddate = intent.getStringExtra("obsservermodifieddate");
+            if (obsservermodifieddate == null) {
+                obsservermodifieddate = "";
+            }
         }
 
         // end visit - start
@@ -301,13 +304,12 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             presc_arrowRight.setVisibility(View.VISIBLE);
             presc_relative.setClickable(true);
             presc_remind_block.setVisibility(View.GONE);
-            if (!obsservermodifieddate.equalsIgnoreCase("")) {
-                //  String modifiedDate = fetchEncounterModifiedDateForPrescGiven(visitID);
-                String modifiedDate = obsservermodifieddate;
+            String modifiedDate = resolveObsModifiedDateForVisit(visitID, true);
+            if (!modifiedDate.isEmpty()) {
                 modifiedDate = timeAgoFormat(modifiedDate);
                 presc_time.setText(getResources().getString(R.string.received) + " " + modifiedDate);
-                icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
             }
+            icon_presc_details.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.prescription_icon));
 
 /*
             presc_arrowRight.setOnClickListener(v -> {
@@ -347,16 +349,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             // if no presc given than show the dialog of remind and pending based on time passed from visit uplaoded.
             presc_arrowRight.setVisibility(View.GONE);
             presc_relative.setClickable(false);
-            //   String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
-
-            String modifiedDate = "";
-            if (!obsservermodifieddate.equalsIgnoreCase("")) {
-                modifiedDate = obsservermodifieddate;
-                modifiedDate = timeAgoFormat(modifiedDate);
-            } else {
-                modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
-                modifiedDate = timeAgoFormat(modifiedDate);
-            }
+            String modifiedDate = resolveObsModifiedDateForVisit(visitID, false);
+            modifiedDate = timeAgoFormat(modifiedDate);
 
             if (modifiedDate.contains("minutes") || modifiedDate.contains("hours") || modifiedDate.contains("minute") || modifiedDate.contains("hour")) {
                 // here dont show remind block
