@@ -19,6 +19,7 @@ import io.reactivex.schedulers.Schedulers
 import okhttp3.Credentials
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.database.dao.PatientsDAO
@@ -559,8 +560,9 @@ class FilterResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickLis
             .toRequestBody("application/json".toMediaTypeOrNull())
 
         val auth = Credentials.basic("admin", "apple@1Mango")
-
+        val url = (BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/ihmodule/patient/\$match")
         return AppConstants.apiInterface.searchPatientOpenMRS(
+            url,
             auth,
             requestBody
         )

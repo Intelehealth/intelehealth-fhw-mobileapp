@@ -18,6 +18,9 @@
         <variable
             name="isEditMode"
             type="Boolean" />
+        <variable
+            name="isFhirEnableds"
+            type="Boolean" />
 
     </data>
 
@@ -784,7 +787,7 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:paddingHorizontal="@dimen/margin_10"
-            android:text="@{isEditMode ? @string/save : @string/next}"
+            android:text="@{isEditMode ? @string/save: (isFhirEnableds ? @string/registry_check : @string/next)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

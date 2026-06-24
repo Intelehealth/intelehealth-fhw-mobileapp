@@ -89,8 +89,9 @@ public interface ApiInterface {
     @GET
     Call<ResponseDTO> RESPONSE_DTO_CALL_FOR_FILTER(@Url String url,
                                                    @Header("Authorization") String authHeader);
-    @POST("openmrs/ws/rest/v1/ihmodule/patient/$match")
+    @POST
     Single<PatientSearchDTO> searchPatientOpenMRS(
+            @Url String url,
             @Header("Authorization") String auth,
             @Body RequestBody body
     );

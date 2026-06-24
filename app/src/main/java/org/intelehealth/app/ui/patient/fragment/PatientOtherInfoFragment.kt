@@ -63,7 +63,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 isFhirEnabled = it.activeStatusFhir
 
                 Timber.d { "FHIR STATUS => $isFhirEnabled" }
-                updateRegistryButton()
+                //updateRegistryButton()
                 onFhirStatusChanged(isFhirEnabled)
             }
         }
@@ -89,7 +89,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { Gson().toJson(patient) }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
-        updateRegistryButton()
+        //updateRegistryButton()
         fetchPersonalInfoConfig()
     }
     private fun updateRegistryButton() {
@@ -157,7 +157,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             codeOfDepartment = binding.textInputCodeOfDepartment.text?.toString()
             department = binding.textInputDepartment.text?.toString()
 
-            if (isFhirEnabled){
+            /*if (isFhirEnabled){
                 val intent = Intent(
                     requireContext(),
                     PatientSearchingActivity::class.java
@@ -167,13 +167,13 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 intent.putExtra("isFhir",isFhirEnabled)
 
                 startActivity(intent)
-            }else{
+            }else{*/
                 patientViewModel.updatedPatient(this)
                 patientViewModel.savePatient().observe(viewLifecycleOwner) {
                     it ?: return@observe
                     patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
                 }
-            }
+            //}
         }
     }
 

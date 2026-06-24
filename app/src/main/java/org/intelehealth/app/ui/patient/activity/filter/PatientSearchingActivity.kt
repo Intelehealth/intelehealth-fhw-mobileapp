@@ -3,8 +3,6 @@ package org.intelehealth.app.ui.patient.activity.filter
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
@@ -13,13 +11,10 @@ import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import okhttp3.Credentials
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -35,8 +30,6 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.models.dto.PatientSearchDTO
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability
 import org.intelehealth.app.utilities.BundleKeys
-import org.intelehealth.app.utilities.DialogUtils
-import org.intelehealth.app.utilities.ToastUtil
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Locale
@@ -742,7 +735,10 @@ class PatientSearchingActivity : AppCompatActivity() {
 
         val auth = Credentials.basic("admin", "apple@1Mango")
 
+        val url = (BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/ihmodule/patient/\$match")
+
         return AppConstants.apiInterface.searchPatientOpenMRS(
+            url,
             auth,
             requestBody
         )

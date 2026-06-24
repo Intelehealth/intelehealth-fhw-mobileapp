@@ -104,8 +104,23 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun setClickListener() {
         binding.frag2BtnBack.setOnClickListener {
+
+            if (isFhirEnabled) {
+                requireActivity().finish()
+                return@setOnClickListener
+            }
+
             setOtherBlockData()
-            findNavController().popBackStack()
+
+            val handled = try {
+                findNavController().popBackStack()
+            } catch (e: Exception) {
+                false
+            }
+
+            if (!handled) {
+                requireActivity().finish()
+            }
         }
         binding.frag2BtnNext.setOnClickListener {
             setOtherBlockData()

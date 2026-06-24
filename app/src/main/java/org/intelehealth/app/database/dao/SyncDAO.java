@@ -1164,8 +1164,10 @@ public class SyncDAO {
                     "admin",
                     "apple@1Mango"
             );
+            String url = (BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/ihmodule/patient/$match");
 
             return AppConstants.apiInterface.searchPatientOpenMRS(
+                    url,
                     auth,
                     requestBody
             );

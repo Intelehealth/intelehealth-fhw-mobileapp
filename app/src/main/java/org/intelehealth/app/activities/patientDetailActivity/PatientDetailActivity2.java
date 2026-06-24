@@ -295,13 +295,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         initUI();
-        if (isFhirEnabled &&
+       /* if (isFhirEnabled &&
                 NetworkConnection.isOnline(this)
                 ) {
 
             new SyncUtils().syncBackground();
             setDisplay(patientDTO.getUuid());
-        }
+        }*/
         personal_edit.setOnClickListener(v -> {
             PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);

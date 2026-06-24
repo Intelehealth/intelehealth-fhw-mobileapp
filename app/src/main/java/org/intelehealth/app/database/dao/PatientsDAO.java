@@ -122,7 +122,7 @@ public class PatientsDAO extends BaseDao {
         db.beginTransaction();
         try {
             for (PatientDTO patient : patientDTO) {
-                createPatients(patient, db);
+                createPatientsApp(patient, db);
             }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
@@ -236,6 +236,74 @@ public class PatientsDAO extends BaseDao {
             values.put("address6", patient.getAddress6());
             values.put("country", patient.getCountry());
             values.put("date_of_birth", DateAndTimeUtils.formatDateFromOnetoAnother(patient.getDateofbirth(), "MMM dd, yyyy hh:mm:ss a", "yyyy-MM-dd"));
+            values.put("gender", patient.getGender());
+            values.put("postal_code", patient.getPostalcode());
+            values.put("state_province", patient.getStateprovince());
+            values.put("city_village", patient.getCityvillage());
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+
+            values.put("guardian_type", patient.getGuardianType());
+            values.put("guardian_name", patient.getGuardianName());
+            values.put("contact_type", patient.getContactType());
+            values.put("em_contact_name", patient.getEmContactName());
+            values.put("em_contact_num", patient.getEmContactNumber());
+
+            values.put("dead", patient.getDead());
+            values.put("sync", patient.getSyncd());
+            values.put("cr_sync_state", syncState);
+            if (mpiIdDuplicate){
+                values.put("cr_merge_target_uuid", mpiId);
+            }
+            values.put("cr_last_attempt_at",patient.getCrLastAttemptAt());
+            values.put("cr_sync_attempts",patient.getCrSyncAttemptAt());
+            values.put("phone_normalized", normalizePhone(patient.getPhonenumber()));
+            createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+            isCreated = createdRecordsCount > 0;
+        } catch (SQLException e) {
+            isCreated = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        }
+        return isCreated;
+
+    }
+    public boolean createPatientsApp(PatientDTO patient, SQLiteDatabase db) throws DAOException {
+        boolean isCreated = true;
+        ContentValues values = new ContentValues();
+        String firstNameSdx = SoundexHelper.encode(patient.getFirstname());
+        String middleNameSdx =patient.getMiddlename();
+        if(middleNameSdx != null){
+            middleNameSdx = SoundexHelper.encode(patient.getMiddlename());
+        }
+        String lastNameSdx = SoundexHelper.encode(patient.getLastname());
+        String syncState="SYNCED_PENDING_CR";
+        String mpiId = patient.getMpiId();
+        boolean mpiIdDuplicate=false;
+
+        if (mpiId != null && !mpiId.isEmpty()) {
+            mpiIdDuplicate = isMpiIdExists(db, mpiId);
+            syncState = mpiIdDuplicate ? "CR_DUPLICATE_OF" : "CR_ASSIGNED";
+        }
+
+        try {
+            values.put("uuid", patient.getUuid());
+            values.put("openmrs_id", patient.getOpenmrsId());
+            values.put("mpi_id", patient.getMpiId());
+            values.put("source_id", patient.getSourceId());
+            values.put("first_name", patient.getFirstname());
+            values.put("middle_name", patient.getMiddlename());
+            values.put("last_name", patient.getLastname());
+            values.put("phone_number",patient.getPhonenumber());
+
+            values.put("first_name_sdx", firstNameSdx);
+            values.put("middle_name_sdx", middleNameSdx);
+            values.put("last_name_sdx", lastNameSdx);
+
+            values.put("address1", patient.getAddress1());
+            values.put("address2", patient.getAddress2());
+            values.put("address6", patient.getAddress6());
+            values.put("country", patient.getCountry());
+            values.put("date_of_birth", patient.getDateofbirth());
             values.put("gender", patient.getGender());
             values.put("postal_code", patient.getPostalcode());
             values.put("state_province", patient.getStateprovince());
@@ -2143,9 +2211,9 @@ public class PatientsDAO extends BaseDao {
             args.add("%" + firstName.trim() + "%");
             args.add("%" + SoundexHelper.encode(firstName.trim()) + "%");
         }*/
-        if (lastName != null && !lastName.trim().isEmpty()) {
+        if (!TextUtils.isEmpty(lastName)) {
 
-            query.append(" AND (LOWER(last_name) LIKE LOWER(?) OR last_name_sdx LIKE ?) ");
+            query.append(" OR (LOWER(last_name) LIKE LOWER(?) OR last_name_sdx LIKE ?) ");
             args.add("%" + lastName.trim() + "%");
             args.add("%" + SoundexHelper.encode(lastName.trim()) + "%");
         }
@@ -2160,7 +2228,7 @@ public class PatientsDAO extends BaseDao {
         /**
          * DOB
          */
-        if (dob != null && !dob.trim().isEmpty()) {
+        if (!TextUtils.isEmpty(dob)) {
 
             query.append(" AND date_of_birth = ? ");
             args.add(dob.trim());
@@ -2168,7 +2236,7 @@ public class PatientsDAO extends BaseDao {
         /**
          * Phone
          */
-        if (phone != null && !phone.trim().isEmpty()) {
+        if (!TextUtils.isEmpty(phone)) {
 
             query.append(" AND phone_normalized = ? ");
             args.add( normalizePhone(phone.trim()) );
@@ -2227,7 +2295,7 @@ public class PatientsDAO extends BaseDao {
                         boolean phoneMatch =
                                 patient.getPhonenumber() != null &&
                                         patient.getPhonenumber().equals(normalizePhone(phone.trim()));
-
+                        Log.d("CheckScore Phone",""+phoneMatch);
                         totalScore += phoneMatch ? 0.05 : 0.0;
                         result.setPhoneMatched(phoneMatch);
                     }
@@ -2254,9 +2322,9 @@ public class PatientsDAO extends BaseDao {
                     result.setFirstNameScore(0);
                     result.setLastNameScore(0);
 
-                   // if (totalScore >= 0.60) {
+                   if (totalScore >= 0.60) {
                         resultList.add(result);
-                   // }
+                   }
                 }while (cursor.moveToNext());
             }
 

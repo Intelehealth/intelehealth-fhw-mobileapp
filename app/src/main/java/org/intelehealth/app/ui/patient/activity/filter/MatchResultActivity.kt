@@ -19,9 +19,11 @@ import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivi
 import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity.Companion.startPatientRegistration
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
+import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.ToastUtil
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 
@@ -107,19 +109,58 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
         }
        noneMatch.setOnClickListener {
            patientViewModel.updatedPatient(patientDTO)
-           patientViewModel.savePatient().observe(this) {
-               it ?: return@observe
-               patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails(patientDTO) }
+           if (patientViewModel.activeStatusAddressSection) {
+               startPatientRegistration(
+                   this,
+                   null,
+                   PatientRegStage.ADDRESS,
+                   patientDTO.firstname,
+                   patientDTO.lastname,
+                   getGenderCode(patientDTO.gender),
+                   patientDTO.phonenumber,
+                   patientDTO.dateofbirth
+               )
+               //finish()
+           } else if (patientViewModel.activeStatusOtherSection) {
+               startPatientRegistration(
+                   this,
+                   null,
+                   PatientRegStage.OTHER,
+                   patientDTO.firstname,
+                   patientDTO.lastname,
+                   getGenderCode(patientDTO.gender),
+                   patientDTO.phonenumber,
+                   patientDTO.dateofbirth
+               )
+               //finish()
+           } else {
+               saveAndNavigateToDetails()
            }
        }
+    }
+    fun getGenderCode(gender: String?): Int {
+        return when (gender?.uppercase()) {
+            "M" -> 1
+            "F" -> 2
+            "O" -> 3
+            else -> 0 // unknown / null case
+        }
+    }
+    private fun saveAndNavigateToDetails() {
+        patientViewModel.updatedPatient(patientDTO)
+        patientViewModel.savePatient().observe(this) {
+            it ?: return@observe
+            patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails(patientDTO) }
+        }
     }
     override fun onItemClick(selectedItem: Any) {
         if (selectedItem is PatientDTO) {
 
             val finalPatient = mergePatient(selectedItem, patientDTO)
-          //  Toast.makeText(this, "Check Final"+finalPatient.firstname, Toast.LENGTH_SHORT).show()
+           //Toast.makeText(this, "Check Final"+finalPatient.dateofbirth, Toast.LENGTH_SHORT).show()
             patientViewModel.updatedPatient(finalPatient)
             patientViewModel.savePatient().observe(this) {
+               // Toast.makeText(this, "Check Final"+it.status, Toast.LENGTH_SHORT).show()
                 it ?: return@observe
                 patientViewModel.handleResponse(it) { result ->
                     if (result) navigateToDetails(finalPatient)

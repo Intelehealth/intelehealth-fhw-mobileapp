@@ -215,7 +215,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="12th May 1988"
+                        android:text=""
                         android:textAppearance="@style/caption"
                         android:textColor="@color/textview_color"
                         android:textSize="@dimen/find_patient_hint_size" />

@@ -61,23 +61,31 @@ class PatientFilterAdapter(
         holder.filterPossibleTv.text =
             if (patients.score > 0.94)
                 "Patient may already exist"
+            else if(patients.score>0.79)
+                "Probable Duplicate Found locally"
             else
                 "Possible Duplicate Found locally"
         holder.filterPossibleTv.setTextColor(
             if (patients.score > 0.94)
                 Color.parseColor("#6F2623")
+            else if(patients.score>0.79)
+                Color.parseColor("#FF8A3D")
             else
                 Color.parseColor("#7E521E")
         )
         holder.filterInfoTv.setTextColor(
             if (patients.score > 0.95)
                 Color.parseColor("#6F2623")
+            else if(patients.score>0.79)
+                Color.parseColor("#FF8A3D")
             else
                 Color.parseColor("#7E521E")
         )
         holder.cardView.setBackgroundResource(
             if (patients.score > 0.95)
                 R.drawable.patient_filter_items_bg_c
+           else if (patients.score > 0.79)
+                R.drawable.patient_filter_items_bg_p
             else
                 R.drawable.patient_filter_items_bg
         )

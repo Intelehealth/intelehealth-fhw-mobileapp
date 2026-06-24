@@ -605,8 +605,9 @@ class FilterPatientActivity : BaseActivity(), FilterPatientAdapter.AdapterClickL
             .toRequestBody("application/json".toMediaTypeOrNull())
 
         val auth = Credentials.basic("admin", "apple@1Mango")
-
+        val url = (BuildConfig.SERVER_URL + "openmrs/ws/rest/v1/ihmodule/patient/\$match")
         return AppConstants.apiInterface.searchPatientOpenMRS(
+            url,
             auth,
             requestBody
         )

@@ -39,6 +39,7 @@ import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.filter.PatientSearchingActivity
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -103,7 +104,7 @@ class PatientPersonalInfoFragment :
     private lateinit var loadingDialog: AlertDialog
     private val handler = Handler(Looper.getMainLooper())
     private var runnable: Runnable? = null
-    private var isFhirEnableds = false   // FHIR FLAG
+    //private var isFhirEnableds = false   // FHIR FLAG
 
     // VIEWMODEL (FHIR STATUS)
     private val featureStatusViewModel by viewModels<FeatureActiveStatusViewModel> {
@@ -162,7 +163,9 @@ class PatientPersonalInfoFragment :
                 isFhirEnabled = it.activeStatusFhir
 
                 Timber.d { "FHIR STATUS => $isFhirEnabled" }
+                binding.isFhirEnableds = isFhirEnabled
                 onFhirStatusChanged(isFhirEnabled)
+                updateRegistryButton()
             }
         }
     }
@@ -428,6 +431,18 @@ class PatientPersonalInfoFragment :
 //            binding.addOnRebindCallback(onRebindCallback)
         }
     }
+    private fun updateRegistryButton() {
+        Timber.d { "FHIR STATUS b => $isFhirEnabled" }
+        binding.btnPatientPersonalNext.text =
+            if (isFhirEnabled) {
+                getString(R.string.registry_check)
+
+            } else {
+                getString(R.string.next)
+            }
+        Timber.d { "FHIR STATUS a => $isFhirEnabled" }
+        Timber.d{"Button text => ${binding.btnPatientPersonalNext.text}"}
+    }
 
 //    private val onRebindCallback =
 //        object : OnRebindCallback<FragmentPatientPersonalInfoOldDesignBinding>() {
@@ -461,15 +476,29 @@ class PatientPersonalInfoFragment :
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
-                if (patientViewModel.activeStatusAddressSection) {
-                    PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
-                        findNavController().navigate(this)
-                    }
-                } else if (patientViewModel.activeStatusOtherSection) {
-                    PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
-                        findNavController().navigate(this)
-                    }
-                } else saveAndNavigateToDetails()
+                if(isFhirEnabled){
+                    val intent = Intent(
+                            requireContext(),
+                    PatientSearchingActivity::class.java
+                    )
+
+                    intent.putExtra("patientDTO", patient)
+                    intent.putExtra("isFhir",isFhirEnabled)
+
+                    startActivity(intent)
+                    requireActivity().finish()
+                }
+                else{
+                    if (patientViewModel.activeStatusAddressSection) {
+                        PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
+                            findNavController().navigate(this)
+                        }
+                    } else if (patientViewModel.activeStatusOtherSection) {
+                        PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
+                            findNavController().navigate(this)
+                        }
+                    } else saveAndNavigateToDetails()
+                }
             }
         }
     }

@@ -153,12 +153,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_10dp"
-                    android:background="@drawable/bg_register_button"
+                    android:background="@drawable/button_bg"
                     android:gravity="center"
                     android:paddingHorizontal="16dp"
                     android:paddingVertical="14dp"
                     android:text="Proceed with new registration"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/white"
                     android:textSize="17sp"
                     android:textStyle="bold" />
             </LinearLayout>
