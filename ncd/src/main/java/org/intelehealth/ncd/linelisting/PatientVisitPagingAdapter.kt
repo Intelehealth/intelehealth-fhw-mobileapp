@@ -32,6 +32,24 @@ class PatientVisitPagingAdapter (
         fun bind(patient: PatientVisitDetails) {
             binding.visitDetail = patient
             binding.executePendingBindings()
+            try {
+                Class.forName("org.intelehealth.app.utilities.DownloadFilesUtils")
+                    .getMethod(
+                        "ensurePatientProfileImage",
+                        android.content.Context::class.java,
+                        android.widget.ImageView::class.java,
+                        String::class.java,
+                        String::class.java
+                    )
+                    .invoke(
+                        null,
+                        binding.root.context,
+                        binding.profileImgview,
+                        patient.patientId,
+                        patient.patientPhoto
+                    )
+            } catch (_: Exception) {
+            }
 
             binding.root.setOnClickListener {
                 listener.onPatientClicked(patient)

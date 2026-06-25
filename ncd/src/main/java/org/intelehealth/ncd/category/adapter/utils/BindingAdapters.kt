@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import org.intelehealth.ncd.R
 import org.intelehealth.ncd.model.PatientVisitDetails
 import org.intelehealth.ncd.utils.DateAndTimeUtils
@@ -105,11 +106,14 @@ fun bindProfileImage(imageView: ImageView?, url: String?) {
         .sizeMultiplier(0.25f)
 
     if (!url.isNullOrEmpty()) {
+        val file = File(url)
         Glide.with(context)
-            .load(File(url))
+            .load(file)
             .thumbnail(requestBuilder)
             .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .signature(ObjectKey(if (file.exists()) file.lastModified() else 0L))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .placeholder(R.drawable.avatar1)
             .error(R.drawable.avatar1)
             .into(imageView)

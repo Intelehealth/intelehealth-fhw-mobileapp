@@ -479,6 +479,14 @@ public class SearchPatientActivity_New extends BaseActivity {
         view.setVisibility(View.GONE);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     private void initializeRecyclerView(LinearLayoutManager linearLayoutManager) {
         search_recycelview.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override

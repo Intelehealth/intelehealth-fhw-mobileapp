@@ -5,7 +5,6 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +16,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
@@ -152,38 +147,31 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             }
 
             //  6. Patient Profile Pic
-            //1.
+            boolean hasUnsyncedLocalPhoto = false;
             try {
-                profileImage = imagesDAO.getPatientProfileChangeTime(model.getUuid());
+                hasUnsyncedLocalPhoto = imagesDAO.hasUnsyncedPatientProfileImage(model.getUuid());
             } catch (DAOException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
-            //2.
-            if (model.getPatientPhoto() == null || model.getPatientPhoto().equalsIgnoreCase("")) {
-                if (NetworkConnection.isOnline(context)) {
-                    profilePicDownloaded(model, holder);
+
+            if (!hasUnsyncedLocalPhoto) {
+                try {
+                    profileImage = imagesDAO.getPatientProfileChangeTime(model.getUuid());
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
                 }
-            }
-            //3.
-            if (!profileImage.equalsIgnoreCase(profileImage1)) {
-                if (NetworkConnection.isOnline(context)) {
-                    profilePicDownloaded(model, holder);
+                if (model.getPatientPhoto() == null || model.getPatientPhoto().equalsIgnoreCase("")) {
+                    if (NetworkConnection.isOnline(context)) {
+                        profilePicDownloaded(model, holder);
+                    }
+                } else if (!profileImage.equalsIgnoreCase(profileImage1)) {
+                    if (NetworkConnection.isOnline(context)) {
+                        profilePicDownloaded(model, holder);
+                    }
                 }
             }
 
-            if (model.getPatientPhoto() != null) {
-                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                        .asDrawable().sizeMultiplier(0.3f);
-                Glide.with(context)
-                        .load(model.getPatientPhoto())
-                        .thumbnail(requestBuilder)
-                        .centerCrop()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true)
-                        .into(holder.profile_imgview);
-            } else {
-                holder.profile_imgview.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.avatar1));
-            }
+            DownloadFilesUtils.bindProfileImage(context, holder.profile_imgview, model.getPatientPhoto());
 
         }
     }
@@ -271,15 +259,9 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                         }
                         if (updated) {
                             if (!((Activity) context).isFinishing() && !((Activity) context).isDestroyed()) {
-                                RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())
-                                        .asDrawable().sizeMultiplier(0.3f);
-                                Glide.with(context)
-                                        .load(AppConstants.IMAGE_PATH + model.getUuid() + ".jpg")
-                                        .thumbnail(requestBuilder)
-                                        .centerCrop()
-                                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                        .skipMemoryCache(true)
-                                        .into(holder.profile_imgview);
+                                String photoPath = AppConstants.IMAGE_PATH + model.getUuid() + ".jpg";
+                                model.setPatientPhoto(photoPath);
+                                DownloadFilesUtils.bindProfileImage(context, holder.profile_imgview, photoPath);
                             }
 
                         }

@@ -482,6 +482,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -505,6 +507,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.intelehealth.ihutils.R;
+import org.intelehealth.ihutils.utils.BitmapUtils;
 
 import java.io.File;
 import java.util.concurrent.ExecutionException;
@@ -544,6 +547,8 @@ public class CameraActivity extends AppCompatActivity {
     private String mImagePathRoot = "";
 
     private boolean fabClickFlag = true;
+
+    private Handler mBackgroundHandler;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -670,12 +675,7 @@ public class CameraActivity extends AppCompatActivity {
             return;
         }
 
-        File photoFile =
-                new File(
-                        mImagePathRoot +
-                                mImageName +
-                                ".jpg"
-                );
+        File photoFile = createPhotoFile();
 
         ImageCapture.OutputFileOptions outputOptions =
                 new ImageCapture.OutputFileOptions.Builder(photoFile)
@@ -691,25 +691,22 @@ public class CameraActivity extends AppCompatActivity {
                             @NonNull ImageCapture.OutputFileResults
                                     outputFileResults
                     ) {
-
-                        fabClickFlag = true;
-
-                        Intent intent = new Intent();
-
-                        intent.putExtra(
-                                "RESULT",
-                                photoFile.getAbsolutePath()
-                        );
-
-                        setResult(RESULT_OK, intent);
-
-                        Toast.makeText(
-                                CameraActivity.this,
-                                R.string.util_picture_taken,
-                                Toast.LENGTH_SHORT
-                        ).show();
-
-                        finish();
+                        getBackgroundHandler().post(() -> {
+                            boolean success =
+                                    BitmapUtils.fileCompressed(photoFile.getAbsolutePath());
+                            runOnUiThread(() -> {
+                                if (success) {
+                                    finishWithResult(photoFile);
+                                } else {
+                                    fabClickFlag = true;
+                                    Toast.makeText(
+                                            CameraActivity.this,
+                                            "Capture failed",
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                }
+                            });
+                        });
                     }
 
                     @Override
@@ -733,6 +730,40 @@ public class CameraActivity extends AppCompatActivity {
                     }
                 }
         );
+    }
+
+    private File createPhotoFile() {
+        String directory = mFilePath != null ? mFilePath : mImagePathRoot;
+        return new File(directory + mImageName + ".jpg");
+    }
+
+    private void finishWithResult(File photoFile) {
+        if (isFinishing() || isDestroyed()) {
+            return;
+        }
+
+        fabClickFlag = true;
+
+        Intent intent = new Intent();
+        intent.putExtra("RESULT", photoFile.getAbsolutePath());
+        setResult(RESULT_OK, intent);
+
+        Toast.makeText(
+                CameraActivity.this,
+                R.string.util_picture_taken,
+                Toast.LENGTH_SHORT
+        ).show();
+
+        finish();
+    }
+
+    private Handler getBackgroundHandler() {
+        if (mBackgroundHandler == null) {
+            HandlerThread thread = new HandlerThread("camera-image-processing");
+            thread.start();
+            mBackgroundHandler = new Handler(thread.getLooper());
+        }
+        return mBackgroundHandler;
     }
 
     public void flipCamera(View view) {
