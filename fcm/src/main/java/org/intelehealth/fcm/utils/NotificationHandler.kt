@@ -40,7 +40,7 @@ object NotificationHandler {
         println("buildIntentExtra :: $notification")
         println("buildIntentExtra :: $data")
         intent.putExtra(FcmConstants.FCM_DATA_PAYLOAD, data)
-        intent.putExtra(FcmConstants.FCM_NOTIFICATION_PAYLOAD, notification)
+        intent.putExtra(FcmConstants.FCM_NOTIFICATION_PAYLOAD, notification ?: "")
     }
 
     fun generateSimpleNotification(

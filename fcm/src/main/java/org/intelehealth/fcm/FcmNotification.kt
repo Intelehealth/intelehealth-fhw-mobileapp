@@ -95,7 +95,7 @@ class FcmNotification private constructor(val context: Context) {
                 setCategory(Notification.CATEGORY_MESSAGE)
                 setGroup("$NOTIFICATION_GROUP_FCM.$notificationId")
                 setGroupSummary(false)
-                setVibrate(longArrayOf(VIBRATE, VIBRATE, VIBRATE, VIBRATE))
+                setVibrate(VIBRATION_PATTERN)
                 setAutoCancel(true)
                 setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 setSound(ringToneUri)
@@ -116,6 +116,8 @@ class FcmNotification private constructor(val context: Context) {
 
                 channel.enableLights(true)
                 channel.lightColor = Color.BLUE
+                channel.enableVibration(true)
+                channel.vibrationPattern = VIBRATION_PATTERN
                 channel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
                 return channel
             }
@@ -125,9 +127,9 @@ class FcmNotification private constructor(val context: Context) {
     }
 
     companion object {
-        const val VIBRATE = 1000L
+        private val VIBRATION_PATTERN = longArrayOf(0, 300, 200, 300)
         private const val RAN_NUM_MAX = 10000
-        private const val CHANNEL_ID_SUFFIX = "_channel"
+        private const val CHANNEL_ID_SUFFIX = "_fcm_channel"
         private const val NOTIFICATION_GROUP_FCM = "intelehealth.fcm"
         var notificationId = Random(System.currentTimeMillis()).nextInt(RAN_NUM_MAX)
 

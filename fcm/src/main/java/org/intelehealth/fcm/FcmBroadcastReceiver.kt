@@ -39,9 +39,7 @@ abstract class FcmBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun hasValidExtras(intent: Intent, onValid: () -> Unit) {
-        if (intent.hasExtra(FcmConstants.FCM_NOTIFICATION_PAYLOAD)
-            && intent.hasExtra(FcmConstants.FCM_DATA_PAYLOAD)
-        ) {
+        if (intent.hasExtra(FcmConstants.FCM_DATA_PAYLOAD)) {
             onValid.invoke()
         }
     }
@@ -53,8 +51,8 @@ abstract class FcmBroadcastReceiver : BroadcastReceiver() {
         var data = HashMap<String, String>()
         val gson = Gson()
         jsonNotification?.let {
-            NotificationHandler.isValidJson(jsonNotification).apply {
-                if (this) notification = gson.fromJson(jsonNotification, Notification::class.java)
+            if (it.isNotBlank() && NotificationHandler.isValidJson(it)) {
+                notification = gson.fromJson(it, Notification::class.java)
             }
         }
 
