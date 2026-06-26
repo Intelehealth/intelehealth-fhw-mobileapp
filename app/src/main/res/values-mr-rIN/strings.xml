@@ -531,10 +531,15 @@
     <string name="table_spo2">SpO2 (%)</string>
     <string name="spo2_error">Sp02 %1$s आणि %2$s च्या दरम्यान असावा.</string>
     <string name="enter_15_digits">15 अंक प्रविष्ट करा</string>
+    <!--    <string name="Hours">तास</string>-->
+    <!--    <string name="Days">दिवस</string>-->
+    <!--    <string name="Weeks">Weeks</string>-->
+    <!--    <string name="Months">आठवडे</string>-->
+    <!--    <string name="Years">वर्षे</string>-->
     <string name="Hours">तास</string>
     <string name="Days">दिवस</string>
-    <string name="Weeks">Weeks</string>
-    <string name="Months">आठवडे</string>
+    <string name="Weeks">आठवडे</string>
+    <string name="Months">महिने</string>
     <string name="Years">वर्षे</string>
     <string name="setup_internet_not_available">तुम्ही इंटरनेटशी कनेक्ट केलेले नाही.</string>
     <string name="visit_closed">भेट बंद</string>

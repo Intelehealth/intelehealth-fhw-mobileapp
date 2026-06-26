@@ -452,4 +452,8 @@
 
     <string name="saved_to_downloads">ફાઇલ ડાઉનલોડ્સમાં સાચવી</string>
     <string name="failed_to_save_downloads">PDF સાચવવામાં નિષ્ફળ થયાં</string>
+
+    <string name="are_you_sure_you_want_to_delete_all_notifications">શું તમે ખરેખર બધી સૂચનાઓ કાઢી નાખવા માંગો છો?</string>
+
+
 </resources>

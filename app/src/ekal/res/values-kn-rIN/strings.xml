@@ -450,4 +450,7 @@
     <string name="confirm_continue_changes_button_dialog">Continue</string>-->
     <string name="saved_to_downloads">ಫೈಲ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್‌ಗಳಿಗೆ ಉಳಿಸಲಾಗಿದೆ</string>
     <string name="failed_to_save_downloads">PDF ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
+
+    <string name="are_you_sure_you_want_to_delete_all_notifications">ನೀವು ಎಲ್ಲಾ ಅಧಿಸೂಚನೆಗಳನ್ನು ಅಳಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
+
 </resources>

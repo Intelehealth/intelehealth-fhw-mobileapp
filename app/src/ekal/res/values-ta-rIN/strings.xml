@@ -460,4 +460,7 @@
 
     <string name="saved_to_downloads">கோப்பு பதிவிறக்கங்களில் சேமிக்கப்பட்டது</string>
     <string name="failed_to_save_downloads">PDF-ஐச் சேமிக்க முடியவில்லை</string>
+
+    <string name="are_you_sure_you_want_to_delete_all_notifications">அனைத்து அறிவிப்புகளையும் நீக்க விரும்புகிறீர்கள் என்பது உறுதியா?</string>
+
 </resources>

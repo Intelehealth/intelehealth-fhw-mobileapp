@@ -454,4 +454,7 @@
     <string name="confirm_continue_changes_button_dialog">অব্যাহত ৰাখক</string>
     <string name="saved_to_downloads">ফাইল ডাউনলোডছত সংৰক্ষণ কৰা হৈছে</string>
     <string name="failed_to_save_downloads">PDF সংৰক্ষণ কৰাত ব্যৰ্থ</string>
+
+    <string name="are_you_sure_you_want_to_delete_all_notifications">আপুনি নিশ্চিত নেকি যে আপুনি সকলো জাননী মচি পেলাব বিচাৰে?</string>
+
 </resources>

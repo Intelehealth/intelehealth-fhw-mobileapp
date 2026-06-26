@@ -455,4 +455,6 @@
     <string name="confirm_continue_changes_button_dialog">Continue</string>-->
     <string name="saved_to_downloads">फ़ाइल डाउनलोड में सहेजी गई</string>
     <string name="failed_to_save_downloads">PDF सेव नहीं हो सका</string>
+
+    <string name="are_you_sure_you_want_to_delete_all_notifications">क्या आप वाकई सभी नोटिफ़िकेशन हटाना चाहते हैं?</string>
 </resources>

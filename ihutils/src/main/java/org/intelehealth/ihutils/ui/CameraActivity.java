@@ -54,23 +54,23 @@ public class CameraActivity extends AppCompatActivity {
     public static final int TAKE_IMAGE = 205;
     */
 /**
-     * Bundle key used for the {@link String} setting custom Image Name
-     * for the file generated
-     *//*
+ * Bundle key used for the {@link String} setting custom Image Name
+ * for the file generated
+ *//*
 
     public static final String SET_IMAGE_NAME = "IMG_NAME";
     */
 /**
-     * Bundle key used for the {@link String} setting custom FilePath for
-     * storing the file generated
-     *//*
+ * Bundle key used for the {@link String} setting custom FilePath for
+ * storing the file generated
+ *//*
 
     public static final String SET_IMAGE_PATH = "IMG_PATH";
     */
 /**
-     * Bundle key used for the {@link String} showing custom dialog
-     * message before starting the camera.
-     *//*
+ * Bundle key used for the {@link String} showing custom dialog
+ * message before starting the camera.
+ *//*
 
     public static final String SHOW_DIALOG_MESSAGE = "DEFAULT_DLG";
     public static final String SEND_BROADCAST_AFTER_CAPTURE = "SEND_BROADCAST_AFTER_CAPTURE";
@@ -433,9 +433,9 @@ public class CameraActivity extends AppCompatActivity {
 
     */
 /**
-     * removed onBackPressed function due to deprecation
-     * and added this one to handle onBackPressed
-     *//*
+ * removed onBackPressed function due to deprecation
+ * and added this one to handle onBackPressed
+ *//*
 
     private void handleBackPress() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -733,7 +733,11 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private File createPhotoFile() {
+        Log.v("CameraActivity", "createPhotoFile - mFilePath: " + mFilePath + ", mImagePathRoot: " + mImagePathRoot);
         String directory = mFilePath != null ? mFilePath : mImagePathRoot;
+        if (!directory.endsWith(File.separator)) {
+            directory += File.separator;
+        }
         return new File(directory + mImageName + ".jpg");
     }
 

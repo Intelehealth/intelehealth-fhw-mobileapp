@@ -447,4 +447,7 @@
     <string name="decline">తిరస్కరించు</string>
     <string name="saved_to_downloads">ఫైల్ డౌన్‌లోడ్‌లకు సేవ్ చేయబడింది</string>
     <string name="failed_to_save_downloads">PDFని సేవ్ చేయడం విఫలమైంది</string>
+
+    <string name="are_you_sure_you_want_to_delete_all_notifications">మీరు అన్ని నోటిఫికేషన్‌లను తొలగించాలనుకుంటున్నారని ఖచ్చితంగా అనుకుంటున్నారా?</string>
+
 </resources>
