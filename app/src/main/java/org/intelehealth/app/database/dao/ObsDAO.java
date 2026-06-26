@@ -582,9 +582,10 @@ public class ObsDAO {
 
     public void updateSyncForEncounter(String syncd, String uuid) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        // exclude images obs like Additional doc & Physical exam images from sync update
         ContentValues values = new ContentValues();
         values.put("sync", syncd);
-        String whereClause = "encounteruuid = ?";
-        db.update("tbl_obs", values, whereClause, new String[]{uuid});
+        String whereClause = "encounteruuid = ? and conceptuuid not in (?, ?)";
+        db.update("tbl_obs", values, whereClause, new String[]{uuid, UuidDictionary.COMPLEX_IMAGE_AD, UuidDictionary.COMPLEX_IMAGE_PE});
     }
 }

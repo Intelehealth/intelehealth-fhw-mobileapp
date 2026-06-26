@@ -731,6 +731,9 @@ public class SyncDAO {
                             CustomLog.d(TAG, "onSuccess: in push api response");
                             Logger.logD(TAG, "success" + pushResponseApiCall);
                             try {
+                                imagesPushDAO.obsImagesPush();
+                                imagesPushDAO.deleteObsImage();
+
                                 for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                     try {
                                         patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
@@ -805,8 +808,7 @@ public class SyncDAO {
                                     }
                                 }, 3000);*/
 
-                                imagesPushDAO.obsImagesPush();
-                                imagesPushDAO.deleteObsImage();
+
 
                                 isSucess[0] = true;
                                 sessionManager.setSyncFinished(true);
@@ -885,6 +887,9 @@ public class SyncDAO {
                             CustomLog.d(TAG, "onSuccess: in push api response");
                             Logger.logD(TAG, "success" + pushResponseApiCall);
                             try {
+                                imagesPushDAO.obsImagesPush();
+                                imagesPushDAO.deleteObsImage();
+
                                 for (int i = 0; i < pushResponseApiCall.getData().getPatientlist().size(); i++) {
                                     try {
                                         patientsDAO.updateOpemmrsId(pushResponseApiCall.getData().getPatientlist().get(i).getOpenmrsId(), pushResponseApiCall.getData().getPatientlist().get(i).getSyncd().toString(), pushResponseApiCall.getData().getPatientlist().get(i).getUuid());
@@ -964,8 +969,7 @@ public class SyncDAO {
                                     }
                                 }, 3000);*/
 
-                                imagesPushDAO.obsImagesPush();
-                                imagesPushDAO.deleteObsImage();
+
 
                                 Intent broadcast = new Intent();
                                 broadcast.putExtra("JOB", AppConstants.SYNC_PUSH_DATA_DONE);

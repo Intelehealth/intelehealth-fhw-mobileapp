@@ -457,11 +457,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
 
             }
-            Toast.makeText(
-                this@CommonQuestionnaireActivity,
-                "questionnaire loaded successfully",
-                Toast.LENGTH_SHORT
-            ).show()
+            Log.d("FHIR", "questionnaire loaded successfully");
         }
     }
 

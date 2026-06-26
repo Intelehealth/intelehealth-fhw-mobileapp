@@ -930,7 +930,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ medicalConfig.alcoholDuration.mandatory ? @string/alcohol_rate_label + ` *` : @string/alcohol_rate_label}"
+                        android:text="@{ medicalConfig.alcoholDuration.mandatory ? @string/alcohol_consumption_question + ` *` : @string/alcohol_rate_label}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/alcohol_consumption_question" />
