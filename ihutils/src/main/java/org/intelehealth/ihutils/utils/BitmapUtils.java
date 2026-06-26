@@ -2,9 +2,7 @@ package org.intelehealth.ihutils.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.util.Log;
 
@@ -99,108 +97,117 @@ public class BitmapUtils {
     public static boolean fileCompressed(String filePath) {
         File file = new File(filePath);
 
-        Log.d(TAG, "fileCompressed: filePath : "+filePath);
-        Bitmap scaledBitmap = null;
+        Log.d(TAG, "fileCompressed: filePath : " + filePath);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+        BitmapFactory.decodeFile(filePath, options);
 
-        int actualHeight = options.outHeight;
-        int actualWidth = options.outWidth;
-        float maxHeight = 816.0f;
-        float maxWidth = 612.0f;
-        float imgRatio = actualWidth / actualHeight;
-        float maxRatio = maxWidth / maxHeight;
-        Log.d(TAG, "fileCompressed: actualWidth : "+actualWidth);
-        Log.d(TAG, "fileCompressed: actualHeight : "+actualHeight);
-
-        if (actualHeight > maxHeight || actualWidth > maxWidth) {
-            if (imgRatio < maxRatio) {
-                imgRatio = maxHeight / actualHeight;
-                actualWidth = (int) (imgRatio * actualWidth);
-                actualHeight = (int) maxHeight;
-            } else if (imgRatio > maxRatio) {
-                imgRatio = maxWidth / actualWidth;
-                actualHeight = (int) (imgRatio * actualHeight);
-                actualWidth = (int) maxWidth;
-            } else {
-                actualHeight = (int) maxHeight;
-                actualWidth = (int) maxWidth;
-            }
+        if (options.outWidth <= 0 || options.outHeight <= 0) {
+            return false;
         }
 
-        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
-        options.inJustDecodeBounds = false;
-        options.inDither = false;
-        options.inTempStorage = new byte[16 * 1024];
-
+        int orientation = ExifInterface.ORIENTATION_NORMAL;
         try {
-            bmp = BitmapFactory.decodeFile(filePath, options);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-
-        }
-        try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-        }
-
-        float ratioX = actualWidth / (float) options.outWidth;
-        float ratioY = actualHeight / (float) options.outHeight;
-        float middleX = actualWidth / 2.0f;
-        float middleY = actualHeight / 2.0f;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(
-                Paint.FILTER_BITMAP_FLAG));
-
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(filePath);
-
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
-            Log.e("EXIF", "Exif: " + orientation);
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-                Log.e("EXIF", "Exif: " + orientation);
-            } else if (orientation == 3) {
-                matrix.postRotate(180);
-                Log.e("EXIF", "Exif: " + orientation);
-            } else if (orientation == 8) {
-                matrix.postRotate(270);
-                Log.e("EXIF", "Exif: " + orientation);
-            }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(),
-                    matrix, true);
+            ExifInterface exif = new ExifInterface(filePath);
+            orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL
+            );
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e(TAG, "Failed to read EXIF", e);
             return false;
         }
-        FileOutputStream out = null;
-        String filename = filePath;
+
+        int srcWidth = options.outWidth;
+        int srcHeight = options.outHeight;
+        if (orientation == ExifInterface.ORIENTATION_ROTATE_90
+                || orientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            int temp = srcWidth;
+            srcWidth = srcHeight;
+            srcHeight = temp;
+        }
+
+        float maxHeight = 816f;
+        float maxWidth = 612f;
+        int targetWidth = srcWidth;
+        int targetHeight = srcHeight;
+
+        if (targetHeight > maxHeight || targetWidth > maxWidth) {
+            float imgRatio = (float) targetWidth / targetHeight;
+            float maxRatio = maxWidth / maxHeight;
+            if (imgRatio < maxRatio) {
+                targetWidth = Math.round(maxHeight * imgRatio);
+                targetHeight = Math.round(maxHeight);
+            } else if (imgRatio > maxRatio) {
+                targetHeight = Math.round(maxWidth / imgRatio);
+                targetWidth = Math.round(maxWidth);
+            } else {
+                targetHeight = Math.round(maxHeight);
+                targetWidth = Math.round(maxWidth);
+            }
+        }
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = calculateInSampleSize(options, targetWidth, targetHeight);
+
+        Bitmap decoded = BitmapFactory.decodeFile(filePath, options);
+        if (decoded == null) {
+            return false;
+        }
+
+        Bitmap oriented = applyExifOrientation(decoded, orientation);
+        if (oriented != decoded) {
+            decoded.recycle();
+        }
+
+        Bitmap scaled = Bitmap.createScaledBitmap(oriented, targetWidth, targetHeight, true);
+        if (scaled != oriented) {
+            oriented.recycle();
+        }
+
+        try (FileOutputStream out = new FileOutputStream(file)) {
+            if (!scaled.compress(Bitmap.CompressFormat.JPEG, 95, out)) {
+                scaled.recycle();
+                return false;
+            }
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to save compressed image", e);
+            scaled.recycle();
+            return false;
+        }
+        scaled.recycle();
+
         try {
-            out = new FileOutputStream(file);
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 95, out);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (bmp != null) {
-                bmp.recycle();
-                bmp = null;
-            }
-            if (scaledBitmap != null) {
-                scaledBitmap.recycle();
-            }
+            ExifInterface outputExif = new ExifInterface(filePath);
+            outputExif.setAttribute(
+                    ExifInterface.TAG_ORIENTATION,
+                    String.valueOf(ExifInterface.ORIENTATION_NORMAL)
+            );
+            outputExif.saveAttributes();
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to reset EXIF orientation", e);
         }
+
         return true;
+    }
+
+    private static Bitmap applyExifOrientation(Bitmap bitmap, int orientation) {
+        int degrees;
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                degrees = 90;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                degrees = 180;
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                degrees = 270;
+                break;
+            default:
+                return bitmap;
+        }
+        return rotateImage(bitmap, degrees);
     }
 
 

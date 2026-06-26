@@ -915,6 +915,8 @@ public class VisitsDAO {
                     CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
+                model.setObsservermodifieddate(
+                        resolveObsModifiedDateForVisit(model.getVisitUuid(), model.isHasPrescription()));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
@@ -1134,6 +1136,8 @@ public class VisitsDAO {
                     CustomLog.e(TAG, e.getMessage());
                     throw new RuntimeException(e);
                 }
+                model.setObsservermodifieddate(
+                        resolveObsModifiedDateForVisit(model.getVisitUuid(), model.isHasPrescription()));
                 arrayList.add(model);
             }
             while (cursor.moveToNext());
@@ -1298,6 +1302,105 @@ public class VisitsDAO {
 
         return modifiedDate;
     }
+
+    public static String getMaxObsServerModifiedDate(String visitUUID, String encounterTypeUuid) {
+        if (visitUUID == null) {
+            return "";
+        }
+        String modifiedDate = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery(
+                "SELECT MAX(o.obsservermodifieddate) AS obsservermodifieddate " +
+                        "FROM tbl_encounter e " +
+                        "INNER JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                        "WHERE e.visituuid = ? AND e.encounter_type_uuid = ? AND o.voided = 0",
+                new String[]{visitUUID, encounterTypeUuid});
+        if (cursor.moveToFirst()) {
+            modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+            if (modifiedDate == null) {
+                modifiedDate = "";
+            }
+        }
+        cursor.close();
+        return modifiedDate;
+    }
+
+    public static String resolveObsModifiedDateForVisit(String visitUUID, boolean hasPrescription) {
+        String modifiedDate;
+        if (hasPrescription) {
+            modifiedDate = getMaxObsServerModifiedDate(visitUUID, ENCOUNTER_VISIT_COMPLETE);
+            if (modifiedDate.isEmpty()) {
+                modifiedDate = EncounterDAO.fetchEncounterModifiedDateForPrescGiven(visitUUID);
+            }
+        } else {
+            modifiedDate = getPendingVisitModifiedDate(visitUUID);
+        }
+        if (modifiedDate == null) {
+            modifiedDate = "";
+        }
+        return formatDateForTimeAgo(modifiedDate);
+    }
+
+    private static String getPendingVisitModifiedDate(String visitUUID) {
+        if (visitUUID == null) {
+            return "";
+        }
+        String modifiedDate = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        Cursor cursor = db.rawQuery(
+                "SELECT MAX(COALESCE(NULLIF(o.obsservermodifieddate, ''), o.modified_date, o.created_date)) AS modified_date " +
+                        "FROM tbl_encounter e " +
+                        "INNER JOIN tbl_obs o ON e.uuid = o.encounteruuid " +
+                        "WHERE e.visituuid = ? AND e.encounter_type_uuid = ? AND o.voided = 0",
+                new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
+        if (cursor.moveToFirst()) {
+            modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
+            if (modifiedDate == null) {
+                modifiedDate = "";
+            }
+        }
+        cursor.close();
+
+        if (modifiedDate.isEmpty()) {
+            cursor = db.rawQuery(
+                    "SELECT modified_date FROM tbl_encounter WHERE visituuid = ? AND encounter_type_uuid = ? AND voided = 0 ORDER BY modified_date DESC LIMIT 1",
+                    new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
+            if (cursor.moveToFirst()) {
+                modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("modified_date"));
+                if (modifiedDate == null) {
+                    modifiedDate = "";
+                }
+            }
+            cursor.close();
+        }
+
+        if (modifiedDate.isEmpty()) {
+            cursor = db.rawQuery("SELECT startdate FROM tbl_visit WHERE uuid = ?", new String[]{visitUUID});
+            if (cursor.moveToFirst()) {
+                modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+                if (modifiedDate == null) {
+                    modifiedDate = "";
+                }
+            }
+            cursor.close();
+        }
+
+        return modifiedDate;
+    }
+
+    private static String formatDateForTimeAgo(String date) {
+        if (date == null || date.isEmpty()) {
+            return "";
+        }
+        if (date.contains("T")) {
+            String formatted = DateAndTimeUtils.date_formatter(date, DateAndTimeUtils.D_FORMAT_ISO8601, "yyyy-MM-dd HH:mm:ss");
+            if (formatted != null && !formatted.isEmpty()) {
+                return formatted;
+            }
+        }
+        return date;
+    }
+
 
     /**
      * This function is used to return counts of todays, thisweeks, thismonths visit who are NOT ENDED by HW.

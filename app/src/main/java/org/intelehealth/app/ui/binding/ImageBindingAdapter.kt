@@ -4,6 +4,7 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import org.intelehealth.app.models.IntroContent
 import java.io.File
 
@@ -26,12 +27,15 @@ fun bindContentImage(imageView: ImageView?, content: IntroContent?) {
 @BindingAdapter("profileUrl")
 fun bindProfileImage(imageView: ImageView?, url: String?) {
     if (imageView != null && !url.isNullOrEmpty()) {
+        val file = File(url)
         val requestBuilder = Glide.with(imageView.context).asDrawable().sizeMultiplier(0.25f)
         Glide.with(imageView.context)
-            .load(File(url))
+            .load(file)
             .thumbnail(requestBuilder)
             .centerCrop()
-            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+            .signature(ObjectKey(if (file.exists()) file.lastModified() else 0L))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(imageView)
     }
 }

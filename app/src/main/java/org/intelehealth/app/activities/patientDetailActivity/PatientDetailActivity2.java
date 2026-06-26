@@ -90,9 +90,6 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -1817,27 +1814,27 @@ private MissingLineListingResult resultModel;
             CustomLog.e(TAG, e.getMessage());
         }
 
-        if (patientDTO.getPatientPhoto() == null || patientDTO.getPatientPhoto().equalsIgnoreCase("")) {
-            if (NetworkConnection.isOnline(getApplication())) {
-                profilePicDownloaded();
-            }
+        boolean hasUnsyncedLocalPhoto = false;
+        try {
+            hasUnsyncedLocalPhoto = imagesDAO.hasUnsyncedPatientProfileImage(patientDTO.getUuid());
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
         }
-        if (!profileImage.equalsIgnoreCase(profileImage1)) {
-            if (NetworkConnection.isOnline(getApplication())) {
-                profilePicDownloaded();
-            }
-        }
-        RequestBuilder<Drawable> requestBuilder = Glide.with(this)
-                .asDrawable().sizeMultiplier(0.3f);
 
-        Glide.with(this)
-                .load(patientDTO.getPatientPhoto())
-                .thumbnail(requestBuilder)
-                .centerCrop()
-                .error(R.drawable.avatar1)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(profile_image);
+        if (!hasUnsyncedLocalPhoto) {
+            if (patientDTO.getPatientPhoto() == null || patientDTO.getPatientPhoto().equalsIgnoreCase("")) {
+                if (NetworkConnection.isOnline(getApplication())) {
+                    profilePicDownloaded();
+                }
+            } else if (!profileImage.equalsIgnoreCase(profileImage1)) {
+                if (NetworkConnection.isOnline(getApplication())) {
+                    profilePicDownloaded();
+                }
+            }
+        }
+
+        DownloadFilesUtils.bindProfileImage(this, profile_image, patientDTO.getPatientPhoto());
 
         // setting openmrs id
         if (patientDTO.getOpenmrsId() != null && !patientDTO.getOpenmrsId().isEmpty()) {
@@ -2462,6 +2459,15 @@ private MissingLineListingResult resultModel;
 
     // profile pic download
     public void profilePicDownloaded() {
+        try {
+            if (imagesDAO.hasUnsyncedPatientProfileImage(patientDTO.getUuid())) {
+                return;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
+        }
+
         UrlModifiers urlModifiers = new UrlModifiers();
         String url = urlModifiers.patientProfileImageUrl(patientDTO.getUuid());
         Logger.logD(TAG, "profileimage url" + url);
@@ -2497,16 +2503,10 @@ private MissingLineListingResult resultModel;
                                 }
                                 if (updated) {
                                     if (!isFinishing() && !isDestroyed()) {
-                                        RequestBuilder<Drawable> requestBuilder = Glide.with(PatientDetailActivity2.this)
-                                                .asDrawable().sizeMultiplier(0.3f);
-                                        Glide.with(PatientDetailActivity2.this)
-                                                .load(AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg")
-                                                .thumbnail(requestBuilder)
-                                                .centerCrop()
-                                                .error(R.drawable.avatar1)
-                                                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                                .skipMemoryCache(true)
-                                                .into(profile_image);
+                                        patientDTO.setPatientPhoto(
+                                                AppConstants.IMAGE_PATH + patientDTO.getUuid() + ".jpg"
+                                        );
+                                        DownloadFilesUtils.bindProfileImage(context, profile_image, patientDTO.getPatientPhoto());
                                     }
                                 }
                                 ImagesDAO imagesDAO = new ImagesDAO();

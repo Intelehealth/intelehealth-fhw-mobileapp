@@ -156,6 +156,13 @@ class ProtocolScreenFragment : Fragment(), PatientClickedListener {
         }
 
     }
+    override fun onResume() {
+        super.onResume()
+        if (::adapter.isInitialized) {
+            adapter.refresh()
+        }
+    }
+
     override fun onPatientClicked(patient: PatientVisitDetails) {
         PatientNavigationUtils.openPatientDetail(
             requireContext(),

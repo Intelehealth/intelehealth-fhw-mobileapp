@@ -18,6 +18,7 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.databinding.Dialog2NumbersPickerBinding
 import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBinding
 import org.intelehealth.app.models.dto.PatientDTO
+import org.intelehealth.app.ui.binding.bindProfileImage
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.AllowAllLettersInputFilter
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
@@ -43,7 +44,6 @@ import org.intelehealth.klivekit.utils.DateTimeUtils
 import org.joda.time.LocalDate
 import org.joda.time.Period
 import org.joda.time.PeriodType
-import java.io.File
 import java.util.Calendar
 import java.util.Date
 import java.util.TimeZone
@@ -273,14 +273,9 @@ class PatientPersonalInfoFragment :
     }
 
     private fun takePicture() {
-        val filePath = File(AppConstants.IMAGE_PATH + patient.uuid)
-        if (!filePath.exists()) {
-            filePath.mkdir()
-        }
-
         val cameraIntent = Intent(activity, CameraActivity::class.java)
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, patient.uuid)
-        cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, filePath.toString())
+        cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, AppConstants.IMAGE_PATH)
         cameraActivityResult.launch(cameraIntent)
     }
 
@@ -290,6 +285,7 @@ class PatientPersonalInfoFragment :
         if (result.resultCode == Activity.RESULT_OK) {
             patient.patientPhoto = result.data!!.getStringExtra("RESULT")
             binding.patient = patient
+            bindProfileImage(binding.patientImgview, patient.patientPhoto)
             if (!patient.patientPhoto.isNullOrEmpty()) binding.profileImageError.isVisible = false
             Timber.d { "Profile path => ${patient.patientPhoto}" }
         }
