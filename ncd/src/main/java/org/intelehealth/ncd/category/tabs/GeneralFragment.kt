@@ -44,6 +44,7 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
 
     private var binding: LayoutNcdPatientCategoryBinding? = null
     override lateinit var viewModel: GeneralViewModel
+    private lateinit var adapter: PatientPagingAdapter
     private var prevRefreshLoadState: LoadState? = null
 
     override fun onCreateView(
@@ -92,6 +93,12 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
         PatientNavigationUtils.openPatientDetail(requireContext(), patient, Constants.GENERAL)
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (::adapter.isInitialized) {
+            adapter.refresh()
+        }
+    }
     private fun setObservers() {
         val b = binding ?: return
         val recyclerView = b.recyclerView
@@ -105,7 +112,7 @@ class GeneralFragment : SearchableFragment<GeneralViewModel>(), PatientClickedLi
             overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        val adapter = PatientPagingAdapter(
+        adapter = PatientPagingAdapter(
             resources = resources,
             context = requireContext(),
             listener = this

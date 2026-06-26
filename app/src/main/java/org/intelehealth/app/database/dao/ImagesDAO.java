@@ -302,6 +302,31 @@ public class ImagesDAO {
         return datetime;
     }
 
+    public boolean hasUnsyncedPatientProfileImage(String patientUuid) throws DAOException {
+        if (patientUuid == null || patientUuid.isEmpty()) {
+            return false;
+        }
+
+        SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+
+        try {
+            Cursor idCursor = localdb.rawQuery(
+                    "SELECT sync FROM tbl_image_records WHERE patientuuid = ? AND image_type = ? COLLATE NOCASE LIMIT 1",
+                    new String[]{patientUuid, "PP"}
+            );
+            if (idCursor.moveToFirst()) {
+                String sync = idCursor.getString(idCursor.getColumnIndexOrThrow("sync"));
+                idCursor.close();
+                return "false".equalsIgnoreCase(sync) || "0".equals(sync);
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        }
+
+        return false;
+    }
+
 
     public boolean updateUnsyncedPatientProfile(String patientuuid, String type) throws DAOException {
         long isupdate = 0;
