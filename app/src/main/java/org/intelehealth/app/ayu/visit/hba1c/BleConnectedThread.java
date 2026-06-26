@@ -85,7 +85,7 @@ public class BleConnectedThread extends Thread {
     private HandlerThread mPollThread;
     private Handler       mPollHandler;
 
-    private volatile boolean mRunning = true;
+    private volatile boolean mRunning =  true;
 
     // ── Constructor ────────────────────────────────────────────────────────
 
