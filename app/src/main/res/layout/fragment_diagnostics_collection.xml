@@ -107,6 +107,40 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <!-- inside ll_diabetes_hba1c_container, below etv_diabetes_hba1c -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:id="@+id/tv_hba1c_live_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="● LIVE"
+                            android:textSize="11sp"
+                            android:textColor="#FF00C853"
+                            android:textStyle="bold"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="2dp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tv_hba1c_last_updated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="11sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ll_diabetes_hba1c_container"
                         android:layout_width="match_parent"
@@ -139,7 +173,7 @@
                                 android:background="@drawable/input_edittext_border"
                                 android:hint="@string/uric_acid_eg"
                                 android:inputType="numberDecimal"
-                                android:maxLength="3"
+                                android:maxLength="5"
                                 android:padding="@dimen/padding_10"
                                 android:textColorHint="@color/edittext_hint_color"
                                 android:textSize="14sp" />

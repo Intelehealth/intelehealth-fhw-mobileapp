@@ -106,6 +106,12 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
 
+import org.intelehealth.app.ayu.visit.hba1c.HbA1cLiveViewModel;
+
+import androidx.lifecycle.ViewModelProvider;
+
+import android.content.SharedPreferences;
+
 import timber.log.Timber;
 
 public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener, ConnectPocDeviceFragment.OnDigitalScopeCompleteListener, RecordHeartSoundsFragment.OnRecordingCompleteListener,
@@ -167,6 +173,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public static final int STEP_6_VISIT_SUMMARY = 9;
     public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;*/
 
+    /**
+     * Activity-scoped ViewModel — survives fragment transactions.
+     */
+    private HbA1cLiveViewModel mHba1cViewModel;
+
+    /**
+     * SharedPrefs key where BleScanActivity saves the chosen device address.
+     */
+    private static final String PREF_BLE_ADDRESS = "hba1c_ble_address";
 
     private int mCurrentStep = STEP_1_VITAL;
     //    private int currentScreenIndex = 1;
@@ -180,9 +195,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public String patientUuid;
     public String visitUuid;
     public String encounterVitals;
-    /** Sound exam types already recorded in this visit (e.g. "heart", "lung").
-     *  Survives fragment recreation; lets us suppress the adapter's auto
-     *  showAyuDeviceDialog() trigger when returning from SoundFragment. */
+    /**
+     * Sound exam types already recorded in this visit (e.g. "heart", "lung").
+     * Survives fragment recreation; lets us suppress the adapter's auto
+     * showAyuDeviceDialog() trigger when returning from SoundFragment.
+     */
     public final java.util.Set<String> completedSoundTypes = new java.util.HashSet<>();
     private float float_ageYear_Month;
     private int mAgeInMonth;
@@ -219,7 +236,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private boolean isHeartRecorded = false;
     private boolean isLungRecorded = false;
     private boolean isDigitalFlowCompleted = false;
-
 
 
     private void startVisit() {
@@ -484,6 +500,49 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         bundle.putString("encounterUuidVitals", encounterVitals);
 
         handleDeviceBackPress();
+        initHba1cBle();
+    }
+
+    private void initHba1cBle() {
+        // ViewModel is scoped to this Activity — all fragments share the same instance.
+        mHba1cViewModel = new ViewModelProvider(this)
+                .get(HbA1cLiveViewModel.class);
+
+        // Use app-level prefs so address persists across Activity recreations
+        SharedPreferences prefs = getSharedPreferences("hba1c_prefs", MODE_PRIVATE);
+        String savedAddress = prefs.getString(PREF_BLE_ADDRESS, null);
+        Log.d("HBA1C_DEBUG", "initHba1cBle: savedAddress = " + savedAddress);
+        if (savedAddress != null && !savedAddress.isEmpty()) {
+            mHba1cViewModel.startBle(savedAddress);
+            Log.d("HBA1C_DEBUG", "initHba1cBle: auto-connecting to " + savedAddress);
+        } else {
+            Log.d("HBA1C_DEBUG", "initHba1cBle: no saved address, user must scan");
+        }
+    }
+// ─────────────────────────────────────────────────────────────────────────────
+// 4. Getter — fragments call this to get the shared ViewModel
+// ─────────────────────────────────────────────────────────────────────────────
+
+    public HbA1cLiveViewModel getHba1cViewModel() {
+        return mHba1cViewModel;
+    }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 5. Save device address when BleScanActivity returns
+//    Add this inside your existing onActivityResult(), or call from
+//    DiagnosticsCollectionFragment after a successful scan.
+// ─────────────────────────────────────────────────────────────────────────────
+
+    public void saveAndStartBleDevice(String deviceAddress) {
+        getSharedPreferences("hba1c_prefs", MODE_PRIVATE)
+                .edit()
+                .putString(PREF_BLE_ADDRESS, deviceAddress)
+                .apply();
+
+        Log.d("HBA1C_DEBUG", "saveAndStartBleDevice: saved + starting " + deviceAddress);
+        if (mHba1cViewModel != null) {
+            mHba1cViewModel.startBle(deviceAddress);
+        }
     }
 
     private void handleDeviceBackPress() {
@@ -745,19 +804,49 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 break;
             case STEP_7_VISIT_SUMMARY:
                 onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null);
-
-               /* if (!isDigitalFlowCompleted) {
-                    // 🔥 Always go to Digital Screen first
-                    onFormSubmitted(STEP_8_DIGITAL_SETHA_SCOPE, isEditMode, mVitalsObject);
-                } else {
-                    // 🔥 Only after DONE
-                    onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null);
-                }*/
                 break;
             case STEP_7_VISIT_SUMMARY_FINAL:
+                //its updated the AI_Concept_id_with english values:
+                insertLocalEnFormatQAValues();
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class);
                 mCommonVisitData.setHasPrescription(false);
                 intent1.putExtra("CommonVisitData", mCommonVisitData);
+                // ── DEBUG ─────────────────────────────────────────────────────────────
+                Log.d("HBA1C_DEBUG", "mHba1cViewModel is null? " + (mHba1cViewModel == null));
+                if (mHba1cViewModel != null) {
+                    Log.d("HBA1C_DEBUG", "isBleRunning? " + mHba1cViewModel.isBleRunning());
+                    Log.d("HBA1C_DEBUG", "hba1cReading value = " + mHba1cViewModel.hba1cReading().getValue());
+                    Log.d("HBA1C_DEBUG", "connected value = " + mHba1cViewModel.connected().getValue());
+                }
+                SharedPreferences prefs = getSharedPreferences("hba1c_prefs", MODE_PRIVATE);
+                String savedAddr = prefs.getString(PREF_BLE_ADDRESS, null);
+                Log.d("HBA1C_DEBUG", "saved BLE address = " + savedAddr);
+                Log.d("HBA1C_DEBUG", "mDiagnosticsModel hba1c = " + (mDiagnosticsModel != null ? mDiagnosticsModel.getDiabetesbba1c() : "null"));
+// ── END DEBUG ─────────────────────────────────────────────────────────
+
+// Priority 1: ViewModel LiveData (real-time BLE reading)
+// Priority 2: DiagnosticsModel (value user submitted on diagnostics screen)
+                String latestHba1c = null;
+
+                if (mHba1cViewModel != null
+                        && mHba1cViewModel.hba1cReading().getValue() != null
+                        && !mHba1cViewModel.hba1cReading().getValue().isEmpty()) {
+                    latestHba1c = mHba1cViewModel.hba1cReading().getValue();
+                    Log.d("HBA1C_DEBUG", "source: ViewModel LiveData → " + latestHba1c);
+                } else if (mDiagnosticsModel != null
+                        && mDiagnosticsModel.getDiabetesbba1c() != null
+                        && !mDiagnosticsModel.getDiabetesbba1c().isEmpty()) {
+                    latestHba1c = mDiagnosticsModel.getDiabetesbba1c();
+                    Log.d("HBA1C_DEBUG", "source: DiagnosticsModel → " + latestHba1c);
+                }
+
+                Log.d("HBA1C_DEBUG", "latestHba1c final = " + latestHba1c);
+                if (latestHba1c != null && !latestHba1c.isEmpty()) {
+                    intent1.putExtra("hba1c_live_value", latestHba1c);
+                    Log.d("HBA1C_DEBUG", "✅ Extra added to intent: " + latestHba1c);
+                } else {
+                    Log.d("HBA1C_DEBUG", "❌ No HbA1c value available from any source");
+                }
                 startActivity(intent1);
                 finish();
                 break;
@@ -873,7 +962,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //**********
         insertion = "";
         insertionLocale = "";
+        insertionLocaleEn = "";
         StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilderEn = new StringBuilder();
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
             CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
@@ -882,13 +973,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, "val- " + val);
             String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
             CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
+            String answerInLocaleEn = bullet_arrow + node.findDisplay("en") + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType, "en");
+            CustomLog.v(TAG, "answerInLocaleEn " + answerInLocaleEn);
 
             stringBuilder.append(answerInLocale);
+            stringBuilderEn.append(answerInLocaleEn);
             if (val == null) {
                 return false;
             }
         }
         insertionLocale = stringBuilder.toString();
+        insertionLocaleEn = stringBuilderEn.toString();
 
 
         if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>")) {
@@ -897,6 +992,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject = new JSONObject();
         try {
             insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
+            insertionLocaleEn = VisitUtils.replaceEnglishCommonString(insertionLocaleEn, "en");
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
             if (matchDate != null) {
                 for (String date : matchDate) {
@@ -1192,6 +1288,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     String insertion = "";
     String insertionLocale = "";
+
+    String insertionLocaleEn = "";
+
     String insertionWithLocaleJsonString = "";
 
     //new code for the one by one complain data capture
@@ -1402,6 +1501,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     String physicalString;
     String physicalStringLocale = "";
+    String physicalStringLocaleEn = "";
     String physicalStringWithLocaleJsonString = "";
     Boolean complaintConfirmed = false;
     PhysicalExam physicalExamMap;
@@ -1419,7 +1519,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             //physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
             //       physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             physicalStringLocale = physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
+            physicalStringLocaleEn = physicalExamMap.generateFindingsByLocale("en");
+
             CustomLog.v(TAG, "physicalStringLocale -" + physicalStringLocale);
+            CustomLog.v(TAG, "physicalStringLocaleEn" + physicalStringLocaleEn);
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
 
@@ -1454,6 +1557,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
+                physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
                 if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
                     Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
                     physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
@@ -1485,6 +1589,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private String patientHistory, familyHistory;
     String patientHistoryLocale = "", familyHistoryLocale = "";
+    String patientHistoryLocaleEn = "", familyHistoryLocaleEn = "";
     String patientHistoryWithLocaleJsonString = "", familyHistoryWithLocaleJsonString = "";
 
     /**
@@ -1501,12 +1606,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0, false);
+        patientHistoryLocaleEn = mPastMedicalHistoryNode.formQuestionAnswer(0, false, "en");
         while (patientHistory != null && patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
 
-        familyHistory = generateFamilyHistoryAns(false);
+        familyHistory = generateFamilyHistoryAns(false, "en");
         CustomLog.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             DialogUtils dialogUtils = new DialogUtils();
@@ -1522,7 +1628,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             return false;
         }
-        familyHistoryLocale = generateFamilyHistoryAns(true);
+        familyHistoryLocale = generateFamilyHistoryAns(true, sessionManager.getAppLanguage());
+        familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
 
         familyHistory = familyHistory.replaceAll("null.", "");
 
@@ -1542,6 +1649,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject1 = new JSONObject();
         try {
             patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
+            patientHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(patientHistoryLocaleEn, "en");
 
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(patientHistoryLocale);
             if (matchDate != null) {
@@ -1559,6 +1667,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, patientHistoryWithLocaleJsonString);
 
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
+            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
@@ -1593,7 +1702,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         //familyHistory = mFamilyHistoryNode.generateLanguage();
 
-        familyHistory = generateFamilyHistoryAns(false);
+        familyHistory = generateFamilyHistoryAns(false, "en");
         CustomLog.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             DialogUtils dialogUtils = new DialogUtils();
@@ -1609,7 +1718,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             return false;
         }
-        familyHistoryLocale = generateFamilyHistoryAns(true);
+        familyHistoryLocale = generateFamilyHistoryAns(true, sessionManager.getAppLanguage());
+        familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
 
         familyHistory = familyHistory.replaceAll("null.", "");
 
@@ -1629,6 +1739,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         JSONObject jsonObject1 = new JSONObject();
         try {
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
+            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
 
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) {
@@ -1652,7 +1763,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         return insertDbPastHistory(null, familyHistoryWithLocaleJsonString);
     }
 
-    private String generateFamilyHistoryAns(boolean isLocale) {
+    private String generateFamilyHistoryAns(boolean isLocale, String locale) {
         String familyHistory = "";
         ArrayList<String> familyInsertionList = new ArrayList<>();
         for (Node node : mFamilyHistoryNode.getOptionsList()) {
@@ -1666,8 +1777,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
-                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false);
-                    String toInsert = (!isLocale ? node.getText() : node.findDisplay()) + " : " + familyString;
+                    String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false, locale);
+                    String toInsert = (!isLocale ? node.getText() : node.findDisplay(locale)) + " : " + familyString;
                     //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
@@ -1740,6 +1851,38 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     isInserted = obsDAO.insertObs(obsDTO);
                 }
             }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        return isInserted;
+    }
+
+    private boolean insertLocalEnFormatQAValues() {
+        CustomLog.i(TAG, "insertLocalEnFormatQAValues");
+        boolean isInserted = false;
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+            String insertDbEnValue = "Visit Reason (Chief Complaint)\n" + insertionLocaleEn + "\n" + "Physical Examination:\n" + physicalStringLocaleEn + "\n" + "Patient Medical History:\n" + patientHistoryLocaleEn + "\n" + "Family History:\n" + familyHistoryLocaleEn;
+
+            String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
+            ObsDTO obsDTO = new ObsDTO();
+            obsDTO.setConceptuuid(UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(insertDbEnValue));
+
+            if (uuidOBS1 != null) {
+                obsDTO.setUuid(uuidOBS1);
+                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -2130,13 +2273,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, false, null);
     }
 
-    public void setHeartRecorded(boolean value) {
-        isHeartRecorded = value;
-    }
-
-    public void setLungRecorded(boolean value) {
-        isLungRecorded = value;
-    }
 
     public boolean isHeartRecorded() {
         return isHeartRecorded;
@@ -2145,6 +2281,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public boolean isLungRecorded() {
         return isLungRecorded;
     }
+
     @Override
     public void onRecordingCompleted(String type) {
         if ("heart".equals(type)) {
@@ -2165,5 +2302,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         } else {
             super.onBackPressed();
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        // ← ADD START
+        if (mHba1cViewModel != null) {
+            mHba1cViewModel.stopBle();
+        }
+        // ← ADD END
+
+        super.onDestroy();   // keep this line — it must stay here
     }
 }

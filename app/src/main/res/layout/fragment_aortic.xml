@@ -44,13 +44,26 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
+                    <FrameLayout
+                        android:id="@+id/waveContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_margin="10dp">
 
-                    <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                        <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                            android:id="@+id/waveView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_digital_lablel" />
+
+                    </FrameLayout>
+
+                  <!--  <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
                         android:id="@+id/waveView"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:layout_margin="10dp"
-                        android:background="@drawable/bg_digital_lablel" />
+                        android:background="@drawable/bg_digital_lablel" />-->
 
                     <LinearLayout
                         android:layout_width="match_parent"

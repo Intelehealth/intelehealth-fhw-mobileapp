@@ -1,73 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="20dp"
-    android:background="#FFFFFF">
-
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Connect AyuSynk Device"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:paddingBottom="16dp"
-        android:textColor="#000000" />
-
-    <TextView
-        android:id="@+id/tvStatus"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Disconnected"
-        android:textSize="14sp"
-        android:gravity="center"
-        android:paddingBottom="8dp"
-        android:textColor="#666666" />
-
-    <ProgressBar
-        android:id="@+id/pbScanning"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone" />
-
-    <Button
-        android:id="@+id/btnScan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Scan &amp; Connect" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="12dp"
-        android:weightSum="2">
-
-        <Button
-            android:id="@+id/btnCancel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginEnd="6dp"
-            android:text="Cancel" />
-
-        <Button
-            android:id="@+id/btnContinue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginStart="6dp"
-            android:text="Continue"
-            android:enabled="false" />
-    </LinearLayout>
-</LinearLayout>
--->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -184,7 +115,7 @@
                     android:textColor="#888888" />
             </LinearLayout>
 
-            <!-- Scan button small -->
+            <!-- Scan button -->
             <TextView
                 android:id="@+id/btnScan"
                 android:layout_width="wrap_content"
@@ -219,6 +150,21 @@
             android:orientation="horizontal"
             android:layout_marginBottom="10dp">
 
+            <!-- Left: icon -->
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle_light_blue"
+                android:layout_marginEnd="12dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/selector_mic"
+                    app:tint="#E05C5C" />
+            </FrameLayout>
+
+            <!-- Middle: title + subtitle + progress -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -233,18 +179,33 @@
                     android:textStyle="bold"
                     android:textColor="#1A1A2E" />
 
+                <!-- Count label: e.g. "2 / 4 recorded" -->
                 <TextView
                     android:id="@+id/tvHeartSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Optional"
+                    android:text="0 / 4 recorded"
                     android:textSize="12sp"
-                    android:textColor="#888888" />
+                    android:textColor="#888888"
+                    android:layout_marginBottom="6dp"/>
+
+                <!-- Progress bar for heart -->
+                <ProgressBar
+                    android:id="@+id/pbHeart"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:max="4"
+                    android:progress="0"
+                    android:progressTint="#E05C5C"
+                    android:progressBackgroundTint="#F0D0D0" />
+
             </LinearLayout>
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/ic_arrow_right"
                 app:tint="#AAAAAA" />
         </LinearLayout>
@@ -260,6 +221,21 @@
             android:orientation="horizontal"
             android:layout_marginBottom="20dp">
 
+            <!-- Left: icon -->
+            <FrameLayout
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_circle_light_blue"
+                android:layout_marginEnd="12dp">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/selector_mic"
+                    app:tint="#5B8DEF" />
+            </FrameLayout>
+
+            <!-- Middle: title + subtitle + progress -->
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -274,18 +250,33 @@
                     android:textStyle="bold"
                     android:textColor="#1A1A2E" />
 
+                <!-- Count label: e.g. "6 / 16 recorded" -->
                 <TextView
                     android:id="@+id/tvLungSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Optional"
+                    android:text="0 / 16 recorded"
                     android:textSize="12sp"
-                    android:textColor="#888888" />
+                    android:textColor="#888888"
+                    android:layout_marginBottom="6dp"/>
+
+                <!-- Progress bar for lung -->
+                <ProgressBar
+                    android:id="@+id/pbLung"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="6dp"
+                    android:max="16"
+                    android:progress="0"
+                    android:progressTint="#5B8DEF"
+                    android:progressBackgroundTint="#D0DCF8" />
+
             </LinearLayout>
 
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
+                android:layout_marginStart="12dp"
                 android:src="@drawable/ic_arrow_right"
                 app:tint="#AAAAAA" />
         </LinearLayout>

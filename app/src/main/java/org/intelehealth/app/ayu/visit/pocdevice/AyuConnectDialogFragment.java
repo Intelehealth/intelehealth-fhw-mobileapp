@@ -26,70 +26,81 @@ import com.ayudevice.ayusynksdk.ble.constants.DeviceStrength;
 import com.ayudevice.ayusynksdk.ble.listener.AyuDeviceListener;
 import com.ayudevice.ayusynksdk.ble.listener.DeviceScanListener;
 
-
 import org.intelehealth.app.R;
+import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 
-/**
- * AyuConnectDialogFragment — redesigned to match the Digital Auscultation UI.
- *
- * Shows:
- *  • Header with mic icon + title + subtitle
- *  • Description text
- *  • Device connection status bar (dot + status text + SCAN button + spinner)
- *  • Heart Sounds card  → launches SoundFragment for heart
- *  • Lung Sounds card   → launches SoundFragment for lung
- *  • "Continue without recording" button → posts result(true) i.e. skip sounds
- *  • Cancel button → posts result(false)
- *
- * Cards are ENABLED only when device is connected.
- * Status dot turns green when connected, grey when not.
- */
+import java.util.List;
+
 public class AyuConnectDialogFragment extends DialogFragment
         implements AyuDeviceListener, DeviceScanListener {
 
-    public static final String RESULT_KEY       = "ayu_connect_result";
+    public static final String RESULT_KEY = "ayu_connect_result";
     public static final String RESULT_CONNECTED = "connected";
+    public static final String RESULT_TYPE = "selected_type";
+    public static final String ARG_TYPE = "type";
+    public static final String ARG_VISIT_UUID = "visit_uuid";
+    public static final String ARG_TOTAL = "total"; // total positions for this type
 
-    // Optional: caller can pass type hint so we pre-highlight a card
-    public static final String ARG_TYPE = "type"; // "heart" | "lung" | null = both
+    public static final String ARG_HEART_TOTAL = "heart_total";  // ADD THIS
+    public static final String ARG_LUNG_TOTAL = "lung_total";   // ADD THIS
+    public static final String RECORD_SAVED_KEY = "ayu_record_saved";
 
     // Views
-    private View       viewStatusDot;
-    private TextView   tvStatus, tvStatusSub;
-    private TextView   btnScan;         // styled as chip
+    private View viewStatusDot;
+    private TextView tvStatus, tvStatusSub;
+    private TextView btnScan;
     private ProgressBar pbScanning;
-    private ViewGroup  cardHeart, cardLung;
-    private TextView   tvHeartSub, tvLungSub;
-    private Button     btnContinue, btnCancel;
+    private ViewGroup cardHeart, cardLung;
+    private TextView tvHeartSub, tvLungSub;
+    private ProgressBar pbHeart, pbLung;
+    private Button btnContinue, btnCancel;
 
     private boolean resultPosted = false;
+    private String visitUuid = "";
 
-    public static final String RESULT_TYPE = "selected_type";
+    // FIX: totals come from sounds.size() passed by SoundFragment
+    // NOT hardcoded — heart could be 4, lung could be 6/10/16
+    private int heartTotal = 0;
+    private int lungTotal = 0;
 
 
-    // Listener so parent (VisitCreationActivity / PhysExamFragment) can react
-    // to which card was tapped before device dialog posts its result
     public interface OnSoundTypeSelectedListener {
         void onHeartSelected();
+
         void onLungSelected();
     }
+
     private OnSoundTypeSelectedListener mListener;
 
-    public void setOnSoundTypeSelectedListener(OnSoundTypeSelectedListener l) {
-        mListener = l;
-    }
-
-    public static AyuConnectDialogFragment newInstance() {
-        return new AyuConnectDialogFragment();
-    }
-
-    public static AyuConnectDialogFragment newInstance(String type) {
+    /**
+     * Preferred factory — pass total so dialog shows correct "0 / N recorded"
+     * total = sounds.size() from SoundFragment (actual positions for this type)
+     */
+    public static AyuConnectDialogFragment newInstance(String type, String visitUuid, int total) {
         AyuConnectDialogFragment f = new AyuConnectDialogFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_TYPE, type);
+        if (type != null) args.putString(ARG_TYPE, type);
+        if (visitUuid != null) args.putString(ARG_VISIT_UUID, visitUuid);
+        args.putInt(ARG_TOTAL, total);
         f.setArguments(args);
         return f;
     }
+
+    // ADD this new factory method alongside existing newInstance() methods
+    public static AyuConnectDialogFragment newInstance(
+            String type, String visitUuid, int heartTotal, int lungTotal) {
+        AyuConnectDialogFragment f = new AyuConnectDialogFragment();
+        Bundle args = new Bundle();
+        if (type != null) args.putString(ARG_TYPE, type);
+        if (visitUuid != null) args.putString(ARG_VISIT_UUID, visitUuid);
+        args.putInt(ARG_HEART_TOTAL, heartTotal);
+        args.putInt(ARG_LUNG_TOTAL, lungTotal);
+        f.setArguments(args);
+        return f;
+    }
+
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     @Override
     public void onStart() {
@@ -115,71 +126,165 @@ public class AyuConnectDialogFragment extends DialogFragment
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        // Read args
+        if (getArguments() != null) {
+            visitUuid = getArguments().getString(ARG_VISIT_UUID, "");
+            String argType = getArguments().getString(ARG_TYPE, "");
+
+            // Try new dual-total args first
+            int argHeartTotal = getArguments().getInt(ARG_HEART_TOTAL, 0);
+            int argLungTotal = getArguments().getInt(ARG_LUNG_TOTAL, 0);
+
+            if (argHeartTotal > 0 || argLungTotal > 0) {
+                // New path — both totals passed directly
+                heartTotal = argHeartTotal;
+                lungTotal = argLungTotal;
+            } else {
+                // Legacy fallback — single ARG_TOTAL for active type only
+                int argTotal = getArguments().getInt(ARG_TOTAL, 0);
+                if ("heart".equalsIgnoreCase(argType)) {
+                    heartTotal = argTotal;
+                } else if ("lung".equalsIgnoreCase(argType)) {
+                    lungTotal = argTotal;
+                }
+            }
+        }
+
+        Log.d("AYU_DIALOG", "onViewCreated: visitUuid=" + visitUuid
+                + " | heartTotal=" + heartTotal + " | lungTotal=" + lungTotal);
+
         // Bind views
         viewStatusDot = view.findViewById(R.id.viewStatusDot);
-        tvStatus      = view.findViewById(R.id.tvStatus);
-        tvStatusSub   = view.findViewById(R.id.tvStatusSub);
-        btnScan       = view.findViewById(R.id.btnScan);
-        pbScanning    = view.findViewById(R.id.pbScanning);
-        cardHeart     = view.findViewById(R.id.cardHeart);
-        cardLung      = view.findViewById(R.id.cardLung);
-        tvHeartSub    = view.findViewById(R.id.tvHeartSub);
-        tvLungSub     = view.findViewById(R.id.tvLungSub);
-        btnContinue   = view.findViewById(R.id.btnContinue);
-        btnCancel     = view.findViewById(R.id.btnCancel);
+        tvStatus = view.findViewById(R.id.tvStatus);
+        tvStatusSub = view.findViewById(R.id.tvStatusSub);
+        btnScan = view.findViewById(R.id.btnScan);
+        pbScanning = view.findViewById(R.id.pbScanning);
+        cardHeart = view.findViewById(R.id.cardHeart);
+        cardLung = view.findViewById(R.id.cardLung);
+        tvHeartSub = view.findViewById(R.id.tvHeartSub);
+        tvLungSub = view.findViewById(R.id.tvLungSub);
+        pbHeart = view.findViewById(R.id.pbHeart);
+        pbLung = view.findViewById(R.id.pbLung);
+        btnContinue = view.findViewById(R.id.btnContinue);
+        btnCancel = view.findViewById(R.id.btnCancel);
 
-        // Hide cards if caller specified a single type
+        // Hide card based on type
+        // Show both cards — dim the inactive type, keep active one fully clickable
         String argType = getArguments() != null
                 ? getArguments().getString(ARG_TYPE, null) : null;
-        if ("heart".equalsIgnoreCase(argType)) {
-            cardLung.setVisibility(View.GONE);
-        } else if ("lung".equalsIgnoreCase(argType)) {
-            cardHeart.setVisibility(View.GONE);
-        }
-        // null → show both (default)
+
+        setCardActiveState(cardHeart, tvHeartSub, "heart", argType);
+        setCardActiveState(cardLung, tvLungSub, "lung", argType);
+
+        // FIX: Listen for RECORD_SAVED_KEY from SoundFragment.
+        // Bundle carries type + visitUuid + total so we can update
+        // the correct card with live count after each position is saved.
+      /*  getParentFragmentManager().setFragmentResultListener(
+                RECORD_SAVED_KEY,
+                getViewLifecycleOwner(),
+                (key, bundle) -> {
+                    String savedType = bundle.getString("type", "");
+                    String savedVisitUuid = bundle.getString("visitUuid", "");
+                    int savedTotal = bundle.getInt("total", 0);
+
+                    // Update visitUuid if it was empty
+                    if (!savedVisitUuid.isEmpty() && visitUuid.isEmpty()) {
+                        visitUuid = savedVisitUuid;
+                    }
+
+                    // FIX: Update the total for this type dynamically
+                    if ("heart".equalsIgnoreCase(savedType) && savedTotal > 0) {
+                        heartTotal = savedTotal;
+                    } else if ("lung".equalsIgnoreCase(savedType) && savedTotal > 0) {
+                        lungTotal = savedTotal;
+                    }
+// Also pull the other type's total from the bundle if sent
+                    int bundleHeartTotal = bundle.getInt("heartTotal", 0);
+                    int bundleLungTotal = bundle.getInt("lungTotal", 0);
+                    if (bundleHeartTotal > 0) heartTotal = bundleHeartTotal;
+                    if (bundleLungTotal > 0) lungTotal = bundleLungTotal;
+
+                    Log.d("AYU_DIALOG", "RECORD_SAVED: type=" + savedType
+                            + " | total=" + savedTotal
+                            + " | visitUuid=" + visitUuid);
+
+                    // Reload counts from DB and refresh cards
+                    loadAndDisplayCounts();
+                });*/
+
+        // Show initial counts (0/N at start)
+        loadAndDisplayCounts();
 
         // Heart card tap
+        // Heart card tap
         cardHeart.setOnClickListener(v -> {
+            // If lung is currently active, this click switches to heart
             if (!isDeviceConnected()) {
                 Toast.makeText(getContext(),
                         "Please connect AyuSynk device first", Toast.LENGTH_SHORT).show();
                 return;
             }
+            // Visually switch active state
+            setCardActiveState(cardHeart, tvHeartSub, "heart", "heart");
+            setCardActiveState(cardLung, tvLungSub, "lung", "heart");
+
             if (mListener != null) mListener.onHeartSelected();
-            postResult(true, "heart");   // ← pass "heart"
+            postResult(true, "heart");
             dismiss();
         });
 
-        // Lung card tap
+// Lung card tap
         cardLung.setOnClickListener(v -> {
             if (!isDeviceConnected()) {
                 Toast.makeText(getContext(),
                         "Please connect AyuSynk device first", Toast.LENGTH_SHORT).show();
                 return;
             }
+            // Visually switch active state
+            setCardActiveState(cardHeart, tvHeartSub, "heart", "lung");
+            setCardActiveState(cardLung, tvLungSub, "lung", "lung");
+
             if (mListener != null) mListener.onLungSelected();
-            postResult(true, "lung");    // ← pass "lung"
+            postResult(true, "lung");
             dismiss();
         });
 
-        // Scan
         btnScan.setOnClickListener(v -> startScanFlow());
-
-        // Continue without recording = skip sounds, go next
         btnContinue.setOnClickListener(v -> {
-            postResult(true, null);      // ← no type, just skip
-            // true = allow continue, skip sounds
+            postResult(true, null);
             dismiss();
         });
-
-        // Cancel = go back
         btnCancel.setOnClickListener(v -> {
-            postResult(false, null);      // ← no type, just skip
+            postResult(false, null);
             dismiss();
         });
 
-        // Initial state
         renderState(AyuSynk.getBleInstance().isDeviceConnected());
+    }
+
+    /**
+     * activeType = the type currently in use ("heart" / "lung" / null = both active).
+     * cardType   = which card this is ("heart" or "lung").
+     * <p>
+     * If activeType is null → both cards fully active.
+     * If activeType matches cardType → this card is active (full opacity, clickable).
+     * If activeType does NOT match → this card is dimmed (0.4f alpha) but still VISIBLE
+     * and still clickable so user can switch types without closing the dialog.
+     */
+    private void setCardActiveState(ViewGroup card, TextView subText,
+                                    String cardType, String activeType) {
+        if (card == null) return;
+
+        boolean isActive = activeType == null
+                || activeType.equalsIgnoreCase(cardType);
+
+        card.setVisibility(View.VISIBLE);      // always visible — never GONE
+        card.setAlpha(isActive ? 1.0f : 0.4f);
+
+        // Optional: show a small hint on the dimmed card
+        if (!isActive && subText != null) {
+            // Don't overwrite the "X / N recorded" text — just dim it via alpha above
+        }
     }
 
     @Override
@@ -187,6 +292,7 @@ public class AyuConnectDialogFragment extends DialogFragment
         super.onResume();
         AyuSynk.getBleInstance().setAyuDeviceListener(this);
         renderState(AyuSynk.getBleInstance().isDeviceConnected());
+        loadAndDisplayCounts();
     }
 
     @Override
@@ -195,14 +301,85 @@ public class AyuConnectDialogFragment extends DialogFragment
         AyuSynk.getBleInstance().setAyuDeviceListener(null);
     }
 
-    @Override
     public void onDismiss(@NonNull DialogInterface dialog) {
         postResult(isDeviceConnected());
         try { AyuSynk.getBleInstance().stopScan(); } catch (Exception ignored) {}
         super.onDismiss(dialog);
     }
 
-    // ── Helpers ──────────────────────────────────────────────────────────────
+    // ── Count loading ─────────────────────────────────────────────────────────
+
+    /**
+     * Reads DB for this visitUuid, counts heart rows and lung rows separately.
+     * Uses heartTotal / lungTotal (set from sounds.size()) for the denominator.
+     * Shows "0 / 4 recorded" for heart, "0 / 6 recorded" for lung etc.
+     */
+    private void loadAndDisplayCounts() {
+        if (getContext() == null) return;
+
+        int heartCount = 0;
+        int lungCount = 0;
+
+        if (visitUuid != null && !visitUuid.isEmpty()) {
+            try {
+                InteleHealthDatabaseHelper dbHelper =
+                        new InteleHealthDatabaseHelper(getContext());
+                List<HeartLungRecordModel> records =
+                        dbHelper.getAllHeartLungRecords(visitUuid);
+
+                if (records != null) {
+                    for (HeartLungRecordModel r : records) {
+                        if ("heart".equalsIgnoreCase(r.type)) heartCount++;
+                        else if ("lung".equalsIgnoreCase(r.type)) lungCount++;
+                    }
+                }
+                Log.d("AYU_DIALOG", "DB counts: heart=" + heartCount + "/" + heartTotal
+                        + " | lung=" + lungCount + "/" + lungTotal);
+            } catch (Exception e) {
+                Log.e("AYU_DIALOG", "Error: " + e.getMessage());
+            }
+        }
+
+        updateHeartCard(heartCount);
+        updateLungCard(lungCount);
+    }
+
+    private void updateHeartCard(int count) {
+        if (tvHeartSub == null || pbHeart == null) return;
+
+        // If heartTotal is 0 (not yet known), show just the count
+        String label = heartTotal > 0
+                ? count + " / " + heartTotal + " recorded"
+                : count + " recorded";
+
+        tvHeartSub.setText(label);
+        pbHeart.setMax(heartTotal > 0 ? heartTotal : 1);
+        pbHeart.setProgress(count);
+
+        boolean done = heartTotal > 0 && count >= heartTotal;
+        tvHeartSub.setTextColor(done
+                ? android.graphics.Color.parseColor("#2E7D32")  // green — all done
+                : android.graphics.Color.parseColor("#888888")); // grey  — in progress
+    }
+
+    private void updateLungCard(int count) {
+        if (tvLungSub == null || pbLung == null) return;
+
+        String label = lungTotal > 0
+                ? count + " / " + lungTotal + " recorded"
+                : count + " recorded";
+
+        tvLungSub.setText(label);
+        pbLung.setMax(lungTotal > 0 ? lungTotal : 1);
+        pbLung.setProgress(count);
+
+        boolean done = lungTotal > 0 && count >= lungTotal;
+        tvLungSub.setTextColor(done
+                ? android.graphics.Color.parseColor("#2E7D32")
+                : android.graphics.Color.parseColor("#888888"));
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
 
     private boolean isDeviceConnected() {
         return AyuSynk.getBleInstance().isDeviceConnected()
@@ -217,63 +394,45 @@ public class AyuConnectDialogFragment extends DialogFragment
         getParentFragmentManager().setFragmentResult(RESULT_KEY, out);
     }
 
-    /**
-     * Updates all status UI based on connection state.
-     * Connected  → green dot, cards enabled, subtitle shows "Ready to record"
-     * Disconnected → grey dot, cards show tap hint, subtitle shows scan prompt
-     */
+    private void postResult(boolean connected, String selectedType) {
+        if (resultPosted) return;
+        resultPosted = true;
+        Bundle out = new Bundle();
+        out.putBoolean(RESULT_CONNECTED, connected);
+        if (selectedType != null) out.putString(RESULT_TYPE, selectedType);
+        getParentFragmentManager().setFragmentResult(RESULT_KEY, out);
+    }
+
     private void renderState(DeviceConnectionState state) {
         if (tvStatus == null) return;
-
         boolean connected = state == DeviceConnectionState.DEVICE_CONNECTED;
-
-        // Status dot color
-        viewStatusDot.setBackgroundResource(
-                connected ? R.drawable.bg_dot_connected
-                        : R.drawable.bg_dot_disconnected);
-
-        // Status text
+        viewStatusDot.setBackgroundResource(connected
+                ? R.drawable.bg_dot_connected : R.drawable.bg_dot_disconnected);
         tvStatus.setText(connected ? "Device Connected" : "Device Disconnected");
         tvStatusSub.setText(connected
                 ? "AyuSynk ready — tap a sound type below"
                 : "Scan to connect AyuSynk device");
-
-        // Scan button visibility
         btnScan.setVisibility(connected ? View.GONE : View.VISIBLE);
-
-        // Cards — dim when not connected
-        float alpha = connected ? 1.0f : 0.5f;
-        cardHeart.setAlpha(alpha);
-        cardLung.setAlpha(alpha);
-
-        // Card subtitles
-        String cardSub = connected ? "Tap to record" : "Connect device to record";
-        tvHeartSub.setText(cardSub);
-        tvLungSub.setText(cardSub);
-
+        cardHeart.setAlpha(connected ? 1.0f : 0.5f);
+        cardLung.setAlpha(connected ? 1.0f : 0.5f);
         if (connected) pbScanning.setVisibility(View.GONE);
     }
 
     private void startScanFlow() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !checkLocation()) return;
-
         if (!AyuSynk.getBleInstance().isAllBluetoothPermissionGranted()) {
             AyuSynk.getBleInstance().requestBluetoothPermission(getActivity(), 11);
             return;
         }
-
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
         if (adapter == null) {
-            Toast.makeText(getContext(),
-                    R.string.bluetooth_notsupported_device, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.bluetooth_notsupported_device, Toast.LENGTH_SHORT).show();
             return;
         }
         if (!adapter.isEnabled()) {
-            Toast.makeText(getContext(),
-                    R.string.turn_on_bluetooth, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.turn_on_bluetooth, Toast.LENGTH_SHORT).show();
             return;
         }
-
         tvStatus.setText("Scanning...");
         pbScanning.setVisibility(View.VISIBLE);
         btnScan.setVisibility(View.GONE);
@@ -295,25 +454,27 @@ public class AyuConnectDialogFragment extends DialogFragment
         return true;
     }
 
-    // ── AyuDeviceListener ────────────────────────────────────────────────────
+    // ── AyuDeviceListener ─────────────────────────────────────────────────────
 
     @Override
-    public void deviceConnectionStrength(DeviceStrength deviceStrength) {
-
+    public void deviceConnectionStrength(DeviceStrength s) {
     }
 
     @Override
     public void deviceConnectionState(DeviceConnectionState state) {
-        if (getActivity() != null) {
+        if (getActivity() != null)
             getActivity().runOnUiThread(() -> renderState(state));
-        }
     }
 
-    @Override public void deviceBatteryUpdate(int level) {}
+    @Override
+    public void deviceBatteryUpdate(int level) {
+    }
 
-    // ── DeviceScanListener ───────────────────────────────────────────────────
+    // ── DeviceScanListener ────────────────────────────────────────────────────
 
-    @Override public void onScanStart() {}
+    @Override
+    public void onScanStart() {
+    }
 
     @Override
     public void onDeviceFound(Device device) {
@@ -325,32 +486,20 @@ public class AyuConnectDialogFragment extends DialogFragment
 
     @Override
     public void onScanFinish() {
-        if (getActivity() != null) {
+        if (getActivity() != null)
             getActivity().runOnUiThread(() -> {
                 pbScanning.setVisibility(View.GONE);
                 btnScan.setVisibility(View.VISIBLE);
             });
-        }
     }
-    // In postResult, add a type parameter:
-    private void postResult(boolean connected, String selectedType) {
-        if (resultPosted) return;
-        resultPosted = true;
-        Bundle out = new Bundle();
-        out.putBoolean(RESULT_CONNECTED, connected);
-        if (selectedType != null) {
-            out.putString(RESULT_TYPE, selectedType);  // ← NEW
-        }
-        getParentFragmentManager().setFragmentResult(RESULT_KEY, out);
-    }
+
     @Override
     public void onScanFailed(int i) {
-        if (getActivity() != null) {
+        if (getActivity() != null)
             getActivity().runOnUiThread(() -> {
                 pbScanning.setVisibility(View.GONE);
                 btnScan.setVisibility(View.VISIBLE);
                 tvStatus.setText("Scan failed — try again");
             });
-        }
     }
 }

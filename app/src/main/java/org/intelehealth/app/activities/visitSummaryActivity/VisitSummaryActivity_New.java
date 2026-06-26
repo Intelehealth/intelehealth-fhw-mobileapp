@@ -73,9 +73,6 @@ import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
 import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
 import org.intelehealth.app.ayu.visit.pocdevice.RecordingData;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
-import org.intelehealth.app.models.UploadResponse;
-import org.intelehealth.app.networkApiCalls.ApiClient;
-import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.ui.billgeneration.models.BillDetails;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -121,7 +118,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ayudevice.ayusynksdk.AyuSynk;
 import com.ayudevice.ayusynksdk.playback.AyuFileGenerator;
 import com.ayudevice.ayusynksdk.report.HeartSoundData;
-import com.ayudevice.ayusynksdk.report.LungSoundData;
 import com.ayudevice.ayusynksdk.report.SoundFile;
 import com.ayudevice.ayusynksdk.report.constants.LocationType;
 import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener;
@@ -247,13 +243,8 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 /**
  * Created by: Prajwal Waingankar On: 2/Nov/2022
@@ -430,9 +421,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private okhttp3.OkHttpClient mStethoHttpClient;
 
 
+    private AlertDialog mSoundProgressDialog;
+    private android.widget.ProgressBar mSoundProgressBar;
+    private android.widget.TextView mSoundProgressText;
+    private android.widget.TextView mSoundProgressPercent; // ADD THIS
+
     // Add these two fields at the top of the class
     private List<HeartLungRecordModel> mPendingUploadQueue = new ArrayList<>();
     private int mCurrentUploadIndex = 0;
+
+    private String mLiveHba1cValue = null;
 
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
@@ -562,10 +560,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 (mBinding, VisitSummaryActivity_New.this, null,
                         this, encounterVitals, mCommonVisitData);
         visitDiagnosticsSummary.initViews();
+        if (mLiveHba1cValue != null && !mLiveHba1cValue.isEmpty()) {
+            mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue
+                    .postDelayed(() -> {
+                        mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue
+                                .setText(mLiveHba1cValue);
+                        Log.d(TAG, "onCreate: HbA1c applied → " + mLiveHba1cValue);
+                    }, 300); // 300ms gives VisitDiagnosticsSummary time to finish
+        }
         setupVisibilityForSpecificFlavor();
-
-
         setupDiagnosticsConfig();
+
 
     }
 
@@ -764,6 +769,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 intentTag = mCommonVisitData.getIntentTag();
 
                 isPastVisit = mCommonVisitData.isPastVisit();
+                String liveHba1c = intent.getStringExtra("hba1c_live_value");
+                Log.d(TAG, "fetchingIntent: hba1c_live_value = " + liveHba1c);
+                if (liveHba1c != null && !liveHba1c.isEmpty()) {
+                    mLiveHba1cValue = liveHba1c;
+                }
+
             } else {
                 visitUuid = intent.getStringExtra("visitUuid");
                 mCommonVisitData = new CommonVisitData();
@@ -791,6 +802,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
+
+
             }
 
 
@@ -996,7 +1009,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
-
+        String liveHba1c = getIntent().getStringExtra("hba1c_live_value");
+        Log.d(TAG, "fetchingIntent: hba1c_live_value = " + liveHba1c);
+        if (liveHba1c != null && !liveHba1c.isEmpty()) {
+            mLiveHba1cValue = liveHba1c;
+        }
 
         setupDiagnosisData();
         setupTypeOfConsultationSpinner();
@@ -1480,7 +1497,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             });
             // additional doc data - end
         }
-
 
         // speciality data
         //if row is present i.e. if true is returned by the function then the spinner will be disabled.
@@ -2693,6 +2709,50 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     });
 
+    private void advanceSoundProgress() {
+        if (mSoundProgressDialog == null || !mSoundProgressDialog.isShowing()
+                || mSoundProgressBar == null) return;
+
+        int done = mSoundProgressBar.getProgress() + 1;
+        int total = mSoundProgressBar.getMax();
+        int percent = (int) ((done / (float) total) * 100);
+
+        mSoundProgressBar.setProgress(done);
+
+        if (mSoundProgressText != null) {
+            mSoundProgressText.setText(done + " / " + total + " processed");
+        }
+        if (mSoundProgressPercent != null) {
+            mSoundProgressPercent.setText(percent + "%");
+        }
+
+        Log.d("FLOW", "Progress: " + done + "/" + total + " = " + percent + "%");
+
+        if (done >= total) {
+            new Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                if (mSoundProgressDialog != null && mSoundProgressDialog.isShowing()) {
+                    mSoundProgressDialog.dismiss();
+                }
+                mSoundProgressDialog = null;
+                mSoundProgressBar = null;
+                mSoundProgressText = null;
+                mSoundProgressPercent = null;
+
+                if (!isFinishing() && !isDestroyed()) {
+                    new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this)
+                            .setTitle("Sounds Processed")
+                            .setMessage("All " + total + " sound recordings analysed successfully.")
+                            .setPositiveButton("OK", (d, w) -> {
+                                d.dismiss();
+                                fetchingIntent();
+                            })
+                            .setCancelable(false)
+                            .create()
+                            .show();
+                }
+            }, 600);
+        }
+    }
 
     // Permission - start
     private void checkPerm(int item) {
@@ -3436,15 +3496,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
                             }
-                           // fetchingIntent();
+                            // fetchingIntent();
                             setAppointmentButtonStatus();
-                            Drawable drawable1 = ContextCompat.getDrawable(
+                            /*Drawable drawable1 = ContextCompat.getDrawable(
                                     VisitSummaryActivity_New.this,
                                     R.drawable.dialog_visit_sent_success_icon);
                             visitSentSuccessDialog(context, drawable1,
                                     getResources().getString(R.string.visit_successfully_sent),
                                     getResources().getString(R.string.patient_visit_sent),
-                                    getResources().getString(R.string.okay));
+                                    getResources().getString(R.string.okay));*/
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                         }
@@ -3495,6 +3555,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         dialog_subtitle.setText(subTitle);
         positive_btn.setText(neutral);
 
+
         AlertDialog alertDialog = alertdialogBuilder.create();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
         alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
@@ -3506,18 +3567,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             InteleHealthDatabaseHelper dbHelper = new InteleHealthDatabaseHelper(VisitSummaryActivity_New.this);
             List<HeartLungRecordModel> list = dbHelper.getAllHeartLungRecords(visitUuid);
-            fetchingIntent();
+          /*  fetchingIntent();
             if (list == null || list.isEmpty()) {
                 Log.e("FLOW", "No recordings found in DB");
                 return;
+            }*/
+            if (list == null || list.isEmpty()) {
+                Log.e("FLOW", "No recordings found in DB");
+                fetchingIntent(); // FIX: refresh UI when no sounds
+                return;
             }
-
             // Build valid items list with audio data
             mPendingUploadQueue.clear();
             mCurrentUploadIndex = 0;
 
             for (HeartLungRecordModel item : list) {
-                int recStatus = Integer.parseInt(item.recordingStatus);
+              /*  int recStatus = Integer.parseInt(item.recordingStatus);
                 if (recStatus <= 0) {
                     Log.e("FLOW", "Invalid recordingStatus for: " + item.position);
                     continue;
@@ -3525,6 +3590,29 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 short[] audio = AyuSynk.getBleInstance().getAudioData(recStatus);
                 if (audio == null || audio.length == 0) {
                     Log.e("FLOW", "Audio NULL for: " + item.position   + " | recStatus=" + recStatus);
+                    continue;
+                }*/
+                if (item.recordingStatus == null || item.recordingStatus.trim().isEmpty()) {
+                    Log.e("FLOW", "Skipping item with null/empty recordingStatus at position: " + item.position);
+                    continue;
+                }
+
+                int recStatus;
+                try {
+                    recStatus = Integer.parseInt(item.recordingStatus.trim());
+                } catch (NumberFormatException e) {
+                    Log.e("FLOW", "Invalid recordingStatus value: '" + item.recordingStatus + "' at position: " + item.position);
+                    continue;
+                }
+
+                if (recStatus <= 0) {
+                    Log.e("FLOW", "Invalid recordingStatus for: " + item.position);
+                    continue;
+                }
+
+                short[] audio = AyuSynk.getBleInstance().getAudioData(recStatus);
+                if (audio == null || audio.length == 0) {
+                    Log.e("FLOW", "Audio NULL for: " + item.position + " | recStatus=" + recStatus);
                     continue;
                 }
                 item.audioData = audio;
@@ -3536,12 +3624,60 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             }
 
-            if (mPendingUploadQueue.isEmpty()) {
+           /* if (mPendingUploadQueue.isEmpty()) {
                 Log.e("FLOW", "No valid audio found");
                 return;
+            }*/
+            if (mPendingUploadQueue.isEmpty()) {
+                Log.e("FLOW", "No valid audio found");
+                fetchingIntent(); // FIX: refresh UI when queue empty
+                return;
             }
-
             Log.d("FLOW", "Total queued: " + mPendingUploadQueue.size());
+
+            // ── ADD FROM HERE ─────────────────────────────────────────────────
+            android.widget.LinearLayout layout = new android.widget.LinearLayout(VisitSummaryActivity_New.this);
+            layout.setOrientation(android.widget.LinearLayout.VERTICAL);
+            layout.setPadding(60, 40, 60, 40);
+
+            android.widget.TextView titleTv = new android.widget.TextView(VisitSummaryActivity_New.this);
+            titleTv.setText("Processing Sounds");
+            titleTv.setTextSize(18);
+            titleTv.setTypeface(null, android.graphics.Typeface.BOLD);
+            layout.addView(titleTv);
+
+            mSoundProgressText = new android.widget.TextView(VisitSummaryActivity_New.this);
+            mSoundProgressText.setText("0 / " + mPendingUploadQueue.size() + " processed");
+            mSoundProgressText.setPadding(0, 16, 0, 8);
+            layout.addView(mSoundProgressText);
+
+            mSoundProgressPercent = new android.widget.TextView(VisitSummaryActivity_New.this);
+            mSoundProgressPercent.setText("0%");
+            mSoundProgressPercent.setTextSize(28);
+            mSoundProgressPercent.setTypeface(null, android.graphics.Typeface.BOLD);
+            mSoundProgressPercent.setTextColor(android.graphics.Color.parseColor("#1A1A2E"));
+            mSoundProgressPercent.setPadding(0, 0, 0, 12);
+            layout.addView(mSoundProgressPercent);
+
+            mSoundProgressBar = new android.widget.ProgressBar(
+                    VisitSummaryActivity_New.this, null,
+                    android.R.attr.progressBarStyleHorizontal);
+            mSoundProgressBar.setMax(mPendingUploadQueue.size());
+            mSoundProgressBar.setProgress(0);
+            android.widget.LinearLayout.LayoutParams lp = new android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT);
+            mSoundProgressBar.setLayoutParams(lp);
+            layout.addView(mSoundProgressBar);
+
+            mSoundProgressDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this)
+                    .setView(layout)
+                    .setCancelable(false)
+                    .create();
+            mSoundProgressDialog.show();
+            // ── TO HERE ───────────────────────────────────────────────────────
+
+            // FIX: Register listener ONCE — it triggers the NEXT upload
 
             // FIX: Register listener ONCE — it triggers the NEXT upload
             // after each AI report is generated, ensuring strict one-at-a-time
@@ -3568,7 +3704,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             } else {
                                 Log.e("AI_ERROR", "No mapping for: " + tid);
                             }
-
+                            runOnUiThread(() -> advanceSoundProgress());
                             // FIX: Trigger next upload AFTER this report is done
                             // Small delay ensures SDK finishes its internal iteration
                             // before the next generateDiagnosisReport call starts
@@ -3580,6 +3716,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         public void onReportGenerationError(String error) {
                             Log.e("AI_FLOW", "SDK Error: " + error);
                             // Still advance queue on error
+
                             new Handler(android.os.Looper.getMainLooper()).postDelayed(() ->
                                     processNextInQueue(), 500);
                         }
@@ -3706,6 +3843,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
         });
     }
+
     private okhttp3.OkHttpClient getStethoHttpClient() {
         if (mStethoHttpClient == null) {
             mStethoHttpClient = new okhttp3.OkHttpClient.Builder()
@@ -3728,7 +3866,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         return mStethoHttpClient;
     }
-
 
 
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {
@@ -6671,7 +6808,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!billEncounterUuid.equals("")) {
                     billUtils.fetchBillDetails(billEncounterUuid);
                 } else {
-                    boolean[] selectedTests = new boolean[8];
+                    boolean[] selectedTests = new boolean[9];
                     if (!mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString()))
                         selectedTests[1] = false;//no use seen
                     if (!mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString()))
@@ -6688,6 +6825,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         selectedTests[7] = true;
                     if (!mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString()))
                         selectedTests[8] = true;
+                    System.out.println("HBA1cDataValue" + !mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty());
+                  /*  if (!mBinding.layoutVisitSummarySections
+                            .textViewDiabetesHba1cValue.getText().toString().isEmpty()
+                            && isNumeric(mBinding.layoutVisitSummarySections
+                            .textViewDiabetesHba1cValue.getText().toString())) {
+                        selectedTests[8] = true;   // ← now valid (array size = 9)
+                    }*/
                     Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
@@ -6697,16 +6841,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     }
 
+    /* public boolean isNumeric(String input) {
+         if (input == null || input.isEmpty()) {
+             return false;
+         }
+         for (char c : input.toCharArray()) {
+             if (!Character.isDigit(c)) {
+                 return false;
+             }
+         }
+         return true;
+     }*/
     public boolean isNumeric(String input) {
-        if (input == null || input.isEmpty()) {
+        if (input == null || input.isEmpty()) return false;
+        try {
+            Double.parseDouble(input);
+            return true;
+        } catch (NumberFormatException e) {
             return false;
         }
-        for (char c : input.toCharArray()) {
-            if (!Character.isDigit(c)) {
-                return false;
-            }
-        }
-        return true;
     }
 
     private void setupDiagnosticsConfig() {
@@ -6827,57 +6980,53 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String pos = position.toLowerCase().trim();
 
         if (type.equalsIgnoreCase("heart")) {
-            if (pos.contains("aortic"))    return LocationType.Heart.aortic;
+            if (pos.contains("aortic")) return LocationType.Heart.aortic;
             if (pos.contains("pulmonic")) return LocationType.Heart.pulmonic;
             if (pos.contains("tricuspid")) return LocationType.Heart.tricuspid;
-            if (pos.contains("mitral"))   return LocationType.Heart.mitral;
+            if (pos.contains("mitral")) return LocationType.Heart.mitral;
             return LocationType.Heart.aortic; // default heart
         } else {
             // Lung positions
-            if (pos.contains("anterior") && pos.contains("upper") && pos.contains("right"))
+            // ── ANTERIOR ──────────────────────────────────────────────────────
+            // FIX: SoundFragment uses "Top" not "upper" in position names
+            // e.g. "Anterior-1-Left-Top" → toLowerCase() = "top"
+            if (pos.contains("anterior") && pos.contains("left") && pos.contains("top"))
+                return LocationType.Lung.anterior_upper_left;
+            if (pos.contains("anterior") && pos.contains("right") && pos.contains("top"))
                 return LocationType.Lung.anterior_upper_right;
-            if (pos.contains("anterior") && pos.contains("middle") && pos.contains("right"))
+            if (pos.contains("anterior") && pos.contains("left") && pos.contains("middle"))
+                return LocationType.Lung.anterior_middle_left;
+            if (pos.contains("anterior") && pos.contains("right") && pos.contains("middle"))
                 return LocationType.Lung.anterior_middle_right;
-            if (pos.contains("anterior") && pos.contains("lower") && pos.contains("right"))
+            if (pos.contains("anterior") && pos.contains("left") && pos.contains("lower"))
+                return LocationType.Lung.anterior_lower_left;
+            if (pos.contains("anterior") && pos.contains("right") && pos.contains("lower"))
                 return LocationType.Lung.anterior_lower_right;
 
-            // ANTERIOR LEFT
-            if (pos.contains("anterior") && pos.contains("upper") && pos.contains("left"))
-                return LocationType.Lung.anterior_upper_left;
-            if (pos.contains("anterior") && pos.contains("middle") && pos.contains("left"))
-                return LocationType.Lung.anterior_middle_left;
-            if (pos.contains("anterior") && pos.contains("lower") && pos.contains("left"))
-                return LocationType.Lung.anterior_lower_left;
-
-            // LATERAL RIGHT
-            if (pos.contains("lateral") && pos.contains("upper") && pos.contains("right"))
+            // ── LATERAL ───────────────────────────────────────────────────────
+            if (pos.contains("lateral") && pos.contains("left") && pos.contains("top"))
+                return LocationType.Lung.lateral_upper_left;
+            if (pos.contains("lateral") && pos.contains("left") && pos.contains("lower"))
+                return LocationType.Lung.lateral_lower_left;
+            if (pos.contains("lateral") && pos.contains("right") && pos.contains("top"))
                 return LocationType.Lung.lateral_upper_right;
-            if (pos.contains("lateral") && pos.contains("lower") && pos.contains("right"))
+            if (pos.contains("lateral") && pos.contains("right") && pos.contains("lower"))
                 return LocationType.Lung.lateral_lower_right;
 
-            // LATERAL LEFT
-            if (pos.contains("lateral") && pos.contains("upper") && pos.contains("left"))
-                return LocationType.Lung.lateral_upper_left;
-            if (pos.contains("lateral") && pos.contains("lower") && pos.contains("left"))
-                return LocationType.Lung.lateral_lower_left;
-
-            // POSTERIOR RIGHT
-            if (pos.contains("posterior") && pos.contains("upper") && pos.contains("right"))
+            // ── POSTERIOR ─────────────────────────────────────────────────────
+            if (pos.contains("posterior") && pos.contains("left") && pos.contains("top"))
+                return LocationType.Lung.posterior_upper_left;
+            if (pos.contains("posterior") && pos.contains("right") && pos.contains("top"))
                 return LocationType.Lung.posterior_upper_right;
-            if (pos.contains("posterior") && pos.contains("middle") && pos.contains("right"))
+            if (pos.contains("posterior") && pos.contains("left") && pos.contains("middle"))
+                return LocationType.Lung.posterior_middle_left;
+            if (pos.contains("posterior") && pos.contains("right") && pos.contains("middle"))
                 return LocationType.Lung.posterior_middle_right;
-            if (pos.contains("posterior") && pos.contains("lower") && pos.contains("right"))
+            if (pos.contains("posterior") && pos.contains("left") && pos.contains("lower"))
+                return LocationType.Lung.posterior_lower_left;
+            if (pos.contains("posterior") && pos.contains("right") && pos.contains("lower"))
                 return LocationType.Lung.posterior_lower_right;
 
-            // POSTERIOR LEFT
-            if (pos.contains("posterior") && pos.contains("upper") && pos.contains("left"))
-                return LocationType.Lung.posterior_upper_left;
-            if (pos.contains("posterior") && pos.contains("middle") && pos.contains("left"))
-                return LocationType.Lung.posterior_middle_left;
-            if (pos.contains("posterior") && pos.contains("lower") && pos.contains("left"))
-                return LocationType.Lung.posterior_lower_left;
-
-            // default lung
             Log.w("LOCATION_MAP", "No match for position: " + position + " — defaulting to anterior_upper_left");
             return LocationType.Lung.anterior_upper_left;
         }
@@ -6936,29 +7085,24 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Log.e("AI_FLOW", "File save error: " + e.getMessage());
         }
     }
+
     private void saveToDb(RecordingData data) {
-        // FIX: reportGenerated() fires on a background thread — must post to main thread
-        // before touching UI or DB helper initialized on main thread.
         runOnUiThread(() -> {
-            // FIX: initialize on demand if somehow still null
-            if (db == null) {
-                db = new InteleHealthDatabaseHelper(VisitSummaryActivity_New.this);
-            }
+            if (db == null) db = new InteleHealthDatabaseHelper(VisitSummaryActivity_New.this);
+            if (isFinishing() || isDestroyed()) return;
 
-            // FIX: guard against activity being destroyed before callback fires
-            if (isFinishing() || isDestroyed()) {
-                Log.w("SOUND_FLOW", "saveToDb: activity finishing, skipping insert");
-                return;
-            }
+            // ✅ Use insertRecord() instead of raw insert — it sets ALL required fields
+            db.insertRecord(
+                    patientUuid,          // patient_uuid
+                    visitUuid,            // visit_uuid ← was missing before
+                    encounterVitals,      // encounter_uuid
+                    data.type,
+                    data.position,
+                    1,                    // recordingStatus = 1 (recorded)
+                    data.filePath,
+                    data.result
+            );
 
-            ContentValues values1 = new ContentValues();
-            values1.put("position", data.position);
-            values1.put("audio_path", data.filePath);
-            values1.put("type", data.type);
-            values1.put("result", data.result);
-            values1.put("recordingStatus", 1);
-
-            db.insert("tbl_follow_up_heart_lung_recoding", null, values1);
             Log.d("SOUND_FLOW", "saveToDb: saved " + data.type + " | " + data.position);
         });
     }

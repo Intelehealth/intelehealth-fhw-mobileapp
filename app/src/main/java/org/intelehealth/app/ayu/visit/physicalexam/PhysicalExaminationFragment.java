@@ -43,7 +43,7 @@ import java.util.List;
  * Use the {@link PhysicalExaminationFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PhysicalExaminationFragment extends Fragment  implements SoundFragment.OnSoundSavedListener {
+public class PhysicalExaminationFragment extends Fragment  {
 
     //private List<Node> mCurrentRootOptionList = new ArrayList<>();
     private int mCurrentComplainNodeOptionsIndex = 0;
@@ -337,7 +337,7 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
                         return;
                     }
 
-                    ArrayList<String> sounds = extractSounds(examType);
+                  /*  ArrayList<String> sounds = extractSounds(examType);
                     if (sounds.isEmpty()) {
                         if ("heart".equals(examType)) {
                             sounds.add("Aortic"); sounds.add("Pulmonic");
@@ -368,8 +368,55 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
                             .replace(R.id.fl_steps_body, fragment)
                             .addToBackStack("sound")
                             .commit();
-                }
+                }*/
+// AFTER
+                    ArrayList<String> sounds = extractSounds(examType);
+                    if (sounds.isEmpty()) {
+                        if ("heart".equals(examType)) {
+                            sounds.add("Aortic");
+                            sounds.add("Pulmonic");
+                            sounds.add("Tricuspid");
+                            sounds.add("Mitral");
+                        } else {
+                            sounds.add("Anterior-1-Left-Top");
+                            sounds.add("Anterior-2-Right-Top");
+                            sounds.add("Anterior-3-Left-Middle");
+                            sounds.add("Anterior-4-Right-Middle");
+                            sounds.add("Anterior-5-Left-Lower");
+                            sounds.add("Anterior-6-Right-Lower");
+                        }
+                    }
 
+// Extract BOTH heart and lung sizes here so AyuConnectDialogFragment
+// can show correct "0 / 4" and "0 / 6" on both cards from the start
+                    ArrayList<String> heartSounds = extractSounds("heart");
+                    ArrayList<String> lungSounds = extractSounds("lung");
+
+// Fallback: if extractSounds returned empty, use the hardcoded defaults size
+                    int heartSize = heartSounds.isEmpty() ? 4 : heartSounds.size();
+                    int lungSize = lungSounds.isEmpty() ? 6 : lungSounds.size();
+
+                    isSoundFlowCompleted = true;
+                    vca.completedSoundTypes.add(examType);
+                    Log.d("SOUND_FLOW", "Opening SoundFragment for type=" + examType
+                            + " heartSize=" + heartSize + " lungSize=" + lungSize);
+
+                    Bundle args = new Bundle();
+                    args.putString("type", examType);
+                    args.putStringArrayList("sounds", sounds);
+                    args.putString("patientUuid", vca.patientUuid);
+                    args.putString("visitUuid", vca.visitUuid);
+                    args.putString("encounterUuid", vca.encounterVitals);
+                    args.putInt("heartSoundsSize", heartSize);  // ADD — for AyuConnectDialogFragment
+                    args.putInt("lungSoundsSize", lungSize);   // ADD — for AyuConnectDialogFragment
+
+                    SoundFragment fragment = SoundFragment.newInstance(args);
+                    getParentFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fl_steps_body, fragment)
+                            .addToBackStack("sound")
+                            .commit();
+                }
                 @Override
                 public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
 
@@ -524,10 +571,10 @@ public class PhysicalExaminationFragment extends Fragment  implements SoundFragm
         });
     }
 
-    @Override
+   /* @Override
     public void onSoundSaved() {
         advanceToNextExam(null);
-    }
+    }*/
 
     /**
      * After a sound flow finishes (e.g. all 4 heart positions recorded),

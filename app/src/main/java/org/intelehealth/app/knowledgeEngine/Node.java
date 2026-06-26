@@ -1611,7 +1611,7 @@ public class Node implements Serializable {
         }
     }
 
-    public String findDisplay() {
+ /*   public String findDisplay() {
 
         SessionManager sessionManager = null;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -1774,7 +1774,176 @@ public class Node implements Serializable {
             }
         }
     }
+*/
 
+    // Find display for ondemand language support. If the display for the locale is not present, it defaults to English text or display.
+    public String findDisplay(String locale){
+        switch (locale) {
+            case "en": {
+                //CustomLog.i(TAG, "findDisplay: eng");
+                if (display != null && display.isEmpty()) {
+                    //CustomLog.i(TAG, "findDisplay: eng txt");
+                    return text;
+                } else {
+                    //CustomLog.i(TAG, "findDisplay: eng dis");
+                    return display;
+                }
+            }
+            case "gu": {
+                if (display_gujarati != null && !display_gujarati.isEmpty()) {
+                    return display_gujarati;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "bn": {
+                if (display_bengali != null && !display_bengali.isEmpty()) {
+                    return display_bengali;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "ta": {
+                if (display_tamil != null && !display_tamil.isEmpty()) {
+                    return display_tamil;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "or": {
+                //CustomLog.i(TAG, "findDisplay: ori");
+                if (display_oriya != null && !display_oriya.isEmpty()) {
+                    //CustomLog.i(TAG, "findDisplay: ori dis");
+                    return display_oriya;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+
+            }
+            case "hi": {
+                //CustomLog.i(TAG, "findDisplay: cb");
+                if (display_hindi != null && !display_hindi.isEmpty()) {
+                    //CustomLog.i(TAG, "findDisplay: cb ");
+                    return display_hindi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "te": {
+                if (display_telugu != null && !display_telugu.isEmpty()) {
+                    return display_telugu;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }
+            case "mr": {
+                if (display_marathi != null && !display_marathi.isEmpty()) {
+                    //CustomLog.i(TAG, "findDisplay: mr ");
+                    return display_marathi;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        //CustomLog.i(TAG, "findDisplay: eng/o txt");
+                        return text;
+                    } else {
+                        //CustomLog.i(TAG, "findDisplay: eng/o dis");
+                        return display;
+                    }
+                }
+            }  //Assamese language support...
+            case "as": {
+                if (display_assamese != null && !display_assamese.isEmpty()) {
+                    return display_assamese;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            //Malyalam language support...
+            case "ml": {
+                if (display_malyalam != null && !display_malyalam.isEmpty()) {
+                    return display_malyalam;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+            case "kn": {
+                if (display_kannada != null && !display_kannada.isEmpty()) {
+                    return display_kannada;
+                } else {
+                    if (display == null || display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+
+            default: {
+                {
+                    if (display != null && display.isEmpty()) {
+                        return text;
+                    } else {
+                        return display;
+                    }
+                }
+            }
+        }
+    }
+
+    public String findDisplay() {
+
+        SessionManager sessionManager = null;
+        sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
+
+//        String locale = Locale.getDefault().getLanguage();
+        String locale = sessionManager.getCurrentLang();
+
+        return findDisplay(locale);
+    }
     public String getPositiveCondition() {
         return positiveCondition;
     }
@@ -2897,6 +3066,224 @@ public class Node implements Serializable {
                     stringsListNoSelected.add("Patient denies -" + next_line);
                 }
                 stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay() + next_line);
+                Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
+            }
+
+        }
+
+
+        if (stringsListNoSelected.size() > 0) {
+            stringsList.addAll(stringsListNoSelected);
+        }
+        Timber.tag(TAG).
+
+                i("ipt: stringsList: %s", stringsList);
+
+        String mLanguage = "";
+        for (
+                int i = 0; i < stringsList.size(); i++) {
+
+            if (!stringsList.get(i).isEmpty()) {
+                mLanguage = mLanguage.concat(stringsList.get(i));
+            }
+
+        }
+        Timber.tag(TAG).
+
+                i("ipt: formQuestionAnswer: %s", mLanguage);
+
+        mLanguage = mLanguage.replaceAll(",<br/>•", ",");
+        if (mLanguage.endsWith(",")) {
+            mLanguage = mLanguage.substring(0, mLanguage.length() - 1);
+        }
+        Timber.tag(TAG).
+
+                i("ipt: formQuestionAnswer: %s", mLanguage);
+
+        if (mLanguage.equalsIgnoreCase("")) {
+            mLanguage = (level == 0 ? bullet_hollow : right_pointing) + NOT_ANSWERED + next_line;
+        }
+        Timber.tag(TAG).
+
+                i("ipt: +++++++++++++++++++++++++++++++++++END+++++++++++++++++++++++++++++++++++++++++++++");
+
+        return mLanguage;
+    }
+
+    public String formQuestionAnswer(int level, boolean isAssociateSymptomsType, String locale) {
+        List<String> stringsList = new ArrayList<>();
+        List<String> stringsListNoSelected = new ArrayList<>();
+        List<Node> mOptions = optionsList;
+        boolean flag = false;
+        boolean isAssociatedSymEmpty = false;
+
+        for (int i = 0; i < mOptions.size(); i++) {
+            //isSelected set from  thisNode.setUnselected(); method
+            if (mOptions.get(i).isSelected()) {
+                String question;
+                if (level == 0) {
+                    question = big_bullet + " " + mOptions.get(i).findDisplay(locale);
+                    if ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")) || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))) {                        question = question + next_line + "Patient reports -";
+                    }
+                } else {
+                    if (isAssociateSymptomsType) {
+                        question = right_pointing + " " + mOptions.get(i).findDisplay(locale);
+                    } else {
+
+                        if (mOptions.get(i).isTerminal()) {
+                            question = bullet + " " + mOptions.get(i).findDisplay(locale);
+                        } else {
+                            if (level >= 1) {
+                                question = right_pointing + " " + mOptions.get(i).findDisplay(locale);
+                            } else {
+                                question = bullet + " " + mOptions.get(i).findDisplay(locale);
+                            }
+                            //question = right_pointing + " " + mOptions.get(i).findDisplay(locale);
+                        }
+                    }
+                }
+                question = question.replaceAll("\\[(.*?)\\]", "");
+                String answer = mOptions.get(i).getLanguage();
+                Timber.tag(TAG).i("ipt: +++++++++++++++++++++++++++START++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+                Timber.tag(TAG).i("ipt: isTerminal - %s", mOptions.get(i).isTerminal());
+                Timber.tag(TAG).i("ipt: level - %s", level);
+                Timber.tag(TAG).i("ipt: getInputType %s", mOptions.get(i).getInputType());
+                Timber.tag(TAG).i("ipt: findDisplay %s", mOptions.get(i).findDisplay(locale));
+                Timber.tag(TAG).i("ipt: getText %s", mOptions.get(i).getText());
+                Timber.tag(TAG).i("ipt: answer %s", answer);
+                Timber.tag(TAG).i("ipt: question %s", question);
+                if (answer.equals("%") && level != 0) {
+                    level = level - 1;
+                }
+
+                if (mOptions.get(i).isTerminal()) {
+                    if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
+
+                        if (mOptions.get(i).getInputType().equals("camera")) {
+                            stringsList.add(bullet_hollow + answer + next_line);
+                        } else {
+                            if (!answer.isEmpty()) {
+                                if (isAssociateSymptomsType) {
+                                    if (answer.equals("%")) {
+                                    } else if (mOptions.get(i).getText().equals(mOptions.get(i).getLanguage())) {
+                                        stringsList.add(question + " " + right_pointing + answer + next_line);
+                                    } else if (answer.substring(0, 1).equals("%")) {
+                                        stringsList.add(question + " " + right_pointing + answer.substring(1) + next_line);
+                                    } else {
+                                        stringsList.add(question + " " + right_pointing + answer + next_line);
+                                    }
+                                } else {
+                                    if (answer.equals("%")) {
+                                    } else if (mOptions.get(i).getText().trim().equals(mOptions.get(i).getLanguage().trim())) {
+                                        stringsList.add((level > 1 ? right_pointing : bullet_hollow) + answer + next_line);
+                                    } else if (answer.charAt(0) == '%') {
+                                        stringsList.add(bullet_hollow + answer.substring(1) + next_line);
+                                    } else {
+                                        stringsList.add((level > 1 ? right_pointing : bullet_hollow) + answer + next_line);
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if (isAssociateSymptomsType) {
+                            if (level > 0) {
+                                stringsList.add(right_pointing + mOptions.get(i).findDisplay(locale) + next_line);
+                            } else {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay(locale) + next_line);
+                            }
+
+                        } else {
+                            if (level == 0) {
+                                stringsList.add(bullet_hollow + mOptions.get(i).findDisplay(locale) + next_line);
+                            } else {
+                                //stringsList.add(bullet_hollow + mOptions.get(i).findDisplay(locale) + "," + next_line);
+                                stringsList.add((level > 1 ? right_pointing : bullet_hollow) + mOptions.get(i).findDisplay(locale) + next_line);
+
+                            }
+
+                        }
+
+                    }
+                } else {
+                    CustomLog.i(TAG, "ipt: nested question " + question);
+                    CustomLog.i(TAG, "ipt: nested question level - " + level);
+                    if (level > 0 && level % 2 != 0)
+                        if (question.startsWith("▻"))
+                            question = bullet_hollow + " " + question.substring(1);
+                    if (level == 0) {
+                        stringsList.add(question + next_line);
+
+                    } else if (!answer.equals("%")) {
+                        stringsList.add(question + next_line);
+                    }
+
+
+                    Timber.tag(TAG).i("ipt: nested question %s", question);
+                    Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
+                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+
+                    Timber.tag(TAG).i("ipt: nested answer %s", temp1);
+                    temp1 = temp1.replaceAll("<br/>•", ",");
+                    if (level == 0)
+                        if (temp1.startsWith("▻") && temp1.chars().filter(ch -> ch == '▻').count() > 1)
+                            temp1 = bullet_hollow + " " + temp1.substring(1);
+                    Timber.tag(TAG).v("ipt: nested answer %s", temp1);
+                    stringsList.add(temp1);
+                    // cleanup duplicate text
+                    String lastVal = "";
+                    /*for (int j = 0; j < stringsList.size(); j++) {
+                        String v = stringsList.get(j).replaceAll(right_pointing, "").trim().replaceAll(bullet_hollow, "").trim();
+                        Log.v(TAG, "ipt: nested answer v" + v);
+                        if (!lastVal.isEmpty() && v.startsWith(lastVal)) {
+                            stringsList.get(j).replace(lastVal, "");
+                        }
+                        lastVal = v;
+                    }*/
+                    if (stringsList.contains(bullet_hollow + NOT_ANSWERED + next_line) || stringsList.contains(right_pointing + NOT_ANSWERED + next_line)) {
+                        //stringsList.clear();
+                        stringsList.remove(stringsList.size() - 1);
+                    }
+                    Timber.tag(TAG).i("ipt: stringsList %s", stringsList);
+                    Timber.tag(TAG).i("ipt: ******************END********************************* %s", level);
+                }
+            } else if (mOptions.get(i).getText() != null &&
+                    ((mOptions.get(i).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("जुड़े लक्षण"))                            || (mOptions.get(i).getText().equalsIgnoreCase("అనుబంధ లక్షణాలు"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("জড়িত লক্ষণগুলি"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("தொடர்புடைய அறிகுறிகள்"))
+                            || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
+                if (!mOptions.get(i).isTerminal()) {
+                    stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay(locale) + next_line);
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                }
+
+                if (mOptions.get(i).getOptionsList().size() > 0) {
+
+                    for (int j = 0; j < mOptions.get(i).getOptionsList().size(); j++) {
+
+                        if (mOptions.get(i).getOptionsList().get(j).isSelected()
+                                || mOptions.get(i).getOptionsList().get(j).isNoSelected()) {
+
+                            if (!mOptions.get(i).isTerminal()) {
+                                stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay(locale) + next_line);
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                            }
+                        }
+                    }
+                }
+            } else {
+                //in case of weird null exception...
+            }
+
+            // to add Patient denies entry
+            if (mOptions.get(i).isNoSelected()) {
+                if (!flag) {
+                    flag = true;
+                    stringsListNoSelected.add("Patient denies -" + next_line);
+                }
+                stringsListNoSelected.add(bullet_hollow + mOptions.get(i).findDisplay(locale) + next_line);
                 Timber.tag(TAG).e("ipt: %s", stringsListNoSelected);
             }
 
