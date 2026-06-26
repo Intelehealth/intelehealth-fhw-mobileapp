@@ -456,5 +456,5 @@
     <string name="failed_to_save_downloads">PDF ସେଭ୍ କରିବାରେ ବିଫଳ ହେଲା</string>
 
     <string name="are_you_sure_you_want_to_delete_all_notifications">ଆପଣ ସମସ୍ତ ବିଜ୍ଞପ୍ତି ଡିଲିଟ୍ କରିବାକୁ ଚାହୁଁଥିବା ନିଶ୍ଚିତ କି?</string>
-
+    <string name="confirmation">ନିଶ୍ଚିତକରଣ</string>
 </resources>

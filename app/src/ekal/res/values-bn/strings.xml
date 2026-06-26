@@ -455,5 +455,5 @@
     <string name="failed_to_save_downloads">PDF সংরক্ষণ করা যায়নি</string>
 
     <string name="are_you_sure_you_want_to_delete_all_notifications">আপনি কি নিশ্চিত যে আপনি সমস্ত বিজ্ঞপ্তি মুছে ফেলতে চান?</string>
-
+    <string name="confirmation">নিশ্চিতকরণ</string>
 </resources>

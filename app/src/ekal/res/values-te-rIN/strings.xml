@@ -449,5 +449,5 @@
     <string name="failed_to_save_downloads">PDFని సేవ్ చేయడం విఫలమైంది</string>
 
     <string name="are_you_sure_you_want_to_delete_all_notifications">మీరు అన్ని నోటిఫికేషన్‌లను తొలగించాలనుకుంటున్నారని ఖచ్చితంగా అనుకుంటున్నారా?</string>
-
+    <string name="confirmation">ధృవీకరణ</string>
 </resources>

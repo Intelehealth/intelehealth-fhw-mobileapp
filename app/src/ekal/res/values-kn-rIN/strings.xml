@@ -452,5 +452,5 @@
     <string name="failed_to_save_downloads">PDF ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ</string>
 
     <string name="are_you_sure_you_want_to_delete_all_notifications">ನೀವು ಎಲ್ಲಾ ಅಧಿಸೂಚನೆಗಳನ್ನು ಅಳಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
-
+    <string name="confirmation">ದೃಢೀಕರಣ</string>
 </resources>

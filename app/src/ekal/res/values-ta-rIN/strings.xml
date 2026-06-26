@@ -462,5 +462,5 @@
     <string name="failed_to_save_downloads">PDF-ஐச் சேமிக்க முடியவில்லை</string>
 
     <string name="are_you_sure_you_want_to_delete_all_notifications">அனைத்து அறிவிப்புகளையும் நீக்க விரும்புகிறீர்கள் என்பது உறுதியா?</string>
-
+    <string name="confirmation">உறுதிப்படுத்தல்</string>
 </resources>

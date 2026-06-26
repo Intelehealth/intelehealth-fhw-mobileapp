@@ -454,5 +454,5 @@
     <string name="failed_to_save_downloads">PDF सेव्ह करण्यात अयशस्वी</string>
 
     <string name="are_you_sure_you_want_to_delete_all_notifications">तुम्हाला खात्री आहे का की तुम्हाला सर्व सूचना (notifications) हटवायच्या आहेत?</string>
-
+    <string name="confirmation">पुष्टीकरण</string>
 </resources>
