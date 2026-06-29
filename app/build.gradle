@@ -195,7 +195,7 @@ dependencies {
     implementation "com.google.dagger:hilt-android:2.46.1" // Replace 2.x with the latest version
     kapt "com.google.dagger:hilt-compiler:2.46.1"
 
-    implementation "com.ayudevices:ayudevicesdk:4.5.2"// for POC SDK
+    implementation "com.ayudevices:ayudevicesdk: 5.3.6"// for POC SDK
 //    implementation(name: "ayudevicesdk-4.5.2", ext: "aar")
   //HBA1c
     implementation"androidx.legacy:legacy-support-v4:1.0.0"
