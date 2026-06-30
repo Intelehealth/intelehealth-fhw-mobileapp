@@ -25,7 +25,6 @@ import android.widget.RadioButton
 import android.widget.Spinner
 import android.widget.Switch
 import android.widget.TextView
-import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -50,7 +49,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import org.hl7.fhir.instance.model.api.IBase
 import org.hl7.fhir.r4.model.Enumerations
 import org.hl7.fhir.r4.model.Extension
 import org.hl7.fhir.r4.model.IntegerType
@@ -115,75 +113,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var appLang: String? = "en"
 
 
-    private var questionnaireResponse: String? = null
-    private var isFormChanged = false
-    private var changeMonitorRunnable: Runnable? = null
-
-    private fun startMonitoringChanges() {
-
-        lifecycleScope.launch {
-
-            questionnaireResponse = getResponseString()
-
-            changeMonitorRunnable = object : Runnable {
-                override fun run() {
-
-                    lifecycleScope.launch {
-
-                        val currentResponse = getResponseString()
-                        Log.d("FHIR", "Current Response: $currentResponse")
-                        Log.d("FHIR", "Last Response: $questionnaireResponse")
-                        if (currentResponse != questionnaireResponse) {
-                            questionnaireResponse = currentResponse
-                            isFormChanged = true
-
-                            Log.d("FHIR", "Questionnaire changed")
-                        }
-
-                        rootView.postDelayed(
-                            changeMonitorRunnable,
-                            500
-                        ) // Check every 1 second (adjust as needed)
-                    }
-                }
-            }
-
-            rootView.post(changeMonitorRunnable!!)
-        }
-    }
-
-    private suspend fun getResponseString(): String {
-
-        val response = questionnaireFragment?.getQuestionnaireResponse()
-            ?: return ""
-        // Remove dynamic fields
-        response.authored = null
-
-        response.extension.removeAll {
-            it.url == "http://github.com/google-android/questionnaire-lastLaunched-timestamp"
-        }
-        return try {
-            FhirContext.forR4Cached()
-                .newJsonParser()
-                .encodeResourceToString(response)
-
-
-        } catch (e: Exception) {
-            Log.e("FHIR", "Failed to generate response hash", e)
-            ""
-        } as String
-    }
-
-    private fun stopMonitoringChanges() {
-        changeMonitorRunnable?.let {
-            rootView.removeCallbacks(it)
-        }
-    }
-
-    override fun onDestroy() {
-        stopMonitoringChanges()
-        super.onDestroy()
-    }
     // change the locale of the activity
 //    override onC
 
@@ -273,9 +202,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 .use { it.readText() }*/
 
         if (savedInstanceState == null) {
-            lifecycleScope.launch {
-                loadQuestionnaireFragment(true)
-            }
+            loadQuestionnaireFragment(null, false, -1)
         }
         supportFragmentManager.setFragmentResultListener(
             QuestionnaireFragment.SUBMIT_REQUEST_KEY,
@@ -329,17 +256,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
           // Do nothing → disables back button
           hideKeyboard()
       }*/
-    private var questionnaireLoaded = false
-    private suspend fun loadQuestionnaireFragment(
-        initialLoad: Boolean
-    ) {
-        //if(questionnaireResponse!=null) return
-        //println("loadQuestionnaireFragment called with index: $index")
 
-        // Remove any existing observers to avoid multiple triggers
-        /* questionnaireFragment?.viewLifecycleOwnerLiveData?.removeObservers(
-             this@CommonQuestionnaireActivity
-         )*/
+    private fun loadQuestionnaireFragment(
+        questionnaireResponse: Any?,
+        isDisableRequired: Boolean,
+        index: Int
+    ) {
 
         // match with the questionnaireTitles then found the file name from questionnaireFiles
         val patient = Patient().apply {
@@ -365,7 +287,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
         val launchContextMap = mapOf("patient" to patientJson)
         // print console log
-        println("loadQuestionnaireFragment Launch context map: $launchContextMap")
+        println("Launch context map: $launchContextMap")
 
         val questionnaireFileName =
             questionnaireFiles[questionnaireTitles.indexOf(questionnaireTitle)]
@@ -376,9 +298,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
         questionnaireJSONObject = latestQuestionnaire?.let { JSONObject(it) }
         //supportFragmentManager.commitNow {
-        println("loadQuestionnaireFragment supportFragmentManager.isStateSaved) : " + supportFragmentManager.isStateSaved)
-        if (!supportFragmentManager.isStateSaved) {
-
+        if (!supportFragmentManager.isStateSaved)
             supportFragmentManager.commitNow {
                 setReorderingAllowed(true)
                 fragmentBuilder = QuestionnaireFragment.builder()
@@ -393,33 +313,12 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 // include a questionnaire response in your arguments bundle for your
                 //.setQuestionnaireResponse(questionnaireResponse)
                 //.setShowCancelButton(true)
-                if (!initialLoad &&
-                    !lastQuestionnaireResponseString.isNullOrEmpty()
-                ) {
-                    /*lastQuestionnaireResponse?.item?.let {
+                if (questionnaireResponse != null) {
+                    lastQuestionnaireResponse?.item?.let {
                         clearAnswersExceptFirstPage(it)
-                    }*/
-                    val fragment =
-                        supportFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as? QuestionnaireFragment
-                    lastQuestionnaireResponse = fragment?.getQuestionnaireResponse()
-
-                    lastQuestionnaireResponse?.let {
-                        val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
-                        lastQuestionnaireResponseString = jsonParser.encodeResourceToString(it)
-                        Log.println(Log.DEBUG, "FHIR", "Response: $lastQuestionnaireResponseString")
-                        // get the selected_symptoms_list link id
-                        fragmentBuilder!!.setQuestionnaireResponse(lastQuestionnaireResponseString.toString())
                     }
-
+                    fragmentBuilder!!.setQuestionnaireResponse(questionnaireResponse.toString())
                 }
-                // Remove old fragment if exists
-                supportFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG)
-                    ?.let { oldFragment ->
-                        supportFragmentManager.commitNow {
-                            remove(oldFragment)
-                        }
-                        println("Old QuestionnaireFragment removed")
-                    }
                 questionnaireFragment = fragmentBuilder!!.build()
 
                 replace(
@@ -427,21 +326,18 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     questionnaireFragment!!,
                     QUESTIONNAIRE_FRAGMENT_TAG
                 )
-                println(" QuestionnaireFragment committed with tag: $QUESTIONNAIRE_FRAGMENT_TAG")
 
                 // commitNow already used earlier, so view should exist — but run in post to be safe
-                //supportFragmentManager.executePendingTransactions()
+                supportFragmentManager.executePendingTransactions()
 
                 // Observe viewLifecycleOwnerLiveData so we run only after onCreateView/onViewCreated
                 questionnaireFragment!!.viewLifecycleOwnerLiveData.observe(this@CommonQuestionnaireActivity) { owner ->
                     if (owner != null) {
-                        // Now it's safe to use reqloadQuestionnaireFragmentuireView()
+                        // Now it's safe to use requireView()
                         //  questionnaireFragment!!.requireView().post {
                         questionnaireFragment?.view?.post {
                             val v = questionnaireFragment?.view ?: return@post
                             rootView = v
-                            //startMonitoringChanges()
-
                             // rootView = questionnaireFragment!!.requireView()
                             bottomActionController = QuestionnaireBottomActionController(rootView)
 
@@ -449,23 +345,46 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                             bottomActionController!!.setBottomActionsEnabledSmooth(!isRecurring)
                             //bottomActionController.attachAutoToggleForRequiredInputs()
                             // hideNextButtonIn(root)
+
+                            questionnaireFragment?.setOnAnswerChangedListener {
+                                if (bottomActionController?.isFirstPage() == true) {
+                                    isAllowedForBottomActionEnable = false
+                                    bottomActionController?.setBottomActionsEnabledSmooth(
+                                        isAllowedForBottomActionEnable
+                                    )
+                                }
+
+                                Log.d("FHIR", "Answer Changed")
+                            }
+
+                            questionnaireFragment?.setBeforeNextPageListener {
+                                //loadQuestionnaireFragment(lastQuestionnaireResponseString, true, -2)
+
+                                Log.d("FHIR", "Before Next Page")
+                            }
+                            questionnaireFragment?.setAfterNextPageListener {
+
+                                Log.d("FHIR", "Moved to Next Page")
+                            }
+
+                            questionnaireFragment?.setAfterPreviousPageListener {
+
+                                Log.d("FHIR", "Moved to Previous Page")
+                            }
                             if (isRecurring) updateUIComponents();
                         }
-                        questionnaireLoaded = true
                     }
                 }
 
 
             }
-            Log.d("FHIR", "questionnaire loaded successfully");
-        }
-    }
 
+    }
 
     private fun updateUIComponents() {
         Handler(Looper.getMainLooper()).postDelayed({
             updateUIComponentsNow()
-        }, 1500) // 1000 ms = 1 second
+        }, 2000) // 1000 ms = 1 second
     }
 
     private fun updateUIComponentsNow() {
@@ -513,8 +432,20 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         )*/
         // collect all text inputs
         //val matched = mutableListOf<View>()
+        fun View.printTree(indent: String = "") {
+            Log.d("TREE", "$indent${javaClass.simpleName}")
+
+            if (this is ViewGroup) {
+                for (i in 0 until childCount) {
+                    getChildAt(i).printTree("$indent  ")
+                }
+            }
+        }
+        rootView.printTree()
+        matchedViews.clear()
         rootView.findAllTextInputs(matchedViews)
         fun printInputDetails(view: View) {
+            Log.d("FHIR", "View = ${view.javaClass.name}")
             when (view) {
                 is TextInputEditText -> {
                     val label =
@@ -796,31 +727,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     var lastQuestionnaireResponse: QuestionnaireResponse? = null
     var lastQuestionnaireResponseString: String? = null
     var isAllowedForBottomActionEnable: Boolean = false
-    //var isOnFirstQuestion : Boolean = false
-    //var isOnLastQuestion : Boolean = false
-
-    private suspend fun loadLatestQuestionnaireResponse() {
-        val fragment =
-            supportFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as? QuestionnaireFragment
-        lastQuestionnaireResponse = fragment?.getQuestionnaireResponse()
-
-        lastQuestionnaireResponse?.let {
-            val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
-            lastQuestionnaireResponseString = jsonParser.encodeResourceToString(it)
-            Log.println(
-                Log.DEBUG,
-                "QuestionnaireUtils",
-                "Response: $lastQuestionnaireResponseString"
-            )
-            // get the selected_symptoms_list link id i.e. health_seeking_history
-            val selectedSymptoms = QuestionnaireUtils.extractSelectedLinkIdFromResponse(
-                it,
-                "health_seeking_history"
-            )
-
-
-        }
-    }
 
     // working
 // "expression": "%resource.item.where(linkId='bp_measurement_page').item.where(linkId='sbp_dbp_measurement_1').item.where(linkId='sbp_m1').answer.value > 139"
@@ -829,46 +735,41 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             while (isActive && !isFinishing) {
                 delay(1000) // Check every 5 second (adjust as needed)
                 // updateUIComponents()
-                if (bottomActionController!!.isFirstPage()) {
-                    Log.d("FHIR", "bpReadings = $bpReadings")
-                    Log.d("FHIR", "bpReadingsHelper = $bpReadingsHelper")
-                    // check if bpReadings all  shownDialogOnceForTimer done then not need to refresh again and again
-                    // also check last item have false value for shownDialogOnceForTimer
+                Log.d("BP_MONITOR", "bpReadings = $bpReadings")
+                Log.d("BP_MONITOR", "bpReadingsHelper = $bpReadingsHelper")
+                // check if bpReadings all  shownDialogOnceForTimer done then not need to refresh again and again
+                // also check last item have false value for shownDialogOnceForTimer
+                if (isAllowedForBottomActionEnable) {
+                    Log.d("FHIR", "All BP readings have shown dialog once. Stopping monitoring.")
+                    bottomActionController?.setBottomActionsEnabledSmooth(
+                        isAllowedForBottomActionEnable
+                    )
+                    continue
+                }
+
+                val fragment =
+                    supportFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as? QuestionnaireFragment
+                lastQuestionnaireResponse = fragment?.getQuestionnaireResponse()
+
+                lastQuestionnaireResponse?.let {
+                    val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
+                    lastQuestionnaireResponseString = jsonParser.encodeResourceToString(it)
+                    Log.println(Log.DEBUG, "FHIR", "Response: $lastQuestionnaireResponseString")
+                    // get the selected_symptoms_list link id
+
+                }
+                lastQuestionnaireResponse?.let {
+                    extractTimedBpReadings(it)
+
+                    isAllowedForBottomActionEnable = bpReadingsHelper.all { it == null }
+                    bottomActionController?.setBottomActionsEnabledSmooth(
+                        isAllowedForBottomActionEnable
+                    )
 
 
-                    val fragment =
-                        supportFragmentManager.findFragmentByTag(QUESTIONNAIRE_FRAGMENT_TAG) as? QuestionnaireFragment
-                    lastQuestionnaireResponse = fragment?.getQuestionnaireResponse()
+                    if (shouldShowAlertFromLatest())
+                        showBpDialogOnceWithTimer()
 
-                    lastQuestionnaireResponse?.let {
-                        val jsonParser = FhirContext.forCached(FhirVersionEnum.R4).newJsonParser()
-                        lastQuestionnaireResponseString = jsonParser.encodeResourceToString(it)
-                        Log.println(Log.DEBUG, "FHIR", "Response: $lastQuestionnaireResponseString")
-                        // get the selected_symptoms_list link id
-
-                    }
-                    lastQuestionnaireResponse?.let {
-                        extractTimedBpReadings(it)
-                        isAllowedForBottomActionEnable = bpReadingsHelper.all { it == null }
-                        bottomActionController?.setBottomActionsEnabledSmooth(
-                            isAllowedForBottomActionEnable
-                        )
-
-                        if (isAllowedForBottomActionEnable) {
-                            Log.d(
-                                "FHIR",
-                                "All BP readings have shown dialog once. Stopping monitoring."
-                            )
-                            bottomActionController?.setBottomActionsEnabledSmooth(
-                                isAllowedForBottomActionEnable
-                            )
-
-                        } else {
-                            if (shouldShowAlertFromLatest())
-                                showBpDialogOnceWithTimer()
-                        }
-
-                    }
                 }
             }
         }
@@ -882,10 +783,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         var timestamp: Long,
         var shownDialogOnceForTimer: Boolean = false,
         var isValidData: Boolean = false,
-        var validationDialogShownOnce: Boolean = false,
-        var isAbnormalValueEntered: Boolean = false,
-        var isFragmentLoadedOnce: Boolean = false
-
+        var validationDialogShownOnce: Boolean = false
 
     )
 
@@ -917,9 +815,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
             val sbp = extractAnswer(response, sbpId)
             val dbp = extractAnswer(response, dbpId)
-            Log.d("FHIR", "Extracted Reading at index $index: SBP=$sbp, DBP=$dbp")
-
-
 
 
             if (sbp == null || dbp == null) {
@@ -948,28 +843,13 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
                 // check sbp > dbp an also check the range of dbp & sbp
 
-                //bpReadingsHelper[index] = null
-                if (bpReadings[index] != null) {
-                    // ned to check the older value and compare with current value if different then need to update the falgs
-                    // check old values are changed or not if changed then only update the timestamp
 
+                if (bpReadings[index] != null) {
                     bpReadings[index]?.sbp = sbp
                     bpReadings[index]?.dbp = dbp
                     bpReadings[index]?.timestamp = System.currentTimeMillis()
                     bpReadings[index]?.isValidData = true
-
-                    if (bpReadings[index]?.sbp != sbp || bpReadings[index]?.dbp != dbp) {
-                        bpReadings[index]?.shownDialogOnceForTimer = false
-                        isAllowedForBottomActionEnable = false
-                        bpReadingsHelper[index] = bpReadings[index]
-                    }
-
                 } else {
-
-
-                    /*if (bpReadingsHelper[index] != null && bpReadingsHelper[index]?.validationDialogShownOnce!!) {
-                        bpReadingsHelper[index] = null
-                    }*/
                     // create new TimedBpReading object
                     bpReadings[index] = TimedBpReading(
                         sbp = sbp,
@@ -977,40 +857,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                         timestamp = System.currentTimeMillis(),
                         isValidData = true
                     )
-                    if ((bpReadings[index]?.sbp != sbp || bpReadings[index]?.dbp != dbp) && !bpReadings[index]?.shownDialogOnceForTimer!!) {
-                        isAllowedForBottomActionEnable = false
-                        bpReadingsHelper[index] = bpReadings[index]
-                    }
-
-
                 }
-                if (index == 2) {
-                    bpReadingsHelper[index] = null
-                    if (bpReadings[index]?.shownDialogOnceForTimer == false) {
-                        bpReadings[index]?.shownDialogOnceForTimer = true
-                        /*lifecycleScope.launch {
-
-                            delay(500)
-                            loadLatestQuestionnaireResponse()
-                            Timber.tag("FHIR_RESPONSE").d(lastQuestionnaireResponseString)
-
-                            loadQuestionnaireFragment(
-                                lastQuestionnaireResponseString,
-                                true,
-                                foundIndexedValue!!
-                            )
-                        }*/
-                        /*loadQuestionnaireFragment(
-                            lastQuestionnaireResponseString,
-                            true,
-                            index
-                        )*/
-                        lifecycleScope.launch {
-                            loadQuestionnaireFragment(false)
-                        }
-                    }
-                }
-
+                bpReadingsHelper[index] = null
             } else {
                 if (sbp != null && dbp != null) {
                     if (bpReadingsHelper[index] != null) {
@@ -1065,7 +913,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
          return (sbp != null && (sbp > 139 || sbp < 90)) || (dbp != null && (dbp > 89 || dbp < 60))
      }*/
     var foundIndexedValue: Int? = 0
-    var reccuringCurrentMeasurementIndex: Int? = 0
     fun shouldShowAlertFromLatest(): Boolean {
         Log.d("FHIR", "Checking BP Readings: $bpReadings")
         Log.d("FHIR", "Checking BP bpReadingsHelper: $bpReadingsHelper")
@@ -1078,22 +925,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             if (!bpReadings[2]!!.shownDialogOnceForTimer) {
                 bpReadings[2]?.shownDialogOnceForTimer = true
                 // need to reset the other
-                // loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
-                lifecycleScope.launch {
-                    loadQuestionnaireFragment(false)
-                }
-                /*lifecycleScope.launch {
-
-                    delay(500)
-                    loadLatestQuestionnaireResponse()
-                    Timber.tag("FHIR_RESPONSE").d(lastQuestionnaireResponseString)
-
-                    loadQuestionnaireFragment(
-                        lastQuestionnaireResponseString,
-                        true,
-                        2
-                    )
-                }*/
+                loadQuestionnaireFragment(lastQuestionnaireResponseString, true, 2)
             }
             return false
         }
@@ -1102,18 +934,8 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         for (index in 1 downTo 0) {
             val reading = bpReadings[index]
             if (reading != null) {
-                reccuringCurrentMeasurementIndex = index
-                Log.d(
-                    "FHIR",
-                    "reccuringCurrentMeasurementIndex - " + reccuringCurrentMeasurementIndex
-                )
                 if (reading.shownDialogOnceForTimer) {
-                    //return false
-                    Log.d(
-                        "FHIR",
-                        "reading.shownDialogOnceForTimer - " + reading.shownDialogOnceForTimer
-                    )
-                    continue
+                    return false
                 }
                 val sbp = reading.sbp
                 val dbp = reading.dbp
@@ -1128,60 +950,23 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                     }*/
                 } else {
                     Log.d("FHIR", "Normal BP at index $index: SBP=$sbp, DBP=$dbp")
-
                 }
-                if (isAbnormal) {
-                    foundIndexedValue = index
-                    bpReadings[index]!!.isAbnormalValueEntered = true
-                    return true
-                    Log.d("FHIR", "Abnormal BP detected at index $index, showing dialog.")
-                } else {
-                    bpReadings[index]!!.isAbnormalValueEntered = false
+                if (isAbnormal) foundIndexedValue = index
+                else {
                     // bpReadingsHelper all null values need to set
                     bpReadingsHelper.forEachIndexed { i, helperReading ->
                         if (helperReading != null) {
                             bpReadingsHelper[i] = null
                         }
                     }
-                    /*lifecycleScope.launch {
 
-                        delay(500)
-                        loadLatestQuestionnaireResponse()
-                        Timber.tag("FHIR_RESPONSE").d(lastQuestionnaireResponseString)
-
-                        loadQuestionnaireFragment(
-                            lastQuestionnaireResponseString,
-                            true,
-                            index
-                        )
-                    }*/
-                    Log.d("FHIR", "Normal BP detected at index $index, reloading fragment.")
-                    /*loadQuestionnaireFragment(
+                    loadQuestionnaireFragment(
                         lastQuestionnaireResponseString,
                         true,
-                        index
-                    )*/
-                    lifecycleScope.launch {
-                        loadQuestionnaireFragment(false)
-                        // wait sometime
-
-                    }
-                    return false
+                        foundIndexedValue!!
+                    )
                 }
-
-            } else {
-                Log.d("FHIR", "No BP reading at index $index")
-                // if smaller index bp reading is null then followed other bigger should be reset. ex. 0 index is null then, 1, 2 index bpReadings should be null
-
-                if (index == 0) {
-                    bpReadings[1] = null
-                    bpReadings[2] = null
-                    bpReadingsHelper[1] = null
-                    bpReadingsHelper[2] = null
-                } else if (index == 1) {
-                    bpReadings[2] = null
-                    bpReadingsHelper[2] = null
-                }
+                return isAbnormal
             }
         }
 
@@ -1203,15 +988,15 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
     private var lastDialogShownTime: Long = 0
-// set 10 sec for debug and 5 min for the release build
+    // set 10 sec for debug and 5 min for the release build
 
-    private val FIVE_MINUTES_MILLIS: Long = if (BuildConfig.DEBUG) 1 * 10 * 1000 else 5 * 60 * 1000
+    private val FIVE_MINUTES_MILLIS: Long = if (BuildConfig.DEBUG) 1 * 60 * 1000 else 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
-// create array to keep flag
-// to check if dialog is shown once
-// and then show dialog only once
+    // create array to keep flag
+    // to check if dialog is shown once
+    // and then show dialog only once
 
     private fun showBpDialogOnceWithTimer() {
         /* if (isShownOnce0 && foundIndexedValue == 0)
@@ -1262,7 +1047,6 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
 
                     override fun onFinish() {
                         if (dialog.isShowing) {
-                            bpReadingsHelper[foundIndexedValue!!] = null
                             dialog.dismiss()
                             hasShownDialog = false
                             isAllowedForBottomActionEnable = false
@@ -1270,14 +1054,11 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                                 isAllowedForBottomActionEnable
                             )
                             // reload the fragment to reset the state
-                            /*loadQuestionnaireFragment(
+                            loadQuestionnaireFragment(
                                 lastQuestionnaireResponseString,
                                 true,
                                 foundIndexedValue!!
-                            )*/
-                            lifecycleScope.launch {
-                                loadQuestionnaireFragment(false)
-                            }
+                            )
                         }
                     }
                 }.start()
@@ -1406,7 +1187,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
           }
           return null
       }
-    */
+  */
     fun showConfirmDialog() {
         Log.d("FHIR", "Showing confirm dialog...")
         val alertdialogBuilder = MaterialAlertDialogBuilder(this)

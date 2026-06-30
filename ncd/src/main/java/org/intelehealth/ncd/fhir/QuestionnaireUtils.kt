@@ -924,7 +924,7 @@ object QuestionnaireUtils {
         items: MutableList<QuestionnaireResponse.QuestionnaireResponseItemComponent>
     ) {
         items.forEachIndexed { index, item ->
-            if (index > 0) {
+            if (index > 0 ) {
                 clearItemAnswers(item)
             }
         }

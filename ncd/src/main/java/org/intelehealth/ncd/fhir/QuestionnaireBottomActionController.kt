@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.widget.*
 import android.animation.ValueAnimator
 import android.content.res.ColorStateList
+import android.view.MotionEvent
 import androidx.core.animation.doOnEnd
 import androidx.core.graphics.ColorUtils
 import com.google.android.material.button.MaterialButton
@@ -416,5 +417,36 @@ class QuestionnaireBottomActionController(private val rootView: View) {
 
     fun getNextButton(): View? {
         return findViewByName("pagination_next_button")
+    }
+    /*fun setOnNextButtonClickListener(action: () -> Unit) {
+        getNextButton()?.setOnClickListener {
+            action()
+        }
+    }*/
+    fun setOnNextButtonPressed(action: () -> Unit) {
+        getNextButton()?.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                action()
+            }
+            false   // VERY IMPORTANT: let SDK handle the click
+        }
+    }
+    fun interceptNextButton(beforeClick: () -> Unit) {
+        val button = getNextButton() ?: return
+
+        val listenerInfoField = View::class.java.getDeclaredField("mListenerInfo")
+        listenerInfoField.isAccessible = true
+        val listenerInfo = listenerInfoField.get(button)
+
+        val clickField = Class.forName("android.view.View\$ListenerInfo")
+            .getDeclaredField("mOnClickListener")
+        clickField.isAccessible = true
+
+        val originalClick = clickField.get(listenerInfo) as? View.OnClickListener
+
+        button.setOnClickListener {
+            beforeClick()             // Your code
+            originalClick?.onClick(it) // SDK navigates
+        }
     }
 }
