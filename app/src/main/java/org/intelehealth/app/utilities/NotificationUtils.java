@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.os.Build;
+import android.service.notification.StatusBarNotification;
 
 import androidx.core.app.NotificationCompat;
 
@@ -16,7 +17,11 @@ import java.util.Calendar;
 
 public class NotificationUtils {
 
-    private static final String NOTIFICATION_GROUP_SYNC = "intelehealth.sync";
+    public static final String NOTIFICATION_GROUP_SYNC = "intelehealth.sync";
+    public static final String NOTIFICATION_GROUP_PRESCRIPTION = "intelehealth.prescription";
+    public static final int PRESCRIPTION_FCM_NOTIFICATION_ID = 100;
+
+    private static volatile boolean fcmSyncInProgress = false;
 
     private String channelId = "1";
     private String channelName = "intelehealth";
@@ -29,6 +34,14 @@ public class NotificationUtils {
 //    #3 for visit uploadand download and end visit
 //    #4 for images upload and download either obs and patient profile
 //
+
+    public static void setFcmSyncInProgress(boolean inProgress) {
+        fcmSyncInProgress = inProgress;
+    }
+
+    public static boolean isFcmSyncInProgress() {
+        return fcmSyncInProgress;
+    }
 
     public void showNotifications(String title, String text, int notificationId, Context context) {
         this.context = context;
@@ -81,16 +94,20 @@ public class NotificationUtils {
             mNotifyManager.createNotificationChannel(mChannel);
         }
 
+        boolean isPrescriptionSync = fcmSyncInProgress;
+        int notifyId = isPrescriptionSync ? PRESCRIPTION_FCM_NOTIFICATION_ID : notificationId;
+        String groupPrefix = isPrescriptionSync ? NOTIFICATION_GROUP_PRESCRIPTION : NOTIFICATION_GROUP_SYNC;
+
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
         mBuilder.setContentTitle(title)
                 .setContentText(text)
                 .setSmallIcon(R.drawable.ic_cloud_upload)
                 .setCategory(Notification.CATEGORY_MESSAGE)
-                .setGroup(NOTIFICATION_GROUP_SYNC + "." + notificationId)
+                .setGroup(groupPrefix + "." + notifyId)
                 .setGroupSummary(false)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
-        mNotifyManager.notify(notificationId, mBuilder.build());
+        mNotifyManager.notify(notifyId, mBuilder.build());
 
     }
 
@@ -99,15 +116,19 @@ public class NotificationUtils {
         this.context = context;
         NotificationManager mNotifyManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        mNotifyManager.cancelAll();
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
-            mNotifyManager.createNotificationChannel(mChannel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            for (StatusBarNotification statusBarNotification : mNotifyManager.getActiveNotifications()) {
+                String group = statusBarNotification.getNotification().getGroup();
+                if (group != null && group.startsWith(NOTIFICATION_GROUP_SYNC)) {
+                    mNotifyManager.cancel(statusBarNotification.getTag(), statusBarNotification.getId());
+                }
+            }
+        } else {
+            mNotifyManager.cancel(1);
+            mNotifyManager.cancel(2);
+            mNotifyManager.cancel(3);
+            mNotifyManager.cancel(4);
         }
-
-        mNotifyManager.cancelAll();
     }
 
     public void showNotifications_noProgress(String title, String text, Context context) {
