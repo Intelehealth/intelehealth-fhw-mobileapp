@@ -18,6 +18,7 @@ import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,12 +30,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
-import org.intelehealth.app.ayu.visit.hba1c.BleConnectedThread;
 import org.intelehealth.app.ayu.visit.hba1c.BleScanActivity;
 import org.intelehealth.app.ayu.visit.hba1c.HbA1cLiveViewModel;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
@@ -74,11 +75,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     private DiagnosticsModel  results     = new DiagnosticsModel();
     private boolean           mIsEditMode = false;
     private List<Diagnostics> mPatientDiagnosticsList;
+
+    private StringBuilder mDebugLog = new StringBuilder();
     private FragmentDiagnosticsCollectionBinding mBinding;
 
-    // ── Activity-scoped ViewModel (shared with all fragments + Activity) ───────
-    // BleConnectedThread lives here — survives fragment transactions so BLE
-    // keeps running while the user navigates between screens.
+
     private HbA1cLiveViewModel mHba1cVm;
 
     // ── Constructor / factory ─────────────────────────────────────────────────
@@ -126,9 +127,9 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.tvHemoglobinError.setVisibility(View.GONE);
         mBinding.tvDiabetesHba1cError.setVisibility(View.GONE);
 
-            // Live-update views — hidden until BLE connects
-            mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
-            mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
+        // Live-update views — hidden until BLE connects
+        mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
+        mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
 
         mBinding.etvGlucoseRandom.addTextChangedListener(new MyTextWatcher(mBinding.etvGlucoseRandom));
         mBinding.etvGlucoseFasting.addTextChangedListener(new MyTextWatcher(mBinding.etvGlucoseFasting));
@@ -153,7 +154,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
         // ── Get Activity-scoped ViewModel ─────────────────────────────────
         // requireActivity() ensures we get the SAME instance as the Activity
-        // and every other fragment — BLE thread is shared, not per-fragment.
+        // and every other fragment — BLE connection is shared, not per-fragment.
         mHba1cVm = new ViewModelProvider(requireActivity())
                 .get(HbA1cLiveViewModel.class);
 
@@ -191,6 +192,18 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             updateConnectionStatus(connected != null && connected);
         });
 
+        // ── Observe "awaiting 2nd button press" — fires after go() on the
+        // Activity. The device sends frame 1 on the 1st press but does NOT
+        // call setHbA1cReading() until the 2nd press. Surface that to the
+        // user so they don't think the device is stuck.
+        mHba1cVm.awaitingSecondPress().observe(getViewLifecycleOwner(), awaiting -> {
+            if (mBinding == null) return;
+            if (awaiting != null && awaiting) {
+                mBinding.tvConnectionStatus.setText("Press the device button again to get the reading");
+                mBinding.tvConnectionStatus.setTextColor(0xFFFF9800); // amber
+            }
+        });
+
         // ── Diagnostics config ────────────────────────────────────────────
         DiagnosticsRepository repository = new DiagnosticsRepository(
                 ConfigDatabase.getInstance(requireActivity()).patientDiagnosticsDao());
@@ -206,7 +219,39 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.btnScanDevice.setOnClickListener(v ->
                 startActivityForResult(
                         new Intent(getActivity(), BleScanActivity.class), REQ_BLE));
+        if (BuildConfig.DEBUG) {
+            mBinding.tvDebugLog.setVisibility(View.VISIBLE);
+            mBinding.btnCopyDebugLog.setVisibility(View.VISIBLE);
+            mBinding.btnEmailDebugLog.setVisibility(View.VISIBLE);
 
+            appendDebugLog("=== HbA1c Debug Session Started ===");
+            appendDebugLog("Device model: " + android.os.Build.MODEL);
+            appendDebugLog("Android version: " + android.os.Build.VERSION.RELEASE);
+            appendDebugLog("App version: " + BuildConfig.VERSION_NAME);
+
+            mHba1cVm.connected().observe(getViewLifecycleOwner(), c ->
+                    appendDebugLog("connected = " + c));
+
+            mHba1cVm.hba1cReading().observe(getViewLifecycleOwner(), r ->
+                    appendDebugLog("hba1cReading = " + r));
+
+            mHba1cVm.lastUpdatedAt().observe(getViewLifecycleOwner(), ts ->
+                    appendDebugLog("lastUpdatedAt = " + ts));
+
+            mHba1cVm.awaitingSecondPress().observe(getViewLifecycleOwner(), awaiting ->
+                    appendDebugLog("awaitingSecondPress = " + awaiting));
+
+            mBinding.btnCopyDebugLog.setOnClickListener(v -> {
+                android.content.ClipboardManager clipboard =
+                        (android.content.ClipboardManager) requireActivity()
+                                .getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setPrimaryClip(
+                        android.content.ClipData.newPlainText("debug_log", mDebugLog.toString()));
+                Toast.makeText(getContext(), "Log copied to clipboard", Toast.LENGTH_SHORT).show();
+            });
+
+            mBinding.btnEmailDebugLog.setOnClickListener(v -> emailDebugLogFile());
+        }
         manageBackButtonVisibility();
     }
 
@@ -214,14 +259,22 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
     @Override
     public void onDestroyView() {
-        // Do NOT stop the BLE thread here — it lives in the ViewModel and must
-        // keep running across fragment transactions so the value is ready on
-        // the summary screen. The Activity calls stopBle() in onDestroy().
+        // Do NOT stop the BLE connection here — it lives in the Activity
+        // (ControlCentre) and must keep running across fragment transactions
+        // so the value is ready on the summary screen. The Activity calls
+        // mControlCentre.stopReceiver() in its own onDestroy().
         stopLivePulse();
         mBinding = null;
         super.onDestroyView();
     }
-
+    private void appendDebugLog(String line) {
+        String ts = new java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.getDefault())
+                .format(new java.util.Date());
+        mDebugLog.append("[").append(ts).append("] ").append(line).append("\n");
+        if (mBinding != null && mBinding.tvDebugLog != null) {
+            mBinding.tvDebugLog.setText(mDebugLog.toString());
+        }
+    }
     // ── Activity result (manual scan fallback) ────────────────────────────────
 
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
@@ -237,76 +290,54 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             return;
         }
 
-        // Hand off to Activity which saves the address and starts the thread
-        // inside the shared ViewModel — not a new local thread.
+        // Hand off to Activity which saves the address and starts ControlCentre
+        // — not a new local thread/connection.
         ((VisitCreationActivity) requireActivity()).saveAndStartBleDevice(address);
     }
 
     // ── Connection-status UI ──────────────────────────────────────────────────
 
-   /* private void updateConnectionStatus(boolean isConnected) {
+    private void updateConnectionStatus(boolean isConnected) {
         if (mBinding == null) return;
 
-        mBinding.tvConnectionStatus.setText(isConnected ? "Connected" : "Disconnected");
-        mBinding.statusDot.setBackgroundResource(
-                isConnected ? R.color.btn_background : R.color.red);
+        boolean hasReading = mHba1cVm != null
+                && mHba1cVm.hba1cReading().getValue() != null
+                && !mHba1cVm.hba1cReading().getValue().isEmpty();
 
-        mBinding.tvHba1cLiveBadge.setVisibility(isConnected ? View.VISIBLE : View.GONE);
-        if (isConnected) startLivePulse(); else stopLivePulse();
+        if (isConnected && !hasReading) {
+            // Connected but waiting for first reading
+            mBinding.tvConnectionStatus.setText("Connected — waiting for reading...");
+            mBinding.statusDot.setBackgroundResource(R.color.btn_background);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
+            startLivePulse();
+            mBinding.btnScanDevice.setEnabled(false);
+            mBinding.btnScanDevice.setAlpha(0.5f);
+            // Keep field editable while no reading yet
+            mBinding.etvDiabetesHba1c.setFocusable(true);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
+        } else if (isConnected) {
+            mBinding.tvConnectionStatus.setText("Connected");
+            mBinding.statusDot.setBackgroundResource(R.color.btn_background);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
+            startLivePulse();
+            mBinding.btnScanDevice.setEnabled(false);
+            mBinding.btnScanDevice.setAlpha(0.5f);
+            mBinding.etvDiabetesHba1c.setFocusable(false);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(false);
+        } else {
+            mBinding.tvConnectionStatus.setText("Disconnected");
+            mBinding.statusDot.setBackgroundResource(R.color.red);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
+            stopLivePulse();
+            mBinding.btnScanDevice.setEnabled(true);
+            mBinding.btnScanDevice.setAlpha(1.0f);
+            mBinding.etvDiabetesHba1c.setFocusable(true);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
+            mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
+        }
 
-        // Disable scan button while connected; re-enable to allow device swap
-        mBinding.btnScanDevice.setEnabled(!isConnected);
-        mBinding.btnScanDevice.setAlpha(isConnected ? 0.5f : 1.0f);
-
-        // Read-only while BLE streams live data
-        mBinding.etvDiabetesHba1c.setFocusable(!isConnected);
-        mBinding.etvDiabetesHba1c.setFocusableInTouchMode(!isConnected);
-
-        if (!isConnected) mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
-
-        Log.d(TAG, "updateConnectionStatus → " + (isConnected ? "CONNECTED" : "DISCONNECTED"));
-    }*/
-   private void updateConnectionStatus(boolean isConnected) {
-       if (mBinding == null) return;
-
-       boolean hasReading = mHba1cVm != null
-               && mHba1cVm.hba1cReading().getValue() != null
-               && !mHba1cVm.hba1cReading().getValue().isEmpty();
-
-       if (isConnected && !hasReading) {
-           // Connected but waiting for first reading
-           mBinding.tvConnectionStatus.setText("Connected — waiting for reading...");
-           mBinding.statusDot.setBackgroundResource(R.color.btn_background);
-           mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
-           startLivePulse();
-           mBinding.btnScanDevice.setEnabled(false);
-           mBinding.btnScanDevice.setAlpha(0.5f);
-           // Keep field editable while no reading yet
-           mBinding.etvDiabetesHba1c.setFocusable(true);
-           mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
-       } else if (isConnected) {
-           mBinding.tvConnectionStatus.setText("Connected");
-           mBinding.statusDot.setBackgroundResource(R.color.btn_background);
-           mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
-           startLivePulse();
-           mBinding.btnScanDevice.setEnabled(false);
-           mBinding.btnScanDevice.setAlpha(0.5f);
-           mBinding.etvDiabetesHba1c.setFocusable(false);
-           mBinding.etvDiabetesHba1c.setFocusableInTouchMode(false);
-       } else {
-           mBinding.tvConnectionStatus.setText("Disconnected");
-           mBinding.statusDot.setBackgroundResource(R.color.red);
-           mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
-           stopLivePulse();
-           mBinding.btnScanDevice.setEnabled(true);
-           mBinding.btnScanDevice.setAlpha(1.0f);
-           mBinding.etvDiabetesHba1c.setFocusable(true);
-           mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
-           mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
-       }
-
-       Log.d(TAG, "updateConnectionStatus → connected=" + isConnected + " hasReading=" + hasReading);
-   }
+        Log.d(TAG, "updateConnectionStatus → connected=" + isConnected + " hasReading=" + hasReading);
+    }
 
     private void startLivePulse() {
         if (mBinding == null) return;
@@ -569,8 +600,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                         UuidDictionary.TOTAL_CHOLESTEROL,           results.getCholesterol());
                 updateIfNeeded(obsDAO, mBinding.llHemoglobinContainer,
                         UuidDictionary.HEMOGLOBIN,                  results.getHemoglobin());
-               /* updateIfNeeded(obsDAO, mBinding.llDiabetesHba1cContainer,
-                        UuidDictionary.DIABETES_HBA1C,              results.getDiabetesbba1c());*/
                 String hba1cVal = results.getDiabetesbba1c();
                 if (hba1cVal != null && !hba1cVal.isEmpty()) {
                     ObsDTO hba1cDto = new ObsDTO();
@@ -609,7 +638,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 insertIfNeeded(obsDAO, mBinding.llHemoglobinContainer,      results.getHemoglobin());
                 insertIfNeeded(obsDAO, mBinding.llCholestrolContainer,      results.getCholesterol());
                 insertIfNeeded(obsDAO, mBinding.llUricAcidContainer,        results.getUricAcid());
-                /*insertIfNeeded(obsDAO, mBinding.llDiabetesHba1cContainer,   results.getDiabetesbba1c());*/
                 String hba1cVal = results.getDiabetesbba1c();
                 if (hba1cVal != null && !hba1cVal.isEmpty()) {
                     ObsDTO hba1cDto = new ObsDTO();
@@ -656,5 +684,59 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         try { dao.insertObs(dto);
         }
         catch (DAOException e) { FirebaseCrashlytics.getInstance().recordException(e); }
+    }
+
+    // ── Email debug log as file attachment (DEBUG builds only) ──────────────
+    private void emailDebugLogFile() {
+        try {
+            // 1. Write log to a file in cache/debug_logs/
+            java.io.File logDir = new java.io.File(requireContext().getCacheDir(), "debug_logs");
+            if (!logDir.exists()) logDir.mkdirs();
+
+            String fileName = "hba1c_debug_" +
+                    new java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault())
+                            .format(new java.util.Date()) + ".txt";
+            java.io.File logFile = new java.io.File(logDir, fileName);
+
+            java.io.FileWriter writer = new java.io.FileWriter(logFile);
+            writer.write(mDebugLog.toString());
+            writer.write("\n\n=== Saved Device Address ===\n");
+            android.content.SharedPreferences prefs =
+                    requireActivity().getSharedPreferences("hba1c_prefs", Context.MODE_PRIVATE);
+            writer.write("hba1c_ble_address = " + prefs.getString("hba1c_ble_address", "null") + "\n");
+            writer.close();
+
+            // 2. Get a content:// URI via FileProvider
+            android.net.Uri logUri = androidx.core.content.FileProvider.getUriForFile(
+                    requireContext(),
+                    requireContext().getPackageName() + ".fileprovider",
+                    logFile);
+
+            // 3. Build email intent with attachment
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("text/plain");
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nagarjuna@intelehealth.org"}); // ← your email
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "HbA1c Debug Log — " + fileName);
+            emailIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Attached: HbA1c BLE debug log.\n\nDevice: " + android.os.Build.MODEL +
+                            "\nTested by: [QA name]\n\nSteps performed:\n");
+            emailIntent.putExtra(Intent.EXTRA_STREAM, logUri);
+            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // 4. Force Gmail if installed, else show chooser
+            emailIntent.setPackage("com.google.android.gm");
+            if (emailIntent.resolveActivity(requireContext().getPackageManager()) != null) {
+                startActivity(emailIntent);
+            } else {
+                // Fallback: show chooser if Gmail not installed
+                emailIntent.setPackage(null);
+                startActivity(Intent.createChooser(emailIntent, "Send debug log via"));
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Failed to prepare log: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+            Log.e(TAG, "emailDebugLogFile error", e);
+        }
     }
 }

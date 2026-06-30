@@ -87,6 +87,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/common_button_text_size" />-->
 
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv_vital_body"
             android:layout_width="match_parent"
@@ -205,6 +206,51 @@
                                 android:visibility="gone"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+
+                    <!-- ── DEBUG-ONLY VIEWS — visible only in debug builds via code ─────── -->
+                    <TextView
+                        android:id="@+id/tv_debug_log"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="#CC000000"
+                        android:textColor="#00FF00"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp"
+                        android:padding="8dp"
+                        android:maxLines="15"
+                        android:scrollbars="vertical"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="4dp"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_copy_debug_log"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="Copy Debug Log"
+                            android:textAllCaps="false"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_email_debug_log"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Email Debug Log"
+                            android:textAllCaps="false"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                    <!-- ── END DEBUG-ONLY VIEWS ──────────────────────────────────────────── -->
+
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

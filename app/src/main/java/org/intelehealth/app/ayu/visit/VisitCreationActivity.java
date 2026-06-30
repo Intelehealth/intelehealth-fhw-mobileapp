@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -114,8 +115,16 @@ import android.content.SharedPreferences;
 
 import timber.log.Timber;
 
-public class VisitCreationActivity extends BaseActivity implements VisitCreationActionListener, ConnectPocDeviceFragment.OnDigitalScopeCompleteListener, RecordHeartSoundsFragment.OnRecordingCompleteListener,
-        RecordLungSoundsFragment.OnRecordingCompleteListener {
+import biosense.sreyasvpariyath.com.biosenselib.helper.ControlCentre;
+import biosense.sreyasvpariyath.com.biosenselib.helper.Constants;
+import biosense.sreyasvpariyath.com.biosenselib.helper.Communicator;
+
+public class VisitCreationActivity extends BaseActivity implements
+        VisitCreationActionListener,
+        ConnectPocDeviceFragment.OnDigitalScopeCompleteListener,
+        RecordHeartSoundsFragment.OnRecordingCompleteListener,
+        RecordLungSoundsFragment.OnRecordingCompleteListener,
+        Communicator {
 
     private static final String TAG = VisitCreationActivity.class.getSimpleName();
     private static final String VITAL_FRAGMENT = "VITAL";
@@ -160,23 +169,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private static final String DIAGNOSTICS_FRAGMENT = "DIAGNOSTICS";
     private static final String DIAGNOSTICS_SUMMARY_FRAGMENT = "DIAGNOSTICS_SUMMARY";
 
-
-    /*public static final int STEP_2_VISIT_REASON = 2;
-    public static final int STEP_2_VISIT_REASON_QUESTION = 3;
-    public static final int STEP_2_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS = 4;
-    public static final int STEP_2_VISIT_REASON_QUESTION_SUMMARY = 44;
-    public static final int STEP_3_PHYSICAL_EXAMINATION = 5;
-    public static final int STEP_3_PHYSICAL_SUMMARY_EXAMINATION = 55;
-    public static final int STEP_4_PAST_MEDICAL_HISTORY = 6;
-    public static final int STEP_5_FAMILY_HISTORY = 7;
-    public static final int STEP_5_HISTORY_SUMMARY = 8;
-    public static final int STEP_6_VISIT_SUMMARY = 9;
-    public static final int FROM_SUMMARY_RESUME_BACK_FOR_EDIT = 33;*/
-
     /**
      * Activity-scoped ViewModel — survives fragment transactions.
      */
     private HbA1cLiveViewModel mHba1cViewModel;
+    private ControlCentre mControlCentre;          // owns the actual BLE/SDK connection
+    private String mHba1cDeviceAddress;            // kept so we can restart if needed
 
     /**
      * SharedPrefs key where BleScanActivity saves the chosen device address.
@@ -184,7 +182,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private static final String PREF_BLE_ADDRESS = "hba1c_ble_address";
 
     private int mCurrentStep = STEP_1_VITAL;
-    //    private int currentScreenIndex = 1;
     private int totalScreen = 5;
 
     SessionManager sessionManager;
@@ -209,23 +206,15 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     private FrameLayout mSummaryFrameLayout;
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar, mStep5ProgressBar;
 
-    // Chief complain
-    //private List<Node> mAnsweredRootNodeList = new ArrayList<>();
     private List<Node> mChiefComplainRootNodeList = new ArrayList<>();
     private List<Node> mAssociateSymptomsNodeList = new ArrayList<>();
     private int mCurrentComplainNodeIndex = 0;
     private int mCurrentComplainNodeOptionsIndex = 0;
     private List<ReasonData> mSelectedComplainList = new ArrayList<ReasonData>();
 
-    // Physical Examination
-
-    // Past Medical History
-
-    // Family History]
-
     private boolean mIsEditMode = false;
     private boolean mIsEditTriggerFromVisitSummary = false;
-    private int mEditFor = 0; // STEP_1_VITAL , STEP_2_VISIT_REASON, STEP_3_PHYSICAL_EXAMINATION, STEP_4_PAST_MEDICAL_HISTORY
+    private int mEditFor = 0;
     private String privacy_value_selected = "";
     private PatientDTO patientDTO;
     private CommonVisitData mCommonVisitData;
@@ -239,12 +228,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
 
     private void startVisit() {
-        // before starting, we determine if it is new visit for a returning patient
-        // extract both FH and PMH
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         Date todayDate = new Date();
         String thisDate = currentDate.format(todayDate);
-
 
         visitUuid = UUID.randomUUID().toString();
         mCommonVisitData.setVisitUuid(visitUuid);
@@ -259,7 +245,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         encounterDTO.setProvideruuid(sessionManager.getProviderID());
         CustomLog.d("DTO", "DTO:detail " + encounterDTO.getProvideruuid());
         encounterDTO.setVoided(0);
-        encounterDTO.setPrivacynotice_value(privacy_value_selected);//privacy value added.
+        encounterDTO.setPrivacynotice_value(privacy_value_selected);
 
         try {
             encounterDAO.createEncountersToDB(encounterDTO);
@@ -274,7 +260,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         visitDTO.setVisitTypeUuid(UuidDictionary.VISIT_TELEMEDICINE);
         visitDTO.setLocationuuid(sessionManager.getLocationUuid());
         visitDTO.setSyncd(false);
-        visitDTO.setCreatoruuid(sessionManager.getCreatorID());//static
+        visitDTO.setCreatoruuid(sessionManager.getCreatorID());
         VisitsDAO visitsDAO = new VisitsDAO();
 
         try {
@@ -283,31 +269,16 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        // visitUuid = String.valueOf(visitLong);
-//                localdb.close();
-        //intent2.putExtra("patientUuid", patientUuid);
-        //intent2.putExtra("visitUuid", uuid);
         encounterVitals = encounterDTO.getUuid();
         mCommonVisitData.setEncounterUuidVitals(encounterVitals);
-        //intent2.putExtra("encounterUuidVitals", encounterDTO.getUuid());
 
         encounterAdultIntials = "";
-        encounterAdultIntials = UUID.randomUUID().toString(); //added due to in some case the adult initial encounter is not getting saved aginst physical exam images obs
+        encounterAdultIntials = UUID.randomUUID().toString();
 
         mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
-        //intent2.putExtra("encounterUuidAdultIntial", "");
 
         EncounterAdultInitial_LatestVisit = encounterAdultIntials;
         mCommonVisitData.setEncounterAdultInitialLatestVisit(EncounterAdultInitial_LatestVisit);
-        //intent2.putExtra("EncounterAdultInitial_LatestVisit", encounterAdultIntials);
-
-
-        //intent2.putExtra("name", fullName);
-        //intent2.putExtra("gender", mGender);
-        //intent2.putExtra("tag", "new");
-        //intent2.putExtra("float_ageYear_Month", float_ageYear_Month);
-        //startActivity(intent2);
-        //finish();
     }
 
     private boolean mIsInitilaFeaturesLoading = true;
@@ -317,13 +288,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         super.onFeatureActiveStatusLoaded(activeStatus);
         featureActiveStatus = activeStatus;
         if (mIsInitilaFeaturesLoading) {
-//            if (featureActiveStatus != null && !featureActiveStatus.getVitalSection()) {
-//                CustomLog.d(TAG, "featureActiveStatus first screen=>%s", featureActiveStatus.getVitalSection());
-//                mStep1ProgressBar.setVisibility(View.GONE);
-//                mCurrentStep = STEP_3_VISIT_REASON;
-//                totalScreen = 3;
-//                Timber.tag(TAG).d("Feature first screen=>%s", mCurrentStep);
-//            }
 
             if (featureActiveStatus != null) {
                 boolean isVitalsActive = featureActiveStatus.getVitalSection();
@@ -371,13 +335,9 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     totalScreen = 3;
                     Timber.tag(TAG).d("6 Feature first screen : " + mCurrentStep);
                 }
-
             }
 
             if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
-//            getSupportFragmentManager().beginTransaction().
-//                    replace(R.id.fl_steps_body, VitalCollectionFragment.newInstance(mCommonVisitData, mIsEditMode, null), VITAL_FRAGMENT).
-//                    commit();
             else makeReadyForEdit();
         }
         mIsInitilaFeaturesLoading = false;
@@ -403,13 +363,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         mStep4ProgressBar = findViewById(R.id.prog_bar_step4);
         mStep5ProgressBar = findViewById(R.id.prog_bar_step5);
 
-//        if (BuildConfig.FLAVOR_client.equals("bmgf")) {
-//            mStep1ProgressBar.setVisibility(View.GONE);
-//            mStep3ProgressBar.setVisibility(View.GONE);
-//            mStep4ProgressBar.setVisibility(View.GONE);
-//        }
-
-        Intent intent = this.getIntent(); // The intent was passed to the activity
+        Intent intent = this.getIntent();
         if (intent != null) {
             mCommonVisitData = intent.getExtras().getParcelable("CommonVisitData");
             patientUuid = mCommonVisitData.getPatientUuid();
@@ -421,32 +375,22 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 privacy_value_selected = mCommonVisitData.getPrivacyNote();
                 startVisit();
             } else {
-                /*visitUuid = intent.getStringExtra("visitUuid");
-                encounterVitals = intent.getStringExtra("encounterUuidVitals");
-                encounterAdultIntials = intent.getStringExtra("encounterUuidAdultIntial");
-                EncounterAdultInitial_LatestVisit = intent.getStringExtra("EncounterAdultInitial_LatestVisit");*/
-
                 visitUuid = mCommonVisitData.getVisitUuid();
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
                 encounterAdultIntials = mCommonVisitData.getEncounterUuidAdultIntial();
                 EncounterAdultInitial_LatestVisit = mCommonVisitData.getEncounterAdultInitialLatestVisit();
 
-                mEditFor = mCommonVisitData.getEditFor();//intent.getIntExtra("edit_for", STEP_1_VITAL);
+                mEditFor = mCommonVisitData.getEditFor();
             }
 
-
-            //state = intent.getStringExtra("state"); // unused
-
-
-            patientName = patientDTO.getFirstname() + " " + patientDTO.getLastname(); //intent.getStringExtra("name");
+            patientName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
             mCommonVisitData.setPatientName(patientName);
 
-            patientGender = patientDTO.getGender(); //intent.getStringExtra("gender");
+            patientGender = patientDTO.getGender();
             mCommonVisitData.setPatientGender(patientGender);
 
-            float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth()); //intent.getFloatExtra("float_ageYear_Month", 0);
+            float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth());
             mCommonVisitData.setPatientAgeYearMonth(float_ageYear_Month);
-
 
             String[] temp = String.valueOf(float_ageYear_Month).split("\\.");
             mAgeInMonth = Integer.parseInt(temp[0]) * 12 + Integer.parseInt(temp[1]);
@@ -469,7 +413,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, "Intent float_ageYear_Month: " + float_ageYear_Month);
             ((TextView) findViewById(R.id.tv_title)).setText(patientName);
             ((TextView) findViewById(R.id.tv_title_desc)).setText(String.format("%s/%s", patientGender, mAgeAndMonth));
-
         }
 
         if (encounterAdultIntials.equalsIgnoreCase("") || encounterAdultIntials == null) {
@@ -493,7 +436,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-
         Bundle bundle = new Bundle();
         bundle.putString("patientUuid", patientUuid);
         bundle.putString("visitUuid", visitUuid);
@@ -505,34 +447,61 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void initHba1cBle() {
         // ViewModel is scoped to this Activity — all fragments share the same instance.
-        mHba1cViewModel = new ViewModelProvider(this)
-                .get(HbA1cLiveViewModel.class);
+        mHba1cViewModel = new ViewModelProvider(this).get(HbA1cLiveViewModel.class);
 
-        // Use app-level prefs so address persists across Activity recreations
         SharedPreferences prefs = getSharedPreferences("hba1c_prefs", MODE_PRIVATE);
         String savedAddress = prefs.getString(PREF_BLE_ADDRESS, null);
         Log.d("HBA1C_DEBUG", "initHba1cBle: savedAddress = " + savedAddress);
+
         if (savedAddress != null && !savedAddress.isEmpty()) {
-            mHba1cViewModel.startBle(savedAddress);
-            Log.d("HBA1C_DEBUG", "initHba1cBle: auto-connecting to " + savedAddress);
+            startHba1cControlCentre(savedAddress);
         } else {
             Log.d("HBA1C_DEBUG", "initHba1cBle: no saved address, user must scan");
         }
     }
-// ─────────────────────────────────────────────────────────────────────────────
-// 4. Getter — fragments call this to get the shared ViewModel
-// ─────────────────────────────────────────────────────────────────────────────
 
+    /**
+     * Starts (or restarts) the BioSense ControlCentre for the given device
+     * address. Safe to call again with a new address — stops the previous
+     * receiver first so we never have two ControlCentre instances racing.
+     * Single definition only — checks BLUETOOTH_CONNECT permission first.
+     */
+    private void startHba1cControlCentre(String deviceAddress) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                && ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.e("HBA1C_DEBUG", "startHba1cControlCentre: BLUETOOTH_CONNECT not granted — aborting");
+            return;
+        }
+
+        try {
+            if (mControlCentre != null) {
+                mControlCentre.stopReceiver();
+            }
+            mHba1cDeviceAddress = deviceAddress;
+            mHba1cViewModel.reset();
+
+            mControlCentre = new ControlCentre(
+                    this,                       // Communicator
+                    this,                       // Context
+                    this,                       // Activity
+                    deviceAddress,               // BLE MAC address
+                    Constants.devId_A1Chek,      // Device type
+                    "HbA1c"                      // Device name label
+            );
+            mControlCentre.startReceiver();
+            Log.d("HBA1C_DEBUG", "startHba1cControlCentre: started for " + deviceAddress);
+        } catch (SecurityException e) {
+            Log.e("HBA1C_DEBUG", "startHba1cControlCentre: SecurityException — " + e.getMessage());
+        }
+    }
+
+    // ── Getter — fragments call this to get the shared ViewModel ──────────
     public HbA1cLiveViewModel getHba1cViewModel() {
         return mHba1cViewModel;
     }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// 5. Save device address when BleScanActivity returns
-//    Add this inside your existing onActivityResult(), or call from
-//    DiagnosticsCollectionFragment after a successful scan.
-// ─────────────────────────────────────────────────────────────────────────────
-
+    // ── Save device address when BleScanActivity returns ──────────────────
     public void saveAndStartBleDevice(String deviceAddress) {
         getSharedPreferences("hba1c_prefs", MODE_PRIVATE)
                 .edit()
@@ -540,9 +509,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 .apply();
 
         Log.d("HBA1C_DEBUG", "saveAndStartBleDevice: saved + starting " + deviceAddress);
-        if (mHba1cViewModel != null) {
-            mHba1cViewModel.startBle(deviceAddress);
-        }
+        startHba1cControlCentre(deviceAddress);
     }
 
     private void handleDeviceBackPress() {
@@ -562,7 +529,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private void makeReadyForEdit() {
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
-        // init all resources
         mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
         }.getType());
 
@@ -575,13 +541,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         } else
             loadPhysicalExam();
 
-        //we don't need patient history for unfpa
         if (BuildConfig.FLAVOR_client != FlavorKeys.UNFPA) {
             if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
                 mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
             else
                 mPastMedicalHistoryNode = loadPastMedicalHistory();
-
         }
         if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
             mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
@@ -601,13 +565,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                         commit();
                 break;
             case STEP_3_VISIT_REASON:
-
-
-                //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
-                //mStep2ProgressBar.setProgress(40);
                 setTitle(STEP_3_VISIT_REASON_QUESTION);
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-                //mSummaryFrameLayout.setVisibility(View.GONE);
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(mCommonVisitData, mIsEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
                         commit();
@@ -615,8 +573,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             case STEP_4_PHYSICAL_EXAMINATION:
                 mStep4ProgressBar.setProgress(10);
                 mSummaryFrameLayout.setVisibility(View.GONE);
-                //mPhysicalExamNode =
-                //loadPhysicalExam();
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(mCommonVisitData, mIsEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
                         commit();
@@ -631,7 +587,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     public void backPress(View view) {
-        // finish();
         if (!mIsEditTriggerFromVisitSummary) {
             showConfirmationDialog(getString(R.string.confirm_discard_changes_content));
         }
@@ -653,7 +608,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 if (object != null)
                     mVitalsObject = (VitalsObject) object;
                 if (mVitalsObject != null) {
-                    //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
@@ -662,7 +616,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_1_VITAL:
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 mStep1ProgressBar.setProgress(100);
                 mStep2ProgressBar.setProgress(0);
                 mStep3ProgressBar.setProgress(0);
@@ -676,18 +629,16 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 break;
             case STEP_2_DIAGNOSTICS:
                 mStep2ProgressBar.setProgress(100);
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, DiagnosticsCollectionFragment.newInstance(mCommonVisitData, isEditMode, mDiagnosticsModel), DIAGNOSTICS_FRAGMENT).
                         commit();
                 break;
-            case STEP_2_DIAGNOSTICS_SUMMARY://change here for diagnostics temp kaveri
+            case STEP_2_DIAGNOSTICS_SUMMARY:
                 if (object != null)
                     mDiagnosticsModel = (DiagnosticsModel) object;
                 if (mDiagnosticsModel != null) {
-                    //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep2ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().
@@ -698,7 +649,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             case STEP_3_VISIT_REASON:
                 getSupportFragmentManager().popBackStack();
                 mStep3ProgressBar.setProgress(30);
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 setTitle(nextAction);
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, VisitReasonCaptureFragment.newInstance(mCommonVisitData, isEditMode, false), VISIT_REASON_FRAGMENT).
@@ -707,7 +657,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 break;
 
             case STEP_3_VISIT_REASON_QUESTION:
-                //on UNFPA, we are directly jump into the visit reason question without going to the VisitReasonCaptureFragment
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     getSupportFragmentManager().popBackStack();
                     mSummaryFrameLayout.setVisibility(View.GONE);
@@ -715,8 +664,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mSelectedComplainList = (List<ReasonData>) object;
                 loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 mStep3ProgressBar.setProgress(60);
-                //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-                //mSummaryFrameLayout.setVisibility(View.GONE);
                 setTitle(nextAction);
                 getSupportFragmentManager().beginTransaction().
                         replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(mCommonVisitData, isEditMode, mChiefComplainRootNodeList), VISIT_REASON_QUESTION_FRAGMENT).
@@ -727,7 +674,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 if (object != null) {
                     int caseNo = (int) object;
                     Timber.tag(TAG).d("Title case no=>%s", caseNo);
-//                    setTitle(caseNo);
                     if (caseNo == STEP_5_PAST_MEDICAL_HISTORY) {
                         showPastMedicalHistoryFragment(isEditMode);
                         setTitle(STEP_5_PAST_MEDICAL_HISTORY);
@@ -737,26 +683,20 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     } else if (caseNo == STEP_4_PHYSICAL_EXAMINATION) {
                         mStep4ProgressBar.setProgress(100);
                         mSummaryFrameLayout.setVisibility(View.GONE);
-                        //mPhysicalExamNode =
-                        //loadPhysicalExam();
                         getSupportFragmentManager().beginTransaction().
                                 replace(R.id.fl_steps_body, PhysicalExaminationFragment.newInstance(mCommonVisitData, isEditMode, physicalExamMap), PHYSICAL_EXAM_FRAGMENT).
                                 commit();
                         setTitle(STEP_4_PHYSICAL_EXAMINATION);
-                    }
-                    // step 2
-                    else if (caseNo == STEP_3_VISIT_REASON_QUESTION) {
-                        //showFamilyHistoryFragment(isEditMode);
+                    } else if (caseNo == STEP_3_VISIT_REASON_QUESTION) {
                         setTitle(STEP_3_VISIT_REASON_QUESTION);
                     } else if (caseNo == STEP_3_VISIT_REASON_QUESTION_ASSOCIATE_SYMPTOMS) {
-                        //showFamilyHistoryFragment(isEditMode);
+                        // no-op
                     }
                 }
                 break;
             case STEP_3_VISIT_REASON_QUESTION_SUMMARY:
                 if (isSavedVisitReason()) {
                     mStep3ProgressBar.setProgress(100);
-
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
                             replace(R.id.fl_steps_summary, VisitReasonSummaryFragment.newInstance(mCommonVisitData, insertionWithLocaleJsonString, isEditMode, visitUuid), VISIT_REASON_QUESTION_FRAGMENT).
@@ -768,7 +708,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 getSupportFragmentManager().popBackStack();
                 mStep4ProgressBar.setProgress(10);
                 mSummaryFrameLayout.setVisibility(View.GONE);
-                //mPhysicalExamNode =
                 loadPhysicalExam();
                 setTitle(nextAction);
                 getSupportFragmentManager().beginTransaction().
@@ -779,8 +718,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 if (isSavedPhysicalExam()) {
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     getSupportFragmentManager().beginTransaction().
-                            //replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(getIntent(), physicalString, isEditMode), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
-                                    replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(mCommonVisitData, physicalStringLocale, isEditMode, visitUuid), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
+                            replace(R.id.fl_steps_summary, PhysicalExamSummaryFragment.newInstance(mCommonVisitData, physicalStringLocale, isEditMode, visitUuid), PHYSICAL_EXAM_SUMMARY_FRAGMENT).
                             commit();
                 }
                 break;
@@ -806,7 +744,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null);
                 break;
             case STEP_7_VISIT_SUMMARY_FINAL:
-                //its updated the AI_Concept_id_with english values:
                 insertLocalEnFormatQAValues();
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class);
                 mCommonVisitData.setHasPrescription(false);
@@ -814,9 +751,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 // ── DEBUG ─────────────────────────────────────────────────────────────
                 Log.d("HBA1C_DEBUG", "mHba1cViewModel is null? " + (mHba1cViewModel == null));
                 if (mHba1cViewModel != null) {
-                    Log.d("HBA1C_DEBUG", "isBleRunning? " + mHba1cViewModel.isBleRunning());
+                    Log.d("HBA1C_DEBUG", "connected (live)? " + mHba1cViewModel.connected().getValue());
                     Log.d("HBA1C_DEBUG", "hba1cReading value = " + mHba1cViewModel.hba1cReading().getValue());
-                    Log.d("HBA1C_DEBUG", "connected value = " + mHba1cViewModel.connected().getValue());
                 }
                 SharedPreferences prefs = getSharedPreferences("hba1c_prefs", MODE_PRIVATE);
                 String savedAddr = prefs.getString(PREF_BLE_ADDRESS, null);
@@ -824,8 +760,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 Log.d("HBA1C_DEBUG", "mDiagnosticsModel hba1c = " + (mDiagnosticsModel != null ? mDiagnosticsModel.getDiabetesbba1c() : "null"));
 // ── END DEBUG ─────────────────────────────────────────────────────────
 
-// Priority 1: ViewModel LiveData (real-time BLE reading)
-// Priority 2: DiagnosticsModel (value user submitted on diagnostics screen)
                 String latestHba1c = null;
 
                 if (mHba1cViewModel != null
@@ -866,25 +800,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             case SELECT_HEART:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
                 mStep1ProgressBar.setProgress(100);
-               /* ArrayList<String> heartSounds = extractHeartSounds(performPhysicalExamString);
-                getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary,
-                                RecordHeartSoundsFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject, visitUuid, heartSounds),
-                                POC_DEVICELIST_FRAGMENT).
-                        addToBackStack("HEART") //
-                        .commit();*/
-               /* RecordHeartSoundsFragment recordHeartSoundsFragment = RecordHeartSoundsFragment.newInstance(
-                        patientUuid,
-                        visitUuid,
-                        encounterVitals,
-                        intentTag,
-                        type,// "Heart" or "Lung"
-                        float_ageYear_Month
-                );
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fl_steps_summary, recordHeartSoundsFragment)
-                        .commit();*/
                 break;
             case SELECT_LUNG:
                 mSummaryFrameLayout.setVisibility(View.VISIBLE);
@@ -895,22 +810,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                                 POC_DEVICELIST_FRAGMENT)
                         .addToBackStack("LUNG")
                         .commit();
-               /* RecordLungSoundsFragment recordLungSoundsFragment = RecordLungSoundsFragment.newInstance(
-                        patientUuid,
-                        visitUuid,
-                        encounterVitals,
-                        intentTag,
-                        float_ageYear_Month// "Heart" or "Lung"
-                );
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fl_steps_summary, recordLungSoundsFragment)
-                        .commit();*/
                 break;
-              /*  getSupportFragmentManager().beginTransaction().
-                        replace(R.id.fl_steps_summary, RecordLungSoundsFragment.newInstance( isEditMode, mVitalsObject), POC_DEVICELIST_FRAGMENT).
-                        commit();*/
-
         }
     }
 
@@ -934,7 +834,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
         mStep5ProgressBar.setProgress(50);
         mSummaryFrameLayout.setVisibility(View.GONE);
-        //boolean isEditMode = true;
         if (mFamilyHistoryNode == null) {
             mFamilyHistoryNode = loadFamilyHistory();
             isEditMode = false;
@@ -955,11 +854,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private boolean isSavedVisitReason() {
-
-        // save to cache
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid, new Gson().toJson(mSelectedComplainList));
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid, new Gson().toJson(mChiefComplainRootNodeList));
-        //**********
         insertion = "";
         insertionLocale = "";
         insertionLocaleEn = "";
@@ -985,7 +881,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertionLocale = stringBuilder.toString();
         insertionLocaleEn = stringBuilderEn.toString();
 
-
         if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>", "<br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
         }
@@ -1001,9 +896,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             }
             insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
             jsonObject.put("en", insertion);
-            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), insertionLocale);
-            //}
             insertionWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
             CustomLog.v(TAG, insertionWithLocaleJsonString);
         } catch (JSONException e) {
@@ -1019,11 +912,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         ArrayList<String> physicalExams = new ArrayList<>();
         ArrayList<String> childNodeSelectedPhysicalExams = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExamList();
         if (!childNodeSelectedPhysicalExams.isEmpty())
-            physicalExams.addAll(childNodeSelectedPhysicalExams); //For Selected child nodes
+            physicalExams.addAll(childNodeSelectedPhysicalExams);
 
         ArrayList<String> rootNodePhysicalExams = parseExams(mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex));
         if (rootNodePhysicalExams != null && !rootNodePhysicalExams.isEmpty())
-            physicalExams.addAll(rootNodePhysicalExams); //For Root Node
+            physicalExams.addAll(rootNodePhysicalExams);
         Set<String> selectedExams = new LinkedHashSet<>(physicalExams);
         mLastChiefComplainPhysicalString = mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex).getPhysicalExams();
         String[] exm = mLastChiefComplainPhysicalString.split(";");
@@ -1050,9 +943,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         physicalExamMap.setEngineVersion(filterNode.getEngineVersion());
         List<Node> optionsList = new ArrayList<>();
         for (int i = 0; i < filterNode.getOptionsList().size(); i++) {
-            /*if (i == 0) {
-                optionsList.add(filterNode.getOptionsList().get(i).getOptionsList().get(0).getOptionsList().get(0));
-            }*/
             if (map.containsKey(filterNode.getOptionsList().get(i).getText()) && filterNode.getOptionsList().get(i).getOptionsList() != null) {
                 for (int j = 0; j < filterNode.getOptionsList().get(i).getOptionsList().size(); j++) {
                     Node innerNode = filterNode.getOptionsList().get(i).getOptionsList().get(j);
@@ -1111,13 +1001,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             String fileLocation = "engines/" + fileName;
             JSONObject currentFile = null;
 
-
             if (!sessionManager.getLicenseKey().isEmpty()) {
                 currentFile = FileUtils.encodeJSONFromFile(this, fileName);
             } else {
                 currentFile = FileUtils.encodeJSON(this, fileLocation);
             }
-
 
             Node mainNode = new Node(currentFile);
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
@@ -1126,7 +1014,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mainNode.setCompareDuplicateNode(selectedComplains.get(i).getReasonName());
             }
             List<Node> optionList = new ArrayList<>();
-            Node associateSymptoms = null;
             CustomLog.v(TAG, "optionList  mainNode- " + mainNode.getText());
             for (int j = 0; j < mainNode.getOptionsList().size(); j++) {
                 if (mainNode.getOptionsList().get(j).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
@@ -1135,7 +1022,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     else {
                         mCommonAssociateSymptoms.getOptionsList().addAll(mainNode.getOptionsList().get(j).getOptionsList());
                     }
-
                 } else {
                     if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
                         if (mainNode.getOptionsList().get(j).getOptionsList() != null)
@@ -1144,26 +1030,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     }
                 }
             }
-            /*if (mCommonAssociateSymptoms != null) {
-
-                mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !checkNodeValidByGenderAndAge(node.getGender(), node.getMin_age(), node.getMax_age()));
-
-                //optionList.add(associateSymptoms);
-            }*/
             mainNode.setOptionsList(optionList);
             mChiefComplainRootNodeList.add(mainNode);
-
         }
         if (mCommonAssociateSymptoms != null) {
-
             mCommonAssociateSymptoms.setOptionsList(getNodeWithoutDuplicates(mCommonAssociateSymptoms.getOptionsList()));
             mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
-
-            //optionList.add(associateSymptoms);
             mChiefComplainRootNodeList.add(mCommonAssociateSymptoms);
         }
-
-
     }
 
     private static List<Node> getNodeWithoutDuplicates(final List<Node> nodes) {
@@ -1173,57 +1047,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     static class NodeComparator implements Comparator<Node> {
-
         @Override
         public int compare(Node n1, Node n2) {
             return n1.getText().compareToIgnoreCase(n2.getText());
-
         }
-
     }
 
-
-    /*
-        public void setTitle(int screenId) {
-            Timber.tag(TAG).d("setTitle=>%s", screenId);
-            int currentScreenIndex = 1;
-            String title = getString(R.string._1_4_vitals, currentScreenIndex, totalScreen);
-            if (screenId == STEP_1_VITAL) {
-                title = getString(R.string._1_4_vitals, 1, 5);
-            } else if (screenId == STEP_2_DIAGNOSTICS) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-                title = getString(R.string.diagnostics_section, currentScreenIndex, totalScreen);
-            } else if (screenId == STEP_3_VISIT_REASON) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-                title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
-            } else if (screenId == STEP_2_VISIT_REASON_QUESTION) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 2 : 1;
-                title = getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
-                if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
-                    title = getString(R.string.visit_reason, currentScreenIndex, totalScreen);
-                }
-            } else if (screenId == STEP_3_PHYSICAL_EXAMINATION) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 3 : 2;
-                String titleStr = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
-                if (BuildConfig.FLAVOR_client == FlavorKeys.KCDO) {
-                    titleStr = getString(R.string._relapse, currentScreenIndex, totalScreen);
-                } else if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
-                    titleStr = getString(R.string._obstetric_history, currentScreenIndex, totalScreen);
-                }
-                title = titleStr;
-            } else if (screenId == STEP_4_PAST_MEDICAL_HISTORY) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 4 : 3;
-                title = getString(R.string._phy_examination, currentScreenIndex, totalScreen);
-            } else if (screenId == STEP_5_PAST_MEDICAL_HISTORY) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
-                title = getString(R.string.patinet_history, currentScreenIndex, totalScreen);
-            } else if (screenId == STEP_6_FAMILY_HISTORY) {
-                currentScreenIndex = featureActiveStatus.getVitalSection() ? 5 : 4;
-                title = getString(R.string._medical_family_history, currentScreenIndex, totalScreen);
-            }
-            ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
-        }
-    */
     @Override
     public void onProgress(int progress) {
         switch (mCurrentStep) {
@@ -1239,20 +1068,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     @Override
     public void onTitleChange(String title) {
         Timber.tag(TAG).d("onTitleChange=>%s", mCurrentStep);
-//        setTitle(mCurrentStep);
-//        switch (mCurrentStep) {
-//            case STEP_2_VISIT_REASON_QUESTION:
-////                if (title == null || title.isEmpty()) {
-//                setTitle(getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen) + " : " + mSelectedComplainList.get(0).getReasonNameLocalized());
-////                } else {
-////                    setTitle(title);
-////                }
-//                break;
-//            case STEP_3_PHYSICAL_EXAMINATION:
-//                setTitle(getResources().getString(R.string._phy_examination, currentScreenIndex, totalScreen));
-//                break;
-//        }
-
     }
 
     @Override
@@ -1276,102 +1091,52 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     @Override
     public void onAyuDeviceRequest(Node node) {
-
     }
-
 
     boolean nodeComplete = false;
 
     public void filterNodeQuestions() {
-
     }
 
     String insertion = "";
     String insertionLocale = "";
-
     String insertionLocaleEn = "";
-
     String insertionWithLocaleJsonString = "";
 
-    //new code for the one by one complain data capture
     public String formatComplainRecord(Node currentNode, boolean isAssociateSymptom) {
-        // checking any question missing
-        // can check also compulsory question
-
         AnswerResult answerResult = isAssociateSymptom ? currentNode.checkAllRequiredAnsweredRootNode(this) : currentNode.checkAllRequiredAnswered(this);
         if (!answerResult.result) {
-            // show alert dialog
             DialogUtils dialogUtils = new DialogUtils();
             dialogUtils.showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), answerResult.requiredStrings, true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
                 @Override
                 public void onDialogActionDone(int action) {
-
                 }
             });
-            /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-            alertDialogBuilder.setMessage(answerResult.requiredStrings);
-            alertDialogBuilder.setPositiveButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Dialog.dismiss();
-
-                }
-            });
-            Dialog alertDialog = alertDialogBuilder.show();*/
             CustomLog.v(TAG, answerResult.requiredStrings);
             return null;
         }
-
-
-        // upload images if any
-
-        // generate language from current node
 
         String complaintString = isAssociateSymptom ? currentNode.generateLanguageSingleNode() : currentNode.generateLanguage();
 
         CustomLog.v("formatComplainRecord", "Value - " + complaintString);
         if (complaintString != null && !complaintString.isEmpty()) {
-            //     String complaintFormatted = complaintString.replace("?,", "?:");
-
             String complaint = currentNode.getText();
-            //    complaintDetails.put(complaint, complaintFormatted);
-
-//                insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
             insertion = insertion.concat(bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + complaintString + " ");
         } else {
             String complaint = currentNode.getText();
             if (!complaint.equalsIgnoreCase(getResources().getString(R.string.associated_symptoms))) {
-//                    insertion = insertion.concat(Node.bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
                 insertion = insertion.concat(bullet_arrow + "<b>" + complaint + "</b>" + ": " + Node.next_line + " ");
             }
         }
         CustomLog.v("formatComplainRecord", "Value - " + insertion);
         return insertion;
-
     }
 
-    /**
-     *
-     */
     private void showNextComplainQueries() {
         mCurrentComplainNodeIndex++;
         mStep2ProgressBar.setProgress(mStep2ProgressBar.getProgress() + 10);
-//        setTitle(getResources().getString(R.string.visit_reason, currentScreenIndex, totalScreen)
-//                + " : " + mSelectedComplainList.get(mCurrentComplainNodeIndex).getReasonNameLocalized());
-        //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
-        //mSummaryFrameLayout.setVisibility(View.GONE);
-       /* getSupportFragmentManager().beginTransaction().
-                replace(R.id.fl_steps_body, VisitReasonQuestionsFragment.newInstance(getIntent(), mChiefComplainRootNodeList.get(mCurrentComplainNodeIndex)), VISIT_REASON_QUESTION_FRAGMENT).
-                commit();*/
     }
 
-    /**
-     * Insert into DB could be made into a Helper Method, but isn't because there are specific concept IDs used each time.
-     * Although this could also be made into a function, for now it has now been.
-     *
-     * @param value String to put into DB
-     * @return DB Row number, never used
-     */
     private boolean insertChiefComplainToDb(String value) {
         boolean isInserted = false;
         try {
@@ -1388,7 +1153,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             if (uuidOBS != null) {
                 obsDTO.setUuid(uuidOBS);
                 CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                 isInserted = obsDAO.updateObs(obsDTO);
             } else {
                 CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
@@ -1398,14 +1162,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-
         return isInserted;
     }
 
-
     private void updateDatabase(String string) {
         CustomLog.i(TAG, "updateDatabase: " + patientUuid + " " + visitUuid + " " + UuidDictionary.CURRENT_COMPLAINT);
-//        }
         ObsDTO obsDTO = new ObsDTO();
         ObsDAO obsDAO = new ObsDAO();
         try {
@@ -1414,9 +1175,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             obsDTO.setCreator(sessionManager.getCreatorID());
             obsDTO.setValue(string);
             obsDTO.setUuid(obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT));
-
             obsDAO.updateObs(obsDTO);
-
         } catch (DAOException dao) {
             FirebaseCrashlytics.getInstance().recordException(dao);
         }
@@ -1428,7 +1187,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
-
     }
 
     private ArrayList<String> parseExams(Node node) {
@@ -1462,13 +1220,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         if (requestCode == Node.TAKE_IMAGE_FOR_NODE) {
             if (resultCode == RESULT_OK) {
                 String mCurrentPhotoPath = data.getStringExtra("RESULT");
-                // currentNode.setImagePath(mCurrentPhotoPath);
-                // currentNode.displayImage(this, filePath.getAbsolutePath(), imageName);
             }
         }
     }
 
-    /*Physical exam*/
     private boolean insertDbPhysicalExam(String value) {
         CustomLog.i(TAG, "insertDb: ");
         boolean isInserted = false;
@@ -1486,7 +1241,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             if (uuidOBS != null) {
                 obsDTO.setUuid(uuidOBS);
                 CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                 isInserted = obsDAO.updateObs(obsDTO);
             } else {
                 CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
@@ -1508,16 +1262,11 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private boolean savePhysicalExamData() {
         CustomLog.v(TAG, "savePhysicalExamData");
-        // save to cache
         sessionManager.setVisitEditCache(SessionManager.PHY_EXAM + visitUuid, new Gson().toJson(physicalExamMap));
-        //**********
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
 
         if (complaintConfirmed) {
-
             physicalString = physicalExamMap.generateFindings();
-            //physicalStringLocale = sessionManager.getAppLanguage().equalsIgnoreCase("en") ?
-            //       physicalString : physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             physicalStringLocale = physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             physicalStringLocaleEn = physicalExamMap.generateFindingsByLocale("en");
 
@@ -1525,7 +1274,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             CustomLog.v(TAG, "physicalStringLocaleEn" + physicalStringLocaleEn);
             while (physicalString.contains("[Describe"))
                 physicalString = physicalString.replace("[Describe]", "");
-
 
             for (int i = 0; i < physicalExamMap.getTotalNumberOfExams(); i++) {
                 Node l1Node = physicalExamMap.getExamNode(i);
@@ -1537,31 +1285,25 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                     CustomLog.v(TAG, "savePhysicalExamData, imagePathList " + imagePathList);
                     if (imagePathList != null && imagePathList.size() > 0) {
                         if (l2Node.isImageUploaded()) {
-
                             for (String imagePath : imagePathList) {
                                 String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
                                 String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0];
                                 updateImageDatabase(fileName, comments);
                             }
-
                         } else {
                             Toast.makeText(this, getString(R.string.image_upload_pending_alert), Toast.LENGTH_SHORT).show();
                             return false;
                         }
                     }
                 }
-
             }
-
 
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
                 physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
                 if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
-                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
                     physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
-                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
                 }
                 String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
                 if (matchDate != null) {
@@ -1571,11 +1313,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 physicalString = VisitUtils.replaceToEnglishCommonString(physicalString, sessionManager.getAppLanguage());
                 jsonObject.put("en", physicalString);
-                //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
                 jsonObject.put("l-" + sessionManager.getAppLanguage(), physicalStringLocale);
-                //}
                 physicalStringWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
-                Timber.tag(TAG).v(physicalStringWithLocaleJsonString);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -1592,25 +1331,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     String patientHistoryLocaleEn = "", familyHistoryLocaleEn = "";
     String patientHistoryWithLocaleJsonString = "", familyHistoryWithLocaleJsonString = "";
 
-    /**
-     * @return
-     */
     private boolean savePastHistoryData() {
-        //for UNFPA, saving only family history
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             return saveOnlyFamilyHistory();
         }
-        // save to cache
         sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
-        //**********
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0, false);
         patientHistoryLocaleEn = mPastMedicalHistoryNode.formQuestionAnswer(0, false, "en");
         while (patientHistory != null && patientHistory.contains("[Describe"))
             patientHistory = patientHistory.replace("[Describe]", "");
-
-        //familyHistory = mFamilyHistoryNode.generateLanguage();
 
         familyHistory = generateFamilyHistoryAns(false, "en");
         CustomLog.v(TAG, "familyHistory - " + familyHistory);
@@ -1632,7 +1363,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
 
         familyHistory = familyHistory.replaceAll("null.", "");
-
 
         while (familyHistory.contains("[Describe"))
             familyHistory = familyHistory.replace("[Describe]", "");
@@ -1660,11 +1390,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             patientHistory = VisitUtils.replaceToEnglishCommonString(patientHistory, sessionManager.getAppLanguage());
             jsonObject.put("en", patientHistory);
-            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
-            //}
             patientHistoryWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
-            CustomLog.v(TAG, patientHistoryWithLocaleJsonString);
 
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
             familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
@@ -1678,11 +1405,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
             jsonObject1.put("en", familyHistory);
-            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
-            //}
             familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/", "/");
-            CustomLog.v(TAG, familyHistoryWithLocaleJsonString);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1691,16 +1415,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         return insertDbPastHistory(patientHistoryWithLocaleJsonString, familyHistoryWithLocaleJsonString);
     }
 
-    /**
-     * here we are proccesing only family history for UNFPA
-     *
-     * @return
-     */
     private boolean saveOnlyFamilyHistory() {
-        // save to cache
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
-
-        //familyHistory = mFamilyHistoryNode.generateLanguage();
 
         familyHistory = generateFamilyHistoryAns(false, "en");
         CustomLog.v(TAG, "familyHistory - " + familyHistory);
@@ -1722,7 +1438,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
 
         familyHistory = familyHistory.replaceAll("null.", "");
-
 
         while (familyHistory.contains("[Describe"))
             familyHistory = familyHistory.replace("[Describe]", "");
@@ -1750,11 +1465,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
             jsonObject1.put("en", familyHistory);
-            //if(!sessionManager.getAppLanguage().equalsIgnoreCase("en")) {
             jsonObject1.put("l-" + sessionManager.getAppLanguage(), familyHistoryLocale);
-            //}
             familyHistoryWithLocaleJsonString = jsonObject1.toString().replace("\\/", "/");
-            CustomLog.v(TAG, familyHistoryWithLocaleJsonString);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1768,18 +1480,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         ArrayList<String> familyInsertionList = new ArrayList<>();
         for (Node node : mFamilyHistoryNode.getOptionsList()) {
             if (!node.checkIsAnswered()) return null;
-//            if (node.isSelected() && node.isRequired() && !node.isNestedMandatoryOptionsAnswered())
-//                return null;
         }
-//        if (!mFamilyHistoryNode.getOptionsList().get(0).isNestedMandatoryOptionsAnswered()) {
-//            return null;
-//        }
         if (mFamilyHistoryNode.anySubSelected()) {
             for (Node node : mFamilyHistoryNode.getOptionsList()) {
                 if (node.isSelected()) {
                     String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false, locale);
                     String toInsert = (!isLocale ? node.getText() : node.findDisplay(locale)) + " : " + familyString;
-                    //toInsert = toInsert.replaceAll(Node.bullet, "");
                     toInsert = toInsert.replaceAll(" - ", ", ");
                     toInsert = toInsert.replaceAll("<br/>", "");
                     if (org.apache.commons.lang3.StringUtils.right(toInsert, 2).equals(", ")) {
@@ -1793,7 +1499,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         for (int i = 0; i < familyInsertionList.size(); i++) {
             if (i == 0) {
-                familyHistory = /*Node.bullet +*/ familyInsertionList.get(i);   // sr no. 38 - bug fix.
+                familyHistory = familyInsertionList.get(i);
             } else {
                 familyHistory = familyHistory + " " + Node.bullet + familyInsertionList.get(i);
             }
@@ -1801,7 +1507,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         return familyHistory;
     }
 
-    /*Physical exam*/
     private boolean insertDbPastHistory(String patientHistory, String familyHistory) {
         CustomLog.i(TAG, "insertDb: ");
         boolean isInserted = false;
@@ -1809,8 +1514,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             ObsDAO obsDAO = new ObsDAO();
             ObsDTO obsDTO = new ObsDTO();
 
-            //sometimes we will send patientHistory as null
-            //because some flavor doesn't required this
             if (patientHistory != null) {
                 String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.RHK_MEDICAL_HISTORY_BLURB);
                 CustomLog.i(TAG, "insertDbPastHistory patientHistory : uuidOBS - " + uuidOBS);
@@ -1820,14 +1523,10 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(StringUtils.getValue(patientHistory));
 
-
                 if (uuidOBS != null) {
                     obsDTO.setUuid(uuidOBS);
-                    CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                     isInserted = obsDAO.updateObs(obsDTO);
                 } else {
-                    CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                     isInserted = obsDAO.insertObs(obsDTO);
                 }
             }
@@ -1843,11 +1542,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 if (uuidOBS1 != null) {
                     obsDTO.setUuid(uuidOBS1);
-                    CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                     isInserted = obsDAO.updateObs(obsDTO);
                 } else {
-                    CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                     isInserted = obsDAO.insertObs(obsDTO);
                 }
             }
@@ -1866,7 +1562,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
             String insertDbEnValue = "Visit Reason (Chief Complaint)\n" + insertionLocaleEn + "\n" + "Physical Examination:\n" + physicalStringLocaleEn + "\n" + "Patient Medical History:\n" + patientHistoryLocaleEn + "\n" + "Family History:\n" + familyHistoryLocaleEn;
 
             String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
-            CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
             ObsDTO obsDTO = new ObsDTO();
             obsDTO.setConceptuuid(UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
             obsDTO.setEncounteruuid(encounterAdultIntials);
@@ -1875,11 +1570,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             if (uuidOBS1 != null) {
                 obsDTO.setUuid(uuidOBS1);
-                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
-
                 isInserted = obsDAO.updateObs(obsDTO);
             } else {
-                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
                 isInserted = obsDAO.insertObs(obsDTO);
             }
 
@@ -1895,27 +1587,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         dialogUtils.showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), getResources().getString(R.string.question_answer_all_phy_exam), true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), new DialogUtils.CustomDialogListener() {
             @Override
             public void onDialogActionDone(int action) {
-
             }
         });
-
-        /*MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(this);
-        //AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this,R.style.AlertDialogStyle);
-        alertDialogBuilder.setMessage(getResources().getString(R.string.question_answer_all_phy_exam));
-        alertDialogBuilder.setNeutralButton(R.string.generic_ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Dialog.dismiss();
-            }
-        });
-        AlertDialog alertDialog = alertDialogBuilder.show();
-        //alertDialog.show();
-        IntelehealthApplication.setAlertDialogCustomTheme(this, alertDialog);*/
     }
 
     private void updateImageDatabase(String imageName, String comments) {
         ImagesDAO imagesDAO = new ImagesDAO();
-
         try {
             imagesDAO.insertObsImageDatabase(imageName, encounterAdultIntials, UuidDictionary.COMPLEX_IMAGE_PE, comments);
         } catch (DAOException e) {
@@ -1923,10 +1600,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
     }
 
-
     private void deleteImageFromDatabase(int nodeIndex, int imageIndex, String imageName) {
         ImagesDAO imagesDAO = new ImagesDAO();
-
         try {
             String obsUUID = imageName.substring(imageName.lastIndexOf("/") + 1).split("\\.")[0];
             imagesDAO.deleteImageFromDatabase(obsUUID);
@@ -1942,17 +1617,12 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 public void onActivityResult(ActivityResult result) {
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         Intent data = result.getData();
-                        // Handle the Intent
                         String mCurrentPhotoPath = data.getStringExtra("RESULT");
 
                         Bundle bundle = new Bundle();
                         bundle.putString("image", mCurrentPhotoPath);
                         imageUtilsListener.onImageReady(bundle);
-
-                        //physicalExamMap.setImagePath(mCurrentPhotoPath);
                         CustomLog.i(TAG, mCurrentPhotoPath);
-                        //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-                        //updateImageDatabase(mLastSelectedImageName);
                     }
                 }
             });
@@ -1971,53 +1641,41 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                             int columnIndex = c.getColumnIndex(filePath[0]);
                             String picturePath = c.getString(columnIndex);
                             c.close();
-                            //Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
                             CustomLog.v("path", picturePath + "");
 
-                            // copy & rename the file
                             mLastSelectedImageName = UUID.randomUUID().toString();
                             currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
 
-
-                            //compress image if more than 2MB
                             File file = new File(currentPhotoPath);
-                            long fileSizeInBytes = file.length();              // size in bytes
-                            long fileSizeInKB = fileSizeInBytes / 1024;        // size in KB
+                            long fileSizeInBytes = file.length();
+                            long fileSizeInKB = fileSizeInBytes / 1024;
                             long fileSizeInMB = fileSizeInKB / 1024;
                             Log.d("TAG", "onActivityResult: " + fileSizeInMB + " " + fileSizeInKB);
                             if (fileSizeInMB > 2) {
                                 String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + "_compressed.jpg";
                                 compressImage(currentPhotoPath, compressedPath);
-                                currentPhotoPath = compressedPath; // replace with compressed one
+                                currentPhotoPath = compressedPath;
                             }
                             BitmapUtils.copyFile(picturePath, currentPhotoPath);
 
-                            // Handle the Intent
                             Bundle bundle = new Bundle();
                             bundle.putString("image", currentPhotoPath);
                             imageUtilsListener.onImageReady(bundle);
 
-                            //physicalExamMap.setImagePath(mCurrentPhotoPath);
                             CustomLog.i(TAG, currentPhotoPath);
-
-                            //physicalExamMap.displayImage(this, filePath.getAbsolutePath(), imageName);
-                            //updateImageDatabase(mLastSelectedImageName);
                         } else {
                             Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                         }
-
                     }
                 }
             });
 
     private void compressImage(String inputPath, String outputPath) {
-        // Load the bitmap
         BitmapFactory.Options options = new BitmapFactory.Options();
         Bitmap bitmap = BitmapFactory.decodeFile(inputPath, options);
 
         try {
             FileOutputStream out = new FileOutputStream(outputPath);
-            // 80 means 80% quality (adjust as needed)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
             out.flush();
             out.close();
@@ -2044,7 +1702,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_NAME, imageName);
         cameraIntent.putExtra(CameraActivity.SET_IMAGE_PATH, imagePath);
-        //mContext.startActivityForResult(cameraIntent, Node.TAKE_IMAGE_FOR_NODE);
         mStartForCameraResult.launch(cameraIntent);
     }
 
@@ -2067,39 +1724,18 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mImagePickerAlertDialog.dismiss();
                 if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
                     cameraStart();
-
                 } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
                     galleryStart();
                 }
             }
         });
-       /* final CharSequence[] options = {getString(R.string.take_photo), getString(R.string.choose_from_gallery), getString(R.string.cancel)};
-        AlertDialog.Builder builder = new AlertDialog.Builder(VisitCreationActivity.this);
-        builder.setTitle(getResources().getString(R.string.add_image_by));
-        builder.setItems(options, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (item == 0) {
-                    cameraStart();
-
-                } else if (item == 1) {
-                    galleryStart();
-
-                } else if (options[item].equals("Cancel")) {
-                    Dialog.dismiss();
-                }
-            }
-        });
-        builder.show();*/
     }
-
 
     private void validatePermissionAndIntent() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_CAMERA_REQUEST_CODE);
         } else {
-            //cameraStart();
             selectImage();
         }
     }
@@ -2109,7 +1745,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                cameraStart();
                 selectImage();
             } else {
                 Toast.makeText(this, getResources().getString(R.string.camera_permission_denied), Toast.LENGTH_LONG).show();
@@ -2146,16 +1781,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-                if (isGranted) {
-                    // Permission is granted. Continue the action or workflow in your
-                    // app.
-                } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // feature requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
-                }
             });
 
     public FeatureActiveStatus getFeatureActiveStatus() {
@@ -2165,20 +1790,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     public void setTitle(int screenId) {
         Timber.tag(TAG).d("setTitle=>%s", screenId);
 
-        int currentScreenIndex = 1; // Default screen index
+        int currentScreenIndex = 1;
         String title = "";
 
         boolean isVitalEnabled = featureActiveStatus.getVitalSection();
         boolean isDiagnosticsEnabled = featureActiveStatus.getActiveStatusDiagnosticsSection();
 
-        // Determine the starting positions of screens based on configurability
         int vitalScreenIndex = isVitalEnabled ? 1 : 0;
         int diagnosticsScreenIndex = isDiagnosticsEnabled ? vitalScreenIndex + 1 : vitalScreenIndex;
         int visitReasonScreenIndex = Math.max(vitalScreenIndex, diagnosticsScreenIndex) + 1;
 
-        // Adjust totalScreen count dynamically if necessary
-
-        int adjustedTotalScreen = 5; // Default total
+        int adjustedTotalScreen = 5;
         if (!isVitalEnabled) adjustedTotalScreen--;
         if (!isDiagnosticsEnabled) adjustedTotalScreen--;
 
@@ -2212,7 +1834,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 for (int i = 0; i < mSelectedComplainList.size(); i++) {
                     builder.append(mSelectedComplainList.get(i).getReasonNameLocalized());
                     if (i < mSelectedComplainList.size() - 1) {
-                        builder.append(", "); // separator
+                        builder.append(", ");
                     }
                 }
                 reasonName = builder.toString();
@@ -2249,7 +1871,6 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 Log.w(TAG, "Unknown screenId: " + screenId);
         }
 
-        // Update the subtitle TextView
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
     }
 
@@ -2259,20 +1880,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         dialogUtils.showCommonDialog(this, R.drawable.fingerprint_dialog_error, getResources().getString(R.string.confirm_discard_changes_title),
                 content, false,
                 getResources().getString(R.string.confirm_continue_changes_button_dialog), getResources().getString(R.string.confirm_discard_changes_button_dialog), action -> {
-
                     if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) {
                         new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid);
                         finish();
                     }
                 });
-
     }
 
     @Override
     public void onDigitalScopeCompleted() {
         onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, false, null);
     }
-
 
     public boolean isHeartRecorded() {
         return isHeartRecorded;
@@ -2289,30 +1907,121 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         } else {
             isLungRecorded = true;
         }
-
-        // 🔥 POP BACK instead of navigating fresh
         getSupportFragmentManager().popBackStack();
     }
 
     @Override
     public void onBackPressed() {
-
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
-            getSupportFragmentManager().popBackStack(); // 🔥 Go back to Connect screen
+            getSupportFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
     }
 
+    // ── Communicator interface implementation (BioSense SDK) ───────────────
+
+    @Override
+    public void setHbA1cReading(String reading, String date, String time, String srno) {
+        Log.d("HBA1C_DEBUG", "setHbA1cReading: " + reading + " at " + time + " (serial " + srno + ")");
+        if (mHba1cViewModel != null) {
+            mHba1cViewModel.onHba1cReading(reading, time);
+        }
+    }
+
+    @Override
+    public void setHB(String s) {
+
+    }
+
+    @Override
+    public void setConnectionStatus(String status, boolean isConnected) {
+        Log.d("HBA1C_DEBUG", "setConnectionStatus: " + status + " connected=" + isConnected);
+        if (mHba1cViewModel != null) {
+            mHba1cViewModel.onConnectionStatus(isConnected);
+        }
+    }
+
+    @Override
+    public void setSwitchActivity() {
+
+    }
+
+    @Override
+    public void setBatteryLevel(int i) {
+
+    }
+
+    @Override
+    public void setManufacturerName(String s) {
+
+    }
+
+    @Override
+    public void setSerialNumber(String s) {
+
+    }
+
+    @Override
+    public void setModelNumber(String s) {
+
+    }
+
+    @Override
+    public void getOfflineResults(ArrayList<String> arrayList) {
+
+    }
+
+    @Override
+    public boolean go(String s) {
+        // Fires after the device's 1st button press. setHbA1cReading() will
+        // NOT be called yet — the user must press the device button again.
+        Log.d("HBA1C_DEBUG", "go(): 1st frame received, awaiting 2nd press — " + s);
+        if (mHba1cViewModel != null) {
+            mHba1cViewModel.onFirstFrameReceived();
+        }
+        return false;
+    }
+
+    @Override
+    public void setBPReading(String systolic, String diastolic, String pulse) {
+        // Not used for HbA1c device — no-op.
+    }
+
+    @Override
+    public void onBpDeviceError() {
+
+    }
+
+    @Override
+    public void setGlucoseReading(String text) {
+        // Not used for HbA1c device — no-op.
+    }
+
+    @Override
+    public void testStarted(boolean started) {
+        // Fired when the device begins a measurement cycle. No-op is fine —
+        // we don't need to react to this for HbA1c, but the interface
+        // requires it to be implemented.
+        Log.d("HBA1C_DEBUG", "testStarted: " + started);
+    }
+
+    @Override
+    public void stopNotiFication() {
+
+    }
 
     @Override
     protected void onDestroy() {
-        // ← ADD START
-        if (mHba1cViewModel != null) {
-            mHba1cViewModel.stopBle();
+        if (mControlCentre != null) {
+            try {
+                mControlCentre.stopReceiver();
+            } catch (SecurityException e) {
+                Log.e("HBA1C_DEBUG", "onDestroy: SecurityException on stopReceiver — " + e.getMessage());
+            } catch (Exception ignored) {
+            }
+            mControlCentre = null;
         }
-        // ← ADD END
-
-        super.onDestroy();   // keep this line — it must stay here
+        super.onDestroy();
     }
 }

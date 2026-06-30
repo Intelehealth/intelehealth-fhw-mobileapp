@@ -55,9 +55,9 @@ public class BleConnectedThread extends Thread {
 
     // ── UUIDs ──────────────────────────────────────────────────────────────
     public static final UUID SERVICE_UUID =
-            UUID.fromString("0000fff0-0000-1000-8000-00805f9b34fb");
+            UUID.fromString("0000ffe0-0000-1000-8000-00805f9b34fb");  // FFE0 ✓
     public static final UUID CHAR_UUID    =
-            UUID.fromString("0000fff1-0000-1000-8000-00805f9b34fb");
+            UUID.fromString("0000ffe1-0000-1000-8000-00805f9b34fb");  // FFE1 ✓
     private static final UUID CCCD_UUID   =
             UUID.fromString("00002902-0000-1000-8000-00805f9b34fb");
 
