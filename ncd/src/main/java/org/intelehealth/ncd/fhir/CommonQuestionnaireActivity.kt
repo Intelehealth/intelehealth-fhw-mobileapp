@@ -827,6 +827,15 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                 )
 
             }
+
+            val currentReading = bpReadings[index]
+
+            if (currentReading != null &&
+                (currentReading.sbp != sbp || currentReading.dbp != dbp)
+            ) {
+                resetSubsequentReadings(index)
+            }
+
             //if (sbp != null && dbp != null && sbp >= 70 && dbp >= 40 && sbp <= 220 && dbp <= 120) {
             if (
                 sbp != null && dbp != null &&
@@ -907,7 +916,13 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         return bpReadings
 
     }
-
+    //
+    private fun resetSubsequentReadings(index: Int) {
+        for (i in (index + 1) until bpReadings.size) {
+            bpReadings[i] = null
+            bpReadingsHelper[i] = null
+        }
+    }
 
     /* private fun shouldShowAlert(sbp: Int?, dbp: Int?): Boolean {
          return (sbp != null && (sbp > 139 || sbp < 90)) || (dbp != null && (dbp > 89 || dbp < 60))
@@ -990,7 +1005,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     private var lastDialogShownTime: Long = 0
     // set 10 sec for debug and 5 min for the release build
 
-    private val FIVE_MINUTES_MILLIS: Long = if (BuildConfig.DEBUG) 1 * 60 * 1000 else 5 * 60 * 1000
+    private val FIVE_MINUTES_MILLIS: Long = if (BuildConfig.DEBUG) 5 * 60 * 1000 else 5 * 60 * 1000
     private var isShownOnce0: Boolean = false
     private var isShownOnce1: Boolean = false
 
