@@ -53,6 +53,7 @@ public class SyncUtils {
     }
 
     public void syncBackgroundAfterFCM() {
+        NotificationUtils.setFcmSyncInProgress(true);
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());

@@ -32,6 +32,7 @@ import org.intelehealth.app.user.UserSessionDao;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NotificationID;
+import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.PatientsFrameJson;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -310,6 +311,7 @@ public class SyncDAO {
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
+                NotificationUtils.setFcmSyncInProgress(false);
                 IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
                         .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                         .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
@@ -378,10 +380,15 @@ public class SyncDAO {
 
                 if (listPatientUUID.size() > 0) {
                     triggerVisitNotification(listPatientUUID);
+                } else if (NotificationUtils.isFcmSyncInProgress()) {
+                    NotificationUtils.setFcmSyncInProgress(false);
                 }
             }
         } else {
             sessionManager.setTriggerNoti("yes");
+            if (NotificationUtils.isFcmSyncInProgress()) {
+                NotificationUtils.setFcmSyncInProgress(false);
+            }
         }
         return true;
     }
@@ -646,21 +653,28 @@ public class SyncDAO {
         List<ActivePatientModel> activePatientList = new ArrayList<>();
         getPatients(activePatientList);
 
-        if (listPatientUUID != null) {
-            for (int i = 0; i < listPatientUUID.size(); i++) {
-                for (int j = 0; j < activePatientList.size(); j++) {
-                    if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
-                        int syncNotificationId = NotificationID.getID();
-                        CustomLog.e("GET-ID", "" + syncNotificationId);
-                        AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " +
-                                        activePatientList.get(j).getFirst_name() + " " +
-                                        activePatientList.get(j).getLast_name(),
-                                IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription),
-                                syncNotificationId, IntelehealthApplication.getAppContext());
-                        NotificationBroadCast.initialize(IntelehealthApplication.getAppContext());
+        try {
+            if (listPatientUUID != null) {
+                for (int i = 0; i < listPatientUUID.size(); i++) {
+                    for (int j = 0; j < activePatientList.size(); j++) {
+                        if (listPatientUUID.get(i).equalsIgnoreCase(activePatientList.get(j).getPatientuuid())) {
+                            int syncNotificationId = NotificationID.getID();
+                            CustomLog.e("GET-ID", "" + syncNotificationId);
+                            AppConstants.notificationUtils.DownloadDone(IntelehealthApplication.getAppContext().getResources().getString(R.string.patient) + " " +
+                                            activePatientList.get(j).getFirst_name() + " " +
+                                            activePatientList.get(j).getLast_name(),
+                                    IntelehealthApplication.getAppContext().getString(R.string.has_a_new_prescription),
+                                    syncNotificationId, IntelehealthApplication.getAppContext());
+                            NotificationBroadCast.initialize(IntelehealthApplication.getAppContext());
+                            if (NotificationUtils.isFcmSyncInProgress()) {
+                                return;
+                            }
+                        }
                     }
                 }
             }
+        } finally {
+            NotificationUtils.setFcmSyncInProgress(false);
         }
     }
 
