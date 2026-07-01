@@ -906,6 +906,7 @@
     <string name="seconds">సెకన్లు</string>
     <string name="no_data_added">డేటా జోడించబడలేదు.</string>
     <string name="open_prescription">ప్రిస్క్రిప్షన్ తెరవండి</string>
+    <string name="prescription_was_received">ప్రిస్క్రిప్షన్ అందింది!</string>
     <string name="reset">రీసెట్ చేయండి</string>
     <string name="update_button">నవీకరించు</string>
     <string name="underweight">తక్కువ బరువు</string>

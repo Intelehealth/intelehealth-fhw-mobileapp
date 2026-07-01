@@ -76,7 +76,7 @@ class NotificationRepository {
             val notificationModel = NotificationModel().apply {
                 uuid = prescriptionModel.visitUuid
                 description =
-                    "${prescriptionModel.first_name} ${prescriptionModel.last_name}'s prescription was received!"
+                    "${prescriptionModel.first_name} ${prescriptionModel.last_name}'s "
                 notification_type = NotificationDbConstants.PRESCRIPTION_TYPE_NOTIFICATION
                 obs_server_modified_date = prescriptionModel.visit_start_date
             }

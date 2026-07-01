@@ -933,6 +933,7 @@
     <string name="seconds">সেকেন্ড</string>
     <string name="no_data_added">কোন ডেটা যোগ করা হয়নি</string>
     <string name="open_prescription">প্রেসক্রিপশনটি দেখুন</string>
+    <string name="prescription_was_received">পপ্রেসক্রিপশন পাওয়া গেছে!</string>
     <string name="reset">ইংরেজিতে রিসেট করুন</string>
     <string name="update_button">আপডেট</string>
     <string name="underweight">কম ওজনের</string>
