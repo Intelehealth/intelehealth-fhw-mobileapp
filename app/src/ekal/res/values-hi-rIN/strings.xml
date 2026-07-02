@@ -98,8 +98,10 @@
     <string name="cultivable_land_landless">भूमिहीन</string>
 
     <string name="error_number_of_people_living_cannot_be_greater_than_the_total_number_of_members_in_the_household">रहने वाले सदस्यों की संख्या घर में सदस्यों की कुल संख्या से अधिक नहीं हो सकती</string>
-    <string name="load_shedding_hours_error">The number of hours must be between 0 and 24.</string>
-    <string name="load_shedding_days_error">The number of days must be between 0 and 7.</string>
+    <!--<string name="load_shedding_hours_error">The number of hours must be between 0 and 24.</string>
+    <string name="load_shedding_days_error">The number of days must be between 0 and 7.</string>-->
+    <string name="load_shedding_hours_error">घंटों की संख्या 0 से 24 के बीच होनी चाहिए।</string>
+    <string name="load_shedding_days_error">दिनों की संख्या 0 से 7 के बीच होनी चाहिए।</string>
 
     <string name="availability_of_water_supply">जल आपूर्ति की उपलब्धता</string>
 
