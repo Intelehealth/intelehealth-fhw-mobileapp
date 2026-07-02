@@ -347,7 +347,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
                             // hideNextButtonIn(root)
 
                             questionnaireFragment?.setOnAnswerChangedListener {
-                                if (bottomActionController?.isFirstPage() == true) {
+                                if (bottomActionController?.isFirstPage() == true && isRecurring) {
                                     isAllowedForBottomActionEnable = false
                                     bottomActionController?.setBottomActionsEnabledSmooth(
                                         isAllowedForBottomActionEnable
