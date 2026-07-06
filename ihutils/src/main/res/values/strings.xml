@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">IHUtils</string>
-    //Camera Permissions
     <string name="util_permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
     <string name="util_permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
     <string name="util_permission_camera_never_askagain">Camera permission was denied with never ask again.</string>

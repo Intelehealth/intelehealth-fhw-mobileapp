@@ -7,6 +7,7 @@ import android.media.ExifInterface;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -166,11 +167,24 @@ public class BitmapUtils {
             oriented.recycle();
         }
 
-        try (FileOutputStream out = new FileOutputStream(file)) {
-            if (!scaled.compress(Bitmap.CompressFormat.JPEG, 95, out)) {
-                scaled.recycle();
-                return false;
+        try {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            int quality = 90;
+            // If the image is still larger than 150 KB, it reduces the quality by 5%.
+            do {
+                baos.reset();
+                scaled.compress(Bitmap.CompressFormat.JPEG, quality, baos);
+                quality -= 5;
+            } while (baos.size() > 150 * 1024 && quality >= 50);
+
+            try (FileOutputStream out = new FileOutputStream(file)) {
+                out.write(baos.toByteArray());
+                out.flush();
             }
+
+            Log.d(TAG, "Final Quality: " + (quality + 5));
+            Log.d(TAG, "Final Size: " + (file.length() / 1024) + " KB");
+
         } catch (IOException e) {
             Log.e(TAG, "Failed to save compressed image", e);
             scaled.recycle();
