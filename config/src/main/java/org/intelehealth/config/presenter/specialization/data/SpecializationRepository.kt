@@ -1,6 +1,7 @@
 package org.intelehealth.config.presenter.specialization.data
 
 import org.intelehealth.config.room.dao.SpecializationDao
+import org.intelehealth.config.room.entity.Specialization
 
 /**
  * Created by Vaghela Mithun R. on 10-04-2024 - 18:11.
@@ -8,6 +9,8 @@ import org.intelehealth.config.room.dao.SpecializationDao
  * Mob   : +919727206702
  **/
 class SpecializationRepository(private val specializationDao: SpecializationDao) {
+    suspend fun saveAll(specializations: List<Specialization>) = specializationDao.save(specializations)
+
     suspend fun getAllRecord() = specializationDao.getAllRecord()
 
     suspend fun getRecord(key: String) = specializationDao.getRecord(key)

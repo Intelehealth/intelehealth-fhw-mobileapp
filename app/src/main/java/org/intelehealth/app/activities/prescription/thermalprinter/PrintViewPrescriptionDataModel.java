@@ -81,16 +81,12 @@ public class PrintViewPrescriptionDataModel {
     public void setUricAcid(ObsDTO uricAcid) {
         this.uricAcid = uricAcid;
     }
-
     public ObsDTO getDiabeteshba1c() {
         return diabeteshba1c;
     }
     public void setDiabeteshba1c(ObsDTO diabeteshba1c) {
         this.diabeteshba1c = diabeteshba1c;
     }
-
-
-
     private ObsDTO hemoglobin;
     private ObsDTO cholesterol;
     private ObsDTO uricAcid;
@@ -257,6 +253,8 @@ public class PrintViewPrescriptionDataModel {
     public void setBP(String BP) {
         this.BP = BP;
     }
+
+
 
     private ObsDTO complaint;
     private String rxReturned;

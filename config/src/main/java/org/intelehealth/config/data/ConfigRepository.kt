@@ -7,6 +7,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import org.intelehealth.config.network.provider.WebClientProvider
 import org.intelehealth.config.network.response.ConfigResponse
+import org.intelehealth.config.presenter.specialization.data.SpecializationRepository
 import org.intelehealth.config.room.ConfigDatabase
 import org.intelehealth.config.room.entity.PatientRegistrationFields
 import org.intelehealth.config.utility.FieldGroup
@@ -22,7 +23,8 @@ import org.intelehealth.core.network.state.Result
 class ConfigRepository(
     private val configDb: ConfigDatabase,
     private val dataSource: ConfigDataSource,
-    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+    private val specializationRepository: SpecializationRepository = SpecializationRepository(configDb.specializationDao())
 ) {
     constructor(context: Context) : this(
         configDb = ConfigDatabase.getInstance(context),
@@ -47,7 +49,7 @@ class ConfigRepository(
     fun saveAllConfig(config: ConfigResponse, onCompleted: () -> Unit) {
         scope.launch {
             configDb.clearAllTables()
-            configDb.specializationDao().save(config.specialization)
+            specializationRepository.saveAll(config.specialization)
             configDb.languageDao().save(config.language)
             groupingPatientRegFields(config.patientRegFields.personal, FieldGroup.PERSONAL)
             groupingPatientRegFields(config.patientRegFields.address, FieldGroup.ADDRESS)
