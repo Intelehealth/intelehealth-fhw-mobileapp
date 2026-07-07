@@ -135,6 +135,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SpecialtyNotesProvider;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -184,7 +185,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private LinearLayout presc_profile_header;
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext, notes_precautions_txt;
+    private View notesPrecautionsCard;
     private ImageView priorityTag, profile_image;
     private ActivityPrescription2Binding mBinding;
     private SessionManager sessionManager;
@@ -238,7 +240,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     ObsDTO hemoglobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO cholesterol = new ObsDTO();
-    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
+    ObsDTO diabeteshba1c = new ObsDTO();
+    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol, mdiabeteshba1c;
     String hwMobileNumber = "";
     private SharePrescriptionViewModel viewModel;
     Set<String> processedConcepts = new HashSet<>();
@@ -389,6 +392,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         followup_date_txt = findViewById(R.id.followup_date_txt);
         followup_subtext = findViewById(R.id.followup_info);
         followup_date_block = findViewById(R.id.followup_date_block);
+        notesPrecautionsCard = findViewById(R.id.notesPrecautionsCard);
+        notes_precautions_txt = findViewById(R.id.notes_precautions_txt);
 
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
@@ -580,6 +585,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 prescriptionDataModel.setHemoglobin(hemoglobin);
                 prescriptionDataModel.setUricAcid(uricAcid);
                 prescriptionDataModel.setCholesterol(cholesterol);
+                prescriptionDataModel.setDiabeteshba1c(diabeteshba1c);
                 prescriptionDataModel.setReferredSpecialist(referredSpeciality);
                 Log.d(TAG, "setDataToView: referredSpeciality : "+referredSpeciality);
 
@@ -1080,6 +1086,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
         mHemoglobin = hemoglobin.getValue();
         mCholesterol = cholesterol.getValue();
+        mdiabeteshba1c = diabeteshba1c.getValue();
         mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;
@@ -1434,6 +1441,22 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details.getQualification() != null && !details.getQualification().isEmpty())
             qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
+        showSpecialtyNotesAndPrecautions(details.getSpecialization());
+    }
+
+    private void showSpecialtyNotesAndPrecautions(String specialization) {
+        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(this, specialization);
+        if (notes == null || notes.isEmpty()) {
+            notesPrecautionsCard.setVisibility(View.GONE);
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (String note : notes) {
+            builder.append("• ").append(note).append("\n");
+        }
+        if (builder.length() > 0) builder.setLength(builder.length() - 1);
+        notes_precautions_txt.setText(builder.toString());
+        notesPrecautionsCard.setVisibility(View.VISIBLE);
     }
 
     private String addBulletPoints(String inputString) {
@@ -1736,6 +1759,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             case UuidDictionary.TOTAL_CHOLESTEROL: // Cholestrol
             {
                 cholesterol.setValue(value);
+                break;
+            }
+            case UuidDictionary.DIABETES_HBA1C: // diabeteshba1c
+            {
+                diabeteshba1c.setValue(value);
                 break;
             }
 
@@ -2070,14 +2098,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String visitSelection = "encounteruuid = ? and voided!='1' ";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        String dbValue = null;
         if (visitCursor.moveToFirst()) {
             do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
+        // the doctor-details JSON is stored as the last obs row for this encounter,
+        // matching the lookup in ObsDAO.fetchDrDetailsFromLocalDb - calling
+        // parseDoctorDetails() per-row instead overwrote dr_speciality/notes with
+        // unrelated obs values (e.g. after a refresh), intermittently blanking them.
+        parseDoctorDetails(dbValue);
     }
     // downlaod dr - end
 
@@ -2459,6 +2491,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
         mHemoglobin = hemoglobin.getValue();
         mCholesterol = cholesterol.getValue();
+        mdiabeteshba1c = diabeteshba1c.getValue();
         mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;

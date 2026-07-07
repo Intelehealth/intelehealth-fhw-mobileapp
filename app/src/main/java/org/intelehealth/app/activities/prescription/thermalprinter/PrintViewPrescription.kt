@@ -14,6 +14,7 @@ import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -182,7 +183,8 @@ class PrintViewPrescription(
                 " ${dataModel.bloodGlucoseRandom.value ?: ""} <br> -Glucose (Fasting): ${dataModel.bloodGlucoseFasting.value ?: ""} " +
                 "<br> -Glucose (Post-Prandial): " +
                 "${dataModel.bloodGlucosePostPrandial.value ?: ""} <br> -HGB: ${dataModel.hemoglobin.value ?: ""} <br> -Uric Acid:" +
-                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br><br>"
+                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br>"+
+                "-Diabetes HBA1C: ${dataModel.diabeteshba1c.value ?: ""} <br><br>"
     }
 
     private fun formatDiagnosis(): String {
@@ -244,6 +246,7 @@ class PrintViewPrescription(
             .append(formatReferredSpecialist())
             .append(formatAdviceFromDoctor())
             .append(formatFollowUpDate())
+            .append(formatSpecialtyNotes())
             .toString()
 
         Log.d(TAG, "Generated Prescription HTML: $prescriptionHtml")
@@ -344,6 +347,16 @@ class PrintViewPrescription(
         }
         return formatted
     }
+    private fun formatSpecialtyNotes(): String {
+        var htmlDocument = ""
+        val notes = SpecialtyNotesProvider.getNotesFor(context, clsDoctorDetails?.specialization)
+        if (!notes.isNullOrEmpty()) {
+            val notesWeb = stringToWebSms(notes.joinToString("\n"))
+            htmlDocument = "<b id=\"notes_precautions_heading\">* Notes & Precautions </b><br>$notesWeb<br>"
+        }
+        return htmlDocument
+    }
+
     private fun formatReferredSpecialist(): String {
         var htmlDocument = ""
         if (dataModel.referredSpecialist.isNotEmpty()) {

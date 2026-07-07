@@ -561,28 +561,35 @@
                                     android:layout_marginTop="@dimen/margin_4"
                                     android:layout_weight="2">
 
-                                    <TextView
-                                        android:layout_width="wrap_content"
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_marginStart="2dp"
-                                        android:layout_marginEnd="@dimen/margin_5"
-                                        android:layout_weight="1"
-                                        android:drawableStart="@drawable/bullet_gray"
-                                        android:drawablePadding="5dp"
-                                        android:text="@string/speciality"
-                                        android:textAppearance="@style/caption"
-                                        android:textColor="@color/hint_text_color"
-                                        android:textSize="@dimen/find_patient_hint_size" />
+                                        android:layout_span="2"
+                                        android:orientation="vertical">
 
-                                    <TextView
-                                        android:id="@+id/dr_speciality"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_weight="1"
-                                        android:text="@string/no_information"
-                                        android:textAppearance="@style/caption"
-                                        android:textColor="@color/textview_color"
-                                        android:textSize="@dimen/find_patient_hint_size" />
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="2dp"
+                                            android:drawableStart="@drawable/bullet_gray"
+                                            android:drawablePadding="5dp"
+                                            android:text="@string/speciality"
+                                            android:textAppearance="@style/caption"
+                                            android:textColor="@color/hint_text_color"
+                                            android:textSize="@dimen/find_patient_hint_size"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:id="@+id/dr_speciality"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginStart="18dp"
+                                            android:layout_marginTop="2dp"
+                                            android:text="@string/no_information"
+                                            android:textAppearance="@style/caption"
+                                            android:textColor="@color/textview_color"
+                                            android:textSize="@dimen/find_patient_hint_size" />
+                                    </LinearLayout>
                                 </TableRow>
 
                             </TableLayout>
@@ -1064,13 +1071,13 @@
 
                 <!--Follow up - start -->
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/followupCard"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/specialityCard"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
                     android:layout_marginTop="@dimen/margin_20dp"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/toolbar_margin_left"
                     android:elevation="16dp"
                     app:cardCornerRadius="@dimen/margin_5"
                     app:cardElevation="@dimen/margin_5">
@@ -1221,6 +1228,93 @@
                 </androidx.cardview.widget.CardView>
 
                 <!--Follow up - end -->
+
+                <!--Notes and Precautions - start-->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/notesPrecautionsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/followupCard"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_20dp"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:layout_marginBottom="@dimen/toolbar_margin_left"
+                    android:elevation="16dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:cardCornerRadius="@dimen/margin_5"
+                    app:cardElevation="@dimen/margin_5">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/notes_precautions_header_relative"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/fu_card_margin_sides"
+                            android:layout_marginTop="@dimen/fu_card_margin_sides"
+                            android:layout_marginEnd="@dimen/fu_card_margin_sides"
+                            android:layout_marginBottom="@dimen/fu_card_margin_sides">
+
+                            <ImageView
+                                android:id="@+id/ivPresNotesPrecautionsIcon"
+                                android:layout_width="@dimen/edittext_height_44dp"
+                                android:layout_height="@dimen/edittext_height_44dp"
+                                android:src="@drawable/add_notes_redicon" />
+
+                            <TextView
+                                style="@style/text_title_style"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginStart="@dimen/margin_8"
+                                android:layout_toEndOf="@+id/ivPresNotesPrecautionsIcon"
+                                android:text="@string/notes_and_precautions" />
+
+                            <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/btnup_notes_precautions_header"
+                                android:layout_width="@dimen/fu_icon_width"
+                                android:layout_height="@dimen/fu_icon_height"
+                                android:layout_alignParentEnd="true"
+                                android:layout_centerVertical="true"
+                                android:background="@null"
+                                android:src="@drawable/ui2_ic_chevron_down" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/vs_notes_precautions_expandview"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/notes_precautions_header_relative"
+                            android:visibility="visible"
+                            tools:visibility="visible">
+
+                            <View
+                                android:id="@+id/divider8"
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:background="@color/notifi_divider_color" />
+
+                            <TextView
+                                android:id="@+id/notes_precautions_txt"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/divider8"
+                                android:layout_marginStart="@dimen/fu_margin_start"
+                                android:layout_marginTop="@dimen/margin_16dp"
+                                android:layout_marginEnd="@dimen/fu_margin_start"
+                                android:layout_marginBottom="@dimen/fu_margin_start"
+                                android:lineSpacingExtra="4dp"
+                                android:textSize="@dimen/find_patient_hint_size" />
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </androidx.cardview.widget.CardView>
+                <!--Notes and Precautions - end-->
             </RelativeLayout>
         </ScrollView>
         <!--ScrollView - End-->

@@ -189,19 +189,20 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         // ── Observe connection status ─────────────────────────────────────
         mHba1cVm.connected().observe(getViewLifecycleOwner(), connected -> {
             if (mBinding == null) return;
-            updateConnectionStatus(connected != null && connected);
+            boolean ready = mHba1cVm.readyToReceive().getValue() != null
+                    && mHba1cVm.readyToReceive().getValue();
+            updateConnectionStatus(connected != null && connected, ready);
         });
 
         // ── Observe "awaiting 2nd button press" — fires after go() on the
         // Activity. The device sends frame 1 on the 1st press but does NOT
         // call setHbA1cReading() until the 2nd press. Surface that to the
         // user so they don't think the device is stuck.
-        mHba1cVm.awaitingSecondPress().observe(getViewLifecycleOwner(), awaiting -> {
+        mHba1cVm.readyToReceive().observe(getViewLifecycleOwner(), ready -> {
             if (mBinding == null) return;
-            if (awaiting != null && awaiting) {
-                mBinding.tvConnectionStatus.setText("Press the device button again to get the reading");
-                mBinding.tvConnectionStatus.setTextColor(0xFFFF9800); // amber
-            }
+            boolean isConnected = mHba1cVm.connected().getValue() != null
+                    && mHba1cVm.connected().getValue();
+            updateConnectionStatus(isConnected, ready != null && ready);
         });
 
         // ── Diagnostics config ────────────────────────────────────────────
@@ -238,8 +239,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             mHba1cVm.lastUpdatedAt().observe(getViewLifecycleOwner(), ts ->
                     appendDebugLog("lastUpdatedAt = " + ts));
 
-            mHba1cVm.awaitingSecondPress().observe(getViewLifecycleOwner(), awaiting ->
-                    appendDebugLog("awaitingSecondPress = " + awaiting));
+            mHba1cVm.readyToReceive().observe(getViewLifecycleOwner(), r ->
+                    appendDebugLog("readyToReceive = " + r));
 
             mBinding.btnCopyDebugLog.setOnClickListener(v -> {
                 android.content.ClipboardManager clipboard =
@@ -297,35 +298,44 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
     // ── Connection-status UI ──────────────────────────────────────────────────
 
-    private void updateConnectionStatus(boolean isConnected) {
+    private void updateConnectionStatus(boolean isConnected, boolean readyToReceive) {
         if (mBinding == null) return;
 
         boolean hasReading = mHba1cVm != null
                 && mHba1cVm.hba1cReading().getValue() != null
                 && !mHba1cVm.hba1cReading().getValue().isEmpty();
 
-        if (isConnected && !hasReading) {
-            // Connected but waiting for first reading
-            mBinding.tvConnectionStatus.setText("Connected — waiting for reading...");
+        if (isConnected && readyToReceive && !hasReading) {
+            mBinding.tvConnectionStatus.setText("Ready — you may start the test now");
+            mBinding.tvConnectionStatus.setTextColor(0xFF2E7D32);
             mBinding.statusDot.setBackgroundResource(R.color.btn_background);
             mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
             startLivePulse();
             mBinding.btnScanDevice.setEnabled(false);
             mBinding.btnScanDevice.setAlpha(0.5f);
-            // Keep field editable while no reading yet
+            mBinding.etvDiabetesHba1c.setFocusable(true);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
+        } else if (isConnected && !readyToReceive) {
+            mBinding.tvConnectionStatus.setText("Connecting — please wait before starting the test");
+            mBinding.tvConnectionStatus.setTextColor(0xFFFF9800);
+            mBinding.statusDot.setBackgroundResource(R.color.btn_background);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
+            startLivePulse();
+            mBinding.btnScanDevice.setEnabled(false);
+            mBinding.btnScanDevice.setAlpha(0.5f);
             mBinding.etvDiabetesHba1c.setFocusable(true);
             mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
         } else if (isConnected) {
             mBinding.tvConnectionStatus.setText("Connected");
+            mBinding.tvConnectionStatus.setTextColor(0xFF000000);
             mBinding.statusDot.setBackgroundResource(R.color.btn_background);
             mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
             startLivePulse();
             mBinding.btnScanDevice.setEnabled(false);
             mBinding.btnScanDevice.setAlpha(0.5f);
-            mBinding.etvDiabetesHba1c.setFocusable(false);
-            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(false);
         } else {
             mBinding.tvConnectionStatus.setText("Disconnected");
+            mBinding.tvConnectionStatus.setTextColor(0xFFD32F2F);
             mBinding.statusDot.setBackgroundResource(R.color.red);
             mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
             stopLivePulse();
@@ -336,7 +346,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
         }
 
-        Log.d(TAG, "updateConnectionStatus → connected=" + isConnected + " hasReading=" + hasReading);
+        Log.d(TAG, "updateConnectionStatus → connected=" + isConnected
+                + " ready=" + readyToReceive + " hasReading=" + hasReading);
     }
 
     private void startLivePulse() {
@@ -572,13 +583,46 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             results.setHemoglobin(mBinding.etvHemoglobin.getText().toString());
             results.setUricAcid(mBinding.etvUricAcid.getText().toString());
             results.setCholesterol(mBinding.etvCholesterol.getText().toString());
-            // HbA1c: prefer what the ViewModel has (latest BLE reading);
-            // fall back to whatever the user typed
-            String vmReading = mHba1cVm != null ? mHba1cVm.hba1cReading().getValue() : null;
-            String fieldVal   = mBinding.etvDiabetesHba1c.getText().toString().trim();
-            String hba1cFinal = (vmReading != null && !vmReading.isEmpty()) ? vmReading : fieldVal;
-            results.setDiabetesbba1c(hba1cFinal);
-            Log.d(TAG, "isDataReadyForSaving: hba1cFinal = " + hba1cFinal);
+            // ── HbA1c value resolution — 3-tier fallback ─────────────────────────
+            String vmReading   = mHba1cVm != null ? mHba1cVm.hba1cReading().getValue() : null;
+            String fieldVal    = mBinding.etvDiabetesHba1c.getText().toString().trim();
+            String modelVal    = results != null ? results.getDiabetesbba1c() : null;
+
+// Priority: ViewModel > field text > what observer already stored in model
+            String hba1cFinal  = null;
+
+            if (vmReading != null && !vmReading.isEmpty()) {
+                hba1cFinal = vmReading;
+                Log.d(TAG, "HbA1c source: ViewModel → " + hba1cFinal);
+            } else if (fieldVal != null && !fieldVal.isEmpty()) {
+                hba1cFinal = fieldVal;
+                Log.d(TAG, "HbA1c source: field text → " + hba1cFinal);
+            } else if (modelVal != null && !modelVal.isEmpty()) {
+                // Observer already stored it in results — DO NOT overwrite with empty
+                hba1cFinal = modelVal;
+                Log.d(TAG, "HbA1c source: model (from observer) → " + hba1cFinal);
+            } else {
+                // Last resort — SharedPreferences (survives process death)
+                android.content.SharedPreferences prefs =
+                        requireActivity().getSharedPreferences("hba1c_prefs", Context.MODE_PRIVATE);
+                String savedReading = prefs.getString("hba1c_last_reading", null);
+                String savedVisit   = prefs.getString("hba1c_last_reading_visit", null);
+                if (savedReading != null && !savedReading.isEmpty()
+                        && visitUuid != null && visitUuid.equals(savedVisit)) {
+                    hba1cFinal = savedReading;
+                    Log.d(TAG, "HbA1c source: SharedPreferences → " + hba1cFinal);
+                }
+            }
+
+// Only update results if we actually found a value — never overwrite with null/empty
+            if (hba1cFinal != null && !hba1cFinal.isEmpty()) {
+                results.setDiabetesbba1c(hba1cFinal);
+            }
+
+            Log.d(TAG, "isDataReadyForSaving: hba1cFinal = " + hba1cFinal
+                    + " | vmReading=" + vmReading
+                    + " | fieldVal=" + fieldVal
+                    + " | modelVal=" + modelVal);
         } catch (NumberFormatException e) {
             Log.d(TAG, "isDataReadyForSaving NFE: " + e.getMessage());
         }
@@ -613,8 +657,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                         hba1cDto.setUuid(existingUuid);
                         obsDAO.updateObs(hba1cDto);
                     } else {
-                        obsDAO.insertObs(hba1cDto);
-                    }
+                     //   hba1cDto.setUuid(java.util.UUID.randomUUID().toString());
+                        obsDAO.insertObs(hba1cDto);                    }
                     Log.d(TAG, "HbA1c saved (edit): " + hba1cVal);
                 }
 
@@ -638,20 +682,48 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 insertIfNeeded(obsDAO, mBinding.llHemoglobinContainer,      results.getHemoglobin());
                 insertIfNeeded(obsDAO, mBinding.llCholestrolContainer,      results.getCholesterol());
                 insertIfNeeded(obsDAO, mBinding.llUricAcidContainer,        results.getUricAcid());
+
+                // ── HbA1c ─────────────────────────────────────────────────────
                 String hba1cVal = results.getDiabetesbba1c();
+                Log.d(TAG, "HbA1c insert path: hba1cVal=" + hba1cVal
+                        + " encounterVitals=" + encounterVitals);
+
                 if (hba1cVal != null && !hba1cVal.isEmpty()) {
                     ObsDTO hba1cDto = new ObsDTO();
+
+                    // FIX 1 — always set a UUID so the sync engine can send it
+                    hba1cDto.setUuid(java.util.UUID.randomUUID().toString());
+
                     hba1cDto.setConceptuuid(UuidDictionary.DIABETES_HBA1C);
                     hba1cDto.setEncounteruuid(encounterVitals);
                     hba1cDto.setCreator(sessionManager.getCreatorID());
                     hba1cDto.setValue(hba1cVal);
                     hba1cDto.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-                    obsDAO.insertObs(hba1cDto);
-                    Log.d(TAG, "HbA1c saved (insert): " + hba1cVal);
+
+                    try {
+                        obsDAO.insertObs(hba1cDto);
+                        Log.d(TAG, "✅ HbA1c saved (insert): " + hba1cVal
+                                + " uuid=" + hba1cDto.getUuid()
+                                + " encounter=" + encounterVitals);
+
+                        // FIX 2 — mark encounter as dirty so sync picks it up
+                        EncounterDAO enc = new EncounterDAO();
+                        enc.updateEncounterSync("false", encounterVitals);
+                        enc.updateEncounterModifiedDate(encounterVitals);
+                        Log.d(TAG, "✅ Encounter marked unsynced: " + encounterVitals);
+
+                    } catch (DAOException e) {
+                        // FIX 3 — report to Crashlytics so failures are visible
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                        Log.e(TAG, "❌ HbA1c insertObs failed: " + e.getLocalizedMessage());
+                    }
+                } else {
+                    Log.w(TAG, "❌ HbA1c insert skipped — hba1cVal is empty");
                 }
 
             } catch (Exception e) {
-                Log.d(TAG, "isDataReadyForSaving(insert): " + e.getLocalizedMessage());
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Log.e(TAG, "isDataReadyForSaving(insert) outer: " + e.getLocalizedMessage());
             }
         }
         return true;
