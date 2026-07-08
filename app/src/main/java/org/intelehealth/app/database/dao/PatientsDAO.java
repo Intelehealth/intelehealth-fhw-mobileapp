@@ -34,6 +34,7 @@ import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.services.MyIntentService;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.FuzzySearchMatchingCalculatedUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -317,7 +318,7 @@ public class PatientsDAO extends BaseDao {
             values.put("em_contact_num", patient.getEmContactNumber());
 
             values.put("dead", patient.getDead());
-            values.put("sync", patient.getSyncd());
+            values.put("sync", false);
             values.put("cr_sync_state", syncState);
             if (mpiIdDuplicate){
                 values.put("cr_merge_target_uuid", mpiId);
@@ -999,7 +1000,7 @@ public class PatientsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         try {
-            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where (sync = ? OR sync=?) COLLATE NOCASE", new String[]{"0", "false"});
+            Cursor idCursor = db.rawQuery("SELECT * FROM tbl_patient where (sync = ? OR sync=? OR sync IS NULL) COLLATE NOCASE", new String[]{"0", "false"});
             PatientDTO patientDTO = new PatientDTO();
             if (idCursor.getCount() != 0) {
                 while (idCursor.moveToNext()) {
@@ -2200,7 +2201,8 @@ public class PatientsDAO extends BaseDao {
         StringBuilder query = new StringBuilder();
         List<String> args = new ArrayList<>();
 
-        query.append("SELECT * FROM tbl_patient WHERE 1=1 ");
+        query.append("SELECT * FROM tbl_patient WHERE ");
+        boolean hasPrevious = false;
 
         /**
          * First Name
@@ -2211,12 +2213,33 @@ public class PatientsDAO extends BaseDao {
             args.add("%" + firstName.trim() + "%");
             args.add("%" + SoundexHelper.encode(firstName.trim()) + "%");
         }*/
-        if (!TextUtils.isEmpty(lastName)) {
+       /* if (lastName != null && !lastName.trim().isEmpty()) {
 
-            query.append(" OR (LOWER(last_name) LIKE LOWER(?) OR last_name_sdx LIKE ?) ");
+            query.append(" AND (LOWER(last_name) LIKE LOWER(?) OR last_name_sdx LIKE ?) ");
             args.add("%" + lastName.trim() + "%");
             args.add("%" + SoundexHelper.encode(lastName.trim()) + "%");
+        }*/
+        /**
+         * Given + Family (Blocking Rule)
+         */
+        if (firstName != null && !firstName.trim().isEmpty()
+                && lastName != null && !lastName.trim().isEmpty()) {
+
+            query.append("(")
+                    .append("(LOWER(first_name) LIKE LOWER(?) OR first_name_sdx = ?)")
+                    .append(" AND ")
+                    .append("(LOWER(last_name) LIKE LOWER(?) OR last_name_sdx = ?)")
+                    .append(")");
+
+            args.add("%" + firstName.trim() + "%");
+            args.add(SoundexHelper.encode(firstName.trim()));
+
+            args.add("%" + lastName.trim() + "%");
+            args.add(SoundexHelper.encode(lastName.trim()));
+
+            hasPrevious = true;
         }
+
         /**
          * Gender
          */
@@ -2228,19 +2251,46 @@ public class PatientsDAO extends BaseDao {
         /**
          * DOB
          */
-        if (!TextUtils.isEmpty(dob)) {
+        /*if (dob != null && !dob.trim().isEmpty()) {
 
             query.append(" AND date_of_birth = ? ");
             args.add(dob.trim());
+        }*/
+        if (gender != null && !gender.trim().isEmpty()) {
+
+            query.append(" AND gender = ?");
+            args.add(gender.trim());
+        }
+        if (dob != null && !dob.trim().isEmpty()) {
+
+            if (hasPrevious) {
+                query.append(" OR ");
+            }
+
+            query.append("date_of_birth = ?");
+            args.add(dob.trim());
+
+            hasPrevious = true;
         }
         /**
          * Phone
          */
-        if (!TextUtils.isEmpty(phone)) {
+        if (phone != null && !phone.trim().isEmpty()) {
+
+            if (hasPrevious) {
+                query.append(" OR ");
+            }
+
+            query.append("phone_normalized = ?");
+            args.add(normalizePhone(phone.trim()));
+
+            hasPrevious = true;
+        }
+        /*if (phone != null && !phone.trim().isEmpty()) {
 
             query.append(" AND phone_normalized = ? ");
             args.add( normalizePhone(phone.trim()) );
-        }
+        }*/
         /**
          * Pagination
          */
@@ -2249,7 +2299,9 @@ public class PatientsDAO extends BaseDao {
 
         args.add(String.valueOf(limit));
         args.add(String.valueOf(offset));
-
+        Log.d("phone", phone);
+        Log.d("SQL", query.toString());
+        Log.d("ARGS", args.toString());
         Cursor cursor = null;
 
         try {
@@ -2277,52 +2329,54 @@ public class PatientsDAO extends BaseDao {
                     double firstNameScore=0.0;
                     double lastNameScore=0.0;
 
-                    if (!TextUtils.isEmpty(firstName)) {
+                    if (firstName != null && !firstName.trim().isEmpty()) {
                         Log.d("CheckScore First Name",""+calculateNameScore(firstName, patient.getFirstname()));
-                        firstNameScore = 0.5*(calculateNameScore(firstName, patient.getFirstname()));
-                        totalScore += 0.5*(calculateNameScore(firstName, patient.getFirstname()));
+                        firstNameScore = FuzzySearchMatchingCalculatedUtils.GIVEN_WEIGHT*(calculateNameScore(firstName, patient.getFirstname()));
+                        totalScore += FuzzySearchMatchingCalculatedUtils.GIVEN_WEIGHT*(calculateNameScore(firstName, patient.getFirstname()));
 
                         fields++;
                     }
 
-                    if (!TextUtils.isEmpty(lastName)) {
+                    if (lastName != null && !lastName.trim().isEmpty()) {
                         Log.d("CheckScore Last Name",""+calculateNameScore(lastName, patient.getLastname()));
-                        lastNameScore = 0.5*(calculateNameScore(lastName, patient.getLastname()));
-                        totalScore += 0.5*(calculateNameScore(lastName, patient.getLastname()));
+                        lastNameScore = FuzzySearchMatchingCalculatedUtils.FAMILY_WEIGHT*(calculateNameScore(lastName, patient.getLastname()));
+                        totalScore += FuzzySearchMatchingCalculatedUtils.FAMILY_WEIGHT*(calculateNameScore(lastName, patient.getLastname()));
                         fields++;
                     }
-                    if (!TextUtils.isEmpty(phone)) {
+                    if (dob != null && !dob.trim().isEmpty()) {
+                        boolean dobMatch =
+                                patient.getDateofbirth() != null &&
+                                        patient.getDateofbirth().equals(dob);
+                        Log.d("CheckScore DOB",""+dobMatch);
+                        totalScore += dobMatch ? FuzzySearchMatchingCalculatedUtils.DOB_WEIGHT : 0.0;
+                    }
+                    if (phone != null && !phone.trim().isEmpty()) {
                         boolean phoneMatch =
-                                patient.getPhonenumber() != null &&
-                                        patient.getPhonenumber().equals(normalizePhone(phone.trim()));
+                                patient.getPhone_normalized() != null &&
+                                        patient.getPhone_normalized().equals(normalizePhone(phone.trim()));
                         Log.d("CheckScore Phone",""+phoneMatch);
-                        totalScore += phoneMatch ? 0.05 : 0.0;
+                        totalScore += phoneMatch ? FuzzySearchMatchingCalculatedUtils.PHONE_WEIGHT : 0.0;
                         result.setPhoneMatched(phoneMatch);
                     }
                     double finalScore = Math.min(totalScore, 1.0);
-                    //double finalScore = (fields > 0) ? (totalScore / fields) : 0.0;
-                    Log.d("CheckScore Final Score",""+fields);
-                    Log.d("CheckScore Final Score",""+totalScore);
-                    Log.d("CheckScore Final Score F",""+firstNameScore);
-                    Log.d("CheckScore Final Score L",""+lastNameScore);
                     /**
                      * Grade
                      */
                     MatchGrade grade;
 
-                    if (totalScore >= 0.95) grade = MatchGrade.CERTAIN;
-                    else if (totalScore >= 0.80) grade = MatchGrade.PROBABLE;
-                    else if (totalScore >= 0.60) grade = MatchGrade.POSSIBLE;
+                    if (finalScore >= 0.95) grade = MatchGrade.CERTAIN;
+                    else if (finalScore >= 0.80) grade = MatchGrade.PROBABLE;
+                    else if (finalScore >= 0.60) grade = MatchGrade.POSSIBLE;
                     else grade = MatchGrade.NOT_MATCHED;
 
-                    result.setScore(totalScore);
-                    result.setIhscore(totalScore);
+                    result.setScore(finalScore);
+                    result.setIhscore(finalScore);
                     result.setIHNetwork(true);
                     result.setGrade(grade);
                     result.setFirstNameScore(0);
                     result.setLastNameScore(0);
 
-                   if (totalScore >= 0.60) {
+                   if (finalScore >= 0.50) {
                         resultList.add(result);
                    }
                 }while (cursor.moveToNext());

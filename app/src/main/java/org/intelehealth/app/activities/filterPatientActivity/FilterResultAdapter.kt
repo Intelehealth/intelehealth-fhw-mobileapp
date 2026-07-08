@@ -18,6 +18,7 @@ import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.klivekit.utils.DateTimeUtils
 
 class FilterResultAdapter(
+    private val isFhirEnable: Boolean,
     private var patientList: MutableList<PatientSearchResult>,
     private val listener: AdapterClickListener): RecyclerView.Adapter<FilterResultAdapter.FilterResultViewHolder>() {
     private var lastSelectedPosition = -1
@@ -67,7 +68,7 @@ class FilterResultAdapter(
             }
             if (!p.isNRNetwork){
                 nrNetworkTv.visibility = View.GONE
-                noNRNetworkTv.visibility= View.VISIBLE
+                if (isFhirEnable){noNRNetworkTv.visibility= View.GONE}
                 nrScoreTv.visibility = View.GONE
             }
             linkToContinue.setOnClickListener{
@@ -90,6 +91,13 @@ class FilterResultAdapter(
                     cityvillage=p.patient?.cityvillage
                     country=p.patient?.country
                     postalcode=p.patient?.postalcode
+                    caste=p.patient?.caste
+                    city=p.patient?.city
+                    occupation=p.patient?.occupation
+                    education=p.patient?.education
+                    economic=p.patient?.economic
+                    stateprovince=p.patient?.stateprovince
+                    contactType=p.patient?.contactType
                     syncd=false
                 }
                 listener.onItemClick(patient)

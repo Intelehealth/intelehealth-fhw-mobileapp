@@ -143,6 +143,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun savePatient() {
+
         patient.apply {
             nationalID = binding.textInputNationalId.text?.toString()
             occupation = binding.textInputOccupation.text?.toString()
@@ -156,6 +157,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
             codeOfDepartment = binding.textInputCodeOfDepartment.text?.toString()
             department = binding.textInputDepartment.text?.toString()
+            syncd=false
 
             /*if (isFhirEnabled){
                 val intent = Intent(

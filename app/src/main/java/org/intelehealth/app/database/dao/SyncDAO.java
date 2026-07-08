@@ -435,10 +435,14 @@ public class SyncDAO {
         //   return null;
         return "";  // avoid null return
     }
+    public interface MPICallback {
+        void onResult(boolean success);
+    }
     public void pullMPIID(
             final Context context,
             String openmrsId,
-            final PatientDTO patientDTO) {
+            final PatientDTO patientDTO,
+            final MPICallback callback) {
 
         sessionManager = new SessionManager(context);
 
@@ -474,42 +478,45 @@ public class SyncDAO {
                         MpiDataDTO data = body.getData();
 
                         String mpiId = data.getMpi();
-
-                        int attemptNumber =
-                                data.getAttemptNumber();
-
-                        String lastTry =
-                                data.getLastTry();
-
-                        String mpiStatus =
-                                data.getStatus();
-
-                        patientDTO.setMpiId(mpiId);
-                        patientDTO.setCrLastAttemptAt(lastTry);
-                        patientDTO.setCrSyncAttemptAt(attemptNumber);
-
-                        patientsDAO.insertPatients(
-                                Collections.singletonList(patientDTO));
+                        int attemptNumber = data.getAttemptNumber();
+                        String lastTry = data.getLastTry();
+                        String mpiStatus = data.getStatus();
 
                         Logger.logD(
                                 "MPI_UPDATE",
                                 "MPI: " + mpiId
                                         + " Status: " + mpiStatus
                                         + " Attempt: " + attemptNumber
-                                        + " Last Try: " + lastTry+
-                                        "Date OF "+patientDTO.getDateofbirth());
+                                        + " Last Try: " + lastTry);
+
+                        // SUCCESS হলে DB update
+                        if ("SUCCESS".equalsIgnoreCase(mpiStatus)
+                                && mpiId != null
+                                && !mpiId.isEmpty()) {
+
+                            patientDTO.setMpiId(mpiId);
+                            patientDTO.setCrLastAttemptAt(lastTry);
+                            patientDTO.setCrSyncAttemptAt(attemptNumber);
+
+                            patientsDAO.insertPatients(
+                                    Collections.singletonList(patientDTO));
+
+                            callback.onResult(true);
+
+                        } else {
+                            callback.onResult(false);
+                        }
 
                     } else {
-
-                        Logger.logD(
-                                "MPI_UPDATE",
-                                "Empty response");
+                        callback.onResult(false);
                     }
 
                 } catch (Exception e) {
 
                     FirebaseCrashlytics.getInstance()
                             .recordException(e);
+
+                    callback.onResult(false);
                 }
             }
 
@@ -524,6 +531,8 @@ public class SyncDAO {
                 Logger.logD(
                         "MPI_UPDATE",
                         "Failed : " + t.getMessage());
+
+                callback.onResult(false);
             }
         });
     }

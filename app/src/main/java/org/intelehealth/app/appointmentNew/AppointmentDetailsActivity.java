@@ -1158,7 +1158,7 @@ public class AppointmentDetailsActivity extends BaseActivity implements NetworkU
         }
         idCursor1.close();
 
-        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
+        PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null,null,null);
 //        Intent intent2 = new Intent(this, IdentificationActivity_New.class);
 //        intent2.putExtra("patientUuid", patientDTO.getUuid());
 //        intent2.putExtra("ScreenEdit", "personal_edit");

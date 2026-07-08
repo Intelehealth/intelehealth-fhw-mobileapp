@@ -25,7 +25,9 @@ import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.shared.BaseActivity
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.BundleKeys.Companion.CONTACT_TYPE
 import org.intelehealth.app.utilities.BundleKeys.Companion.DOB
+import org.intelehealth.app.utilities.BundleKeys.Companion.EMERGENCY_NUMBER
 import org.intelehealth.app.utilities.BundleKeys.Companion.FIRST_NAME
 import org.intelehealth.app.utilities.BundleKeys.Companion.GENDER
 import org.intelehealth.app.utilities.BundleKeys.Companion.LAST_NAME
@@ -118,6 +120,9 @@ class PatientRegistrationActivity : BaseActivity() {
                 phone = it.getStringExtra(PHONE),
                 dob = it.getStringExtra(DOB),
                 gen = it.getIntExtra(GENDER, 0),
+                contactTypes = it.getStringExtra(CONTACT_TYPE),
+                emergencyNumbers = it.getStringExtra(EMERGENCY_NUMBER),
+
             )
 
             val stage = if (it.hasExtra(PATIENT_CURRENT_STAGE)) {
@@ -150,7 +155,9 @@ class PatientRegistrationActivity : BaseActivity() {
         lastName: String?,
         phone: String?,
         dob: String?,
-        gen: Int?
+        gen: Int?,
+        contactTypes: String?,
+        emergencyNumbers: String?
     ) {
         PatientDTO().apply {
             uuid = UUID.randomUUID().toString()
@@ -188,6 +195,8 @@ class PatientRegistrationActivity : BaseActivity() {
             if ((lastName ?: "").isNotEmpty()) lastname = lastName
             if ((phone ?: "").isNotEmpty()) phonenumber = phone
             if ((dob ?: "").isNotEmpty()) dateofbirth = dob
+            if ((contactTypes ?: "").isNotEmpty()) contactType = contactTypes
+            if ((emergencyNumbers ?: "").isNotEmpty()) emContactNumber = emergencyNumbers
             gender = when (gen) {
                 1 -> "M"
                 2 -> "F"
@@ -306,7 +315,9 @@ class PatientRegistrationActivity : BaseActivity() {
             lastName: String? = null,
             gender: Int? = null,
             phone: String? = null,
-            dob: String? = null
+            dob: String? = null,
+            contactType: String? = null,
+            emergencyNumber: String? = null
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
@@ -316,6 +327,8 @@ class PatientRegistrationActivity : BaseActivity() {
                 putExtra(GENDER, gender)
                 putExtra(PHONE, phone)
                 putExtra(DOB, dob)
+                putExtra(CONTACT_TYPE, contactType)
+                putExtra(EMERGENCY_NUMBER, emergencyNumber)
             }.also { context.startActivity(it) }
         }
 

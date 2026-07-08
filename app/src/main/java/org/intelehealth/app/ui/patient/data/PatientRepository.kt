@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.patient.data
 
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesDAO
@@ -27,6 +28,9 @@ class PatientRepository(
 
     fun createNewPatient(patient: PatientDTO): Boolean {
         bindPatientAttributes(patient).let {
+            Log.d("CHECK","Con"+it.contactType)
+            Log.d("CHECK","Em"+it.emContactName)
+            Log.d("CHECK","Em"+it.emContactNumber)
             var syncState = "LOCAL_ONLY"
             it.crSyncState=syncState;
             val flag = patientsDao.insertPatientToDB(it, it.uuid)

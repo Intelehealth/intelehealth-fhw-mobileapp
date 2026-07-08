@@ -99,6 +99,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.os.Handler;
+import android.os.Looper;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -245,6 +247,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private boolean isFhirEnabled ;
     private boolean hasTriggeredSync = false;
     SyncDAO syncDAO = new SyncDAO();
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private Runnable retryRunnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,6 +299,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
 
         initUI();
+       // new SyncUtils().syncBackground();
+        setDisplay(patientDTO.getUuid());
+
+        if (patientDTO.getOpenmrsId() != null) {
+            startPullMPI(patientDTO);
+            setDisplay(patientDTO.getUuid());
+        }
+
        /* if (isFhirEnabled &&
                 NetworkConnection.isOnline(this)
                 ) {
@@ -303,7 +315,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             setDisplay(patientDTO.getUuid());
         }*/
         personal_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.PERSONAL,null, null, null, null, null,null,null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "personal_edit");
@@ -316,7 +328,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         address_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS,null, null, null, null, null);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.ADDRESS,null, null, null, null, null,null,null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "address_edit");
@@ -329,7 +341,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         });
 
         others_edit.setOnClickListener(v -> {
-            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER,null, null, null, null, null);
+            PatientRegistrationActivity.startPatientRegistration(this, patientDTO.getUuid(), PatientRegStage.OTHER,null, null, null, null, null,null,null);
 //            Intent intent2 = new Intent(PatientDetailActivity2.this, IdentificationActivity_New.class);
 //            intent2.putExtra("patientUuid", patientDTO.getUuid());
 //            intent2.putExtra("ScreenEdit", "others_edit");
@@ -540,6 +552,41 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (retryRunnable != null) {
+            handler.removeCallbacks(retryRunnable);
+        }
+    }
+    private void startPullMPI(final PatientDTO patientDTO) {
+
+        retryRunnable = new Runnable() {
+            @Override
+            public void run() {
+
+                syncDAO.pullMPIID(
+                        PatientDetailActivity2.this,
+                        patientDTO.getOpenmrsId(),
+                        patientDTO,
+                        new SyncDAO.MPICallback() {
+                            @Override
+                            public void onResult(boolean success) {
+
+                                if (success) {
+
+                                    handler.removeCallbacks(retryRunnable);
+                                    setDisplay(patientDTO.getUuid());
+
+                                } else {
+
+                                    // 2 second call
+                                    handler.postDelayed(retryRunnable, 2000);
+                                }
+                            }
+                        });
+            }
+        };
+
+        // first 11 second  call
+        handler.postDelayed(retryRunnable, 11000);
     }
 
     @Override
@@ -569,6 +616,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onResume() {
         super.onResume();
+        if ( patientDTO.getOpenmrsId() != null) {
+            startPullMPI(patientDTO);
+            setDisplay(patientDTO.getUuid());
+        }
         setDisplay(patientDTO.getUuid());
         if (isPregnancyVisible()) {
             binding.rosterDetails.relativePregnancyHeader.setVisibility(View.VISIBLE);
@@ -1461,6 +1512,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 if (name.equalsIgnoreCase("Telephone Number")) {
                     patientDTO.setPhonenumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
+                if (name.equalsIgnoreCase("Emergency Contact Type")) {
+                    patientDTO.setContactType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase("Education Level")) {
                     patientDTO.setEducation(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -1489,6 +1543,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                     patientDTO.setBlock(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }*/
 
+                if (name.equalsIgnoreCase(PatientAttributesDTO.Column.EMERGENCY_CONTACT_TYPE.value)) {
+                    patientDTO.setContactType(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
+                }
                 if (name.equalsIgnoreCase(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value)) {
                     patientDTO.setTmhCaseNumber(idCursor1.getString(idCursor1.getColumnIndexOrThrow("value")));
                 }
@@ -2186,10 +2243,33 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientDTO.setEmContactNumber(getValueByUuid(attributes, "6c25becf-1bdd-4b2e-98dd-558a4becf4a4"));
         }
 
+        String contactType = patientDTO.getContactType();
 
-        if (TextUtils.isEmpty(patientDTO.getContactType())) {
+        if (TextUtils.isEmpty(contactType)) {
+            contactType = getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164");
+        }
+
+        patientDTO.setContactType(contactType);
+
+        Log.d("CONTACT_TYPE", "Final Contact Type = " + contactType);
+
+        if (!TextUtils.isEmpty(contactType)) {
+
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                contact_type_tv.setText(switch_hi_contact_type_edit(contactType));
+            } else {
+                contact_type_tv.setText(contactType);
+            }
+
+        } else {
+            contact_type_tv.setText(getString(R.string.not_provided));
+        }
+        /*if (TextUtils.isEmpty(patientDTO.getContactType())) {
             patientDTO.setContactType(getValueByUuid(attributes, "5fde1411-801c-49b9-93d4-abeefd8e1164"));
         }
+        Log.d("CONTACT_TYPE", "patientDTO: " + patientDTO.getContactType());
+        String types = switch_hi_contact_type_edit(patientDTO.getContactType());
+        contact_type_tv.setText(types);
         //contact type
         if (!TextUtils.isEmpty(patientDTO.getContactType())) {
             if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
@@ -2200,7 +2280,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             }
         } else {
             contact_type_tv.setText(getString(R.string.not_provided));
-        }
+        }*/
 
         //emergency contact name
         if (!TextUtils.isEmpty(patientDTO.getEmContactName())) {
@@ -2472,7 +2552,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             if (/*(patientDTO.getMpiId() == null || patientDTO.getMpiId().isEmpty())
                     &&*/ patientDTO.getOpenmrsId() != null) {
 
-                syncDAO.pullMPIID(context, patientDTO.getOpenmrsId(),patientDTO);
+                startPullMPI(patientDTO);
             }
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
@@ -2484,6 +2564,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         public void onReceive(Context context, Intent intent) {
 
             try {
+                if ( patientDTO.getOpenmrsId() != null) {
+                    startPullMPI(patientDTO);
+                    setDisplay(patientDTO.getUuid());
+                }
                 openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
                 setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
@@ -2510,6 +2594,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
                 CustomLog.v(TAG, "Sync Done!");
                 try {
+                    if ( patientDTO.getOpenmrsId() != null) {
+                        startPullMPI(patientDTO);
+                        setDisplay(patientDTO.getUuid());
+                    }
                     refresh.clearAnimation();
                     syncAnimator.cancel();
                     setDisplay(patientDTO.getUuid());

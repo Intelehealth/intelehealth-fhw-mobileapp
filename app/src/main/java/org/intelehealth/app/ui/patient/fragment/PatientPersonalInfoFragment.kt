@@ -9,6 +9,7 @@ import android.os.Handler
 import android.os.LocaleList
 import android.os.Looper
 import android.text.InputFilter.LengthFilter
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -39,7 +40,9 @@ import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.filter.MatchResultActivity
 import org.intelehealth.app.ui.patient.activity.filter.PatientSearchingActivity
+import org.intelehealth.app.ui2.utils.CheckInternetAvailability
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -136,23 +139,33 @@ class PatientPersonalInfoFragment :
             dismiss()
         }
             binding.textInputETFName.addTextChangedListener {
-                if (!isFhirEnabled) return@addTextChangedListener
+                if (patientViewModel.isEditMode) return@addTextChangedListener
                 currentFirstName = it.toString().trim()
                 triggerFilter()
             }
             binding.textInputETLName.addTextChangedListener {
-                if (!isFhirEnabled) return@addTextChangedListener
+                if (patientViewModel.isEditMode) return@addTextChangedListener
                 currentLastName = it.toString().trim()
                 triggerFilter()
             }
-        val countryCode = binding.countrycodeSpinner.selectedCountryCodeWithPlus
         binding.countrycodeSpinner.registerCarrierNumberEditText(
-            binding.textInputETPhoneNumber
-        )
-        binding.textInputETPhoneNumber.addTextChangedListener {
-            if (!isFhirEnabled) return@addTextChangedListener
+                    binding.textInputETPhoneNumber
+                    )
 
-            currentPhone = countryCode + it.toString().trim()
+        binding.textInputETPhoneNumber.addTextChangedListener { editable ->
+
+            if (patientViewModel.isEditMode) {
+                return@addTextChangedListener
+            }
+
+            val phone = editable?.toString()?.trim().orEmpty()
+
+            currentPhone = if (phone.isBlank()) {
+                ""
+            } else {
+                val countryCode = binding.countrycodeSpinner.selectedCountryCodeWithPlus
+                countryCode + phone
+            }
 
             triggerFilter()
         }
@@ -163,7 +176,7 @@ class PatientPersonalInfoFragment :
                 isFhirEnabled = it.activeStatusFhir
 
                 Timber.d { "FHIR STATUS => $isFhirEnabled" }
-                binding.isFhirEnableds = isFhirEnabled
+                binding.isFhirEnableds = true
                 onFhirStatusChanged(isFhirEnabled)
                 updateRegistryButton()
             }
@@ -181,14 +194,15 @@ class PatientPersonalInfoFragment :
         runnable?.let { handler.removeCallbacks(it) }
 
         runnable = Runnable {
-
-            doFilterLocal(
-                firstName = currentFirstName,
-                lastName = currentLastName,
-                phone = currentPhone,
-                gender = currentGender,
-                dob = currentDob
-            )
+if (!patientViewModel.isEditMode) {
+    doFilterLocal(
+        firstName = currentFirstName,
+        lastName = currentLastName,
+        phone = currentPhone,
+        gender = currentGender,
+        dob = currentDob
+    )
+}
         }
 
         handler.postDelayed(runnable!!, 500)
@@ -250,8 +264,12 @@ class PatientPersonalInfoFragment :
         } else {
 
             binding.filterPatientSuccessLl.visibility = View.GONE
+            if (currentFirstName.isEmpty()||currentFirstName.isEmpty()){
+                binding.filterPatientFailedLl.visibility = View.GONE
+            }else{
+                binding.filterPatientFailedLl.visibility = View.VISIBLE
+            }
 
-            binding.filterPatientFailedLl.visibility = View.VISIBLE
         }
     }
     private fun initRecyclerScrollListener(
@@ -434,12 +452,12 @@ class PatientPersonalInfoFragment :
     private fun updateRegistryButton() {
         Timber.d { "FHIR STATUS b => $isFhirEnabled" }
         binding.btnPatientPersonalNext.text =
-            if (isFhirEnabled) {
+           // if (isFhirEnabled) {
                 getString(R.string.registry_check)
 
-            } else {
-                getString(R.string.next)
-            }
+           // } else {
+              //  getString(R.string.next)
+           // }
         Timber.d { "FHIR STATUS a => $isFhirEnabled" }
         Timber.d{"Button text => ${binding.btnPatientPersonalNext.text}"}
     }
@@ -476,10 +494,11 @@ class PatientPersonalInfoFragment :
             if (patientViewModel.isEditMode) {
                 saveAndNavigateToDetails()
             } else {
-                if(isFhirEnabled){
+              //  if(isFhirEnabled){
+                if(CheckInternetAvailability.isNetworkAvailable(requireContext())){
                     val intent = Intent(
-                            requireContext(),
-                    PatientSearchingActivity::class.java
+                        requireContext(),
+                        PatientSearchingActivity::class.java
                     )
 
                     intent.putExtra("patientDTO", patient)
@@ -489,16 +508,34 @@ class PatientPersonalInfoFragment :
                     requireActivity().finish()
                 }
                 else{
-                    if (patientViewModel.activeStatusAddressSection) {
-                        PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
-                            findNavController().navigate(this)
-                        }
-                    } else if (patientViewModel.activeStatusOtherSection) {
-                        PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
-                            findNavController().navigate(this)
-                        }
-                    } else saveAndNavigateToDetails()
+                    val intent = Intent(
+                        requireContext(),
+                        MatchResultActivity::class.java)
+
+                    intent.putExtra("patientDTO", patient)
+                    intent.putExtra("isFhir",isFhirEnabled)
+                    intent.putExtra(
+                        "finalPatientList",
+                        ArrayList(patientList)
+                    )
+
+                    startActivity(intent)
+                    requireActivity().finish()
                 }
+
+
+                    /* }
+                   else{
+                        if (patientViewModel.activeStatusAddressSection) {
+                            PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
+                                findNavController().navigate(this)
+                            }
+                        } else if (patientViewModel.activeStatusOtherSection) {
+                            PatientPersonalInfoFragmentDirections.navigationPersonalToOther().apply {
+                                findNavController().navigate(this)
+                            }
+                        } else saveAndNavigateToDetails()
+                    }*/
             }
         }
     }

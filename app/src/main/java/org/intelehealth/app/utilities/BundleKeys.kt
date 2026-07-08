@@ -20,6 +20,8 @@ class BundleKeys {
         const val GOLDEN_RECORD = "GOLDEN_RECORD"
         const val PHONE = "phone"
         const val DOB = "dob"
+        const val CONTACT_TYPE = "contact_type"
+        const val EMERGENCY_NUMBER = "emergency_number"
         const val PATIENT_ID = "patientId"
         const val VISIT_UUI = "visitUuid"
         const val GENDER = "gender"

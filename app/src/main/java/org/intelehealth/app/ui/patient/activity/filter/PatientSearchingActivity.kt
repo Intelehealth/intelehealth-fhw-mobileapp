@@ -8,9 +8,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -43,6 +45,7 @@ class PatientSearchingActivity : AppCompatActivity() {
     private lateinit var ihNetworkTv: TextView
     private lateinit var totalNetworkTv: TextView
     private lateinit var nrNetworkTv: TextView
+    private lateinit var national_card_id: CardView
 
     private var isIHApiDone = false
     private var isNationalApiDone = false
@@ -69,6 +72,7 @@ class PatientSearchingActivity : AppCompatActivity() {
         ihNetworkTv = findViewById(R.id.ihNetworkTv)
         totalNetworkTv = findViewById(R.id.totalTv)
         nrNetworkTv = findViewById(R.id.nrNetworkTv)
+        national_card_id = findViewById(R.id.national_card_id)
         isFhirEnabled = intent.getBooleanExtra("isFhir",false)
         patientDTO = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra(
@@ -84,13 +88,16 @@ class PatientSearchingActivity : AppCompatActivity() {
         val dob =patientDTO?.dateofbirth;
         val  phone=patientDTO?.phonenumber
         nameTv.text=name
-        infoTv.text = "$gender . DOB $dob. $phone"
+        infoTv.text = "$gender . DOB $dob. $phone $isFhirEnabled"
 
         findViewById<ImageView>(R.id.iv_back_arrow)?.setOnClickListener {
             finish()
         }
         callIHNetworkApi()
-        callNationalRegistryApi()
+        if(isFhirEnabled){
+            national_card_id.visibility= View.VISIBLE
+            callNationalRegistryApi()
+        }
 
     }
     private fun callIHNetworkApi() {
@@ -167,13 +174,20 @@ class PatientSearchingActivity : AppCompatActivity() {
     }
 
     private fun checkAndMerge() {
+        if (isFhirEnabled){
 
         if (isLocalDone && isFhirDone) {
 
             mergeFinalPatientList()
 
             loadingDialog.dismiss()
-        }
+        }}
+        else{if (isLocalDone) {
+
+            mergeFinalPatientList()
+
+            loadingDialog.dismiss()
+        }}
     }
     private fun mergeFinalPatientList() {
 
@@ -214,6 +228,13 @@ class PatientSearchingActivity : AppCompatActivity() {
                     openmrsId = local.patient?.openmrsId ?: openmrsId
                     sourceId = local.patient?.sourceId ?: sourceId
                     mpiId = local.patient?.mpiId ?: mpiId
+                    stateprovince=stateprovince
+                    city=city
+                    cityvillage=cityvillage
+                    occupation=occupation
+                    education=education
+                    caste=caste
+                    economic=economic
 
                 }
                 // SAME PATIENT → MERGE
@@ -308,12 +329,6 @@ class PatientSearchingActivity : AppCompatActivity() {
                         openmrsId =openMrsId
                         firstname = given
                         lastname = family
-                        gender = resource.gender ?: ""
-                        phonenumber = resource.telecom?.firstOrNull()?.value ?: ""
-                        dateofbirth = resource.birthDate ?: ""
-
-                        firstname = given
-                        lastname = family
                         gender = genders ?: ""
                         phonenumber = phones ?: ""
                         dateofbirth = dob ?: ""
@@ -321,25 +336,33 @@ class PatientSearchingActivity : AppCompatActivity() {
                         postalcode=address?.postalCode?:""
                         stateprovince=address?.state
                         city=address?.city
-                        address1=address?.use
+                        cityvillage=address?.city
+                        address1= address?.line?.get(0)
+                        address6=address?.line?.get(1)
                         contactType =getExtensionValueByEndPoint(extension,"Emergency-Contact-Type")
                         education =getExtensionValueByEndPoint(extension,"Education-Level")
                         economic =getExtensionValueByEndPoint(extension,"Economic-Status")
                         caste =getExtensionValueByEndPoint(extension,"Caste")
+                        occupation=getExtensionValueByEndPoint(extension,"occupation")
                         syncd=true
                     }
-
-                    resultList.add(
-                        PatientSearchResult().apply {
-                            this.patient = patient
-                            this.source = MatchSource.FHIR
-                            this.score = item.search?.score ?: 0.0
-                            this.grade = MatchGrade.CERTAIN
-                            this.localDbResult = false
-                            this.isNRNetwork=true
-                            this.nrscore=item.search?.score ?: 0.0
+                    val score= item.search?.score
+                    if (score != null) {
+                        if (score >= 0.50){
+                            resultList.add(
+                                PatientSearchResult().apply {
+                                    this.patient = patient
+                                    this.source = MatchSource.FHIR
+                                    this.score = item.search?.score ?: 0.0
+                                    this.grade = MatchGrade.CERTAIN
+                                    this.localDbResult = false
+                                    this.isNRNetwork=true
+                                    this.nrscore=item.search?.score ?: 0.0
+                                }
+                            )
                         }
-                    )
+                    }
+
                 }
 
                 resultList.toList()   //  IMPORTANT FIX
@@ -347,433 +370,456 @@ class PatientSearchingActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())
     }
     private fun searchPatientFhirObservable(
-        firstName: String,
-        lastName: String,
-        phone: String,
-        gender: String,
-        dob: String,
-        pageNo: Int
-    ): Single<PatientSearchDTO> {
-        Log.e("TEST", "FUNCTION ENTERED");
-        val offset = pageNo * defaultPageSize
+                firstName: String,
+                lastName: String,
+                phone: String,
+                gender: String,
+                dob: String,
+                pageNo: Int
+            ): Single<PatientSearchDTO> {
+                Log.e("TEST", "FUNCTION ENTERED");
+                val offset = pageNo * defaultPageSize
 
-        val jsonObject = JSONObject()
+                val jsonObject = JSONObject()
 
-        val parameterArray = JSONArray()
+                val parameterArray = JSONArray()
 
-        // resource parameter
-        val resourceObject = JSONObject()
-        resourceObject.put("resourceType", "Patient")
+                // resource parameter
+                val resourceObject = JSONObject()
+                resourceObject.put("resourceType", "Patient")
 
-        // name
-        val nameArray = JSONArray()
-        val nameObject = JSONObject()
+                // name
+                val nameArray = JSONArray()
+                val nameObject = JSONObject()
 
-        if (lastName.isNotEmpty()) {
-            nameObject.put("family", lastName)
-        }
+                if (lastName.isNotEmpty()) {
+                    nameObject.put("family", lastName)
+                }
 
-        val givenArray = JSONArray()
-        givenArray.put(firstName)
-        if (firstName.isNotEmpty()) {
+                val givenArray = JSONArray()
+                givenArray.put(firstName)
+                if (firstName.isNotEmpty()) {
 
-            nameObject.put("given", givenArray)}
-        nameArray.put(nameObject)
+                    nameObject.put("given", givenArray)}
+                nameArray.put(nameObject)
 
-        resourceObject.put("name", nameArray)
+                resourceObject.put("name", nameArray)
 
 
-        // telecom
-        val telecomArray = JSONArray()
-        val telecomObject = JSONObject()
-        if (phone.isNotEmpty()) {
-            telecomObject.put("system", "phone")
-            telecomObject.put("value", phone)
+                // telecom
+                val telecomArray = JSONArray()
+                val telecomObject = JSONObject()
+                if (phone.isNotEmpty()) {
+                    telecomObject.put("system", "phone")
+                    telecomObject.put("value", phone)
 
-            telecomArray.put(telecomObject)
-            resourceObject.put("telecom", telecomArray)}
-        // gender
-        if (gender.isNotEmpty()) {
-            resourceObject.put("gender", gender.lowercase())
-        }
+                    telecomArray.put(telecomObject)
+                    resourceObject.put("telecom", telecomArray)}
+                // gender
+                if (gender.isNotEmpty()) {
+                    resourceObject.put("gender", gender.lowercase())
+                }
 
-        // dob
-        if (dob.isNotEmpty()) {
-            resourceObject.put("birthDate", dob)
-        }
+                // dob
+                if (dob.isNotEmpty()) {
+                    resourceObject.put("birthDate", dob)
+                }
 
-        val resourceParam = JSONObject()
-        resourceParam.put("name", "resource")
-        resourceParam.put("resource", resourceObject)
+                val resourceParam = JSONObject()
+                resourceParam.put("name", "resource")
+                resourceParam.put("resource", resourceObject)
 
-        parameterArray.put(resourceParam)
+                parameterArray.put(resourceParam)
 
-        // resourceType
-        val resourceTypeParam = JSONObject()
-        resourceTypeParam.put("name", "resourceType")
-        resourceTypeParam.put("valueString", "Patient")
+                // resourceType
+                val resourceTypeParam = JSONObject()
+                resourceTypeParam.put("name", "resourceType")
+                resourceTypeParam.put("valueString", "Patient")
 
-        parameterArray.put(resourceTypeParam)
+                parameterArray.put(resourceTypeParam)
 
-        // count
-        val countParam = JSONObject()
-        countParam.put("name", "count")
-        countParam.put("valueInteger", defaultPageSize)
+                // count
+                val countParam = JSONObject()
+                countParam.put("name", "count")
+                countParam.put("valueInteger", defaultPageSize)
 
-        parameterArray.put(countParam)
+                parameterArray.put(countParam)
 
-        // offset
-        val offsetParam = JSONObject()
-        offsetParam.put("name", "offset")
-        offsetParam.put("valueInteger", offset)
+                // offset
+                val offsetParam = JSONObject()
+                offsetParam.put("name", "offset")
+                offsetParam.put("valueInteger", offset)
 
-        parameterArray.put(offsetParam)
+                parameterArray.put(offsetParam)
 
-        // onlyCertainMatches
-        val matchParam = JSONObject()
-        matchParam.put("name", "onlyCertainMatches")
-        matchParam.put("valueBoolean", false)
+                // onlyCertainMatches
+                val matchParam = JSONObject()
+                matchParam.put("name", "onlyCertainMatches")
+                matchParam.put("valueBoolean", false)
 
-        parameterArray.put(matchParam)
+                parameterArray.put(matchParam)
 
-        jsonObject.put("resourceType", "Parameters")
-        jsonObject.put("parameter", parameterArray)
-        // %24 = $ encoding
-        val url = BuildConfig.FHIR_URL+"/\$mdm-match"
+                jsonObject.put("resourceType", "Parameters")
+                jsonObject.put("parameter", parameterArray)
+                // %24 = $ encoding
+                val url = BuildConfig.FHIR_URL+"/\$mdm-match"
 
-        val requestBody = jsonObject.toString()
-            .toRequestBody("application/json".toMediaTypeOrNull())
+                val requestBody = jsonObject.toString()
+                    .toRequestBody("application/json".toMediaTypeOrNull())
 
-        val auth = Credentials.basic("fhir_app", "Admin123")
-        return AppConstants.apiInterface.searchPatientFhir(
-            url,
-            auth,
-            requestBody
-        )
-    }
-    private fun doFilterLocal(
-        firstName: String,
-        lastName: String,
-        gender: String,
-        phone: String,
-        dob: String
-    ) {
-
-        subscriptions.add(
-            Single.fromCallable {
-                PatientsDAO.getFilteredPatients1(
-                    firstName,
-                    lastName,
-                    gender,
-                    phone,
-                    dob,
-                    0,
-                    defaultPageSize
+                val auth = Credentials.basic("fhir_app", "Admin123")
+                return AppConstants.apiInterface.searchPatientFhir(
+                    url,
+                    auth,
+                    requestBody
                 )
             }
-                .subscribeOn(Schedulers.io())
-                .flatMap { localList ->
+            private fun doFilterLocal(
+                firstName: String,
+                lastName: String,
+                gender: String,
+                phone: String,
+                dob: String
+            ) {
 
-                    val isNetwork = CheckInternetAvailability.isNetworkAvailable(this)
-
-                    if (!isNetwork) {
-                        Single.just(localList)
-                    } else {
-                        fetchOpenMRSPatients(
-                            firstName, lastName, phone,
-                            getFullGenderStr(gender), dob, 0
+                subscriptions.add(
+                    Single.fromCallable {
+                        PatientsDAO.getFilteredPatients1(
+                            firstName,
+                            lastName,
+                            gender,
+                            phone,
+                            dob,
+                            0,
+                            defaultPageSize
                         )
-                            .map { remote ->
-                                mergePatientList(localList, remote)
+                    }
+                        .subscribeOn(Schedulers.io())
+                        .flatMap { localList ->
+
+                            val isNetwork = CheckInternetAvailability.isNetworkAvailable(this)
+
+                            if (!isNetwork) {
+                                Single.just(localList)
+                            } else {
+                                fetchOpenMRSPatients(
+                                    firstName, lastName, phone,
+                                    getFullGenderStr(gender), dob, 0
+                                )
+                                    .map { remote ->
+                                        mergePatientList(localList, remote)
+                                    }
+                                    .onErrorReturn { localList }
                             }
-                            .onErrorReturn { localList }
+                        }
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ patientList ->
+
+                            progressBarIH.visibility = View.GONE   //  STOP LOADING
+
+                            filteredPatientList.clear()
+                            filteredPatientList.addAll(patientList)
+
+                            isLocalDone = true
+
+                            ihNetworkTv.text =
+                                if (patientList.isEmpty()) "No match found"
+                                else "Matches found"
+
+                            checkAndMerge()
+
+                        }, {
+
+                            progressBarIH.visibility = View.GONE
+
+                            isLocalDone = true
+                            ihNetworkTv.text = "No match found"
+
+                            checkAndMerge()
+                        })
+                )
+            }
+            private fun mergePatientList(
+                localList: List<PatientSearchResult>,
+                remoteList: List<PatientSearchResult>
+            ): List<PatientSearchResult> {
+
+                val map = LinkedHashMap<String, PatientSearchResult>()
+
+                // LOCAL FIRST
+                localList.forEach { item ->
+                    val uuid = item.patient?.uuid
+                    if (!uuid.isNullOrEmpty()) {
+                        map[uuid] = item
                     }
                 }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ patientList ->
 
-                    progressBarIH.visibility = View.GONE   //  STOP LOADING
+                // REMOTE OVERRIDE
+                remoteList.forEach { item ->
+                    val uuid = item.patient?.uuid
+                    if (!uuid.isNullOrEmpty()) {
+                        map[uuid] = item
+                    }
+                }
 
-                    filteredPatientList.clear()
-                    filteredPatientList.addAll(patientList)
-
-                    isLocalDone = true
-
-                    ihNetworkTv.text =
-                        if (patientList.isEmpty()) "No match found"
-                        else "Matches found"
-
-                    checkAndMerge()
-
-                }, {
-
-                    progressBarIH.visibility = View.GONE
-
-                    isLocalDone = true
-                    ihNetworkTv.text = "No match found"
-
-                    checkAndMerge()
-                })
-        )
-    }
-    private fun mergePatientList(
-        localList: List<PatientSearchResult>,
-        remoteList: List<PatientSearchResult>
-    ): List<PatientSearchResult> {
-
-        val map = LinkedHashMap<String, PatientSearchResult>()
-
-        // LOCAL FIRST
-        localList.forEach { item ->
-            val uuid = item.patient?.uuid
-            if (!uuid.isNullOrEmpty()) {
-                map[uuid] = item
+                return map.values.toList()
             }
-        }
+            private fun fetchOpenMRSPatients(
+                firstName: String,
+                lastName: String,
+                phone: String,
+                genderss: String,
+                dob: String,
+                pageNo: Int
+            ): Single<List<PatientSearchResult>> {
 
-        // REMOTE OVERRIDE
-        remoteList.forEach { item ->
-            val uuid = item.patient?.uuid
-            if (!uuid.isNullOrEmpty()) {
-                map[uuid] = item
+                return searchPatientOpenMRSObservable(
+                    firstName,
+                    lastName,
+                    phone,
+                    genderss,
+                    dob,
+                    pageNo
+                ).map { body ->
+
+                    val resultList = ArrayList<PatientSearchResult>()
+
+                    val entries = body.entry ?: emptyList()
+
+                    for (item in entries) {
+
+                        val resource = item.resource
+
+                        val name = resource?.name?.firstOrNull()
+                        val id = resource?.id
+                        val genders = resource?.gender
+                        val telecom = resource?.telecom?.firstOrNull()
+                        val phones = telecom?.value
+                        val dob = resource?.birthDate
+                        val address = resource?.address?.firstOrNull()
+
+                        val given = name?.given?.firstOrNull().orEmpty()
+                        val family = name?.family.orEmpty()
+                        val extension = resource?.extension
+                        val openMrsId = resource?.identifier
+                            ?.firstOrNull {
+                                it.use == "official" ||
+                                        it.system?.contains("OpenMRS-ID", ignoreCase = true) == true
+                            }
+                            ?.value
+
+                        val patient = PatientDTO().apply {
+                            uuid = id
+                            firstname = given
+                            lastname = family
+                            gender = genders ?: ""
+                            phonenumber = phones ?: ""
+                            dateofbirth = dob ?: ""
+                            country=address?.country?:""
+                            postalcode=address?.postalCode?:""
+                            stateprovince=address?.state
+                            city=address?.city
+                            openmrsId =openMrsId
+                            address1=address?.line?.get(0)
+                            address6=address?.line?.get(1)
+                            contactType =getExtensionValueByEndPoint(extension,"Emergency-Contact-Type")
+                            education =getExtensionValueByEndPoint(extension,"Education-Level")
+                            economic =getExtensionValueByEndPoint(extension,"Economic-Status")
+                            caste =getExtensionValueByEndPoint(extension,"Caste")
+                            occupation=getExtensionValueByEndPoint(extension,"occupation")
+                            syncd=false
+                        }
+                        val score=item.search?.score
+                        val result = PatientSearchResult().apply {
+                            this.patient = patient
+                            this.source = MatchSource.OPENMRS
+                            this.score = item.search?.score ?: 0.0
+                            this.grade = MatchGrade.CERTAIN
+                            this.localDbResult = false
+                            this.isIHNetwork=true
+                            this.ihscore = item.search?.score ?: 0.0
+                        }
+
+                        if (score != null) {
+                            if (score >= 0.50){
+                                resultList.add(result)
+                            }
+                        }
+                    }
+
+                    resultList
+                }
             }
-        }
+            private fun getExtensionValueByEndPoint(
+                extensions: List<Extension>?,
+                endPoint: String
+            ): String {
 
-        return map.values.toList()
-    }
-    private fun fetchOpenMRSPatients(
-        firstName: String,
-        lastName: String,
-        phone: String,
-        genderss: String,
-        dob: String,
-        pageNo: Int
-    ): Single<List<PatientSearchResult>> {
-
-        return searchPatientOpenMRSObservable(
-            firstName,
-            lastName,
-            phone,
-            genderss,
-            dob,
-            pageNo
-        ).map { body ->
-
-            val resultList = ArrayList<PatientSearchResult>()
-
-            val entries = body.entry ?: emptyList()
-
-            for (item in entries) {
-
-                val resource = item.resource
-
-                val name = resource?.name?.firstOrNull()
-                val id = resource?.id
-                val genders = resource?.gender
-                val telecom = resource?.telecom?.firstOrNull()
-                val phones = telecom?.value
-                val dob = resource?.birthDate
-                val address = resource?.address?.firstOrNull()
-
-                val given = name?.given?.firstOrNull().orEmpty()
-                val family = name?.family.orEmpty()
-                val extension = resource?.extension
-                val openMrsId = resource?.identifier
+                return extensions
                     ?.firstOrNull {
-                        it.use == "official" ||
-                                it.system?.contains("OpenMRS-ID", ignoreCase = true) == true
+                        it.url
+                            ?.substringAfterLast("/")
+                            ?.equals(endPoint, ignoreCase = true) == true
                     }
-                    ?.value
-
-                val patient = PatientDTO().apply {
-                    uuid = id
-                    firstname = given
-                    lastname = family
-                    gender = genders ?: ""
-                    phonenumber = phones ?: ""
-                    dateofbirth = dob ?: ""
-                    country=address?.country?:""
-                    postalcode=address?.postalCode?:""
-                    stateprovince=address?.state
-                    city=address?.city
-                    openmrsId =openMrsId
-                    address1=address?.line.toString()
-                    contactType =getExtensionValueByEndPoint(extension,"Emergency-Contact-Type")
-                    education =getExtensionValueByEndPoint(extension,"Education-Level")
-                    economic =getExtensionValueByEndPoint(extension,"Economic-Status")
-                    caste =getExtensionValueByEndPoint(extension,"Caste")
-                    syncd=false
-                }
-
-                val result = PatientSearchResult().apply {
-                    this.patient = patient
-                    this.source = MatchSource.OPENMRS
-                    this.score = item.search?.score ?: 0.0
-                    this.grade = MatchGrade.CERTAIN
-                    this.localDbResult = false
-                    this.isIHNetwork=true
-                    this.ihscore = item.search?.score ?: 0.0
-                }
-
-                resultList.add(result)
+                    ?.valueString
+                    .orEmpty()
             }
+            private fun searchPatientOpenMRSObservable(
+                firstName: String,
+                lastName: String,
+                phone: String,
+                gender: String,
+                dob: String,
+                pageNo: Int
+            ): Single<PatientSearchDTO> {
 
-            resultList
-        }
-    }
-    fun getExtensionValueByEndPoint(
-        extensions: List<Extension>?,
-        endPoint: String
-    ): String? {
+                Log.e("TEST", "FUNCTION ENTERED");
+                val offset = pageNo * defaultPageSize
 
-        if (extensions.isNullOrEmpty()) return null
+                val jsonObject = JSONObject()
 
-        return extensions.firstOrNull { ext ->
+                val parameterArray = JSONArray()
 
-            val url = ext.url ?: return@firstOrNull false
+                // resource parameter
+                val resourceObject = JSONObject()
+                resourceObject.put("resourceType", "Patient")
 
-            val lastSegment = url.substringAfterLast("/")
+                // name
+                val nameArray = JSONArray()
+                val nameObject = JSONObject()
 
-            lastSegment.equals(endPoint, ignoreCase = true)
+                if (lastName.isNotEmpty()) {
+                    nameObject.put("family", lastName)
+                }
 
-        }?.valueString
-    }
-    private fun searchPatientOpenMRSObservable(
-        firstName: String,
-        lastName: String,
-        phone: String,
-        gender: String,
-        dob: String,
-        pageNo: Int
-    ): Single<PatientSearchDTO> {
+                val givenArray = JSONArray()
+                givenArray.put(firstName)
 
-        Log.e("TEST", "FUNCTION ENTERED");
-        val offset = pageNo * defaultPageSize
+                nameObject.put("given", givenArray)
+                nameArray.put(nameObject)
 
-        val jsonObject = JSONObject()
+                resourceObject.put("name", nameArray)
 
-        val parameterArray = JSONArray()
+                // gender
+                if (gender.isNotEmpty()) {
+                    resourceObject.put("gender", gender.lowercase())
+                }
 
-        // resource parameter
-        val resourceObject = JSONObject()
-        resourceObject.put("resourceType", "Patient")
+                // dob
+                if (dob.isNotEmpty()) {
+                    resourceObject.put("birthDate", dob)
+                }
 
-        // name
-        val nameArray = JSONArray()
-        val nameObject = JSONObject()
+                // telecom
+                val telecomArray = JSONArray()
+                val telecomObject = JSONObject()
+                telecomObject.put("system", "phone")
+                telecomObject.put("value", phone)
 
-        if (lastName.isNotEmpty()) {
-            nameObject.put("family", lastName)
-        }
+                telecomArray.put(telecomObject)
+                resourceObject.put("telecom", telecomArray)
 
-        val givenArray = JSONArray()
-        givenArray.put(firstName)
+                val resourceParam = JSONObject()
+                resourceParam.put("name", "resource")
+                resourceParam.put("resource", resourceObject)
 
-        nameObject.put("given", givenArray)
-        nameArray.put(nameObject)
+                parameterArray.put(resourceParam)
 
-        resourceObject.put("name", nameArray)
+                // resourceType
+                val resourceTypeParam = JSONObject()
+                resourceTypeParam.put("name", "resourceType")
+                resourceTypeParam.put("valueString", "Patient")
 
-         // gender
-         if (gender.isNotEmpty()) {
-             resourceObject.put("gender", gender.lowercase())
-         }
+                parameterArray.put(resourceTypeParam)
 
-         // dob
-         if (dob.isNotEmpty()) {
-             resourceObject.put("birthDate", dob)
-         }
+                // count
+                val countParam = JSONObject()
+                countParam.put("name", "count")
+                countParam.put("valueInteger", defaultPageSize)
 
-        // telecom
-        val telecomArray = JSONArray()
-        val telecomObject = JSONObject()
-        telecomObject.put("system", "phone")
-        telecomObject.put("value", phone)
+                parameterArray.put(countParam)
 
-        telecomArray.put(telecomObject)
-        resourceObject.put("telecom", telecomArray)
+                // offset
+                val offsetParam = JSONObject()
+                offsetParam.put("name", "offset")
+                offsetParam.put("valueInteger", offset)
 
-        val resourceParam = JSONObject()
-        resourceParam.put("name", "resource")
-        resourceParam.put("resource", resourceObject)
+                parameterArray.put(offsetParam)
 
-        parameterArray.put(resourceParam)
+                // onlyCertainMatches
+                val matchParam = JSONObject()
+                matchParam.put("name", "onlyCertainMatches")
+                matchParam.put("valueBoolean", false)
 
-        // resourceType
-        val resourceTypeParam = JSONObject()
-        resourceTypeParam.put("name", "resourceType")
-        resourceTypeParam.put("valueString", "Patient")
+                parameterArray.put(matchParam)
 
-        parameterArray.put(resourceTypeParam)
+                jsonObject.put("resourceType", "Parameters")
+                jsonObject.put("parameter", parameterArray)
 
-        // count
-        val countParam = JSONObject()
-        countParam.put("name", "count")
-        countParam.put("valueInteger", defaultPageSize)
+                val requestBody = jsonObject.toString()
+                    .toRequestBody("application/json".toMediaTypeOrNull())
 
-        parameterArray.put(countParam)
+                val auth = Credentials.basic("admin", "apple@1Mango")
 
-        // offset
-        val offsetParam = JSONObject()
-        offsetParam.put("name", "offset")
-        offsetParam.put("valueInteger", offset)
+                val url = (BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/ihmodule/patient/\$match")
 
-        parameterArray.put(offsetParam)
+                return AppConstants.apiInterface.searchPatientOpenMRS(
+                    url,
+                    auth,
+                    requestBody
+                )
+            }
+            private fun callNationalRegistryApi() {
 
-        // onlyCertainMatches
-        val matchParam = JSONObject()
-        matchParam.put("name", "onlyCertainMatches")
-        matchParam.put("valueBoolean", false)
+                progressBarNational.visibility = View.VISIBLE
+                isNationalApiDone = false
 
-        parameterArray.put(matchParam)
+                doFilterFhir(
+                    patientDTO?.firstname ?: "",
+                    patientDTO?.lastname ?: "",
+                    patientDTO?.gender ?: "",
+                    patientDTO?.phonenumber ?: "",
+                    patientDTO?.dateofbirth ?: ""
+                )}
+            private fun checkAllApisCompleted() {
+                if (isFhirEnabled){
+                    if (isLocalDone && isFhirDone) {
 
-        jsonObject.put("resourceType", "Parameters")
-        jsonObject.put("parameter", parameterArray)
+                        val intent = Intent(
+                            this,
+                            MatchResultActivity::class.java
+                        )
 
-        val requestBody = jsonObject.toString()
-            .toRequestBody("application/json".toMediaTypeOrNull())
+                        intent.putExtra("patientDTO", patientDTO)
+                        intent.putExtra("isFhir",isFhirEnabled)
+                        intent.putExtra(
+                            "finalPatientList",
+                            ArrayList(filteredPatientFinalList)
+                        )
 
-        val auth = Credentials.basic("admin", "apple@1Mango")
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+                else{
+                    if (isLocalDone) {
 
-        val url = (BuildConfig.SERVER_URL + "/openmrs/ws/rest/v1/ihmodule/patient/\$match")
+                        val intent = Intent(
+                            this,
+                            MatchResultActivity::class.java
+                        )
 
-        return AppConstants.apiInterface.searchPatientOpenMRS(
-            url,
-            auth,
-            requestBody
-        )
-    }
-    private fun callNationalRegistryApi() {
+                        intent.putExtra("patientDTO", patientDTO)
+                        intent.putExtra("isFhir",isFhirEnabled)
+                        intent.putExtra(
+                            "finalPatientList",
+                            ArrayList(filteredPatientFinalList)
+                        )
 
-        progressBarNational.visibility = View.VISIBLE
-        isNationalApiDone = false
-
-        doFilterFhir(
-            patientDTO?.firstname ?: "",
-            patientDTO?.lastname ?: "",
-            patientDTO?.gender ?: "",
-            patientDTO?.phonenumber ?: "",
-            patientDTO?.dateofbirth ?: ""
-        )}
-    private fun checkAllApisCompleted() {
-
-        if (isLocalDone && isFhirDone) {
-
-            val intent = Intent(
-                this,
-                MatchResultActivity::class.java
-            )
-
-            intent.putExtra("patientDTO", patientDTO)
-            intent.putExtra("isFhir",isFhirEnabled)
-            intent.putExtra(
-                "finalPatientList",
-                ArrayList(filteredPatientFinalList)
-            )
-
-            startActivity(intent)
-            finish()
-        }
-    }
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
 
 }

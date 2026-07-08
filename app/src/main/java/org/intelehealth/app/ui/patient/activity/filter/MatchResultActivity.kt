@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -77,7 +78,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
        filterRecyclerView.setHasFixedSize(true)
        filterRecyclerView.isNestedScrollingEnabled = false
        patientAdapter =
-           FilterResultAdapter(patientList, this)
+           FilterResultAdapter(isFhirEnabled,patientList, this)
 
        filterRecyclerView.adapter = patientAdapter
        networkUtils = NetworkUtils(this, this)
@@ -118,7 +119,9 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
                    patientDTO.lastname,
                    getGenderCode(patientDTO.gender),
                    patientDTO.phonenumber,
-                   patientDTO.dateofbirth
+                   patientDTO.dateofbirth,
+                   patientDTO.contactType,
+                   patientDTO.emContactNumber
                )
                //finish()
            } else if (patientViewModel.activeStatusOtherSection) {
@@ -160,11 +163,17 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
            //Toast.makeText(this, "Check Final"+finalPatient.dateofbirth, Toast.LENGTH_SHORT).show()
             patientViewModel.updatedPatient(finalPatient)
             patientViewModel.savePatient().observe(this) {
-               // Toast.makeText(this, "Check Final"+it.status, Toast.LENGTH_SHORT).show()
+                //Toast.makeText(this, "Check Final"+it.status, Toast.LENGTH_SHORT).show()
                 it ?: return@observe
+
                 patientViewModel.handleResponse(it) { result ->
-                    if (result) navigateToDetails(finalPatient)
+
+                    if (result) {
+                        navigateToDetails(finalPatient)
+                    }
+
                 }
+
             }
 
         } else {
@@ -205,7 +214,6 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
         result.postalcode = primary.postalcode ?: fallback.postalcode
         result.country = primary.country ?: fallback.country
         result.district = primary.district ?: fallback.district
-
         // Social / extra info
         result.education = primary.education ?: fallback.education
         result.economic = primary.economic ?: fallback.economic
@@ -237,7 +245,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
 
         // Flags
         result.dead = primary.dead ?: fallback.dead
-        result.syncd = primary.syncd ?: fallback.syncd
+        result.syncd = primary.syncd ?: false
 
         result.setEmergency(primary.isEmergency || fallback.isEmergency)
         result.setPrescription_exists(primary.isPrescription_exists || fallback.isPrescription_exists)
@@ -280,6 +288,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
             )
 
             intent.putExtra("patientDTO", patientDTO)
+            intent.putExtra("isFhir",isFhirEnabled)
 
             startActivity(intent)
 

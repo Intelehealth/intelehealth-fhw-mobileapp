@@ -39,7 +39,7 @@ class PatientViewModel(
 
     fun updatedPatient(patient: PatientDTO) {
         Timber.d { "Saved patient => ${Gson().toJson(patient)}" }
-        mutableLivePatient.postValue(patient)
+        mutableLivePatient.value = patient
     }
 
     fun updatePatientStage(stage: PatientRegStage) {

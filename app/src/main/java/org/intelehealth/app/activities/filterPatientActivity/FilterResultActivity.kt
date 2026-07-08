@@ -52,7 +52,7 @@ class FilterResultActivity : BaseActivity(), FilterResultAdapter.AdapterClickLis
     private var phone=""
     private var dob=""
     private var gender=""
-    private val patientAdapter = FilterResultAdapter(patientList, this)
+    private val patientAdapter = FilterResultAdapter(false,patientList, this)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //enableEdgeToEdge()
