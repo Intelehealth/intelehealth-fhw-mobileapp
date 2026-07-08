@@ -52,7 +52,7 @@ class NotificationAdapter(
         patientDTOList?.get(position)?.let { model ->
 
             model.description?.let {
-                holder.search_name.text = it
+                holder.search_name.text = it + ContextCompat.getString(mContext!!, R.string.prescription_was_received)
             }
             holder.delete_imgview.setOnClickListener { _: View? ->
                 clickListener.deleteNotification(model, holder.layoutPosition)

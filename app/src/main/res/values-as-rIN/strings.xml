@@ -967,6 +967,7 @@
     <string name="seconds">চেকেণ্ড</string>
     <string name="no_data_added">কোনো তথ্য যোগ কৰা হোৱা নাই</string>
     <string name="open_prescription">অ\'পেন প্ৰেছক্ৰিপচন</string>
+    <string name="prescription_was_received">পপ্ৰেস্ক্ৰিপচন পোৱা গৈছে!</string>
     <string name="reset">ৰিছেট কৰক</string>
     <string name="update_button">আপডেট</string>
     <string name="underweight">কম ওজন</string>
