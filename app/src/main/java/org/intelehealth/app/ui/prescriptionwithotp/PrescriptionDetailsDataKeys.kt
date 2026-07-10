@@ -1,61 +1,64 @@
 package org.intelehealth.app.ui.prescriptionwithotp
 
 object PrescriptionDetailsDataKeys {
-        // Vitals
-        object Vitals {
-            const val HEIGHT = "Height(cm)"
-            const val WEIGHT = "Weight(kg)"
-            const val BMI = "BMI"
-            const val TEMPERATURE = "Temperature"
-            const val SPO2 = "SPO2"
-            const val BP = "BP"
-            const val RESPIRATORY_RATE = "Respiratory Rate"
-            const val PULSE = "Pulse"
-            const val BLOOD_GROUP = "Blood Group"
-        }
+    // Vitals
+    object Vitals {
+        const val HEIGHT = "Height(cm)"
+        const val WEIGHT = "Weight(kg)"
+        const val BMI = "BMI"
+        const val TEMPERATURE = "Temperature"
+        const val SPO2 = "SPO2"
+        const val BP = "BP"
+        const val RESPIRATORY_RATE = "Respiratory Rate"
+        const val PULSE = "Pulse"
+        const val BLOOD_GROUP = "Blood Group"
+    }
 
-        // Diagnostics
-        object Diagnostics {
-            const val GLUCOSE_RANDOM = "Glucose (Random)"
-            const val BLOOD_GLUCOSE_FASTING = "Glucose (Fasting)"
-            const val BLOOD_GLUCOSE_POST_PRANDIAL = "Glucose (Post-Prandial)"
-            const val URIC_ACID = "Uric Acid"
-            const val TOTAL_CHOLESTEROL = "Total Cholesterol"
-            const val HAEMOGLOBIN = "Haemoglobin"
-        }
+    // Diagnostics
+    object Diagnostics {
+        const val GLUCOSE_RANDOM = "Glucose (Random)"
+        const val BLOOD_GLUCOSE_FASTING = "Glucose (Fasting)"
+        const val BLOOD_GLUCOSE_POST_PRANDIAL = "Glucose (Post-Prandial)"
+        const val URIC_ACID = "Uric Acid"
+        const val TOTAL_CHOLESTEROL = "Total Cholesterol"
+        const val HAEMOGLOBIN = "Haemoglobin"
+    }
 
-        // Complaints
-        object Complaints {
-            const val PRESENTING_COMPLAINTS = "Presenting Complaint(s)"
-        }
+    // Complaints
+    object Complaints {
+        const val PRESENTING_COMPLAINTS = "Presenting Complaint(s)"
+    }
 
-        // Diagnosis
-        object Diagnosis {
-            const val PRIMARY = "Primary Diagnosis"
-        }
+    // Diagnosis
+    object Diagnosis {
+        const val PRIMARY = "Primary Diagnosis"
+    }
 
-        // Medication Plan
-        object MedicationPlan {
-            const val MEDICINE_DETAILS = "Medicine"
-          /*  const val DOSAGE = "Dosage"
-            const val FREQUENCY = "Frequency"
-            const val DURATION = "Duration"*/
-        }
+    // Medication Plan
+    object MedicationPlan {
+        const val MEDICINE_DETAILS = "Medicine"
+        /*  const val DOSAGE = "Dosage"
+          const val FREQUENCY = "Frequency"
+          const val DURATION = "Duration"*/
+    }
 
-        // General Advice
-        object GeneralAdvice {
-            const val ADVICE = "Advice"
-        }
+    // General Advice
+    object GeneralAdvice {
+        const val ADVICE = "Advice"
+    }
 
-        // Follow-up
-        object FollowUp {
-            const val DATE = "Follow-up Date"
-        }
+    // Follow-up
+    object FollowUp {
+        const val DATE = "Follow-up Date"
+    }
     object Tests {
         const val TESTS = "Tests"
     }
     object Referral {
         const val REFERRAL = "Referred Specialist"
+    }
+    object NotesPrecautions {
+        const val NOTES = "Notes & Precautions"
     }
     fun getLabelForKey(key: String): String {
         return when (key) {
@@ -98,4 +101,3 @@ object PrescriptionDetailsDataKeys {
     }
 
 }
-

@@ -42,6 +42,7 @@ import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import org.intelehealth.app.utilities.UrlModifiers
 import timber.log.Timber
 import java.io.File
@@ -62,72 +63,72 @@ class ShowPrescriptionDataPdfShareDialog(
     private val scope = CoroutineScope(Dispatchers.Main + job)
     private var visitStartDate = ""
     private var hwMobileNumber = ""
-     fun sharePrescriptionInPdf() {
-         val sessionManager = SessionManager(activity)
-         hwMobileNumber= sessionManager.healthWorkerNumber
-         val binding = DialogShareprescBinding.inflate(LayoutInflater.from(activity))
-         val dialogView = binding.root
-         if (hasPrescription) {
-             var isHWNumberAvailable =false
-             var title =""
-             var body =""
-             if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
-                 isHWNumberAvailable = true
-                 title = activity.resources.getString(R.string.pdf_share_flow_title)
-                 body = activity.resources.getString(R.string.pdf_share_flow_msg, hwMobileNumber)
-             }else{
-                 title = activity.resources.getString(R.string.pdf_share_flow_title)
-                 body = activity.resources.getString(R.string.enter_mobile_number_in_profile)
-             }
-             DialogUtils.showPrescriptionPDFShareDialog(activity, ContextCompat.getDrawable(activity, R.drawable.close_patient_svg), title, body,
-                 activity.resources.getString(R.string.ok),
-                 activity.resources.getString(R.string.cancel), false
-             ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK)
-                 if (isHWNumberAvailable) {
-                     createAndSaveFile()
-                 }
-             }
+    fun sharePrescriptionInPdf() {
+        val sessionManager = SessionManager(activity)
+        hwMobileNumber= sessionManager.healthWorkerNumber
+        val binding = DialogShareprescBinding.inflate(LayoutInflater.from(activity))
+        val dialogView = binding.root
+        if (hasPrescription) {
+            var isHWNumberAvailable =false
+            var title =""
+            var body =""
+            if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
+                isHWNumberAvailable = true
+                title = activity.resources.getString(R.string.pdf_share_flow_title)
+                body = activity.resources.getString(R.string.pdf_share_flow_msg, hwMobileNumber)
+            }else{
+                title = activity.resources.getString(R.string.pdf_share_flow_title)
+                body = activity.resources.getString(R.string.enter_mobile_number_in_profile)
+            }
+            DialogUtils.showPrescriptionPDFShareDialog(activity, ContextCompat.getDrawable(activity, R.drawable.close_patient_svg), title, body,
+                activity.resources.getString(R.string.ok),
+                activity.resources.getString(R.string.cancel), false
+            ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK)
+                if (isHWNumberAvailable) {
+                    createAndSaveFile()
+                }
+            }
+        }
+        /* val editText = binding.editTextMobileno
+         val shareBtn = binding.sharebtn
+         val message = binding.message
+         val errorTextView = binding.errorTextView
+
+         editText.setText(hwMobileNumber)
+         editText.isEnabled = false
+         message.text = activity.getString(R.string.hw_mobile_number)
+         editText.hint = ""
+         if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
+             errorTextView.visibility = View.GONE
+             shareBtn.isEnabled = true
+         } else {
+             errorTextView.visibility = View.VISIBLE
+             shareBtn.isEnabled = false
          }
-            /* val editText = binding.editTextMobileno
-             val shareBtn = binding.sharebtn
-             val message = binding.message
-             val errorTextView = binding.errorTextView
 
-             editText.setText(hwMobileNumber)
-             editText.isEnabled = false
-             message.text = activity.getString(R.string.hw_mobile_number)
-             editText.hint = ""
-             if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
-                 errorTextView.visibility = View.GONE
-                 shareBtn.isEnabled = true
-             } else {
-                 errorTextView.visibility = View.VISIBLE
-                 shareBtn.isEnabled = false
-             }
-
-             val alertDialog = MaterialAlertDialogBuilder(activity)
-                 .setView(dialogView)
-                 .create().apply {
-                     window?.apply {
-                         setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
-                         addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
-                         setLayout(
-                             activity.resources.getDimensionPixelSize(R.dimen.internet_dialog_width),
-                             WindowManager.LayoutParams.WRAP_CONTENT
-                         )
-                     }
+         val alertDialog = MaterialAlertDialogBuilder(activity)
+             .setView(dialogView)
+             .create().apply {
+                 window?.apply {
+                     setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
+                     addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+                     setLayout(
+                         activity.resources.getDimensionPixelSize(R.dimen.internet_dialog_width),
+                         WindowManager.LayoutParams.WRAP_CONTENT
+                     )
                  }
-
-             shareBtn.setOnClickListener {
-                 if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
-                     alertDialog.dismiss()
-                     createAndSaveFile()
-                 } else errorTextView.visibility = View.VISIBLE
              }
-             alertDialog.show()
 
-         }*/
-     }
+         shareBtn.setOnClickListener {
+             if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
+                 alertDialog.dismiss()
+                 createAndSaveFile()
+             } else errorTextView.visibility = View.VISIBLE
+         }
+         alertDialog.show()
+
+     }*/
+    }
     private fun createAndSaveFile() {
         scope.launch {
             val visitStartDateDbValue = VisitsDAO().getVisitStartDate(visitUuid)
@@ -210,6 +211,7 @@ class ShowPrescriptionDataPdfShareDialog(
         val vital= formatVitalsAndDiagnostics(prescriptionData.vitals)
         val diagnostic= formatVitalsAndDiagnostics(prescriptionData.diagnostics)
         val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").toString())
+        val specialtyNotes = SpecialtyNotesProvider.getNotesFor(activity, drDetails?.specialization)
 
         val patientDataSections: Map<String, Map<String, String?>> = mapOf(
             "Vitals" to mapOf(PrescriptionDetailsDataKeys.Vitals.toString() to vital),
@@ -220,7 +222,12 @@ class ShowPrescriptionDataPdfShareDialog(
             "General Advice" to mapOf(PrescriptionDetailsDataKeys.GeneralAdvice.toString() to formatedAdvice),
             "Tests" to mapOf(PrescriptionDetailsDataKeys.Tests.toString() to prescriptionData.visitCompleteEncData?.get("Tests")),
             "Referred Specialist" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referred Specialist")),
-            "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date")))
+            "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
+        ) + if (!specialtyNotes.isNullOrEmpty()) {
+            mapOf("Notes & Precautions" to mapOf(PrescriptionDetailsDataKeys.NotesPrecautions.toString() to specialtyNotes.joinToString("\n") { "• $it" }))
+        } else {
+            emptyMap()
+        }
 
         val patientData = createPatientData(prescriptionData.patient)
 
@@ -229,21 +236,21 @@ class ShowPrescriptionDataPdfShareDialog(
         builder.setPatientDataSections(patientDataSections)
         builder.buildDynamicUI()
         drDetails?.let { builder.createSignatureBitmap(it) }
-       /* drDetails?.let { details ->
-            val font = details.fontOfSign
-            val text = details.textOfSign
-            if (font != null && text != null) {
-                builder.createSignatureBitmap(font, activity, text, details)
-            } else {
-                Log.e("SignatureBitmap", "Font or text is null, skipping signature generation")
-            }
-        }*/
+        /* drDetails?.let { details ->
+             val font = details.fontOfSign
+             val text = details.textOfSign
+             if (font != null && text != null) {
+                 builder.createSignatureBitmap(font, activity, text, details)
+             } else {
+                 Log.e("SignatureBitmap", "Font or text is null, skipping signature generation")
+             }
+         }*/
 
         builder.build(fileName.absolutePath)
         return builder
     }
 
-   private fun formatComplaintsWithBullets(complaintHtml: String): String {
+    private fun formatComplaintsWithBullets(complaintHtml: String): String {
         val regex = Regex("<b>(.*?)</b>")
         val ignoreList = listOf("Associated symptoms")
 
