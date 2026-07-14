@@ -86,7 +86,7 @@
                 android:src="@drawable/user_plus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
-            <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+            <com.ayudevices.cardiosynksdk.visualizer.AyuVisualizerView
                 android:id="@+id/ayuVisualizerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

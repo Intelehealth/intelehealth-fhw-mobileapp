@@ -59,29 +59,30 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
-        imagesPushDAO.loggedInUserProfileImagesPush();
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()
          * is called from the syncWorkManager.java class which executes the sync on the
          * worker thread (non-ui thread) and the image push is executing on the
          * ui thread.
+         *
+         * The image push itself is now triggered from the metadata push's completion
+         * callback (success or error) instead of a fixed delay, so it can no longer
+         * fire before the parent encounter/obs exists on the server - which was
+         * silently dropping images on slower syncs.
          */
         final Handler handler_background = new Handler(Looper.getMainLooper());
-        handler_background.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //sometimes syncing happening while logout
-                //added the checking to prevent appointment api call
-                if(!sessionManager.isLogout()){
-                    AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
-                }
-                Logger.logD(TAG, "Background Image Push Started");
-                imagesPushDAO.obsImagesPush();
-                Logger.logD(TAG, "Background Image Pull ended");
+        syncDAO.pushDataApi(success -> handler_background.post(() -> {
+            //sometimes syncing happening while logout
+            //added the checking to prevent appointment api call
+            if(!sessionManager.isLogout()){
+                AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
             }
-        }, 4000);
+            Logger.logD(TAG, "Background Image Push Started, metadata push success=" + success);
+            imagesPushDAO.obsImagesPush();
+            Logger.logD(TAG, "Background Image Push triggered");
+        }));
+        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
+        imagesPushDAO.loggedInUserProfileImagesPush();
 
         imagesPushDAO.deleteObsImage();
 
@@ -104,7 +105,20 @@ public class SyncUtils {
         SyncDAO syncDAO = new SyncDAO();
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         Logger.logD(TAG, "Push Started");
-        isSynced = syncDAO.pushDataApi();
+        /*
+         * Obs images (physical exam / additional docs) are pushed only once the
+         * encounter/obs metadata push actually completes (success or error) rather
+         * than after a fixed delay - a fixed delay can fire before the parent
+         * encounter/obs exists on the server, which silently drops the image
+         * upload and caused images to sometimes not show up on the webapp
+         * (doctor portal).
+         */
+        final Handler mainHandler = new Handler(Looper.getMainLooper());
+        isSynced = syncDAO.pushDataApi(success -> mainHandler.post(() -> {
+            Logger.logD(TAG, "Image Push Started, metadata push success=" + success);
+            imagesPushDAO.obsImagesPush();
+            Logger.logD(TAG, "Image Push triggered");
+        }));
         Logger.logD(TAG, "Push ended");
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -120,22 +134,6 @@ public class SyncUtils {
         imagesPushDAO.patientProfileImagesPush();
         //ui2.0
         imagesPushDAO.loggedInUserProfileImagesPush();
-//        imagesPushDAO.obsImagesPush();
-
-        /*
-         * Handler is added for pushing image in sync foreground
-         * to fix the issue of Phy exam and additional images not showing up sometimes
-         * on the webapp (doctor portal).
-         * */
-        final Handler handler_foreground = new Handler();
-        handler_foreground.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Logger.logD(TAG, "Image Push Started");
-                imagesPushDAO.obsImagesPush();
-                Logger.logD(TAG, "Image Pull ended");
-            }
-        }, 3000);
 
         imagesPushDAO.deleteObsImage();
 

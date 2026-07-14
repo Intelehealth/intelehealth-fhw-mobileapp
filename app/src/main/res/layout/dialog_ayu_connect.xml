@@ -47,7 +47,7 @@
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Digital Auscultation"
+                    android:text="@string/ayu_connect_title"
                     android:textSize="16sp"
                     android:textStyle="bold"
                     android:textColor="#1A1A2E" />
@@ -55,7 +55,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Optional • Not required based on symptoms"
+                    android:text="@string/ayu_connect_subtitle"
                     android:textSize="12sp"
                     android:textColor="#888888" />
             </LinearLayout>
@@ -65,7 +65,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Based on the patient's symptoms, auscultation is not required. You can skip this or choose to record if needed."
+            android:text="@string/ayu_connect_description"
             android:textSize="13sp"
             android:textColor="#555555"
             android:lineSpacingExtra="3dp"
@@ -101,7 +101,7 @@
                     android:id="@+id/tvStatus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Device Disconnected"
+                    android:text="@string/ayu_connect_status_disconnected"
                     android:textSize="13sp"
                     android:textStyle="bold"
                     android:textColor="#333333" />
@@ -110,7 +110,7 @@
                     android:id="@+id/tvStatusSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Scan to connect AyuSynk device"
+                    android:text="@string/ayu_connect_subtext_disconnected"
                     android:textSize="11sp"
                     android:textColor="#888888" />
             </LinearLayout>
@@ -120,7 +120,7 @@
                 android:id="@+id/btnScan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SCAN"
+                android:text="@string/ayu_connect_scan"
                 android:textSize="11sp"
                 android:textStyle="bold"
                 android:textColor="#5B8DEF"
@@ -174,17 +174,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Heart Sounds"
+                    android:text="@string/heartSounds"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="#1A1A2E" />
 
-                <!-- Count label: e.g. "2 / 4 recorded" -->
+                <!-- Count label set at runtime via sound_recorded_count_format, e.g. "2 / 4 recorded" -->
                 <TextView
                     android:id="@+id/tvHeartSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 / 4 recorded"
+                    android:text=""
                     android:textSize="12sp"
                     android:textColor="#888888"
                     android:layout_marginBottom="6dp"/>
@@ -245,17 +245,17 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lung Sounds"
+                    android:text="@string/lungSounds"
                     android:textSize="15sp"
                     android:textStyle="bold"
                     android:textColor="#1A1A2E" />
 
-                <!-- Count label: e.g. "6 / 16 recorded" -->
+                <!-- Count label set at runtime via sound_recorded_count_format, e.g. "6 / 16 recorded" -->
                 <TextView
                     android:id="@+id/tvLungSub"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 / 16 recorded"
+                    android:text=""
                     android:textSize="12sp"
                     android:textColor="#888888"
                     android:layout_marginBottom="6dp"/>
@@ -281,12 +281,12 @@
                 app:tint="#AAAAAA" />
         </LinearLayout>
 
-        <!-- Continue without recording -->
+        <!-- Shown only once every required sound (heart + lung) is recorded -->
         <Button
             android:id="@+id/btnContinue"
             android:layout_width="match_parent"
             android:layout_height="52dp"
-            android:text="Continue"
+            android:text="@string/next"
             android:visibility="gone"
             android:textSize="14sp"
             android:textStyle="bold"
@@ -299,7 +299,7 @@
             android:id="@+id/btnCancel"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:textSize="14sp"
             android:visibility="gone"
             android:textColor="#666666"

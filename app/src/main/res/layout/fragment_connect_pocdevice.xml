@@ -525,7 +525,7 @@
                                     android:textColor="#1B163A"
                                     android:textSize="@dimen/margin_12" />
 
-                                <com.ayudevice.ayusynksdk.battery.AyuBatteryMeterView
+                                <com.ayudevices.cardiosynksdk.battery.AyuBatteryMeterView
                                     android:id="@+id/customBatteryMeter"
                                     android:layout_width="50dp"
                                     android:layout_height="30dp"

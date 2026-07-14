@@ -50,20 +50,21 @@
                         android:layout_height="200dp"
                         android:layout_margin="10dp">
 
-                        <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                        <com.ayudevices.cardiosynksdk.visualizer.AyuVisualizerView
                             android:id="@+id/waveView"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@drawable/bg_digital_lablel" />
+                            android:background="@drawable/bg_digital_lablel"
+                            app:streamColor="#2196F3"
+                            app:recordColor="#2196F3"
+                            app:gridColor="#CCCCCC"
+                            app:xAxisColor="#000000"
+                            app:yAxisColor="#000000"
+                            app:strokeWidth="2dp" />
 
                     </FrameLayout>
 
-                  <!--  <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
-                        android:id="@+id/waveView"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_margin="10dp"
-                        android:background="@drawable/bg_digital_lablel" />-->
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -290,7 +291,7 @@
                         </LinearLayout>
 
 
-                        <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                        <com.ayudevices.cardiosynksdk.visualizer.AyuVisualizerView
                             android:id="@+id/waveView_Play"
                             android:layout_width="match_parent"
                             android:layout_height="250dp"

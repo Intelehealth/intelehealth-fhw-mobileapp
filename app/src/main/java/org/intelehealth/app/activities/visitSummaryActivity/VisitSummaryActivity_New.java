@@ -115,12 +115,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
-import com.ayudevice.ayusynksdk.playback.AyuFileGenerator;
-import com.ayudevice.ayusynksdk.report.HeartSoundData;
-import com.ayudevice.ayusynksdk.report.SoundFile;
-import com.ayudevice.ayusynksdk.report.constants.LocationType;
-import com.ayudevice.ayusynksdk.report.listener.DiagnosisReportUpdateListener;
+import com.ayudevices.cardiosynksdk.AyuDevice;
+import com.ayudevices.cardiosynksdk.playback.AyuFileGenerator;
+import com.ayudevices.cardiosynksdk.report.HeartSoundData;
+import com.ayudevices.cardiosynksdk.report.SoundFile;
+import com.ayudevices.cardiosynksdk.report.constants.LocationType;
+import com.ayudevices.cardiosynksdk.report.listener.DiagnosisReportUpdateListener;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -560,18 +560,45 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 (mBinding, VisitSummaryActivity_New.this, null,
                         this, encounterVitals, mCommonVisitData);
         visitDiagnosticsSummary.initViews();
-        if (mLiveHba1cValue != null && !mLiveHba1cValue.isEmpty()) {
-            mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue
-                    .postDelayed(() -> {
-                        mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue
-                                .setText(mLiveHba1cValue);
-                        Log.d(TAG, "onCreate: HbA1c applied → " + mLiveHba1cValue);
-                    }, 300); // 300ms gives VisitDiagnosticsSummary time to finish
+
+// ── DEBUG: verify HbA1c in tbl_obs ───────────────────────────────────
+        if (BuildConfig.DEBUG) {
+            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
+                try {
+                    android.database.sqlite.SQLiteDatabase db =
+                            IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+
+                    android.database.Cursor cursor = db.rawQuery(
+                            "SELECT uuid, value, syncd FROM tbl_obs " +
+                                    "WHERE encounteruuid = ? AND conceptuuid = ? AND voided != '1' " +
+                                    "ORDER BY rowid DESC LIMIT 1",
+                            new String[]{ encounterVitals, UuidDictionary.DIABETES_HBA1C });
+
+                    if (cursor != null && cursor.moveToFirst()) {
+                        String dbUuid  = cursor.getString(0);
+                        String dbVal   = cursor.getString(1);
+                        String dbSyncd = cursor.getString(2);
+                        Log.d(TAG, "✅ HbA1c in tbl_obs:"
+                                + " value=" + dbVal
+                                + " uuid=" + dbUuid
+                                + " syncd=" + dbSyncd);
+                        if (dbVal == null || dbVal.isEmpty()) {
+                            Log.e(TAG, "❌ HbA1c row exists but value is EMPTY");
+                        }
+                    } else {
+                        Log.e(TAG, "❌ HbA1c NOT FOUND in tbl_obs for encounter=" + encounterVitals);
+                    }
+                    if (cursor != null) cursor.close();
+
+                    Log.d(TAG, "   intent extra mLiveHba1cValue=" + mLiveHba1cValue);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "DB check error: " + e.getMessage());
+                }
+            }, 1000);
         }
         setupVisibilityForSpecificFlavor();
         setupDiagnosticsConfig();
-
-
     }
 
     private void setupVisibilityForSpecificFlavor() {
@@ -802,11 +829,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
                 isPastVisit = intent.getBooleanExtra("pastVisit", false);
                 mCommonVisitData.setPastVisit(isPastVisit);
-
-
             }
-
-
             mSharedPreference = this.getSharedPreferences("visit_summary", Context.MODE_PRIVATE);
             try {
                 hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
@@ -3303,6 +3326,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         positive_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
+            // Disable immediately on confirm so a slow tap/double-tap (or the
+            // 4s delay before the actual sync call below) can't fire a
+            // second visitUploadBlock() and send the same visit twice.
+            uploadButton.setEnabled(false);
+            uploadButton.setAlpha(0.5f);
             visitUploadBlock();
         });
 
@@ -3484,6 +3512,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             setAppointmentButtonStatus();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
+                            // Visit is sent — hide Send Visit for good so it can't be sent again.
+                            uploadButton.setVisibility(View.GONE);
+
                             isSynedFlag = "1";
                             showVisitID();
                             CustomLog.d("visitUUID", "showVisitID: " + visitUUID);
@@ -3507,6 +3538,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     getResources().getString(R.string.okay));*/
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                            // Sync failed — let the user retry sending.
+                            uploadButton.setEnabled(true);
+                            uploadButton.setAlpha(1f);
                         }
                         uploaded = true;
                     }
@@ -3515,9 +3549,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 add_additional_doc.setVisibility(View.GONE);
                 fetchingIntent();
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                // Offline — send never happened, let the user retry.
+                uploadButton.setEnabled(true);
+                uploadButton.setAlpha(1f);
             }
         } else {
             showSelectSpeciliatyErrorDialog();
+            // Speciality missing — send never happened, let the user retry.
+            uploadButton.setEnabled(true);
+            uploadButton.setAlpha(1f);
         }
     }
 
@@ -3587,7 +3627,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     Log.e("FLOW", "Invalid recordingStatus for: " + item.position);
                     continue;
                 }
-                short[] audio = AyuSynk.getBleInstance().getAudioData(recStatus);
+                short[] audio = AyuDevice.getBleInstance().getAudioData(recStatus);
                 if (audio == null || audio.length == 0) {
                     Log.e("FLOW", "Audio NULL for: " + item.position   + " | recStatus=" + recStatus);
                     continue;
@@ -3610,7 +3650,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     continue;
                 }
 
-                short[] audio = AyuSynk.getBleInstance().getAudioData(recStatus);
+                short[] audio = AyuDevice.getBleInstance().getAudioData(recStatus);
                 if (audio == null || audio.length == 0) {
                     Log.e("FLOW", "Audio NULL for: " + item.position + " | recStatus=" + recStatus);
                     continue;
@@ -3683,8 +3723,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             // after each AI report is generated, ensuring strict one-at-a-time
             // processing. This prevents the SDK Timer thread from seeing list
             // modifications while iterating → no ConcurrentModificationException.
-            AyuSynk.getBleInstance().setLogsListener(s -> Log.d("AYUSYNK_LOG", s));
-            AyuSynk.getBleInstance().setDiagnosisReportUpdateListener(
+            AyuDevice.getBleInstance().setLogsListener(s -> Log.d("AYUSYNK_LOG", s));
+            AyuDevice.getBleInstance().setDiagnosisReportUpdateListener(
                     new DiagnosisReportUpdateListener() {
                         @Override
                         public void reportRequestAdded(SoundFile soundFile) {
@@ -3710,6 +3750,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             // before the next generateDiagnosisReport call starts
                             new Handler(android.os.Looper.getMainLooper()).postDelayed(() ->
                                     processNextInQueue(), 500);
+                        }
+
+                        @Override
+                        public void ecgReportGenerated(com.ayudevices.cardiosynksdk.report.ReportData reportData) {
+                            // Not used: this flow only handles heart/lung sound reports
                         }
 
                         @Override
@@ -7062,8 +7107,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             if (type != null && type.equalsIgnoreCase("lung")) {
                 // Lung sound
-                com.ayudevice.ayusynksdk.report.LungSoundData lungSoundData =
-                        new com.ayudevice.ayusynksdk.report.LungSoundData(
+                com.ayudevices.cardiosynksdk.report.LungSoundData lungSoundData =
+                        new com.ayudevices.cardiosynksdk.report.LungSoundData(
                                 file1,
                                 (LocationType.Lung) location);
                 soundFile = new SoundFile<>(lungSoundData);
@@ -7079,7 +7124,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             Log.d("AI_FLOW", "Sending to SDK: " + trackerId
                     + " | " + type + " | " + position);
 
-            AyuSynk.getBleInstance().generateDiagnosisReport(soundFile);
+            AyuDevice.getBleInstance().generateDiagnosisReport(soundFile);
 
         } catch (IOException e) {
             Log.e("AI_FLOW", "File save error: " + e.getMessage());

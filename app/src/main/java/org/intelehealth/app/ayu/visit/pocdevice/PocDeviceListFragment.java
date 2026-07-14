@@ -11,12 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
-import com.ayudevice.ayusynksdk.ble.Device;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceConnectionState;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceStrength;
-import com.ayudevice.ayusynksdk.ble.listener.AyuDeviceListener;
-import com.ayudevice.ayusynksdk.ble.listener.DeviceScanListener;
+import com.ayudevices.cardiosynksdk.AyuDevice;
+import com.ayudevices.cardiosynksdk.ble.Device;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceConnectionState;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceStrength;
+import com.ayudevices.cardiosynksdk.ble.listener.AyuDeviceListener;
+import com.ayudevices.cardiosynksdk.ble.listener.DeviceScanListener;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
@@ -58,9 +58,9 @@ public class PocDeviceListFragment extends Fragment implements DeviceScanListene
 
         deviceListAdapter = new DeviceListAdapter(getContext(), this);
         binding.deviceList.setAdapter(deviceListAdapter);
-        AyuSynk.getBleInstance().startScan(this);
-        AyuSynk.getBleInstance().setDeviceScanListener(this);
-        AyuSynk.getBleInstance().setAyuDeviceListener(new AyuDeviceListener() {
+        AyuDevice.getBleInstance().startScan(this);
+        AyuDevice.getBleInstance().setDeviceScanListener(this);
+        AyuDevice.getBleInstance().setAyuDeviceListener(new AyuDeviceListener() {
             @Override
             public void deviceConnectionStrength(DeviceStrength strength) {
 
@@ -109,13 +109,13 @@ public class PocDeviceListFragment extends Fragment implements DeviceScanListene
 
     @Override
     public void onBLEConnectClicked(DeviceListObject device) {
-        AyuSynk.getBleInstance().connect(device.getBleAddress());
+        AyuDevice.getBleInstance().connect(device.getBleAddress());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        AyuSynk.getBleInstance().stopScan();
+        AyuDevice.getBleInstance().stopScan();
         binding = null;
     }
 }

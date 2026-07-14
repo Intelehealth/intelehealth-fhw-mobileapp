@@ -19,12 +19,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
-import com.ayudevice.ayusynksdk.ble.Device;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceConnectionState;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceStrength;
-import com.ayudevice.ayusynksdk.ble.listener.AyuDeviceListener;
-import com.ayudevice.ayusynksdk.ble.listener.DeviceScanListener;
+import com.ayudevices.cardiosynksdk.AyuDevice;
+import com.ayudevices.cardiosynksdk.ble.Device;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceConnectionState;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceStrength;
+import com.ayudevices.cardiosynksdk.ble.listener.AyuDeviceListener;
+import com.ayudevices.cardiosynksdk.ble.listener.DeviceScanListener;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
@@ -221,7 +221,7 @@ public class AyuConnectDialogFragment extends DialogFragment
             // If lung is currently active, this click switches to heart
             if (!isDeviceConnected()) {
                 Toast.makeText(getContext(),
-                        "Please connect AyuSynk device first", Toast.LENGTH_SHORT).show();
+                        R.string.ayu_connect_device_required, Toast.LENGTH_SHORT).show();
                 return;
             }
             // Visually switch active state
@@ -237,7 +237,7 @@ public class AyuConnectDialogFragment extends DialogFragment
         cardLung.setOnClickListener(v -> {
             if (!isDeviceConnected()) {
                 Toast.makeText(getContext(),
-                        "Please connect AyuSynk device first", Toast.LENGTH_SHORT).show();
+                        R.string.ayu_connect_device_required, Toast.LENGTH_SHORT).show();
                 return;
             }
             // Visually switch active state
@@ -259,7 +259,7 @@ public class AyuConnectDialogFragment extends DialogFragment
             dismiss();
         });
 
-        renderState(AyuSynk.getBleInstance().isDeviceConnected());
+        renderState(AyuDevice.getBleInstance().isDeviceConnected());
     }
 
     /**
@@ -290,20 +290,20 @@ public class AyuConnectDialogFragment extends DialogFragment
     @Override
     public void onResume() {
         super.onResume();
-        AyuSynk.getBleInstance().setAyuDeviceListener(this);
-        renderState(AyuSynk.getBleInstance().isDeviceConnected());
+        AyuDevice.getBleInstance().setAyuDeviceListener(this);
+        renderState(AyuDevice.getBleInstance().isDeviceConnected());
         loadAndDisplayCounts();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        AyuSynk.getBleInstance().setAyuDeviceListener(null);
+        AyuDevice.getBleInstance().setAyuDeviceListener(null);
     }
 
     public void onDismiss(@NonNull DialogInterface dialog) {
         postResult(isDeviceConnected());
-        try { AyuSynk.getBleInstance().stopScan(); } catch (Exception ignored) {}
+        try { AyuDevice.getBleInstance().stopScan(); } catch (Exception ignored) {}
         super.onDismiss(dialog);
     }
 
@@ -342,6 +342,21 @@ public class AyuConnectDialogFragment extends DialogFragment
 
         updateHeartCard(heartCount);
         updateLungCard(lungCount);
+        updateContinueButtonVisibility(heartCount, lungCount);
+    }
+
+    /**
+     * "Next" only appears once every sound this protocol requires has been
+     * recorded (heart AND lung, whichever totals are non-zero) — while any
+     * are still remaining, it stays hidden so the user can't skip past
+     * unrecorded positions.
+     */
+    private void updateContinueButtonVisibility(int heartCount, int lungCount) {
+        if (btnContinue == null) return;
+        boolean heartDone = heartTotal <= 0 || heartCount >= heartTotal;
+        boolean lungDone = lungTotal <= 0 || lungCount >= lungTotal;
+        boolean allSoundsDone = (heartTotal > 0 || lungTotal > 0) && heartDone && lungDone;
+        btnContinue.setVisibility(allSoundsDone ? View.VISIBLE : View.GONE);
     }
 
     private void updateHeartCard(int count) {
@@ -349,8 +364,8 @@ public class AyuConnectDialogFragment extends DialogFragment
 
         // If heartTotal is 0 (not yet known), show just the count
         String label = heartTotal > 0
-                ? count + " / " + heartTotal + " recorded"
-                : count + " recorded";
+                ? getString(R.string.sound_recorded_count_format, count, heartTotal)
+                : getString(R.string.sound_recorded_count_only_format, count);
 
         tvHeartSub.setText(label);
         pbHeart.setMax(heartTotal > 0 ? heartTotal : 1);
@@ -366,8 +381,8 @@ public class AyuConnectDialogFragment extends DialogFragment
         if (tvLungSub == null || pbLung == null) return;
 
         String label = lungTotal > 0
-                ? count + " / " + lungTotal + " recorded"
-                : count + " recorded";
+                ? getString(R.string.sound_recorded_count_format, count, lungTotal)
+                : getString(R.string.sound_recorded_count_only_format, count);
 
         tvLungSub.setText(label);
         pbLung.setMax(lungTotal > 0 ? lungTotal : 1);
@@ -382,7 +397,7 @@ public class AyuConnectDialogFragment extends DialogFragment
     // ── Helpers ───────────────────────────────────────────────────────────────
 
     private boolean isDeviceConnected() {
-        return AyuSynk.getBleInstance().isDeviceConnected()
+        return AyuDevice.getBleInstance().isDeviceConnected()
                 == DeviceConnectionState.DEVICE_CONNECTED;
     }
 
@@ -408,10 +423,10 @@ public class AyuConnectDialogFragment extends DialogFragment
         boolean connected = state == DeviceConnectionState.DEVICE_CONNECTED;
         viewStatusDot.setBackgroundResource(connected
                 ? R.drawable.bg_dot_connected : R.drawable.bg_dot_disconnected);
-        tvStatus.setText(connected ? "Device Connected" : "Device Disconnected");
+        tvStatus.setText(connected ? R.string.ayu_connect_status_connected : R.string.ayu_connect_status_disconnected);
         tvStatusSub.setText(connected
-                ? "AyuSynk ready — tap a sound type below"
-                : "Scan to connect AyuSynk device");
+                ? R.string.ayu_connect_subtext_connected
+                : R.string.ayu_connect_subtext_disconnected);
         btnScan.setVisibility(connected ? View.GONE : View.VISIBLE);
         cardHeart.setAlpha(connected ? 1.0f : 0.5f);
         cardLung.setAlpha(connected ? 1.0f : 0.5f);
@@ -420,8 +435,8 @@ public class AyuConnectDialogFragment extends DialogFragment
 
     private void startScanFlow() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S && !checkLocation()) return;
-        if (!AyuSynk.getBleInstance().isAllBluetoothPermissionGranted()) {
-            AyuSynk.getBleInstance().requestBluetoothPermission(getActivity(), 11);
+        if (!AyuDevice.getBleInstance().isAllBluetoothPermissionGranted()) {
+            AyuDevice.getBleInstance().requestBluetoothPermission(getActivity(), 11);
             return;
         }
         BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
@@ -433,21 +448,21 @@ public class AyuConnectDialogFragment extends DialogFragment
             Toast.makeText(getContext(), R.string.turn_on_bluetooth, Toast.LENGTH_SHORT).show();
             return;
         }
-        tvStatus.setText("Scanning...");
+        tvStatus.setText(R.string.ayu_connect_scanning);
         pbScanning.setVisibility(View.VISIBLE);
         btnScan.setVisibility(View.GONE);
-        AyuSynk.getBleInstance().startScan(this);
-        AyuSynk.getBleInstance().setDeviceScanListener(this);
+        AyuDevice.getBleInstance().startScan(this);
+        AyuDevice.getBleInstance().setDeviceScanListener(this);
     }
 
     private boolean checkLocation() {
-        if (!AyuSynk.getBleInstance().isLocationEnabled()) {
+        if (!AyuDevice.getBleInstance().isLocationEnabled()) {
             new AlertDialog.Builder(requireContext())
-                    .setTitle("Location services disabled")
-                    .setMessage("BLE scanning requires location services on Android < 12.")
-                    .setPositiveButton("Enable", (d, w) -> startActivity(
+                    .setTitle(R.string.ayu_connect_location_disabled_title)
+                    .setMessage(R.string.ayu_connect_location_disabled_message)
+                    .setPositiveButton(R.string.ayu_connect_enable, (d, w) -> startActivity(
                             new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
-                    .setNegativeButton("Cancel", (d, w) -> d.cancel())
+                    .setNegativeButton(R.string.cancel, (d, w) -> d.cancel())
                     .show();
             return false;
         }
@@ -479,8 +494,8 @@ public class AyuConnectDialogFragment extends DialogFragment
     @Override
     public void onDeviceFound(Device device) {
         if (device != null && device.getAddress() != null) {
-            AyuSynk.getBleInstance().connect(device.getAddress());
-            AyuSynk.getBleInstance().stopScan();
+            AyuDevice.getBleInstance().connect(device.getAddress());
+            AyuDevice.getBleInstance().stopScan();
         }
     }
 
@@ -499,7 +514,7 @@ public class AyuConnectDialogFragment extends DialogFragment
             getActivity().runOnUiThread(() -> {
                 pbScanning.setVisibility(View.GONE);
                 btnScan.setVisibility(View.VISIBLE);
-                tvStatus.setText("Scan failed — try again");
+                tvStatus.setText(R.string.ayu_connect_scan_failed);
             });
     }
 }

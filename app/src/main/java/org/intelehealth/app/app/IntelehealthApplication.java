@@ -15,7 +15,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
+import com.ayudevices.cardiosynksdk.AyuDevice;
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
@@ -97,7 +97,7 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
         configureCrashReporting();
         //POC AYUSYNCK initialize
-        AyuSynk.init(getApplicationContext());
+        AyuDevice.init(getApplicationContext());
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             FirebaseCrashlytics.getInstance().recordException(throwable);

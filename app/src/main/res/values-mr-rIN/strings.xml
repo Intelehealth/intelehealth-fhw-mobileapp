@@ -1553,6 +1553,24 @@
     <string name="re_Record">पुन्हा रेकॉर्ड करा</string>
     <string name="digitalAusucultation">डिजिटल ऑस्कल्टेशन</string>
 
+    <!--AYU CONNECT DIALOG (dialog_ayu_connect.xml)-->
+    <string name="ayu_connect_title">डिजिटल ऑस्कल्टेशन</string>
+    <string name="ayu_connect_subtitle">पर्यायी • लक्षणांनुसार आवश्यक नाही</string>
+    <string name="ayu_connect_description">रुग्णाच्या लक्षणांनुसार, ऑस्कल्टेशन आवश्यक नाही. तुम्ही हे वगळू शकता किंवा आवश्यक असल्यास रेकॉर्ड करणे निवडू शकता.</string>
+    <string name="ayu_connect_status_disconnected">डिव्हाइस डिस्कनेक्ट केलेले आहे</string>
+    <string name="ayu_connect_status_connected">डिव्हाइस कनेक्ट केलेले आहे</string>
+    <string name="ayu_connect_subtext_disconnected">AyuSynk डिव्हाइसशी कनेक्ट करण्यासाठी स्कॅन करा</string>
+    <string name="ayu_connect_subtext_connected">AyuSynk तयार आहे — खालील आवाजाचा प्रकार निवडा</string>
+    <string name="ayu_connect_scan">स्कॅन</string>
+    <string name="ayu_connect_scanning">स्कॅन करत आहे…</string>
+    <string name="ayu_connect_scan_failed">स्कॅन अयशस्वी — पुन्हा प्रयत्न करा</string>
+    <string name="ayu_connect_device_required">कृपया प्रथम AyuSynk डिव्हाइस कनेक्ट करा</string>
+    <string name="ayu_connect_location_disabled_title">स्थान सेवा अक्षम आहे</string>
+    <string name="ayu_connect_location_disabled_message">Android &lt; 12 वर BLE स्कॅनिंगसाठी स्थान सेवा आवश्यक आहे.</string>
+    <string name="ayu_connect_enable">सक्षम करा</string>
+    <string name="sound_recorded_count_format">%1$d / %2$d रेकॉर्ड केले</string>
+    <string name="sound_recorded_count_only_format">%1$d रेकॉर्ड केले</string>
+
 
 
 </resources>

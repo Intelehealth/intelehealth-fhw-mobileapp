@@ -13,9 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.DialogFragment;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceConnectionState;
-import com.ayudevice.ayusynksdk.playback.listener.RecorderListener;
+import com.ayudevices.cardiosynksdk.AyuDevice;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceConnectionState;
+import com.ayudevices.cardiosynksdk.playback.listener.RecorderListener;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
@@ -138,16 +138,16 @@ public class SoundDialogFragment extends DialogFragment implements RecorderListe
     }
 
     private void startRecording() {
-        if (AyuSynk.getBleInstance().isDeviceConnected()
+        if (AyuDevice.getBleInstance().isDeviceConnected()
                 != DeviceConnectionState.DEVICE_CONNECTED) {
 
             Toast.makeText(getContext(), "Device not connected", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        AyuSynk.getBleInstance().startRecording();
-        AyuSynk.getBleInstance().setRecorderListener(this);
-        AyuSynk.getBleInstance().setAyuVisualizerView(binding.waveView);
+        AyuDevice.getBleInstance().startRecording();
+        AyuDevice.getBleInstance().setRecorderListener(this);
+        AyuDevice.getBleInstance().setAyuVisualizerView(binding.waveView);
 
         startTime = System.currentTimeMillis();
         timerHandler.post(timerRunnable);
@@ -178,7 +178,7 @@ public class SoundDialogFragment extends DialogFragment implements RecorderListe
     @Override
     public void recordingComplete(int status) {
 
-        short[] audioShorts = AyuSynk.getBleInstance().getAudioData(status);
+        short[] audioShorts = AyuDevice.getBleInstance().getAudioData(status);
         recordingStatus = status;
 
         if (audioShorts != null) {

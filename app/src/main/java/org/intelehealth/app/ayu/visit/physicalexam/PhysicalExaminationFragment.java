@@ -164,6 +164,19 @@ public class PhysicalExaminationFragment extends Fragment  {
                         skipPastSoundNodesAndAdvance(examType);
                     }
             );
+            getParentFragmentManager().setFragmentResultListener(
+                    SoundFragment.RESULT_CANCELLED, this,
+                    (key, bundle) -> {
+                        String examType = bundle.getString("type", "heart");
+                        VisitCreationActivity vca = (VisitCreationActivity) requireActivity();
+                        isSoundFlowCompleted = false;
+                        if (!hasRecordedSoundTypeInDb(vca, examType)) {
+                            vca.completedSoundTypes.remove(examType);
+                        }
+                        Log.d("SOUND_FLOW", "sound_cancelled: type=" + examType
+                                + " completedSoundTypes=" + vca.completedSoundTypes);
+                    }
+            );
             RecyclerView recyclerView = view.findViewById(R.id.rcv_questions);
             mRecyclerView = recyclerView;
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(requireActivity());

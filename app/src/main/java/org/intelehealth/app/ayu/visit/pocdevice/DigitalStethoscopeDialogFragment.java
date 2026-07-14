@@ -16,9 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceConnectionState;
-import com.ayudevice.ayusynksdk.playback.listener.RecorderListener;
+import com.ayudevices.cardiosynksdk.AyuDevice;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceConnectionState;
+import com.ayudevices.cardiosynksdk.playback.listener.RecorderListener;
 
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.databinding.FragmentAorticBinding; // You can reuse or create a new layout
@@ -124,13 +124,13 @@ public class DigitalStethoscopeDialogFragment extends DialogFragment implements 
 
     private void setupRecordingLogic() {
         mBinding.btnStartRecording.setOnClickListener(v -> {
-            if (AyuSynk.getBleInstance().isDeviceConnected() != DeviceConnectionState.DEVICE_CONNECTED) {
+            if (AyuDevice.getBleInstance().isDeviceConnected() != DeviceConnectionState.DEVICE_CONNECTED) {
                 Toast.makeText(getContext(), "Device not connected", Toast.LENGTH_SHORT).show();
                 return;
             }
-            AyuSynk.getBleInstance().startRecording();
-            AyuSynk.getBleInstance().setRecorderListener(this);
-            AyuSynk.getBleInstance().setAyuVisualizerView(mBinding.waveView);
+            AyuDevice.getBleInstance().startRecording();
+            AyuDevice.getBleInstance().setRecorderListener(this);
+            AyuDevice.getBleInstance().setAyuVisualizerView(mBinding.waveView);
             startTime = System.currentTimeMillis();
             timerHandler.post(timerRunnable);
             mBinding.llButtonStart.setVisibility(View.GONE);
@@ -190,13 +190,13 @@ public class DigitalStethoscopeDialogFragment extends DialogFragment implements 
         Log.d("Ayu", "recordingComplete = " + status);
         if (getActivity() == null) return;
         getActivity().runOnUiThread(() -> {
-            short[] audioShorts = AyuSynk.getBleInstance().getAudioData(status);
+            short[] audioShorts = AyuDevice.getBleInstance().getAudioData(status);
             this.recordingStatus = status;
             if (audioShorts != null && audioShorts.length > 0) {
                 byte[] audioBytes = shortToByte(audioShorts);
                 lastRecordedFilePath = saveToFile(audioBytes);
                 if (!isAdded() || getActivity() == null || mBinding == null) return;
-                AyuSynk.getBleInstance().setAyuVisualizerView(null);
+                AyuDevice.getBleInstance().setAyuVisualizerView(null);
                 mBinding.llButtonStop.setVisibility(GONE);
                 mBinding.llButtonStart.setVisibility(GONE);
                 mBinding.llButtonSaveRecordingMain.setVisibility(VISIBLE);

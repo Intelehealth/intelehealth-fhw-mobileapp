@@ -42,7 +42,7 @@
                         android:textColor="@color/colorPrimary"
                         android:textSize="18sp"
                         android:textStyle="bold" />
-                    <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                    <com.ayudevices.cardiosynksdk.visualizer.AyuVisualizerView
                         android:id="@+id/waveView"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
@@ -248,7 +248,7 @@
                         </LinearLayout>
 
 
-                        <com.ayudevice.ayusynksdk.visualizer.AyuVisualizerView
+                        <com.ayudevices.cardiosynksdk.visualizer.AyuVisualizerView
                             android:id="@+id/waveView_Play"
                             android:layout_width="match_parent"
                             android:layout_height="250dp"

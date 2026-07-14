@@ -499,7 +499,19 @@ public class SyncDAO {
     }
 
 
+    /**
+     * Callback invoked once the encounter/obs/visit metadata push to the server has
+     * actually completed (success or error), instead of guessing with a fixed delay.
+     */
+    public interface PushDataCallback {
+        void onPushComplete(boolean success);
+    }
+
     public boolean pushDataApi() {
+        return pushDataApi(null);
+    }
+
+    public boolean pushDataApi(PushDataCallback callback) {
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         PatientsDAO patientsDAO = new PatientsDAO();
         VisitsDAO visitsDAO = new VisitsDAO();
@@ -615,6 +627,9 @@ public class SyncDAO {
                             } catch (Exception e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);
                             }
+                            if (callback != null) {
+                                callback.onPushComplete(true);
+                            }
                         }
 
                         @Override
@@ -626,6 +641,9 @@ public class SyncDAO {
                                                     .getPackageName())
                                             .putExtra(AppConstants.SYNC_INTENT_DATA_KEY,
                                                     AppConstants.SYNC_FAILED));
+                            if (callback != null) {
+                                callback.onPushComplete(false);
+                            }
                         }
                     });
             sessionManager.setPullSyncFinished(true);
@@ -634,6 +652,10 @@ public class SyncDAO {
                             .setPackage(IntelehealthApplication.getAppContext().getPackageName())
                             .putExtra(AppConstants.SYNC_INTENT_DATA_KEY,
                                     AppConstants.SYNC_PUSH_DATA_DONE));
+        } else if (callback != null) {
+            // Nothing to push (no pending visits/encounters/etc) - there is no
+            // metadata push to wait on, so any pending obs images can be pushed now.
+            callback.onPushComplete(true);
         }
 
         return isSucess[0];

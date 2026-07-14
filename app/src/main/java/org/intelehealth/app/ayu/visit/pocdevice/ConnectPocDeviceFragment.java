@@ -24,12 +24,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
-import com.ayudevice.ayusynksdk.AyuSynk;
-import com.ayudevice.ayusynksdk.ble.Device;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceConnectionState;
-import com.ayudevice.ayusynksdk.ble.constants.DeviceStrength;
-import com.ayudevice.ayusynksdk.ble.listener.AyuDeviceListener;
-import com.ayudevice.ayusynksdk.ble.listener.DeviceScanListener;
+import com.ayudevices.cardiosynksdk.AyuDevice;
+import com.ayudevices.cardiosynksdk.ble.Device;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceConnectionState;
+import com.ayudevices.cardiosynksdk.ble.constants.DeviceStrength;
+import com.ayudevices.cardiosynksdk.ble.listener.AyuDeviceListener;
+import com.ayudevices.cardiosynksdk.ble.listener.DeviceScanListener;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
@@ -135,12 +135,12 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
             }
         });
         binding.btnDisconnect.setOnClickListener(view1 -> {
-            AyuSynk.getBleInstance().disconnect();
+            AyuDevice.getBleInstance().disconnect();
         });
 
         binding.btnTryagain.setOnClickListener(view1 -> {
             //navigate_pocListfragment();
-           // AyuSynk.getBleInstance().startScan();
+           // AyuDevice.getBleInstance().startScan();
             setBluetoothOn();
         });
         binding.llHeartSounds.setOnClickListener(view1 -> {
@@ -241,9 +241,9 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("TAG", "onResume: " + AyuSynk.getBleInstance().isDeviceConnected());
-        AyuSynk.getBleInstance().setAyuDeviceListener(this);
-        if (AyuSynk.getBleInstance().isDeviceConnected() == DeviceConnectionState.DEVICE_CONNECTED) {
+        Log.d("TAG", "onResume: " + AyuDevice.getBleInstance().isDeviceConnected());
+        AyuDevice.getBleInstance().setAyuDeviceListener(this);
+        if (AyuDevice.getBleInstance().isDeviceConnected() == DeviceConnectionState.DEVICE_CONNECTED) {
             onDeviceConnected();
         } else {
             onDeviceDisconnected();
@@ -253,13 +253,13 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
     @Override
     public void onPause() {
         super.onPause();
-        AyuSynk.getBleInstance().setAyuDeviceListener(null);
+        AyuDevice.getBleInstance().setAyuDeviceListener(null);
     }
 
 
     private void onDeviceConnected() {
-        setDeviceStrength(AyuSynk.getBleInstance().getDeviceStrength());
-        deviceBatteryUpdate(AyuSynk.getBleInstance().getCurrentBatteryLevel());
+        setDeviceStrength(AyuDevice.getBleInstance().getDeviceStrength());
+        deviceBatteryUpdate(AyuDevice.getBleInstance().getCurrentBatteryLevel());
         binding.cvSelect.setTag(2);
         // binding.cvSelect.setVisibility(View.GONE);
         binding.btBleConnectdevice.setVisibility(GONE);
@@ -320,8 +320,8 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
             return;
         } else {
             binding.lltryagain.setVisibility(GONE);
-            AyuSynk.getBleInstance().startScan(this);
-            AyuSynk.getBleInstance().setDeviceScanListener(this);
+            AyuDevice.getBleInstance().startScan(this);
+            AyuDevice.getBleInstance().setDeviceScanListener(this);
 
         }
     }
@@ -346,15 +346,15 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
         // Check if Location services are on because they are required to make scanning work for SDK < 31
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
             if (checkLocationServices()) {
-                if (!AyuSynk.getBleInstance().isAllBluetoothPermissionGranted())
-                    AyuSynk.getBleInstance().requestBluetoothPermission(getActivity(), 11);
+                if (!AyuDevice.getBleInstance().isAllBluetoothPermissionGranted())
+                    AyuDevice.getBleInstance().requestBluetoothPermission(getActivity(), 11);
                 else
                     setBluetoothOn();
 
             }
         } else {
-            if (!AyuSynk.getBleInstance().isAllBluetoothPermissionGranted()) {
-                AyuSynk.getBleInstance().requestBluetoothPermission(getActivity(), 11);
+            if (!AyuDevice.getBleInstance().isAllBluetoothPermissionGranted()) {
+                AyuDevice.getBleInstance().requestBluetoothPermission(getActivity(), 11);
 
             } else {
                 setBluetoothOn();
@@ -365,7 +365,7 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
     }
 
     private boolean checkLocationServices() {
-        if (!AyuSynk.getBleInstance().isLocationEnabled()) {
+        if (!AyuDevice.getBleInstance().isLocationEnabled()) {
             new AlertDialog.Builder(requireContext())
                     .setTitle("Location services are not enabled")
                     .setMessage("Scanning for Bluetooth peripherals requires locations services to be enabled.") // Want to enable?
@@ -419,8 +419,8 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
     @Override
     public void onDeviceFound(Device device) {
         if (device != null && device.getAddress() != null) {
-            AyuSynk.getBleInstance().connect(device.getAddress());
-            AyuSynk.getBleInstance().stopScan();
+            AyuDevice.getBleInstance().connect(device.getAddress());
+            AyuDevice.getBleInstance().stopScan();
         }
     }
 
@@ -442,7 +442,7 @@ public class ConnectPocDeviceFragment extends Fragment implements AyuDeviceListe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        AyuSynk.getBleInstance().stopScan();
+        AyuDevice.getBleInstance().stopScan();
     }
 
     @Override

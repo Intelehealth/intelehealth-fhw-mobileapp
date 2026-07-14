@@ -1800,6 +1800,24 @@
     <string name="re_Record">Re-record</string>
     <string name="digitalAusucultation">Digital Ausucultation</string>
 
+    <!--AYU CONNECT DIALOG (dialog_ayu_connect.xml)-->
+    <string name="ayu_connect_title">Digital Auscultation</string>
+    <string name="ayu_connect_subtitle">Optional • Not required based on symptoms</string>
+    <string name="ayu_connect_description">Auscultation is needed based on the patient’s symptoms and should be recorded in the app.</string>
+    <string name="ayu_connect_status_disconnected">Device Disconnected</string>
+    <string name="ayu_connect_status_connected">Device Connected</string>
+    <string name="ayu_connect_subtext_disconnected">Scan to connect AyuSynk device</string>
+    <string name="ayu_connect_subtext_connected">AyuSynk ready — tap a sound type below</string>
+    <string name="ayu_connect_scan">SCAN</string>
+    <string name="ayu_connect_scanning">Scanning…</string>
+    <string name="ayu_connect_scan_failed">Scan failed — try again</string>
+    <string name="ayu_connect_device_required">Please connect AyuSynk device first</string>
+    <string name="ayu_connect_location_disabled_title">Location services disabled</string>
+    <string name="ayu_connect_location_disabled_message">BLE scanning requires location services on Android &lt; 12.</string>
+    <string name="ayu_connect_enable">Enable</string>
+    <string name="sound_recorded_count_format">%1$d / %2$d recorded</string>
+    <string name="sound_recorded_count_only_format">%1$d recorded</string>
+
 
     <string name="diabetes_hba1c">Diabetes HBA1C (%)</string>
 
