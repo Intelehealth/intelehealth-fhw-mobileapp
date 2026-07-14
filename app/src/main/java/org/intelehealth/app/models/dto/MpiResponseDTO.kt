@@ -19,14 +19,14 @@ data class MpiResponseDTO(
 data class MpiDataDTO(
 
     @SerializedName("mpi")
-    val mpi: String,
+    val mpi: String? = null,
 
     @SerializedName("attempt_number")
-    val attemptNumber: Int = 0,
+    val attemptNumber: Int? = null,
 
     @SerializedName("last_try")
     val lastTry: String? = null,
 
     @SerializedName("status")
-    val status: String
+    val status: String? = null
 )

@@ -123,7 +123,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
                    patientDTO.contactType,
                    patientDTO.emContactNumber
                )
-               //finish()
+               finish()
            } else if (patientViewModel.activeStatusOtherSection) {
                startPatientRegistration(
                    this,
@@ -135,7 +135,7 @@ class MatchResultActivity : BaseActivity() , NetworkUtils.InternetCheckUpdateInt
                    patientDTO.phonenumber,
                    patientDTO.dateofbirth
                )
-               //finish()
+               finish()
            } else {
                saveAndNavigateToDetails()
            }

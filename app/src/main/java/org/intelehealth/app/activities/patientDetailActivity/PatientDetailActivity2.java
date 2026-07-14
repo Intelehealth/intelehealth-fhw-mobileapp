@@ -246,6 +246,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     private ActivityPatientDetail2Binding binding;
     private boolean isFhirEnabled ;
     private boolean hasTriggeredSync = false;
+    private boolean isFirstNetworkCallback = true;
+    private boolean wasInternetAvailable = false;
+    private boolean syncTriggered = false;
+    private boolean mpiPulled = false;
     SyncDAO syncDAO = new SyncDAO();
     private final Handler handler = new Handler(Looper.getMainLooper());
     private Runnable retryRunnable;
@@ -300,13 +304,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         initUI();
        // new SyncUtils().syncBackground();
+        pullMPIOnce();
         setDisplay(patientDTO.getUuid());
-
-        if (patientDTO.getOpenmrsId() != null) {
-            startPullMPI(patientDTO);
-            setDisplay(patientDTO.getUuid());
-        }
-
        /* if (isFhirEnabled &&
                 NetworkConnection.isOnline(this)
                 ) {
@@ -612,14 +611,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         res.updateConfiguration(conf, dm);
         return context;
     }
-
+    private void pullMPIOnce() {
+        if (!mpiPulled && patientDTO.getOpenmrsId() != null) {
+            mpiPulled = true;
+            startPullMPI(patientDTO);
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
-        if ( patientDTO.getOpenmrsId() != null) {
-            startPullMPI(patientDTO);
-            setDisplay(patientDTO.getUuid());
-        }
+        pullMPIOnce();
+
         setDisplay(patientDTO.getUuid());
         if (isPregnancyVisible()) {
             binding.rosterDetails.relativePregnancyHeader.setVisibility(View.VISIBLE);
@@ -2549,11 +2551,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             refresh.clearAnimation();
             syncAnimator.start();
             new SyncUtils().syncBackground();
-            if (/*(patientDTO.getMpiId() == null || patientDTO.getMpiId().isEmpty())
-                    &&*/ patientDTO.getOpenmrsId() != null) {
+            pullMPIOnce();
 
-                startPullMPI(patientDTO);
-            }
+            setDisplay(patientDTO.getUuid());
             //Toast.makeText(this, getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
         }
     }
@@ -2564,10 +2564,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         public void onReceive(Context context, Intent intent) {
 
             try {
-                if ( patientDTO.getOpenmrsId() != null) {
-                    startPullMPI(patientDTO);
-                    setDisplay(patientDTO.getUuid());
-                }
+                pullMPIOnce();
+                setDisplay(patientDTO.getUuid());
                 openmrsID_txt.setText(patientsDAO.getOpenmrsId(patientDTO.getUuid()));
                 setTitle(openmrsID_txt.getText());
             } catch (DAOException e) {
@@ -2594,10 +2592,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 //Toast.makeText(context, getString(R.string.sync_completed), Toast.LENGTH_SHORT).show();
                 CustomLog.v(TAG, "Sync Done!");
                 try {
-                    if ( patientDTO.getOpenmrsId() != null) {
-                        startPullMPI(patientDTO);
-                        setDisplay(patientDTO.getUuid());
-                    }
+                    pullMPIOnce();
+
+                    setDisplay(patientDTO.getUuid());
                     refresh.clearAnimation();
                     syncAnimator.cancel();
                     setDisplay(patientDTO.getUuid());
@@ -2795,12 +2792,37 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
-        CustomLog.d("TAG", "updateUIForInternetAvailability: ");
-        if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_internet_available));
-        } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(PatientDetailActivity2.this, R.drawable.ui2_ic_no_internet));
+
+        CustomLog.d("TAG", "updateUIForInternetAvailability: " + isInternetAvailable);
+
+        // Ignore first callback
+        if (isFirstNetworkCallback) {
+            wasInternetAvailable = isInternetAvailable;
+            isFirstNetworkCallback = false;
+
+            refresh.setImageDrawable(ContextCompat.getDrawable(
+                    PatientDetailActivity2.this,
+                    isInternetAvailable
+                            ? R.drawable.ui2_ic_internet_available
+                            : R.drawable.ui2_ic_no_internet));
+
+            return;
         }
+
+        // Internet came back
+        if (!wasInternetAvailable && isInternetAvailable) {
+            new SyncUtils().syncBackground();
+            pullMPIOnce();
+            setDisplay(patientDTO.getUuid());
+        }
+
+        refresh.setImageDrawable(ContextCompat.getDrawable(
+                PatientDetailActivity2.this,
+                isInternetAvailable
+                        ? R.drawable.ui2_ic_internet_available
+                        : R.drawable.ui2_ic_no_internet));
+
+        wasInternetAvailable = isInternetAvailable;
     }
 
     private void initForPastVisit() {

@@ -180,10 +180,11 @@ public class PatientsDAO extends BaseDao {
         return null; // Return null if no match is found
     }
 
-    public boolean isMpiIdExists(SQLiteDatabase db, String mpiId) {
+    public boolean isMpiIdExists(SQLiteDatabase db, String mpiId, String uuid) {
+
         Cursor cursor = db.rawQuery(
-                "SELECT COUNT(*) FROM tbl_patient WHERE mpi_id = ?",
-                new String[]{mpiId}
+                "SELECT COUNT(*) FROM tbl_patient WHERE mpi_id = ? AND uuid != ?",
+                new String[]{mpiId, uuid}
         );
 
         boolean exists = false;
@@ -209,19 +210,87 @@ public class PatientsDAO extends BaseDao {
             middleNameSdx = SoundexHelper.encode(patient.getMiddlename());
         }
         String lastNameSdx = SoundexHelper.encode(patient.getLastname());
-        String syncState="SYNCED_PENDING_CR";
-        String mpiId = patient.getMpiId();
         boolean mpiIdDuplicate=false;
+        String syncState = "SYNCED_PENDING_CR";
+        String mergeTargetUuid = null;
+        PatientDTO existingPatient = getExistingPatient(db, patient.getUuid());
 
-        if (mpiId != null && !mpiId.isEmpty()) {
-            mpiIdDuplicate = isMpiIdExists(db, mpiId);
-            syncState = mpiIdDuplicate ? "CR_DUPLICATE_OF" : "CR_ASSIGNED";
-        }
-
+        String existingState = existingPatient != null
+                ? existingPatient.getCrSyncState()
+                : null;
+        // Always use one MPI value
+        String effectiveMpiId = existingPatient != null
+                && existingPatient.getMpiId() != null
+                ? existingPatient.getMpiId()
+                : patient.getMpiId();
         try {
+            //========================
+            // Preserve existing state
+            //========================
+
+            if (existingPatient == null) {
+
+                // New Patient
+
+                if (effectiveMpiId != null && !effectiveMpiId.trim().isEmpty()) {
+                    CustomLog.d(TAG, "Incoming UUID = " + patient.getUuid());
+                    CustomLog.d(TAG, "Incoming MPI = " + effectiveMpiId);
+                    CustomLog.d(TAG, "Duplicate = " + isMpiIdExists(db, effectiveMpiId, patient.getUuid()));
+                    if (isMpiIdExists(db, effectiveMpiId, patient.getUuid())) {
+                        CustomLog.d(TAG, "MPI = " + effectiveMpiId);
+
+                        String assignedUuid = getAssignedPatientUuid(db, effectiveMpiId);
+
+                        CustomLog.d(TAG, "Assigned UUID = " + assignedUuid);
+
+                        mergeTargetUuid = assignedUuid;
+                        syncState = "CR_DUPLICATE_OF";
+                       // mergeTargetUuid = getAssignedPatientUuid(db, effectiveMpiId);
+                        CustomLog.d(TAG, "MPI = " + effectiveMpiId);
+                        CustomLog.d(TAG, "Merge Target = " + mergeTargetUuid);
+
+                    } else {
+
+                        syncState = "CR_ASSIGNED";
+                    }
+
+                } else if (patient.getOpenmrsId() != null
+                        && !patient.getOpenmrsId().trim().isEmpty()) {
+
+                    syncState = "SYNCED_PENDING_CR";
+                }
+
+            } else {
+
+                // Existing Patient
+
+                if ("CR_DUPLICATE_OF".equals(existingState)) {
+
+                    syncState = "CR_DUPLICATE_OF";
+                    mergeTargetUuid = existingPatient.getCrMergeTargetUuid();
+
+                } else if (effectiveMpiId != null && !effectiveMpiId.trim().isEmpty()) {
+
+                    if (isMpiIdExists(db, effectiveMpiId, patient.getUuid())) {
+
+                        syncState = "CR_DUPLICATE_OF";
+                        mergeTargetUuid = getAssignedPatientUuid(db, effectiveMpiId);
+
+                    } else {
+
+                        syncState = "CR_ASSIGNED";
+                    }
+
+                } else if (patient.getOpenmrsId() != null
+                        && !patient.getOpenmrsId().trim().isEmpty()) {
+
+                    syncState = "SYNCED_PENDING_CR";
+                }
+            }
+            CustomLog.d(TAG, "CR Cre P  = " + syncState);
             values.put("uuid", patient.getUuid());
             values.put("openmrs_id", patient.getOpenmrsId());
-            values.put("mpi_id", patient.getMpiId());
+            values.put("mpi_id", effectiveMpiId);
             values.put("source_id", patient.getSourceId());
             values.put("first_name", patient.getFirstname());
             values.put("middle_name", patient.getMiddlename());
@@ -252,11 +321,30 @@ public class PatientsDAO extends BaseDao {
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
             values.put("cr_sync_state", syncState);
-            if (mpiIdDuplicate){
-                values.put("cr_merge_target_uuid", mpiId);
+            if (existingPatient != null) {
+
+                values.put(
+                        "cr_merge_target_uuid",
+                        mergeTargetUuid != null
+                                ? mergeTargetUuid
+                                : existingPatient.getCrMergeTargetUuid());
+                values.put("cr_last_attempt_at",
+                        existingPatient.getCrLastAttemptAt() != null
+                                ? existingPatient.getCrLastAttemptAt()
+                                : patient.getCrLastAttemptAt());
+                Integer attempt = patient.getCrSyncAttemptAt();
+                values.put(
+                        "cr_sync_attempts",
+                        attempt != null && attempt > 0
+                                ? attempt
+                                : existingPatient.getCrSyncAttemptAt()
+                );
+
+            } else {
+                values.put("cr_merge_target_uuid", mergeTargetUuid);
+                values.put("cr_last_attempt_at", patient.getCrLastAttemptAt());
+                values.put("cr_sync_attempts", patient.getCrSyncAttemptAt());
             }
-            values.put("cr_last_attempt_at",patient.getCrLastAttemptAt());
-            values.put("cr_sync_attempts",patient.getCrSyncAttemptAt());
             values.put("phone_normalized", normalizePhone(patient.getPhonenumber()));
             createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
             isCreated = createdRecordsCount > 0;
@@ -268,51 +356,246 @@ public class PatientsDAO extends BaseDao {
         return isCreated;
 
     }
-    public boolean createPatientsApp(PatientDTO patient, SQLiteDatabase db) throws DAOException {
-        boolean isCreated = true;
-        ContentValues values = new ContentValues();
-        String firstNameSdx = SoundexHelper.encode(patient.getFirstname());
-        String middleNameSdx =patient.getMiddlename();
-        if(middleNameSdx != null){
-            middleNameSdx = SoundexHelper.encode(patient.getMiddlename());
-        }
-        String lastNameSdx = SoundexHelper.encode(patient.getLastname());
-        String syncState="SYNCED_PENDING_CR";
-        String mpiId = patient.getMpiId();
-        boolean mpiIdDuplicate=false;
+    private String getExistingSyncState(SQLiteDatabase db, String uuid) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT cr_sync_state FROM tbl_patient WHERE uuid = ? LIMIT 1",
+                    new String[]{uuid});
 
-        if (mpiId != null && !mpiId.isEmpty()) {
-            mpiIdDuplicate = isMpiIdExists(db, mpiId);
-            syncState = mpiIdDuplicate ? "CR_DUPLICATE_OF" : "CR_ASSIGNED";
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
+        return null;
+    }
+    private PatientDTO getExistingPatient(SQLiteDatabase db, String uuid) {
+        Cursor cursor = null;
 
         try {
+            cursor = db.rawQuery(
+                    "SELECT * FROM tbl_patient WHERE uuid = ? LIMIT 1",
+                    new String[]{uuid}
+            );
+
+            if (cursor.moveToFirst()) {
+
+                PatientDTO patient = new PatientDTO();
+
+                patient.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                patient.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                patient.setMpiId(cursor.getString(cursor.getColumnIndexOrThrow("mpi_id")));
+                patient.setSourceId(cursor.getString(cursor.getColumnIndexOrThrow("source_id")));
+
+                patient.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                patient.setMiddlename(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                patient.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+
+                patient.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+
+                patient.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+                patient.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+                patient.setAddress6(cursor.getString(cursor.getColumnIndexOrThrow("address6")));
+
+                patient.setCountry(cursor.getString(cursor.getColumnIndexOrThrow("country")));
+                patient.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                patient.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+
+                patient.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+                patient.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
+                patient.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
+
+                patient.setGuardianType(cursor.getString(cursor.getColumnIndexOrThrow("guardian_type")));
+                patient.setGuardianName(cursor.getString(cursor.getColumnIndexOrThrow("guardian_name")));
+
+                patient.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
+                patient.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
+                patient.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+
+                patient.setDead(cursor.getInt(cursor.getColumnIndexOrThrow("dead")));
+
+                patient.setCrSyncState(cursor.getString(cursor.getColumnIndexOrThrow("cr_sync_state")));
+                patient.setCrMergeTargetUuid(cursor.getString(cursor.getColumnIndexOrThrow("cr_merge_target_uuid")));
+                patient.setCrLastAttemptAt(cursor.getString(cursor.getColumnIndexOrThrow("cr_last_attempt_at")));
+                patient.setCrSyncAttemptAt(cursor.getInt(cursor.getColumnIndexOrThrow("cr_sync_attempts")));
+
+                return patient;
+            }
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return null;
+    }
+    private String getExistingMergeTarget(SQLiteDatabase db, String uuid) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT cr_merge_target_uuid FROM tbl_patient WHERE uuid = ? LIMIT 1",
+                    new String[]{uuid});
+
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+    private String getAssignedPatientUuid(SQLiteDatabase db, String mpiId) {
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(
+                    "SELECT uuid FROM tbl_patient " +
+                            "WHERE mpi_id = ? AND cr_sync_state = 'CR_ASSIGNED' LIMIT 1",
+                    new String[]{mpiId});
+
+            if (cursor.moveToFirst()) {
+                return cursor.getString(0);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+    public boolean createPatientsApp(PatientDTO patient, SQLiteDatabase db) throws DAOException {
+
+        boolean isCreated = true;
+        ContentValues values = new ContentValues();
+
+        String firstNameSdx = SoundexHelper.encode(patient.getFirstname());
+
+        String middleNameSdx = patient.getMiddlename();
+        if (middleNameSdx != null) {
+            middleNameSdx = SoundexHelper.encode(middleNameSdx);
+        }
+
+        String lastNameSdx = SoundexHelper.encode(patient.getLastname());
+
+        String syncState = "SYNCED_PENDING_CR";
+        String mergeTargetUuid = null;
+        // Existing patient
+        PatientDTO existingPatient = getExistingPatient(db, patient.getUuid());
+
+        String existingState = existingPatient != null
+                ? existingPatient.getCrSyncState()
+                : null;
+
+        // Always use one MPI value
+        String effectiveMpiId = existingPatient != null
+                && existingPatient.getMpiId() != null
+                ? existingPatient.getMpiId()
+                : patient.getMpiId();
+        try {
+
+            // Preserve existing state
+
+
+            if (existingPatient == null) {
+
+                // New Patient
+
+                if (effectiveMpiId != null && !effectiveMpiId.trim().isEmpty()) {
+                    CustomLog.d(TAG, "Incoming UUID = " + patient.getUuid());
+                    CustomLog.d(TAG, "Incoming MPI = " + effectiveMpiId);
+                    CustomLog.d(TAG, "Duplicate = " + isMpiIdExists(db, effectiveMpiId, patient.getUuid()));
+                    if (isMpiIdExists(db, effectiveMpiId, patient.getUuid())) {
+
+                        CustomLog.d(TAG, "MPI = " + effectiveMpiId);
+
+                        String assignedUuid = getAssignedPatientUuid(db, effectiveMpiId);
+
+                        CustomLog.d(TAG, "Assigned UUID = " + assignedUuid);
+
+                        mergeTargetUuid = assignedUuid;
+                        syncState = "CR_DUPLICATE_OF";
+                        // mergeTargetUuid = getAssignedPatientUuid(db, effectiveMpiId);
+                        CustomLog.d(TAG, "MPI = " + effectiveMpiId);
+                        CustomLog.d(TAG, "Merge Target = " + mergeTargetUuid);
+
+                    } else {
+
+                        syncState = "CR_ASSIGNED";
+                    }
+
+                } else if (patient.getOpenmrsId() != null
+                        && !patient.getOpenmrsId().trim().isEmpty()) {
+
+                    syncState = "SYNCED_PENDING_CR";
+                }
+
+            } else {
+
+                // Existing Patient
+
+                if ("CR_DUPLICATE_OF".equals(existingState)) {
+
+                    syncState = "CR_DUPLICATE_OF";
+                    mergeTargetUuid = existingPatient.getCrMergeTargetUuid();
+
+                } else if (effectiveMpiId != null && !effectiveMpiId.trim().isEmpty()) {
+
+                    if (isMpiIdExists(db, effectiveMpiId, patient.getUuid())) {
+
+                        syncState = "CR_DUPLICATE_OF";
+                        mergeTargetUuid = getAssignedPatientUuid(db, effectiveMpiId);
+
+                    } else {
+
+                        syncState = "CR_ASSIGNED";
+                    }
+
+                } else if (patient.getOpenmrsId() != null
+                        && !patient.getOpenmrsId().trim().isEmpty()) {
+
+                    syncState = "SYNCED_PENDING_CR";
+                }
+            }
+
+            CustomLog.d(TAG, "CR Cre P A = " + syncState);
+
             values.put("uuid", patient.getUuid());
             values.put("openmrs_id", patient.getOpenmrsId());
-            values.put("mpi_id", patient.getMpiId());
+            values.put("mpi_id", effectiveMpiId);
             values.put("source_id", patient.getSourceId());
+
             values.put("first_name", patient.getFirstname());
             values.put("middle_name", patient.getMiddlename());
             values.put("last_name", patient.getLastname());
-            values.put("phone_number",patient.getPhonenumber());
 
             values.put("first_name_sdx", firstNameSdx);
             values.put("middle_name_sdx", middleNameSdx);
             values.put("last_name_sdx", lastNameSdx);
 
+            values.put("phone_number", patient.getPhonenumber());
+            values.put("phone_normalized", normalizePhone(patient.getPhonenumber()));
+
             values.put("address1", patient.getAddress1());
             values.put("address2", patient.getAddress2());
             values.put("address6", patient.getAddress6());
+
             values.put("country", patient.getCountry());
             values.put("date_of_birth", patient.getDateofbirth());
             values.put("gender", patient.getGender());
+
             values.put("postal_code", patient.getPostalcode());
             values.put("state_province", patient.getStateprovince());
             values.put("city_village", patient.getCityvillage());
-            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
 
             values.put("guardian_type", patient.getGuardianType());
             values.put("guardian_name", patient.getGuardianName());
+
             values.put("contact_type", patient.getContactType());
             values.put("em_contact_name", patient.getEmContactName());
             values.put("em_contact_num", patient.getEmContactNumber());
@@ -320,21 +603,49 @@ public class PatientsDAO extends BaseDao {
             values.put("dead", patient.getDead());
             values.put("sync", false);
             values.put("cr_sync_state", syncState);
-            if (mpiIdDuplicate){
-                values.put("cr_merge_target_uuid", mpiId);
+
+            if (existingPatient != null) {
+
+                values.put(
+                        "cr_merge_target_uuid",
+                        mergeTargetUuid != null
+                                ? mergeTargetUuid
+                                : existingPatient.getCrMergeTargetUuid());
+                values.put("cr_last_attempt_at",
+                        existingPatient.getCrLastAttemptAt() != null
+                                ? existingPatient.getCrLastAttemptAt()
+                                : patient.getCrLastAttemptAt());
+                Integer attempt = patient.getCrSyncAttemptAt();
+                values.put(
+                        "cr_sync_attempts",
+                        attempt != null && attempt > 0
+                                ? attempt
+                                : existingPatient.getCrSyncAttemptAt()
+                );
+
+            } else {
+                values.put("cr_merge_target_uuid", mergeTargetUuid);
+                values.put("cr_last_attempt_at", patient.getCrLastAttemptAt());
+                values.put("cr_sync_attempts", patient.getCrSyncAttemptAt());
             }
-            values.put("cr_last_attempt_at",patient.getCrLastAttemptAt());
-            values.put("cr_sync_attempts",patient.getCrSyncAttemptAt());
-            values.put("phone_normalized", normalizePhone(patient.getPhonenumber()));
-            createdRecordsCount = db.insertWithOnConflict("tbl_patient", null, values, SQLiteDatabase.CONFLICT_REPLACE);
+
+            createdRecordsCount = db.insertWithOnConflict(
+                    "tbl_patient",
+                    null,
+                    values,
+                    SQLiteDatabase.CONFLICT_REPLACE
+            );
+
             isCreated = createdRecordsCount > 0;
+
         } catch (SQLException e) {
+
             isCreated = false;
             CustomLog.e(TAG, e.getMessage());
             throw new DAOException(e.getMessage(), e);
         }
-        return isCreated;
 
+        return isCreated;
     }
 
     public boolean insertPatientToDB(PatientDTO patientDTO, String uuid) throws DAOException {
@@ -346,8 +657,18 @@ public class PatientsDAO extends BaseDao {
         db.beginTransaction();
         List<PatientAttributesDTO> patientAttributesList = new ArrayList<PatientAttributesDTO>();
         try {
+            PatientDTO patient = getExistingPatient(db,uuid);
+            String existingState = getExistingSyncState(db, uuid);
+            CustomLog.d(TAG, "CR Cre P I P = " + existingState);
+            CustomLog.d(TAG, "CR Cre P I P = " + existingState);
             Logger.logD("create", "create has to happen");
             values.put("uuid", uuid);
+            if(patient!=null){
+                values.put("mpi_id", patientDTO.getMpiId()!=null?patientDTO.getMpiId():patient.getMpiId());
+            }
+            else {
+                values.put("mpi_id", patientDTO.getMpiId()!=null?patientDTO.getMpiId():null);
+            }
             values.put("openmrs_id", patientDTO.getOpenmrsId());
             values.put("source_id", patientDTO.getSourceId());
             values.put("first_name", patientDTO.getFirstname());
@@ -374,8 +695,32 @@ public class PatientsDAO extends BaseDao {
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
-            values.put("cr_sync_state", patientDTO.getCrSyncState());
+            values.put("cr_sync_state", existingState != null ? existingState : patientDTO.getCrSyncState());
             values.put("phone_normalized", normalizePhone(patientDTO.getPhonenumber()));
+            if (patient != null) {
+                values.put("cr_merge_target_uuid",
+                        patient.getCrMergeTargetUuid() != null
+                                ? patient.getCrMergeTargetUuid()
+                                : patientDTO.getCrMergeTargetUuid());
+
+                values.put("cr_last_attempt_at",
+                        patient.getCrLastAttemptAt() != null
+                                ? patient.getCrLastAttemptAt()
+                                : patientDTO.getCrLastAttemptAt());
+
+                values.put(
+                        "cr_sync_attempts",
+                        patient.getCrSyncAttemptAt() > 0
+                                ? patient.getCrSyncAttemptAt()
+                                : patientDTO.getCrSyncAttemptAt()
+                );
+
+            } else {
+
+                values.put("cr_merge_target_uuid", patientDTO.getCrMergeTargetUuid());
+                values.put("cr_last_attempt_at", patientDTO.getCrLastAttemptAt());
+                values.put("cr_sync_attempts", patientDTO.getCrSyncAttemptAt());
+            }
             patientAttributesList = patientDTO.getPatientAttributesDTOList();
             if (patientAttributesList != null)
                 insertPatientAttributes(patientAttributesList, db);
@@ -481,6 +826,7 @@ public class PatientsDAO extends BaseDao {
         ContentValues values = new ContentValues();
         String whereclause = "Uuid=?";
         String state="LOCAL_ONLY";
+        String existingState = getExistingSyncState(db, uuid);
         if( patientDTO.getCrSyncState()!=null && !patientDTO.getCrSyncState().isEmpty()){
             state = patientDTO.getCrSyncState();
         }
@@ -521,7 +867,7 @@ public class PatientsDAO extends BaseDao {
             values.put("address3", patientDTO.getAddress3());
             values.put("address6", patientDTO.getAddress6());
 
-            values.put("cr_sync_state", state);
+            values.put("cr_sync_state", existingState);
             values.put("cr_merge_target_uuid", patientDTO.getCrMergeTargetUuid());
             values.put("phone_normalized", patientDTO.getPhone_normalized());
 
@@ -917,11 +1263,15 @@ public class PatientsDAO extends BaseDao {
         ContentValues values = new ContentValues();
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
+        String existingState = getExistingSyncState(db, uuid);
+        PatientDTO existingPatient = getExistingPatient(db,uuid);
+        String openmrs_id = openmrsId != null ? openmrsId : existingPatient.getOpenmrsId();
         try {
-            values.put("openmrs_id", openmrsId);
+            values.put("openmrs_id", openmrs_id);
             values.put("sync", synced);
             values.put("uuid", uuid);
-            values.put("cr_sync_state", "SYNCED_PENDING_CR");
+            values.put("cr_sync_state", existingState);
+            //values.put("cr_sync_state", "SYNCED_PENDING_CR");
             int i = db.update("tbl_patient", values, whereclause, whereargs);
             Logger.logD("patient", "description" + i);
             db.setTransactionSuccessful();
@@ -2203,22 +2553,6 @@ public class PatientsDAO extends BaseDao {
 
         query.append("SELECT * FROM tbl_patient WHERE ");
         boolean hasPrevious = false;
-
-        /**
-         * First Name
-         */
-        /*if (firstName != null && !firstName.trim().isEmpty()) {
-
-            query.append(" AND (LOWER(first_name) LIKE LOWER(?) OR first_name_sdx LIKE ?) ");
-            args.add("%" + firstName.trim() + "%");
-            args.add("%" + SoundexHelper.encode(firstName.trim()) + "%");
-        }*/
-       /* if (lastName != null && !lastName.trim().isEmpty()) {
-
-            query.append(" AND (LOWER(last_name) LIKE LOWER(?) OR last_name_sdx LIKE ?) ");
-            args.add("%" + lastName.trim() + "%");
-            args.add("%" + SoundexHelper.encode(lastName.trim()) + "%");
-        }*/
         /**
          * Given + Family (Blocking Rule)
          */
@@ -2227,7 +2561,7 @@ public class PatientsDAO extends BaseDao {
 
             query.append("(")
                     .append("(LOWER(first_name) LIKE LOWER(?) OR first_name_sdx = ?)")
-                    .append(" AND ")
+                    .append(" OR ")
                     .append("(LOWER(last_name) LIKE LOWER(?) OR last_name_sdx = ?)")
                     .append(")");
 
@@ -2239,28 +2573,16 @@ public class PatientsDAO extends BaseDao {
 
             hasPrevious = true;
         }
-
-        /**
-         * Gender
-         */
         /*if (gender != null && !gender.trim().isEmpty()) {
+            if (hasPrevious) {
+                query.append(" OR ");
+            }
 
-            query.append(" AND gender = ? ");
+            query.append("LOWER(gender) = LOWER(?)");
             args.add(gender.trim());
-        }*/
-        /**
-         * DOB
-         */
-        /*if (dob != null && !dob.trim().isEmpty()) {
 
-            query.append(" AND date_of_birth = ? ");
-            args.add(dob.trim());
+            hasPrevious = true;
         }*/
-        if (gender != null && !gender.trim().isEmpty()) {
-
-            query.append(" AND gender = ?");
-            args.add(gender.trim());
-        }
         if (dob != null && !dob.trim().isEmpty()) {
 
             if (hasPrevious) {
@@ -2286,14 +2608,7 @@ public class PatientsDAO extends BaseDao {
 
             hasPrevious = true;
         }
-        /*if (phone != null && !phone.trim().isEmpty()) {
 
-            query.append(" AND phone_normalized = ? ");
-            args.add( normalizePhone(phone.trim()) );
-        }*/
-        /**
-         * Pagination
-         */
         query.append(" ORDER BY first_name ASC ");
         query.append(" LIMIT ? OFFSET ? ");
 
@@ -2328,9 +2643,13 @@ public class PatientsDAO extends BaseDao {
                     int fields = 0;
                     double firstNameScore=0.0;
                     double lastNameScore=0.0;
+                    double dobScore=0.0;
+                    double phoneScore=0.0;
 
                     if (firstName != null && !firstName.trim().isEmpty()) {
                         Log.d("CheckScore First Name",""+calculateNameScore(firstName, patient.getFirstname()));
+                        Log.d("CheckScore First Name",""+firstName);
+                        Log.d("CheckScore First Name",""+patient.getFirstname());
                         firstNameScore = FuzzySearchMatchingCalculatedUtils.GIVEN_WEIGHT*(calculateNameScore(firstName, patient.getFirstname()));
                         totalScore += FuzzySearchMatchingCalculatedUtils.GIVEN_WEIGHT*(calculateNameScore(firstName, patient.getFirstname()));
 
@@ -2339,6 +2658,8 @@ public class PatientsDAO extends BaseDao {
 
                     if (lastName != null && !lastName.trim().isEmpty()) {
                         Log.d("CheckScore Last Name",""+calculateNameScore(lastName, patient.getLastname()));
+                        Log.d("CheckScore Last Name",""+lastName);
+                        Log.d("CheckScore Last Name",""+ patient.getLastname());
                         lastNameScore = FuzzySearchMatchingCalculatedUtils.FAMILY_WEIGHT*(calculateNameScore(lastName, patient.getLastname()));
                         totalScore += FuzzySearchMatchingCalculatedUtils.FAMILY_WEIGHT*(calculateNameScore(lastName, patient.getLastname()));
                         fields++;
@@ -2349,21 +2670,26 @@ public class PatientsDAO extends BaseDao {
                                         patient.getDateofbirth().equals(dob);
                         Log.d("CheckScore DOB",""+dobMatch);
                         totalScore += dobMatch ? FuzzySearchMatchingCalculatedUtils.DOB_WEIGHT : 0.0;
+                        dobScore = dobMatch ? FuzzySearchMatchingCalculatedUtils.DOB_WEIGHT : 0.0;
                     }
                     if (phone != null && !phone.trim().isEmpty()) {
                         boolean phoneMatch =
                                 patient.getPhone_normalized() != null &&
                                         patient.getPhone_normalized().equals(normalizePhone(phone.trim()));
                         Log.d("CheckScore Phone",""+phoneMatch);
-                        totalScore += phoneMatch ? FuzzySearchMatchingCalculatedUtils.PHONE_WEIGHT : 0.0;
+                        phoneScore = phoneMatch ? FuzzySearchMatchingCalculatedUtils.PHONE_WEIGHT : 0.0;
+                       totalScore += phoneMatch ? FuzzySearchMatchingCalculatedUtils.PHONE_WEIGHT : 0.0;
                         result.setPhoneMatched(phoneMatch);
                     }
+                    //totalScore=(firstNameScore+lastNameScore)*0.9+(dobScore)+(phoneScore);
+
                     double finalScore = Math.min(totalScore, 1.0);
                     /**
                      * Grade
                      */
                     MatchGrade grade;
-
+                    Log.d("CheckScore Final ",""+totalScore);
+                    Log.d("CheckScore Final ",""+finalScore);
                     if (finalScore >= 0.95) grade = MatchGrade.CERTAIN;
                     else if (finalScore >= 0.80) grade = MatchGrade.PROBABLE;
                     else if (finalScore >= 0.60) grade = MatchGrade.POSSIBLE;

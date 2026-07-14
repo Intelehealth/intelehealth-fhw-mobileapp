@@ -469,52 +469,70 @@ public class SyncDAO {
 
                 try {
 
+                    if (!response.isSuccessful()) {
+                        Logger.logD("MPI_UPDATE",
+                                "Request failed. Code = " + response.code());
+                        callback.onResult(false);
+                        return;
+                    }
+
                     MpiResponseDTO body = response.body();
 
-                    if (response.isSuccessful()
-                            && body != null
-                            && body.getData() != null) {
-
-                        MpiDataDTO data = body.getData();
-
-                        String mpiId = data.getMpi();
-                        int attemptNumber = data.getAttemptNumber();
-                        String lastTry = data.getLastTry();
-                        String mpiStatus = data.getStatus();
-
-                        Logger.logD(
-                                "MPI_UPDATE",
-                                "MPI: " + mpiId
-                                        + " Status: " + mpiStatus
-                                        + " Attempt: " + attemptNumber
-                                        + " Last Try: " + lastTry);
-
-                        // SUCCESS হলে DB update
-                        if ("SUCCESS".equalsIgnoreCase(mpiStatus)
-                                && mpiId != null
-                                && !mpiId.isEmpty()) {
-
-                            patientDTO.setMpiId(mpiId);
-                            patientDTO.setCrLastAttemptAt(lastTry);
-                            patientDTO.setCrSyncAttemptAt(attemptNumber);
-
-                            patientsDAO.insertPatients(
-                                    Collections.singletonList(patientDTO));
-
-                            callback.onResult(true);
-
-                        } else {
-                            callback.onResult(false);
-                        }
-
-                    } else {
+                    if (body == null) {
+                        Logger.logD("MPI_UPDATE", "Response body is null");
                         callback.onResult(false);
+                        return;
                     }
+
+                    if (!"OK".equalsIgnoreCase(body.getStatus())) {
+                        Logger.logD("MPI_UPDATE",
+                                "Server Status = " + body.getStatus());
+
+                        callback.onResult(false);
+                        return;
+                    }
+
+                    MpiDataDTO data = body.getData();
+
+                    if (data == null || data.getMpi() == null
+                            || data.getMpi().trim().isEmpty()) {
+
+                        Logger.logD("MPI_UPDATE", "MPI not found");
+                        callback.onResult(false);
+                        return;
+                    }
+
+                    // -----------------------------
+                    // Update Patient
+                    // -----------------------------
+
+                    patientDTO.setMpiId(data.getMpi());
+                    patientDTO.setCrSyncState("CR_ASSIGNED");
+
+                    if (data.getAttemptNumber() != null) {
+                        patientDTO.setCrSyncAttemptAt(data.getAttemptNumber());
+                    }
+
+                    if (data.getLastTry() != null) {
+                        patientDTO.setCrLastAttemptAt(data.getLastTry());
+                    }
+
+                    Logger.logD(
+                            "MPI_UPDATE",
+                            "MPI Assigned : " + data.getMpi());
+
+                    patientsDAO.insertPatients(
+                            Collections.singletonList(patientDTO));
+
+                    callback.onResult(true);
 
                 } catch (Exception e) {
 
-                    FirebaseCrashlytics.getInstance()
-                            .recordException(e);
+                    FirebaseCrashlytics.getInstance().recordException(e);
+
+                    Logger.logD(
+                            "MPI_UPDATE",
+                            "Exception : " + e.getMessage());
 
                     callback.onResult(false);
                 }
@@ -525,12 +543,11 @@ public class SyncDAO {
                     Call<MpiResponseDTO> call,
                     Throwable t) {
 
-                FirebaseCrashlytics.getInstance()
-                        .recordException(t);
+                FirebaseCrashlytics.getInstance().recordException(t);
 
                 Logger.logD(
                         "MPI_UPDATE",
-                        "Failed : " + t.getMessage());
+                        "API Failed : " + t.getMessage());
 
                 callback.onResult(false);
             }

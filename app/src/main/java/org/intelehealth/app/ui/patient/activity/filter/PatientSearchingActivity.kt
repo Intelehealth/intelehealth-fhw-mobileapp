@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -28,10 +27,12 @@ import org.intelehealth.app.models.MatchGrade
 import org.intelehealth.app.models.MatchSource
 import org.intelehealth.app.models.PatientSearchResult
 import org.intelehealth.app.models.dto.Extension
+import org.intelehealth.app.models.dto.Identifier
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.models.dto.PatientSearchDTO
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability
 import org.intelehealth.app.utilities.BundleKeys
+import org.intelehealth.app.utilities.CustomLog
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.Locale
@@ -227,7 +228,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                     uuid = local.patient?.uuid ?: uuid
                     openmrsId = local.patient?.openmrsId ?: openmrsId
                     sourceId = local.patient?.sourceId ?: sourceId
-                    mpiId = local.patient?.mpiId ?: mpiId
+                    mpiId = mpiId
                     stateprovince=stateprovince
                     city=city
                     cityvillage=cityvillage
@@ -316,6 +317,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                                     it.system?.contains("OpenMRS-ID", ignoreCase = true) == true
                         }
                         ?.value
+                    CustomLog.d("MPI ID CECK", " " + getIdentifierValueByEndPoint(resource.identifier ,"mdm-golden-resource-enterprise-id"))
                     val patient = PatientDTO().apply {
                         uuid = resource.identifier
                             ?.firstOrNull { identifier ->
@@ -325,6 +327,7 @@ class PatientSearchingActivity : AppCompatActivity() {
                                         identifier.use == null
                             }
                             ?.value
+                        mpiId=getIdentifierValueByEndPoint(resource.identifier ,"mdm-golden-resource-enterprise-id")
                         sourceId=resource.id
                         openmrsId =openMrsId
                         firstname = given
@@ -337,8 +340,8 @@ class PatientSearchingActivity : AppCompatActivity() {
                         stateprovince=address?.state
                         city=address?.city
                         cityvillage=address?.city
-                        address1= address?.line?.get(0)
-                        address6=address?.line?.get(1)
+                        address1 = address?.line?.getOrNull(0)
+                        address6 = address?.line?.getOrNull(1)
                         contactType =getExtensionValueByEndPoint(extension,"Emergency-Contact-Type")
                         education =getExtensionValueByEndPoint(extension,"Education-Level")
                         economic =getExtensionValueByEndPoint(extension,"Economic-Status")
@@ -620,8 +623,8 @@ class PatientSearchingActivity : AppCompatActivity() {
                             stateprovince=address?.state
                             city=address?.city
                             openmrsId =openMrsId
-                            address1=address?.line?.get(0)
-                            address6=address?.line?.get(1)
+                            address1 = address?.line?.getOrNull(0)
+                            address6 = address?.line?.getOrNull(1)
                             contactType =getExtensionValueByEndPoint(extension,"Emergency-Contact-Type")
                             education =getExtensionValueByEndPoint(extension,"Education-Level")
                             economic =getExtensionValueByEndPoint(extension,"Economic-Status")
@@ -664,6 +667,26 @@ class PatientSearchingActivity : AppCompatActivity() {
                     ?.valueString
                     .orEmpty()
             }
+    private fun getIdentifierValueByEndPoint(
+        identifier: List<Identifier>?,
+        endPoint: String
+    ): String {
+        identifier?.forEach {
+            CustomLog.d(
+                "CHECK",
+                "system=${it.system}, end=${it.system?.substringAfterLast("/")}"
+            )
+        }
+
+        return  identifier
+                ?.firstOrNull { identifier ->
+            identifier.system
+                ?.substringAfterLast("/")
+                ?.equals(endPoint, ignoreCase = true) == true
+        }
+            ?.value
+            .orEmpty()
+    }
             private fun searchPatientOpenMRSObservable(
                 firstName: String,
                 lastName: String,
