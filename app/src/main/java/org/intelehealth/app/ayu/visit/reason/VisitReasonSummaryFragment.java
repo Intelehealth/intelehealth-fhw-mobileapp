@@ -165,6 +165,10 @@ public class VisitReasonSummaryFragment extends Fragment {
     }
 
     private void prepareSummaryV2() {
+        if (mSummaryStringJsonObject == null) {
+            CustomLog.e(TAG, "mSummaryStringJsonObject is null, cannot prepare summary");
+            return;
+        }
         try {
             String lCode = sessionManager.getAppLanguage();
             String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);

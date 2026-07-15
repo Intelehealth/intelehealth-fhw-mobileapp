@@ -192,6 +192,9 @@ public class VisitReasonCaptureFragment extends Fragment {
                     currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
                 }
 
+                if (currentFile == null) {
+                    continue;
+                }
                 Node mainNode = new Node(currentFile);
                 if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
                     mFinalEnabledMMList.add(mindMapName);

@@ -465,7 +465,19 @@ public class CameraActivity extends AppCompatActivity {
     public void takeImage(View view) {
         if (mCameraView != null && fabClickFlag == true) {
             fabClickFlag = false;
-            mCameraView.takePicture();
+            try {
+                mCameraView.takePicture();
+            } catch (NullPointerException e) {
+                // Known race in the unmaintained google/cameraview library:
+                // onCameraOpened() fires before Camera2's internal capture
+                // session finishes configuring (there is no public callback
+                // for that state), so takePicture() can reach
+                // CameraCaptureSession.capture() while the session is still
+                // null. Surface a retry instead of crashing.
+                Log.e(TAG, "mCameraView.takePicture() failed, capture session not ready yet", e);
+                Toast.makeText(this, R.string.util_camera_start_failed, Toast.LENGTH_SHORT).show();
+                fabClickFlag = true;
+            }
         }
     }
 
