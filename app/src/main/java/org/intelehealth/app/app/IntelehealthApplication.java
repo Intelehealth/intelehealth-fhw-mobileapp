@@ -15,6 +15,16 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.facebook.react.PackageList;
+import com.facebook.react.ReactApplication;
+import com.facebook.react.ReactHost;
+import com.facebook.react.ReactNativeHost;
+import com.facebook.react.ReactPackage;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactHost;
+import com.facebook.react.defaults.DefaultReactNativeHost;
+import com.facebook.react.soloader.OpenSourceMergedSoMapping;
+import com.facebook.soloader.SoLoader;
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
@@ -35,6 +45,9 @@ import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
 
+import java.io.IOException;
+import java.util.List;
+
 import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
 import okhttp3.Dispatcher;
@@ -42,9 +55,36 @@ import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
 @HiltAndroidApp
-public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
+public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver, ReactApplication {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
+
+    private final ReactNativeHost reactNativeHost = new DefaultReactNativeHost(this) {
+        @Override
+        public List<ReactPackage> getPackages() {
+            return new PackageList(this).getPackages();
+        }
+
+        @Override
+        public String getJSMainModuleName() {
+            return "index";
+        }
+
+        @Override
+        public boolean getUseDeveloperSupport() {
+            return BuildConfig.DEBUG;
+        }
+
+        @Override
+        protected boolean isNewArchEnabled() {
+            return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
+        }
+
+        @Override
+        protected Boolean isHermesEnabled() {
+            return BuildConfig.IS_HERMES_ENABLED;
+        }
+    };
     private static Context mContext;
     private static String androidId;
     private Activity currentActivity;
@@ -66,6 +106,16 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         return sIntelehealthApplication;
     }
 
+    @Override
+    public ReactNativeHost getReactNativeHost() {
+        return reactNativeHost;
+    }
+
+    @Override
+    public ReactHost getReactHost() {
+        return DefaultReactHost.getDefaultReactHost(getApplicationContext(), reactNativeHost, null);
+    }
+
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 //    private RealTimeDataChangedObserver dataChangedObserver;
 
@@ -83,6 +133,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     @Override
     public void onCreate() {
         super.onCreate();
+        try {
+            SoLoader.init(this, OpenSourceMergedSoMapping.INSTANCE);
+        } catch (IOException e) {
+//            throw new RuntimeException(e);
+        }
+        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+            DefaultNewArchitectureEntryPoint.load();
+        }
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);

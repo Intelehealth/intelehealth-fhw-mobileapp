@@ -76,6 +76,7 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -151,7 +152,8 @@ import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import okhttp3.ResponseBody;
 
-public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
+public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, DefaultHardwareBackBtnHandler {
+
     private static final String TAG = "HomeScreenActivity";
     private PreferenceHelper preferenceHelper;
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
@@ -1739,6 +1741,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             }
         }
     };
+
+    @Override
+    public void invokeDefaultOnBackPressed() {
+        super.onBackPressed();
+    }
 
 
     public class NotificationReceiver extends BroadcastReceiver {

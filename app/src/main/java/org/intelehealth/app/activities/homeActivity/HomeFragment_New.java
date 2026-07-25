@@ -22,6 +22,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
+import org.intelehealth.app.reactnative.PatientData;
 import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -41,6 +42,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.lifecycle.LifecycleObserver;
 
+import com.facebook.react.ReactFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
@@ -71,6 +73,7 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -120,6 +123,44 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         return context;
     }
 
+    private void addQueueLayout() {
+        ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
+
+        PatientData currentPatient = new PatientData(
+                "Q-104",
+                "Anthony G",
+                "M",
+                50,
+                "ID-987654jK",
+                symptomList,
+                2,
+                8,
+                "https://unsplash.com"
+        );
+
+        // 3. Map your custom data class parameters directly into the Android Bundle payload
+        Bundle initialProperties = new Bundle();
+        initialProperties.putString("queueNumber", currentPatient.getQueueNumber());
+        initialProperties.putString("patientName", currentPatient.getPatientName());
+        initialProperties.putString("gender", currentPatient.getGender());
+        initialProperties.putInt("age", currentPatient.getAge());
+        initialProperties.putString("patientId", currentPatient.getPatientId());
+        initialProperties.putStringArrayList("symptoms", currentPatient.getSymptoms()); // Maps perfectly to a JavaScript Array
+        initialProperties.putInt("position", currentPatient.getPosition());
+        initialProperties.putInt("waitTimeMinutes", currentPatient.getWaitTimeMinutes());
+        initialProperties.putString("avatarUrl", currentPatient.getAvatarUrl());
+
+        // 4. Boot the pipeline layer inside your execution lifecycle hook
+        ReactFragment reactFragment = new ReactFragment.Builder()
+                .setComponentName("QueueCardModule")
+                .setLaunchOptions(initialProperties)
+                .build();
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.queue_card_container, reactFragment)
+                .commit();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -413,6 +454,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         followup_cardview = view.findViewById(R.id.followup_cardview);
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
+
+        addQueueLayout();
 
         textlayout_find_patient.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SearchPatientActivity_New.class);

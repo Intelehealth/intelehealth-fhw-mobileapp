@@ -68,7 +68,7 @@
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent=".13"
+                app:layout_constraintHeight_percent=".10"
                 app:layout_constraintStart_toStartOf="@id/guideline_12"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -123,6 +123,18 @@
             </com.google.android.material.card.MaterialCardView>
 
 
+            <FrameLayout
+                android:id="@+id/queue_card_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_all_card_start_margin"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/common_all_card_end_margin"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addpatient_cardview" />
 
 
             <com.google.android.material.card.MaterialCardView
@@ -133,12 +145,12 @@
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
-                app:layout_constraintHeight_percent=".25"
+                app:layout_constraintHeight_percent=".18"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintStart_toStartOf="@id/guideline_275"
-                app:layout_constraintTop_toBottomOf="@+id/addpatient_cardview"
+                app:layout_constraintTop_toBottomOf="@+id/queue_card_container"
                  >
 
 
@@ -217,7 +229,7 @@
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
-                app:layout_constraintHeight_percent=".25"
+                app:layout_constraintHeight_percent=".18"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
