@@ -762,6 +762,7 @@
     <string name="last_sync">Last sync</string>
     <string name="help_center">Help center</string>
     <string name="help_footer">Help</string>
+    <string name="queue">Queue</string>
     <string name="selected_date"> Selected date</string>
     <string name="today">Today</string>
     <string name="close_patient_registration">Close patient registration?</string>

@@ -119,7 +119,7 @@ public class HelpFragment_New extends Fragment implements View.OnClickListener,
         networkUtils = new NetworkUtils(getActivity(), this);
 
         BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
+//        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
         bottomNav.setVisibility(View.VISIBLE);
 
 

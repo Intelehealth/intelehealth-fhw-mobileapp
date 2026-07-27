@@ -8,16 +8,22 @@
         app:iconTint="?colorPrimary" />
 
     <item
+        android:id="@+id/bottom_nav_queue"
+        android:icon="@drawable/ui2_selector_queue_nav"
+        android:title="@string/queue"
+        app:iconTint="?colorPrimary" />
+
+    <item
         android:id="@+id/bottom_nav_achievements"
         android:icon="@drawable/ui2_selector_acievements_nav"
         android:title="@string/achievements"
         app:iconTint="?colorPrimary" />
 
-    <item
+    <!--<item
         android:id="@+id/bottom_nav_help"
         android:icon="@drawable/ui2_selector_help_nav"
         android:title="@string/help_footer"
-        app:iconTint="?colorPrimary" />
+        app:iconTint="?colorPrimary" />-->
 
     <item
         android:id="@+id/bottom_nav_add_patient"

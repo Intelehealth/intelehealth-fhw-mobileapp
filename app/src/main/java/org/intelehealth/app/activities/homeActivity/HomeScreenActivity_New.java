@@ -104,6 +104,7 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.reactnative.RNActivity;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -1465,7 +1466,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     //loadFragmentForBottomNav(fragment);
                     loadFragment(fragment, TAG_ACHIEVEMENT);
                     return true;
-                case R.id.bottom_nav_help:
+                /*case R.id.bottom_nav_help:
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
@@ -1476,9 +1477,13 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     fragment = new HelpFragment_New();
                     //loadFragmentForBottomNav(fragment);
                     loadFragment(fragment, TAG_HELP);
-                    return true;
+                    return true;*/
                 case R.id.bottom_nav_add_patient:
                     AddPatientUtils.navigate(HomeScreenActivity_New.this);
+                    return false;
+                case R.id.bottom_nav_queue:
+                    Intent intent = new Intent(HomeScreenActivity_New.this, RNActivity.class);
+                    startActivity(intent);
                     return false;
             }
 
@@ -1652,7 +1657,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             fragment = new HomeFragment_New();
             ivHamburger.setVisibility(View.VISIBLE);
             bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        } else if (tag.equalsIgnoreCase(TAG_HELP)) {
+        } else /*if (tag.equalsIgnoreCase(TAG_HELP)) {
             fragment = new HelpFragment_New();
             bottomNav.getMenu().findItem(R.id.bottom_nav_help).setChecked(true);
             tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
@@ -1660,7 +1665,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             imageview_notifications_home.setVisibility(View.GONE);
             ivNotificationIcon.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
-        } else if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
+        } else*/ if (tag.equalsIgnoreCase(TAG_ACHIEVEMENT)) {
             fragment = new MyAchievementsFragment();
             bottomNav.getMenu().findItem(R.id.bottom_nav_achievements).setChecked(true);
             ivHamburger.setVisibility(View.GONE);
