@@ -28,3 +28,5 @@ salt.env
 /app/src/ida/assets/
 
 app/src/nas/assets/assets/fonts/
+
+app/src/nas/assets/fonts/
