@@ -104,7 +104,7 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.reactnative.RNActivity;
+import org.intelehealth.app.reactnative.PatientQueueFragment;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -193,6 +193,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_HOME = "TAG_HOME";
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
+    private static final String TAG_QUEUE = PatientQueueFragment.TAG;
     private NotificationReceiver notificationReceiver;
 
     private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
@@ -1482,9 +1483,16 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     AddPatientUtils.navigate(HomeScreenActivity_New.this);
                     return false;
                 case R.id.bottom_nav_queue:
-                    Intent intent = new Intent(HomeScreenActivity_New.this, RNActivity.class);
-                    startActivity(intent);
-                    return false;
+                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.patients_queue));
+                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+                    tvAppLastSync.setVisibility(View.GONE);
+                    ivHamburger.setVisibility(View.VISIBLE);
+                    imageViewIsInternet.setVisibility(View.VISIBLE);
+                    imageViewIsNotification.setVisibility(View.GONE);
+                    ivNotificationIcon.setVisibility(View.GONE);
+                    fragment = new PatientQueueFragment();
+                    loadFragment(fragment, TAG_QUEUE);
+                    return true;
             }
 
             return false;

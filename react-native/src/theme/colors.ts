@@ -12,6 +12,7 @@ export const Colors = {
   cardCreamBorder: '#FDE68A',
   avatarPlaceholder: '#E5E7EB',
   divider: '#F3F4F6',
+  inputBorder: '#E5E7EB', // search / text input outline
 
   // Text
   textPrimary: '#111827',
