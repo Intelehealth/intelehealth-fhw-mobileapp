@@ -16,6 +16,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.models.QueueModel;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitAttributeDTO;
 import org.intelehealth.app.models.dto.VisitAttribute_Speciality;
@@ -756,6 +757,46 @@ public class VisitsDAO extends BaseDao {
         cursor.close();
 //        db.setTransactionSuccessful();
 //        db.endTransaction();
+
+        return arrayList;
+    }
+
+    /**
+     * TEMPORARY: duplicate of {@link #allNotEndedVisits()} that returns
+     * {@link QueueModel} rows to feed the RN "Patient's Queue" list. Same
+     * "all not-ended visits" filter (no older-than-4-days window), with paging.
+     * Remove once the real queue feed is in place.
+     */
+    public static List<QueueModel> queueVisits(int limit, int offset) {
+        List<QueueModel> arrayList = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT p.uuid, v.uuid as visitUUID, p.patient_photo, p.first_name,  p.middle_name, p.last_name, p.phone_number, p.date_of_birth,p.gender,p.openmrs_id,v.startdate " +
+                        "FROM tbl_patient p, tbl_visit v " +
+                        "WHERE p.uuid = v.patientuuid and (v.sync = 1 OR v.sync = 'TRUE' OR v.sync = 'true') " +
+                        "AND v.voided = 0 " +
+                        "AND v.enddate IS NULL ORDER BY v.startdate DESC limit ? offset ?",
+                new String[]{String.valueOf(limit), String.valueOf(offset)});
+
+        if (cursor.getCount() > 0 && cursor.moveToFirst()) {
+            do {
+                QueueModel model = new QueueModel();
+                model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+                model.setPatientPhoto(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
+                model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
+                model.setFirstName(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                model.setMiddleName(cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                model.setLastName(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                model.setPhoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+                model.setVisitStartDate(cursor.getString(cursor.getColumnIndexOrThrow("startdate")));
+                model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                model.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                arrayList.add(model);
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
 
         return arrayList;
     }

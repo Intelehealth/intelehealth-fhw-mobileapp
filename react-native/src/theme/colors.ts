@@ -25,6 +25,26 @@ export const Colors = {
   tagBackground: '#E6FDF4',
   tagBorder: '#34D399',
   tagText: '#059669',
+
+  // Queue status: On Call (green surface + badge)
+  cardGreen: '#F0FDF4',
+  cardGreenBorder: '#BBF7D0',
+  badgeOnCallBg: '#D1FAE5',
+  badgeOnCallText: '#047857',
+
+  // Queue status: Next in Queue (amber badge — reuses cardCream surface)
+  badgeNextBg: '#FEF3C7',
+  badgeNextText: '#D97706',
+
+  // Queue status: Waiting (neutral surface + outlined badge)
+  cardNeutralBorder: '#E5E7EB',
+  badgeWaitingBg: '#FFFFFF',
+  badgeWaitingBorder: '#D1D5DB',
+  badgeWaitingText: '#6B7280',
+
+  // Queue filter tabs
+  tabIndicator: '#EA315B', // active-tab underline (crimson)
+  tabDivider: '#FFE8E8', // full-width hairline under the tab row
 } as const;
 
 export type ColorName = keyof typeof Colors;
