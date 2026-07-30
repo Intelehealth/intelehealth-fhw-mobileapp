@@ -176,6 +176,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     int i = 5;
     Context context;
     TextView tvTitleHomeScreenCommon, tvAppLastSync;
+    LinearLayout llAutoUpdate;
     BottomNavigationView bottomNav;
     private CardView survey_snackbar_cv;
     ImageView imageViewIsNotification, ivCloseDrawer, ivProfileIcon, ivNotificationIcon;
@@ -714,6 +715,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         toolbarHome = findViewById(R.id.toolbar_home);
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
         tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        llAutoUpdate = toolbarHome.findViewById(R.id.layout_autoupdate);
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
         ivNotificationIcon = toolbarHome.findViewById(R.id.ivNotificationIcon);
@@ -1113,6 +1115,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tvAppLastSync.setVisibility(View.GONE);
+            llAutoUpdate.setVisibility(View.GONE);
             ivHamburger.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
             imageViewIsNotification.setVisibility(View.GONE);
@@ -1451,6 +1454,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
+                    llAutoUpdate.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.VISIBLE);
                     loadFragment(fragment, TAG_HOME);
                     setupNotificationDotVisibility();
@@ -1459,6 +1463,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
+                    llAutoUpdate.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
@@ -1471,6 +1476,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
+                    llAutoUpdate.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
                     ivNotificationIcon.setVisibility(View.GONE);
@@ -1486,6 +1492,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.patients_queue));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
+                    llAutoUpdate.setVisibility(View.VISIBLE);
                     ivHamburger.setVisibility(View.VISIBLE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
@@ -1789,6 +1796,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
         tvAppLastSync.setText(lastSyncText);
+        llAutoUpdate.setVisibility(View.GONE);
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
         // }).start();
