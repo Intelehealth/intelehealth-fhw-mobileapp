@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_account"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_20"
+    android:layout_marginVertical="@dimen/margin_10"
+    android:background="@drawable/bg_textbox_outline"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="@dimen/margin_12"
+    android:paddingVertical="@dimen/margin_10">
+
+    <ImageView
+        android:id="@+id/iv_checked_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="@dimen/margin_14"
+        android:contentDescription="@null"
+        android:src="@drawable/abdm_ic_check_circle"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_index"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_heading"
+            android:textSize="@dimen/text_16"
+            tools:text="Index: 1" />
+
+        <TextView
+            android:id="@+id/tv_full_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:textColor="@color/text_heading"
+            android:textSize="@dimen/text_16"
+            tools:text="Name: Arpan Sircar" />
+
+        <TextView
+            android:id="@+id/tv_abha_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:textColor="@color/text_heading"
+            android:textSize="@dimen/text_16"
+            tools:text="ABHA Number: xx-xxxx-xxxx-1234" />
+
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:textColor="@color/text_heading"
+            android:textSize="@dimen/text_16"
+            tools:text="Gender: M" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:textColor="@color/text_heading"
+            android:textSize="@dimen/text_16"
+            tools:text="Status: Not registered with Intelehealth" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -103,9 +103,8 @@ dependencies {
     api 'com.squareup.retrofit2:converter-gson:2.9.0'
     api "com.squareup.okhttp3:logging-interceptor:4.10.0"
 
-    def hiltVersion = '2.47'
+    def hiltVersion = '2.51.1'
     api "com.google.dagger:hilt-android:$hiltVersion"
-    annotationProcessor "com.google.dagger:hilt-compiler:$hiltVersion"
     kapt "com.google.dagger:hilt-compiler:$hiltVersion"
 
     // WorkManager

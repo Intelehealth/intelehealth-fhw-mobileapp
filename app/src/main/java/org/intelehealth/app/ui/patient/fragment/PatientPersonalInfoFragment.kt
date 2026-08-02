@@ -188,8 +188,26 @@ class PatientPersonalInfoFragment :
             setGender()
             setClickListener()
             setInputTextChangListener()
+            lockAbhaFieldsIfLinked()
 //            binding.addOnRebindCallback(onRebindCallback)
         }
+    }
+
+    /**
+     * Locks the identity fields sourced from a verified ABHA profile. Called last in the config
+     * observer because setupDOB/setupAge/applyFilter attach the pickers and filters that would
+     * otherwise leave these fields interactive. The country-code picker is locked alongside the
+     * number so the code cannot be changed independently.
+     */
+    private fun lockAbhaFieldsIfLinked() {
+        if (!hasAbha()) return
+        binding.textInputETFName.isEnabled = false
+        binding.textInputETMName.isEnabled = false
+        binding.textInputETLName.isEnabled = false
+        binding.textInputETPhoneNumber.isEnabled = false
+        binding.countrycodeSpinner.setCcpClickable(false)
+        binding.textInputETDob.isEnabled = false
+        binding.textInputETAge.isEnabled = false
     }
 
 //    private val onRebindCallback =

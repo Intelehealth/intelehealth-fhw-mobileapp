@@ -103,6 +103,8 @@ public class PatientsDAO extends BaseDao {
         values.put("address3", patient.getAddress3());
         values.put("address6", patient.getAddress6());
         values.put("countyDistrict", patient.getDistrict());
+        values.put("abha_number", patient.getAbhaNumber());
+        values.put("abha_address", patient.getAbhaAddress());
 
         values.put("dead", patient.getDead());
         values.put("sync", patient.getSyncd().toString());
@@ -148,6 +150,8 @@ public class PatientsDAO extends BaseDao {
             values.put("address3", patient.getAddress3());
             values.put("address6", patient.getAddress6());
             values.put("countyDistrict", patient.getDistrict());
+            values.put("abha_number", patient.getAbhaNumber());
+            values.put("abha_address", patient.getAbhaAddress());
 
             values.put("dead", patient.getDead());
             values.put("sync", patient.getSyncd());
@@ -198,6 +202,8 @@ public class PatientsDAO extends BaseDao {
             values.put("countyDistrict", patientDTO.getDistrict());
             values.put("address3", patientDTO.getAddress3());
             values.put("address6", patientDTO.getAddress6());
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
 
             values.put("dead", patientDTO.getDead());
             values.put("sync", false);
@@ -260,6 +266,8 @@ public class PatientsDAO extends BaseDao {
             values.put("countyDistrict", patientDTO.getDistrict());
             values.put("address3", patientDTO.getAddress3());
             values.put("address6", patientDTO.getAddress6());
+            values.put("abha_number", patientDTO.getAbhaNumber());
+            values.put("abha_address", patientDTO.getAbhaAddress());
 
             values.put("dead", false);
             values.put("sync", false);
@@ -709,6 +717,8 @@ public class PatientsDAO extends BaseDao {
                     patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));
                     patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));
                     patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                    patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                    patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
                     patientDTOList.add(patientDTO);
 
                 }
@@ -1301,6 +1311,8 @@ public class PatientsDAO extends BaseDao {
                 patientDTO.setContactType(cursor.getString(cursor.getColumnIndexOrThrow("contact_type")));
                 patientDTO.setEmContactName(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_name")));
                 patientDTO.setEmContactNumber(cursor.getString(cursor.getColumnIndexOrThrow("em_contact_num")));
+                patientDTO.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
 
                 // Attributes
                 patientDTO.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("telephone")));
@@ -1558,6 +1570,190 @@ public class PatientsDAO extends BaseDao {
             throw new DAOException(s);
         }
         return patientName;
+    }
+
+    /**
+     * Whether the known HMIS patient (by openmrs_id) is already linked locally to [abhaAddress].
+     * Lets the ABDM flow skip a redundant server identifier update.
+     */
+    public boolean isPatientExistWithAbhaAddress(String patientOpenMRSId, String abhaAddress) {
+        boolean exists = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT COUNT(*) as count FROM tbl_patient WHERE openmrs_id = ? AND abha_address LIKE ? COLLATE NOCASE",
+                new String[]{patientOpenMRSId, "%" + abhaAddress + "%"})) {
+            if (cursor.moveToFirst()) {
+                exists = cursor.getInt(cursor.getColumnIndexOrThrow("count")) > 0;
+            }
+        } catch (SQLException s) {
+            CustomLog.e(TAG, s.getMessage());
+        }
+        return exists;
+    }
+
+    /**
+     * Links ABHA identifiers to an existing local patient (by uuid) and marks the row unsynced so
+     * the next push sends them as patient identifiers.
+     */
+    public boolean updatePatientAbha(String uuid, String abhaNumber, String abhaAddress) throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        try {
+            values.put("abha_number", abhaNumber);
+            values.put("abha_address", abhaAddress);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("sync", false);
+            db.update("tbl_patient", values, "uuid=?", new String[]{uuid});
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isUpdated = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isUpdated;
+    }
+
+    /**
+     * Finds the local patient to reconcile against during ABHA verification, matched by ABHA number.
+     * Most-recently-modified wins. Returns null when no local copy exists.
+     */
+    public PatientDTO getPatientForComparisonByAbhaNumber(String abhaNumber) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT * FROM tbl_patient WHERE abha_number LIKE ? AND (voided = '0' OR voided IS NULL) ORDER BY modified_date DESC LIMIT 1",
+                new String[]{"%" + abhaNumber + "%"})) {
+            if (cursor.moveToFirst()) {
+                return cursorToComparisonDTO(cursor);
+            }
+        } catch (SQLException s) {
+            CustomLog.e(TAG, s.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Fallback lookup for the ABHA verify to compare flow when no row matches by ABHA number.
+     * Most-recently-modified wins. Returns null when no local copy exists.
+     */
+    public PatientDTO getPatientForComparisonByPhone(String phoneNumber) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT * FROM tbl_patient WHERE phone_number = ? AND (voided = '0' OR voided IS NULL) ORDER BY modified_date DESC LIMIT 1",
+                new String[]{phoneNumber})) {
+            if (cursor.moveToFirst()) {
+                return cursorToComparisonDTO(cursor);
+            }
+        } catch (SQLException s) {
+            CustomLog.e(TAG, s.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Whether a local patient already exists for an ABHA account shown in the multiple-accounts
+     * picker, driving the "Registered / Not registered with Intelehealth" status line.
+     */
+    public boolean isPatientRegisteredLocally(String abhaNumberLastFour, String firstName, String lastName) {
+        boolean registered = false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT uuid FROM tbl_patient WHERE abha_number LIKE ? AND first_name = ? AND last_name = ? AND (voided = '0' OR voided IS NULL) LIMIT 1",
+                new String[]{"%" + abhaNumberLastFour + "%", firstName, lastName})) {
+            registered = cursor.moveToFirst();
+        } catch (SQLException s) {
+            CustomLog.e(TAG, s.getMessage());
+        }
+        return registered;
+    }
+
+    /**
+     * Persists the merged record chosen on the ABHA compare screen back to the local patient row
+     * and marks it unsynced. address2, address3 and address6 are deliberately left untouched: the
+     * ABHA address carries no reliable equivalent, so overwriting them would lose local data.
+     */
+    public boolean updatePatientAfterAbhaComparison(String uuid, String firstName, String lastName,
+                                                    String dateOfBirth, String gender,
+                                                    String address1, String cityVillage,
+                                                    String countyDistrict, String stateProvince,
+                                                    String pinCode, String phone,
+                                                    String abhaNumber, String abhaAddress) throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        try {
+            values.put("first_name", firstName);
+            values.put("last_name", lastName);
+            values.put("date_of_birth", dateOfBirth);
+            values.put("gender", gender);
+            values.put("address1", address1);
+            values.put("city_village", cityVillage);
+            values.put("countyDistrict", countyDistrict);
+            values.put("state_province", stateProvince);
+            values.put("postal_code", pinCode);
+            values.put("phone_number", phone);
+            values.put("abha_number", abhaNumber);
+            values.put("abha_address", abhaAddress);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("sync", false);
+            db.update("tbl_patient", values, "uuid=?", new String[]{uuid});
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isUpdated = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isUpdated;
+    }
+
+    /**
+     * The stored ABHA number for a patient, used to decide whether the ABHA card button is shown
+     * and to locate the cached card image. Returns null when the patient has no ABHA linked.
+     */
+    public String getAbhaNumberByUuid(String uuid) {
+        String abhaNumber = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT abha_number FROM tbl_patient WHERE uuid = ? LIMIT 1",
+                new String[]{uuid})) {
+            if (cursor.moveToFirst()) {
+                abhaNumber = cursor.getString(0);
+            }
+        } catch (SQLException s) {
+            CustomLog.e(TAG, s.getMessage());
+        }
+        return abhaNumber;
+    }
+
+    /**
+     * Builds the patient row used by the ABHA compare screen. Both city_village and countyDistrict
+     * are populated so PatientDTO's village/district accessors normalise legacy rows that still
+     * encode "district:village" in the single column.
+     */
+    private PatientDTO cursorToComparisonDTO(Cursor cursor) {
+        PatientDTO dto = new PatientDTO();
+        dto.setUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+        dto.setOpenmrsId(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+        dto.setFirstname(cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+        dto.setLastname(cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+        dto.setDateofbirth(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+        dto.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+        dto.setAddress1(cursor.getString(cursor.getColumnIndexOrThrow("address1")));
+        dto.setAddress2(cursor.getString(cursor.getColumnIndexOrThrow("address2")));
+        dto.setCityvillage(cursor.getString(cursor.getColumnIndexOrThrow("city_village")));
+        dto.setDistrict(cursor.getString(cursor.getColumnIndexOrThrow("countyDistrict")));
+        dto.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
+        dto.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
+        dto.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+        dto.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
+        dto.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
+        return dto;
     }
 
 }

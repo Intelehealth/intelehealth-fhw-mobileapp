@@ -112,6 +112,28 @@ public class PatientDTO implements Serializable {
     @SerializedName("address6")
     @Expose
     private String address6;
+    @SerializedName("abha_number")
+    @Expose
+    private String abhaNumber;
+    @SerializedName("abha_address")
+    @Expose
+    private String abhaAddress;
+
+    public String getAbhaNumber() {
+        return abhaNumber;
+    }
+
+    public void setAbhaNumber(String abhaNumber) {
+        this.abhaNumber = abhaNumber;
+    }
+
+    public String getAbhaAddress() {
+        return abhaAddress;
+    }
+
+    public void setAbhaAddress(String abhaAddress) {
+        this.abhaAddress = abhaAddress;
+    }
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
     }

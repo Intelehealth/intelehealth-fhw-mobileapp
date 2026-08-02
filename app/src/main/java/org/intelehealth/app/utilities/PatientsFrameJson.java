@@ -41,6 +41,14 @@ import java.util.List;
 
 public class PatientsFrameJson {
     private static final String TAG = "PatientsFrameJson";
+
+    /**
+     * OpenMRS PatientIdentifierType UUIDs for the ABHA identifiers. These are per-instance records,
+     * not global constants: they must exist on the target server or the patient push is rejected.
+     */
+    private static final String ABHA_ADDRESS_IDENTIFIER_TYPE_UUID = "59077d8f-8bee-4a6f-a1a8-64365a297da6";
+    private static final String ABHA_NUMBER_IDENTIFIER_TYPE_UUID = "6ad4e308-33aa-4afc-9879-6033d1984876";
+
     private PatientsDAO patientsDAO = new PatientsDAO();
     private SessionManager session;
     private VisitsDAO visitsDAO = new VisitsDAO();
@@ -127,6 +135,24 @@ public class PatientsFrameJson {
                 identifier.setLocation(session.getLocationUuid());
                 identifier.setPreferred(true);
                 identifierList.add(identifier);
+
+                String abhaAddress = patientDTOList.get(i).getAbhaAddress();
+                if (abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA")) {
+                    Identifier abhaAddressIdentifier = new Identifier();
+                    abhaAddressIdentifier.setIdentifierType(ABHA_ADDRESS_IDENTIFIER_TYPE_UUID);
+                    abhaAddressIdentifier.setLocation(session.getLocationUuid());
+                    abhaAddressIdentifier.setIdentifier(abhaAddress);
+                    identifierList.add(abhaAddressIdentifier);
+                }
+
+                String abhaNumber = patientDTOList.get(i).getAbhaNumber();
+                if (abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA")) {
+                    Identifier abhaNumberIdentifier = new Identifier();
+                    abhaNumberIdentifier.setIdentifierType(ABHA_NUMBER_IDENTIFIER_TYPE_UUID);
+                    abhaNumberIdentifier.setLocation(session.getLocationUuid());
+                    abhaNumberIdentifier.setIdentifier(abhaNumber);
+                    identifierList.add(abhaNumberIdentifier);
+                }
 
                 patient.setIdentifiers(identifierList);
                 patientList.add(patient);

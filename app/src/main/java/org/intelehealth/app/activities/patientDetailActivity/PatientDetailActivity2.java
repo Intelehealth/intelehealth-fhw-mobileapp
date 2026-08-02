@@ -139,6 +139,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.abdm.presentation.AbdmCardDownloader;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -218,6 +219,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn;
+    Button btnViewAbhaCard;
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
     //private boolean returning;
@@ -770,6 +772,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn = findViewById(R.id.cancelbtn);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
+        btnViewAbhaCard = findViewById(R.id.btn_view_abha_card);
 
         mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -780,6 +783,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         fetchAllConfig();
 
         setFullName();
+        setupViewAbhaCardButton();
         initForOpenVisit();
         initForPastVisit();
     }
@@ -1373,6 +1377,23 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             patientName = patientDTO.getFirstname() + " " + patientDTO.getMiddlename() + " " + patientDTO.getLastname();
         }
+    }
+
+    /**
+     * Reveals the ABHA card button for a patient with a linked ABHA. The number is read from the
+     * database rather than the patient DTO so it works on every route into this screen, including
+     * those whose queries do not select the ABHA columns. The card itself may not have downloaded
+     * yet; AbdmCardDownloader reports that case to the user.
+     */
+    private void setupViewAbhaCardButton() {
+        if (btnViewAbhaCard == null || patientDTO == null) return;
+        String abhaNumber = patientsDAO.getAbhaNumberByUuid(patientDTO.getUuid());
+        if (abhaNumber == null || abhaNumber.isEmpty() || abhaNumber.equalsIgnoreCase("NA")) {
+            btnViewAbhaCard.setVisibility(View.GONE);
+            return;
+        }
+        btnViewAbhaCard.setVisibility(View.VISIBLE);
+        btnViewAbhaCard.setOnClickListener(v -> AbdmCardDownloader.viewCard(this, abhaNumber));
     }
 
     public void setDisplay(String dataString) {

@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.onboarding
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -8,11 +9,19 @@ import android.os.LocaleList
 import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import androidx.core.view.WindowCompat
+import org.intelehealth.abdm.presentation.AbdmLauncher
+import org.intelehealth.abdm.presentation.abha_choice.AbhaChoiceDialogFragment
+import org.intelehealth.abdm.result.AbdmOutcomes
+import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ConfigUtils
@@ -30,6 +39,11 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     private val context: Context = this
     private var sessionManager: SessionManager? = null
     private var loadingDialog: AlertDialog? = null
+
+    private val abhaResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            handleAbhaResult(result)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +68,8 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
         )
 
         ivBack?.setOnClickListener { v: View? -> finish() }
+
+        registerAbhaChoiceListener()
 
         Thread {
             var text: String?
@@ -91,9 +107,7 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 //                IdentificationActivity_New::class.java
 //            )
 //        )
-        PatientRegistrationActivity.startPatientRegistration(this)
-        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-        finish()
+        offerAbhaThenRegister()
 
 //        startRosterQuestionnaire(
 //            this,
@@ -109,6 +123,61 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
               RosterQuestionnaireStage.GENERAL_ROSTER
           )*/
 
+    }
+
+    /**
+     * Registered in onCreate rather than at click time so the choice survives a configuration
+     * change while the dialog is open.
+     */
+    private fun registerAbhaChoiceListener() {
+        AbhaChoiceDialogFragment.setResultListener(supportFragmentManager, this) { choice ->
+            when (choice) {
+                AbhaChoiceDialogFragment.Choice.VERIFY_ABHA ->
+                    AbdmLauncher.startVerifyAbha(this, abhaResultLauncher)
+
+                AbhaChoiceDialogFragment.Choice.CREATE_ABHA ->
+                    AbdmLauncher.startCreateAbha(this, abhaResultLauncher)
+
+                AbhaChoiceDialogFragment.Choice.CONTINUE_WITHOUT_ABHA -> continueWithoutAbha()
+            }
+        }
+    }
+
+    private fun offerAbhaThenRegister() {
+        AbhaChoiceDialogFragment.show(supportFragmentManager)
+    }
+
+    private fun continueWithoutAbha() {
+        PatientRegistrationActivity.startPatientRegistration(this)
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        finish()
+    }
+
+    /**
+     * A cancelled ABHA flow deliberately leaves this screen up so the user can pick again, rather
+     * than dropping them into registration they did not ask for.
+     */
+    private fun handleAbhaResult(result: ActivityResult) {
+        val data = result.data
+        if (result.resultCode != RESULT_OK || data == null) return
+        data.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        val abdmResult = IntentCompat.getParcelableExtra(
+            data, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
+        ) ?: return
+
+        if (abdmResult.outcome ==
+            AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON
+        ) {
+            Intent(this, PatientDetailActivity2::class.java).apply {
+                putExtra("patientUuid", abdmResult.uuid)
+                putExtra("tag", "newPatient")
+            }.also { startActivity(it) }
+        } else {
+            PatientRegistrationActivity.startPatientRegistrationFromAbha(this, abdmResult)
+        }
+
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        finish()
     }
 
     override fun attachBaseContext(newBase: Context) {

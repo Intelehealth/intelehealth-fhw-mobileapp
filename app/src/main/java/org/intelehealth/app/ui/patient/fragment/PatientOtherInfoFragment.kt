@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import androidx.core.content.IntentCompat
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.presentation.AbdmCardDownloader
+import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -125,9 +128,32 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             patientViewModel.updatedPatient(this)
             patientViewModel.savePatient().observe(viewLifecycleOwner) {
                 it ?: return@observe
-                patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
+                patientViewModel.handleResponse(it) { result ->
+                    if (result) {
+                        downloadAbhaCardIfLinked()
+                        navigateToDetails()
+                    }
+                }
             }
         }
+    }
+
+    /**
+     * Fetches the ABHA card once the patient is persisted. xToken and cardScope belong to the
+     * one-shot ABHA session rather than the patient, so they are read from the AbdmResult on the
+     * activity intent — they are not stored on the record like the abha number is. The download is
+     * fire-and-forget: a missing card must never block registration.
+     */
+    private fun downloadAbhaCardIfLinked() {
+        if (!hasAbha()) return
+        val hostIntent = activity?.intent ?: return
+        hostIntent.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        val abdmResult = IntentCompat.getParcelableExtra(
+            hostIntent, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
+        ) ?: return
+        AbdmCardDownloader.downloadInBackground(
+            requireContext(), abdmResult.xToken, abdmResult.cardScope, patient.abhaNumber
+        )
     }
 
     private fun navigateToDetails() {

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".presentation.abha_suggestions.AbhaSuggestionsActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_20"
+            android:paddingVertical="@dimen/padding_10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/select_an_abha_address"
+                android:textAppearance="@style/TextAppearance.Abdm.Title" />
+
+            <ImageView
+                android:id="@+id/iv_abha_suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/abdm_content_desc_icon"
+                android:padding="@dimen/margin_10"
+                android:src="@drawable/abdm_ic_info"
+                app:tint="@color/error_red" />
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_subtitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_15"
+                    android:text="@string/please_select_an_abha_address_from_the_suggestions_below"
+                    android:textAppearance="@style/TextAppearance.Abdm.Subtitle" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_16"
+                    android:layout_marginTop="@dimen/margin_16"
+                    app:chipSpacingHorizontal="@dimen/margin_12"
+                    app:singleSelection="true" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_20"
+                    app:hintEnabled="false">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_abha_address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_textbox_outline"
+                            android:hint="@string/abha_address"
+                            android:inputType="textEmailAddress"
+                            android:maxLength="18"
+                            android:paddingStart="14dp"
+                            android:paddingTop="14dp"
+                            android:paddingEnd="80dp"
+                            android:paddingBottom="14dp"
+                            android:singleLine="true"
+                            android:textAppearance="@style/TextAppearance.Abdm.InputField"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/hint_color"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/tv_suffix"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="14dp"
+                            android:textAppearance="@style/TextAppearance.Abdm.InputField"
+                            android:textColor="@color/brand_primary"
+                            tools:text="\@…"
+                            app:layout_constraintBottom_toBottomOf="@id/et_abha_address"
+                            app:layout_constraintEnd_toEndOf="@id/et_abha_address"
+                            app:layout_constraintTop_toTopOf="@id/et_abha_address" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/tv_address_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/margin_20"
+                    android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
+                    android:visibility="gone"
+                    tools:text="@string/length_validation"
+                    tools:visibility="visible" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_16"
+            android:layout_marginBottom="@dimen/margin_20"
+            android:text="@string/submit"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/brand_primary"
+            app:cornerRadius="@dimen/margin_8" />
+
+    </LinearLayout>
+
+    <!-- Blocking loading overlay (fetching suggestions / saving address) -->
+    <FrameLayout
+        android:id="@+id/loading_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/white" />
+
+            <TextView
+                android:id="@+id/loading_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14"
+                tools:text="Fetching suggestions…" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</FrameLayout>

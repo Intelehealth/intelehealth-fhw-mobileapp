@@ -1771,5 +1771,10 @@
     <string name="poor_quality_msg">Poor quality network detected.Countinuing with audio call.</string>
     <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">If symptoms worsen, Please visit the nearest doctor or government health facility</string>
 
+    <!-- ABDM / ABHA -->
+    <string name="abha_number">ABHA Number</string>
+    <string name="abha_address">ABHA Address</string>
+    <string name="view_abha_card">View ABHA Card</string>
+    <string name="select_valid_date">Select valid date</string>
 
 </resources>

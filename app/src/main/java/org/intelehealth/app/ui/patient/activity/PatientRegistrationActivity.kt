@@ -22,6 +22,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.result.AbdmResult
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -37,9 +39,15 @@ import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.NetworkUtils.InternetCheckUpdateInterface
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.AbhaPhotoUtils
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.bifurcateAbhaAddress
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 import org.intelehealth.config.room.entity.FeatureActiveStatus
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 
@@ -180,7 +188,82 @@ class PatientRegistrationActivity : BaseActivity() {
                 }
             }
 
+            seedFromAbhaIfPresent(this)
+
         }.also { patientViewModel.updatedPatient(it) }
+    }
+
+    /**
+     * Copies the verified ABHA profile onto the fresh patient record so every stage sees it through
+     * the shared view model. Seeding here rather than per-fragment means a single `abhaNumber`
+     * check can drive field locking in both this flow and the edit flow, with no AbdmResult
+     * plumbing in the fragments. Gender is intentionally not prefilled (deferred pending PM), and
+     * the address is left to the address stage, which needs to bifurcate and match it against the
+     * state/district masters.
+     */
+    private fun seedFromAbhaIfPresent(patient: PatientDTO) {
+        intent?.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        val abdmResult = intent?.let {
+            IntentCompat.getParcelableExtra(it, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java)
+        } ?: return
+        val profile = abdmResult.profile ?: return
+
+        patient.abhaNumber = profile.abhaNumber
+        patient.abhaAddress = withAbhaSuffix(profile.preferredAbhaAddress)
+        patient.firstname = profile.firstName
+        patient.middlename = profile.middleName
+        patient.lastname = profile.lastName
+        patient.gender = profile.gender
+        patient.phonenumber = withCountryCode(profile.mobile)
+        patient.postalcode = profile.pinCode
+        AbhaPhotoUtils.saveEncodedPhoto(this, profile.profilePhoto, patient.uuid)
+            ?.let { patient.patientPhoto = it }
+        parseAbhaDob(profile.dateOfBirth)?.let {
+            patient.dateofbirth = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(it)
+        }
+
+        bifurcateAbhaAddress(profile.address).let { addr ->
+            patient.address1 = addr.address1
+            patient.cityvillage = addr.cityVillage
+            patient.district = addr.countyDistrict
+            patient.stateprovince = addr.stateProvince
+        }
+    }
+
+    /**
+     * ABHA returns a bare national number. The phone field is driven by an hbb20 CountryCodePicker
+     * whose `fullNumber` setter *parses* an international number, so handing it a bare one makes it
+     * read the leading digits as the country code. Prefixing 91 up front is what development_master
+     * does and is the shape the picker expects.
+     */
+    private fun withCountryCode(mobile: String?): String? {
+        val digits = mobile?.filter { it.isDigit() }.orEmpty()
+        if (digits.isEmpty()) return mobile
+        return if (digits.startsWith(COUNTRY_CODE_IN) && digits.length > 10) digits else "$COUNTRY_CODE_IN$digits"
+    }
+
+    /**
+     * The server sometimes returns the phr address without its environment suffix. Uses the app's
+     * own BuildConfig value rather than a hardcoded "@abdm" so sandbox builds stay on "@sbx".
+     */
+    private fun withAbhaSuffix(abhaAddress: String?): String? {
+        if (abhaAddress.isNullOrBlank()) return abhaAddress
+        val suffix = BuildConfig.ABHA_ADDRESS_SUFFIX
+        return if (abhaAddress.endsWith(suffix, ignoreCase = true)) abhaAddress else "$abhaAddress$suffix"
+    }
+
+    /** ABHA DOB arrives as "yyyy-M-d" from the verify flow or "dd-MM-yyyy" from create. */
+    private fun parseAbhaDob(value: String?): Date? {
+        if (value.isNullOrBlank()) return null
+        val patterns = arrayOf("yyyy-MM-dd", "yyyy-M-d", "dd-MM-yyyy", "d-M-yyyy")
+        for (pattern in patterns) {
+            try {
+                return SimpleDateFormat(pattern, Locale.ENGLISH).apply { isLenient = false }
+                    .parse(value.trim())
+            } catch (ignored: ParseException) {
+            }
+        }
+        return null
     }
 
     private fun fetchPatientDetails(id: String) {
@@ -279,6 +362,9 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     companion object {
+        /** India only — matches development_master. Revisit if ABDM is ever deployed elsewhere. */
+        private const val COUNTRY_CODE_IN = "91"
+
         @JvmStatic
         fun startPatientRegistration(
             context: Context,
@@ -288,6 +374,21 @@ class PatientRegistrationActivity : BaseActivity() {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
+            }.also { context.startActivity(it) }
+        }
+
+        /**
+         * Entry point for a registration originating from the ABDM (ABHA) flow. Deliberately
+         * separate from [startPatientRegistration] rather than an extra parameter on it: this path
+         * is always a fresh PERSONAL-stage registration, and the other eight call sites (seven of
+         * them Java, which does not honour Kotlin default arguments) keep binding to the signature
+         * they already use.
+         */
+        @JvmStatic
+        fun startPatientRegistrationFromAbha(context: Context, abdmResult: AbdmResult) {
+            Intent(context, PatientRegistrationActivity::class.java).apply {
+                putExtra(PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
+                putExtra(AbdmResult.EXTRA_ABDM_RESULT, abdmResult)
             }.also { context.startActivity(it) }
         }
 

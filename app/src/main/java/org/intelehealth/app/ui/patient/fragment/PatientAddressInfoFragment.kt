@@ -569,6 +569,36 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 setupProvinceAndCities()
             }
+            lockAbhaFieldsIfLinked()
+        }
+    }
+
+    /**
+     * Locks the address fields derived from a verified ABHA profile. Runs after setupStates and
+     * setupDistricts so the dropdowns have already resolved their values from the patient record.
+     *
+     * Each field is locked only when it actually holds a value: the ABHA address is free text, so a
+     * component may fail to match the state/district masters, and locking an empty field would
+     * leave the user unable to supply it at all.
+     */
+    private fun lockAbhaFieldsIfLinked() {
+        if (!hasAbha()) return
+        if (binding.textInputAddress1.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputAddress1, false)
+        }
+        if (binding.textInputCityVillage.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputCityVillage, false)
+        }
+        if (binding.textInputPostalCode.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputPostalCode, false)
+        }
+        if (binding.autoCompleteState.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputLayState, false)
+            setFieldEnabledStatus(binding.autoCompleteState, false)
+        }
+        if (binding.autoCompleteDistrict.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputLayDistrict, false)
+            setFieldEnabledStatus(binding.autoCompleteDistrict, false)
         }
     }
 

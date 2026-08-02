@@ -38,4 +38,11 @@ abstract class BasePatientFragment(@LayoutRes layoutResId: Int) : Fragment(layou
     open fun onPatientDataLoaded(patient: PatientDTO) {
         this.patient = patient
     }
+
+    /**
+     * Whether this patient's identity fields came from a verified ABHA profile and must stay
+     * read-only. Keyed on the record rather than on an intent extra, so it holds on every entry
+     * path — fresh ABHA registration, and editing a linked patient later.
+     */
+    protected fun hasAbha(): Boolean = patient.abhaNumber.isNullOrBlank().not()
 }

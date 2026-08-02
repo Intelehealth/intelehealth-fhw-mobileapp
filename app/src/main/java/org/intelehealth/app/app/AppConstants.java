@@ -27,7 +27,8 @@ public class AppConstants {
     public static final String DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db";
  /*   public static final int DATABASE_VERSION = 4;*/
     //new changes for count update
-    public static final int DATABASE_VERSION = 5;
+    // v6: added abha_number / abha_address columns to tbl_patient (ABDM identifiers).
+    public static final int DATABASE_VERSION = 6;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String IMAGE_APP_ID = "app2";
