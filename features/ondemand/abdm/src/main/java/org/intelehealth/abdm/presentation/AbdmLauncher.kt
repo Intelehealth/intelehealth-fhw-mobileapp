@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.fragment.app.FragmentActivity
 import org.intelehealth.abdm.presentation.abha_create.AbhaCreateActivity
 import org.intelehealth.abdm.presentation.abha_create.PatientNameDialogFragment
+import org.intelehealth.abdm.presentation.abha_suggestions.AbhaSuggestionsActivity
 import org.intelehealth.abdm.presentation.abha_verify.AbhaVerifyActivity
 
 /**
@@ -31,6 +32,29 @@ object AbdmLauncher {
             AbhaCreateActivity::class.java,
             AbhaCreateActivity.EXTRA_PATIENT_NAME,
             resultLauncher,
+        )
+    }
+
+    /**
+     * Re-enters the ABHA address suggestions screen from an already-started registration, so the
+     * user can add a further address to an ABHA that is already resolved. Unlike the create and
+     * verify entry points this asks for no patient name — registration is already under way — and it
+     * carries [patientUuid] so the module links the chosen address to that patient's server
+     * identifier, which nothing else on this path would do.
+     *
+     * [currentAddress] is the address in use today; passing it lets the screen treat re-picking the
+     * same value as a no-op instead of a redundant server call.
+     */
+    @JvmStatic
+    fun startAbhaSuggestions(
+        activity: FragmentActivity,
+        resultLauncher: ActivityResultLauncher<Intent>,
+        txnId: String,
+        currentAddress: String,
+        patientUuid: String,
+    ) {
+        resultLauncher.launch(
+            AbhaSuggestionsActivity.newIntent(activity, txnId, currentAddress, patientUuid),
         )
     }
 

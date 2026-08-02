@@ -98,5 +98,13 @@ public class UuidDictionary {
 
     public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
 
+    /**
+     * VisitAttributeType recording which ABHA address the patient was using when the visit was
+     * created, so a past visit keeps its historical value rather than inheriting today's. Like the
+     * ABHA PatientIdentifierTypes this is a per-server OpenMRS record and must exist on the target
+     * server for the attribute to sync.
+     */
+    public static final String VISIT_ABHA_ADDRESS = "ca0ec991-0ac4-4572-8c7a-d1b8556429ee";
+
 
 }

@@ -748,6 +748,26 @@
                             android:inputType="text"
                             android:text="@{patient.abhaAddress}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
+                    <!--
+                      Lets the user add a further ABHA address to an already-resolved ABHA. Gated in
+                      the fragment, not here: it depends on the originating flow and on how many phr
+                      addresses the profile already has, neither of which the patient record knows.
+                    -->
+                    <TextView
+                        android:id="@+id/tvCreateNewAbhaAddress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:background="?attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:paddingVertical="@dimen/margin_4"
+                        android:text="@string/create_new_abha_address"
+                        android:textColor="@color/colorPrimary"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

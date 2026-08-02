@@ -61,6 +61,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -715,6 +716,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_7_VISIT_SUMMARY:
+                storeAbhaAddressForVisit();
                 insertLocalEnFormatQAValues();
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
 //                intent1.putExtra("patientUuid", patientUuid);
@@ -734,6 +736,32 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 startActivity(intent1);
                 finish();
                 break;
+        }
+    }
+
+    /**
+     * Snapshots the ABHA address the patient is using onto the visit, so a past visit keeps the
+     * address that was in force when it was created rather than inheriting whichever address is
+     * current later on. Runs at the terminal summary step, which is where the visit is finalised.
+     *
+     * abha_address may be a comma-separated list of every address registered for the patient on our
+     * server; position 0 is the one in use. Upserts because this step can be re-entered.
+     */
+    private void storeAbhaAddressForVisit() {
+        String abhaAddress = new PatientsDAO().getPatientAbhaAddressByUuid(patientUuid);
+        if (abhaAddress == null || abhaAddress.trim().isEmpty()) return;
+        if (abhaAddress.contains(",")) abhaAddress = abhaAddress.split(",")[0];
+        abhaAddress = abhaAddress.trim();
+
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+        try {
+            if (visitAttributeListDAO.isAttributeExistForVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS)) {
+                visitAttributeListDAO.updateVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+            } else {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

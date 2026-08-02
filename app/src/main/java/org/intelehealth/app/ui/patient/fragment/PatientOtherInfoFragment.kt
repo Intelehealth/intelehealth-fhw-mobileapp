@@ -1,14 +1,21 @@
 package org.intelehealth.app.ui.patient.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.IntentCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import org.intelehealth.abdm.presentation.AbdmCardDownloader
+import org.intelehealth.abdm.presentation.AbdmLauncher
+import org.intelehealth.abdm.presentation.abha_suggestions.AbhaSuggestionsActivity
+import org.intelehealth.abdm.result.AbdmOutcomes
 import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
@@ -37,6 +44,14 @@ import org.intelehealth.app.utilities.extensions.validateDropDowb
  **/
 class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_other_info) {
     private lateinit var binding: FragmentPatientOtherInfoBinding
+
+    private val abhaSuggestionsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+            val chosen = result.data?.getStringExtra(AbhaSuggestionsActivity.EXTRA_CHOSEN_ADDRESS)
+            if (chosen.isNullOrBlank()) return@registerForActivityResult
+            applyNewAbhaAddress(chosen)
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPatientOtherInfoBinding.bind(view)
@@ -78,7 +93,75 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             applyFilter()
             setInputTextChangListener()
             setClickListener()
+            setupCreateNewAbhaAddress()
         }
+    }
+
+    /**
+     * Offers a further ABHA address for an already-resolved ABHA. Three conditions, mirroring
+     * abdm_development_master: the create flow only, ABDM's cap of six phr addresses, and not the
+     * existing-patient path — that last one is its `firstRequestFulfilled` flag, which we get from
+     * the outcome instead of threading a separate boolean through every screen.
+     */
+    private fun setupCreateNewAbhaAddress() {
+        val abdmResult = abdmResultFromIntent()
+        val profile = abdmResult?.profile
+        val eligible = profile != null &&
+            abdmResult.cardScope == AbdmResult.CARD_SCOPE_CREATE &&
+            abdmResult.outcome !=
+            AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION &&
+            profile.phrAddresses.size < MAX_PHR_ADDRESSES
+
+        binding.tvCreateNewAbhaAddress.isVisible = eligible
+        if (!eligible) return
+
+        binding.tvCreateNewAbhaAddress.setOnClickListener {
+            if (profile!!.phrAddresses.size >= MAX_PHR_ADDRESSES) {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.creating_more_than_six_abha_addresses_are_not_allowed,
+                    Toast.LENGTH_LONG,
+                ).show()
+                return@setOnClickListener
+            }
+            AbdmLauncher.startAbhaSuggestions(
+                requireActivity(),
+                abhaSuggestionsLauncher,
+                abdmResult.txnId.orEmpty(),
+                addressInUse(patient.abhaAddress),
+                patient.uuid.orEmpty(),
+            )
+        }
+    }
+
+    /**
+     * Stores the new address at the head of the comma-separated list, because position 0 is the
+     * address currently in use — that is what the visit attribute records. Any earlier occurrence is
+     * removed first so re-picking an existing address promotes it rather than duplicating it.
+     */
+    private fun applyNewAbhaAddress(newAddress: String) {
+        val existing = patient.abhaAddress.orEmpty()
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() && !it.equals(newAddress, ignoreCase = true) }
+        patient.abhaAddress = (listOf(newAddress) + existing).joinToString(",")
+
+        binding.patient = patient
+        binding.textInputAbhaAddress.setText(patient.abhaAddress)
+        patientViewModel.updatedPatient(patient)
+        setupCreateNewAbhaAddress()
+    }
+
+    /** The address currently in use is the head of the comma-separated list. */
+    private fun addressInUse(abhaAddress: String?): String =
+        abhaAddress.orEmpty().split(",").firstOrNull()?.trim().orEmpty()
+
+    private fun abdmResultFromIntent(): AbdmResult? {
+        val hostIntent = activity?.intent ?: return null
+        hostIntent.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        return IntentCompat.getParcelableExtra(
+            hostIntent, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
+        )
     }
 
     private fun setupEconomicCategory() {
@@ -146,14 +229,15 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
      */
     private fun downloadAbhaCardIfLinked() {
         if (!hasAbha()) return
-        val hostIntent = activity?.intent ?: return
-        hostIntent.setExtrasClassLoader(AbdmResult::class.java.classLoader)
-        val abdmResult = IntentCompat.getParcelableExtra(
-            hostIntent, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
-        ) ?: return
+        val abdmResult = abdmResultFromIntent() ?: return
         AbdmCardDownloader.downloadInBackground(
             requireContext(), abdmResult.xToken, abdmResult.cardScope, patient.abhaNumber
         )
+    }
+
+    private companion object {
+        /** ABDM caps an ABHA at six phr addresses. */
+        const val MAX_PHR_ADDRESSES = 6
     }
 
     private fun navigateToDetails() {

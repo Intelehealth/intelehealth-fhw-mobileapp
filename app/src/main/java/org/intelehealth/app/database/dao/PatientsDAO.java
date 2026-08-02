@@ -1732,6 +1732,25 @@ public class PatientsDAO extends BaseDao {
     }
 
     /**
+     * The patient's stored ABHA address, which may be a comma-separated list of every address
+     * registered for them on our server. Position 0 is the one currently in use.
+     */
+    public String getPatientAbhaAddressByUuid(String uuid) {
+        String abhaAddress = null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT abha_address FROM tbl_patient WHERE uuid = ? LIMIT 1",
+                new String[]{uuid})) {
+            if (cursor.moveToFirst()) {
+                abhaAddress = cursor.getString(0);
+            }
+        } catch (SQLException s) {
+            CustomLog.e(TAG, s.getMessage());
+        }
+        return abhaAddress;
+    }
+
+    /**
      * Builds the patient row used by the ABHA compare screen. Both city_village and countyDistrict
      * are populated so PatientDTO's village/district accessors normalise legacy rows that still
      * encode "district:village" in the single column.

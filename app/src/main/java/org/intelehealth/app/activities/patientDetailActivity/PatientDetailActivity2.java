@@ -156,6 +156,7 @@ import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
@@ -1316,6 +1317,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setChiefComplain(visitValue);
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit(visit_id));
                                 mCurrentVisitDataList.add(pastVisitData);
                                 CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
@@ -1377,6 +1379,17 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         } else {
             patientName = patientDTO.getFirstname() + " " + patientDTO.getMiddlename() + " " + patientDTO.getLastname();
         }
+    }
+
+    /**
+     * The ABHA address recorded against a visit when it was created. Returns null when the visit has
+     * no such attribute — visits made before the patient had an ABHA, and non-ABHA patients — so the
+     * adapter can hide the label rather than render an empty one.
+     */
+    private String abhaAddressForVisit(String visitUuid) {
+        String value = new VisitAttributeListDAO()
+                .getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS);
+        return (value == null || value.trim().isEmpty()) ? null : value.trim();
     }
 
     /**
@@ -2869,6 +2882,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setChiefComplain(visitValue);
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                    pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit(visit_id));
                                     mPastVisitDataList.add(pastVisitData);
                                     //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
                                     //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());

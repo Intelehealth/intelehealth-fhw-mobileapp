@@ -41,6 +41,12 @@
 
         </LinearLayout>
 
+        <!--
+          Only the subtitle and the suggestion chips scroll. The input and its error message sit
+          outside this scroll view, pinned above the submit button: inside it they floated directly
+          under the chip group, which leaves them stranded mid-screen while suggestions are still
+          loading or when few chips come back.
+        -->
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -69,65 +75,67 @@
                     app:chipSpacingHorizontal="@dimen/margin_12"
                     app:singleSelection="true" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_20"
-                    app:hintEnabled="false">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/et_abha_address"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/bg_textbox_outline"
-                            android:hint="@string/abha_address"
-                            android:inputType="textEmailAddress"
-                            android:maxLength="18"
-                            android:paddingStart="14dp"
-                            android:paddingTop="14dp"
-                            android:paddingEnd="80dp"
-                            android:paddingBottom="14dp"
-                            android:singleLine="true"
-                            android:textAppearance="@style/TextAppearance.Abdm.InputField"
-                            android:textColor="@color/black"
-                            android:textColorHint="@color/hint_color"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_suffix"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="14dp"
-                            android:textAppearance="@style/TextAppearance.Abdm.InputField"
-                            android:textColor="@color/brand_primary"
-                            tools:text="\@…"
-                            app:layout_constraintBottom_toBottomOf="@id/et_abha_address"
-                            app:layout_constraintEnd_toEndOf="@id/et_abha_address"
-                            app:layout_constraintTop_toTopOf="@id/et_abha_address" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/tv_address_error"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/margin_20"
-                    android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
-                    android:visibility="gone"
-                    tools:text="@string/length_validation"
-                    tools:visibility="visible" />
-
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_20"
+            app:hintEnabled="false">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_abha_address"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_textbox_outline"
+                    android:hint="@string/abha_address"
+                    android:inputType="textEmailAddress"
+                    android:maxLength="18"
+                    android:paddingStart="14dp"
+                    android:paddingTop="14dp"
+                    android:paddingEnd="80dp"
+                    android:paddingBottom="14dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.Abdm.InputField"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint_color"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_suffix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="14dp"
+                    android:textAppearance="@style/TextAppearance.Abdm.InputField"
+                    android:textColor="@color/brand_primary"
+                    tools:text="\@…"
+                    app:layout_constraintBottom_toBottomOf="@id/et_abha_address"
+                    app:layout_constraintEnd_toEndOf="@id/et_abha_address"
+                    app:layout_constraintTop_toTopOf="@id/et_abha_address" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/tv_address_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_5"
+            android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
+            android:visibility="gone"
+            tools:text="@string/length_validation"
+            tools:visibility="visible" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_submit"

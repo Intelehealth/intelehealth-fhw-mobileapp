@@ -10,6 +10,8 @@ public class PastVisitData implements Parcelable {
     private String encounterAdultInitial;
     private String encounterVitals;
     private String diagnostics;
+    /** The ABHA address the patient was using when this visit was created; null for most visits. */
+    private String abhaAddressForVisit;
 
 
     public PastVisitData() {
@@ -22,6 +24,7 @@ public class PastVisitData implements Parcelable {
         encounterAdultInitial = in.readString();
         encounterVitals = in.readString();
         diagnostics = in.readString();
+        abhaAddressForVisit = in.readString();
     }
 
     public static final Creator<PastVisitData> CREATOR = new Creator<PastVisitData>() {
@@ -76,6 +79,14 @@ public class PastVisitData implements Parcelable {
         this.encounterAdultInitial = encounterAdultInitial;
     }
 
+    public String getAbhaAddressForVisit() {
+        return abhaAddressForVisit;
+    }
+
+    public void setAbhaAddressForVisit(String abhaAddressForVisit) {
+        this.abhaAddressForVisit = abhaAddressForVisit;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -89,5 +100,6 @@ public class PastVisitData implements Parcelable {
         parcel.writeString(encounterAdultInitial);
         parcel.writeString(encounterVitals);
         parcel.writeString(diagnostics);
+        parcel.writeString(abhaAddressForVisit);
     }
 }

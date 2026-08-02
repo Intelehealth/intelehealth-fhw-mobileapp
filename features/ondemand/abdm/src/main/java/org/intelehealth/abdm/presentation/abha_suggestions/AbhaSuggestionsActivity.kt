@@ -34,6 +34,7 @@ class AbhaSuggestionsActivity : AppCompatActivity() {
 
     private lateinit var txnId: String
     private var defaultAddress: String = ""
+    private var patientUuid: String = ""
     private var isProgrammaticChange = false
     private var shownErrorRes: Int? = null
 
@@ -46,6 +47,7 @@ class AbhaSuggestionsActivity : AppCompatActivity() {
 
         txnId = intent.getStringExtra(EXTRA_TXN_ID).orEmpty()
         defaultAddress = intent.getStringExtra(EXTRA_DEFAULT_ADDRESS).orEmpty()
+        patientUuid = intent.getStringExtra(EXTRA_PATIENT_UUID).orEmpty()
 
         setupInput()
         setupActions()
@@ -101,7 +103,7 @@ class AbhaSuggestionsActivity : AppCompatActivity() {
             } else {
                 binding.etAbhaAddress.text?.toString().orEmpty().trim()
             }
-            viewModel.onSubmitClicked(txnId, address, defaultAddress)
+            viewModel.onSubmitClicked(txnId, address, defaultAddress, patientUuid)
         }
 
         binding.ivAbhaSuggestion.setOnClickListener {
@@ -110,8 +112,17 @@ class AbhaSuggestionsActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Back is suppressed so the user must Submit — except once the address has been registered with
+     * ABDM but failed to link, when leaving is the only sensible action left.
+     */
     private fun blockBackPress() {
         onBackPressedDispatcher.addCallback(this) {
+            if (viewModel.uiState.value.allowExit) {
+                setResult(Activity.RESULT_CANCELED)
+                finish()
+                return@addCallback
+            }
             Snackbar.make(
                 binding.main,
                 getString(R.string.please_click_on_submit_button_to_proceed),
@@ -200,11 +211,23 @@ class AbhaSuggestionsActivity : AppCompatActivity() {
     companion object {
         private const val EXTRA_TXN_ID = "extra_txn_id"
         private const val EXTRA_DEFAULT_ADDRESS = "extra_default_address"
+        private const val EXTRA_PATIENT_UUID = "extra_patient_uuid"
         const val EXTRA_CHOSEN_ADDRESS = "extra_chosen_address"
 
-        fun newIntent(context: Context, txnId: String, defaultAddress: String): Intent =
+        /**
+         * [patientUuid] is empty when the module's own create flow drives this screen, because
+         * AbhaCreateViewModel links the chosen address itself. It is supplied only when the host
+         * re-enters from registration, where nothing else will do that linking.
+         */
+        fun newIntent(
+            context: Context,
+            txnId: String,
+            defaultAddress: String,
+            patientUuid: String = "",
+        ): Intent =
             Intent(context, AbhaSuggestionsActivity::class.java)
                 .putExtra(EXTRA_TXN_ID, txnId)
                 .putExtra(EXTRA_DEFAULT_ADDRESS, defaultAddress)
+                .putExtra(EXTRA_PATIENT_UUID, patientUuid)
     }
 }

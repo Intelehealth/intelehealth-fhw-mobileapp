@@ -13,14 +13,18 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.intelehealth.abdm.R
 import org.intelehealth.abdm.config.AbdmConfig
+import org.intelehealth.abdm.config.AbdmSessionProvider
 import org.intelehealth.abdm.data.remote.extensions.HttpException
 import org.intelehealth.abdm.domain.repository.AbhaSuggestionsRepository
+import org.intelehealth.abdm.domain.repository.PatientRepository
 import org.intelehealth.abdm.presentation.common.UiState
 import javax.inject.Inject
 
 @HiltViewModel
 internal class AbhaSuggestionsViewModel @Inject constructor(
     private val repository: AbhaSuggestionsRepository,
+    private val patientRepository: PatientRepository,
+    private val sessionProvider: AbdmSessionProvider,
     private val config: AbdmConfig,
 ) : ViewModel() {
 
@@ -58,7 +62,18 @@ internal class AbhaSuggestionsViewModel @Inject constructor(
         }
     }
 
-    fun onSubmitClicked(txnId: String, abhaAddress: String, defaultAddress: String) {
+    /**
+     * [patientUuid] is empty when the module's own create flow drives this screen — that flow links
+     * the address itself in AbhaCreateViewModel, so linking here too would double-call. It is
+     * supplied only when the host re-enters from registration to add a further address, where
+     * nothing else performs the link.
+     */
+    fun onSubmitClicked(
+        txnId: String,
+        abhaAddress: String,
+        defaultAddress: String,
+        patientUuid: String = "",
+    ) {
         if (defaultAddress.isNotBlank() && abhaAddress.equals(defaultAddress, ignoreCase = true)) {
             viewModelScope.launch {
                 _events.send(AbhaSuggestionsEvent.AddressRegistered(abhaAddress))
@@ -76,12 +91,51 @@ internal class AbhaSuggestionsViewModel @Inject constructor(
             }
             repository.registerPreferredAddress(txnId, abhaAddress)
                 .onSuccess { registered ->
-                    _uiState.update { it.copy(operation = UiState.Idle) }
-                    _events.send(AbhaSuggestionsEvent.AddressRegistered(registered.preferredAbhaAddress))
+                    val address = withSuffix(registered.preferredAbhaAddress.ifBlank { abhaAddress })
+                    if (patientUuid.isBlank()) {
+                        _uiState.update { it.copy(operation = UiState.Idle) }
+                        _events.send(AbhaSuggestionsEvent.AddressRegistered(address))
+                    } else {
+                        linkThenFinish(patientUuid, address)
+                    }
                 }
                 .onFailure { error -> _uiState.update { it.copy(operation = UiState.Error(mapError(error))) } }
         }
     }
+
+    /**
+     * The address is already registered with ABDM by this point, so a failure here leaves real work
+     * done but unlinked. Since this screen suppresses the back press, the failure also sets
+     * [AbhaSuggestionsUiState.allowExit] so the user is not trapped with no way out.
+     */
+    private suspend fun linkThenFinish(patientUuid: String, abhaAddress: String) {
+        _uiState.update {
+            it.copy(operation = UiState.Loading, loadingMessageRes = R.string.abdm_loading_linking_address)
+        }
+        patientRepository.updatePatientIdentifier(
+            patientUuid = patientUuid,
+            identifier = abhaAddress,
+            identifierType = IDENTIFIER_TYPE_UUID,
+            location = sessionProvider.getLocationUuid(),
+        )
+            .onSuccess {
+                _uiState.update { it.copy(operation = UiState.Idle) }
+                _events.send(AbhaSuggestionsEvent.AddressRegistered(abhaAddress))
+            }
+            .onFailure {
+                _uiState.update {
+                    it.copy(
+                        operation = UiState.Error(R.string.abdm_error_abha_address_link_failed),
+                        allowExit = true,
+                    )
+                }
+            }
+    }
+
+    /** The server may return the address without its environment suffix. */
+    private fun withSuffix(abhaAddress: String): String =
+        if (abhaAddress.endsWith(config.abhaAddressSuffix, ignoreCase = true)) abhaAddress
+        else "$abhaAddress${config.abhaAddressSuffix}"
 
     private fun validateAbhaAddress(text: String): Int? = when {
         text.isBlank() -> R.string.please_select_abha_address
@@ -111,6 +165,9 @@ internal class AbhaSuggestionsViewModel @Inject constructor(
         const val MIN_LENGTH = 8
         const val MAX_LENGTH = 18
         const val HTTP_CONFLICT = 409
+
+        /** Same OpenMRS PatientIdentifierType as AbhaCreateViewModel and AbhaVerifyViewModel use. */
+        const val IDENTIFIER_TYPE_UUID = "59077d8f-8bee-4a6f-a1a8-64365a297da6"
         val ALLOWED_CHARS = Regex("^[A-Za-z0-9._]+$")
     }
 }

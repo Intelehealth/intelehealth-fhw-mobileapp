@@ -125,6 +125,7 @@
     <string name="abha_address_suffix_not_allowed_validation">Abha addresses should not end with the suffix(%1$s).</string>
     <string name="please_click_on_submit_button_to_proceed">Please click on submit button to proceed.</string>
     <string name="abdm_error_abha_address_exists">This ABHA address already exists, please use a different one.</string>
+    <string name="abdm_error_abha_address_link_failed">The ABHA address was created but could not be linked to this patient. Please go back and try again.</string>
 
     <!-- Existing-address checklist dialog (verbatim from legacy) -->
     <string name="you_have_an_existing_abha_address_present">You have existing ABHA address(es) present. Please select the ABHA address that you would like to proceed with or click on Create New to create a new ABHA address.</string>
