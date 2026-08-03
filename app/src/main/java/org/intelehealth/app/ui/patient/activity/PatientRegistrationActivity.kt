@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.result.AbdmAbhaProfile
 import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
@@ -194,40 +195,82 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     /**
-     * Copies the verified ABHA profile onto the fresh patient record so every stage sees it through
-     * the shared view model. Seeding here rather than per-fragment means a single `abhaNumber`
-     * check can drive field locking in both this flow and the edit flow, with no AbdmResult
-     * plumbing in the fragments. Gender is intentionally not prefilled (deferred pending PM), and
-     * the address is left to the address stage, which needs to bifurcate and match it against the
-     * state/district masters.
+     * The verified ABHA profile carried on this activity's intent, when the registration originated
+     * from the ABDM flow.
      */
-    private fun seedFromAbhaIfPresent(patient: PatientDTO) {
+    private fun abhaProfileFromIntent(): AbdmAbhaProfile? {
         intent?.setExtrasClassLoader(AbdmResult::class.java.classLoader)
-        val abdmResult = intent?.let {
+        return intent?.let {
             IntentCompat.getParcelableExtra(it, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java)
-        } ?: return
-        val profile = abdmResult.profile ?: return
+        }?.profile
+    }
 
-        patient.abhaNumber = profile.abhaNumber
-        patient.abhaAddress = withAbhaSuffix(profile.preferredAbhaAddress)
-        patient.firstname = profile.firstName
-        patient.middlename = profile.middleName
-        patient.lastname = profile.lastName
-        patient.gender = profile.gender
-        patient.phonenumber = withCountryCode(profile.mobile)
-        patient.postalcode = profile.pinCode
+    /**
+     * The fields a verified ABHA profile owns, and therefore the exact set the registration stages
+     * lock. Shared by the create path, which seeds a fresh record, and the edit path, which
+     * refreshes an existing one, so the two cannot drift apart on what ABHA governs.
+     *
+     * Every write is guarded on a non-blank incoming value so a sparse profile can never blank out
+     * something already held locally. The trade-off is that a field genuinely cleared at ABDM keeps
+     * its stale local value, which is the safer way to fail.
+     *
+     * The village, district and state hierarchy is deliberately absent. ABHA returns free text that
+     * cannot be relied on to match the Nashik masters, so those columns are neither refreshed here
+     * nor locked by the address stage.
+     */
+    private fun applyAbhaIdentity(patient: PatientDTO, profile: AbdmAbhaProfile) {
+        profile.firstName.takeIf { it.isNotBlank() }?.let { patient.firstname = it }
+        profile.middleName?.takeIf { it.isNotBlank() }?.let { patient.middlename = it }
+        profile.lastName.takeIf { it.isNotBlank() }?.let { patient.lastname = it }
+        profile.gender.takeIf { it.isNotBlank() }?.let { patient.gender = it }
+        profile.pinCode.takeIf { it.isNotBlank() }?.let { patient.postalcode = it }
+        withCountryCode(profile.mobile)?.takeIf { it.isNotBlank() }
+            ?.let { patient.phonenumber = it }
+        bifurcateAbhaAddress(profile.address).address1.takeIf { it.isNotBlank() }
+            ?.let { patient.address1 = it }
         AbhaPhotoUtils.saveEncodedPhoto(this, profile.profilePhoto, patient.uuid)
             ?.let { patient.patientPhoto = it }
         parseAbhaDob(profile.dateOfBirth)?.let {
             patient.dateofbirth = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(it)
         }
+    }
+
+    /**
+     * Copies the verified ABHA profile onto the fresh patient record so every stage sees it through
+     * the shared view model. Seeding here rather than per-fragment means a single `abhaNumber`
+     * check can drive field locking in both this flow and the edit flow, with no AbdmResult
+     * plumbing in the fragments.
+     *
+     * Beyond the ABHA-owned fields this also prefills the address hierarchy as a convenience. Those
+     * stay editable and are not refreshed on a later relink, because the FHW may have to correct
+     * them against the Nashik masters.
+     */
+    private fun seedFromAbhaIfPresent(patient: PatientDTO) {
+        val profile = abhaProfileFromIntent() ?: return
+
+        patient.abhaNumber = profile.abhaNumber
+        patient.abhaAddress = withAbhaSuffix(profile.preferredAbhaAddress)
+        applyAbhaIdentity(patient, profile)
 
         bifurcateAbhaAddress(profile.address).let { addr ->
-            patient.address1 = addr.address1
             patient.cityvillage = addr.cityVillage
             patient.district = addr.countyDistrict
             patient.stateprovince = addr.stateProvince
         }
+    }
+
+    /**
+     * Refreshes the ABHA-owned fields on a record loaded for editing, reached when an ABHA resolves
+     * to a patient already registered here. This is the only route by which a locked field can ever
+     * change: the profile is the sole authority for those fields, so an update made at ABDM has to
+     * arrive through here or not at all.
+     *
+     * abhaNumber and abhaAddress are pointedly not refreshed. The module's linkAbha has already
+     * written them to this row and the stored value is the authoritative one — the profile carries a
+     * single preferred address where the record may hold the full server-appended list.
+     */
+    private fun reseedAbhaOwnedFields(patient: PatientDTO) = patient.apply {
+        abhaProfileFromIntent()?.let { applyAbhaIdentity(this, it) }
     }
 
     /**
@@ -270,7 +313,9 @@ class PatientRegistrationActivity : BaseActivity() {
         patientViewModel.loadPatientDetails(id).observe(this) {
             it ?: return@observe
             patientViewModel.handleResponse(it) { patient ->
-                patientViewModel.updatedPatient(updatePatientDetails(patient))
+                patientViewModel.updatedPatient(
+                    reseedAbhaOwnedFields(updatePatientDetails(patient))
+                )
             }
         }
     }
@@ -379,14 +424,21 @@ class PatientRegistrationActivity : BaseActivity() {
 
         /**
          * Entry point for a registration originating from the ABDM (ABHA) flow. Deliberately
-         * separate from [startPatientRegistration] rather than an extra parameter on it: this path
-         * is always a fresh PERSONAL-stage registration, and the other eight call sites (seven of
-         * them Java, which does not honour Kotlin default arguments) keep binding to the signature
-         * they already use.
+         * separate from [startPatientRegistration] rather than an extra parameter on it: the other
+         * eight call sites (seven of them Java, which does not honour Kotlin default arguments)
+         * keep binding to the signature they already use.
+         *
+         * A non-blank [AbdmResult.uuid] means the ABHA resolved to a patient already registered
+         * here, so it is passed on as PATIENT_UUID and the activity opens in edit mode against that
+         * record rather than minting a new one. Gating on the uuid rather than on the outcome enum
+         * covers every existing-patient outcome at once, since a genuinely new patient carries no
+         * uuid. The module has already written the ABHA number and address to that row via
+         * linkAbha, so the fetched record arrives with them and this path needs no ABHA seeding.
          */
         @JvmStatic
         fun startPatientRegistrationFromAbha(context: Context, abdmResult: AbdmResult) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
+                abdmResult.uuid?.takeIf { it.isNotBlank() }?.let { putExtra(PATIENT_UUID, it) }
                 putExtra(PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
                 putExtra(AbdmResult.EXTRA_ABDM_RESULT, abdmResult)
             }.also { context.startActivity(it) }

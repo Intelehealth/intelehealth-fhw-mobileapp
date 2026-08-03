@@ -1403,9 +1403,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
      * them. These are not admin-panel config fields like the rest of that table, so visibility is
      * driven by whether the patient actually has an ABHA linked.
      *
-     * The number is read from the database rather than the patient DTO so this works on every route
-     * into this screen, including any whose query does not select the ABHA columns. The card image
-     * itself may not have downloaded yet; AbdmCardDownloader reports that case to the user.
+     * Both values are read from the database rather than the patient DTO. This method runs during view
+     * init, before the details query has populated the DTO, and it must also work on routes into this
+     * screen whose query does not select the ABHA columns at all. The card image itself may not have
+     * downloaded yet; AbdmCardDownloader reports that case to the user.
      */
     private void setupAbhaDetails() {
         if (patientDTO == null) return;
@@ -1415,7 +1416,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (abhaNumberTr != null) abhaNumberTr.setVisibility(hasAbhaNumber ? View.VISIBLE : View.GONE);
         if (hasAbhaNumber && abhaNumberTv != null) abhaNumberTv.setText(abhaNumber);
 
-        String abhaAddress = patientDTO.getAbhaAddress();
+        String abhaAddress = patientsDAO.getPatientAbhaAddressByUuid(patientDTO.getUuid());
         boolean hasAbhaAddress = abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA");
         if (abhaAddressTr != null) abhaAddressTr.setVisibility(hasAbhaAddress ? View.VISIBLE : View.GONE);
         if (hasAbhaAddress && abhaAddressTv != null) abhaAddressTv.setText(abhaAddress);

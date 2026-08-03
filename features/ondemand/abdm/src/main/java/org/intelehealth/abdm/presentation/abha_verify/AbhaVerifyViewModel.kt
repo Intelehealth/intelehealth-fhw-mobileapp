@@ -401,7 +401,11 @@ internal class AbhaVerifyViewModel @Inject constructor(
                     )
                     return@onSuccess
                 }
-                val local = patientLocalStore.findPatientForComparison(profile.abhaNumber, profile.mobile)
+                val local = patientLocalStore.findPatientForComparison(
+                    abhaNumber = profile.abhaNumber,
+                    phoneNumber = profile.mobile,
+                    dateOfBirth = profile.normalisedDateOfBirth(),
+                )
                 if (local == null) {
                     _uiState.update { it.copy(operation = UiState.Idle) }
                     _events.send(AbhaVerifyEvent.ShowSnackbar(messageRes = R.string.abdm_error_generic, isSuccess = false))
@@ -416,6 +420,12 @@ internal class AbhaVerifyViewModel @Inject constructor(
      * Links the chosen ABHA address to the existing patient's server identifier (unless already
      * linked), then routes to compare. Mirrors legacy: the address is the one typed on the
      * ABHA-address path, otherwise the profile's preferred address.
+     *
+     * A successful link is written to the local row straight away. The server adds an identifier row
+     * per call and returns them comma-joined on the next pull, so the guard above has to be able to
+     * see the previous link — without persisting it here, verifying the same address again re-calls
+     * the API and the value comes back duplicated. Completing the compare screen would have stored it,
+     * but the user can abandon that screen and repeat the flow.
      */
     private suspend fun linkThenCompare(
         profile: AbhaProfile,
@@ -442,9 +452,11 @@ internal class AbhaVerifyViewModel @Inject constructor(
             identifier = abhaAddressToLink,
             identifierType = IDENTIFIER_TYPE_UUID,
             location = sessionProvider.getLocationUuid(),
-        )
+        ).onSuccess {
+            patientLocalStore.linkAbha(local.uuid, profile.abhaNumber, abhaAddressToLink)
+        }
         _uiState.update { it.copy(operation = UiState.Idle) }
-        sendToCompare(profile, local, xToken, txnId)
+        sendToCompare(profile, local.copy(abhaAddress = abhaAddressToLink), xToken, txnId)
     }
 
     private suspend fun sendToCompare(
@@ -527,6 +539,26 @@ internal class AbhaVerifyViewModel @Inject constructor(
             index = index,
             isRegisteredLocally = registered,
         )
+    }
+
+    /**
+     * The profile's date of birth as yyyy-MM-dd, matching how the host stores it. ABDM returns the
+     * three parts separately and unpadded ("1978", "8", "25"), so they are zero-padded here rather
+     * than compared raw — both legacy branches concatenate them as-is and their lookup therefore
+     * misses whenever the month or day is below ten.
+     *
+     * Returns "" if any part is missing or non-numeric, which tells the host to skip the phone
+     * fallback instead of matching on the number alone.
+     */
+    private fun AbhaProfile.normalisedDateOfBirth(): String {
+        val year = yearOfBirth.trim()
+        val month = monthOfBirth.trim()
+        val day = dayOfBirth.trim()
+        if (year.length != 4 || month.isEmpty() || day.isEmpty()) return ""
+        if (!year.all { it.isDigit() } || !month.all { it.isDigit() } || !day.all { it.isDigit() }) {
+            return ""
+        }
+        return "$year-${month.padStart(2, '0')}-${day.padStart(2, '0')}"
     }
 
     /**

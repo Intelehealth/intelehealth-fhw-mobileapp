@@ -654,8 +654,8 @@
                             style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
                             android:hint="@string/enter_department"
+                            android:inputType="text"
                             android:text="@{patient.department}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                 </LinearLayout>
@@ -756,7 +756,7 @@
                     -->
                     <TextView
                         android:id="@+id/tvCreateNewAbhaAddress"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_8"
                         android:background="?attr/selectableItemBackground"
@@ -764,6 +764,7 @@
                         android:focusable="true"
                         android:paddingVertical="@dimen/margin_4"
                         android:text="@string/create_new_abha_address"
+                        android:textAlignment="textEnd"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
                         android:visibility="gone"

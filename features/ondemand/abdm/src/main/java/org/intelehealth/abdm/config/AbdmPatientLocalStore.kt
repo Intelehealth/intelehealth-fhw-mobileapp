@@ -24,12 +24,21 @@ interface AbdmPatientLocalStore {
 
     /**
      * Finds the local patient to reconcile against during ABHA verification: matched first by
-     * [abhaNumber], falling back to [phoneNumber] (most-recently-modified wins). Returns null when
-     * no local copy exists. Implementations must not throw.
+     * [abhaNumber], falling back to [phoneNumber] together with [dateOfBirth] (most-recently-modified
+     * wins). Returns null when no local copy exists. Implementations must not throw.
+     *
+     * [dateOfBirth] arrives already normalised to yyyy-MM-dd, since only this module knows the shape
+     * ABDM returns it in. It is blank when the profile carried no usable date; implementations must
+     * then skip the phone fallback rather than match on the number alone, because a phone is often
+     * shared across a household and the compare screen writes onto whichever row is returned.
+     *
+     * How [phoneNumber] is matched is the host's business — it is passed as ABDM supplies it, and the
+     * host holds it in its own format.
      */
     suspend fun findPatientForComparison(
         abhaNumber: String,
         phoneNumber: String,
+        dateOfBirth: String,
     ): LocalPatientRecord?
 
     /**

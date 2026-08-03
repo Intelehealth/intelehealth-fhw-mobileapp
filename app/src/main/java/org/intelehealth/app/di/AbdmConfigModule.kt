@@ -71,13 +71,21 @@ object AbdmConfigModule {
             }
         }
 
+        /**
+         * The phone fallback runs only with a date of birth to narrow it, and matches on the last ten
+         * digits because registration stores the number as "+91XXXXXXXXXX" while ABDM sends it bare.
+         */
         override suspend fun findPatientForComparison(
             abhaNumber: String,
             phoneNumber: String,
+            dateOfBirth: String,
         ): LocalPatientRecord? = withContext(Dispatchers.IO) {
             val dao = PatientsDAO()
             val dto = runCatching { dao.getPatientForComparisonByAbhaNumber(abhaNumber) }.getOrNull()
-                ?: runCatching { dao.getPatientForComparisonByPhone(phoneNumber) }.getOrNull()
+                ?: dateOfBirth.takeIf { it.isNotBlank() }?.let { dob ->
+                    val last10 = phoneNumber.filter { it.isDigit() }.takeLast(10)
+                    runCatching { dao.getPatientForComparisonByPhoneAndDob(last10, dob) }.getOrNull()
+                }
             dto?.toLocalRecord()
         }
 
@@ -91,9 +99,12 @@ object AbdmConfigModule {
             }.getOrDefault(false)
         }
 
+        /**
+         * Only the street line is taken from the compared address. The village, district and state
+         * hierarchy stays as recorded locally — see updatePatientAfterAbhaComparison for why.
+         */
         override suspend fun savePatientAfterComparison(record: LocalPatientRecord): Boolean =
             withContext(Dispatchers.IO) {
-                val addr = bifurcateAbhaAddress(record.address)
                 runCatching {
                     PatientsDAO().updatePatientAfterAbhaComparison(
                         record.uuid,
@@ -101,10 +112,7 @@ object AbdmConfigModule {
                         record.lastName,
                         record.dateOfBirth,
                         record.gender,
-                        addr.address1,
-                        addr.cityVillage,
-                        addr.countyDistrict,
-                        addr.stateProvince,
+                        bifurcateAbhaAddress(record.address).address1,
                         record.pinCode,
                         record.phoneNumber,
                         record.abhaNumber,

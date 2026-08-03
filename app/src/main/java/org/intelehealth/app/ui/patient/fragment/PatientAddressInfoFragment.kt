@@ -574,31 +574,23 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     /**
-     * Locks the address fields derived from a verified ABHA profile. Runs after setupStates and
-     * setupDistricts so the dropdowns have already resolved their values from the patient record.
+     * Locks the address fields a verified ABHA profile owns. Only address1 and the postal code
+     * qualify: a locked field can be updated solely by the refresh on relink, so the set locked here
+     * has to be exactly the set applyAbhaIdentity refreshes.
      *
-     * Each field is locked only when it actually holds a value: the ABHA address is free text, so a
-     * component may fail to match the state/district masters, and locking an empty field would
-     * leave the user unable to supply it at all.
+     * Village, district and state are pointedly not locked. ABHA returns free text that need not
+     * match the Nashik masters, so those are the FHW's to correct and are left to the address config.
+     *
+     * Each field is locked only when it holds a value, since locking an empty one would leave the
+     * user unable to supply it at all.
      */
     private fun lockAbhaFieldsIfLinked() {
         if (!hasAbha()) return
         if (binding.textInputAddress1.text?.isNotBlank() == true) {
             setFieldEnabledStatus(binding.textInputAddress1, false)
         }
-        if (binding.textInputCityVillage.text?.isNotBlank() == true) {
-            setFieldEnabledStatus(binding.textInputCityVillage, false)
-        }
         if (binding.textInputPostalCode.text?.isNotBlank() == true) {
             setFieldEnabledStatus(binding.textInputPostalCode, false)
-        }
-        if (binding.autoCompleteState.text?.isNotBlank() == true) {
-            setFieldEnabledStatus(binding.textInputLayState, false)
-            setFieldEnabledStatus(binding.autoCompleteState, false)
-        }
-        if (binding.autoCompleteDistrict.text?.isNotBlank() == true) {
-            setFieldEnabledStatus(binding.textInputLayDistrict, false)
-            setFieldEnabledStatus(binding.autoCompleteDistrict, false)
         }
     }
 

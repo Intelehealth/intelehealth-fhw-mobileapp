@@ -1638,12 +1638,30 @@ public class PatientsDAO extends BaseDao {
     /**
      * Fallback lookup for the ABHA verify to compare flow when no row matches by ABHA number.
      * Most-recently-modified wins. Returns null when no local copy exists.
+     *
+     * Matches on the last ten digits of the phone rather than the whole string: registration stores
+     * the CountryCodePicker's fullNumberWithPlus ("+91XXXXXXXXXX") while ABDM returns a bare national
+     * number, so an equality test never hits. SQLite has no digit-strip, hence the suffix LIKE. That
+     * also absorbs whatever format the server uses, which matters for the attribute below.
+     *
+     * Both storage locations are searched. tbl_patient.phone_number is only populated for patients
+     * registered on this device; the pull writes the phone as a person attribute instead, so a pulled
+     * patient is findable only through tbl_patient_attribute.
+     *
+     * Date of birth narrows the match because a phone is often shared across a household, and the
+     * caller writes merged ABHA data onto whichever row this returns.
      */
-    public PatientDTO getPatientForComparisonByPhone(String phoneNumber) {
+    public PatientDTO getPatientForComparisonByPhoneAndDob(String last10Digits, String dateOfBirth) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        String suffix = "%" + last10Digits;
         try (Cursor cursor = db.rawQuery(
-                "SELECT * FROM tbl_patient WHERE phone_number = ? AND (voided = '0' OR voided IS NULL) ORDER BY modified_date DESC LIMIT 1",
-                new String[]{phoneNumber})) {
+                "SELECT DISTINCT p.* FROM tbl_patient AS p " +
+                        "LEFT JOIN tbl_patient_attribute AS pa ON pa.patientuuid = p.uuid " +
+                        "AND pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
+                        "WHERE p.date_of_birth = ? AND (p.phone_number LIKE ? OR pa.value LIKE ?) " +
+                        "AND (p.voided = '0' OR p.voided IS NULL) " +
+                        "ORDER BY p.modified_date DESC LIMIT 1",
+                new String[]{dateOfBirth, suffix, suffix})) {
             if (cursor.moveToFirst()) {
                 return cursorToComparisonDTO(cursor);
             }
@@ -1674,11 +1692,17 @@ public class PatientsDAO extends BaseDao {
      * Persists the merged record chosen on the ABHA compare screen back to the local patient row
      * and marks it unsynced. address2, address3 and address6 are deliberately left untouched: the
      * ABHA address carries no reliable equivalent, so overwriting them would lose local data.
+     *
+     * city_village, countyDistrict and state_province are excluded for a stronger reason. They are
+     * config-driven here, hardcoded to Nashik and Maharashtra, and have to match the block, GP and
+     * village masters for reporting. ABHA returns free text that can name another state entirely, and
+     * unlike the registration screens this path saves straight through to Patient Details with no
+     * opportunity to correct it. Leaving the columns out of the write means the hierarchy cannot be
+     * clobbered by construction rather than by remembering to pass the right values.
      */
     public boolean updatePatientAfterAbhaComparison(String uuid, String firstName, String lastName,
                                                     String dateOfBirth, String gender,
-                                                    String address1, String cityVillage,
-                                                    String countyDistrict, String stateProvince,
+                                                    String address1,
                                                     String pinCode, String phone,
                                                     String abhaNumber, String abhaAddress) throws DAOException {
         boolean isUpdated = true;
@@ -1691,9 +1715,6 @@ public class PatientsDAO extends BaseDao {
             values.put("date_of_birth", dateOfBirth);
             values.put("gender", gender);
             values.put("address1", address1);
-            values.put("city_village", cityVillage);
-            values.put("countyDistrict", countyDistrict);
-            values.put("state_province", stateProvince);
             values.put("postal_code", pinCode);
             values.put("phone_number", phone);
             values.put("abha_number", abhaNumber);
@@ -1769,10 +1790,29 @@ public class PatientsDAO extends BaseDao {
         dto.setDistrict(cursor.getString(cursor.getColumnIndexOrThrow("countyDistrict")));
         dto.setStateprovince(cursor.getString(cursor.getColumnIndexOrThrow("state_province")));
         dto.setPostalcode(cursor.getString(cursor.getColumnIndexOrThrow("postal_code")));
-        dto.setPhonenumber(cursor.getString(cursor.getColumnIndexOrThrow("phone_number")));
+        dto.setPhonenumber(resolvePhoneNumber(cursor));
         dto.setAbhaNumber(cursor.getString(cursor.getColumnIndexOrThrow("abha_number")));
         dto.setAbhaAddress(cursor.getString(cursor.getColumnIndexOrThrow("abha_address")));
         return dto;
+    }
+
+    /**
+     * The patient's phone, preferring tbl_patient.phone_number and falling back to the person
+     * attribute. The column is only populated for patients registered on this device: the pull writes
+     * the phone as an attribute and createPatientMap has no phone_number put, so for a pulled patient
+     * the column is empty and the attribute holds the real value.
+     */
+    private String resolvePhoneNumber(Cursor cursor) {
+        String phone = cursor.getString(cursor.getColumnIndexOrThrow("phone_number"));
+        if (phone != null && !phone.trim().isEmpty()) {
+            return phone;
+        }
+        try {
+            return phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+        } catch (DAOException e) {
+            CustomLog.e(TAG, e.getMessage());
+            return phone;
+        }
     }
 
 }
