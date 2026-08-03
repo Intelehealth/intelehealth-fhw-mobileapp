@@ -764,6 +764,7 @@
     <string name="help_footer">Help</string>
     <string name="queue">Queue</string>
     <string name="patients_queue">Patient’s Queue</string>
+    <string name="queue_details">Queue Details</string>
     <string name="selected_date"> Selected date</string>
     <string name="today">Today</string>
     <string name="close_patient_registration">Close patient registration?</string>

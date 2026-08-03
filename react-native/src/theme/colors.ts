@@ -38,13 +38,16 @@ export const Colors = {
 
   // Queue status: Waiting (neutral surface + outlined badge)
   cardNeutralBorder: '#E5E7EB',
-  badgeWaitingBg: '#FFFFFF',
   badgeWaitingBorder: '#D1D5DB',
   badgeWaitingText: '#6B7280',
 
   // Queue filter tabs
   tabIndicator: '#EA315B', // active-tab underline (crimson)
   tabDivider: '#FFE8E8', // full-width hairline under the tab row
+
+  // Buttons
+  buttonSecondaryBg: '#EDE9FE', // light lavender — secondary/"Back to Queue"
+
 } as const;
 
 export type ColorName = keyof typeof Colors;

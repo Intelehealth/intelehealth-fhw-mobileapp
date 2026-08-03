@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FlatList, SafeAreaView, StyleSheet, View} from 'react-native';
 
 import {Colors} from '../../theme';
@@ -8,6 +8,7 @@ import QueueListItem from '../../components/QueueListItem';
 import type {QueueListItemProps} from '../../components/QueueListItem';
 import QueueTabs from '../../components/QueueTabs';
 import type {QueueFilter} from '../../components/QueueTabs';
+import {QueueNavigator} from '../../native/QueueNavigator';
 
 // Fixed gap between queue rows. Defined outside the screen so React keeps a
 // stable component type across renders (avoids remounting the list).
@@ -78,6 +79,11 @@ function PatientQueue({queue: queueProp}: PatientQueueProps): React.JSX.Element 
   const visibleQueue =
     filter === 'all' ? queue : queue.filter(item => item.status === filter);
 
+  // Row tap → open the native Queue Details Activity for that row.
+  const handleOpenDetails = useCallback((item: QueueListItemProps) => {
+    QueueNavigator.openQueueDetails(item);
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -88,7 +94,9 @@ function PatientQueue({queue: queueProp}: PatientQueueProps): React.JSX.Element 
       <FlatList
         data={visibleQueue}
         keyExtractor={item => item.key}
-        renderItem={({item}) => <QueueListItem {...item} />}
+        renderItem={({item}) => (
+          <QueueListItem {...item} onPress={() => handleOpenDetails(item)} />
+        )}
         contentContainerStyle={styles.listContent}
         ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}

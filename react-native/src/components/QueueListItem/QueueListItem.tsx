@@ -48,7 +48,7 @@ const STATUS_CONFIG: Record<QueueStatus, StatusConfig> = {
       borderColor: Colors.cardNeutralBorder,
     },
     badge: {
-      backgroundColor: Colors.badgeWaitingBg,
+      backgroundColor: Colors.white,
       borderWidth: 1,
       borderColor: Colors.badgeWaitingBorder,
     },

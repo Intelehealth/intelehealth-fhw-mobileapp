@@ -34,6 +34,7 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.thermalprinter.BaseEnum;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
+import org.intelehealth.app.reactnative.QueueNavigatorPackage;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
@@ -62,7 +63,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private final ReactNativeHost reactNativeHost = new DefaultReactNativeHost(this) {
         @Override
         public List<ReactPackage> getPackages() {
-            return new PackageList(this).getPackages();
+            List<ReactPackage> packages = new PackageList(this).getPackages();
+            // Bridge for opening the standalone Queue Details Activity from RN.
+            packages.add(new QueueNavigatorPackage());
+            return packages;
         }
 
         @Override
