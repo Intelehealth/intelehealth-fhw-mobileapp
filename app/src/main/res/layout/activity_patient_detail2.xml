@@ -378,28 +378,9 @@
                 android:id="@+id/household_survey"
                 layout="@layout/layout_household_survey"
                 app:activeStatus="@{householdSurveyActiveStatus}" />
-            <!--
-              Shown only when the patient has an ABHA linked; the activity resolves that from the
-              database, since a card can exist for a patient reached by any route.
-            -->
-            <Button
-                android:id="@+id/btn_view_abha_card"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/household_survey"
-                android:layout_centerInParent="true"
-                android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginEnd="@dimen/margin_24"
-                android:layout_marginBottom="@dimen/margin_14"
-                android:background="@drawable/ui2_common_gray_round_stroke_bg"
-                android:text="@string/view_abha_card"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/txtsize_patdetail_16sp"
-                android:visibility="gone" />
-
             <Button
                 android:id="@+id/startVisitBtn"
-                android:layout_below="@+id/btn_view_abha_card"
+                android:layout_below="@+id/household_survey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"

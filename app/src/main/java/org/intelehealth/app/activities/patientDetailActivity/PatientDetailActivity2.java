@@ -201,7 +201,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
             provinceTr, cityTr, registrationAddressOfHfTr,
-            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr;
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr,
+            abhaNumberTr, abhaAddressTr;
+    TextView abhaNumberTv, abhaAddressTv;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -774,6 +776,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
         btnViewAbhaCard = findViewById(R.id.btn_view_abha_card);
+        abhaNumberTr = findViewById(R.id.abha_number_tr);
+        abhaAddressTr = findViewById(R.id.abha_address_tr);
+        abhaNumberTv = findViewById(R.id.abha_number);
+        abhaAddressTv = findViewById(R.id.abha_address);
 
         mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -784,7 +790,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         fetchAllConfig();
 
         setFullName();
-        setupViewAbhaCardButton();
+        setupAbhaDetails();
         initForOpenVisit();
         initForPastVisit();
     }
@@ -1393,15 +1399,29 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     /**
-     * Reveals the ABHA card button for a patient with a linked ABHA. The number is read from the
-     * database rather than the patient DTO so it works on every route into this screen, including
-     * those whose queries do not select the ABHA columns. The card itself may not have downloaded
-     * yet; AbdmCardDownloader reports that case to the user.
+     * Shows the ABHA number and address rows in the Other Details card, plus the card button beneath
+     * them. These are not admin-panel config fields like the rest of that table, so visibility is
+     * driven by whether the patient actually has an ABHA linked.
+     *
+     * The number is read from the database rather than the patient DTO so this works on every route
+     * into this screen, including any whose query does not select the ABHA columns. The card image
+     * itself may not have downloaded yet; AbdmCardDownloader reports that case to the user.
      */
-    private void setupViewAbhaCardButton() {
-        if (btnViewAbhaCard == null || patientDTO == null) return;
+    private void setupAbhaDetails() {
+        if (patientDTO == null) return;
         String abhaNumber = patientsDAO.getAbhaNumberByUuid(patientDTO.getUuid());
-        if (abhaNumber == null || abhaNumber.isEmpty() || abhaNumber.equalsIgnoreCase("NA")) {
+        boolean hasAbhaNumber = abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA");
+
+        if (abhaNumberTr != null) abhaNumberTr.setVisibility(hasAbhaNumber ? View.VISIBLE : View.GONE);
+        if (hasAbhaNumber && abhaNumberTv != null) abhaNumberTv.setText(abhaNumber);
+
+        String abhaAddress = patientDTO.getAbhaAddress();
+        boolean hasAbhaAddress = abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA");
+        if (abhaAddressTr != null) abhaAddressTr.setVisibility(hasAbhaAddress ? View.VISIBLE : View.GONE);
+        if (hasAbhaAddress && abhaAddressTv != null) abhaAddressTv.setText(abhaAddress);
+
+        if (btnViewAbhaCard == null) return;
+        if (!hasAbhaNumber) {
             btnViewAbhaCard.setVisibility(View.GONE);
             return;
         }
@@ -1417,7 +1437,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict",
+                "abha_number", "abha_address"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1447,6 +1468,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));//block
                 patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));//household number
                 patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();

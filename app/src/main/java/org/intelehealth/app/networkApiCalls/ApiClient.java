@@ -46,7 +46,11 @@ public class ApiClient {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
 
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
+        // TEMPORARY (2026-08-03): body logging to inspect whether the pull response carries
+        // abha_number / abha_address in patientlist. Bodies contain patient PII — revert to NONE
+        // once confirmed. Gated on DEBUG so a release build can never emit it.
+        loggingInterceptor.setLevel(
+                BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
         client.addInterceptor(loggingInterceptor);
         client.addInterceptor(new TokenSetupInterceptor());
         client.connectTimeout(60, TimeUnit.SECONDS);
