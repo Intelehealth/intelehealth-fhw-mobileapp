@@ -404,6 +404,23 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
         loadFeatureActiveStatus();
         initializeAbdmManager();
+        preWarmReactNative();
+    }
+
+    /**
+     * Kick off React Native runtime initialization (JS bundle load + runtime/bridge
+     * startup) as soon as the home screen is up, instead of paying that one-time
+     * cost synchronously on first navigation to an RN screen. Without this, tapping
+     * the Queue tab was slow because {@link org.intelehealth.app.reactnative.PatientQueueFragment}'s
+     * ReactFragment triggered a cold RN start. start() is idempotent, so the later
+     * ReactFragment mount just reuses this already-warming host.
+     */
+    private void preWarmReactNative() {
+        try {
+            IntelehealthApplication.getInstance().getReactHost().start();
+        } catch (Exception e) {
+            CustomLog.e(TAG, "React Native pre-warm failed: " + e.getMessage());
+        }
     }
 
     private void initializeAbdmManager() {
@@ -1689,6 +1706,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
             tag = TAG_ACHIEVEMENT;
+        } else if (tag.equalsIgnoreCase(TAG_QUEUE)) {
+            bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setChecked(true);
+            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.patients_queue));
+            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+            tvAppLastSync.setVisibility(View.GONE);
+            llAutoUpdate.setVisibility(View.VISIBLE);
+            ivHamburger.setVisibility(View.VISIBLE);
+            imageViewIsInternet.setVisibility(View.VISIBLE);
+            imageViewIsNotification.setVisibility(View.GONE);
+            ivNotificationIcon.setVisibility(View.GONE);
+            tag = TAG_QUEUE;
+            // fragment left null so the existing Queue fragment (and its list
+            // state) is preserved instead of being rebuilt.
         }
         loadFragment(fragment, tag);
 

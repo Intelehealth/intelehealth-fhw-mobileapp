@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.react.ReactFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.database.dao.VisitsDAO;
@@ -47,6 +48,21 @@ public class PatientQueueFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_patient_queue, container, false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Keep the Queue bottom-nav item selected, mirroring MyAchievementsFragment.
+        // The host activity's onResume() re-checks the Home item, so (e.g. when
+        // returning from QueueDetailsActivity) the Queue fragment must reassert its
+        // own selection here.
+        if (getActivity() != null) {
+            BottomNavigationView bottomNav = getActivity().findViewById(R.id.bottom_nav_home);
+            if (bottomNav != null) {
+                bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setChecked(true);
+            }
+        }
     }
 
     @Override
