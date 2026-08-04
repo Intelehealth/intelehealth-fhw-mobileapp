@@ -139,12 +139,20 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
      * address currently in use — that is what the visit attribute records. Any earlier occurrence is
      * removed first so re-picking an existing address promotes it rather than duplicating it.
      */
+    /**
+     * Prepends the newly registered address and drops any cached ABHA card, since the card carries the
+     * preferred address and a stale copy would otherwise be served indefinitely — the cache is keyed on
+     * the ABHA number, which does not change here. Only this path and a verified communication number
+     * invalidate it, so no repeat downloads are introduced on the edit screen.
+     */
     private fun applyNewAbhaAddress(newAddress: String) {
         val existing = patient.abhaAddress.orEmpty()
             .split(",")
             .map { it.trim() }
             .filter { it.isNotEmpty() && !it.equals(newAddress, ignoreCase = true) }
         patient.abhaAddress = (listOf(newAddress) + existing).joinToString(",")
+
+        AbdmCardDownloader.invalidate(requireContext(), patient.abhaNumber)
 
         binding.patient = patient
         binding.textInputAbhaAddress.setText(patient.abhaAddress)

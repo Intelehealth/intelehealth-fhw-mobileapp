@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.intelehealth.abdm.R
 import org.intelehealth.abdm.databinding.ActivityAbhaCreateBinding
+import org.intelehealth.abdm.presentation.AbdmCardDownloader
 import org.intelehealth.abdm.presentation.abha_suggestions.AbhaSuggestionsActivity
 import org.intelehealth.abdm.presentation.common.UiState
 import org.intelehealth.abdm.presentation.common.showAbdmSnackbar
@@ -333,6 +334,9 @@ class AbhaCreateActivity : AppCompatActivity() {
             }
 
             is AbhaCreateEvent.CompleteWithResult -> finishWithResult(event.result)
+
+            is AbhaCreateEvent.InvalidateCachedCard ->
+                AbdmCardDownloader.invalidate(this, event.abhaNumber)
 
             is AbhaCreateEvent.ShowSnackbar -> {
                 val text = event.message?.takeIf { it.isNotBlank() }

@@ -58,6 +58,7 @@ public class UuidDictionary {
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
+    public static final String VISIT_ABHA_ADDRESS = "ca0ec991-0ac4-4572-8c7a-d1b8556429ee";
 
     public static final String SEVERITY = "6593f000-f1f8-4f35-a3b9-8d1909f5c945";
     public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
@@ -97,14 +98,6 @@ public class UuidDictionary {
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";
 
     public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
-
-    /**
-     * VisitAttributeType recording which ABHA address the patient was using when the visit was
-     * created, so a past visit keeps its historical value rather than inheriting today's. Like the
-     * ABHA PatientIdentifierTypes this is a per-server OpenMRS record and must exist on the target
-     * server for the attribute to sync.
-     */
-    public static final String VISIT_ABHA_ADDRESS = "ca0ec991-0ac4-4572-8c7a-d1b8556429ee";
 
 
 }

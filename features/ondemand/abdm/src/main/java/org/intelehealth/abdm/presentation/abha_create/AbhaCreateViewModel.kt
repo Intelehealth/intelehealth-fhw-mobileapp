@@ -121,11 +121,13 @@ internal class AbhaCreateViewModel @Inject constructor(
                     )
 
                     if (needsMobileOtp) {
+                        mobileTxnId = null
                         _uiState.update {
                             it.copy(
                                 step = AbhaCreateStep.EnterMobileOtp,
                                 verifiedSession = session,
                                 mobileOtp = "",
+                                otpError = null,
                                 resendAttemptsRemaining = AbhaCreateUiState.MAX_RESEND_ATTEMPTS,
                                 resendSecondsRemaining = 0,
                             )
@@ -234,6 +236,28 @@ internal class AbhaCreateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * The user dismissed the mobile-OTP dialog. Returns to Aadhaar entry rather than the OTP step,
+     * because reaching this dialog means the Aadhaar OTP has already been consumed and cannot be
+     * re-submitted. Clearing the step also stops the activity re-showing the dialog on the next state
+     * emission, which is what would otherwise make the dismissal look ignored.
+     */
+    fun onMobileOtpDialogCancelled() {
+        countdownJob?.cancel()
+        mobileTxnId = null
+        _uiState.update {
+            it.copy(
+                step = AbhaCreateStep.EnterAadhaar,
+                operation = UiState.Idle,
+                mobileOtp = "",
+                otpError = null,
+                verifiedSession = null,
+                aadhaarLocked = false,
+                resendSecondsRemaining = 0,
+            )
+        }
+    }
+
     /** Called when the user opts to create a new address instead of an existing one. */
     fun onCreateNewAddressRequested() {
         val session = pendingSession ?: return
@@ -327,7 +351,11 @@ internal class AbhaCreateViewModel @Inject constructor(
             _uiState.update { it.copy(otpError = otpError) }
             return
         }
-        val txnId = mobileTxnId ?: state.txnId ?: return
+        val txnId = mobileTxnId ?: state.txnId
+        if (txnId == null) {
+            _uiState.update { it.copy(operation = UiState.Error(R.string.abdm_error_generic)) }
+            return
+        }
 
         viewModelScope.launch {
             _uiState.update {
@@ -339,13 +367,20 @@ internal class AbhaCreateViewModel @Inject constructor(
                 mobileNumber = state.mobileNumber,
             )
                 .onSuccess {
-                    val base = _uiState.value.verifiedSession ?: return@onSuccess
+                    val base = _uiState.value.verifiedSession
+                    if (base == null) {
+                        _uiState.update { it.copy(operation = UiState.Error(R.string.abdm_error_generic)) }
+                        return@onSuccess
+                    }
                     val session = base.copy(profile = base.profile.copy(mobile = state.mobileNumber))
                     _uiState.update {
                         it.copy(
                             operation = UiState.Idle,
                             step = AbhaCreateStep.Completed
                         )
+                    }
+                    session.profile.abhaNumber.takeIf { it.isNotBlank() }?.let {
+                        _events.send(AbhaCreateEvent.InvalidateCachedCard(it))
                     }
                     routeAfterVerification(session)
                 }
@@ -411,6 +446,14 @@ internal class AbhaCreateViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Surfaces the server's own message when it sent one, falling back to a mapped string otherwise.
+     * Legacy showed `otpResponse.message` directly; mapping everything onto "please enter valid OTP"
+     * made a spent or mismatched transaction indistinguishable from a genuinely wrong OTP, which is
+     * what made this class of failure so hard to read on the mobile-OTP dialog. The state goes back
+     * to Idle on that path because the snackbar event carries the message instead, and the dialog
+     * would otherwise show both.
+     */
     private fun handleFailure(error: Throwable) {
         if (error is HttpException && error.httpCode == HTTP_TOO_MANY_REQUESTS) {
             countdownJob?.cancel()
@@ -437,11 +480,30 @@ internal class AbhaCreateViewModel @Inject constructor(
             else -> R.string.abdm_error_generic
         }
         val unlockAadhaar = error is HttpException && error.httpCode == 400
+        val serverMessage = when (error) {
+            is HttpException -> error.serverMessage
+            is OtpVerificationFailedException -> error.serverMessage
+            else -> null
+        }?.takeIf { it.isNotBlank() }
+
+        if (serverMessage == null) {
+            _uiState.update {
+                it.copy(
+                    operation = UiState.Error(messageRes),
+                    aadhaarLocked = if (unlockAadhaar) false else it.aadhaarLocked,
+                )
+            }
+            return
+        }
+
         _uiState.update {
             it.copy(
-                operation = UiState.Error(messageRes),
+                operation = UiState.Idle,
                 aadhaarLocked = if (unlockAadhaar) false else it.aadhaarLocked,
             )
+        }
+        viewModelScope.launch {
+            _events.send(AbhaCreateEvent.ShowSnackbar(message = serverMessage, isSuccess = false))
         }
     }
 

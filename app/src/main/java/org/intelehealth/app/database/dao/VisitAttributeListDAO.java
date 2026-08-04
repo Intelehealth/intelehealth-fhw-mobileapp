@@ -5,6 +5,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
 import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_ABHA_ADDRESS;
 import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 
 import android.content.ContentValues;
@@ -56,7 +57,8 @@ public class VisitAttributeListDAO extends BaseDao{
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_ABHA_ADDRESS)) {
                 visitsList.add(createVisitAttributeMap(visitDTO));
             }
         }

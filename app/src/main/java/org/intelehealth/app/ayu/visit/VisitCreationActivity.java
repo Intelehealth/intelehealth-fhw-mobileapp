@@ -746,12 +746,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
      *
      * abha_address may be a comma-separated list of every address registered for the patient on our
      * server; position 0 is the one in use. Upserts because this step can be re-entered.
+     *
+     * Writes nothing when the patient has no ABHA. The column can hold the literal "NA" as well as
+     * being blank, so the guard runs after the list is reduced and treats both as absent — every
+     * reader already hides the label on an empty value, so a placeholder row would carry no meaning.
      */
     private void storeAbhaAddressForVisit() {
         String abhaAddress = new PatientsDAO().getPatientAbhaAddressByUuid(patientUuid);
-        if (abhaAddress == null || abhaAddress.trim().isEmpty()) return;
+        if (abhaAddress == null) return;
         if (abhaAddress.contains(",")) abhaAddress = abhaAddress.split(",")[0];
         abhaAddress = abhaAddress.trim();
+        if (abhaAddress.isEmpty() || abhaAddress.equalsIgnoreCase("NA")) return;
 
         VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
         try {

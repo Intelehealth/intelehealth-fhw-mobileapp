@@ -49,6 +49,22 @@ object AbdmCardDownloader {
         }
     }
 
+    /**
+     * Drops the cached card so the next [downloadInBackground] fetches a fresh one. Call this only from
+     * the events that change what the card depicts — a newly verified communication number, or a newly
+     * set preferred ABHA address.
+     *
+     * Eviction rather than a "force refresh" flag because the cached file *is* the cache policy: once
+     * the replacement is stored, the existence check suppresses every later call on its own. There is
+     * no state left behind that could keep re-triggering downloads on a metered or barely-there
+     * connection, which matters because the card is otherwise fetched on each registration save.
+     */
+    @JvmStatic
+    fun invalidate(context: Context, abhaNumber: String?) {
+        if (abhaNumber.isNullOrBlank()) return
+        runCatching { cardFile(context.applicationContext, abhaNumber).delete() }
+    }
+
     /** Opens the stored card PNG in the system image viewer (legacy parity: FileProvider + ACTION_VIEW). */
     @JvmStatic
     fun viewCard(context: Context, abhaNumber: String?) {

@@ -1,5 +1,6 @@
 package org.intelehealth.abdm.presentation.abha_create
 
+import android.content.DialogInterface
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -35,9 +36,13 @@ internal class MobileOtpVerificationDialogFragment : DialogFragment() {
     private var binding: DialogMobileOtpVerificationBinding? = null
     private var shownErrorRes: Int? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        isCancelable = false
+    /**
+     * Dismissible, matching the legacy dialog. It used to be locked, which turned any failure that
+     * left the flow without a usable transaction into a dead end the user could not leave.
+     */
+    override fun onCancel(dialog: DialogInterface) {
+        super.onCancel(dialog)
+        viewModel.onMobileOtpDialogCancelled()
     }
 
     override fun onCreateView(

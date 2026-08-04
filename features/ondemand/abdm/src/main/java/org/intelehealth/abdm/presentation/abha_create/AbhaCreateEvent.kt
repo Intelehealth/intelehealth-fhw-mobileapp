@@ -17,6 +17,13 @@ internal sealed interface AbhaCreateEvent {
         val isSuccess: Boolean = false,
     ) : AbhaCreateEvent
 
+    /**
+     * A verified communication number changed what the ABHA card depicts, so the cached copy for
+     * [abhaNumber] is stale. Fired once, at the moment of verification — the activity owns the file
+     * because the view model has no context.
+     */
+    data class InvalidateCachedCard(val abhaNumber: String) : AbhaCreateEvent
+
     /** Show the existing-addresses picker so the user can choose one or request a new one. */
     data class ShowAddressChecklist(
         val preferredAbhaAddress: String,
