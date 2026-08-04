@@ -48,6 +48,37 @@ export const Colors = {
   // Buttons
   buttonSecondaryBg: '#EDE9FE', // light lavender — secondary/"Back to Queue"
 
+  // Status banners (see StatusBanner component). Each variant = surface + border
+  // + accent (icon/highlight) + soft icon chip + action-button bg/text.
+  // -- warning (amber): position changes, wait reminders
+  bannerWarningBg: '#FFFBEB',
+  bannerWarningBorder: '#FDE68A',
+  bannerWarningAccent: '#D97706',
+  bannerWarningIconBg: '#FEF3C7',
+  bannerWarningButtonBg: '#FDE68A',
+  bannerWarningButtonText: '#B45309',
+  // -- success (green): "next in line"
+  bannerSuccessBg: '#ECFDF5',
+  bannerSuccessBorder: '#A7F3D0',
+  bannerSuccessAccent: '#059669',
+  bannerSuccessIconBg: '#D1FAE5',
+  bannerSuccessButtonBg: '#10B981',
+  // -- priority (neutral surface, orange accent): "priority added"
+  bannerPriorityBg: '#FFFFFF',
+  bannerPriorityBorder: '#FCD9BD',
+  bannerPriorityAccent: '#F97316',
+  bannerPriorityIconBg: '#FFEDD5',
+  bannerPriorityButtonBg: '#F97316',
+  // -- alert (orange): "doctor on break / queue paused"
+  bannerAlertBg: '#FFF7ED',
+  bannerAlertBorder: '#FED7AA',
+  bannerAlertAccent: '#EA580C',
+  bannerAlertIconBg: '#FFEDD5',
+  bannerAlertButtonBg: '#F97316',
+  // -- shared
+  bannerButtonTextLight: '#FFFFFF', // solid-button label
+  bannerCloseIcon: '#9CA3AF', // dismiss (×) glyph
+
 } as const;
 
 export type ColorName = keyof typeof Colors;
