@@ -8,6 +8,7 @@
     android:background="@color/white"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     tools:context=".activities.questionNodeActivity.QuestionNodeActivity">
 
     <LinearLayout

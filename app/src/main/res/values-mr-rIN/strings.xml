@@ -202,6 +202,7 @@
     <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
     <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
     <!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
+    <string name="spo2_error">ऑक्सिजन संतृप्तता %1$s आणि %2$s च्या दरम्यान असावी.</string>
     <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
@@ -446,6 +447,7 @@
     <string name="select_date_hint">तारीख निवडा</string>
     <string name="error_field_valid_village_required">कृपया वैध गावाचे नाव प्रविष्ट करा (किमान 3 अक्षर)</string>
     <string name="patinet_history">%1$d/%2$d वैद्यकीय इतिहास: रुग्णाचा इतिहास</string>
+    <string name="_medical_family_history">%1$d/%2$d. वैद्यकीय इतिहास: कौटुंबिक इतिहास</string>
     <string name="_1_4_vitals">%1$d/%2$d महत्वपूर्ण</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys नेहमी > BP Dia असावा]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia नेहमी < BP Sys असावा]]></string>
@@ -831,6 +833,7 @@
     <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
     <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम)</string>
     <string name="haemoglobin">हिमोग्लोबिन (mg/dL)</string>
+    <string name="diabetes_hba1c">मधुमेह HbA1c (%)</string>
     <string name="household_no_survey">घर क्रमांक*</string>
     <string name="result_of_visit">भेटीचा परिणाम*</string>
 
@@ -930,6 +933,7 @@
     <string name="post_prandial_error">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावी %1$s आणि %2$s</string>
     <string name="uric_acid_error">यूरिक ऍसिड दरम्यान असावे %1$s आणि %2$s</string>
     <string name="cholestrol_acid_error">एकूण कोलेस्ट्रॉल दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="diabeteshba1c_error">मधुमेह HBA1C %1$s आणि %2$s च्या दरम्यान असावा.</string>
     <string name="_diagnostics_summary">%1$d/%2$d निदान सारांश</string>
     <string name="details">तपशील</string>
     <string name="change">संपादित करा</string>
@@ -1256,6 +1260,7 @@
     <string name="most_searched">सर्वाधिक शोधलेले</string>
     <string name="frequently_asked_ques">वारंवार विचारले जाणारे प्रश्न</string>
     <string name="how_intelehealth_work">इंटेलहेल्थ (intelehealth) कसे काम करते?</string>
+    <string name="how_to_register">नवीन रुग्णाची नोंदणी कशी करावी?</string>
     <string name="why_intelehealth_exist_ans">इंटेलेहेल्थ टीमचे "सर्वांसाठी आरोग्य" हे एक स्वप्न आहे. त्यामुळे इंटेलेहेल्थ ही सार्वत्रिक आरोग्य कवच राखण्यासाठी अस्तित्वात आहे. प्रत्येक व्यक्तीला त्यांना लागणारी आरोग्य सेवा जेव्हा आणि जिथे लागते, तेव्हा आणि कुठेही, कोणत्याही आर्थिक अडचणीशिवाय मिळावी यासाठी हे प्रयत्नशील आहे.</string>
     <string name="how_intelehealth_help">इंटेलेहेल्थ रुग्णांना कशी मदत करते?</string>
     <string name="how_to_register_ans">रुग्णाची नोंदणी करण्यासाठी होम स्क्रीनवर "रुग्ण जोडा" टॅबवर क्लिक करा. रुग्णाला गोपनीयता धोरण वाचा. जर रुग्ण सहमत असेल तर सर्व माहिती पूर्ण करा आणि रुग्णाची नोंदणी करा.</string>
@@ -1517,6 +1522,19 @@
     <string name="wait_while_protocols_changing">प्रोटोकॉल बदलले जात असताना कृपया वाट पहा.</string>
     <string name="protocols_successfully_changed">प्रोटोकॉल यशस्वीरित्या बदलले आहेत!</string>
     <string name="language_successfully_changed">भाषा यशस्वीरित्या बदलली!</string>
+    <string name="confirm_discard_changes_title">ही भेट अपूर्ण आहे!</string>
+    <string name="confirm_discard_changes_content">तुम्हाला खात्री आहे का की तुम्ही या भेटीचे सर्व तपशील रद्द करू इच्छिता?</string>
+    <string name="confirm_discard_changes_button_dialog">रद्द करा</string>
+    <string name="confirm_continue_changes_button_dialog">सुरू ठेवा</string>
+    <string name="confirm_discard_changes_content_on_sync">तुमची भेट तयार करण्याची प्रक्रिया अद्याप पूर्ण झालेली नाही. तुम्ही ती पूर्ण करू शकता किंवा ती रद्द करू शकता.</string>
+    <string name="please_enter_mobile_no_in_profile">सुरू ठेवा</string>
+    <string name="enter_mobile_number_in_profile">कृपया प्रोफाइल विभागात तुमचा मोबाइल क्रमांक अपडेट करा</string>
+    <string name="morbidly_obese">मध्यम लठ्ठपणा (वर्ग १)</string>
+    <string name="hw_mobile_number">स्वास्थ्य कार्यकर्ता संपर्क नंबर</string>
+    <string name="pdf_share_flow_msg">कृपया प्रिस्क्रिप्शन या मोबाईल नंबरवर पाठवा: %1$s</string>
+    <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
     <string name="feature_not_found">Feature not found</string>
 
+    <string name="poor_quality_msg">खराब दर्जाचे नेटवर्क आढळले. ऑडिओ कॉलची गणना सुरू आहे.</string>
+    <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">लक्षणे आणखी वाढल्यास, कृपया जवळच्या डॉक्टरांना किंवा सरकारी आरोग्य सुविधेला भेट द्या.</string>
 </resources>

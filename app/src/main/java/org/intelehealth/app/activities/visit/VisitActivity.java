@@ -24,6 +24,7 @@ import org.intelehealth.app.utilities.CustomLog;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -47,6 +48,7 @@ import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 
 import java.util.Locale;
@@ -82,8 +84,22 @@ public class VisitActivity extends BaseActivity implements
     private boolean isPendingOldLoaded = false;
     AlertDialog commonLoadingDialog;
     // private NotificationReceiver notificationReceiver;
+    public FeatureActiveStatus mFeatureActiveStatus;
 
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        Log.d(TAG, "onFeatureActiveStatusLoaded: activeStatus : "+activeStatus);
+        Log.d(TAG, "onFeatureActiveStatusLoaded: activeStatus : "+activeStatus.getActiveStatusPrescriptionWithOtp());
 
+        if (activeStatus != null) {
+            mFeatureActiveStatus = activeStatus;
+            featureStatusListener.onFeatureStatusReady(activeStatus);
+        }
+    }
+    public FeatureActiveStatus getFeatureActiveStatus() {
+        return mFeatureActiveStatus;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -338,32 +354,45 @@ public class VisitActivity extends BaseActivity implements
              LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
          }
 
-         public void unregisterNotificationReceiver(Context context) {
-             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-         }
-     }
- */
-    private void updateCounts(boolean isForReceivedPrescription) {
-        new Thread(() -> {
-            int count;
-            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-            if (isForReceivedPrescription) {
-                count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
-            } else {
-                //count = new VisitsDAO().getVisitCountsByStatus(false);
-                count = new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
-            }
-            int finalCount = count;
-            runOnUiThread(() -> {
-                if (isForReceivedPrescription)
-                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
-                            getResources().getString(R.string.received) + "\t(" + finalCount + ")");
-                else
-                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
-                            getResources().getString(R.string.pending) + "\t(" + finalCount + ")");
-            });
-        }).start();
+        public void unregisterNotificationReceiver(Context context) {
+            LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+        }
     }
+*/
+   private void updateCounts(boolean isForReceivedPrescription) {
+       /*new Thread(() -> {
+           int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+           runOnUiThread(() -> {
+               if (isForReceivedPrescription)
+                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                           getResources().getString(R.string.received) + "\t(" + count + ")");
+               else
+                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                           getResources().getString(R.string.pending) + "\t(" + count + ")");
+           });
+       }).start();*/
+
+       //changed for count is not updated correctly for pending and received from IDA development_master
+       new Thread(() -> {
+           int count;
+           SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+           if (isForReceivedPrescription) {
+               count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
+           } else {
+               //count = new VisitsDAO().getVisitCountsByStatus(false);
+               count = new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
+           }
+           int finalCount = count;
+           runOnUiThread(() -> {
+               if (isForReceivedPrescription)
+                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                           getResources().getString(R.string.received) + "\t(" + finalCount + ")");
+               else
+                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                           getResources().getString(R.string.pending) + "\t(" + finalCount + ")");
+           });
+       }).start();
+   }
 
     @Override
     public void isReceivedRecentLoaded(boolean status) {
@@ -406,6 +435,17 @@ public class VisitActivity extends BaseActivity implements
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
             }
+        }
+    }
+    public interface OnFeatureStatusReadyListener {
+        void onFeatureStatusReady(FeatureActiveStatus status);
+    }
+    private OnFeatureStatusReadyListener featureStatusListener;
+
+    public void setFeatureStatusListener(OnFeatureStatusReadyListener listener) {
+        this.featureStatusListener = listener;
+        if (mFeatureActiveStatus != null) {
+            listener.onFeatureStatusReady(mFeatureActiveStatus);
         }
     }
 }

@@ -2,6 +2,7 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -68,7 +69,12 @@ public class DateAndTimeUtils {
         else
             xmonths = 0;
 
-        x_format = xyears + "." + xmonths;
+        //x_format = xyears + "." + xmonths;
+        // xmonths=10 → "0.10" → Float.parseFloat("0.10") → 0.10f ✅
+// xmonths=7  → "0.07" → Float.parseFloat("0.07") → 0.07f ✅
+// xmonths=1  → "0.01" → Float.parseFloat("0.01") → 0.01f ✅
+        x_format = xyears + "." + String.format(Locale.ENGLISH,"%02d", xmonths);
+
         year_month = Float.parseFloat(x_format);
 
         return year_month;
@@ -364,10 +370,33 @@ public class DateAndTimeUtils {
     }
 
     public String getcurrentDateTime(String localeCode) {
+        Log.d("TAG", "getcurrentDateTime: "+localeCode);
         DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", Locale.ENGLISH);
         Date todayDate = new Date();
         return date.format(todayDate);
     }
+
+    public String getcurrentDateTimeLan(String localeCode) {
+        Locale locale;
+        if (localeCode != null && !localeCode.isEmpty()) {
+            // Attempt to create a Locale object from the localeCode string
+            // This handles cases like "mr" (language) or "mr-IN" (language-country)
+            String[] parts = localeCode.split("[-_]"); // Split by hyphen or underscore
+            if (parts.length > 1) {
+                locale = new Locale(parts[0], parts[1]);
+            } else {
+                locale = new Locale(parts[0]);
+            }
+        } else {
+            // Fallback to the default locale if localeCode is null or empty
+            locale = Locale.ENGLISH;
+
+        }
+        DateFormat date = new SimpleDateFormat("hh:mm a, dd MMMM yyyy", locale);
+        Date todayDate = new Date();
+        return date.format(todayDate);
+    }
+
 
     public static String SimpleDatetoLongFollowupDate(String dateString) {
         String formattedDate = null;

@@ -558,7 +558,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private List<PatientVital> mPatientVitalList;
     private LinearLayout mHeightLinearLayout, mWeightLinearLayout, mBMILinearLayout, mBPLinearLayout, mPulseLinearLayout, mTemperatureLinearLayout, mSpo2LinearLayout, mRespiratoryRateLinearLayout, mBloodGroupLinearLayout;
-    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout;
+    private LinearLayout mRandomGlucoseLinearLayout, mFastingGlucoseLinearLayout, mPostPrandialLinearLayout, mHemoglobinLinearLayout, mUricAcidLinearLayout, mCholestrolLinearLayout, mDiabetesHBA1CLinearLayout;
     private List<Diagnostics> mPatientDiagnosticsList;
 
     private void setupVitalConfig() {
@@ -2546,8 +2546,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         if (id == 1) {
+//            int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//                writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+//            }
+
             int writeExternalStoragePermission = ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                /*writeExternalStoragePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES);
+                if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                    listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES);
+                }*/
+            } else {
                 if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
                     listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE);
                     listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
@@ -3216,12 +3226,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
             viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
-                try {
+                if (specialization != null) {
                     String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
                     vd_special_value.setText(" " + Node.bullet + "  " + value);
-                } catch (Exception e) {
+                } else {
+                    vd_special_value.setText(""); // or some fallback value
                 }
             });
+
 
             VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
@@ -4413,6 +4425,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     // update image database
     private void updateImageDatabase(String imageuuid) {
+    //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
+        final Intent intent = this.getIntent(); // The intent was passed to the activity
+        if (intent != null) {
+            if (intent.hasExtra("CommonVisitData")) {
+                encounterUuidAdultIntial = mCommonVisitData.getEncounterUuidAdultIntial();
+            } else {
+                encounterUuidAdultIntial = intent.getStringExtra("encounterUuidAdultIntial");
+            }
+        }
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
             imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, AppConstants.IMAGE_ADDITIONAL_DOC);
@@ -6396,7 +6417,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (!billEncounterUuid.equals("")) {
                     billUtils.fetchBillDetails(billEncounterUuid);
                 } else {
-                    boolean[] selectedTests = new boolean[8];
+                    boolean[] selectedTests = new boolean[9];
                     if (!mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.getText().toString()))
                         selectedTests[1] = false;//no use seen
                     if (!mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.getText().toString()))
@@ -6411,7 +6432,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         selectedTests[6] = true;
                     if (!mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewHemoglobinValue.getText().toString()))
                         selectedTests[7] = true;
-                    Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
+                    if (!mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString()))
+                        selectedTests[8] = true;
+
+                    Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
                 }
@@ -6438,6 +6462,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mPostPrandialLinearLayout = findViewById(R.id.ll_post_prandial_container);
         mHemoglobinLinearLayout = findViewById(R.id.ll_hemoglobin_container);
         mUricAcidLinearLayout = findViewById(R.id.ll_uric_acid_container);
+        mDiabetesHBA1CLinearLayout = findViewById(R.id.ll_diabetes_hba1c_container);
         mCholestrolLinearLayout = findViewById(R.id.ll_total_cholestrol_container);
 
 
@@ -6461,6 +6486,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mHemoglobinLinearLayout.setVisibility(View.GONE);
         mUricAcidLinearLayout.setVisibility(View.GONE);
         mCholestrolLinearLayout.setVisibility(View.GONE);
+        mDiabetesHBA1CLinearLayout.setVisibility(View.GONE);
 
         for (Diagnostics diagnostics : mPatientDiagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
@@ -6483,6 +6509,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mCholestrolLinearLayout.setVisibility(View.VISIBLE);
 
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
+                mDiabetesHBA1CLinearLayout.setVisibility(View.VISIBLE);
             }
         }
     }

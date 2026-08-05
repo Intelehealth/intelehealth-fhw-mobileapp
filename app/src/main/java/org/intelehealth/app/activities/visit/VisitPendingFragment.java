@@ -396,7 +396,7 @@ public class VisitPendingFragment extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+                /*int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();*/
                 int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {

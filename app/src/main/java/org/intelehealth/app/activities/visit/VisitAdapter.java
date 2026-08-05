@@ -4,9 +4,12 @@ import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,9 +33,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -51,16 +60,23 @@ import java.util.concurrent.Executors;
  * Email: prajwalwaingankar@gmail.com
  */
 public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
-    private Context context;
+    private Activity context;
     List<PrescriptionModel> list = new ArrayList<>();
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager;
-
-    public VisitAdapter(Context context, List<PrescriptionModel> list) {
+    private boolean isPdfPrescFlowEnabled = false;
+    private OnItemClickListener listener;
+    public VisitAdapter(Activity context, List<PrescriptionModel> list) {
         this.context = context;
         this.list.addAll(list);
+        sessionManager = new SessionManager(context);
+    }
+    public VisitAdapter(Activity context, List<PrescriptionModel> list, OnItemClickListener listener) {
+        this.context = context;
+        this.list.addAll(list);
+        this.listener = listener;
         sessionManager = new SessionManager(context);
     }
 
@@ -198,7 +214,13 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sharePresc(model);
+                    if(isPdfPrescFlowEnabled){
+                        if (listener != null) {
+                            listener.onItemClicked(model);
+                        }
+                    }else{
+                        sharePresc(model);
+                    }
                 }
             });
         }
@@ -284,4 +306,11 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertDialog.show();
     }
 
+    public void setFeatureActiveStatus(boolean flag) {
+        isPdfPrescFlowEnabled = flag;
+        notifyDataSetChanged();
+    }
+    public interface OnItemClickListener {
+        void onItemClicked(PrescriptionModel data);
+    }
 }

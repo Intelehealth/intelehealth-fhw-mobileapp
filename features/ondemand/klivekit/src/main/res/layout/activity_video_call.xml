@@ -8,6 +8,7 @@
         android:background="@color/gray_0"
         android:fitsSystemWindows="true"
         android:orientation="vertical"
+        android:fitsSystemWindows="true"
         android:weightSum="2">
 
         <RelativeLayout

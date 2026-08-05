@@ -13,6 +13,8 @@ import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -52,6 +54,8 @@ class PrintViewPrescription(
                 putExtra("doctorDetails", htmlDoctorDetails)
                 putExtra("font-family", clsDoctorDetails.fontOfSign)
                 putExtra("drSign-text", clsDoctorDetails.textOfSign)
+                putExtra("signature", clsDoctorDetails.signature)
+
             }
             context.startActivity(intentEsc)
         } else {
@@ -179,7 +183,8 @@ class PrintViewPrescription(
                 " ${dataModel.bloodGlucoseRandom.value ?: ""} <br> -Glucose (Fasting): ${dataModel.bloodGlucoseFasting.value ?: ""} " +
                 "<br> -Glucose (Post-Prandial): " +
                 "${dataModel.bloodGlucosePostPrandial.value ?: ""} <br> -HGB: ${dataModel.hemoglobin.value ?: ""} <br> -Uric Acid:" +
-                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br><br>"
+                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br>"+
+                "-Diabetes HBA1C: ${dataModel.diabeteshba1c.value ?: ""} <br><br>"
     }
 
     private fun formatDiagnosis(): String {
@@ -204,10 +209,9 @@ class PrintViewPrescription(
 
     private fun formatPrescribedTests(): String {
         var htmlDocument = ""
-        Log.d(TAG, "formatPrescribedTests: tests  : ${replaceDot(dataModel.testsReturned)}")
         if (dataModel.testsReturned.isNotEmpty()) {
             htmlDocument =
-                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>${replaceDot(dataModel.testsReturned)} <br>"
+                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b>${replaceDot(dataModel.testsReturned).trim()}<br><br>"
         }
         return htmlDocument
     }
@@ -239,8 +243,10 @@ class PrintViewPrescription(
             .append(formatDiagnosis())
             .append(formatMedicationPlan())
             .append(formatPrescribedTests())
+            .append(formatReferredSpecialist())
             .append(formatAdviceFromDoctor())
             .append(formatFollowUpDate())
+            .append(formatSpecialtyNotes())
             .toString()
 
         Log.d(TAG, "Generated Prescription HTML: $prescriptionHtml")
@@ -266,30 +272,70 @@ class PrintViewPrescription(
     }
 
     private fun followUpWeb(): String {
-        var followUpWeb = ""
-        var followUpDateStr = ""
         val followUpDate = dataModel.followUpDate
+        Log.d(TAG, "kzfollowUpWeb: followUpDate : $followUpDate")
 
-        if (!followUpDate.isNullOrEmpty() && followUpDate.contains(",")) {
+        if (followUpDate.isNullOrBlank()) {
+            return stringToWebSms("NA")
+        }
+
+        var followUpDateStr = ""
+
+        if (followUpDate.contains(",")) {
             val splitFollowDate = followUpDate.split(",")
-            if (splitFollowDate[0].contains("-")) {
-                var remainingStr = ""
-                for (i in 1 until splitFollowDate.size) {
-                    remainingStr = if (remainingStr.isNotEmpty()) {
-                        "$remainingStr, ${splitFollowDate[i]}"
-                    } else {
-                        splitFollowDate[i]
+            val rawDate = splitFollowDate.getOrNull(0)?.trim()
+            Log.d(TAG, "kzfollowUpWeb: splitFollowDate : $splitFollowDate")
+            Log.d(TAG, "kzfollowUpWeb: rawDate : $rawDate")
+
+            if (!rawDate.isNullOrEmpty()) {
+                val formattedDate = when {
+                    rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
+                        // Format: dd-MM-yyyy
+                        DateAndTimeUtils.date_formatter(
+                            rawDate,
+                            "dd-MM-yyyy",
+                            "dd MMM, yyyy"
+                        )
                     }
+                    rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
+                        // Format: yyyy-MM-dd
+                        DateAndTimeUtils.date_formatter(
+                            rawDate,
+                            "yyyy-MM-dd",
+                            "dd MMM, yyyy"
+                        )
+                    }
+                    else -> null
+                } ?: "NA"
+
+                val remainingStr = splitFollowDate
+                    .drop(1)
+                    .mapNotNull { it.trim().takeIf { str -> str.isNotEmpty() && str != "null" } }
+                    .joinToString(", ")
+                Log.d(TAG, "kzfollowUpWeb: remainingStr : $remainingStr")
+
+                followUpDateStr = if (remainingStr.isNotEmpty()) {
+                    "$formattedDate, $remainingStr"
+                } else {
+                    formattedDate
                 }
-                followUpDateStr = "${parseDateToddMMyyyy(splitFollowDate[0])}, $remainingStr"
             } else {
                 followUpDateStr = followUpDate
             }
         } else {
-            followUpDateStr = followUpDate ?: ""
+            val rawDate = followUpDate.trim()
+            followUpDateStr = when {
+                rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
+                    DateAndTimeUtils.date_formatter(rawDate, "dd-MM-yyyy", "dd MMM, yyyy") ?: "NA"
+                }
+                rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
+                    DateAndTimeUtils.date_formatter(rawDate, "yyyy-MM-dd", "dd MMM, yyyy") ?: "NA"
+                }
+                else -> if (rawDate != "null") rawDate else "NA"
+            }
         }
-        followUpWeb = stringToWebSms(followUpDateStr)
-        return followUpWeb
+
+        return stringToWebSms(followUpDateStr.ifBlank { "NA" })
     }
 
     private fun stringToWebSms(input: String?): String {
@@ -301,5 +347,22 @@ class PrintViewPrescription(
         }
         return formatted
     }
+    private fun formatSpecialtyNotes(): String {
+        var htmlDocument = ""
+        val notes = SpecialtyNotesProvider.getNotesFor(context, clsDoctorDetails?.specialization)
+        if (!notes.isNullOrEmpty()) {
+            val notesWeb = stringToWebSms(notes.joinToString("\n"))
+            htmlDocument = "<b id=\"notes_precautions_heading\">* Notes & Precautions </b><br>$notesWeb<br>"
+        }
+        return htmlDocument
+    }
 
+    private fun formatReferredSpecialist(): String {
+        var htmlDocument = ""
+        if (dataModel.referredSpecialist.isNotEmpty()) {
+            htmlDocument =
+                "<b id=\"referred_specialist_heading\" >* Referred Specialist </b>${replaceDot(dataModel.referredSpecialist)}<br><br>"
+        }
+        return htmlDocument
+    }
 }

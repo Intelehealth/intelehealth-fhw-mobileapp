@@ -115,7 +115,7 @@ public class SyncUtils {
                 AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
                 Logger.logD(TAG, "Pull ended");
             }
-        }, 4000);
+        }, 6000);
 
         imagesPushDAO.patientProfileImagesPush();
         //ui2.0

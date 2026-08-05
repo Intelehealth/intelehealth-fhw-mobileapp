@@ -43,6 +43,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -116,6 +120,20 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    void enableProperPadding(){
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+            toolbarRelative.setPadding(systemBars.left,systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +159,8 @@ public class SearchPatientActivity_New extends BaseActivity {
         iconClear = findViewById(R.id.icon_clear);
         toolbarRelative = findViewById(R.id.toolbar_relative);
 
+
+        //toolbarRelative = findViewById(R.id.toolbar_relative);
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -161,6 +181,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
+        enableProperPadding();
         previous_SearchResults();
         queryAllPatients();
 
@@ -218,7 +239,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                         @Override
                         public void run() {
                             query = "";
-                            doQuery(query);
+                            doQuery(query,false);
                         }
                     }, 100);
 
@@ -256,11 +277,11 @@ public class SearchPatientActivity_New extends BaseActivity {
             mSearchEditText.setTextColor(ContextCompat.getColor(this, R.color.white));
             managePreviousSearchStorage(text);
             query = text;
-            doQuery(text);
+            doQuery(text, true);
         } else {
             allPatientsTV.setText(getString(R.string.all_patients_txt));
             query = "";
-            doQuery(query);
+            doQuery(query, true);
         }
     }
 
@@ -394,9 +415,11 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     }
 
-    private void doQuery(String query) {
-        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
+    private void doQuery(String query, boolean hideKeyBoard) {
+        if (hideKeyBoard) {
+            InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
+        }
 
         recent.clear();
         if (query.equalsIgnoreCase("")) {

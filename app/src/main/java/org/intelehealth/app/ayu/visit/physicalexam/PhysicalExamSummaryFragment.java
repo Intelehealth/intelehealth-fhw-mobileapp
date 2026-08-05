@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import org.intelehealth.app.BuildConfig;
 
+import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -51,6 +52,7 @@ public class PhysicalExamSummaryFragment extends Fragment {
     private VisitCreationActionListener mActionListener;
     SessionManager sessionManager;
     private boolean mIsEditMode = false;
+    private String visitUuid;
 
     public PhysicalExamSummaryFragment() {
         // Required empty public constructor
@@ -58,10 +60,11 @@ public class PhysicalExamSummaryFragment extends Fragment {
 
     private String mSummaryString;
 
-    public static PhysicalExamSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode) {
+    public static PhysicalExamSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode, String visitUuid) {
         PhysicalExamSummaryFragment fragment = new PhysicalExamSummaryFragment();
         fragment.mSummaryString = values;
         fragment.mIsEditMode = isEditMode;
+        fragment.visitUuid = visitUuid;
         //fragment.prepareSummary();
         return fragment;
     }
@@ -131,9 +134,13 @@ public class PhysicalExamSummaryFragment extends Fragment {
         view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (NetworkConnection.isOnline(requireActivity())) {
-                    new SyncUtils().syncBackground();
-                    // Toast.makeText(requireActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                if(mIsEditMode) {
+                    if (NetworkConnection.isOnline(requireActivity())) {
+                        new SyncUtils().syncBackground();
+                        // Toast.makeText(requireActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
                 }
             }
         });

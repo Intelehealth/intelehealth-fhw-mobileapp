@@ -3,6 +3,7 @@ package org.intelehealth.klivekit.call.ui.viewmodel
 import android.app.Application
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -245,10 +246,13 @@ open class CallViewModel(
     }
 
     private fun onConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
+        /*if (it.participant is RemoteParticipant)
+            mutableRemoteConnectionQuality.postValue(it.quality)*/
         when (it.participant) {
             is LocalParticipant -> mutableLocalConnectionQuality.postValue(it.quality)
             is RemoteParticipant -> mutableRemoteConnectionQuality.postValue(it.quality)
         }
+
     }
 
 //    private fun manageTrackPublicationOnConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
@@ -584,6 +588,13 @@ open class CallViewModel(
         }
     }
 
+    fun audioCallView(){
+        viewModelScope.launch {
+            val enabled = false
+            room.localParticipant.setCameraEnabled(enabled)
+            mutableCameraEnabled.postValue(getParticipantStatusMap(room.localParticipant, enabled))
+        }
+    }
     fun flipCamera() {
         val videoTrack = room.localParticipant.getTrackPublication(Track.Source.CAMERA)
             ?.track as? LocalVideoTrack

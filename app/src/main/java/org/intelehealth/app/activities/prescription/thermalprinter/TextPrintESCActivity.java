@@ -1,18 +1,29 @@
 package org.intelehealth.app.activities.prescription.thermalprinter;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
+import android.text.Layout;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +37,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.rt.printerlibrary.bean.BluetoothEdrConfigBean;
@@ -55,17 +71,19 @@ import com.rt.printerlibrary.utils.FuncUtils;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.databinding.ActivityTextPrintEscactivityBinding;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class TextPrintESCActivity extends BaseActivity implements View.OnClickListener,
         CompoundButton.OnCheckedChangeListener, RadioGroup.OnCheckedChangeListener, PrinterObserver {
     private static final String TAG = TextPrintESCActivity.class.getSimpleName();
-    private TextView presTextview, drSignTextview, drDetailsTextview;
+    private TextView presTextview, drDetailsTextview;
     private Button btnTextPrint;
     private String printStr;
     private TextSetting textSetting;
@@ -87,36 +105,45 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
     private CheckBox ckSmallFont, ckAntiWhite, ckDoubleWidth,
             ckDoubleHeight, ckBold, ckUnderline;
     private Spinner spinEscFontType;
+    private TextView drSignTextview;
+    private String base64String;
+    private ImageView imgDrSign;
+    private ActivityTextPrintEscactivityBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_text_print_escactivity);
+        binding = ActivityTextPrintEscactivityBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        getWindow().setStatusBarColor(Color.WHITE);
+        /*WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);*/
         sessionManager = new SessionManager(getBaseContext());
         initView();
         addListener();
         init();
     }
-
     @SuppressLint("WrongViewCast")
     public void initView() {
-        View toolbar = findViewById(R.id.toolbar_common);
-        TextView tvTitle = toolbar.findViewById(R.id.tv_screen_title_common);
-        ImageView ivBack = toolbar.findViewById(R.id.iv_back_arrow_common);
-        ImageView ivIsInternet = toolbar.findViewById(R.id.imageview_is_internet_common);
-        tvTitle.setText(getString(R.string.view_print));
+        ImageView ivBack = binding.toolbarCommon.ivBackArrowCommon;
+        ImageView ivIsInternet = binding.toolbarCommon.imageviewIsInternetCommon;
+        binding.toolbarCommon.tvScreenTitleCommon.setText(getString(R.string.view_print));
         ivBack.setVisibility(View.VISIBLE);
         ivBack.setOnClickListener(v -> onBackPressed());
         ivIsInternet.setVisibility(View.GONE);
 
-        presTextview = findViewById(R.id.pres_textview);
-        drSignTextview = findViewById(R.id.drSign_textview);
-        drDetailsTextview = findViewById(R.id.drDetails_textview);
-        btnTextPrint = findViewById(R.id.btn_txtprint);
-        tvDeviceSelected = findViewById(R.id.tv_device_selected);
-        btnConnect = findViewById(R.id.btn_connect);
-        btnDisConnect = findViewById(R.id.btn_disConnect);
-        pbConnect = findViewById(R.id.pb_connect);
+        presTextview =binding.presTextview;
+        drSignTextview = binding.drSignTextview;
+        drDetailsTextview = binding.drDetailsTextview;
+        btnTextPrint = binding.btnTxtprint;
+        tvDeviceSelected = binding.tvDeviceSelected;
+        btnConnect = binding.btnConnect;
+        btnDisConnect = binding.btnDisConnect;
+        pbConnect = binding.pbConnect;
+        imgDrSign = binding.imageviewDrSign;
     }
 
     public void addListener() {
@@ -125,6 +152,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         btnConnect.setOnClickListener(this);
         btnDisConnect.setOnClickListener(this);
     }
+
     private String removeNull(String inputString) {
         // Remove all occurrences of "&null" (case-insensitive) and "null" (case-insensitive)
 
@@ -133,6 +161,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 .replaceAll("(?i)& ?\\bnull\\b", "") // Remove "&null" or "null" with optional "&"
                 .trim();
     }
+
     public void init() {
         IntelehealthApplication.getInstance().setCurrentCmdType(BaseEnum.CMD_ESC);
         // printerFactory = new UniversalPrinterFactory();
@@ -158,7 +187,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         if (intent != null) {
             //   prescData = Html.fromHtml(intent.getStringExtra("sms_prescripton")).toString();
             prescData = intent.getStringExtra("sms_prescripton");
-
+            Log.d(TAG, "init: prescData : "+prescData);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 presTextview.setText(Html.fromHtml(removeNull(prescData), Html.FROM_HTML_MODE_COMPACT));
             } else {
@@ -174,6 +203,9 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
 
             if (intent.getStringExtra("drSign-text") != null)
                 drSignText = Html.fromHtml(intent.getStringExtra("drSign-text")).toString();
+
+            if (intent.getStringExtra("signature") != null)
+                base64String = Html.fromHtml(intent.getStringExtra("signature")).toString();
         }
         Log.e("pres:", "prescFinall:" + intent.getStringExtra("sms_prescripton") + intent.getStringExtra("doctorDetails"));
 
@@ -189,8 +221,11 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 fontFamilyFile = "fonts/Almondita.ttf";
             }
         }
-
-        if (fontFamily != null) {
+        Bitmap bitmap = setBase64ToImageView();
+        if(bitmap!=null){
+            imgDrSign.setImageBitmap(bitmap);
+        }
+        /*if (fontFamily != null) {
             Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
             drSignTextview.setTypeface(face);
         }
@@ -206,12 +241,12 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
         drSignTextview.layout(0, 0, drSignTextview.getMeasuredWidth(), drSignTextview.getMeasuredHeight());
 
-        mBitmap = drSignTextview.getDrawingCache(); // converting Textview to Bitmap Image.
+        mBitmap = drSignTextview.getDrawingCache(); // converting Textview to Bitmap Image.*/
 
         //  pres_textview.setText(prescData);
         drDetailsTextview.setText(doctorDetails);
-        Log.e("pres:", "prescFinal:" + presTextview.getText().toString() + drSignTextview.getText().toString() +
-                drDetailsTextview.getText().toString());
+       /* Log.e("pres:", "prescFinal:" + presTextview.getText().toString() + drSignTextview.getText().toString() +
+                drDetailsTextview.getText().toString());*/
 
 //        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.doctor_sign);
 //        showImage(uri);
@@ -232,199 +267,6 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 break;
         }
     }
-
-    private void escPrint() {
-        new Handler(Looper.getMainLooper()).post(() -> {
-            if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
-                try {
-                    CmdFactory escFac = new EscFactory();
-                    Cmd escCmd = escFac.create();
-
-                    // Initialize ESC Command
-                    escCmd.append(escCmd.getHeaderCmd()); // Printer initialization
-
-                    // Set Charset
-                    escCmd.setChartsetName(mChartsetName);
-
-                    // Common Settings
-                    CommonSetting commonSetting = new CommonSetting();
-                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
-
-                    // Text Settings
-                    TextSetting textSetting = new TextSetting();
-                    Position txtPosition = new Position(0, 0);
-                    textSetting.setTxtPrintPosition(txtPosition);
-
-                    // Print Prescription Text
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                        escCmd.append(escCmd.getTextCmd(textSetting,
-                                String.valueOf(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT))));
-                    } else {
-                        presTextview.setText(Html.fromHtml(prescData));
-                        escCmd.append(escCmd.getTextCmd(textSetting,
-                                String.valueOf(Html.fromHtml(prescData))));
-                    }
-
-                    // Add Line Feeds
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-
-                    // Bitmap Printing Setup
-                    if (mBitmap != null) {
-                        BitmapSetting bitmapSetting = new BitmapSetting();
-                        bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
-                        bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
-                        escCmd.append(escCmd.getBitmapCmd(bitmapSetting, mBitmap));
-                    }
-
-                    // Move Cursor and Print Doctor Details
-                    txtPosition.x = 20;
-                    textSetting.setTxtPrintPosition(txtPosition);
-                    escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
-
-                    // Add Line Feeds
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-
-                    // Finalize with Paper Cut (if supported)
-                    escCmd.append(new byte[]{0x1D, 0x56, 0x41, 0x10}); // Partial cut
-
-                    // Log ESC Commands for Debugging
-                    byte[] cmds = escCmd.getAppendCmds();
-                    Log.i(TAG, "ESC Commands: " + FuncUtils.ByteArrToHex(cmds));
-
-                    // Send to Printer
-                    rtPrinter.writeMsgAsync(cmds);
-
-                    // Show Printing Dialog
-                    DialogUtils dialogUtils = new DialogUtils();
-                    dialogUtils.showCommonDialog(TextPrintESCActivity.this,
-                            R.drawable.ui2_bell_icon_primary,
-                            getResources().getString(R.string.printing),
-                            getResources().getString(R.string.prescription_printing),
-                            true, getResources().getString(R.string.ok),
-                            getResources().getString(R.string.cancel), action -> finish());
-
-                } catch (UnsupportedEncodingException | SdkException e) {
-                    Log.e(TAG, "Printing Error: ", e);
-                    Toast.makeText(TextPrintESCActivity.this,
-                           "Print failed", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(TextPrintESCActivity.this,
-                        getResources().getString(R.string.tip_have_no_paired_device),
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-/*
-    private void escPrint() {
-
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-
-                if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
-                    rtPrinter.writeMsgAsync("Test Print\n".getBytes());
-                }
-
-                if (rtPrinter != null) {
-                    CmdFactory escFac = new EscFactory();
-                    Cmd escCmd = escFac.create();
-
-                    escCmd.append(escCmd.getHeaderCmd());// Initial //btnCmds = 2......
-                    escCmd.setChartsetName(mChartsetName);
-                    CommonSetting commonSetting = new CommonSetting();
-
-                    BitmapSetting bitmapSetting = new BitmapSetting();
-                    bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
-                    bitmapSetting.setBimtapLimitWidth(bmpPrintWidth * 8);
-
-                    Position txtposition = new Position(0, 0);
-                    textSetting.setTxtPrintPosition(txtposition);
-                    // textSetting.setAlign(CommonEnum.ALIGN_RIGHT);
-                    // commonSetting.setEscLineSpacing(getInputLineSpacing());
-                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
-                    try {
-                        escCmd.append(escCmd.getTextCmd(textSetting, "Test Print"));
-                    } catch (UnsupportedEncodingException e) {
-                        throw new RuntimeException(e);
-                    }
-
-                    try {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            escCmd.append(escCmd.getTextCmd(textSetting, String.valueOf(Html.fromHtml(prescData, Html.FROM_HTML_MODE_COMPACT))));
-                        } else {
-                            presTextview.setText(Html.fromHtml(prescData));
-                            escCmd.append(escCmd.getTextCmd(textSetting, String.valueOf(Html.fromHtml(prescData))));
-                        }
-
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-
-                    try {
-                        if (mBitmap != null)
-                            escCmd.append(escCmd.getBitmapCmd(bitmapSetting, mBitmap));
-                    } catch (SdkException e) {
-                        e.printStackTrace();
-                    }
-                    escCmd.append(escCmd.getLFCRCmd());
-
-                    //here it prints 2nd time taking the position of the cursor where the priting ended above.
-                    txtposition.x = 20;
-                    textSetting.setTxtPrintPosition(txtposition);
-                    try {
-                        escCmd.append(escCmd.getTextCmd(textSetting, doctorDetails));
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-                    escCmd.append(escCmd.getHeaderCmd());
-                    escCmd.append(escCmd.getLFCRCmd());
-
-                    Log.i(TAG, FuncUtils.ByteArrToHex(escCmd.getAppendCmds()));
-                    if (rtPrinter.getPrinterInterface() != null) {
-                        DialogUtils dialogUtils = new DialogUtils();
-                        dialogUtils.showCommonDialog(TextPrintESCActivity.this, R.drawable.ui2_bell_icon_primary, getResources().getString(R.string.printing), getResources().getString(R.string.prescription_printing), true, getResources().getString(R.string.ok), getResources().getString(R.string.cancel), action -> {
-                        });
-                     */
-/*   // If without selecting Bluetooth user click Print button crash happens so added this condition.
-                        rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
-
-                        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(TextPrintESCActivity.this);
-                        alertdialogBuilder.setMessage(R.string.printing);
-                        alertdialogBuilder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                finish();
-                            }
-                        });
-
-                        androidx.appcompat.app.AlertDialog alertDialog = alertdialogBuilder.create();
-                        alertDialog.setCanceledOnTouchOutside(false);
-                        alertDialog.setCancelable(false);
-                        alertDialog.show();
-
-                        Button positiveButton = alertDialog.getButton(android.app.AlertDialog.BUTTON_POSITIVE);
-                        positiveButton.setTextColor(getResources().getColor(R.color.colorPrimary));
-                        IntelehealthApplication.setAlertDialogCustomTheme(TextPrintESCActivity.this, alertDialog);*//*
-
-                    } else {
-                        Toast.makeText(TextPrintESCActivity.this, getResources().getString
-                                (R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-    }
-*/
 
     @Override
     public void onClick(View view) {
@@ -698,4 +540,163 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+    private void escPrint() {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            if (rtPrinter != null && rtPrinter.getPrinterInterface() != null) {
+                try {
+                    CmdFactory escFac = new EscFactory();
+                    Cmd escCmd = escFac.create();
+
+                    escCmd.append(escCmd.getHeaderCmd());
+                    escCmd.setChartsetName("UTF-8");
+
+                    CommonSetting commonSetting = new CommonSetting();
+                    escCmd.append(escCmd.getCommonSettingCmd(commonSetting));
+                    String finalText = presTextview.getText().toString();
+                    Bitmap bitmap = generateWrappedBitmap(finalText, drSignText, doctorDetails, fontFamily);
+
+                    if (bitmap != null) {
+                        BitmapSetting bitmapSetting = new BitmapSetting();
+                        bitmapSetting.setBmpPrintMode(BmpPrintMode.MODE_SINGLE_COLOR);
+                        bitmapSetting.setBimtapLimitWidth(576);  // 72mm paper = 576 dots
+                        escCmd.append(escCmd.getBitmapCmd(bitmapSetting, bitmap));
+                    }
+                    escCmd.append(escCmd.getLFCRCmd());
+                    escCmd.append(new byte[]{0x1D, 0x56, 0x41, 0x10}); // Partial Cut
+
+                    rtPrinter.writeMsgAsync(escCmd.getAppendCmds());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Toast.makeText(TextPrintESCActivity.this, "Print failed", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                Toast.makeText(TextPrintESCActivity.this, getResources().getString(R.string.tip_have_no_paired_device), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private String getFontFilePath(String fontFamily) {
+        if (fontFamily == null) return "";
+
+        String fontFamilyFile = "";
+        if (fontFamily.toLowerCase().equalsIgnoreCase("youthness")) {
+            fontFamilyFile = "fonts/Youthness.ttf";
+        } else if (fontFamily.toLowerCase().equalsIgnoreCase("asem")) {
+            fontFamilyFile = "fonts/Asem.otf";
+        } else if (fontFamily.toLowerCase().equalsIgnoreCase("arty")) {
+            fontFamilyFile = "fonts/Arty.otf";
+        } else if (fontFamily.toLowerCase().equalsIgnoreCase("almondita")) {
+            fontFamilyFile = "fonts/Almondita.ttf";
+        }
+        return fontFamilyFile;
+    }
+
+    private Bitmap generateWrappedBitmap(String text, String drSignText, String doctorDetails, String fontFamily) {
+        int width = 600;
+        int height = 1400;
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        canvas.drawColor(Color.WHITE);
+        TextPaint textPaint = new TextPaint();
+        textPaint.setColor(Color.BLACK);
+        textPaint.setTextSize(22f);
+        textPaint.setAntiAlias(true);
+        StaticLayout staticLayout = new StaticLayout(
+                text,
+                textPaint,
+                width - 40, // Width with margin
+                Layout.Alignment.ALIGN_NORMAL,
+                1.2f, // Line spacing multiplier for better readability
+                0f,
+                false
+        );
+        float currentYPosition = 20;
+        canvas.translate(20, currentYPosition);
+        staticLayout.draw(canvas);
+
+        currentYPosition += staticLayout.getHeight() + 10; // Add space after the wrapped text
+
+        try {
+            // Decode Base64 and convert to Bitmap
+            Bitmap signBitmap = setBase64ToImageView(); // Assuming this already returns the decoded Bitmap
+
+            if (signBitmap != null) {
+                Log.d(TAG, "Original Signature Size: " + signBitmap.getWidth() + "x" + signBitmap.getHeight());
+
+                int desiredWidth = 120;  // or 300 based on your requirement
+                float scaleRatio = (float) desiredWidth / signBitmap.getWidth();
+                int desiredHeight = (int) (signBitmap.getHeight() * scaleRatio);
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(signBitmap, desiredWidth, desiredHeight, true);
+                canvas.drawBitmap(scaledBitmap, 20, currentYPosition, null);
+
+                // Update Y position
+                currentYPosition += scaledBitmap.getHeight() + 10;
+
+            } else {
+                Log.e(TAG, "Signature bitmap is null.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+      /*  if (drSignText != null && !drSignText.isEmpty()) {
+            try {
+                Typeface customTypeface = Typeface.createFromAsset(getAssets(), "fonts/Almondita.ttf");
+                Paint textPaint1 = new Paint();
+                textPaint1.setTypeface(customTypeface);
+                textPaint1.setTextSize(50f);
+                textPaint1.setColor(Color.BLACK);
+                textPaint1.setAntiAlias(true);
+                textPaint1.setTextAlign(Paint.Align.LEFT);
+                canvas.drawText(drSignText, 20, currentYPosition, textPaint1);
+                currentYPosition += textPaint1.descent() - textPaint1.ascent() + 10; // Decreased margin
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("SignatureError", "Error while drawing signature: " + e.getMessage());
+            }
+        }*/
+        Log.d(TAG, "generateWrappedBitmap: doctorDetails : " + doctorDetails);
+
+        if (doctorDetails != null && !doctorDetails.isEmpty()) {
+            try {
+                Paint textPaint2 = new Paint();
+                textPaint2.setTextSize(22f);
+                textPaint2.setColor(Color.BLACK);
+                textPaint2.setAntiAlias(true);
+                textPaint2.setTextAlign(Paint.Align.LEFT);
+                String[] detailsLines = doctorDetails.split("\n");
+                for (String line : detailsLines) {
+                    canvas.drawText(line, 20, currentYPosition, textPaint2);
+                    currentYPosition += textPaint2.descent() - textPaint2.ascent() + 5;  // Reduced gap between lines
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("DoctorDetailsError", "Error while drawing doctor's details: " + e.getMessage());
+            }
+        }
+        return bitmap;
+    }
+
+    public Bitmap setBase64ToImageView() {
+        try {
+            // Remove "data:image..." prefix if it exists
+            String base64Cleaned = base64String.contains("base64,")
+                    ? base64String.substring(base64String.indexOf("base64,") + 7)
+                    : base64String;
+            byte[] decodedBytes = Base64.decode(base64Cleaned, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
+

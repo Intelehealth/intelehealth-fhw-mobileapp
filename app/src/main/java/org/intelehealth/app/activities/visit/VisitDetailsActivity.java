@@ -36,6 +36,7 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
@@ -500,9 +501,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                             if (!stringBuilder.toString().isEmpty()) stringBuilder.append(", ");
                                             stringBuilder.append(complainName);
                                         }
-
                                     }
-
 
                                     chief_complaint_txt.setText(stringBuilder.toString());
                                 }
@@ -531,7 +530,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             Log.v(TAG, "a: " + first + " b: " + last + " C: " + chief_complaint_value);
         }*/
 
-        //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
+
+            //chief_complaint_txt.setText(Html.fromHtml(chief_complaint_value));
 
             visitID_txt = findViewById(R.id.visitID);
             String hideVisitUUID = visitID;
@@ -821,7 +821,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                                         if (complaints != null) {
                                             for (String comp : complaints) {
                                                 if (!comp.trim().isEmpty()) {
-                                                    visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
+                                                    Log.d(TAG, "initForPastVisit: "+comp);
+                                                    int index = comp.indexOf(colon);
+                                                    String value = (index != -1) ? comp.substring(0, index) : comp;
+                                                    visitValue = visitValue + Node.bullet_arrow + value + "<br/>";
+//                                                    visitValue = visitValue + Node.bullet_arrow + comp.substring(0, comp.indexOf(colon)) + "<br/>";
 
                                                 }
                                             }

@@ -13,21 +13,34 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             .where(
                 "e.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
                         "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+//                        // Logic used in IDA
+//                        "AND o.voided = 0 " +
+//                        "AND (CASE " +
+//                        "WHEN EXISTS ( " +
+//                        "SELECT 1 FROM tbl_encounter e1  " +
+//                        "WHERE e1.visituuid = v.uuid  " +
+//                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
+//                        "AND (CASE  " +
+//                        "WHEN EXISTS ( " +
+//                        "SELECT 1 FROM tbl_encounter e2  " +
+//                        "WHERE e2.visituuid = v.uuid  " +
+//                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 1"
+                          // logic used in NAS
                         "AND o.voided = 0 " +
-                        "AND (CASE " +
-                        "WHEN EXISTS ( " +
-                        "SELECT 1 FROM tbl_encounter e1  " +
-                        "WHERE e1.visituuid = v.uuid  " +
-                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
-                        "AND (CASE  " +
-                        "WHEN EXISTS ( " +
-                        "SELECT 1 FROM tbl_encounter e2  " +
-                        "WHERE e2.visituuid = v.uuid  " +
-                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 1"
+                        "AND NOT EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e1 " +
+                        "   WHERE e1.visituuid = v.uuid " +
+                        "   AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30' " +
+                        ") " +
+                        "AND EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e2 " +
+                        "   WHERE e2.visituuid = v.uuid " +
+                        "   AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+                        ")"
+
             )
             .build()
     }
-
     fun getPendingPrescriptionVisitsCount(): String {
         return select("COUNT(DISTINCT p.openmrs_id) AS total_count")
             .from("tbl_patient p")
@@ -35,19 +48,35 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
             .join("tbl_encounter e ON v.uuid = e.visituuid")
             .join("tbl_obs o ON e.uuid = o.encounteruuid")
             //.where("(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0")
+            // logic used in IDA
+//            .where(
+//                "(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+//                        "AND o.voided = 0 " +
+//                        "AND (CASE " +
+//                        "WHEN EXISTS ( " +
+//                        "SELECT 1 FROM tbl_encounter e1  " +
+//                        "WHERE e1.visituuid = v.uuid  " +
+//                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
+//                        "AND (CASE  " +
+//                        "WHEN EXISTS ( " +
+//                        "SELECT 1 FROM tbl_encounter e2  " +
+//                        "WHERE e2.visituuid = v.uuid  " +
+//                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 0"
+//            )
+            // logic Used in NAS
             .where(
                 "(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
                         "AND o.voided = 0 " +
-                        "AND (CASE " +
-                        "WHEN EXISTS ( " +
-                        "SELECT 1 FROM tbl_encounter e1  " +
-                        "WHERE e1.visituuid = v.uuid  " +
-                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
-                        "AND (CASE  " +
-                        "WHEN EXISTS ( " +
-                        "SELECT 1 FROM tbl_encounter e2  " +
-                        "WHERE e2.visituuid = v.uuid  " +
-                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 0"
+                        "AND NOT EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e1 " +
+                        "   WHERE e1.visituuid = v.uuid " +
+                        "   AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30' " +
+                        ") " +
+                        "AND NOT EXISTS ( " +
+                        "   SELECT 1 FROM tbl_encounter e2 " +
+                        "   WHERE e2.visituuid = v.uuid " +
+                        "   AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}' " +
+                        ")"
             )
             .build()
     }

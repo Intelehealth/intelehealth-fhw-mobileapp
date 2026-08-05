@@ -351,6 +351,44 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
     }
 
+    void enableProperPadding(){
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
+        // Setting dark icons for light background
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+
+        // Applying safe merging and padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationview), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Getting current layout params and cast to MarginLayoutParams
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+            // Apply insets as margins
+            lp.leftMargin = systemBars.left;
+            lp.rightMargin = systemBars.right;
+            lp.bottomMargin = systemBars.bottom;
+            lp.topMargin = systemBars.top;
+
+            // Reapplying the updated layout params
+            view.setLayoutParams(lp);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -359,6 +397,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         setContentView(R.layout.activity_home_screen_ui2);
 
         setStatusBarChanges();
+
+
+        //enableProperPadding();
 
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
@@ -369,6 +410,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             saveToken();
             return Unit.INSTANCE;
         });
+        sessionManager = new SessionManager(this);
+        toolbarHome = findViewById(R.id.toolbar_home);
+        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        updateLastSyncTime();
+
 //        catchFCMMessageData();
 
 
@@ -707,9 +753,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvAppVersion = findViewById(R.id.tv_app_version);
         menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
-        toolbarHome = findViewById(R.id.toolbar_home);
+        //toolbarHome = findViewById(R.id.toolbar_home);
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
-        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        //tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
         ivNotificationIcon = toolbarHome.findViewById(R.id.ivNotificationIcon);
@@ -1724,7 +1770,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     progressTvStart.setText((progress) + "%");
                     progressTvEnd.setText(progress + "/100");
                 }
-                Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
+                Logger.logD(SyncDAO.PULL_ISSUE, "% ->H " + String.valueOf(progress));
 
                 if (progress == 100) {
                     SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
@@ -1762,7 +1808,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
     }
-
     private void updateLastSyncTime() {
         // Run long operations in background
         //new Thread(() -> {

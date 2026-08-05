@@ -155,6 +155,13 @@ public class PatientsFrameJson {
         }
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
+           /* Multiple visit attributes getting sync - when we restrict to sync multiple visit
+            attributes for same visit then this condition not allowing to sync visit with 0 attributes.*/
+
+
+           /* if (visitDTO.getAttributes().size() > 0) {*/
+
+            //this condition is changed for visit is not closing even we close the visit
             if (!visitDTO.getAttributes().isEmpty() || visitDTO.getEnddate() != null) {
                 visit.setLocation(visitDTO.getLocationuuid());
                 visit.setPatient(visitDTO.getPatientuuid());
@@ -164,7 +171,7 @@ public class PatientsFrameJson {
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
                 visitList.add(visit);
-            }
+         }
 
         }
 
@@ -267,7 +274,7 @@ public class PatientsFrameJson {
 
         Gson gson = new Gson();
         String value = gson.toJson(pushRequestApiCall);
-        CustomLog.d("OBS: ", "OBS: " + value);
+        CustomLog.d("OBS: ", "OBSpushRequestApiCall: " + value);
 
 
         return pushRequestApiCall;

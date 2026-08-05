@@ -239,8 +239,8 @@
         <item>पदवीधर आणि उच्च</item>
     </string-array>
     <string-array name="economic">
-        <item>एपीएल</item>
-        <item>बीपीएल</item>
+        <item>एपीएल (पांढरा)</item>
+        <item>बीपीएल (केशरी)</item>
     </string-array>
     <string-array name="delivery_type">
         <item>नॉर्मल/नैसर्गिक</item>

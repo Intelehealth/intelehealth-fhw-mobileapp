@@ -127,14 +127,16 @@ public class SyncDAO {
                     responseDTO.getData().getProviderAttributeList().size());
 /*
             visitAttributeListDAO.insertProvidersAttributeList(
-                    responseDTO.getData().getVisitAttributeList());*/
-            if (isAppSetupDone) {
-                visitAttributeListDAO.insertProvidersAttributeListAfterSetup(
-                        responseDTO.getData().getVisitAttributeList());
-            } else {
+                    responseDTO.getData().getVisitAttributeList());
+            //code for duplicate attr removal
+            // this is uncommented in IDA
+ */
+           /* if(isAppSetupDone){
+                visitAttributeListDAO.insertOrUpdateVisitAttributes(responseDTO.getData().getVisitAttributeList(), 0);
+            } else{
                 visitAttributeListDAO.insertProvidersAttributeList(
                         responseDTO.getData().getVisitAttributeList());
-            }
+            }*/
             Logger.logD(TAG, "insertVisitAttributeList = " +
                     responseDTO.getData().getVisitAttributeList().size());
 
@@ -439,11 +441,13 @@ public class SyncDAO {
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
         Logger.logD("Start pull request", "Started");
+        Log.d(TAG, "pullData: pull url : "+url);
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
 //                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in
 //                progress..", 1, IntelehealthApplication.getAppContext());
+                Log.d(TAG, "pulldataonResponse: "+new Gson().toJson(response.body()));
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
@@ -452,6 +456,8 @@ public class SyncDAO {
                     // SyncDAO syncDAO = new SyncDAO();
                     boolean sync = false;
                     try {
+                        if (!isTheConfigUpdated)
+                            loadConfig();
                         sync = SyncData(response.body(), true);
                     } catch (DAOException e) {
                         FirebaseCrashlytics.getInstance().recordException(e);
@@ -606,6 +612,7 @@ public class SyncDAO {
      * @param fromActivity
      * @return
      */
+    // for initial sync
     public boolean pullDataBackgroundService(final Context context, String fromActivity,
                                              int pageNo) {
 
@@ -802,6 +809,7 @@ public class SyncDAO {
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
+        Log.d(TAG, "pushDataApi: visits packet : : "+new Gson().toJson(pushRequestApiCall.getVisits()));
         if (!pushRequestApiCall.getVisits().isEmpty()
                 || !pushRequestApiCall.getPersons().isEmpty()
                 || !pushRequestApiCall.getPatients().isEmpty()
@@ -818,6 +826,8 @@ public class SyncDAO {
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
                             CustomLog.d(TAG, "onSuccess: in push api response");
                             Logger.logD(TAG, "success" + pushResponseApiCall);
+                            Log.d("TAG", "push response model onSuccess: "+gson.toJson(pushRequestApiCall));
+
                             try {
                                 for (int i = 0; i < pushResponseApiCall.getData().getPatientlist()
                                         .size(); i++) {
@@ -1026,4 +1036,5 @@ public class SyncDAO {
         isTheConfigUpdated = true;
 
     }
+
 }

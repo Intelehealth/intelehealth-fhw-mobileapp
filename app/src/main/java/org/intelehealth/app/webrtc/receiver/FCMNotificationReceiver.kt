@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
@@ -54,6 +55,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
                 checkVideoActiveStatus(context) {
                     Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
+                        //to get call type
+                        IntelehealthApplication.getInstance().setnotificationValue(data["callType"])
+                        //
                         nurseName = sessionManager.chwname
                         callType = CallType.VIDEO
                         url = BuildConfig.LIVE_KIT_URL

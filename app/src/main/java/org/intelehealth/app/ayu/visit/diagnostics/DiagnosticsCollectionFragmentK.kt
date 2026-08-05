@@ -94,6 +94,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
         mBinding.etvUricAcidError.visibility = View.GONE
         mBinding.etvCholestrolError.visibility = View.GONE
         mBinding.tvHemoglobinError.visibility = View.GONE
+        mBinding.tvDiabetesHba1cError.visibility = View.GONE
 
 
         //mBinding.etvNonFastingGlucose.addTextChangedListener(MyTextWatcher(mBinding.etvNonFastingGlucose))
@@ -103,6 +104,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
         mBinding.etvHemoglobin.addTextChangedListener(MyTextWatcher(mBinding.etvHemoglobin))
         mBinding.etvUricAcid.addTextChangedListener(MyTextWatcher(mBinding.etvUricAcid))
         mBinding.etvCholesterol.addTextChangedListener(MyTextWatcher(mBinding.etvCholesterol))
+        mBinding.etvDiabetesHba1c.addTextChangedListener(MyTextWatcher(mBinding.etvDiabetesHba1c))
 
         mBinding.btnSubmit.setOnClickListener(this)
         mBinding.btnSubmit.isClickable = true
@@ -153,6 +155,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                 hemoglobin = mBinding.etvHemoglobin.text.toString()
                 uricAcid = mBinding.etvUricAcid.text.toString()
                 cholesterol = mBinding.etvCholesterol.text.toString()
+                diabetesbba1c = mBinding.etvDiabetesHba1c.text.toString()
             }
 
             // Instantiate DAOs
@@ -238,6 +241,14 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                     )
                 }
 
+                results.diabetesbba1c?.let {
+                    processDiagnostic(
+                        mBinding.llDiabetesHba1cContainer.tag as? Diagnostics,
+                        UuidDictionary.DIABETES_HBA1C,
+                        it
+                    )
+                }
+
                 try {
                     encounterDAO.apply {
                         updateEncounterSync("false", encounterVitals)
@@ -298,6 +309,14 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                         it
                     )
                 }
+
+                results.diabetesbba1c?.let {
+                    processDiagnostic(
+                        mBinding.llDiabetesHba1cContainer.tag as? Diagnostics,
+                        UuidDictionary.DIABETES_HBA1C,
+                        it
+                    )
+                }
             }
 
             return true
@@ -346,6 +365,27 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
 
     private fun isValidaForm(): Boolean {
         var isValid = true
+
+        val diabetesHBA1C = mBinding.etvDiabetesHba1c.text.toString().trim()
+        if (diabetesHBA1C.isNotEmpty()) {
+            val randomValue = diabetesHBA1C.toDoubleOrNull()
+            if (randomValue != null && (randomValue > AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C.toDouble() ||
+                        randomValue < AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C.toDouble())
+            ) {
+                mBinding.tvDiabetesHba1cError.text = getString(
+                    R.string.diabeteshba1c_error,
+                    AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C,
+                    AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C
+                )
+                mBinding.tvDiabetesHba1cError.visibility = View.VISIBLE
+                mBinding.etvDiabetesHba1c.requestFocus()
+                mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.input_field_error_bg_ui2)
+                isValid = false
+            } else {
+                mBinding.tvDiabetesHba1cError.visibility = View.GONE
+                mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.bg_input_fieldnew)
+            }
+        }
 
         val bloodGlucoseRandom = mBinding.etvGlucoseRandom.text.toString().trim()
         if (bloodGlucoseRandom.isNotEmpty()) {
@@ -507,6 +547,27 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
             }
         }
 
+
+        val diabetes_hba1c = mBinding.etvDiabetesHba1c.text.toString().trim()
+        if (diabetes_hba1c.isNotEmpty()) {
+            val diabetesValue = diabetes_hba1c.toDoubleOrNull()
+            if (diabetesValue != null && (diabetesValue > AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C.toDouble() ||
+                        diabetesValue < AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C.toDouble())
+            ) {
+                mBinding.tvDiabetesHba1cError.text = getString(
+                    R.string.diabeteshba1c_error,
+                    AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C,
+                    AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C
+                )
+                mBinding.tvDiabetesHba1cError.visibility = View.VISIBLE
+                mBinding.etvDiabetesHba1c.requestFocus()
+                mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.input_field_error_bg_ui2)
+                isValid = false
+            } else {
+                mBinding.tvHemoglobinError.visibility = View.GONE
+                mBinding.etvHemoglobin.setBackgroundResource(R.drawable.bg_input_fieldnew)
+            }
+        }
         return isValid
     }
 

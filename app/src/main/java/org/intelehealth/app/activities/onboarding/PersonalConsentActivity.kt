@@ -35,6 +35,7 @@ import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
+import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
@@ -78,8 +79,11 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
             var text: String?
             text =
                 "<html><body style='color:black;font-size: 0.8em;' >" //style='text-align:justify;text-justify: inter-word;'
-
-            text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
+            if (BuildConfig.FLAVOR_client === FlavorKeys.NAS){
+                text += ConfigUtils(this).getPersonalDataConsentTextForWebrtcRecording(sessionManager?.appLanguage)
+            }else{
+                text += ConfigUtils(this).getPersonalDataConsentText(sessionManager?.appLanguage)
+            }
             text += "</body></html>"
 
             runOnUiThread {

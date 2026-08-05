@@ -55,6 +55,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
@@ -79,8 +80,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -683,6 +686,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                         }
                                         isPageLoading = false;
                                     } else {
+                                        finalMonthsFollowUpDates.clear();
                                         finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
                                         mTodayRelativeLayout.setVisibility(View.VISIBLE);
                                         mWeekRelativeLayout.setVisibility(View.VISIBLE);
@@ -697,6 +701,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                                 ).observeOn(AndroidSchedulers.mainThread())
                                                 .subscribe(result -> {
                                                     if (dataLoadingType == DataLoadingType.INITIAL) {
+                                                        todaysFollowUpDates.clear();
+                                                        tomorrowssFollowUpDates.clear();
                                                         todaysFollowUpDates.addAll(result.first);
                                                         tomorrowssFollowUpDates.addAll(result.second);
                                                         setTodaysDatesInRecyclerView(todaysFollowUpDates);
@@ -730,6 +736,27 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         );
 
 
+    }
+
+    private boolean isDataPresentInTodayOrTomorrow(List<FollowUpModel> monthList) {
+        Set<String> todayIds = new HashSet<>();
+        Set<String> tomorrowIds = new HashSet<>();
+
+        for (FollowUpModel model : todaysFollowUpDates) {
+            todayIds.add(model.getOpenmrs_id());
+        }
+
+        for (FollowUpModel model : tomorrowssFollowUpDates) {
+            tomorrowIds.add(model.getOpenmrs_id());
+        }
+
+        for (FollowUpModel model : monthList) {
+            if (todayIds.contains(model.getOpenmrs_id())
+                    || tomorrowIds.contains(model.getOpenmrs_id())) {
+                return true; // already present
+            }
+        }
+        return false;
     }
 
 
@@ -932,7 +959,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "b.first_name || " + middleName + " || b.last_name as patient_name_new, " +
                 "a.sync, a.patientuuid, " +
                 "substr(a.startdate, 1, 10) as startdate, "
-                + "DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
+                +"DATE(CASE WHEN substr(o.value, 1, 10) LIKE '__-__-____' THEN DATE(SUBSTR(substr(o.value, 1, 10),7,4) || '-' || SUBSTR(substr(o.value, 1, 10),4,2) || '-' || SUBSTR(substr(o.value, 1, 10),1,2)) " +
                 "WHEN substr(o.value, 1, 10) LIKE '____-__-__' THEN substr(o.value, 1, 10) END) as followup_date, " +
                 "o.value as follow_up_info,"
                 + "b.patient_photo, " +
@@ -958,6 +985,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
+                //"AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
+                 //searchQuery +
                 "GROUP BY a.patientuuid " +
                 "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
@@ -1089,7 +1118,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND o.voided='0' " +
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
-                "AND followup_date is NOT NULL " +
+                "AND followup_date is NOT NULL "+
+                //"AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
+                //searchQuery+
                 "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
@@ -1103,7 +1134,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
                     //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                    //  if (isCompletedExitedSurvey) {
+                    //if (isCompletedExitedSurvey) {
                     String emergencyUuid = "";
                     encounterDAO = new EncounterDAO();
                     try {
@@ -1149,7 +1180,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                                 cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
                                 cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                     }
-                    // }
                 } catch (Exception e) {
                     e.printStackTrace();
 //                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -1240,6 +1270,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     skipTodayAndTomorrowQuery +
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
+                    //"AND a.enddate IS NULL " + // changed for visit removed when visit is closed
                     "GROUP BY a.patientuuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
                     "AND value_text != '' ) " +

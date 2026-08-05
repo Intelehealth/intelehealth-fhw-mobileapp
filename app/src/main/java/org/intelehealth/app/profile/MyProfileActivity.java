@@ -110,6 +110,9 @@ import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -858,6 +861,51 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         }
     }
 
+    //code changes for latest update support for every version
+    /*private void pickImage(Intent data){
+        if (data != null) {
+            try {
+                Uri selectedImage = data.getData();
+                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                if (inputStream == null) return;
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                // copy & rename the file
+                String finalImageName = UUID.randomUUID().toString();
+                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
+                ivProfileImage.invalidate();
+
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
+                        //run on ui thread
+                        runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
+                    }
+                };
+                thread.start();
+
+                //this code instead of calling BitmapUtils.copyFile(picturePath, finalFilePath);
+                InputStream input = getContentResolver().openInputStream(selectedImage);
+                OutputStream output = new FileOutputStream(finalFilePath);
+
+                byte[] buffer = new byte[4096];
+                int length;
+                while ((length = input.read(buffer)) > 0) {
+                    output.write(buffer, 0, length);
+                }
+                input.close();
+                output.close();
+                compressImageAndSave(finalFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }*/
+
     private void selectImage() {
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
             @Override
@@ -1198,6 +1246,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                                 etMobileNo.setText(personAttributes.get(i).getValue().toString());
                                 prevPhoneNum = personAttributes.get(i).getValue().toString();
                                 phoneAttributeUuid = personAttributes.get(i).getUuid();
+                                sessionManager.setHealthWorkerNumber(personAttributes.get(i).getValue().toString());
                             }
                             if (attributeName.equalsIgnoreCase("emailId") && !personAttributes.get(i).isVoided()) {
                                 etEmail.setText(personAttributes.get(i).getValue().toString());

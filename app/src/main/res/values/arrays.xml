@@ -1100,8 +1100,8 @@
     </string-array>
 
     <string-array name="economic">
-        <item>APL</item>
-        <item>BPL</item>
+        <item>APL (White)</item>
+        <item>BPL (Orange)</item>
     </string-array>
 
     <string-array name="economic_en">

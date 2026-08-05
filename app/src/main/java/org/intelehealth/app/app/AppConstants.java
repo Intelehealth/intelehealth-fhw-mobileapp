@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 public class AppConstants {
     //Constants
     public static final String DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db";
+ /*   public static final int DATABASE_VERSION = 4;*/
+    //new changes for count update
     public static final int DATABASE_VERSION = 5;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
@@ -242,6 +244,9 @@ public class AppConstants {
 
     public static final String MINIMUM_TOTAL_CHOLSTEROL = "100";
     public static final String MAXIMUM_TOTAL_CHOLSTEROL = "350";
+
+    public static final String MINIMUM_TOTAL_DIABETES_HBA1C = "3";
+    public static final String MAXIMUM_TOTAL_DIABETES_HBA1C = "16";
 
 }
 

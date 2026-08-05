@@ -143,12 +143,18 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 if (isAdded() && activity != null) {
                     initUI();
                 } else {
-                    new Handler().postDelayed(new Runnable() {
+                    // firebase crash issue added and replce old code.
+                    new Handler().postDelayed(() -> {
+                        if (isAdded() && getActivity() != null) { // ✅ guard added
+                            initUI();
+                        }
+                    }, 2000);
+                   /* new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             initUI();
                         }
-                    }, 2000);
+                    }, 2000);*/
                 }
             }
         });
@@ -327,14 +333,29 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
             int total = pendingCountTotalVisits + countReceivedPrescription;
 
-            if (isAdded()) {
+            // firebase crash issue added and replace old code.
+            Activity currentActivity = getActivity(); // ✅ capture once
+            if (isAdded() && currentActivity != null) { // ✅ both checks
+                currentActivity.runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " "
+                            + currentActivity.getString(R.string.out_of)
+                            + " " + total + " "
+                            + currentActivity.getString(R.string.received).toLowerCase();
+
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+                    }
+                    prescriptionCountTextView.setText(prescCountText);
+                });
+
+          /*  if (isAdded()) {
                 activity.runOnUiThread(() -> {
                     String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
                     }
                     prescriptionCountTextView.setText(prescCountText);
-                });
+                });*/
             }
         });
 
@@ -362,21 +383,36 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {
             countStrPendingFollowupVisits();
-
-            if (isAdded()) {
+            //Cr
+           /* if (isAdded()) {
                 activity.runOnUiThread(() -> {
                     StringBuilder followupCount = new StringBuilder()
                             .append(todaysCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.today))
+                            .append(currentActivity.getString(R.string.today))
                             .append("\n")
                             .append(tomorrowsCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.tomorrow));
+                            .append(currentActivity.getString(R.string.tomorrow));
 
                     mCountPendingFollowupVisitsTextView.setText(
                             followupCount
-                    );
+                    );*/
+
+            //Fire base crash issue for added  and replace code
+            Activity currentActivity = getActivity(); // ✅ capture once
+            if (isAdded() && currentActivity != null) { // ✅ both checks
+                currentActivity.runOnUiThread(() -> {
+                    StringBuilder followupCount = new StringBuilder()
+                            .append(todaysCount)
+                            .append(" ")
+                            .append(currentActivity.getString(R.string.today)) // ✅ safe
+                            .append("\n")
+                            .append(tomorrowsCount)
+                            .append(" ")
+                            .append(currentActivity.getString(R.string.tomorrow)); // ✅ safe
+
+                    mCountPendingFollowupVisitsTextView.setText(followupCount);
                 });
             }
         });
@@ -402,8 +438,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onResume() {
         super.onResume();
-        setLocale(getContext());
-        initUI();
+       /* setLocale(getContext());
+        initUI();*/
+        if (getContext() != null) { // ✅ null check
+            setLocale(getContext());
+        }
+        if (isAdded() && getActivity() != null) { // ✅ guard before initUI
+            initUI();
+        }
 
     }
 
@@ -450,6 +492,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (!isAdded() || getActivity() == null || ivInternet == null) return;
         if (isInternetAvailable) {
             ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_internet_available));
 

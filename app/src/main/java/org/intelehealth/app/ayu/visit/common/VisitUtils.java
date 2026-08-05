@@ -106,6 +106,137 @@ AB NEGATIVE = 1231*/
             recyclerView.postDelayed(() -> recyclerView.smoothScrollBy(dx, dy), delayMills);
     }
 
+    public static String replaceLocalCommonToEnglishString(String data, String locale) {
+        CustomLog.v("VisitUtils", "RAW - " + data);
+        String result = data;
+        if (locale.equalsIgnoreCase("hi")) {
+
+            result = result.replace("सवाल का जवाब नहीं दिया", "Question not answered")
+                    .replace("आवृत्ति", "Frequency")
+                    .replace("पेशेंट ने सूचित किया -", "Patient reports -")
+                    .replace("पेशेंट ने मना कर दिया -", "Patient denies -")
+                    .replace("घंटे", "Hours").replace("दिन", "Days")
+                    .replace("हफ्तों", "Weeks").replace("महीने", "Months")
+                    .replace("वर्ष", "Years")
+                    .replace("प्रति घंटे बार", "times per hour")
+                    .replace("प्रति दिन का समय", "time per day")
+                    .replace("प्रति सप्ताह बार", "times per week")
+                    .replace("प्रति माह बार", "times per month")
+                    .replace("प्रति वर्ष बार", "times per year");
+        } else if (locale.equalsIgnoreCase("or")) {
+            result = result.replace("ପ୍ରଶ୍ନର ଉତ୍ତର ନାହିଁ |", "Question not answered")
+                    .replace("ଆବୃତ୍ତି", "Frequency")
+                    .replace("ରୋଗୀ ରିପୋର୍ଟ -", "Patient reports -")
+                    .replace("ରୋଗୀ ଅସ୍ୱୀକାର କରନ୍ତି -", "Patient denies -")
+                    .replace("ଘଣ୍ଟା", "Hours").replace("ଦିନ", "Days")
+                    .replace("ସପ୍ତାହ", "Weeks").replace("ମାସ", "Months")
+                    .replace("ବର୍ଷ", "Years")
+                    .replace("ସମୟ ପ୍ରତି ଘଣ୍ଟା", "times per hour")
+                    .replace("ସମୟ ପ୍ରତିଦିନ", "time per day")
+                    .replace("ସମୟ ପ୍ରତି ସପ୍ତାହ", "times per week")
+                    .replace("ସମୟ ପ୍ରତି ମାସରେ |", "times per month")
+                    .replace("ସମୟ ପ୍ରତିବର୍ଷ", "times per year");
+        } else if (locale.equalsIgnoreCase("gu")) {
+            result = result.replace("પ્રશ્નનો જવાબ મળ્યો નથી", "Question not answered")
+                    .replace("દરદી રિપોર્ટ કરે છે -", "Patient reports -")
+                    .replace("દરદી મના કરે છે -", "Patient denies -")
+                    .replace("કલાક", "Hours").replace("દિવસ", "Days")
+                    .replace("અઠવાડિયું", "Weeks").replace("માસ", "Months")
+                    .replace("વર્ષ", "Years")
+                    .replace("કલાક દીઠ વખત", "times per hour")
+                    .replace("દિવસ દીઠ વખત", "time per day")
+                    .replace("દર અઠવાડિયે વખત", "times per week")
+                    .replace("દર મહિને વખત", "times per month")
+                    .replace("વર્ષ દીઠ વખત", "times per year");
+        } else if (locale.equalsIgnoreCase("te")) {
+            result = result.replace("ప్రశ్నకు సమాధానం ఇవ్వలేదు", "Question not answered")
+                    .replace("రోగి నివేదికలు -", "Patient reports -")
+                    .replace("రోగి నిరాకరించాడు -", "Patient denies -")
+                    .replace("గంటలు", "Hours").replace("రోజులు", "Days")
+                    .replace("వారాలు", "Weeks").replace("నెలల", "Months")
+                    .replace("సంవత్సరాలు", "Years")
+                    .replace("గంటకు సార్లు", "times per hour")
+                    .replace("రోజుకు సార్లు", "time per day")
+                    .replace("వారానికి సార్లు", "times per week")
+                    .replace("నెలకు సార్లు", "times per month")
+                    .replace("సంవత్సరానికి సార్లు", "times per year");
+        } else if (locale.equalsIgnoreCase("mr")) {
+            result = result.replace("प्रश्नाचे उत्तर दिले नाही", "Question not answered")
+                    .replace("रुग्ण अहवाल-", "Patient reports -")
+                    .replace("रुग्ण नकार देतो-", "Patient denies -")
+                    .replace("तास", "Hours").replace("दिवस", "Days")
+                    .replace("आठवडे", "Weeks").replace("महिने", "Months")
+                    .replace("वर्षे", "Years")
+                    .replace("प्रति तास", "times per hour")
+                    .replace("दररोज वेळा", "time per day")
+                    .replace("आठवड्यातून काही वेळा", "times per week")
+                    .replace("दरमहा वेळा", "times per month")
+                    .replace("दरवर्षी वेळा", "times per year");
+        } else if (locale.equalsIgnoreCase("kn")) {
+            result = result.replace("ಪ್ರಶ್ನೆಗೆ ಉತ್ತರಿಸಲಾಗಿಲ್ಲ", "Question not answered")
+                    .replace("ರೋಗಿಯ ವರದಿಗಳು-", "Patient reports -")
+                    .replace("ರೋಗಿಯು ನಿರಾಕರಿಸುತ್ತಾನೆ-", "Patient denies -")
+                    .replace("ಗಂಟೆಗಳು", "Hours").replace("ದಿನಗಳು", "Days")
+                    .replace("ವಾರಗಳು", "Weeks").replace("ತಿಂಗಳುಗಳು", "Months")
+                    .replace("ವರ್ಷಗಳು", "Years")
+                    .replace("ಗಂಟೆಗೆ ಬಾರಿ", "times per hour").replace("ದಿನಕ್ಕೆ ಬಾರಿ", "time per day")
+                    .replace("ವಾರಕ್ಕೆ ಬಾರಿ", "times per week").replace("ತಿಂಗಳಿಗೆ ಬಾರಿ", "times per month")
+                    .replace("ವರ್ಷಕ್ಕೆ ಬಾರಿ", "times per year");
+        } else if (locale.equalsIgnoreCase("as")) {
+            result = result.replace("প্ৰশ্নৰ উত্তৰ দিয়া হোৱা নাই", "Question not answered")
+                    .replace("ৰোগীৰ প্ৰতিবেদন -", "Patient reports -")
+                    .replace("ৰোগীয়ে অস্বীকাৰ কৰে -", "Patient denies -")
+                    .replace("ঘণ্টা", "Hours").replace("দিনসমূহ", "Days")
+                    .replace("সপ্তাহ", "Weeks").replace("মাহ", "Months")
+                    .replace("বছৰ", "Years")
+                    .replace("প্ৰতি ঘণ্টাত সময়", "times per hour")
+                    .replace("প্ৰতিদিনে সময়", "time per day")
+                    .replace("প্ৰতি সপ্তাহত সময়", "times per week")
+                    .replace("প্ৰতি মাহে সময়", "times per month")
+                    .replace("প্ৰতি বছৰে সময়", "times per year");
+
+        }
+        //Malyalam Language Support...
+        else if (locale.equalsIgnoreCase("ml")) {
+            result = result.replace("ചോദ്യത്തിന് ഉത്തരം ലഭിച്ചില്ല", "Question not answered")
+                    .replace("രോഗിയുടെ റിപ്പോർട്ടുകൾ -", "Patient reports -")
+                    .replace("രോഗി നിരസിക്കുന്നു -", "Patient denies -")
+                    .replace("മണിക്കൂറുകൾ", "Hours").replace("ദിവസങ്ങളിൽ", "Days")
+                    .replace("ആഴ്ചകൾ", "Weeks").replace("മാസങ്ങൾ", "Months")
+                    .replace("വർഷങ്ങൾ", "Years")
+                    .replace("മണിക്കൂറിൽ തവണ", "times per hour")
+                    .replace("പ്രതിദിനം തവണ", "time per day")
+                    .replace("ആഴ്ചയിൽ തവണ", "times per week")
+                    .replace("മാസത്തിൽ തവണ", "times per month")
+                    .replace("വർഷത്തിൽ തവണ", "times per year");
+        } else if (locale.equalsIgnoreCase("bn")) {
+            result = result.replace("প্রশ্নের উত্তর দেওয়া হয়নি", "Question not answered")
+                    .replace("রোগীর রিপোর্ট-", "Patient reports-")
+                    .replace("রোগী অস্বীকার করে-", "Patient denies-")
+                    .replace("ঘন্টার", "Hours").replace("দিনগুলি", "Days")
+                    .replace("সপ্তাহ", "Weeks").replace("মাস", "Months")
+                    .replace("বছর", "Years")
+                    .replace("প্রতি ঘন্টা", "times per hour")
+                    .replace("দিনে বার", "time per day")
+                    .replace("প্রতি সপ্তাহে বার", "times per week")
+                    .replace("প্রতি মাসে বার", "times per month")
+                    .replace("প্রতি বছর বার", "times per year");
+        } else if (locale.equalsIgnoreCase("ta")) {
+            result = result.replace("கேள்விக்கு பதில் அளிக்கப்படவில்லை", "Question not answered")
+                    .replace("நோயாளி கூறுகிறார்-", "Patient reports-")
+                    .replace("நோயாளி மறுக்கிறார்-", "Patient denies-")
+                    .replace("மணி", "Hours").replace("நாட்கள்", "Days")
+                    .replace("வாரங்கள்", "Weeks").replace("மாதங்கள்", "Months")
+                    .replace("ஆண்டுகள்", "Years")
+                    .replace("ஒரு மணி நேரத்திற்கு முறை", "times per hour")
+                    .replace("ஒரு நாளைக்கு முறை", "time per day")
+                    .replace("வாரத்திற்கு முறை", "times per week")
+                    .replace("மாதம் முறை", "times per month")
+                    .replace("வருடத்திற்கு முறை", "times per year");
+
+        }
+        return result;
+    }
     public static String replaceEnglishCommonString(String data, String locale) {
         CustomLog.v("VisitUtils", "RAW - " + data);
         String result = data;
