@@ -1,20 +1,25 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import type { TextStyle, ViewStyle } from 'react-native';
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import type { ImageSourcePropType, TextStyle, ViewStyle } from 'react-native';
 
 import { StatusBannerProps, StatusBannerVariant } from './types';
 import { Colors, FontFamily, FontWeight } from '../../theme';
 
 /**
- * Per-variant visual configuration. Keeping every colour/glyph in one map means
+ * Per-variant visual configuration. Keeping every colour/icon in one map means
  * the JSX stays variant-agnostic — add or tweak a variant here and every banner
  * updates. Mirrors the STATUS_CONFIG pattern used by QueueListItem.
+ *
+ * `iconSource` points at an Android vector drawable in
+ * app/src/main/res/drawable/, referenced by name the way RN resolves native
+ * drawables (same pattern as SearchBar's search_icon). Each drawable's stroke
+ * colour already matches its variant accent, so the image is drawn untinted.
  */
 type VariantConfig = {
   container: ViewStyle;
   iconChip: ViewStyle;
-  glyph: string; // default leading icon glyph
-  accent: TextStyle; // colour for the icon + highlight token
+  iconSource: ImageSourcePropType; // default leading icon (native drawable)
+  accent: TextStyle; // colour applied to the title text
   button: ViewStyle;
   buttonLabel: TextStyle;
 };
@@ -26,7 +31,7 @@ const VARIANT_CONFIG: Record<StatusBannerVariant, VariantConfig> = {
       borderColor: Colors.bannerWarningBorder,
     },
     iconChip: { backgroundColor: Colors.bannerWarningIconBg },
-    glyph: '→',
+    iconSource: { uri: 'wait_status_icon' },
     accent: { color: Colors.bannerWarningAccent },
     button: { backgroundColor: Colors.bannerWarningButtonBg },
     buttonLabel: { color: Colors.bannerWarningButtonText },
@@ -37,7 +42,7 @@ const VARIANT_CONFIG: Record<StatusBannerVariant, VariantConfig> = {
       borderColor: Colors.bannerSuccessBorder,
     },
     iconChip: { backgroundColor: Colors.bannerSuccessIconBg },
-    glyph: '✓',
+    iconSource: { uri: 'next_in_queue_status_icon' },
     accent: { color: Colors.bannerSuccessAccent },
     button: { backgroundColor: Colors.bannerSuccessButtonBg },
     buttonLabel: { color: Colors.bannerButtonTextLight },
@@ -48,7 +53,7 @@ const VARIANT_CONFIG: Record<StatusBannerVariant, VariantConfig> = {
       borderColor: Colors.bannerPriorityBorder,
     },
     iconChip: { backgroundColor: Colors.bannerPriorityIconBg },
-    glyph: '★',
+    iconSource: { uri: 'priority_status_icon' },
     accent: { color: Colors.bannerPriorityAccent },
     button: { backgroundColor: Colors.bannerPriorityButtonBg },
     buttonLabel: { color: Colors.bannerButtonTextLight },
@@ -59,7 +64,7 @@ const VARIANT_CONFIG: Record<StatusBannerVariant, VariantConfig> = {
       borderColor: Colors.bannerAlertBorder,
     },
     iconChip: { backgroundColor: Colors.bannerAlertIconBg },
-    glyph: '⏸',
+    iconSource: { uri: 'doctor_break_status' },
     accent: { color: Colors.bannerAlertAccent },
     button: { backgroundColor: Colors.bannerAlertButtonBg },
     buttonLabel: { color: Colors.bannerButtonTextLight },
@@ -76,8 +81,7 @@ const VARIANT_CONFIG: Record<StatusBannerVariant, VariantConfig> = {
  * // Queue position changed
  * <StatusBanner
  *   variant="warning"
- *   title="Sarrah Paul"
- *   highlight="Q-104"
+ *   title="Sarrah Paul · Q-104"
  *   subtitle={['Position #2 → #3', '5 mins wait']}
  *   actionLabel="View Queue"
  *   onActionPress={openQueue}
@@ -105,7 +109,6 @@ export default function StatusBanner(props: StatusBannerProps) {
   const {
     variant = 'warning',
     title,
-    highlight,
     subtitle,
     icon,
     actionLabel,
@@ -124,23 +127,21 @@ export default function StatusBanner(props: StatusBannerProps) {
 
   return (
     <View style={[styles.container, config.container, style]}>
-      {/* Leading icon (variant glyph, or a caller override) */}
+      {/* Leading icon: the variant's native drawable, or a caller override */}
       <View style={[styles.iconChip, config.iconChip]}>
         {icon ?? (
-          <Text style={[styles.glyph, config.accent]}>{config.glyph}</Text>
+          <Image
+            source={config.iconSource}
+            style={styles.glyph}
+            resizeMode="contain"
+          />
         )}
       </View>
 
-      {/* Title + optional accent token + sub-lines */}
+      {/* Accent-coloured title + sub-lines */}
       <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={2}>
+        <Text style={[styles.title, config.accent]} numberOfLines={2}>
           {title}
-          {highlight ? (
-            <Text>
-              {'  ·  '}
-              <Text style={config.accent}>{highlight}</Text>
-            </Text>
-          ) : null}
         </Text>
         {subtitleLines.map((line, index) => (
           <Text key={index} style={styles.subtitle} numberOfLines={1}>
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
     borderWidth: 1,
-    paddingVertical: 10,
+    paddingVertical: 12,
     paddingHorizontal: 12,
     width: '100%',
   },
@@ -195,9 +196,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   glyph: {
-    fontFamily: FontFamily.lato,
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
+    width: 18,
+    height: 18,
   },
   content: {
     flex: 1,

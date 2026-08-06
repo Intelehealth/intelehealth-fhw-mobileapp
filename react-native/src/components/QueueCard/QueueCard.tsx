@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
 import { QueueCardProps } from './types';
 import { Colors, FontFamily, FontWeight } from '../../theme';
+import { QueueNavigator } from '../../native/QueueNavigator';
 
 // Maximum number of symptom pills shown before the rest collapse into "+N More".
 const MAX_VISIBLE_TAGS = 2;
@@ -76,7 +77,10 @@ export default function QueueCard(props: QueueCardProps) {
           </Text>
         </View>
 
-        <TouchableOpacity style={styles.actionButton} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          activeOpacity={0.7}
+          onPress={() => QueueNavigator.openPatientQueue()}>
           <Text style={styles.actionText}>Open Queue</Text>
           <Text style={styles.chevron}>{'›'}</Text>
         </TouchableOpacity>

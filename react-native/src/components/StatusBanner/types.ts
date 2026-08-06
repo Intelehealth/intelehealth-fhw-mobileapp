@@ -17,13 +17,9 @@ export interface StatusBannerProps {
   // Colour/emphasis scheme. Defaults to 'warning'.
   variant?: StatusBannerVariant;
 
-  // Main heading. Pass a string for the default bold style, or a composed
-  // <Text> when you need mixed styling inside the title.
+  // Main heading, rendered in the variant's accent colour. Pass a string for
+  // the default style, or a composed <Text> for mixed styling inside the title.
   title: ReactNode;
-
-  // Optional accent-coloured token appended after the title (e.g. "Q-104"),
-  // separated by a middot. Rendered in the variant's accent colour.
-  highlight?: string;
 
   // Secondary line(s) under the title. A string[] renders each on its own line
   // (e.g. "Position #2 → #3" then "5 mins wait").

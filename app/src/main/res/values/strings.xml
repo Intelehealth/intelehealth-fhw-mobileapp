@@ -1744,5 +1744,9 @@
     <string name="sync_completed">Sync completed</string>
     <string name="feature_not_found">Feature not found</string>
 
+    <!-- Home / queue status banner -->
+    <string name="doctor_on_break">Doctor is on Break</string>
+    <string name="queue_paused">Queue Paused</string>
+    <string name="view_queue">View Queue</string>
 
 </resources>

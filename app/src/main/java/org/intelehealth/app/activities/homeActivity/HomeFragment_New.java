@@ -162,6 +162,29 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 .commit();
     }
 
+    /**
+     * Embeds the shared React Native StatusBanner ("Doctor is on Break") above
+     * the Add Patient card, mirroring {@link #addQueueLayout()}. Content is
+     * passed as launch options so it can later be driven by real queue status.
+     */
+    private void addStatusBannerLayout() {
+        Bundle bannerProps = new Bundle();
+        bannerProps.putString("variant", "alert");
+        bannerProps.putString("title", getString(R.string.doctor_on_break));
+        bannerProps.putString("subtitle", getString(R.string.queue_paused));
+        bannerProps.putString("actionLabel", getString(R.string.view_queue));
+
+        ReactFragment bannerFragment = new ReactFragment.Builder()
+                .setComponentName("StatusBannerModule")
+                .setLaunchOptions(bannerProps)
+                .build();
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.status_banner_container, bannerFragment)
+                .commit();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home_ui2, container, false);
@@ -323,6 +346,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
+        // "Last sync" and "Auto updating" share the same toolbar slot and are
+        // mutually exclusive. The Queue tab shows "Auto updating"; hide it here
+        // so it doesn't overlap the sync time when returning Home (e.g. back
+        // press from the queue list).
+        View llAutoUpdate = requireActivity().findViewById(R.id.layout_autoupdate);
+        if (llAutoUpdate != null) {
+            llAutoUpdate.setVisibility(View.GONE);
+        }
         BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
         ivInternet = requireActivity().findViewById(R.id.imageview_is_internet);
@@ -455,6 +486,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
 
+        addStatusBannerLayout();
         addQueueLayout();
 
         textlayout_find_patient.setOnClickListener(v -> {
@@ -470,6 +502,42 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         addpatient_cardview.setOnClickListener(v -> {
             AddPatientUtils.navigate(requireActivity());
         });
+
+        applyResponsiveCardHeights();
+    }
+
+    /**
+     * The home cards used to be sized as a percentage of screen height inside a
+     * non-scrolling (match_parent) container, which left no room for the "next in queue"
+     * card and caused the layout to break when it was shown. The container is now
+     * content-driven (wrap_content) so the screen can scroll once the queue card appears.
+     * To keep the cards at the exact same visual size as before — without hardcoding a dp
+     * height — we reapply those same fractions of the available viewport height at runtime.
+     */
+    private void applyResponsiveCardHeights() {
+        if (view == null) return;
+        view.post(() -> {
+            if (!isAdded() || view == null) return;
+            int available = view.getHeight();
+            if (textlayout_find_patient != null) {
+                available -= textlayout_find_patient.getHeight();
+            }
+            if (available <= 0) return;
+            setViewHeight(R.id.addpatient_cardview, Math.round(available * 0.13f));
+            setViewHeight(R.id.card_prescription, Math.round(available * 0.25f));
+            setViewHeight(R.id.closedVisitsCardView, Math.round(available * 0.25f));
+        });
+    }
+
+    private void setViewHeight(int viewId, int heightPx) {
+        if (view == null) return;
+        View target = view.findViewById(viewId);
+        if (target == null) return;
+        ViewGroup.LayoutParams params = target.getLayoutParams();
+        if (params != null && params.height != heightPx) {
+            params.height = heightPx;
+            target.setLayoutParams(params);
+        }
     }
 
     @Override

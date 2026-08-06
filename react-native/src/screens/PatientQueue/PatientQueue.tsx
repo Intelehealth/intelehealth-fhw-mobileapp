@@ -8,11 +8,47 @@ import QueueListItem from '../../components/QueueListItem';
 import type {QueueListItemProps} from '../../components/QueueListItem';
 import QueueTabs from '../../components/QueueTabs';
 import type {QueueFilter} from '../../components/QueueTabs';
+import StatusBanner from '../../components/StatusBanner';
+import type {StatusBannerProps} from '../../components/StatusBanner';
 import {QueueNavigator} from '../../native/QueueNavigator';
 
 // Fixed gap between queue rows. Defined outside the screen so React keeps a
 // stable component type across renders (avoids remounting the list).
 const ItemSeparator = () => <View style={styles.separator} />;
+
+// Status banners shown above the list, one per variant. Alert ("Doctor is on
+// Break") sits first; the other three demonstrate the remaining variants.
+// Each carries a stable `key` so it can be dismissed independently.
+type BannerSpec = StatusBannerProps & {key: string};
+const BANNERS: BannerSpec[] = [
+  {
+    key: 'alert',
+    variant: 'alert',
+    title: 'Doctor is on Break',
+    subtitle: 'Queue Paused',
+  },
+  /* {
+    key: 'warning',
+    variant: 'warning',
+    title: 'Sarah Paul · Q-104',
+    subtitle: ['Position #2 → #3', '5 mins wait'],
+    actionLabel: 'View Queue',
+  },
+  {
+    key: 'success',
+    variant: 'success',
+    title: 'Sarah Paul is next in line',
+    subtitle: 'Dr. will call you shortly',
+    actionLabel: 'View Queue',
+  },
+  {
+    key: 'priority',
+    variant: 'priority',
+    title: 'Priority Added',
+    subtitle: 'Sarah Paul moved to #4',
+    actionLabel: 'View Queue',
+  }, */
+];
 
 // Props delivered from the native host (PatientQueueFragment) as initialProperties.
 // `queue` is a plain array of row objects mapped from QueueModel on the native side.
@@ -31,6 +67,9 @@ interface PatientQueueProps {
 function PatientQueue({queue: queueProp}: PatientQueueProps): React.JSX.Element {
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<QueueFilter>('all');
+  // Keys of banners the user has dismissed (×). Hiding one lets the list
+  // reflow to fill the freed space.
+  const [dismissedBanners, setDismissedBanners] = useState<string[]>([]);
 
   // Fallback mock used only when the native host doesn't supply data.
   const mockQueue: QueueListItemProps[] = [
@@ -84,6 +123,25 @@ function PatientQueue({queue: queueProp}: PatientQueueProps): React.JSX.Element 
     QueueNavigator.openQueueDetails(item);
   }, []);
 
+  // Banners sit above the list (as the FlatList header) so they share the
+  // list's horizontal insets and scroll with the content. Each is dismissed
+  // independently; the header disappears once all are dismissed.
+  const visibleBanners = BANNERS.filter(
+    banner => !dismissedBanners.includes(banner.key),
+  );
+  const listHeader = visibleBanners.length ? (
+    <View>
+      {visibleBanners.map(({key, ...banner}) => (
+        <StatusBanner
+          key={key}
+          {...banner}
+          onDismiss={() => setDismissedBanners(prev => [...prev, key])}
+          style={styles.banner}
+        />
+      ))}
+    </View>
+  ) : null;
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -98,6 +156,7 @@ function PatientQueue({queue: queueProp}: PatientQueueProps): React.JSX.Element 
           <QueueListItem {...item} onPress={() => handleOpenDetails(item)} />
         )}
         contentContainerStyle={styles.listContent}
+        ListHeaderComponent={listHeader}
         ItemSeparatorComponent={ItemSeparator}
         showsVerticalScrollIndicator={false}
       />
@@ -124,6 +183,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingTop: 12,
     paddingBottom: 24,
+  },
+  banner: {
+    // Space between the banner and the first queue row (rows are spaced by
+    // ItemSeparator, which doesn't apply to the list header).
+    marginBottom: 12,
   },
   separator: {
     height: 12,
