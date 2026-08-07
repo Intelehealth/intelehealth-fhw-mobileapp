@@ -387,6 +387,15 @@ internal class AbhaVerifyViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Decides whether this ABHA belongs to a patient we already hold.
+     *
+     * checkExistingUser is keyed on the ABHA number, so it answers "does an HMIS patient already carry
+     * this ABHA" — it cannot recognise someone registered without one. That is the common case for
+     * linking, so a local demographic match is attempted even when the server says NA, and only a
+     * genuine miss falls through to registering a new patient. Both legacy branches return early on NA
+     * and never look locally, which is why linking an existing non-ABHA patient never worked there.
+     */
     private suspend fun routeAfterProfile(profile: AbhaProfile, xToken: String, txnId: String) {
         _uiState.update {
             it.copy(operation = UiState.Loading, loadingMessageRes = R.string.abdm_loading_checking_user)
@@ -394,18 +403,25 @@ internal class AbhaVerifyViewModel @Inject constructor(
         patientRepository.checkExistingUser(profile.abhaNumber)
             .onSuccess { serverData ->
                 val uuid = serverData.uuid
+                val local = patientLocalStore.findPatientForComparison(
+                    abhaNumber = profile.abhaNumber,
+                    phoneNumber = profile.mobile,
+                    dateOfBirth = profile.normalisedDateOfBirth(),
+                    firstName = profile.firstName,
+                )
+
                 if (uuid == null || uuid.equals(NA, ignoreCase = true)) {
+                    if (local != null) {
+                        linkThenCompare(profile, local, xToken, txnId)
+                        return@onSuccess
+                    }
                     _uiState.update { it.copy(operation = UiState.Idle) }
                     _events.send(
                         AbhaVerifyEvent.CompleteWithResult(profile.toNewPatientVerifyResult(xToken, txnId)),
                     )
                     return@onSuccess
                 }
-                val local = patientLocalStore.findPatientForComparison(
-                    abhaNumber = profile.abhaNumber,
-                    phoneNumber = profile.mobile,
-                    dateOfBirth = profile.normalisedDateOfBirth(),
-                )
+
                 if (local == null) {
                     _uiState.update { it.copy(operation = UiState.Idle) }
                     _events.send(AbhaVerifyEvent.ShowSnackbar(messageRes = R.string.abdm_error_generic, isSuccess = false))
@@ -426,6 +442,11 @@ internal class AbhaVerifyViewModel @Inject constructor(
      * see the previous link — without persisting it here, verifying the same address again re-calls
      * the API and the value comes back duplicated. Completing the compare screen would have stored it,
      * but the user can abandon that screen and repeat the flow.
+     *
+     * The record handed to compare is the one that was read, never a copy carrying the just-linked
+     * address. That column reports what HMIS held when the patient was found, so for an unlinked
+     * patient both ABHA rows are legitimately empty; overwriting one of them showed an address beside a
+     * missing number and made an unlinked patient look partly linked.
      */
     private suspend fun linkThenCompare(
         profile: AbhaProfile,
@@ -456,7 +477,7 @@ internal class AbhaVerifyViewModel @Inject constructor(
             patientLocalStore.linkAbha(local.uuid, profile.abhaNumber, abhaAddressToLink)
         }
         _uiState.update { it.copy(operation = UiState.Idle) }
-        sendToCompare(profile, local.copy(abhaAddress = abhaAddressToLink), xToken, txnId)
+        sendToCompare(profile, local, xToken, txnId)
     }
 
     private suspend fun sendToCompare(
@@ -539,26 +560,6 @@ internal class AbhaVerifyViewModel @Inject constructor(
             index = index,
             isRegisteredLocally = registered,
         )
-    }
-
-    /**
-     * The profile's date of birth as yyyy-MM-dd, matching how the host stores it. ABDM returns the
-     * three parts separately and unpadded ("1978", "8", "25"), so they are zero-padded here rather
-     * than compared raw — both legacy branches concatenate them as-is and their lookup therefore
-     * misses whenever the month or day is below ten.
-     *
-     * Returns "" if any part is missing or non-numeric, which tells the host to skip the phone
-     * fallback instead of matching on the number alone.
-     */
-    private fun AbhaProfile.normalisedDateOfBirth(): String {
-        val year = yearOfBirth.trim()
-        val month = monthOfBirth.trim()
-        val day = dayOfBirth.trim()
-        if (year.length != 4 || month.isEmpty() || day.isEmpty()) return ""
-        if (!year.all { it.isDigit() } || !month.all { it.isDigit() } || !day.all { it.isDigit() }) {
-            return ""
-        }
-        return "$year-${month.padStart(2, '0')}-${day.padStart(2, '0')}"
     }
 
     /**

@@ -8,6 +8,12 @@ import org.intelehealth.abdm.result.AbdmResult
 /**
  * Builds the [AbdmResult] returned after a successful compare-and-save. The saved record is the
  * ABHA side (locked selection), carrying the existing patient's [uuid]/[openMrsId].
+ *
+ * The card scope is set here for the same reason the create and new-patient verify results set theirs:
+ * this route ends at Patient Details rather than registration, and the host fetches the ABHA card from
+ * whatever result it receives. Leaving it null made the download a silent no-op on exactly the path
+ * where the patient already exists. Compare is only reachable from the verify flow, so the verify scope
+ * is the one that pairs with this result's xToken.
  */
 internal fun LocalPatientRecord.toAfterComparisonResult(
     xToken: String,
@@ -21,6 +27,7 @@ internal fun LocalPatientRecord.toAfterComparisonResult(
         isNew = false,
         uuid = uuid,
         openMrsId = openMrsId,
+        cardScope = AbdmResult.CARD_SCOPE_VERIFY,
         profile = AbdmAbhaProfile(
             abhaNumber = abhaNumber,
             firstName = firstName,

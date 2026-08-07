@@ -32,6 +32,10 @@ interface AbdmPatientLocalStore {
      * then skip the phone fallback rather than match on the number alone, because a phone is often
      * shared across a household and the compare screen writes onto whichever row is returned.
      *
+     * [firstName] only disambiguates: the demographic pass can return several people when a household
+     * shares a phone, and the name picks between them. Implementations return null when the result stays
+     * ambiguous rather than guessing, since the caller writes ABHA data onto whatever comes back.
+     *
      * How [phoneNumber] is matched is the host's business — it is passed as ABDM supplies it, and the
      * host holds it in its own format.
      */
@@ -39,6 +43,7 @@ interface AbdmPatientLocalStore {
         abhaNumber: String,
         phoneNumber: String,
         dateOfBirth: String,
+        firstName: String,
     ): LocalPatientRecord?
 
     /**

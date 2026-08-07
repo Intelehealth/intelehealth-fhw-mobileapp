@@ -59,6 +59,15 @@ class PatientRepository(
     }
 
 
+    /**
+     * Builds the person attributes for a save, dropping any whose value is absent.
+     *
+     * An entry is composed for every attribute type regardless of whether the field was filled or even
+     * shown — field visibility is decided in the registration fragments and is not consulted here — so
+     * without the filter a patient carries a row, and pushes an `{"attributeType": …}` with no value,
+     * for every attribute they never supplied. The server rejects the whole attributes array when it
+     * contains those, which takes the populated ones such as the phone down with them.
+     */
     private fun createPatientAttributes(patient: PatientDTO) = arrayListOf<PatientAttributesDTO>()
         .apply {
             add(
@@ -270,7 +279,7 @@ class PatientRepository(
                     patient.contactType
                 )
             )
-        }
+        }.filter { it.value.isNullOrBlank().not() }
 
     private fun createPatientAttribute(
         patientId: String,
@@ -300,6 +309,7 @@ class PatientRepository(
             val imagesPushDAO = ImagesPushDAO()
             syncDAO.pushDataApi()
             imagesPushDAO.patientProfileImagesPush()
+            syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0)
         }
     }
 }

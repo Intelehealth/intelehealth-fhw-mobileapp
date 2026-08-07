@@ -1430,6 +1430,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         btnViewAbhaCard.setOnClickListener(v -> AbdmCardDownloader.viewCard(this, abhaNumber));
     }
 
+    /**
+     * Populates the patient card from the local record. The phone is taken solely from the
+     * "Telephone Number" person attribute, never from tbl_patient.phone_number: the pull writes
+     * patients with INSERT OR REPLACE and omits that column, so it is blanked on every sync while the
+     * attribute keeps the real value.
+     */
     public void setDisplay(String dataString) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         patientDTO = new PatientDTO();
@@ -1456,7 +1462,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
-                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
 

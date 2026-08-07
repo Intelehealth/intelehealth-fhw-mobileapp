@@ -19,6 +19,14 @@
             name="isEditMode"
             type="Boolean" />
 
+        <!--
+          True when registration came from the ABDM flow. That run is an edit but still advances
+          through all three stages, so the action reads Next rather than Save.
+        -->
+        <variable
+            name="isAbhaFullFlow"
+            type="Boolean" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -728,7 +736,7 @@
             android:background="@drawable/ui2_common_primary_bg"
             android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
             android:paddingHorizontal="@dimen/margin_10"
-            android:text="@{isEditMode ? @string/save : @string/next}"
+            android:text="@{isEditMode &amp;&amp; !isAbhaFullFlow ? @string/save : @string/next}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

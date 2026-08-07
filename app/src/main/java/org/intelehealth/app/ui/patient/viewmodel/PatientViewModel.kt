@@ -29,6 +29,17 @@ class PatientViewModel(
     var activeStatusAddressSection = true
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
+
+    /**
+     * Set when registration was opened from the ABDM flow. Such a run is an edit — the ABHA resolved to
+     * an existing patient, so the save must update rather than insert — but it still has to walk all
+     * three stages, unlike the per-section edits launched from Patient Details.
+     *
+     * So [isEditMode] keeps deciding update-versus-insert, while this decides navigation. Field locking
+     * stays on [isEditMode] alone: the admin config's non-editable fields must not become writable just
+     * because the flow entered from ABDM.
+     */
+    var isAbhaFullFlow: Boolean = false
     var activeStatusRosterSection = false
 
     fun loadPatientDetails(

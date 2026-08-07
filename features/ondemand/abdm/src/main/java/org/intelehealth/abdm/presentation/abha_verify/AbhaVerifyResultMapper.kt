@@ -13,6 +13,28 @@ import org.intelehealth.abdm.result.AbdmResult
  */
 private const val DIALLING_CODE_IN = "+91"
 
+/**
+ * The profile's date of birth as yyyy-MM-dd, matching how the host stores it. ABDM returns the three
+ * parts separately and unpadded ("1978", "8", "25").
+ *
+ * Every use of the date goes through here — the lookup key and the record written back by the compare
+ * screen alike. They previously disagreed: the lookup padded, the saved record did not, so a patient
+ * who completed a compare was left with a date the lookup could never match again.
+ *
+ * Returns "" when any part is missing or non-numeric, which tells the host to skip the demographic
+ * pass rather than match on the phone alone.
+ */
+internal fun AbhaProfile.normalisedDateOfBirth(): String {
+    val year = yearOfBirth.trim()
+    val month = monthOfBirth.trim()
+    val day = dayOfBirth.trim()
+    if (year.length != 4 || month.isEmpty() || day.isEmpty()) return ""
+    if (!year.all { it.isDigit() } || !month.all { it.isDigit() } || !day.all { it.isDigit() }) {
+        return ""
+    }
+    return "$year-${month.padStart(2, '0')}-${day.padStart(2, '0')}"
+}
+
 /** The profile's mobile in the same shape the host stores, so the two compare columns line up. */
 private fun String.withDiallingCode(): String {
     if (isBlank()) return this
@@ -32,7 +54,7 @@ internal fun AbhaProfile.toComparisonRecord(uuid: String, openMrsId: String): Lo
         openMrsId = openMrsId,
         firstName = firstName,
         lastName = lastName,
-        dateOfBirth = "$yearOfBirth-$monthOfBirth-$dayOfBirth",
+        dateOfBirth = normalisedDateOfBirth(),
         gender = gender,
         address = address,
         pinCode = pinCode,
@@ -61,7 +83,7 @@ internal fun AbhaProfile.toNewPatientVerifyResult(
             firstName = firstName,
             middleName = middleName,
             lastName = lastName,
-            dateOfBirth = "$yearOfBirth-$monthOfBirth-$dayOfBirth",
+            dateOfBirth = normalisedDateOfBirth(),
             gender = gender,
             mobile = mobile,
             address = address,

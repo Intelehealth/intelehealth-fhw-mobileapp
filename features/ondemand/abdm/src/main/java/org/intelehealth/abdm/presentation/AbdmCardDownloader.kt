@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Environment
 import android.util.Base64
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import org.intelehealth.abdm.R
@@ -29,14 +30,34 @@ import java.io.FileOutputStream
  */
 object AbdmCardDownloader {
 
+    private const val TAG = "AbdmCardDownloader"
     private const val DIR_NAME = "Intelehealth_AbhaCard"
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
 
+    /**
+     * Each precondition is logged when it stops the download. They previously shared one silent return,
+     * which made "the result carried no card scope" indistinguishable from "the card is already on
+     * disk" — a missing scope on the compare route looked like the trigger never firing at all.
+     */
     @JvmStatic
     fun downloadInBackground(context: Context, xToken: String?, cardScope: String?, abhaNumber: String?) {
-        if (xToken.isNullOrBlank() || cardScope.isNullOrBlank() || abhaNumber.isNullOrBlank()) return
+        if (xToken.isNullOrBlank()) {
+            Log.d(TAG, "card download skipped: no xToken")
+            return
+        }
+        if (cardScope.isNullOrBlank()) {
+            Log.d(TAG, "card download skipped: no card scope")
+            return
+        }
+        if (abhaNumber.isNullOrBlank()) {
+            Log.d(TAG, "card download skipped: no abha number")
+            return
+        }
         val appContext = context.applicationContext
-        if (cardFile(appContext, abhaNumber).exists()) return
+        if (cardFile(appContext, abhaNumber).exists()) {
+            Log.d(TAG, "card download skipped: already cached")
+            return
+        }
 
         val repository = EntryPointAccessors
             .fromApplication(appContext, AbdmCardDownloaderEntryPoint::class.java)
@@ -46,6 +67,7 @@ object AbdmCardDownloader {
         scope.launch {
             repository.fetchAbhaCard(bearerToken, cardScope)
                 .onSuccess { card -> store(appContext, card.image, abhaNumber) }
+                .onFailure { Log.d(TAG, "card download failed: ${it.message}") }
         }
     }
 

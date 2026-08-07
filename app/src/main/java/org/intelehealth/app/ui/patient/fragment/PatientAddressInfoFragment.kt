@@ -138,7 +138,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            if (patientViewModel.isEditMode && !patientViewModel.isAbhaFullFlow) {
                 saveAndNavigateToDetails()
             } else {
                 if (patientViewModel.activeStatusOtherSection.not()) {

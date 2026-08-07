@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.view.WindowCompat
+import org.intelehealth.abdm.presentation.AbdmCardDownloader
 import org.intelehealth.abdm.presentation.AbdmLauncher
 import org.intelehealth.abdm.presentation.abha_choice.AbhaChoiceDialogFragment
 import org.intelehealth.abdm.result.AbdmOutcomes
@@ -156,6 +157,11 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     /**
      * A cancelled ABHA flow deliberately leaves this screen up so the user can pick again, rather
      * than dropping them into registration they did not ask for.
+     *
+     * The ABHA card is fetched here rather than at the end of registration. It needs only the xToken,
+     * scope and ABHA number from this result — never the saved patient — and the cache file is keyed on
+     * the ABHA number alone. Doing it here spends the one-shot token while it is freshest and keeps the
+     * download independent of how far the user gets through registration, or whether they abandon it.
      */
     private fun handleAbhaResult(result: ActivityResult) {
         val data = result.data
@@ -164,6 +170,10 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
         val abdmResult = IntentCompat.getParcelableExtra(
             data, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
         ) ?: return
+
+        AbdmCardDownloader.downloadInBackground(
+            this, abdmResult.xToken, abdmResult.cardScope, abdmResult.profile?.abhaNumber
+        )
 
         if (abdmResult.outcome ==
             AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON

@@ -221,26 +221,11 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 it ?: return@observe
                 patientViewModel.handleResponse(it) { result ->
                     if (result) {
-                        downloadAbhaCardIfLinked()
                         navigateToDetails()
                     }
                 }
             }
         }
-    }
-
-    /**
-     * Fetches the ABHA card once the patient is persisted. xToken and cardScope belong to the
-     * one-shot ABHA session rather than the patient, so they are read from the AbdmResult on the
-     * activity intent — they are not stored on the record like the abha number is. The download is
-     * fire-and-forget: a missing card must never block registration.
-     */
-    private fun downloadAbhaCardIfLinked() {
-        if (!hasAbha()) return
-        val abdmResult = abdmResultFromIntent() ?: return
-        AbdmCardDownloader.downloadInBackground(
-            requireContext(), abdmResult.xToken, abdmResult.cardScope, patient.abhaNumber
-        )
     }
 
     private companion object {

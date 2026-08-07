@@ -126,6 +126,8 @@ class PatientRegistrationActivity : BaseActivity() {
 
     private fun extractAndBindUI() {
         intent?.let {
+            patientViewModel.isAbhaFullFlow = it.hasExtra(AbdmResult.EXTRA_ABDM_RESULT)
+
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
@@ -160,9 +162,14 @@ class PatientRegistrationActivity : BaseActivity() {
         navController.graph = navGraph
     }
 
-    private fun generatePatientId() {
+    /**
+     * Builds the record this screen will save. [existingUuid] is supplied when the ABHA resolved to a
+     * patient the server knows but this device has never pulled: reusing the server's uuid means the
+     * push reconciles with that person instead of creating a second identity for them.
+     */
+    private fun generatePatientId(existingUuid: String? = null) {
         PatientDTO().apply {
-            uuid = UUID.randomUUID().toString()
+            uuid = existingUuid?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
             reportDateOfPatientCreated = DateAndTimeUtils.currentDateTimeFormat()
@@ -228,8 +235,10 @@ class PatientRegistrationActivity : BaseActivity() {
             ?.let { patient.phonenumber = it }
         bifurcateAbhaAddress(profile.address).address1.takeIf { it.isNotBlank() }
             ?.let { patient.address1 = it }
-        AbhaPhotoUtils.saveEncodedPhoto(this, profile.profilePhoto, patient.uuid)
-            ?.let { patient.patientPhoto = it }
+        patient.uuid?.takeIf { it.isNotBlank() }?.let { uuid ->
+            AbhaPhotoUtils.saveEncodedPhoto(this, profile.profilePhoto, uuid)
+                ?.let { photo -> patient.patientPhoto = photo }
+        }
         parseAbhaDob(profile.dateOfBirth)?.let {
             patient.dateofbirth = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(it)
         }
@@ -309,15 +318,39 @@ class PatientRegistrationActivity : BaseActivity() {
         return null
     }
 
+    /**
+     * Loads the record being edited. A blank uuid on the result means no local row matched: the query
+     * finds nothing and retrievePatientDetails still returns a fresh PatientDTO rather than null, so
+     * "absent" and "loaded" are indistinguishable until something reads a field.
+     *
+     * That happens on the ABDM path, where the uuid comes from checkExistingUser and identifies a
+     * patient on the server that this device may never have pulled. Editing is then the wrong mode —
+     * the save would match no rows and report success — so registration switches to creating the
+     * record locally under that same server uuid.
+     */
     private fun fetchPatientDetails(id: String) {
         patientViewModel.loadPatientDetails(id).observe(this) {
             it ?: return@observe
             patientViewModel.handleResponse(it) { patient ->
+                if (patient.uuid.isNullOrBlank()) {
+                    createLocallyForServerPatient(id)
+                    return@handleResponse
+                }
                 patientViewModel.updatedPatient(
                     reseedAbhaOwnedFields(updatePatientDetails(patient))
                 )
             }
         }
+    }
+
+    /**
+     * The ABHA matched a patient held only on the server. Drops out of edit mode so the save inserts,
+     * and keeps the server's uuid so the push links to that person rather than duplicating them.
+     */
+    private fun createLocallyForServerPatient(serverPatientUuid: String) {
+        patientViewModel.isEditMode = false
+        binding.isEditMode = false
+        generatePatientId(serverPatientUuid)
     }
 
     private fun updatePatientDetails(patient: PatientDTO) = patient.apply {

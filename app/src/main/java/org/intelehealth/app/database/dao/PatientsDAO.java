@@ -1648,10 +1648,12 @@ public class PatientsDAO extends BaseDao {
      * registered on this device; the pull writes the phone as a person attribute instead, so a pulled
      * patient is findable only through tbl_patient_attribute.
      *
-     * Date of birth narrows the match because a phone is often shared across a household, and the
-     * caller writes merged ABHA data onto whichever row this returns.
+     * Date of birth narrows the match because a phone is often shared across a household. Every match
+     * is returned rather than the most recent one: the caller writes merged ABHA data onto whichever
+     * row it picks, so it has to see an ambiguous result instead of being handed an arbitrary winner.
      */
-    public PatientDTO getPatientForComparisonByPhoneAndDob(String last10Digits, String dateOfBirth) {
+    public List<PatientDTO> getPatientsForComparisonByPhoneAndDob(String last10Digits, String dateOfBirth) {
+        List<PatientDTO> matches = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         String suffix = "%" + last10Digits;
         try (Cursor cursor = db.rawQuery(
@@ -1660,15 +1662,15 @@ public class PatientsDAO extends BaseDao {
                         "AND pa.person_attribute_type_uuid = '14d4f066-15f5-102d-96e4-000c29c2a5d7' " +
                         "WHERE p.date_of_birth = ? AND (p.phone_number LIKE ? OR pa.value LIKE ?) " +
                         "AND (p.voided = '0' OR p.voided IS NULL) " +
-                        "ORDER BY p.modified_date DESC LIMIT 1",
+                        "ORDER BY p.modified_date DESC",
                 new String[]{dateOfBirth, suffix, suffix})) {
-            if (cursor.moveToFirst()) {
-                return cursorToComparisonDTO(cursor);
+            while (cursor.moveToNext()) {
+                matches.add(cursorToComparisonDTO(cursor));
             }
         } catch (SQLException s) {
             CustomLog.e(TAG, s.getMessage());
         }
-        return null;
+        return matches;
     }
 
     /**
