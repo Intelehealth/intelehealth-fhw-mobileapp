@@ -156,6 +156,9 @@ import okhttp3.ResponseBody;
 public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, DefaultHardwareBackBtnHandler {
 
     private static final String TAG = "HomeScreenActivity";
+    // When set true on the launching Intent, the Queue tab is auto-selected once
+    // the home screen is ready (e.g. from the "View Queue" visit-submitted popup).
+    public static final String EXTRA_OPEN_QUEUE = "open_queue";
     private PreferenceHelper preferenceHelper;
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
@@ -210,6 +213,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         CustomLog.v(TAG, "onNewIntent");
+        // Adopt the new intent so onResume() can honour EXTRA_OPEN_QUEUE (e.g.
+        // "View Queue" from the visit-submitted popup) when this activity is
+        // already running.
+        setIntent(intent);
 //        catchFCMMessageData();
     }
 
@@ -1218,6 +1225,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
+        // "View Queue" from the visit-submitted popup: open the Queue tab. Done
+        // last (after loadLastSelectedFragment reset the nav to Home) so it wins,
+        // and posted so it runs after the pending fragment transaction.
+        if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_OPEN_QUEUE, false)
+                && preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false)) {
+            getIntent().removeExtra(EXTRA_OPEN_QUEUE);
+            bottomNav.post(() -> bottomNav.setSelectedItemId(R.id.bottom_nav_queue));
+        }
         super.onResume();
     }
 

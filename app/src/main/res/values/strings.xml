@@ -839,6 +839,12 @@
     <string name="are_you_sure_you_want_to_send_visit">Are you sure you want to send the visit to the doctor?</string>
     <string name="visit_successfully_sent">Visit successfully sent!</string>
     <string name="patient_visit_sent">Patient\'s visit has been successfully sent to the doctor.</string>
+    <!-- Visit Submitted queue popup (shown when QMS is configured) -->
+    <string name="visit_submitted">Visit Submitted</string>
+    <string name="patient_added_to_doctor_queue">Patient added to the doctor\'s queue</string>
+    <string name="wait_time">Wait Time</string>
+    <string name="wait_time_default_value">8 mins</string>
+    <string name="back_to_home">Back to Home</string>
     <string name="previously_scheduled_on">Previously scheduled on</string>
     <string name="rescheduled_on">Rescheduled on</string>
     <string name="date">Date</string>

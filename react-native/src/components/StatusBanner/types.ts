@@ -29,6 +29,11 @@ export interface StatusBannerProps {
   // <Image />). When omitted, the variant's built-in glyph is shown.
   icon?: ReactNode;
 
+  // Optional style override for the leading icon chip (the circular surface
+  // behind the glyph). Use it to resize the chip or clear its background so the
+  // icon shows on its own. When omitted, the variant's chip style is used.
+  iconChipStyle?: StyleProp<ViewStyle>;
+
   // Label for the trailing action pill (e.g. "View Queue"). Omit to hide it.
   actionLabel?: string;
   // Fired when the action pill is tapped.

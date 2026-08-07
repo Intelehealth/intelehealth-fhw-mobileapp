@@ -111,6 +111,7 @@ export default function StatusBanner(props: StatusBannerProps) {
     title,
     subtitle,
     icon,
+    iconChipStyle,
     actionLabel,
     onActionPress,
     dismissible = true,
@@ -128,7 +129,7 @@ export default function StatusBanner(props: StatusBannerProps) {
   return (
     <View style={[styles.container, config.container, style]}>
       {/* Leading icon: the variant's native drawable, or a caller override */}
-      <View style={[styles.iconChip, config.iconChip]}>
+      <View style={[styles.iconChip, config.iconChip, iconChipStyle]}>
         {icon ?? (
           <Image
             source={config.iconSource}

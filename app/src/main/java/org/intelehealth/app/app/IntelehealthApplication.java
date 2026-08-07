@@ -42,6 +42,7 @@ import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.intelehealth.config.Config;
 import org.intelehealth.klivekit.RtcEngine;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
@@ -152,6 +153,11 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
+        // Pre-load the React Native context at startup so the embedded queue
+        // banners (Home + Visit Summary) render immediately instead of taking a
+        // few seconds while the JS bundle loads on first fragment mount. Only
+        // when QMS is configured, since RN surfaces are otherwise never shown.
+        warmUpReactNative();
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();
@@ -190,6 +196,29 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
+        }
+    }
+
+    /**
+     * Kicks off React Native context creation in the background so the first RN
+     * surface (the queue status banners) doesn't have to load the JS bundle
+     * on-screen. Idempotent and safe to call once at startup.
+     */
+    private void warmUpReactNative() {
+        try {
+            boolean qmsConfigured = new PreferenceHelper(this)
+                    .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+            if (!qmsConfigured) {
+                return;
+            }
+            if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
+                getReactHost().start();
+            } else {
+                getReactNativeHost().getReactInstanceManager()
+                        .createReactContextInBackground();
+            }
+        } catch (Exception e) {
+            CustomLog.e(TAG, "warmUpReactNative failed: " + e.getMessage());
         }
     }
 
