@@ -16,6 +16,11 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         const val MESSAGE_BODY = "message_body"
         const val IS_NOTIFICATION = "isNotification"
         const val CONFIG_VERSION = "config_version"
+
+        // Enables the Queue Management System (QMS): home status banner, the
+        // "Next In Queue" card, and the Queue bottom-nav tab (which otherwise
+        // shows Help).
+        const val IS_QMS_CONFIGURE = "isQmsConfigure"
     }
 
     fun save(key: String?, value: Any?) {

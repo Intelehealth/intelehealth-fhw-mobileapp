@@ -45,6 +45,8 @@ import androidx.lifecycle.LifecycleObserver;
 import com.facebook.react.ReactFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import org.intelehealth.klivekit.data.PreferenceHelper;
+
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
 import org.intelehealth.app.activities.onboarding.PrivacyPolicyActivity_New;
@@ -486,8 +488,18 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
 
-        addStatusBannerLayout();
-        addQueueLayout();
+        // QMS (Queue Management System) gate: only show the home status banner
+        // and the "Next In Queue" card when QMS is configured. When off, collapse
+        // both containers so the layout falls back to the standard home screen.
+        boolean isQmsConfigured = new PreferenceHelper(requireContext())
+                .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        if (isQmsConfigured) {
+            addStatusBannerLayout();
+            addQueueLayout();
+        } else {
+            hideContainer(R.id.status_banner_container);
+            hideContainer(R.id.queue_card_container);
+        }
 
         textlayout_find_patient.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SearchPatientActivity_New.class);
@@ -527,6 +539,15 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             setViewHeight(R.id.card_prescription, Math.round(available * 0.25f));
             setViewHeight(R.id.closedVisitsCardView, Math.round(available * 0.25f));
         });
+    }
+
+    /** Collapse a home card container (used when QMS is disabled). */
+    private void hideContainer(int viewId) {
+        if (view == null) return;
+        View target = view.findViewById(viewId);
+        if (target != null) {
+            target.setVisibility(View.GONE);
+        }
     }
 
     private void setViewHeight(int viewId, int heightPx) {

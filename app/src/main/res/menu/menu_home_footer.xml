@@ -7,6 +7,9 @@
         android:title="@string/title_home_screen"
         app:iconTint="?colorPrimary" />
 
+    <!-- Queue and Help are mutually exclusive: the Queue tab shows only when
+         QMS is configured (PreferenceHelper.IS_QMS_CONFIGURE), otherwise Help
+         is shown. Visibility is toggled at runtime in HomeScreenActivity_New. -->
     <item
         android:id="@+id/bottom_nav_queue"
         android:icon="@drawable/ui2_selector_queue_nav"
@@ -14,16 +17,16 @@
         app:iconTint="?colorPrimary" />
 
     <item
+        android:id="@+id/bottom_nav_help"
+        android:icon="@drawable/ui2_selector_help_nav"
+        android:title="@string/help_footer"
+        app:iconTint="?colorPrimary" />
+
+    <item
         android:id="@+id/bottom_nav_achievements"
         android:icon="@drawable/ui2_selector_acievements_nav"
         android:title="@string/achievements"
         app:iconTint="?colorPrimary" />
-
-    <!--<item
-        android:id="@+id/bottom_nav_help"
-        android:icon="@drawable/ui2_selector_help_nav"
-        android:title="@string/help_footer"
-        app:iconTint="?colorPrimary" />-->
 
     <item
         android:id="@+id/bottom_nav_add_patient"
