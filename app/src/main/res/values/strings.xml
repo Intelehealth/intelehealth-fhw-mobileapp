@@ -1775,7 +1775,6 @@
     <string name="abha_number">ABHA Number</string>
     <string name="abha_address">ABHA Address</string>
     <string name="view_abha_card">View ABHA Card</string>
-    <string name="select_valid_date">Select valid date</string>
     <string name="create_new_abha_address">Create New ABHA Address</string>
     <string name="creating_more_than_six_abha_addresses_are_not_allowed">Creating more than six ABHA addresses is not allowed.</string>
     <string name="associated_abha_address">Associated Abha Address: %1$s</string>
