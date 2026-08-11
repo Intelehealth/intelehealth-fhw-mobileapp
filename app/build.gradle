@@ -154,6 +154,8 @@ dependencies {
 
     // (Java only) Targeting S+ (version 31 and above)
     implementation 'androidx.work:work-runtime:2.9.0'
+    // Kotlin request builders used by the optimized_sync workers
+    implementation 'androidx.work:work-runtime-ktx:2.9.0'
     // optional - RxJava2 support
     implementation 'androidx.work:work-rxjava2:2.9.0'
     // optional - Test helpers

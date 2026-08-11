@@ -43,6 +43,11 @@ abstract class BasePatientFragment(@LayoutRes layoutResId: Int) : Fragment(layou
      * Whether this patient's identity fields came from a verified ABHA profile and must stay
      * read-only. Keyed on the record rather than on an intent extra, so it holds on every entry
      * path — fresh ABHA registration, and editing a linked patient later.
+     *
+     * "NA" counts as absent. The server returns that placeholder for a patient with no ABHA and the
+     * pull stores it verbatim, so a blank-only check reported an ABHA for ordinary patients and locked
+     * their name, phone and date of birth with nothing on screen to explain why.
      */
-    protected fun hasAbha(): Boolean = patient.abhaNumber.isNullOrBlank().not()
+    protected fun hasAbha(): Boolean =
+        patient.abhaNumber?.let { it.isNotBlank() && !it.equals("NA", ignoreCase = true) } ?: false
 }
