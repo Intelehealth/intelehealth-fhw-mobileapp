@@ -2,25 +2,19 @@ package org.intelehealth.app.syncModule;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Toast;
 
-import androidx.work.WorkManager;
-
 import org.intelehealth.app.R;
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.sync.AppointmentSync;
-import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
-import org.intelehealth.app.utilities.NotificationUtils;
-import org.intelehealth.app.utilities.SessionManager;
 
 public class SyncUtils {
 
@@ -42,113 +36,42 @@ public class SyncUtils {
         AppointmentSync.getAppointments(context);
     }
 
+    /**
+     * Requests a sync.
+     *
+     * The sequence itself lives in OptimizedSyncDao and blocks from end to end, so it cannot be run on
+     * the caller's thread: most of the callers here are click handlers and menu actions on the main
+     * thread, which the previous implementation got away with only because every step inside it was
+     * asynchronous. Enqueuing a worker keeps those callers non-blocking and puts every sync in the app
+     * on one path.
+     *
+     * Requests made in quick succession queue behind one another rather than overlapping, which is the
+     * point of the sequence being blocking in the first place.
+     */
     public void syncInBackground() {
-        SyncDAO syncDAO = new SyncDAO();
-        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0);
-        imagesPushDAO.loggedInUserProfileImagesPush();
-        if (!sessionManager.isLogout()) {
-            AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
-        }
-
+        Logger.logD(TAG, "Sync requested");
+        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext());
     }
 
     public void syncBackground() {
-        SyncDAO syncDAO = new SyncDAO();
-        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-        SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
-        syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(),0); //only this new function duplicate
-        imagesPushDAO.loggedInUserProfileImagesPush();
-        /*
-         * Looper.getMainLooper is used in background sync since the sync_background()
-         * is called from the syncWorkManager.java class which executes the sync on the
-         * worker thread (non-ui thread) and the image push is executing on the
-         * ui thread.
-         */
-        final Handler handler_background = new Handler(Looper.getMainLooper());
-        handler_background.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //sometimes syncing happening while logout
-                //added the checking to prevent appointment api call
-                if(!sessionManager.isLogout()){
-                    AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
-                }
-                Logger.logD(TAG, "Background Image Push Started");
-                imagesPushDAO.obsImagesPush();
-                Logger.logD(TAG, "Background Image Pull ended");
-            }
-        }, 4000);
-
-        imagesPushDAO.deleteObsImage();
-
-        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.ALL_SYNC_DONE)
-                .setPackage(IntelehealthApplication.getAppContext().getPackageName()));
-
-        NotificationUtils notificationUtils = new NotificationUtils();
-        notificationUtils.clearAllNotifications(IntelehealthApplication.getAppContext());
-        WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
-                .then(AppConstants.LAST_SYNC_WORK_REQUEST)
-                .enqueue();
-
+        syncInBackground();
     }
 
-
+    /**
+     * Requests a sync and reports that it was accepted.
+     *
+     * The boolean this returns has never described the outcome of a sync. It was the return of
+     * pushDataApi, which subscribes its request on a background scheduler and returns before the call
+     * is made, so it was true in every case that reached a caller. The screens gating on it are
+     * therefore unaffected, and the completion they actually respond to arrives, as it did before, on
+     * the sync broadcast they already listen for.
+     *
+     * @param fromActivity retained so the existing call sites need no change; the pull no longer varies
+     *                     by caller.
+     */
     public boolean syncForeground(String fromActivity) {
-        boolean isSynced = false;
-        SyncDAO syncDAO = new SyncDAO();
-        ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-        Logger.logD(TAG, "Push Started");
-        isSynced = syncDAO.pushDataApi();
-        Logger.logD(TAG, "Push ended");
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Logger.logD(TAG, "Pull Started");
-                syncDAO.pullData(IntelehealthApplication.getAppContext(), fromActivity,0);
-                AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
-                Logger.logD(TAG, "Pull ended");
-            }
-        }, 6000);
-
-        imagesPushDAO.patientProfileImagesPush();
-        //ui2.0
-        imagesPushDAO.loggedInUserProfileImagesPush();
-//        imagesPushDAO.obsImagesPush();
-
-        /*
-         * Handler is added for pushing image in sync foreground
-         * to fix the issue of Phy exam and additional images not showing up sometimes
-         * on the webapp (doctor portal).
-         * */
-        final Handler handler_foreground = new Handler();
-        handler_foreground.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Logger.logD(TAG, "Image Push Started");
-                imagesPushDAO.obsImagesPush();
-                Logger.logD(TAG, "Image Pull ended");
-            }
-        }, 3000);
-
-        imagesPushDAO.deleteObsImage();
-
-
-        WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
-                .then(AppConstants.LAST_SYNC_WORK_REQUEST)
-                .enqueue();
-
-        /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), UpdateDownloadPrescriptionService.class);
-        IntelehealthApplication.getAppContext().startService(intent);*/
-
-        return isSynced;
+        syncInBackground();
+        return true;
     }
 
     /**

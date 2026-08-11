@@ -469,6 +469,16 @@
             android:exported="false"
             android:permission="" />
 
+        <!--
+            WorkManager declares this service without a foregroundServiceType, so the dataSync type the
+            sync worker asks for in its ForegroundInfo is rejected by the platform. Merged in here rather
+            than replaced, so the library keeps ownership of every other attribute.
+        -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
+
         <receiver
             android:name=".syncModule.BootCompleteReceiver"
             android:enabled="true"

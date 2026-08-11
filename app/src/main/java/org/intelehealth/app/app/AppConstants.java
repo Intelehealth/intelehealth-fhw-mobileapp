@@ -7,20 +7,17 @@ import android.os.Environment;
 import androidx.work.Constraints;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
-import androidx.work.PeriodicWorkRequest;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
 import org.intelehealth.app.syncModule.LastSyncWork;
-import org.intelehealth.app.syncModule.SyncWorkManager;
 import org.intelehealth.app.syncModule.VisitSummaryWork;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.NotificationUtils;
 import org.intelehealth.app.utilities.UuidGenerator;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 public class AppConstants {
     //Constants
@@ -107,6 +104,11 @@ public class AppConstants {
 
     //functions constants
 
+    /**
+     * Name of the periodic sync schedule that OptimizedSyncWorker replaces. Retained only so that
+     * schedule can be cancelled on devices upgrading from a build that registered it; nothing enqueues
+     * work under this name any more.
+     */
     public static final String UNIQUE_WORK_NAME = "intelehealth_workmanager";
     public static ApiInterface apiInterface = ApiClient.createService(ApiInterface.class);
     public static DateAndTimeUtils dateAndTimeUtils = new DateAndTimeUtils();
@@ -125,12 +127,6 @@ public class AppConstants {
             .setRequiresBatteryNotLow(false)
             .setRequiresStorageNotLow(false)
             .build();
-
-    public static PeriodicWorkRequest PERIODIC_WORK_REQUEST =
-            new PeriodicWorkRequest.Builder(SyncWorkManager.class, REPEAT_INTERVAL, TimeUnit.MINUTES)
-                    .setConstraints(MY_CONSTRAINTS)
-                    .build();
-
 
     // Added by Venu to make the Sync Issue Solutions as intele_safe.
     public static OneTimeWorkRequest VISIT_SUMMARY_WORK_REQUEST =

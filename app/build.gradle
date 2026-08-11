@@ -153,13 +153,16 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only) Targeting S+ (version 31 and above)
-    implementation 'androidx.work:work-runtime:2.9.0'
+    // 2.10.0 handles the Android 15 dataSync foreground-service timeout; keep every WorkManager
+    // artifact on the same version, including in :config and :features:ondemand:klivekit, as there is
+    // no BOM to align them.
+    implementation 'androidx.work:work-runtime:2.10.0'
     // Kotlin request builders used by the optimized_sync workers
-    implementation 'androidx.work:work-runtime-ktx:2.9.0'
+    implementation 'androidx.work:work-runtime-ktx:2.10.0'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.9.0'
+    implementation 'androidx.work:work-rxjava2:2.10.0'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.9.0'
+    androidTestImplementation 'androidx.work:work-testing:2.10.0'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     //annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"

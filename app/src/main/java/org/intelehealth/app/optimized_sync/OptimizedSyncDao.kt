@@ -2,14 +2,21 @@ package org.intelehealth.app.optimized_sync
 
 import android.content.Context
 import android.content.Intent
+import android.os.Handler
+import android.os.Looper
+import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.appointment.api.ApiClientAppointment
 import org.intelehealth.app.appointment.dao.AppointmentDAO
 import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.ImagesDAO
@@ -18,6 +25,8 @@ import org.intelehealth.app.database.dao.ProviderDAO
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall
+import org.intelehealth.app.utilities.NavigationUtils
+import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.PatientsFrameJson
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UrlModifiers
@@ -38,16 +47,92 @@ class OptimizedSyncDao {
 
     private val appContext: Context get() = IntelehealthApplication.getAppContext()
 
+    /**
+     * Runs the whole sequence and reports whether the clinical record reached the server and came back.
+     *
+     * Only the push and the pull decide the outcome. The image steps and the appointment pull are
+     * deliberately excluded: a rejected photograph or an unreachable appointment service says nothing
+     * about whether patient data synced, and the callers that gate their UI on this boolean would read
+     * one as a failed sync. They still run, still log their own failures, and are still retried on the
+     * next cycle — they just do not veto the result.
+     */
     fun periodicSync(): Boolean {
+        val sessionManager = SessionManager(appContext)
+
         val pushSuccess = pushDataApiPeriodicSync()
         val pullSuccess = pullDataBackgroundSync(appContext)
-        val profileImagesPushed = patientProfileImagesPushSync()
-        val userProfileImagePushed = loggedInUserProfileImagesPushSync()
-        val obsImagesDeleted = deleteObsImageSync()
-        val obsImagesPushed = obsImagesPushSync()
 
-        return pushSuccess && pullSuccess && profileImagesPushed &&
-            userProfileImagePushed && obsImagesDeleted && obsImagesPushed
+        patientProfileImagesPushSync()
+        loggedInUserProfileImagesPushSync()
+        deleteObsImageSync()
+        obsImagesPushSync()
+
+        if (!sessionManager.isLogout) appointmentsPullSync()
+
+        NotificationUtils().clearAllNotifications(appContext)
+        enqueuePostSyncBroadcasts()
+
+        return pushSuccess && pullSuccess
+    }
+
+    /**
+     * Replaces the locally held appointment slots with the next thirty days from the server.
+     *
+     * The existing pull enqueues its call and returns immediately, so on the old path this ran
+     * concurrently with the data pull it was supposed to follow. Executing it blocks instead, which also
+     * means the delete-then-insert below cannot interleave with another sync's copy of itself.
+     *
+     * The 401 sign-out is preserved from the asynchronous original, but posted to the main thread: it
+     * ends in a Toast and an Activity launch, and this now runs on a worker thread where the original
+     * ran on Retrofit's callback thread.
+     */
+    private fun appointmentsPullSync(): Boolean {
+        val sessionManager = SessionManager(appContext)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+        val startDate = dateFormat.format(Date())
+        val endDate = dateFormat.format(Date(Date().time + THIRTY_DAYS_IN_MILLIS))
+        val baseUrl = sessionManager.serverUrl + ":3004"
+
+        return try {
+            val response = ApiClientAppointment.getInstance(baseUrl).api
+                .getSlotsAll(startDate, endDate, sessionManager.locationUuid)
+                .execute()
+
+            val slots = response.body()?.data ?: return false
+
+            val appointmentDAO = AppointmentDAO()
+            appointmentDAO.deleteAllAppointments()
+            slots.forEach { slot ->
+                runCatching { appointmentDAO.insert(slot) }
+                    .onFailure { FirebaseCrashlytics.getInstance().recordException(it) }
+            }
+
+            appContext.sendBroadcast(
+                Intent(AppConstants.SYNC_NOTIFY_INTENT_ACTION)
+                    .setPackage(appContext.packageName)
+                    .putExtra("JOB", AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)
+            )
+            broadcastSyncStatus(AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE)
+            true
+        } catch (e: Exception) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            Handler(Looper.getMainLooper()).post {
+                NavigationUtils().logoutOperation(appContext, e)
+            }
+            false
+        }
+    }
+
+    /**
+     * Fires the two post-sync notifications the screens listen for: a prescription-download refresh and
+     * a bare last-sync broadcast. Both are carried by existing workers rather than sent from here so the
+     * short delays they build in are preserved.
+     */
+    private fun enqueuePostSyncBroadcasts() {
+        WorkManager.getInstance(appContext)
+            .beginWith(AppConstants.VISIT_SUMMARY_WORK_REQUEST)
+            .then(AppConstants.LAST_SYNC_WORK_REQUEST)
+            .enqueue()
     }
 
     /**
@@ -306,5 +391,9 @@ class OptimizedSyncDao {
                 .setPackage(appContext.packageName)
                 .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, status)
         )
+    }
+
+    private companion object {
+        const val THIRTY_DAYS_IN_MILLIS = 30L * 24 * 60 * 60 * 1000
     }
 }
