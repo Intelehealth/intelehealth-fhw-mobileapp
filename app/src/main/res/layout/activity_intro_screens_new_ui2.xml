@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:fitsSystemWindows="true"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context=".activities.IntroActivity.IntroScreensActivity_New">
 
     <ImageView

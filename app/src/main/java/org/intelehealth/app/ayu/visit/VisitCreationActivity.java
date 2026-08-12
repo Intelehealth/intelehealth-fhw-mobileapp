@@ -801,23 +801,23 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder stringBuilderEn = new StringBuilder();
         if (mChiefComplainRootNodeList != null) {
-        for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
-            Node node = mChiefComplainRootNodeList.get(i);
-            CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
-            boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
-            String val = formatComplainRecord(node, isAssociateSymptomsType);
-            CustomLog.v(TAG, "val- " + val);
-            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
-            CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
-            String answerInLocaleEn = bullet_arrow + node.findDisplay("en") + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType, "en");
-            CustomLog.v(TAG, "answerInLocaleEn " + answerInLocaleEn);
+            for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
+                Node node = mChiefComplainRootNodeList.get(i);
+                CustomLog.v(TAG, "mChiefComplainRootNodeList- " + node.findDisplay());
+                boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
+                String val = formatComplainRecord(node, isAssociateSymptomsType);
+                CustomLog.v(TAG, "val- " + val);
+                String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
+                CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
+                String answerInLocaleEn = bullet_arrow + node.findDisplay("en") + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType, "en");
+                CustomLog.v(TAG, "answerInLocaleEn " + answerInLocaleEn);
 
-            stringBuilder.append(answerInLocale);
-            stringBuilderEn.append(answerInLocaleEn);
-            if (val == null) {
-                return false;
+                stringBuilder.append(answerInLocale);
+                stringBuilderEn.append(answerInLocaleEn);
+                if (val == null) {
+                    return false;
+                }
             }
-        }
         }
         insertionLocale = stringBuilder.toString();
         insertionLocaleEn = stringBuilderEn.toString();

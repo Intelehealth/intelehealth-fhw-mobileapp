@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
+
     tools:context=".activities.help.activities.ChatSupportHelpActivity_New">
 
     <RelativeLayout

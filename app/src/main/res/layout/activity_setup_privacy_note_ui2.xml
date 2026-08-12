@@ -6,7 +6,6 @@
     android:background="?colorPrimary"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:fitsSystemWindows="true"
     tools:context=".activities.onboarding.SetupPrivacyNoteActivity_New">
 
     <ImageView

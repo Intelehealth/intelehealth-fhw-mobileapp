@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:padding="16dp"
-    android:fitsSystemWindows="true"
+
     tools:context=".ui2.calendarviewcustom.CalendarViewDemoActivity">
 
     <TextView

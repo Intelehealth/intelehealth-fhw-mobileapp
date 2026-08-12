@@ -9,7 +9,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:weightSum="2"
-    android:fitsSystemWindows="true"
     tools:context=".activities.forgotPasswordNew.ForgotPasswordActivity_New">
 
     <LinearLayout
