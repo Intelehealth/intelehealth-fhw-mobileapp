@@ -1,0 +1,161 @@
+<resources>
+    <string name="abdm_error_aadhaar_required">आधार क्रमांक आवश्यक आहे.</string>
+    <string name="abdm_error_aadhaar_invalid">कृपया वैध १२ अंकी आधार क्रमांक प्रविष्ट करा.</string>
+    <string name="abdm_error_mobile_required">मोबाइल क्रमांक आवश्यक आहे.</string>
+    <string name="abdm_error_mobile_invalid">कृपया वैध १० अंकी मोबाइल क्रमांक प्रविष्ट करा.</string>
+    <string name="abdm_error_otp_required">ओटीपी आवश्यक आहे.</string>
+    <string name="abdm_error_otp_invalid">कृपया ६ अंकी ओटीपी प्रविष्ट करा.</string>
+    <string name="abdm_error_server_unavailable">सेवा तात्पुरती उपलब्ध नाही. कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="abdm_error_authentication_failed">प्रमाणीकरण अयशस्वी झाले. कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="abdm_error_generic">काहीतरी चूक झाली आहे. कृपया पुन्हा प्रयत्न करा.</string>
+    <string name="abdm_card_not_available">आभा कार्ड अद्याप तयार झालेले नाही. कृपया काही वेळाने पुन्हा प्रयत्न करा.</string>
+    <string name="max_resend_attempts_exceeded">तुम्ही ओटीपी पुन्हा पाठवण्याच्या प्रयत्नांची कमाल मर्यादा ओलांडली आहे. कृपया पुन्हा प्रयत्न करण्यापूर्वी ३० मिनिटे प्रतीक्षा करा.</string>
+    <string name="abdm_error_otp_rate_limited">या व्यवहारामध्ये ओटीपी पडताळणीच्या प्रयत्नांची कमाल मर्यादा ओलांडली आहे. कृपया ३० मिनिटांनंतर पुन्हा प्रयत्न करा.</string>
+    <string name="entered_aadhaar_or_mobile_number_is_incorrect">प्रविष्ट केलेला आधार क्रमांक किंवा मोबाइल क्रमांक चुकीचा आहे.</string>
+    <string name="please_enter_valid_otp">कृपया वैध ओटीपी प्रविष्ट करा.</string>
+
+    <!-- Aadhaar entry layout -->
+    <string name="abdm_hint_aadhaar_number">तुमचा आधार कार्ड क्रमांक टाका.</string>
+    <string name="abdm_label_agree_terms_conditions"><![CDATA[मी नियम व अटींशी सहमत आहे.]]></string>
+
+    <!-- Create ABHA activity -->
+    <string name="abdm_title_otp_verification">ओटीपी पडताळणी</string>
+    <string name="abdm_subtitle_verify_aadhaar">तुमच्या माहितीची सुरक्षितता आणि गोपनीयतेसाठी आधार कार्डची पडताळणी करा.</string>
+    <string name="abdm_label_otp_sent_to">तुमच्या आधारशी जोडलेल्या मोबाइल क्रमांकावर एक ओटीपी पाठवला जाईल.</string>
+    <string name="abdm_mobile_otp_sent">तुमच्या %1$s या मोबाइल क्रमांकावर पाठवलेला ओटीपी टाका.</string>
+    <string name="abdm_label_no_otp_received">ओटीपी मिळाला नाही?</string>
+    <string name="abdm_action_resend_otp">पुन्हा पाठवा</string>
+    <string name="abdm_label_resend_in">%1$d सेकंदांनंतर पुन्हा पाठवा</string>
+    <string name="abdm_label_retries_left">उरलेले प्रयत्न: %1$d</string>
+    <string name="abdm_hint_mobile_number">मोबाइल क्रमांक टाका</string>
+    <string name="abdm_info_mobile_validation">आधारशी जोडलेला मोबाइल क्रमांक वापरणे योग्य आहे. दुसरा मोबाइल क्रमांक वापरल्यास त्याची पुन्हा पडताळणी करावी लागेल. तसेच, आभाशी संबंधित सर्व संदेशांसाठी तोच क्रमांक वापरला जाईल.</string>
+    <string name="abdm_action_send_otp">ओटीपी पाठवा</string>
+    <string name="abdm_action_verify">पडताळणी करा</string>
+    <string name="abdm_action_submit">जमा करा</string>
+    <string name="abdm_content_desc_back">मागे</string>
+    <string name="abdm_title_patient_name">रुग्णाचे नाव</string>
+    <string name="abdm_hint_patient_name">रुग्णाचे नाव टाका</string>
+    <string name="abdm_error_name_required">कृपया रुग्णाचे नाव टाका</string>
+    <string name="abdm_action_continue">पुढे जा</string>
+    <string name="abdm_loading_sending_otp">ओटीपी पाठवला जात आहे…</string>
+    <string name="abdm_loading_verifying_otp">ओटीपीची पडताळणी सुरू आहे…</string>
+    <string name="abdm_loading_submitting">माहिती जमा केली जात आहे…</string>
+    <string name="abdm_loading_default">कृपया थांबा…</string>
+    <string name="abdm_loading_checking_user">आधीची माहिती तपासली जात आहे…</string>
+    <string name="abdm_loading_linking_address">आभा पत्ता जोडला जात आहे…</string>
+    <string name="abdm_loading_fetching_profiles">प्रोफाइलची माहिती मिळवली जात आहे…</string>
+    <string name="abdm_loading_fetching_profile">प्रोफाइलची माहिती मिळवली जात आहे…</string>
+
+    <!-- ABHA verify flow (wording verbatim from legacy where applicable) -->
+    <string name="abdm_error_abha_required">कृपया योग्य आभा क्रमांक टाका.</string>
+    <string name="abdm_error_abha_number_invalid">कृपया योग्य आभा क्रमांक टाका.</string>
+    <string name="abdm_error_abha_address_invalid">कृपया योग्य आभा पत्ता टाका.</string>
+    <string name="abdm_error_kyc_pending">या आभा पत्त्याची KYC पडताळणी झालेली नाही. आभा कार्ड डाउनलोड करण्यासाठी तुमचा आभा पत्ता आभा क्रमांकाशी जोडा.</string>
+    <string name="abdm_error_no_abha_records">या मोबाइल क्रमांकाशी संबंधित कोणतीही आभा नोंद आढळली नाही. नवीन आभा नोंद तयार करण्यासाठी तुम्हाला ‘आभा तयार करा’ या स्क्रीनवर नेले जाईल.</string>
+    <string name="abdm_error_no_abha_records_aadhaar">या आधार क्रमांकाशी संबंधित कोणतीही आभा नोंद आढळली नाही. नवीन आभा नोंद तयार करण्यासाठी तुम्हाला ‘आभा तयार करा’ या स्क्रीनवर नेले जाईल.</string>
+    <!-- loginOTPReq 404 messages, method-specific (verbatim from legacy) -->
+    <string name="abdm_error_invalid_abha">कृपया योग्य आभा क्रमांक टाका.</string>
+    <string name="abdm_error_invalid_aadhaar">कृपया योग्य आधार क्रमांक टाका.</string>
+    <string name="abdm_error_mobile_no_match">तुम्ही टाकलेला मोबाइल क्रमांक कोणत्याही नोंदीशी जुळत नाही. कृपया दुसरा मोबाइल क्रमांक टाका.</string>
+
+    <!-- ABHA verify screen (verbatim from legacy) -->
+    <string name="abdm_subtitle_verify">तुमच्या माहितीची सुरक्षितता आणि गोपनीयतेसाठी आधार कार्ड, मोबाइल क्रमांक किंवा आभाची पडताळणी करा.</string>
+    <string name="abdm_tab_aadhaar_number">आधार क्रमांक</string>
+    <string name="abdm_tab_mobile_number">मोबाइल क्रमांक</string>
+    <string name="abdm_tab_abha">आभा</string>
+    <string name="abdm_hint_abha_number">१४ अंकी आभा आयडी क्रमांक टाका.</string>
+    <string name="abdm_hint_abha_address">आभा पत्ता टाका (उदा. address%1$s).</string>
+    <string name="abdm_label_or">किंवा</string>
+    <string name="abdm_action_search_profiles">प्रोफाइल शोधा</string>
+
+    <!-- OTP-channel picker dialog (verbatim from legacy) -->
+    <string name="abdm_otp_type_prompt">याच्याशी जोडलेल्या मोबाइल क्रमांकावर ओटीपी पाठवा</string>
+    <string name="abdm_otp_type_aadhaar">आधार</string>
+    <string name="abdm_otp_type_mobile">मोबाइल</string>
+    <string name="abdm_action_dialog_continue">पुढे जा</string>
+
+    <!-- ABHA account picker dialog (verbatim from legacy) -->
+    <string name="abdm_select_abha_account">कृपया आभा खाते निवडा.</string>
+    <string name="abdm_account_index">अनुक्रमांक: %1$s</string>
+    <string name="abdm_account_name">नाव: %1$s</string>
+    <string name="abdm_account_number">आभा क्रमांक: %1$s</string>
+    <string name="abdm_account_gender">लिंग: %1$s</string>
+    <string name="abdm_account_status_registered">स्थिती: इंटेलिहेल्थमध्ये नोंदणी झालेली आहे.</string>
+    <string name="abdm_account_status_not_registered">स्थिती: इंटेलिहेल्थमध्ये नोंदणी झालेली नाही.</string>
+
+    <!-- Compare-data screen (verbatim from legacy) -->
+    <string name="abdm_compare_title">माहितीची तुलना करा</string>
+    <string name="abdm_compare_header_hmis">एचएमआयएसमधील माहिती</string>
+    <string name="abdm_compare_header_abha">आभामधील माहिती</string>
+    <string name="abdm_field_first_name">पहिले नाव</string>
+    <string name="abdm_field_last_name">आडनाव</string>
+    <string name="abdm_field_dob">जन्मतारीख</string>
+    <string name="abdm_field_gender">लिंग</string>
+    <string name="abdm_field_address">पत्ता</string>
+    <string name="abdm_field_pin_code">पिन कोड</string>
+    <string name="abdm_field_abha_address">आभा पत्ता</string>
+    <string name="abdm_field_abha_number">आभा क्रमांक</string>
+    <string name="abdm_field_phone_number">मोबाइल क्रमांक</string>
+    <string name="abdm_compare_confirm">निवडलेली माहिती तपासा आणि जतन करा</string>
+    <string name="abdm_compare_save_title">माहिती जतन करायची आहे का?</string>
+    <string name="abdm_compare_save_message">तुम्हाला रुग्णाची माहिती जतन करायची आहे का?</string>
+    <string name="abdm_action_save">जतन करा</string>
+    <string name="abdm_action_cancel">रद्द करा</string>
+    <string name="abdm_compare_save_failed">रुग्णाची माहिती अपडेट करता आली नाही. कृपया थोड्या वेळाने पुन्हा प्रयत्न करा.</string>
+    <string name="abdm_not_found">माहिती आढळली नाही</string>
+
+    <!-- ABHA choice dialog (module entry point) -->
+    <string name="abdm_title_abha">आभा</string>
+    <string name="do_you_have_an_abha">तुमच्याकडे आभा क्रमांक आहे का?</string>
+    <string name="abdm_action_create_abha">आभा तयार करा</string>
+    <string name="abdm_action_continue_without_abha">आभाशिवाय पुढे जा</string>
+    <string name="abdm_action_yes">होय</string>
+    <string name="abdm_content_desc_icon">चिन्ह</string>
+
+    <!-- ABHA address suggestions screen (verbatim from legacy) -->
+    <string name="select_an_abha_address">आभा पत्ता निवडा</string>
+    <string name="please_select_an_abha_address_from_the_suggestions_below">\*कृपया खाली दिलेल्या पर्यायांमधून आभा पत्ता निवडा.</string>
+    <string name="abha_address">आभा पत्ता</string>
+    <string name="submit">जमा करा</string>
+    <string name="please_select_abha_address">कृपया आभा पत्ता निवडा.</string>
+    <string name="length_validation">आभा पत्ता कमीत कमी ८ आणि जास्तीत जास्त १८ अक्षरांचा असावा.</string>
+    <string name="characters_validation">आभा पत्त्यामध्ये फक्त अक्षरे, अंक, एक पूर्णविराम (.) आणि/किंवा एक अंडरस्कोअर (\_) वापरता येईल.</string>
+    <string name="special_characters_position_validation">पूर्णविराम (.) किंवा अंडरस्कोअर (\_) सुरुवातीला किंवा शेवटी नसावा; तो मधोमध असावा.</string>
+    <string name="special_characters_count_validation">आभा पत्त्यामध्ये फक्त एक पूर्णविराम (.) आणि/किंवा एक अंडरस्कोअर (\_) वापरता येईल.</string>
+    <string name="abha_address_suffix_not_allowed_validation">आभा पत्त्याच्या शेवटी (%1$s) असू नये.</string>
+    <string name="please_click_on_submit_button_to_proceed">पुढे जाण्यासाठी कृपया ‘जमा करा’ बटणावर क्लिक करा.</string>
+    <string name="abdm_error_abha_address_exists">हा आभा पत्ता आधीपासून अस्तित्वात आहे. कृपया दुसरा पत्ता वापरा.</string>
+    <string name="abdm_error_abha_address_link_failed">आभा पत्ता तयार झाला आहे; मात्र तो या रुग्णाशी जोडता आला नाही. कृपया मागे जाऊन पुन्हा प्रयत्न करा.</string>
+
+    <!-- Existing-address checklist dialog (verbatim from legacy) -->
+    <string name="you_have_an_existing_abha_address_present">तुमचे आभा पत्ते आधीपासून उपलब्ध आहेत. पुढे जाण्यासाठी हवा असलेला आभा पत्ता निवडा किंवा नवीन आभा पत्ता तयार करण्यासाठी ‘नवीन तयार करा’ यावर क्लिक करा.</string>
+    <string name="proceed">पुढे जा</string>
+    <string name="create_new">नवीन तयार करा</string>
+    <string name="preferred_icon_text">P</string>
+    <string name="please_select_an_abha_address_before_proceeding">पुढे जाण्यापूर्वी कृपया आभा पत्ता निवडा.</string>
+    <string name="you_have_more_than_six_abha_addresses_error">जास्तीत जास्त ६ आभा पत्ते तयार करता येतात. कृपया वरील यादीतून एक आभा पत्ता निवडा.</string>
+    <string name="abdm_loading_fetching_suggestions">पर्याय मिळवले जात आहेत…</string>
+    <string name="abdm_loading_saving_address">आभा पत्ता जतन केला जात आहे…</string>
+
+    <!-- No-internet guard (verbatim from legacy) -->
+    <string name="error_network" translatable="false">[do not translate]</string>
+    <string name="you_need_an_active_internet_connection_to_use_this_feature">हे वैशिष्ट्य वापरण्यासाठी इंटरनेट कनेक्शन सुरू असणे आवश्यक आहे.</string>
+    <string name="ok">ठीक आहे</string>
+
+    <!-- ABHA address rules help (info dialog on suggestions screen, verbatim from legacy) -->
+    <string name="abdm_abha_address_rules">१. किमान लांबी – ८ अक्षरे                                                                                 &lt;br&gt;२. कमाल लांबी – १८ अक्षरे                                                                                  ३. विशेष चिन्हे – एक पूर्णविराम (.) आणि/किंवा एक अंडरस्कोअर (\_) वापरता येईल.                              &lt;br&gt;४. पूर्णविराम (.) आणि अंडरस्कोअर (\_) ही चिन्हे मधोमध असावीत. ती सुरुवातीला किंवा शेवटी वापरता येणार नाहीत. \</string>
+
+    <!-- Consent dialog (verbatim from legacy) -->
+    <string name="abha_consent">आभासाठी संमती</string>
+    <string name="abdm_consent">मी याद्वारे घोषित करतो/करते की, केवळ आभा क्रमांक तयार करण्यासाठी मी UIDAI कडून जारी करण्यात आलेला माझा आधार क्रमांक आणि वैयक्तिक माहिती राष्ट्रीय आरोग्य प्राधिकरणाला (NHA) स्वेच्छेने देत आहे.&lt;br&gt;&lt;br&gt;मला समजले आहे की, आरोग्यसेवा देण्यासह ABDM कडून वेळोवेळी सूचित केल्या जाणाऱ्या उद्देशांसाठी माझा आभा क्रमांक वापरला आणि शेअर केला जाऊ शकतो. माझी वैयक्तिक ओळख पटवणारी माहिती—नाव, पत्ता, वय, जन्मतारीख, लिंग आणि छायाचित्र—राष्ट्रीय डिजिटल आरोग्य परिसंस्थेमध्ये (NDHE) कार्यरत असलेल्या संस्थांना उपलब्ध करून दिली जाऊ शकते, याची मला जाणीव आहे. यामध्ये आयुष्मान भारत डिजिटल मिशनमध्ये (ABDM) नोंदणीकृत किंवा त्याच्याशी जोडलेले आरोग्यसेवा व्यावसायिक (उदा. डॉक्टर), आरोग्य सुविधा (उदा. रुग्णालये आणि प्रयोगशाळा) तसेच आरोग्यविषयक माहितीचे व्यवस्थापन करणाऱ्या संस्था (उदा. आरोग्य कार्यक्रम) यांचा समावेश होतो.&lt;br&gt;&lt;br&gt;वरील उद्देशासाठी आधार (आर्थिक आणि इतर अनुदाने, लाभ व सेवा यांचे लक्ष्यित वितरण) अधिनियम, २०१६ मधील तरतुदींनुसार UIDAI मार्फत आधार-आधारित पडताळणी करण्यासाठी माझा आधार क्रमांक वापरण्याची परवानगी मी NHA ला देत आहे. पडताळणी यशस्वी झाल्यानंतर UIDAI माझी ई-केवायसी माहिती किंवा ‘होय’ असा प्रतिसाद NHA सोबत शेअर करेल, हे मला समजले आहे.&lt;br&gt;&lt;br&gt;आधाराव्यतिरिक्त इतर ओळखपत्रे वापरण्याचा पर्याय उपलब्ध असल्याची माहिती मला देण्यात आली आहे. तरीही, NDHE अंतर्गत मिळणाऱ्या सुविधांचा लाभ घेण्यासाठी मी स्वतःहून आधार क्रमांक वापरण्याचा निर्णय घेतला आहे. आधार क्रमांक/VID क्रमांक वगळता, माझी वैयक्तिक ओळख पटवणारी इतर माहिती वरील उद्देशांसाठी वापरली आणि शेअर केली जाऊ शकते, याची मला जाणीव आहे.&lt;br&gt;&lt;br&gt;आधार अधिनियम आणि नियमांमधील तरतुदींनुसार ही संमती कोणत्याही वेळी मागे घेण्याचा अधिकार मला आहे.&lt;br&gt;&lt;br&gt;</string>
+    <string name="decline">असहमत</string>
+    <string name="accept_new">सहमत</string>
+    <string name="i_hereby_declare_that">मी याद्वारे घोषित करतो/करते की:</string>
+    <string name="abha_consent_line1"><![CDATA[आयुष्मान भारत आरोग्य खाते क्रमांक \<b>(“आभा क्रमांक”)\</b> आणि आयुष्मान भारत आरोग्य खाते पत्ता \<b>(“आभा पत्ता”)\</b> तयार करण्यासाठी मी भारतीय विशिष्ट ओळख प्राधिकरणाने \<b>(“UIDAI”)\</b> जारी केलेला माझा आधार क्रमांक/व्हर्च्युअल आयडी आणि माझी वैयक्तिक माहिती स्वेच्छेने देत आहे. वरील उद्देशासाठी आधार (आर्थिक आणि इतर अनुदाने, लाभ व सेवा यांचे लक्ष्यित वितरण) अधिनियम, २०१६ मधील तरतुदींनुसार UIDAI मार्फत आधार-आधारित पडताळणी करण्यासाठी माझा आधार क्रमांक/व्हर्च्युअल आयडी वापरण्याची परवानगी मी NHA ला देत आहे. पडताळणी यशस्वी झाल्यानंतर UIDAI माझी ई-केवायसी माहिती किंवा ‘होय’ असा प्रतिसाद NHA सोबत शेअर करेल, हे मला समजले आहे.]]></string>
+    <string name="abha_consent_line2"><![CDATA[मला आधाराऐवजी इतर कागदपत्राचा वापर करून आयुष्मान भारत आरोग्य खाते क्रमांक \<b>(“आभा क्रमांक”)\</b> आणि आयुष्मान भारत आरोग्य खाते पत्ता \<b>(“आभा पत्ता”)\</b> तयार करायचा आहे. (पुढे जाण्यासाठी येथे क्लिक करा.)]]></string>
+    <string name="abha_consent_line3">माझ्या पूर्वीच्या आरोग्य नोंदी आणि या भेटीदरम्यान तयार होणाऱ्या आरोग्य नोंदी जोडण्यासाठी माझा आभा पत्ता आणि आभा क्रमांक वापरण्यास मी संमती देत आहे.</string>
+    <string name="abha_consent_line4">या भेटीदरम्यान मला आरोग्यसेवा देण्यासाठी माझ्या सर्व आरोग्य नोंदी आरोग्यसेवा देणाऱ्यांसोबत शेअर करण्याची मी परवानगी देत आहे.</string>
+    <string name="abha_consent_line5">सार्वजनिक आरोग्याच्या उद्देशांसाठी माझ्या आरोग्य नोंदींमधून माझी ओळख दर्शवणारी माहिती काढून त्यांचा पुढील वापर करण्यास मी संमती देत आहे.</string>
+    <string name="abha_consent_line6">मी, %1$s, खात्री देतो/देते की वरील उद्देशांसाठी असलेल्या संमतीमधील सर्व माहिती मी लाभार्थ्याला योग्य प्रकारे सांगितली आणि समजावून दिली आहे.</string>
+    <string name="abha_consent_line7">मी, %1$s, यांना वरील संमतीबाबतची माहिती समजावून सांगण्यात आली आहे आणि मी वरील उद्देशांसाठी माझी संमती देत आहे.</string>
+</resources>
