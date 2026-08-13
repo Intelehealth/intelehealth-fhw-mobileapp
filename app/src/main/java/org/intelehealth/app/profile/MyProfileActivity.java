@@ -76,9 +76,8 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
-import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
-import org.intelehealth.app.database.dao.SyncDAO;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 import org.intelehealth.app.models.MyProfilePOJO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.hwprofile.PersonAttributes;
@@ -992,8 +991,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
                     if (isUpdated)
                         snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new), true);
-                    SyncDAO syncDAO = new SyncDAO();
-                    syncDAO.pushDataApi();
+                    OptimizedSyncWorker.enqueueOneTimeWork(MyProfileActivity.this);
 
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -1074,11 +1072,7 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        if (NetworkConnection.isOnline(MyProfileActivity.this)) {
-            ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
-            imagesPushDAO.loggedInUserProfileImagesPush();
-        }
-
+        OptimizedSyncWorker.enqueueOneTimeWork(MyProfileActivity.this);
     }
 
     @Override

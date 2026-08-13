@@ -21,6 +21,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- <uses-permission android:name="android.permission.SEND_SMS" /> -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- Required from API 34 for the sync worker's data-sync foreground service. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -466,6 +468,16 @@
             android:enabled="true"
             android:exported="false"
             android:permission="" />
+
+        <!--
+            WorkManager declares this service without a foregroundServiceType, so the dataSync type the
+            sync worker asks for in its ForegroundInfo is rejected by the platform. Merged in here rather
+            than replaced, so the library keeps ownership of every other attribute.
+        -->
+        <service
+            android:name="androidx.work.impl.foreground.SystemForegroundService"
+            android:foregroundServiceType="dataSync"
+            tools:node="merge" />
 
         <receiver
             android:name=".syncModule.BootCompleteReceiver"

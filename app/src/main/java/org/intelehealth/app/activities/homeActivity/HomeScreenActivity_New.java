@@ -66,12 +66,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -105,7 +100,6 @@ import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
 import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -762,7 +756,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));*/
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            OptimizedSyncWorker.enqueuePeriodicWork(this);
             //saveToken();
 //            requestPermission();
         }
@@ -1351,7 +1345,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        OptimizedSyncWorker.enqueuePeriodicWork(HomeScreenActivity_New.this);
                     }
                 }, 10000);
             }
@@ -1771,21 +1765,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void syncDataFromHome() {
-        Data workData = new Data.Builder()
-                .putString("fromActivity", "home")
-                .build();
-
-        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(SyncWorkerForHomeScreen.class)
-                .setInputData(workData)
-                .setConstraints(
-                        new Constraints.Builder()
-                                .setRequiredNetworkType(NetworkType.CONNECTED)
-                                .build()
-                )
-                .build();
-
-        WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .enqueue(syncWorkRequest);
+        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext());
     }
 
 }
