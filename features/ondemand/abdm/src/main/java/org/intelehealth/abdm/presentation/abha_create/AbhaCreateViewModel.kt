@@ -158,10 +158,38 @@ internal class AbhaCreateViewModel @Inject constructor(
         val isNewUser = session.isNew && isAbhaNumberTheOnlyAddress
 
         if (isNewUser) {
-            _events.send(AbhaCreateEvent.NavigateToSuggestions(session))
+            handleNewUser(session)
         } else {
             handleExistingUser(session)
         }
+    }
+
+    /**
+     * Routes a freshly enrolled ABHA to the suggestions screen, resolving the patient locally first.
+     *
+     * The HMIS server is deliberately not asked here. ABDM minted this ABHA number seconds ago, so the
+     * middleware cannot know it and checkExistingUser could only answer "not found" — and the patient
+     * this exists for is invisible to that lookup regardless, because they registered before they had
+     * an ABHA to be keyed on. Matching them on phone and date of birth instead means the address chosen
+     * on the next screen lands on the record they already have, rather than opening a second one for
+     * the same person.
+     *
+     * Nothing is written here: the identity is only remembered, and [onSuggestionsAddressChosen] does
+     * the linking once there is an address to link. No match simply leaves the fields null and the flow
+     * behaves exactly as it did before.
+     */
+    private suspend fun handleNewUser(session: AbhaCreateSession) {
+        patientLocalStore.findPatientForComparison(
+            abhaNumber = session.profile.abhaNumber,
+            phoneNumber = session.profile.mobile,
+            dateOfBirth = session.profile.normalisedDateOfBirth(),
+            firstName = session.profile.firstName,
+        )?.let { local ->
+            existingPatientUuid = local.uuid
+            existingPatientOpenMrsId = local.openMrsId
+        }
+
+        _events.send(AbhaCreateEvent.NavigateToSuggestions(session))
     }
 
     /** Checks the HMIS server for an existing patient and routes accordingly. */
@@ -269,14 +297,19 @@ internal class AbhaCreateViewModel @Inject constructor(
     /**
      * Called after the suggestions screen registers a freshly chosen address. For an existing
      * HMIS patient we also link the new address to their record before finishing.
+     *
+     * Keyed on the uuid rather than the OpenMRS id, because a patient matched locally by [handleNewUser]
+     * may not have one yet: it is only filled in once a push has been acknowledged, so anyone registered
+     * offline still carries "NA" here. Gating on that placeholder sent exactly those patients down the
+     * new-patient path and opened the duplicate this is meant to prevent. The uuid exists from the moment
+     * the record does.
      */
     fun onSuggestionsAddressChosen(chosenAddress: String) {
         val session = pendingSession ?: return
         val reordered = listOf(chosenAddress) +
             session.profile.phrAddresses.filterNot { it == chosenAddress }
-        val openMrsId = existingPatientOpenMrsId
 
-        if (openMrsId.isNullOrBlank() || openMrsId.equals(NA, ignoreCase = true)) {
+        if (existingPatientUuid.isNullOrBlank()) {
             viewModelScope.launch {
                 _events.send(
                     AbhaCreateEvent.CompleteWithResult(
