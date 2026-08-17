@@ -19,6 +19,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.reactnative.QueueCardUpdater
+import org.intelehealth.app.reactnative.StatusBannerUpdater
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -74,6 +75,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         }
                     }
                 }
+            } else if (data["type"] == "queue_status") {
+                // Refresh the home status banner only: persist the latest payload
+                // and push it to the live banner if mounted. No status-bar
+                // notification is shown for queue status updates.
+                StatusBannerUpdater.handleBannerNotification(context, data)
             } else {
                 if(data.isNotEmpty() && notification == null){
                     val title = (data["title"] ?: "").lowercase()

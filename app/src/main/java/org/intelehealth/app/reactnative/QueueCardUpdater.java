@@ -7,16 +7,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.bridge.Arguments;
-import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.ArrayList;
@@ -124,35 +119,12 @@ public final class QueueCardUpdater {
         }
     }
 
-    /** Emit the card update to JS, if a React context is currently available. */
+    /**
+     * Emit the card update to JS. A no-op when RN isn't running (app in
+     * background); the persisted copy is picked up when the card next mounts.
+     */
     private static void emit(PatientData patient) {
-        try {
-            ReactContext reactContext = getCurrentReactContext();
-            if (reactContext == null) {
-                // App is backgrounded / RN not started. The persisted copy will
-                // be picked up when the home card next mounts.
-                Log.d(TAG, "emit skipped: no active React context");
-                return;
-            }
-            reactContext
-                    .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(EVENT_QUEUE_CARD_UPDATE, toWritableMap(patient));
-        } catch (Exception e) {
-            Log.e(TAG, "emit failed: " + e.getMessage());
-        }
-    }
-
-    @Nullable
-    private static ReactContext getCurrentReactContext() {
-        IntelehealthApplication app = IntelehealthApplication.getInstance();
-        if (app == null) {
-            return null;
-        }
-        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-            return app.getReactHost().getCurrentReactContext();
-        }
-        ReactInstanceManager manager = app.getReactNativeHost().getReactInstanceManager();
-        return manager.getCurrentReactContext();
+        RnEventEmitter.emit(EVENT_QUEUE_CARD_UPDATE, toWritableMap(patient));
     }
 
     /** Build the JS props map that mirrors the QueueCardProps shape. */

@@ -26,6 +26,11 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         // notifications so the home card reflects the newest queue state even
         // after the app was backgrounded when the notification arrived.
         const val QUEUE_CARD_DATA = "queue_card_data"
+
+        // Latest home status-banner payload (JSON), persisted from "queue_status"
+        // FCM notifications so the banner reflects the newest queue status even
+        // after the app was backgrounded when the notification arrived.
+        const val STATUS_BANNER_DATA = "status_banner_data"
     }
 
     fun save(key: String?, value: Any?) {

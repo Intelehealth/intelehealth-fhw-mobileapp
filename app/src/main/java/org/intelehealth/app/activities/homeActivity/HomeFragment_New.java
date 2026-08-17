@@ -24,6 +24,8 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.reactnative.PatientData;
 import org.intelehealth.app.reactnative.QueueCardUpdater;
+import org.intelehealth.app.reactnative.StatusBannerData;
+import org.intelehealth.app.reactnative.StatusBannerUpdater;
 import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -167,11 +169,20 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
      * passed as launch options so it can later be driven by real queue status.
      */
     private void addStatusBannerLayout() {
-        Bundle bannerProps = new Bundle();
-        bannerProps.putString("variant", "alert");
-        bannerProps.putString("title", getString(R.string.doctor_on_break));
-        bannerProps.putString("subtitle", getString(R.string.queue_paused));
-        bannerProps.putString("actionLabel", getString(R.string.view_queue));
+        // Prefer the latest banner payload persisted from a "queue_status" FCM
+        // notification so the banner reflects real queue status; fall back to the
+        // default "Doctor is on Break" banner when none has been received yet.
+        StatusBannerData banner = StatusBannerUpdater.getPersisted(requireContext());
+        Bundle bannerProps;
+        if (banner != null) {
+            bannerProps = StatusBannerUpdater.toBundle(banner);
+        } else {
+            bannerProps = new Bundle();
+            bannerProps.putString("variant", "alert");
+            bannerProps.putString("title", getString(R.string.doctor_on_break));
+            bannerProps.putString("subtitle", getString(R.string.queue_paused));
+            bannerProps.putString("actionLabel", getString(R.string.view_queue));
+        }
 
         ReactFragment bannerFragment = new ReactFragment.Builder()
                 .setComponentName("StatusBannerModule")
