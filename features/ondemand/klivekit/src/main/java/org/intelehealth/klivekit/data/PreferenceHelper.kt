@@ -21,6 +21,11 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         // "Next In Queue" card, and the Queue bottom-nav tab (which otherwise
         // shows Help).
         const val IS_QMS_CONFIGURE = "isQmsConfigure"
+
+        // Latest "Next In Queue" card payload (JSON), persisted from FCM
+        // notifications so the home card reflects the newest queue state even
+        // after the app was backgrounded when the notification arrived.
+        const val QUEUE_CARD_DATA = "queue_card_data"
     }
 
     fun save(key: String?, value: Any?) {

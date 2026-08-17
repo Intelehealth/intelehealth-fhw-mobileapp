@@ -23,6 +23,7 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.reactnative.PatientData;
+import org.intelehealth.app.reactnative.QueueCardUpdater;
 import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -126,31 +127,27 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private void addQueueLayout() {
-        ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
-
-        PatientData currentPatient = new PatientData(
-                "Q-104",
-                "Anthony G",
-                "M",
-                50,
-                "ID-987654jK",
-                symptomList,
-                2,
-                8,
-                "https://unsplash.com"
-        );
+        // Prefer the latest queue payload persisted from a "Next In Queue" FCM
+        // notification so the card reflects real queue state; fall back to mock
+        // data when no notification has been received yet.
+        PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
+        if (currentPatient == null) {
+            ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
+            currentPatient = new PatientData(
+                    "Q-104",
+                    "Anthony G",
+                    "M",
+                    50,
+                    "ID-987654jK",
+                    symptomList,
+                    2,
+                    8,
+                    "https://unsplash.com"
+            );
+        }
 
         // 3. Map your custom data class parameters directly into the Android Bundle payload
-        Bundle initialProperties = new Bundle();
-        initialProperties.putString("queueNumber", currentPatient.getQueueNumber());
-        initialProperties.putString("patientName", currentPatient.getPatientName());
-        initialProperties.putString("gender", currentPatient.getGender());
-        initialProperties.putInt("age", currentPatient.getAge());
-        initialProperties.putString("patientId", currentPatient.getPatientId());
-        initialProperties.putStringArrayList("symptoms", currentPatient.getSymptoms()); // Maps perfectly to a JavaScript Array
-        initialProperties.putInt("position", currentPatient.getPosition());
-        initialProperties.putInt("waitTimeMinutes", currentPatient.getWaitTimeMinutes());
-        initialProperties.putString("avatarUrl", currentPatient.getAvatarUrl());
+        Bundle initialProperties = QueueCardUpdater.toBundle(currentPatient);
 
         // 4. Boot the pipeline layer inside your execution lifecycle hook
         ReactFragment reactFragment = new ReactFragment.Builder()
