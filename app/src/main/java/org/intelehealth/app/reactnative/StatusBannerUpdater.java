@@ -11,7 +11,7 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
 
-import org.intelehealth.klivekit.data.PreferenceHelper;+
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.Map;
 
