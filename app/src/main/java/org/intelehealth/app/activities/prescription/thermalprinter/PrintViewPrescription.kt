@@ -12,9 +12,12 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
+import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.SpecialtyNotesProvider
+import org.intelehealth.app.utilities.UuidDictionary
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -167,6 +170,10 @@ class PrintViewPrescription(
         return adviceWeb
     }
 
+    /**
+     * The slip header. The ABHA lines are appended only when present, so an ordinary patient's slip is
+     * unchanged rather than carrying an empty row — paper on a 58mm roll is worth more than a label.
+     */
     private fun formatPatientDetails(
         heading: String,
         heading2: String,
@@ -174,7 +181,19 @@ class PrintViewPrescription(
         age: Int,
         mGender: String,
     ): String {
-        return "<b id=\"heading_1\">$heading</b><br><b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">$heading2</b><br> ----------------------------------------------- <br><br><b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">$mPatientName</b><br><id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: $age | Gender: $mGender<br><br>"
+        val abhaLines = listOf(
+            AbhaPrescriptionFields.line(context, R.string.label_abha_number, patient.abhaNumber),
+            AbhaPrescriptionFields.line(
+                context,
+                R.string.label_abha_address,
+                VisitAttributeListDAO().getVisitAttributesList_specificVisit(
+                    dataModel.visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
+                )
+            ),
+        ).filter { it.isNotEmpty() }
+            .joinToString("") { "<span style=\"font-size:11pt; margin: 0px; padding: 0px;\">$it</span><br>" }
+
+        return "<b id=\"heading_1\">$heading</b><br><b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">$heading2</b><br> ----------------------------------------------- <br><br><b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">$mPatientName</b><br><id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: $age | Gender: $mGender<br>" + abhaLines + "<br>"
     }
 
     private fun formatDiagnostics(): String {
