@@ -183,6 +183,7 @@ import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.config.presenter.fields.data.DiagnosticsRepository;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.DiagnosticsViewModelFactory;
@@ -239,6 +240,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     //SQLiteDatabase db;
     Button btn_vs_sendvisit;
     private Context context;
+    private CustomProgressDialog progressDialog;
     private ImageButton btn_up_header, btn_up_vitals_header, btn_up_visitreason_header, btn_up_phyexam_header, btn_up_medhist_header, btn_up_addnotes_vd_header;
     private RelativeLayout vitals_header_relative, chiefcomplaint_header_relative, physExam_header_relative,
             pathistory_header_relative, addnotes_vd_header_relative, special_vd_header_relative, associated_sym_relative,
@@ -3225,6 +3227,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         CustomLog.d("visitUUID", "upload_click: " + visitUUID);
 
+        if (progressDialog == null) {
+            progressDialog = new CustomProgressDialog(context);
+        }
+        progressDialog.show(getString(R.string.please_wait));
+
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
             viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
@@ -3400,6 +3407,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
                             //
+                            uploadButton.setText(getString(R.string.go_to_home));
+                            uploadButton.setOnClickListener(v -> {
+                                Intent goHomeIntent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+                                startActivity(goHomeIntent);
+                            });
                             showVisitID();
                             CustomLog.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -3416,15 +3428,24 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                         }
                         uploaded = true;
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                     }
                 }, 4000);
             } else {
                 add_additional_doc.setVisibility(View.GONE);
                 fetchingIntent();
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         } else {
             showSelectSpeciliatyErrorDialog();
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
 
