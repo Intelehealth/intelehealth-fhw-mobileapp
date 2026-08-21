@@ -12,8 +12,14 @@ import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
 
+import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
@@ -53,7 +59,7 @@ public final class QueueCardUpdater {
         if (context == null || data == null) {
             return;
         }
-        PatientData patient = parse(data);
+        PatientData patient = parse(context, data);
         persist(context, patient);
         emit(patient);
     }
@@ -78,13 +84,48 @@ public final class QueueCardUpdater {
     }
 
     /** Map the FCM string payload onto the card's typed fields. */
-    private static PatientData parse(Map<String, String> data) {
+    private static PatientData parse(Context context, Map<String, String> data) {
         String patientName = data.get("patientName");
         if (TextUtils.isEmpty(patientName)) {
             patientName = join(data.get("patientFirstName"), data.get("patientLastName"));
         }
 
         String patientId = firstNonEmpty(data.get("patientId"), data.get("patientOpenMrsId"));
+        String gender = data.get("gender");
+        int age = parseInt(data.get("age"));
+
+        // A "Queue update" notification identifies the patient only by UUID, so
+        // look the display fields (name, id, gender, age) up from the local DB
+        // for any the payload didn't already carry.
+        String patientUuid = data.get("patientUuid");
+        if (!TextUtils.isEmpty(patientUuid) && (TextUtils.isEmpty(patientName)
+                || TextUtils.isEmpty(patientId) || TextUtils.isEmpty(gender) || age == 0)) {
+            try {
+                Map<String, String> details = new PatientsDAO().getQueueCardPatientDetails(patientUuid);
+                if (!details.isEmpty()) {
+                    if (TextUtils.isEmpty(patientName)) {
+                        patientName = join(details.get("first_name"), details.get("last_name"));
+                    }
+                    if (TextUtils.isEmpty(patientId)) {
+                        patientId = emptyToNull(details.get("openmrs_id"));
+                    }
+                    if (TextUtils.isEmpty(gender)) {
+                        gender = details.get("gender");
+                    }
+                    if (age == 0) {
+                        age = DateAndTimeUtils.getAge(details.get("date_of_birth"), context);
+                    }
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "patient lookup failed: " + e.getMessage());
+            }
+        }
+
+        // The "Queue update" payload carries an ISO-8601 ETA (etaTime) instead
+        // of a plain minute count; fall back to it when waitTimeMinutes is absent.
+        int waitTimeMinutes = data.containsKey("waitTimeMinutes")
+                ? parseInt(data.get("waitTimeMinutes"))
+                : minutesUntil(data.get("etaTime"));
 
         ArrayList<String> symptoms = new ArrayList<>();
         String symptomsRaw = data.get("symptoms");
@@ -97,15 +138,22 @@ public final class QueueCardUpdater {
             }
         }
 
+        // A "Queue update" notification carries no symptom list, only the
+        // visitUuid. The symptoms shown on the card are that visit's chief
+        // complaint, stored as an OBS; pull and parse them from the local DB.
+        if (symptoms.isEmpty()) {
+            symptoms = fetchSymptoms(data.get("visitUuid"));
+        }
+
         return new PatientData(
                 emptyToNull(data.get("queueNumber")),
-                patientName,
-                emptyToNull(data.get("gender")),
-                parseInt(data.get("age")),
+                emptyToNull(patientName),
+                emptyToNull(gender),
+                age,
                 patientId,
                 symptoms,
                 parseInt(data.get("position")),
-                parseInt(data.get("waitTimeMinutes")),
+                waitTimeMinutes,
                 emptyToNull(data.get("avatarUrl"))
         );
     }
@@ -165,6 +213,65 @@ public final class QueueCardUpdater {
         bundle.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         bundle.putString("avatarUrl", patient.getAvatarUrl());
         return bundle;
+    }
+
+    /**
+     * The symptom tags for the card: the chief complaint recorded against the
+     * given visit. {@link EncounterDAO#getChiefComplaint(String)} returns the
+     * raw complaint blob (e.g. {@code Fever:...►Cough:...}); this extracts just
+     * the complaint names, mirroring how the visit details screen renders them.
+     * Returns an empty list when the visit or complaint isn't available locally.
+     */
+    private static ArrayList<String> fetchSymptoms(@Nullable String visitUuid) {
+        ArrayList<String> symptoms = new ArrayList<>();
+        if (TextUtils.isEmpty(visitUuid)) {
+            return symptoms;
+        }
+        try {
+            String raw = EncounterDAO.getChiefComplaint(visitUuid);
+            if (TextUtils.isEmpty(raw)) {
+                return symptoms;
+            }
+            raw = raw.replace("?<b>", Node.bullet_arrow);
+            for (String part : StringUtils.split(raw, Node.bullet_arrow)) {
+                if (part == null) {
+                    continue;
+                }
+                int colon = part.indexOf(':');
+                String name = (colon >= 0 ? part.substring(0, colon) : part)
+                        .replaceAll("<b>", "")
+                        .replaceAll("</b>", "")
+                        .replaceAll(Node.ASSOCIATE_SYMPTOMS, "")
+                        .trim();
+                if (!name.isEmpty() && !symptoms.contains(name)) {
+                    symptoms.add(name);
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "fetchSymptoms failed: " + e.getMessage());
+        }
+        return symptoms;
+    }
+
+    /**
+     * Minutes from now until an ISO-8601 instant — the {@code etaTime} the
+     * server sends via {@code Date.toISOString()} (always UTC, e.g.
+     * {@code 2026-08-21T12:30:00.000Z}). Clamped to {@code >= 0}; returns 0 when
+     * absent or unparseable.
+     */
+    private static int minutesUntil(@Nullable String isoTime) {
+        if (TextUtils.isEmpty(isoTime)) {
+            return 0;
+        }
+        try {
+            long deltaMillis = Instant.parse(isoTime.trim()).toEpochMilli()
+                    - System.currentTimeMillis();
+            long minutes = Math.round(deltaMillis / 60000d);
+            return (int) Math.max(0, minutes);
+        } catch (Exception e) {
+            Log.e(TAG, "minutesUntil failed: " + e.getMessage());
+            return 0;
+        }
     }
 
     private static int parseInt(@Nullable String value) {

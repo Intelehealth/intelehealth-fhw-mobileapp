@@ -76,21 +76,20 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         }
                     }
                 }
-            } else if (data["type"] == "queue_status") {
+            } else if (data["type"] == "Queue Banner") {
                 // Refresh the home status banner only: persist the latest payload
                 // and push it to the live banner if mounted. No status-bar
                 // notification is shown for queue status updates.
                 StatusBannerUpdater.handleBannerNotification(context, data)
+            } else if(data["type"] == "Queue update"){
+                // Refresh the home screen "Next In Queue" card only: persist
+                // the latest payload and push it to the live card if mounted.
+                // No status-bar notification is shown for queue updates.
+                QueueCardUpdater.handleQueueNotification(context, data)
+                return@let
             } else {
                 if(data.isNotEmpty() && notification == null){
                     val title = (data["title"] ?: "").lowercase()
-                    if(title.contains("nextinqueue")){
-                        // Refresh the home screen "Next In Queue" card only: persist
-                        // the latest payload and push it to the live card if mounted.
-                        // No status-bar notification is shown for queue updates.
-                        QueueCardUpdater.handleQueueNotification(context, data)
-                        return@let
-                    }
                     sendNotificationFromBody(data,context)
                     if(title.contains("prescription")){
                         NotificationSchedulerUtils.scheduleFollowUpNotification(

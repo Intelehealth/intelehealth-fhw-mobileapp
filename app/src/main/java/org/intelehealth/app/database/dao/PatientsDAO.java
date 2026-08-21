@@ -520,6 +520,39 @@ public class PatientsDAO extends BaseDao {
         return listPatientNames;
     }
 
+    /**
+     * Fetch the fields the home "Next In Queue" card needs for a single patient,
+     * keyed by their {@code uuid}. Returns the columns {@code openmrs_id},
+     * {@code first_name}, {@code middle_name}, {@code last_name}, {@code gender}
+     * and {@code date_of_birth}, or an empty map when the patient isn't found
+     * locally.
+     *
+     * @see org.intelehealth.app.reactnative.QueueCardUpdater
+     */
+    public HashMap<String, String> getQueueCardPatientDetails(String patientuuid) throws DAOException {
+        HashMap<String, String> details = new HashMap<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try {
+            Cursor cursor = db.rawQuery("SELECT openmrs_id, first_name, middle_name, last_name, " +
+                    "gender, date_of_birth FROM tbl_patient WHERE uuid = ? COLLATE NOCASE",
+                    new String[]{patientuuid});
+            if (cursor.moveToFirst()) {
+                details.put("openmrs_id", cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                details.put("first_name", cursor.getString(cursor.getColumnIndexOrThrow("first_name")));
+                details.put("middle_name", cursor.getString(cursor.getColumnIndexOrThrow("middle_name")));
+                details.put("last_name", cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
+                details.put("gender", cursor.getString(cursor.getColumnIndexOrThrow("gender")));
+                details.put("date_of_birth", cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+            }
+            cursor.close();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            CustomLog.e(TAG, s.getMessage());
+            throw new DAOException(s);
+        }
+        return details;
+    }
+
     public String getAttributesName(String attributeuuid) throws DAOException {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
