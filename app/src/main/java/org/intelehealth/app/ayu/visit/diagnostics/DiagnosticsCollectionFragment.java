@@ -81,6 +81,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
 
     private HbA1cLiveViewModel mHba1cVm;
+    private CommonVisitData mCommonVisitData;
 
     // ── Constructor / factory ─────────────────────────────────────────────────
 
@@ -100,6 +101,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         f.patientName                       = d.getPatientName();
         f.patientGender                     = d.getPatientGender();
         f.intentTag                         = d.getIntentTag();
+        f.mCommonVisitData                  = d;
         return f;
     }
 
@@ -171,6 +173,12 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             // Auto-save into model — Submit will always have the latest value
             if (results == null) results = new DiagnosticsModel();
             results.setDiabetesbba1c(reading);
+
+            // Keep the shared CommonVisitData in sync too — same object the
+            // Activity holds, so this reaches final submission automatically.
+            if (mCommonVisitData != null) {
+                mCommonVisitData.setDiabetesbba1c(reading);
+            }
 
             // Green flash to signal live update
             flashField(mBinding.etvDiabetesHba1c);
@@ -617,6 +625,9 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 // Only update results if we actually found a value — never overwrite with null/empty
             if (hba1cFinal != null && !hba1cFinal.isEmpty()) {
                 results.setDiabetesbba1c(hba1cFinal);
+                if (mCommonVisitData != null) {
+                    mCommonVisitData.setDiabetesbba1c(hba1cFinal);
+                }
             }
 
             Log.d(TAG, "isDataReadyForSaving: hba1cFinal = " + hba1cFinal

@@ -195,6 +195,7 @@ import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
+import org.intelehealth.app.widget.materialprogressbar.CustomProgressDialog;
 import org.intelehealth.config.presenter.fields.data.DiagnosticsRepository;
 import org.intelehealth.config.presenter.fields.data.PatientVitalRepository;
 import org.intelehealth.config.presenter.fields.factory.DiagnosticsViewModelFactory;
@@ -432,6 +433,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private String mLiveHba1cValue = null;
 
+    private CustomProgressDialog progressDialog;
+
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -560,43 +564,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 (mBinding, VisitSummaryActivity_New.this, null,
                         this, encounterVitals, mCommonVisitData);
         visitDiagnosticsSummary.initViews();
-
-// ── DEBUG: verify HbA1c in tbl_obs ───────────────────────────────────
-        if (BuildConfig.DEBUG) {
-            new android.os.Handler(android.os.Looper.getMainLooper()).postDelayed(() -> {
-                try {
-                    android.database.sqlite.SQLiteDatabase db =
-                            IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-
-                    android.database.Cursor cursor = db.rawQuery(
-                            "SELECT uuid, value, syncd FROM tbl_obs " +
-                                    "WHERE encounteruuid = ? AND conceptuuid = ? AND voided != '1' " +
-                                    "ORDER BY rowid DESC LIMIT 1",
-                            new String[]{ encounterVitals, UuidDictionary.DIABETES_HBA1C });
-
-                    if (cursor != null && cursor.moveToFirst()) {
-                        String dbUuid  = cursor.getString(0);
-                        String dbVal   = cursor.getString(1);
-                        String dbSyncd = cursor.getString(2);
-                        Log.d(TAG, "✅ HbA1c in tbl_obs:"
-                                + " value=" + dbVal
-                                + " uuid=" + dbUuid
-                                + " syncd=" + dbSyncd);
-                        if (dbVal == null || dbVal.isEmpty()) {
-                            Log.e(TAG, "❌ HbA1c row exists but value is EMPTY");
-                        }
-                    } else {
-                        Log.e(TAG, "❌ HbA1c NOT FOUND in tbl_obs for encounter=" + encounterVitals);
-                    }
-                    if (cursor != null) cursor.close();
-
-                    Log.d(TAG, "   intent extra mLiveHba1cValue=" + mLiveHba1cValue);
-
-                } catch (Exception e) {
-                    Log.e(TAG, "DB check error: " + e.getMessage());
-                }
-            }, 1000);
-        }
         setupVisibilityForSpecificFlavor();
         setupDiagnosticsConfig();
     }
@@ -796,7 +763,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 intentTag = mCommonVisitData.getIntentTag();
 
                 isPastVisit = mCommonVisitData.isPastVisit();
-                String liveHba1c = intent.getStringExtra("hba1c_live_value");
+
+                String liveHba1c = mCommonVisitData.getDiabetesbba1c();
+
                 Log.d(TAG, "fetchingIntent: hba1c_live_value = " + liveHba1c);
                 if (liveHba1c != null && !liveHba1c.isEmpty()) {
                     mLiveHba1cValue = liveHba1c;
@@ -1032,7 +1001,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             btnAppointment.setText(getString(R.string.reschedule));
             doesAppointmentExist = true;
         }
-        String liveHba1c = getIntent().getStringExtra("hba1c_live_value");
+        String liveHba1c = mCommonVisitData != null ? mCommonVisitData.getDiabetesbba1c() : null;
         Log.d(TAG, "fetchingIntent: hba1c_live_value = " + liveHba1c);
         if (liveHba1c != null && !liveHba1c.isEmpty()) {
             mLiveHba1cValue = liveHba1c;
@@ -3339,9 +3308,242 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
     }
 
+    /*private void visitUploadBlock() {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        CustomLog.d("visitUUID", "upload_click: " + visitUUID);
+
+        isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+        boolean specialitySelected = speciality_selected != null && !speciality_selected.isEmpty();
+        // When the doctor-speciality feature is disabled for this config, its UI is never
+        // shown, so speciality_selected can never be set - don't block the entire visit
+        // upload (attributes, encounters, and the sync call itself) on it in that case.
+        // Mirrors the feature-flag check already used for validation above.
+        if (specialitySelected || !mFeatureActiveStatus.getVisitSummeryDoctorSpeciality()) {
+            if (specialitySelected) {
+                viewModel.fetchSpecializationByName(speciality_selected).observe(this, specialization -> {
+                    if (specialization != null) {
+                        String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
+                        vd_special_value.setText(" " + Node.bullet + "  " + value);
+                    } else {
+                        vd_special_value.setText(""); // or some fallback value
+                    }
+                });
+            }
+
+
+            VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+
+            boolean isUpdateVisitDone = false;
+            try {
+                if (!isVisitSpecialityExists && specialitySelected) {
+                    isUpdateVisitDone = visitAttributeListDAO.insertVisitAttributes(visitUuid, speciality_selected, SPECIALITY);
+                }
+                if (selectedFacilityToVisit != null) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedFacilityToVisit.getName(), FACILITY);
+                }
+                if (selectedSeverity != null) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
+                }
+                if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
+                else
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+
+                if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
+                }
+
+                if (!selectedConsultationType.isEmpty()) {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedConsultationType, CONSULTATION_TYPE);
+                }
+
+
+                if (!TextUtils.isEmpty(selectedFollowupDate) && !TextUtils.isEmpty(selectedFollowupTime)) {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    EncounterDTO encounterDTO = new EncounterDTO();
+                    encounterDTO.setUuid(UUID.randomUUID().toString());
+                    encounterDTO.setVisituuid(visitUuid);
+                    encounterDTO.setSyncd(false);
+                    encounterDTO.setProvideruuid(sessionManager.getProviderID());
+                    encounterDTO.setEncounterTypeUuid(ENCOUNTER_ADULTINITIAL);
+                    encounterDTO.setVoided(0);
+                    try {
+                        encounterDAO.createEncountersToDB(encounterDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+
+                    String adultInitialUUID = fetchEncounterUuidForEncounterAdultInitials(visitUUID);
+
+//                    Step - 2 Create observation data object and set the value
+
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setUuid(UUID.randomUUID().toString()); // HW follow up conceptId
+                    obsDTO.setEncounteruuid(adultInitialUUID); // fetched adult initial uuid
+                    obsDTO.setConceptuuid(HW_FOLLOWUP_CONCEPT_ID); // HW follow up conceptId
+                    obsDTO.setValue(selectedFollowupDate + ", Time:" + selectedFollowupTime + ", Remark: Follow-up");
+                    obsDTO.setCreator(sessionManager.getCreatorID());
+
+//                    Step - 3 create observation dao and call insertObs method
+
+                    try {
+                        ObsDAO obsDAO = new ObsDAO();
+                        obsDAO.insertObs(obsDTO);
+                    } catch (DAOException e) {
+                        FirebaseCrashlytics.getInstance().recordException(e);
+                    }
+
+                }
+                CustomLog.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+            } catch (DAOException e) {
+                e.printStackTrace();
+                CustomLog.d("Update_Special_Visit", "Update_Special_Visit: " + isUpdateVisitDone);
+            }
+
+            // Additional Notes - Start
+            try {
+                String addnotes = etAdditionalNotesVS.getText().toString().trim();
+                CustomLog.v("addnotes", "addnotes: " + addnotes);
+                if (!addnotes.equalsIgnoreCase("") && addnotes != null)
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+                *//*else  // TODO: this is hardcoded and needs to be handled via config api.
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, "No notes added for Doctor.", ADDITIONAL_NOTES);*//*
+                // keeping raw string as we dont want regional lang data to be stored in DB.
+            } catch (DAOException e) {
+                e.printStackTrace();
+                CustomLog.v("addnotes", "addnotes - error: " + e.getMessage());
+            }
+            // Additional Notes - End
+
+            if (isVisitSpecialityExists) {
+                speciality_spinner.setEnabled(false);
+                flag.setEnabled(false);
+                flag.setClickable(false);
+            } else {
+                flag.setEnabled(true);
+                flag.setClickable(true);
+            }
+
+            if (flag.isChecked()) {
+                priorityVisit = true;
+                try {
+                    EncounterDAO encounterDAO = new EncounterDAO();
+                    encounterDAO.setEmergency(visitUuid, true);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+                String patientSelection = "uuid = ?";
+                String[] patientArgs = {String.valueOf(patient.getUuid())};
+                String table = "tbl_patient";
+                String[] columnsToReturn = {"openmrs_id"};
+                final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
+
+                if (idCursor.moveToFirst()) {
+                    do {
+                        patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                    } while (idCursor.moveToNext());
+                }
+                idCursor.close();
+            }
+
+            if (patient.getOpenmrs_id() == null || patient.getOpenmrs_id().isEmpty()) {
+            }
+
+            if (visitUUID == null || visitUUID.isEmpty()) {
+                String visitIDSelection = "uuid = ?";
+                String[] visitIDArgs = {visitUuid};
+                final Cursor visitIDCursor = db.query("tbl_visit", null, visitIDSelection, visitIDArgs, null, null, null);
+                if (visitIDCursor != null && visitIDCursor.moveToFirst()) {
+                    visitUUID = visitIDCursor.getString(visitIDCursor.getColumnIndexOrThrow("uuid"));
+                }
+                if (visitIDCursor != null) visitIDCursor.close();
+            }
+
+            if (!flag.isChecked()) {
+                //
+            }
+
+            if (NetworkConnection.isOnline(getApplication())) {
+                Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
+
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+//                            Added the 4 sec delay and then push data.For some reason doing immediately does not work
+                        //Do something after 100ms
+                        SyncUtils syncUtils = new SyncUtils();
+                        boolean isSynced = syncUtils.syncForeground("visitSummary");
+                        if (isSynced) {
+                            // remove the local cache
+                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
+                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
+                            // ie. visit is uploded successfully.
+                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                            setAppointmentButtonStatus();
+                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+
+                            // Visit is sent — hide Send Visit for good so it can't be sent again.
+                            uploadButton.setVisibility(View.GONE);
+
+                            isSynedFlag = "1";
+                            showVisitID();
+                            CustomLog.d("visitUUID", "showVisitID: " + visitUUID);
+                            isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
+                            if (isVisitSpecialityExists) {
+                                speciality_spinner.setEnabled(false);
+                                flag.setEnabled(false);
+                                flag.setClickable(false);
+                            } else {
+                                flag.setEnabled(true);
+                                flag.setClickable(true);
+                            }
+                            // fetchingIntent();
+                            setAppointmentButtonStatus();
+                            *//*Drawable drawable1 = ContextCompat.getDrawable(
+                                    VisitSummaryActivity_New.this,
+                                    R.drawable.dialog_visit_sent_success_icon);
+                            visitSentSuccessDialog(context, drawable1,
+                                    getResources().getString(R.string.visit_successfully_sent),
+                                    getResources().getString(R.string.patient_visit_sent),
+                                    getResources().getString(R.string.okay));*//*
+                        } else {
+                            AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                            // Sync failed — let the user retry sending.
+                            uploadButton.setEnabled(true);
+                            uploadButton.setAlpha(1f);
+                        }
+                        uploaded = true;
+                    }
+                }, 4000);
+            } else {
+                add_additional_doc.setVisibility(View.GONE);
+                fetchingIntent();
+                AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
+                // Offline — send never happened, let the user retry.
+                uploadButton.setEnabled(true);
+                uploadButton.setAlpha(1f);
+            }
+        } else {
+            showSelectSpeciliatyErrorDialog();
+            // Speciality missing — send never happened, let the user retry.
+            uploadButton.setEnabled(true);
+            uploadButton.setAlpha(1f);
+        }
+    }*/
     private void visitUploadBlock() {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         CustomLog.d("visitUUID", "upload_click: " + visitUUID);
+
+        if (progressDialog == null) {
+            progressDialog = new CustomProgressDialog(context);
+        }
+        progressDialog.show(getString(R.string.please_wait));
 
         isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
         if (speciality_selected != null && !speciality_selected.isEmpty()) {
@@ -3368,7 +3570,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-                if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+                if(BuildConfig.FLAVOR_client == FlavorKeys.NAS)
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
                 else
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
@@ -3512,10 +3714,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             setAppointmentButtonStatus();
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
-                            // Visit is sent — hide Send Visit for good so it can't be sent again.
-                            uploadButton.setVisibility(View.GONE);
-
+                            /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
+                                    getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
                             isSynedFlag = "1";
+                            //
+                            uploadButton.setText("Home");
+                            uploadButton.setOnClickListener(v -> {
+                                Intent goHomeIntent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+                                startActivity(goHomeIntent);
+                            });
                             showVisitID();
                             CustomLog.d("visitUUID", "showVisitID: " + visitUUID);
                             isVisitSpecialityExists = speciality_row_exist_check(visitUUID);
@@ -3527,40 +3734,31 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
                             }
-                            // fetchingIntent();
-                            setAppointmentButtonStatus();
-                            /*Drawable drawable1 = ContextCompat.getDrawable(
-                                    VisitSummaryActivity_New.this,
-                                    R.drawable.dialog_visit_sent_success_icon);
-                            visitSentSuccessDialog(context, drawable1,
-                                    getResources().getString(R.string.visit_successfully_sent),
-                                    getResources().getString(R.string.patient_visit_sent),
-                                    getResources().getString(R.string.okay));*/
+                            fetchingIntent();
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-                            // Sync failed — let the user retry sending.
-                            uploadButton.setEnabled(true);
-                            uploadButton.setAlpha(1f);
                         }
                         uploaded = true;
+                        if (progressDialog != null && progressDialog.isShowing()) {
+                            progressDialog.dismiss();
+                        }
                     }
                 }, 4000);
             } else {
                 add_additional_doc.setVisibility(View.GONE);
                 fetchingIntent();
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
-                // Offline — send never happened, let the user retry.
-                uploadButton.setEnabled(true);
-                uploadButton.setAlpha(1f);
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.dismiss();
+                }
             }
         } else {
             showSelectSpeciliatyErrorDialog();
-            // Speciality missing — send never happened, let the user retry.
-            uploadButton.setEnabled(true);
-            uploadButton.setAlpha(1f);
+            if (progressDialog != null && progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
         }
     }
-
     /**
      * function to set appointment button status
      */
@@ -6871,12 +7069,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     if (!mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString()))
                         selectedTests[8] = true;
                     System.out.println("HBA1cDataValue" + !mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty());
-                  /*  if (!mBinding.layoutVisitSummarySections
-                            .textViewDiabetesHba1cValue.getText().toString().isEmpty()
-                            && isNumeric(mBinding.layoutVisitSummarySections
-                            .textViewDiabetesHba1cValue.getText().toString())) {
-                        selectedTests[8] = true;   // ← now valid (array size = 9)
-                    }*/
                     Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 

@@ -1688,6 +1688,16 @@
     <string name="select_time_slot">Please select a time slot</string>
     <string name="pdf_created_successfully">Successfully PDF created!</string>
     <string name="received">Received</string>
+    <string name="referrals">Referrals</string>
+    <string name="active_referrals">Active Referrals</string>
+    <string name="patient_waiting_for_specialist">%1$d Patient is waiting for specialist</string>
+    <string name="patients_waiting_for_specialist">%1$d Patients are waiting for specialist</string>
+    <string name="waiting_for_specialist">Waiting for %1$s Specialist</string>
+    <string name="no_referrals_found">No referrals found</string>
+    <string name="specialist_prescription">Specialist Prescription</string>
+    <string name="latest">Latest</string>
+    <string name="prescription_pending">Prescription Pending</string>
+    <string name="referral_declined">Referral Declined</string>
     <string name="doctor_pending_prescriptions">Doctor is yet to send the prescriptions for 35 patients, you can remind the doctor.</string>
     <string name="visit_summary">Visit summary</string>
     <string name="pending_since">Pending since</string>
@@ -1793,6 +1803,7 @@
     <string name="keepsethoscopeSteday">Keep Stethoscope Steady</string>
     <string name="back">BACK</string>
     <string name="pause">PAUSE</string>
+    <string name="resume">RESUME</string>
     <string name="stopRecording">Stop Recording</string>
     <string name="retry">Retry</string>
     <string name="saveRecording">Save Recording</string>

@@ -292,6 +292,7 @@ public class VisitCreationActivity extends BaseActivity implements
         mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         EncounterAdultInitial_LatestVisit = encounterAdultIntials;
         mCommonVisitData.setEncounterAdultInitialLatestVisit(EncounterAdultInitial_LatestVisit);
+
     }
 
     private boolean mIsInitilaFeaturesLoading = true;
@@ -571,6 +572,21 @@ public class VisitCreationActivity extends BaseActivity implements
                 .putString(PREF_LAST_VISIT,   visitUuid)
                 .apply();
 
+        // Write straight to tbl_obs the moment the device delivers a reading.
+        // The device can broadcast at any point in the visit flow — including
+        // after the user has already submitted/left the Diagnostics screen —
+        // and isDataReadyForSaving() there only runs once, at Submit-time.
+        // Without this, a late reading was captured only in mHba1cViewModel,
+        // which is destroyed with the Activity at final submission, so the
+        // value never reached the DB and was silently lost.
+        persistHba1cObs(reading);
+
+        // Carry it on the same object every other visit field travels on —
+        // this is what "CommonVisitData" already puts into intent1 at final submission.
+        if (mCommonVisitData != null) {
+            mCommonVisitData.setDiabetesbba1c(reading);
+        }
+
         Log.d("HBA1C_DEBUG", "✅ SharedPreferences updated:"
                 + " reading=" + reading
                 + " time=" + time
@@ -582,6 +598,39 @@ public class VisitCreationActivity extends BaseActivity implements
                 mHba1cViewModel.onHba1cReading(reading, time);
             }
         });
+    }
+
+    /**
+     * Upserts the HbA1c reading into tbl_obs for the current vitals encounter.
+     * Safe to call multiple times for the same reading (e.g. device retransmits) —
+     * updates the existing row instead of creating duplicates.
+     */
+    private void persistHba1cObs(String reading) {
+        if (reading == null || reading.isEmpty()
+                || encounterVitals == null || encounterVitals.isEmpty()) {
+            Log.w("HBA1C_DEBUG", "persistHba1cObs: skipped — reading or encounterVitals not ready");
+            return;
+        }
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+            ObsDTO dto = new ObsDTO();
+            dto.setConceptuuid(UuidDictionary.DIABETES_HBA1C);
+            dto.setEncounteruuid(encounterVitals);
+            dto.setCreator(sessionManager.getCreatorID());
+            dto.setValue(reading);
+            dto.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+            String existingUuid = obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIABETES_HBA1C);
+            if (existingUuid != null) {
+                dto.setUuid(existingUuid);
+                obsDAO.updateObs(dto);
+            } else {
+                obsDAO.insertObs(dto);
+            }
+            Log.d("HBA1C_DEBUG", "✅ persistHba1cObs: saved to tbl_obs — " + reading);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            Log.e("HBA1C_DEBUG", "persistHba1cObs failed: " + e.getMessage());
+        }
     }
 
     @Override
@@ -839,33 +888,13 @@ public class VisitCreationActivity extends BaseActivity implements
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_steps_summary, MedicalHistorySummaryFragment.newInstance(mCommonVisitData, patientHistoryLocale, familyHistoryLocale, isEditMode, visitUuid), PAST_MEDICAL_HISTORY_SUMMARY_FRAGMENT).commit();
                 }
                 break;
-            case STEP_7_VISIT_SUMMARY: onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null); break;
+            case STEP_7_VISIT_SUMMARY:
+                onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null); break;
             case STEP_7_VISIT_SUMMARY_FINAL:
                 insertLocalEnFormatQAValues();
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class);
                 mCommonVisitData.setHasPrescription(false);
                 intent1.putExtra("CommonVisitData", mCommonVisitData);
-                Log.d("HBA1C_DEBUG", "mHba1cViewModel null? " + (mHba1cViewModel == null));
-                if (mHba1cViewModel != null) {
-                    Log.d("HBA1C_DEBUG", "connected? " + mHba1cViewModel.connected().getValue());
-                    Log.d("HBA1C_DEBUG", "readyToReceive? " + mHba1cViewModel.readyToReceive().getValue());
-                    Log.d("HBA1C_DEBUG", "hba1cReading = " + mHba1cViewModel.hba1cReading().getValue());
-                }
-                Log.d("HBA1C_DEBUG", "mDiagnosticsModel hba1c = " + (mDiagnosticsModel != null ? mDiagnosticsModel.getDiabetesbba1c() : "null"));
-                String latestHba1c = null;
-                if (mHba1cViewModel != null && mHba1cViewModel.hba1cReading().getValue() != null && !mHba1cViewModel.hba1cReading().getValue().isEmpty()) {
-                    latestHba1c = mHba1cViewModel.hba1cReading().getValue();
-                    Log.d("HBA1C_DEBUG", "source: ViewModel → " + latestHba1c);
-                } else if (mDiagnosticsModel != null && mDiagnosticsModel.getDiabetesbba1c() != null && !mDiagnosticsModel.getDiabetesbba1c().isEmpty()) {
-                    latestHba1c = mDiagnosticsModel.getDiabetesbba1c();
-                    Log.d("HBA1C_DEBUG", "source: DiagnosticsModel → " + latestHba1c);
-                }
-                if (latestHba1c != null && !latestHba1c.isEmpty()) {
-                    intent1.putExtra("hba1c_live_value", latestHba1c);
-                    Log.d("HBA1C_DEBUG", "✅ Extra added: " + latestHba1c);
-                } else {
-                    Log.d("HBA1C_DEBUG", "❌ No HbA1c value available");
-                }
                 startActivity(intent1);
                 finish();
                 break;
@@ -1239,7 +1268,7 @@ public class VisitCreationActivity extends BaseActivity implements
         familyHistory = familyHistory.replaceAll("null.", "");
         while (familyHistory.contains("[Describe")) familyHistory = familyHistory.replace("[Describe]", "");
         List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
-        if (imagePathList != null) for (String imagePath : imagePathList) updateImageDatabase(imagePath, mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath));
+        if (imagePathList != null) for (String imagePath : imagePathList) { String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0]; updateImageDatabase(fileName, mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath)); }
         JSONObject jsonObject = new JSONObject(); JSONObject jsonObject1 = new JSONObject();
         try {
             patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
@@ -1272,7 +1301,7 @@ public class VisitCreationActivity extends BaseActivity implements
         familyHistory = familyHistory.replaceAll("null.", "");
         while (familyHistory.contains("[Describe")) familyHistory = familyHistory.replace("[Describe]", "");
         List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
-        if (imagePathList != null) for (String imagePath : imagePathList) updateImageDatabase(imagePath, mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath));
+        if (imagePathList != null) for (String imagePath : imagePathList) { String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0]; updateImageDatabase(fileName, mFamilyHistoryNode.getImagePathListWithSectionTag().get(imagePath)); }
         JSONObject jsonObject1 = new JSONObject();
         try {
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());

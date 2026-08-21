@@ -224,8 +224,9 @@ public class VisitActivity extends BaseActivity implements
 
             new TabLayoutMediator(tabLayout, viewPager,
                     (tab, position) -> tab.setText(getResources().getString(
-                                    position == 0 ? R.string.received : R.string.pending))
-                            .setIcon(R.drawable.presc_tablayout_icon)
+                            position == 0 ? R.string.received
+                                    : position == 1 ? R.string.pending
+                                    : R.string.referrals))
             ).attach();
 
             viewPager.setOffscreenPageLimit(1); // Optimize memory usage
@@ -368,6 +369,16 @@ public class VisitActivity extends BaseActivity implements
            });
        }).start();
    }
+
+    /** Called by {@link VisitReferralFragment} once its list is loaded — mirrors
+     *  the Received/Pending tab count pattern in {@link #updateCounts(boolean)}. */
+    public void updateReferralCount(int count) {
+        if (tabLayout == null) return;
+        com.google.android.material.tabs.TabLayout.Tab tab = tabLayout.getTabAt(2);
+        if (tab != null) {
+            tab.setText(getResources().getString(R.string.referrals) + "\t(" + count + ")");
+        }
+    }
 
     @Override
     public void isReceivedRecentLoaded(boolean status) {

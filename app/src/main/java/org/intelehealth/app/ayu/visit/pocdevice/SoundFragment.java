@@ -62,13 +62,22 @@ public class SoundFragment extends Fragment implements RecorderListener {
     private int heartSoundsSize = 0;
     private int lungSoundsSize = 0;
 
+    // The SDK exposes pauseRecording() with no separate resume() — calling
+    // it a second time toggles the device back into recording. Track pause
+    // state ourselves so we know whether the next call resumes or pauses,
+    // and so stopRecordingInternal() never double-calls it after a pause
+    // (which would silently resume the device instead of stopping it).
+    private boolean isPaused = false;
+    private long pausedElapsedMs = 0;
+
     // The SDK's audio-streaming toggle is a BLE round-trip to the device
-    // (transmitSound()) and is inherently flaky right after being toggled —
-    // doing it once per sound position (10-16+ times per protocol) multiplies
-    // the chance of a position's retry budget running out and the graph
-    // never starting. Start it exactly once per session and leave it
-    // running; only the visualizer view is attached/detached/cleared
-    // per-position, which is instant and local (no BLE round-trip).
+    // (transmitSound()) and can be flaky right after being toggled. It was
+    // previously only started once per fragment lifetime on the theory that
+    // it, once on, stays on — but in practice the device/BLE stack stops
+    // delivering samples after a position completes, so every position after
+    // the first got a frozen graph. Re-assert it on every startRecording()
+    // call instead; startAudioStreamingWithRetry() already retries with
+    // backoff so a redundant/idempotent call here is cheap.
     private boolean audioStreamingStarted = false;
 
 
@@ -243,6 +252,17 @@ public class SoundFragment extends Fragment implements RecorderListener {
         }
     }
 
+    // The SDK tags every completed recording with an internal status code
+    // derived from the last-applied filter (confirmed by decompiling
+    // ayudevicesdk-5.3.6: changeFilter(HEART) tags it 2, changeFilter(LUNG)
+    // tags it 3 — there is no "1" in that mapping). getAudioData(status) only
+    // returns a match for that exact code, so any caller that queries a
+    // different value always gets null. Manual "Stop Recording" must ask
+    // for the same code the SDK actually tagged the recording with.
+    private int expectedRecordingStatus() {
+        return "lung".equalsIgnoreCase(type) ? 3 : 2;
+    }
+
     private int getImageForPosition(String sound) {
         if (sound == null) return R.drawable.aortic_img;
         switch (sound) {
@@ -298,24 +318,54 @@ public class SoundFragment extends Fragment implements RecorderListener {
         binding.btnStopRecording.setOnClickListener(v -> stopRecordingInternal());
         binding.btnSaveRecordingMain.setOnClickListener(v -> saveAndAdvance());
 
-        // PAUSE — pauses recording, stays on stop layout
+        // PAUSE / RESUME — toggles recording, stays on stop layout
         // (does NOT advance or show save — user can resume or stop)
         binding.btnPause.setOnClickListener(v -> {
-            try {
-                AyuDevice.getBleInstance().pauseRecording();
+            if (!isPaused) {
+                try {
+                    AyuDevice.getBleInstance().pauseRecording();
+                    Log.d("SOUND_FLOW", "Paused: " + position);
+                } catch (Exception e) {
+                    Log.e("SOUND_FLOW", "pauseRecording error: " + e.getMessage());
+                }
+                pausedElapsedMs = System.currentTimeMillis() - startTime;
                 timerHandler.removeCallbacks(timerRunnable);
-                Log.d("SOUND_FLOW", "Paused: " + position);
-            } catch (Exception e) {
-                Log.e("SOUND_FLOW", "pauseRecording error: " + e.getMessage());
+                isPaused = true;
+                binding.btnPause.setText(getString(R.string.resume));
+            } else {
+                try {
+                    AyuDevice.getBleInstance().pauseRecording();
+                    Log.d("SOUND_FLOW", "Resumed: " + position);
+                } catch (Exception e) {
+                    Log.e("SOUND_FLOW", "resume (pauseRecording) error: " + e.getMessage());
+                }
+                startTime = System.currentTimeMillis() - pausedElapsedMs;
+                timerHandler.post(timerRunnable);
+                isPaused = false;
+                binding.btnPause.setText(getString(R.string.pause));
             }
         });
 
         // RETRY — discard current recording, reset UI back to start
         binding.btnRetryMain.setOnClickListener(v -> {
+            // Discard the SDK's buffered samples from the attempt being
+            // retried — without this, the next getAudioData() pull can
+            // return stale/combined audio from the discarded attempt
+            // instead of just the fresh recording, corrupting what gets
+            // saved to DB.
+            try {
+                AyuDevice.getBleInstance().clearRecordedData();
+            } catch (Exception e) {
+                Log.e("SOUND_FLOW", "clearRecordedData error: " + e.getMessage());
+            }
+
             // Reset state
             filePath = "";
             recordingStatus = 0;
             mSaveButtonShown = false;
+            isPaused = false;
+            pausedElapsedMs = 0;
+            binding.btnPause.setText(getString(R.string.pause));
 
             // Reset timer display
             binding.txtTimer.setText("0.0 / 15.0");
@@ -341,6 +391,9 @@ public class SoundFragment extends Fragment implements RecorderListener {
         mSaveButtonShown = false;
         filePath = "";
         recordingStatus = 0;
+        isPaused = false;
+        pausedElapsedMs = 0;
+        binding.btnPause.setText(getString(R.string.pause));
 
         // Wipe any previously drawn samples first so every recording —
         // including the very first one — starts from a blank graph instead
@@ -352,12 +405,12 @@ public class SoundFragment extends Fragment implements RecorderListener {
         }
 
         // Attaching the visualizer / applying the filter is deferred to this
-        // click so nothing draws before Start Recording is tapped. The
-        // audio-streaming BLE toggle itself only needs to succeed once for
-        // the whole session — see audioStreamingStarted's comment.
+        // click so nothing draws before Start Recording is tapped.
         AyuDevice.getBleInstance().setAyuVisualizerView(binding.waveView);
         applyFilterForType();
-        if (!audioStreamingStarted) startAudioStreamingWithRetry(0);
+        // Re-assert audio streaming for every position (see audioStreamingStarted's
+        // comment) rather than only once per fragment lifetime.
+        startAudioStreamingWithRetry(0);
 
         AyuDevice.getBleInstance().setRecorderListener(this);
         AyuDevice.getBleInstance().startRecording();
@@ -375,18 +428,26 @@ public class SoundFragment extends Fragment implements RecorderListener {
     private void stopRecordingInternal() {
         if (mSaveButtonShown) return;
         timerHandler.removeCallbacks(timerRunnable);
-        try {
-            AyuDevice.getBleInstance().pauseRecording();
-            Log.d("SOUND_FLOW", "pauseRecording: " + position);
-        } catch (Exception e) {
-            Log.e("SOUND_FLOW", "pauseRecording error: " + e.getMessage());
+        // If the recording is already paused, the device is already halted —
+        // calling pauseRecording() again would toggle it back into
+        // recording (the SDK has no separate resume()), which would corrupt
+        // the buffer pulled below. Only pause here when we weren't already.
+        if (!isPaused) {
+            try {
+                AyuDevice.getBleInstance().pauseRecording();
+                Log.d("SOUND_FLOW", "pauseRecording: " + position);
+            } catch (Exception e) {
+                Log.e("SOUND_FLOW", "pauseRecording error: " + e.getMessage());
+            }
         }
+        isPaused = false;
+        if (binding != null) binding.btnPause.setText(getString(R.string.pause));
         timerHandler.postDelayed(this::pullAudioAndShowSave, 600);
     }
 
     private void pullAudioAndShowSave() {
         if (binding == null || getActivity() == null || mSaveButtonShown) return;
-        recordingStatus = 1;
+        recordingStatus = expectedRecordingStatus();
         short[] audio = AyuDevice.getBleInstance().getAudioData(recordingStatus);
         Log.d("SOUND_FLOW", "pull: samples=" + (audio != null ? audio.length : 0)
                 + " | " + position);

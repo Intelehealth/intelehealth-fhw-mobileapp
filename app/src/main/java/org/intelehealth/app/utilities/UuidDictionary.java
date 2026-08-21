@@ -46,6 +46,8 @@ public class UuidDictionary {
     public static final String ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
+    public static final String ENCOUNTER_TYPE_REFERRAL = "95f4ae7f-6caa-4c66-950f-7f3d6072ce56";
+    public static final String ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE = "086f323a-b90b-49aa-a3ca-fb9ed8ab7426";
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";

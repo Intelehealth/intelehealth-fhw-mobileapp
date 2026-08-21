@@ -326,6 +326,61 @@ public class EncounterDAO extends BaseDao {
         return uuid;
     }
 
+    /** True once a "Referral" encounter (1-per-visit hand-off marker) exists for this visit. */
+    public boolean hasReferralEncounter(String visitUuid) throws DAOException {
+        String uuid = getEmergencyEncounters(visitUuid, UuidDictionary.ENCOUNTER_TYPE_REFERRAL);
+        return uuid != null && !uuid.isEmpty();
+    }
+
+    /**
+     * Creates the "Referral" encounter for a visit, cloning every obs from the
+     * visit's ENCOUNTER_VISIT_NOTE encounter (diagnosis, medications, advice,
+     * requested tests, the Referred Specialist fields, etc.) onto it — mirrors
+     * the shape of a doctor-created referral encounter so the specialist sees
+     * full context. Returns the new encounter's uuid, or null if there's no
+     * visit-note encounter yet to clone from.
+     */
+    public String createReferralEncounter(String visitUuid, String creatorUuid) throws DAOException {
+        String visitNoteEncounterUuid = getEmergencyEncounters(visitUuid, getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
+        if (visitNoteEncounterUuid == null || visitNoteEncounterUuid.isEmpty()) {
+            return null;
+        }
+
+        String referralEncounterUuid = UUID.randomUUID().toString();
+        EncounterDTO referralEncounter = new EncounterDTO();
+        referralEncounter.setUuid(referralEncounterUuid);
+        referralEncounter.setVisituuid(visitUuid);
+        referralEncounter.setEncounterTypeUuid(UuidDictionary.ENCOUNTER_TYPE_REFERRAL);
+        referralEncounter.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+        referralEncounter.setProvideruuid(creatorUuid);
+        referralEncounter.setSyncd(false);
+        referralEncounter.setVoided(0);
+        createEncountersToDB(referralEncounter);
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor obsCursor = db.rawQuery(
+                "SELECT conceptuuid, value FROM tbl_obs WHERE encounteruuid = ? AND voided = '0'",
+                new String[]{visitNoteEncounterUuid});
+        ObsDAO obsDAO = new ObsDAO();
+        if (obsCursor.moveToFirst()) {
+            do {
+                ObsDTO obs = new ObsDTO();
+                obs.setConceptuuid(obsCursor.getString(obsCursor.getColumnIndexOrThrow("conceptuuid")));
+                obs.setValue(obsCursor.getString(obsCursor.getColumnIndexOrThrow("value")));
+                obs.setEncounteruuid(referralEncounterUuid);
+                obs.setCreator(creatorUuid);
+                try {
+                    obsDAO.insertObs(obs);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            } while (obsCursor.moveToNext());
+        }
+        obsCursor.close();
+
+        return referralEncounterUuid;
+    }
+
 
     public boolean updateEncounterModifiedDate(String encounterUuid) throws DAOException {
         boolean isUpdated = true;

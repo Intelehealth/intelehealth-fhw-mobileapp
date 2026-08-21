@@ -25,6 +25,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -96,7 +97,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     @Override
     public VisitAdapter.Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.followup_list_item, parent, false);
+        View row = inflater.inflate(R.layout.visit_prescription_list_item, parent, false);
         Myholder myholder = new VisitAdapter.Myholder(row);
         myholder.fu_cardview_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,6 +135,22 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.shareicon.setVisibility(View.GONE);
 
             // end
+
+            // Status badge — "Specialist Prescription"/"Latest"/"Referral Declined"
+            // aren't wired up yet (no data field for them), so only the one
+            // condition we already have (hasPrescription) drives a badge for now.
+            if (model.isHasPrescription()) {
+                holder.badgePrimary.setVisibility(View.VISIBLE);
+                holder.badgePrimary.setText(context.getString(R.string.prescription));
+                holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_green);
+                holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeGreenText));
+            } else {
+                holder.badgePrimary.setVisibility(View.VISIBLE);
+                holder.badgePrimary.setText(context.getString(R.string.prescription_pending));
+                holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_orange);
+                holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeOrangeText));
+            }
+            holder.badgeSecondary.setVisibility(View.GONE);
 
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
@@ -238,6 +255,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         LinearLayout fu_priority_tag;
         private LinearLayout shareicon;
         private FrameLayout fl_priority;
+        private TextView badgePrimary, badgeSecondary;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -249,6 +267,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fl_priority = itemView.findViewById(R.id.fl_priority);
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
+            badgePrimary = itemView.findViewById(R.id.fu_badge_primary);
+            badgeSecondary = itemView.findViewById(R.id.fu_badge_secondary);
         }
     }
 
