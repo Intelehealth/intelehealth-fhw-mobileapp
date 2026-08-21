@@ -1492,9 +1492,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        if (getActivity().getIntent().equals("edit")) {
-            ObsDAO.deleteExistingVitalsDataIfExists(visitUuid);
-
+        if ("edit".equalsIgnoreCase(intentTag)) {
+            // Edit mode: reuse the existing obs UUIDs (update-in-place) so the edit is pushed as an
+            // update instead of creating duplicates on the server. Do NOT delete the existing rows,
+            // otherwise getObsuuid() below can't find them to reuse.
             try {
                 PatientVital patientVital = (PatientVital) mHeightCardView.getTag();
                 if ((patientVital != null && patientVital.isMandatory()) || !results.getHeight().isEmpty()) {

@@ -260,6 +260,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
+    private boolean isAllowForEdit = true;
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
     VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
@@ -840,18 +841,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 e.printStackTrace();
                 CustomLog.e(TAG, e.getMessage());
             }
-            boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
+            // Editable while local edit cache still exists for this visit,
+            // or the Visit Note encounter has not yet been created in the DB for it.
+            isAllowForEdit = computeIsEditAllowed();
             // Edit btn visibility based on user coming from Visit Details screen - Start
             //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
             if (!isAllowForEdit) {
-                editVitals.setVisibility(View.GONE);
-                editComplaint.setVisibility(View.GONE);
-                cc_details_edit.setVisibility(View.GONE);
-                ass_symp_edit.setVisibility(View.GONE);
-                editPhysical.setVisibility(View.GONE);
-                editFamHist.setVisibility(View.GONE);
-                editMedHist.setVisibility(View.GONE);
-                editAddDocs.setVisibility(View.GONE);
+                // Keep the edit icons visible even when editing is not allowed;
+                // an error message is shown on click instead (see edit listeners).
+                editVitals.setVisibility(View.VISIBLE);
+                editComplaint.setVisibility(View.VISIBLE);
+                editPhysical.setVisibility(View.VISIBLE);
+                editFamHist.setVisibility(View.VISIBLE);
+                editMedHist.setVisibility(View.VISIBLE);
+                editAddDocs.setVisibility(View.VISIBLE);
                 add_additional_doc.setVisibility(View.GONE);
 
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
@@ -862,7 +865,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                     mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
                 }
 
-                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.GONE);
+                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
 
@@ -1232,6 +1235,47 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
 
+    /**
+     * Editable while the local edit cache still exists for this visit, or the Visit Note
+     * encounter has not yet been created in the DB for it.
+     * <p>
+     * Recomputed on demand (not cached from onCreate) so that if the "start visit" notification
+     * clears the edit cache while the user is already on this screen, the next edit click reflects it.
+     */
+    private boolean computeIsEditAllowed() {
+        boolean hasEditCache =
+                !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty();
+        // The doctor has started the visit note if either the visit note encounter is already in the
+        // local DB, or the visit_started push flagged it in-memory this session (the push arrives
+        // before the encounter syncs into the DB).
+        boolean isVisitNoteStarted =
+                !EncounterDAO.getStartVisitNoteEncounterByVisitUUID(visitUUID).isEmpty()
+                        || IntelehealthApplication.isVisitNoteStarted(visitUuid);
+        return hasEditCache || !isVisitNoteStarted;
+    }
+
+    /**
+     * Guard for the edit icons. When editing is not allowed the icons are kept
+     * visible (instead of being hidden), and clicking one shows an error message.
+     * <p>
+     * Re-evaluates edit permission at click time so a "start visit" notification received while
+     * the user is on this screen takes effect immediately (the value from onCreate can be stale).
+     *
+     * @return {@code true} if editing is blocked (caller should return), {@code false} otherwise.
+     */
+    private boolean blockEditIfNotAllowed() {
+        isAllowForEdit = computeIsEditAllowed();
+        if (!isAllowForEdit) {
+            Toast.makeText(this, getString(R.string.editing_not_allowed_visit_note_present), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
     private void setViewsData() {
         physicalDoumentsUpdates();
 
@@ -1436,6 +1480,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             editAddDocs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (blockEditIfNotAllowed()) return;
                 /*Intent addDocs = new Intent(VisitSummaryActivity_New.this, AdditionalDocumentsActivity.class);
                 addDocs.putExtra("patientUuid", patientUuid);
                 addDocs.putExtra("visitUuid", visitUuid);
@@ -1506,6 +1551,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
 //                intent1.putExtra("patientUuid", patientUuid);
 //                intent1.putExtra("visitUuid", visitUuid);
@@ -1530,6 +1576,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -1680,6 +1727,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editPhysical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -1826,6 +1874,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editMedHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 final MaterialAlertDialogBuilder historyDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -1963,6 +2012,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this,R.style.AlertDialogStyle);
                 famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
@@ -2157,6 +2207,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 Intent intent1 = new Intent(context, VisitCreationActivity.class);
 
                 mCommonVisitData.setEditFor(VisitCreationActivity.STEP_2_DIAGNOSTICS);
@@ -3369,12 +3420,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         SyncUtils syncUtils = new SyncUtils();
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
-                            // remove the local cache
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
                             Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
                             setAppointmentButtonStatus();
@@ -5536,6 +5581,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         (mBinding, VisitSummaryActivity_New.this, null,
                                 VisitSummaryActivity_New.this, encounterVitals, mCommonVisitData);
                 visitDiagnosticsSummary.initViews();
+
+                // An edit section (vitals / complaint / physical exam / medical / family history /
+                // diagnostics) was just completed. Push the edited data to the server on returning
+                // to the Visit Summary screen. syncOnServer() no-ops when offline.
+                SyncUtils.syncOnServer();
             }
         }
     });

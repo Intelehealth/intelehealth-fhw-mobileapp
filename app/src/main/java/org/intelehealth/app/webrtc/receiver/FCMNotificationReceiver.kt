@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
@@ -51,7 +52,21 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
-            if (data.containsKey("type") && data["type"].equals("video_call")) {
+            if (data.containsKey("type") && data["type"].equals("visit_started")) {
+                val visitUuid = data["visitUuid"] ?: ""
+                if (visitUuid.isNotEmpty()) {
+                    Log.d(TAG, "onMessageReceived: $visitUuid - removing visit cache")
+                    // remove the local edit cache once the doctor starts the visit note
+                    sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid)
+                    sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid)
+                    sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid)
+                    sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid)
+                    sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid)
+                    // mark visit note as started (in-memory, non-persistent) so editing is blocked
+                    // immediately, even before the visit note encounter is pulled into the local DB.
+                    IntelehealthApplication.markVisitNoteStarted(visitUuid)
+                }
+            } else if (data.containsKey("type") && data["type"].equals("video_call")) {
                 checkVideoActiveStatus(context) {
                     Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                         nurseName = sessionManager.chwname

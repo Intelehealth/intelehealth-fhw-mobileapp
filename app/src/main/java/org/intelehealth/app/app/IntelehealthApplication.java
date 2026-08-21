@@ -66,6 +66,23 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         return sIntelehealthApplication;
     }
 
+    /**
+     * In-memory (non-persistent) set of visit uuids for which the doctor has started the visit note
+     * during this app process, learned from the visit_started push. Used to block editing on the
+     * Visit Summary screen immediately, without waiting for the visit note encounter to sync into the
+     * local DB. Cleared automatically when the process ends (no permanent flag stored).
+     */
+    private static final java.util.Set<String> sVisitNoteStartedUuids =
+            java.util.Collections.synchronizedSet(new java.util.HashSet<String>());
+
+    public static void markVisitNoteStarted(String visitUuid) {
+        if (visitUuid != null && !visitUuid.isEmpty()) sVisitNoteStartedUuids.add(visitUuid);
+    }
+
+    public static boolean isVisitNoteStarted(String visitUuid) {
+        return visitUuid != null && sVisitNoteStartedUuids.contains(visitUuid);
+    }
+
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 //    private RealTimeDataChangedObserver dataChangedObserver;
 

@@ -46,15 +46,21 @@ public class AppointmentSync {
                         if (response.body() == null) return;
                         AppointmentListingResponse slotInfoResponse = response.body();
                         AppointmentDAO appointmentDAO = new AppointmentDAO();
-                        appointmentDAO.deleteAllAppointments();
-                        for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
+                        try {
+                            appointmentDAO.deleteAllAppointments();
+                            for (int i = 0; i < slotInfoResponse.getData().size(); i++) {
 
-                            try {
-                                CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
-                                appointmentDAO.insert(slotInfoResponse.getData().get(i));
-                            } catch (DAOException e) {
-                                e.printStackTrace();
+                                try {
+                                    CustomLog.v(TAG, "insert = " + new Gson().toJson(slotInfoResponse.getData().get(i)));
+                                    appointmentDAO.insert(slotInfoResponse.getData().get(i));
+                                } catch (DAOException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        } catch (Exception e) {
+                            // Guard against a transient DB lock (SQLITE_BUSY) while another sync is
+                            // writing. Appointment data is refreshed on the next pull, so don't crash.
+                            CustomLog.e(TAG, "getAppointments DB write skipped: " + e.getMessage());
                         }
 
                         /*if (slotInfoResponse.getCancelledAppointments() != null) {

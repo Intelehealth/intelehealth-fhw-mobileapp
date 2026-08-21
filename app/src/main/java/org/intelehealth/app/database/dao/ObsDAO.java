@@ -118,6 +118,10 @@ public class ObsDAO extends BaseDao{
             values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
+            // Re-flag the parent encounter as unsynced so this obs is pushed again,
+            // even if the encounter was already synced to the server previously.
+            markEncounterUnsynced(db, obsDTO.getEncounteruuid());
+
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
@@ -151,6 +155,10 @@ public class ObsDAO extends BaseDao{
             values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
 
+            // Re-flag the parent encounter as unsynced so this edited obs is pushed again,
+            // even if the encounter was already synced to the server previously.
+            markEncounterUnsynced(db, obsDTO.getEncounteruuid());
+
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
             Logger.logE(TAG, "exception ", e);
@@ -170,6 +178,22 @@ public class ObsDAO extends BaseDao{
 
 
         return true;
+    }
+
+    /**
+     * Marks the given encounter as unsynced (sync = "false") so that any obs added/edited under it
+     * are re-pushed to the server even if the encounter was already synced.
+     * Runs on the caller's open transaction/connection. No-op for a null/empty encounter uuid.
+     */
+    private void markEncounterUnsynced(SQLiteDatabase db, String encounterUuid) {
+        if (encounterUuid == null || encounterUuid.isEmpty()) return;
+        try {
+            ContentValues encValues = new ContentValues();
+            encValues.put("sync", "false");
+            db.update("tbl_encounter", encValues, "uuid = ?", new String[]{encounterUuid});
+        } catch (SQLiteException e) {
+            Logger.logE(TAG, "markEncounterUnsynced failed", e);
+        }
     }
 
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {

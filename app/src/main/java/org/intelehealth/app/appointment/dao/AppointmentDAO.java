@@ -187,11 +187,14 @@ public class AppointmentDAO {
         CustomLog.v(TAG, "deleteAllAppointments ");
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
-            if (db.inTransaction())
-                db.endTransaction();
             db.beginTransaction();
             db.delete("tbl_appointments", null, null);
             db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            // SQLITE_BUSY can be thrown by beginTransaction() when another thread (e.g. the push
+            // sync) holds a write lock. Appointment sync is best-effort and re-runs on the next
+            // pull, so log and skip instead of crashing the main thread.
+            CustomLog.e(TAG, "deleteAllAppointments failed: " + e.getMessage());
         } finally {
             if (db.inTransaction()) {
                 db.endTransaction();
