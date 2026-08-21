@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fu_cardview_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="@dimen/margin_10"
+    android:layout_marginHorizontal="@dimen/margin_5"
+    android:layout_marginTop="@dimen/margin_5"
+    android:layout_marginBottom="@dimen/margin_24"
+    app:cardElevation="@dimen/margin_5">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/fu_margin_start"
+
+            android:layout_marginBottom="@dimen/fu_margin_start"
+            android:layout_toStartOf="@+id/linear_icon">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/fu_profile_imgv"
+                android:layout_width="@dimen/notifi_header_icon"
+                android:layout_height="@dimen/notifi_header_icon"
+                android:layout_alignParentTop="true"
+                android:layout_margin="@dimen/margin_2dp"
+                android:elevation="0dp"
+                app:cardCornerRadius="@dimen/cardcornerradius_imagev">
+
+                <ImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/notifi_header_icon"
+                    android:layout_height="@dimen/notifi_header_icon"
+                    android:src="@drawable/avatar1" />
+            </androidx.cardview.widget.CardView>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/fu_margin_start"
+                android:layout_toEndOf="@+id/fu_profile_imgv">
+
+                <!-- Label -->
+                <RelativeLayout
+                    android:id="@+id/lll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <!-- fu_patname_txtview -->
+                    <TextView
+                        android:id="@+id/fu_patname_txtview"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toStartOf="@id/fl_priority"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:lineSpacingExtra="3sp"
+                        android:maxLines="1"
+                        android:text="@string/fu_item_title"
+                        android:textAppearance="@style/label"
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_name_txt_size" />
+
+                    <FrameLayout
+                        android:id="@+id/fl_priority"
+                        android:layout_width="@dimen/btn_prioirty_w_60dp"
+                        android:layout_height="@dimen/btn_prioirty_h_20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/cal_margnin_start"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <LinearLayout
+                            android:id="@+id/llPriorityTagFollowUpListItem"
+                            android:contentDescription="Follow Up List Item Priority Tag Linear Layout"
+                            android:layout_marginEnd="@dimen/cp_margin_start"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_alignParentEnd="true"
+                            android:background="@drawable/ui2_frame_priority"
+                            android:layout_gravity="top"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            tools:visibility="visible">
+
+                            <TextView
+                                android:id="@+id/fu_priority_tag"
+                                android:layout_gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:lineSpacingExtra="0sp"
+                                android:text="@string/priority"
+                                android:textColor="@color/white"
+                                android:textAlignment="center"
+                                android:textAllCaps="true"
+                                android:textSize="10sp"
+                                android:textStyle="bold" />
+
+                        </LinearLayout>
+
+                    </FrameLayout>
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/fu_item_calendar"
+                    android:layout_width="@dimen/cal_size"
+                    android:layout_height="@dimen/cal_size"
+                    android:layout_below="@+id/lll"
+                    android:layout_marginTop="@dimen/cal_margin_top"
+                    android:layout_marginEnd="@dimen/cal_margnin_start"
+                    android:src="@drawable/followup_item_calendar" />
+
+                <TextView
+                    android:id="@+id/fu_date_txtview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lll"
+                    android:layout_marginTop="@dimen/cal_margnin_start"
+                    android:layout_toEndOf="@+id/fu_item_calendar"
+                    android:gravity="center_vertical"
+                    android:lineSpacingExtra="3sp"
+                    android:text="@string/fu_card_item_date"
+                    android:textAppearance="@style/caption"
+                    android:textColor="@null"
+                    android:textSize="@dimen/fu_male_textsize" />
+
+                <!--
+                    Status badge row — which badges show is driven by the model
+                    (currently just hasPrescription -> Prescription/Prescription
+                    Pending). "Specialist Prescription", "Latest", and "Referral
+                    Declined" aren't wired to real conditions yet — no data field
+                    exists for them (e.g. newest-encounter check, referral status).
+                -->
+                <LinearLayout
+                    android:id="@+id/fu_badge_row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/fu_date_txtview"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/fu_badge_primary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/margin_8"
+                        android:paddingHorizontal="@dimen/margin_10"
+                        android:paddingVertical="@dimen/margin_4"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:background="@drawable/bg_badge_green"
+                        tools:text="Prescription"
+                        tools:textColor="@color/badgeGreenText"
+                        tools:visibility="visible" />
+
+                    <TextView
+                        android:id="@+id/fu_badge_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/margin_10"
+                        android:paddingVertical="@dimen/margin_4"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:background="@drawable/bg_badge_purple"
+                        tools:text="Latest"
+                        tools:textColor="@color/badgePurpleText"
+                        tools:visibility="visible" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <!--Icons-->
+        <LinearLayout
+            android:id="@+id/linear_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/fu_margin_start"
+            android:layout_marginEnd="@dimen/fu_margin_start">
+
+            <TextView
+                android:id="@+id/search_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/cal_margnin_start"
+                android:layout_gravity="end"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/search_gender"
+                android:paddingRight="5dp"
+                android:textAppearance="@style/label_misc_txt_14sp"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_name_txt_size" />
+
+            <LinearLayout
+                android:id="@+id/shareiconLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:orientation="horizontal"
+                android:layout_gravity="bottom">
+
+                <ImageView
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/prescription_icon_green" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingRight="5dp"
+                    android:text="@string/share"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/dm_sans"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/shareImgBtn"
+                android:layout_width="@dimen/btn_prioirty_w_60dp"
+                android:layout_height="@dimen/btn_prioirty_h_20dp"
+                android:src="@drawable/visit_share_presc_icon"
+                android:background="@null"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:layout_marginTop="@dimen/fu_margin_start"
+                android:layout_gravity="bottom"/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

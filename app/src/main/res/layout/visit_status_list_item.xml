@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vsi_cardview_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_5"
+    android:layout_marginBottom="@dimen/margin_16dp"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="@dimen/margin_10"
+    app:cardElevation="@dimen/margin_5">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/fu_margin_start">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/vsi_profile_cardview"
+            android:layout_width="@dimen/notifi_header_icon"
+            android:layout_height="@dimen/notifi_header_icon"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            app:cardCornerRadius="@dimen/cardcornerradius_imagev">
+
+            <ImageView
+                android:id="@+id/vsi_profile_image"
+                android:layout_width="@dimen/notifi_header_icon"
+                android:layout_height="@dimen/notifi_header_icon"
+                android:src="@drawable/avatar1" />
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/vsi_patname_txtview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/vsi_profile_cardview"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_toStartOf="@id/vsi_gender_age_txtview"
+            android:layout_toEndOf="@id/vsi_profile_cardview"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textAppearance="@style/label"
+            android:textColor="@null"
+            android:textSize="@dimen/fu_name_txt_size"
+            tools:text="Anthony G" />
+
+        <TextView
+            android:id="@+id/vsi_gender_age_txtview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/vsi_profile_cardview"
+            android:layout_alignParentEnd="true"
+            android:textAppearance="@style/caption"
+            android:textColor="@null"
+            android:textSize="@dimen/fu_male_textsize"
+            tools:text="Female 21" />
+
+        <ImageView
+            android:id="@+id/vsi_calendar_icon"
+            android:layout_width="@dimen/cal_size"
+            android:layout_height="@dimen/cal_size"
+            android:layout_below="@id/vsi_patname_txtview"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/cal_margin_top"
+            android:layout_toEndOf="@id/vsi_profile_cardview"
+            android:src="@drawable/followup_item_calendar" />
+
+        <TextView
+            android:id="@+id/vsi_date_txtview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@id/vsi_calendar_icon"
+            android:layout_marginStart="@dimen/cal_margnin_start"
+            android:layout_toEndOf="@id/vsi_calendar_icon"
+            android:textAppearance="@style/caption"
+            android:textColor="@null"
+            android:textSize="@dimen/fu_male_textsize"
+            tools:text="22 June at 18:11 PM" />
+
+        <!--
+            Badge row — up to 2 pills, e.g. "Specialist Prescription" + "Latest",
+            or "Prescription Pending" + "Referral Declined". Which badges show is
+            driven by VisitStatusItem — the actual conditions (e.g. is this the
+            newest encounter for the visit, was a referral declined) are not
+            wired up yet; for now callers pass whatever badges apply.
+        -->
+        <LinearLayout
+            android:id="@+id/vsi_badge_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/vsi_calendar_icon"
+            android:layout_marginStart="@dimen/fu_margin_start"
+            android:layout_marginTop="@dimen/margin_8"
+            android:layout_toEndOf="@id/vsi_profile_cardview"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/vsi_badge_primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_8"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:paddingVertical="@dimen/margin_4"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:background="@drawable/bg_badge_green"
+                tools:text="Specialist Prescription"
+                tools:textColor="@color/badgeGreenText"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/vsi_badge_secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_10"
+                android:paddingVertical="@dimen/margin_4"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:background="@drawable/bg_badge_purple"
+                tools:text="Latest"
+                tools:textColor="@color/badgePurpleText"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
