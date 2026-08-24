@@ -187,7 +187,7 @@ import okhttp3.ResponseBody;
 public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
-            postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
+            postalcode, patientcountry, patientstate, patientdistrict, blockTv, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
             tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv,
@@ -196,7 +196,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
-            stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
+            stateTr, districtTr, blockTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
             provinceTr, cityTr, registrationAddressOfHfTr,
             innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr;
@@ -720,6 +720,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         countryTr = findViewById(R.id.country_tr);
         stateTr = findViewById(R.id.state_tr);
         districtTr = findViewById(R.id.district_tr);
+        blockTr = findViewById(R.id.block_tr);
         villageCityTr = findViewById(R.id.village_city_tr);
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
@@ -748,6 +749,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientcountry = findViewById(R.id.country);
         patientstate = findViewById(R.id.state);
         patientdistrict = findViewById(R.id.district);
+        blockTv = findViewById(R.id.block);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
@@ -925,6 +927,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         false,
                         fields,
                         districtTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        blockTr,
                         null,
                         null,
                         null
@@ -1270,11 +1280,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     if (s.isEmpty()) continue;
                                     //String s1 =  new String(s.getBytes(), "UTF-8");
                                     System.out.println(s);
-                                    String[] spt1 = s.split("::●");
+                                    String[] spt1 = s.split("::");
                                     complainName = spt1[0];
 
-                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))
+                                            && !complainName.trim().startsWith(VisitUtils.getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()))) {
                                         System.out.println(complainName);
                                         if (!stringBuilder.toString().isEmpty())
                                             stringBuilder.append(", ");
@@ -1836,6 +1846,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientdistrict.setText(getResources().getString(R.string.no_district_added));
         }
 
+        // setting block
+        if (patientDTO.getAddress3() != null && patientDTO.getAddress3().length() > 0) {
+            blockTv.setText(getBlockTranslated(state, district, patientDTO.getAddress3(), sessionManager.getAppLanguage()));
+        } else {
+            blockTv.setText(getResources().getString(R.string.no_block_added));
+        }
+
         if (city_village != null) {
             //village.setText(city_village);
             village.setText(getVillageTranslated(patientDTO.getStateprovince(), patientDTO.getDistrict(), patientDTO.getAddress3(), patientDTO.getCityvillage(), sessionManager.getAppLanguage()));
@@ -2371,6 +2388,53 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         return desiredVal;
     }
 
+    private String getBlockTranslated(String state, String district, String block, String language) {
+        if (block == null) return block;
+
+        String json = FileUtils.encodeJSON(this, "state_district_tehsil.json").toString();
+        StateDistMaster stateDistMaster = new Gson().fromJson(json, StateDistMaster.class);
+
+        if (stateDistMaster == null || stateDistMaster.getStateDataList() == null) {
+            return block; // Return original if JSON is invalid
+        }
+
+        StateData stateData = stateDistMaster.getStateDataList().stream()
+                .filter(s -> s.getState().equalsIgnoreCase(state))
+                .findFirst()
+                .orElse(null);
+
+        if (stateData == null || stateData.getDistDataList() == null) {
+            return block; // Return original if state or districts are not found
+        }
+
+        DistData districtData = stateData.getDistDataList().stream()
+                .filter(d -> d.getName().equalsIgnoreCase(district))
+                .findFirst()
+                .orElse(null);
+
+        if (districtData == null || districtData.getBlocks() == null) {
+            return block; // Return original if district or blocks are not found
+        }
+
+        Block blockData = districtData.getBlocks().stream()
+                .filter(b -> b.getName().equalsIgnoreCase(block))
+                .findFirst()
+                .orElse(null);
+
+        if (blockData == null) {
+            return block; // Return original if block is not found
+        }
+
+        switch (language.toLowerCase()) {
+            case "hi":
+                return blockData.getNameHindi() != null ? blockData.getNameHindi() : block;
+            case "mr":
+                return blockData.getNameMarathi() != null ? blockData.getNameMarathi() : block;
+            default:
+                return blockData.getName() != null ? blockData.getName() : block;
+        }
+    }
+
     // profile pic download
     public void profilePicDownloaded() {
         UrlModifiers urlModifiers = new UrlModifiers();
@@ -2806,11 +2870,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                         if (s.isEmpty()) continue;
                                         //String s1 =  new String(s.getBytes(), "UTF-8");
                                         System.out.println(s);
-                                        String[] spt1 = s.split("::●");
+                                        String[] spt1 = s.split("::");
                                         complainName = spt1[0];
 
-                                        //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                        if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
+                                        if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))
+                                                && !complainName.trim().startsWith(VisitUtils.getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()))) {
                                             System.out.println(complainName);
                                             if (!stringBuilder.toString().isEmpty())
                                                 stringBuilder.append(", ");

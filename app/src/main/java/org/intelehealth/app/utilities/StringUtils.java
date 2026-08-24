@@ -16,10 +16,13 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.text.InputFilter;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +48,19 @@ import java.util.Locale;
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
+
+    /**
+     * Appends a mandatory-field asterisk to the label, colored red, when isMandatory is true.
+     */
+    public static CharSequence appendMandatoryAsterisk(String label, boolean isMandatory) {
+        if (!isMandatory || label == null) return label;
+        String labelWithAsterisk = label + " *";
+        SpannableString spannable = new SpannableString(labelWithAsterisk);
+        spannable.setSpan(new ForegroundColorSpan(Color.RED),
+                labelWithAsterisk.length() - 1, labelWithAsterisk.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
+    }
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());

@@ -594,7 +594,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 +" (followup_date = ? or followup_date = ?) "
                 + "AND o.value is NOT NULL "
                 + "AND followup_date is NOT NULL " +
-                "GROUP BY a.patientuuid"
+                "GROUP BY a.uuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
         CustomLog.d("COUNT_QUERY",query);

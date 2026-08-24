@@ -3784,7 +3784,13 @@ public class Node implements Serializable {
 
         if (optionsList != null && !optionsList.isEmpty()) {
             ArrayList<Node> selectedNodes = getSelectedNode();
-            if (isRequired() && selectedNodes.isEmpty()) return false;
+            if (isRequired() && selectedNodes.isEmpty()) {
+                // Some options (e.g. "Other") carry both nested sub-options AND their own
+                // direct text/data input. If none of the nested children were selected,
+                // fall back to checking whether the node itself captured an answer
+                // before treating it as unanswered.
+                return isUserInputsTypeNode() && isDataCaptured();
+            }
             for (Node child : selectedNodes) {
                 if (!child.checkIsAnswered()) {
                     isAnswered = false;

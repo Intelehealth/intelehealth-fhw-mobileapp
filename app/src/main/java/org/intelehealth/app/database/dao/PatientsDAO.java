@@ -1313,6 +1313,7 @@ public class PatientsDAO extends BaseDao {
                 patientDTO.setProfileTimestamp(cursor.getString(cursor.getColumnIndexOrThrow("profileImageTimestamp")));
                 patientDTO.setCaste(cursor.getString(cursor.getColumnIndexOrThrow("caste")));
                 patientDTO.setCreatedDate(cursor.getString(cursor.getColumnIndexOrThrow("createdDate")));
+                patientDTO.setReportDateOfPatientCreated(cursor.getString(cursor.getColumnIndexOrThrow("reportDateOfPatientCreated")));
 
                 patientDTO.setTmhCaseNumber(cursor.getString(cursor.getColumnIndexOrThrow("tmhCaseNumber")));
                 patientDTO.setRequestId(cursor.getString(cursor.getColumnIndexOrThrow("requestId")));
@@ -1376,7 +1377,7 @@ public class PatientsDAO extends BaseDao {
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
                     "AND a.enddate IS NULL " + // changed for visit removed but count is not dec
-                    "GROUP BY a.patientuuid " +
+                    "GROUP BY a.uuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
                     "AND value_text != '' ) ";
 

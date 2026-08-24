@@ -135,7 +135,6 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.SpecialtyNotesProvider;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -185,8 +184,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private LinearLayout presc_profile_header;
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext, notes_precautions_txt;
-    private View notesPrecautionsCard;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
     private ImageView priorityTag, profile_image;
     private ActivityPrescription2Binding mBinding;
     private SessionManager sessionManager;
@@ -392,8 +390,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         followup_date_txt = findViewById(R.id.followup_date_txt);
         followup_subtext = findViewById(R.id.followup_info);
         followup_date_block = findViewById(R.id.followup_date_block);
-        notesPrecautionsCard = findViewById(R.id.notesPrecautionsCard);
-        notes_precautions_txt = findViewById(R.id.notes_precautions_txt);
 
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
@@ -1441,22 +1437,6 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details.getQualification() != null && !details.getQualification().isEmpty())
             qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
-        showSpecialtyNotesAndPrecautions(details.getSpecialization());
-    }
-
-    private void showSpecialtyNotesAndPrecautions(String specialization) {
-        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(this, specialization);
-        if (notes == null || notes.isEmpty()) {
-            notesPrecautionsCard.setVisibility(View.GONE);
-            return;
-        }
-        StringBuilder builder = new StringBuilder();
-        for (String note : notes) {
-            builder.append("• ").append(note).append("\n");
-        }
-        if (builder.length() > 0) builder.setLength(builder.length() - 1);
-        notes_precautions_txt.setText(builder.toString());
-        notesPrecautionsCard.setVisibility(View.VISIBLE);
     }
 
     private String addBulletPoints(String inputString) {
@@ -1568,10 +1548,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
-                if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
-                    diagnosisReturned = diagnosisReturned + "\n" + value;
+                // Strip a leading "<code>::" or "NA::" prefix (e.g. "115902018::Acute
+                // Gastroenteritis:Primary & Under Evaluation") - the diagnosis concept id
+                // isn't meant to be shown, only the diagnosis text that follows it.
+                String cleanedValue = value == null ? null : value.replaceFirst("(?i)^(?:na|\\d+)::\\s*", "");
+                if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(cleanedValue)) {
+                    diagnosisReturned = diagnosisReturned + "\n" + cleanedValue;
                 } else {
-                    diagnosisReturned = value;
+                    diagnosisReturned = cleanedValue;
                 }
                 diagnosis_txt.setText(addBulletPoints(diagnosisReturned));
                 break;

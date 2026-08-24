@@ -42,7 +42,6 @@ import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import org.intelehealth.app.utilities.UrlModifiers
 import timber.log.Timber
 import java.io.File
@@ -211,7 +210,6 @@ class ShowPrescriptionDataPdfShareDialog(
         val vital= formatVitalsAndDiagnostics(prescriptionData.vitals)
         val diagnostic= formatVitalsAndDiagnostics(prescriptionData.diagnostics)
         val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").toString())
-        val specialtyNotes = SpecialtyNotesProvider.getNotesFor(activity, drDetails?.specialization)
 
         val patientDataSections: Map<String, Map<String, String?>> = mapOf(
             "Vitals" to mapOf(PrescriptionDetailsDataKeys.Vitals.toString() to vital),
@@ -223,11 +221,7 @@ class ShowPrescriptionDataPdfShareDialog(
             "Tests" to mapOf(PrescriptionDetailsDataKeys.Tests.toString() to prescriptionData.visitCompleteEncData?.get("Tests")),
             "Referred Specialist" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referred Specialist")),
             "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
-        ) + if (!specialtyNotes.isNullOrEmpty()) {
-            mapOf("Notes & Precautions" to mapOf(PrescriptionDetailsDataKeys.NotesPrecautions.toString() to specialtyNotes.joinToString("\n") { "• $it" }))
-        } else {
-            emptyMap()
-        }
+        )
 
         val patientData = createPatientData(prescriptionData.patient)
 

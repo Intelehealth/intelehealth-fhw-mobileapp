@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="org.intelehealth.app.utilities.StringUtils" />
 
         <variable
             name="patient"
@@ -56,7 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.nationalId.mandatory ? @string/national_ID + ` *` : @string/national_ID}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/national_ID, otherInfoConfig.nationalId.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/national_ID" />
@@ -98,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.occuptions.mandatory ? @string/occupation + ` *` : @string/occupation}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/occupation, otherInfoConfig.occuptions.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/occupation" />
@@ -140,7 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.socialCategory.mandatory ? @string/social_category + ` *` : @string/social_category}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/social_category, otherInfoConfig.socialCategory.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/social_category" />
@@ -182,7 +183,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.education.mandatory ? @string/education + ` *` : @string/education}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/education, otherInfoConfig.education.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/education" />
@@ -224,7 +225,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.economicCategory.mandatory ? @string/economic_category + ` *` : @string/economic_category}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/economic_category, otherInfoConfig.economicCategory.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/economic_category" />
@@ -267,7 +268,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{otherInfoConfig.tmhCaseNumber.mandatory ? @string/tmh_case_number + ` *` : @string/tmh_case_number}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/tmh_case_number, otherInfoConfig.tmhCaseNumber.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/tmh_case_number" />
@@ -311,7 +312,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.requestId.mandatory ? @string/request_id + ` *` : @string/request_id}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/request_id, otherInfoConfig.requestId.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/request_id" />
@@ -355,7 +356,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/relative_phone_number + ` *` : @string/relative_phone_number}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/relative_phone_number, otherInfoConfig.relativePhoneNumber.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/relative_phone_number" />
@@ -384,7 +385,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/std_12dp"
-                            android:hint="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/relative_phone_number + ` *` : @string/relative_phone_number}"
+                            android:hint="@{StringUtils.appendMandatoryAsterisk(@string/relative_phone_number, otherInfoConfig.relativePhoneNumber.mandatory)}"
                             app:expandedHintEnabled="false"
                             app:hintEnabled="false"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -423,7 +424,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.discipline.mandatory ? @string/discipline + ` *` : @string/discipline}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/discipline, otherInfoConfig.discipline.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/discipline" />
@@ -465,7 +466,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.inn.mandatory ? @string/inn + ` *` : @string/inn}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/inn, otherInfoConfig.inn.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/inn" />
@@ -507,7 +508,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.codeOfHealthyFacility.mandatory ? @string/code_of_the_health_facility + ` *` : @string/code_of_the_health_facility}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/code_of_the_health_facility, otherInfoConfig.codeOfHealthyFacility.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/code_of_the_health_facility" />
@@ -549,7 +550,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.healthFacilityName.mandatory ? @string/health_facility_name + ` *` : @string/health_facility_name}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/health_facility_name, otherInfoConfig.healthFacilityName.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/health_facility_name" />
@@ -591,7 +592,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.codeOfDepartment.mandatory ? @string/code_of_the_department + ` *` : @string/code_of_the_department}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/code_of_the_department, otherInfoConfig.codeOfDepartment.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/code_of_the_department" />
@@ -634,7 +635,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ otherInfoConfig.department.mandatory ? @string/department + ` *` : @string/department}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/department, otherInfoConfig.department.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/department" />
