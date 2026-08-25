@@ -2256,7 +2256,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
+                    // Read the model from the adapter data, not from view.getTag(): during a
+                    // programmatic setSelection() the row view is null (fired via SelectionNotifier
+                    // before layout), which previously caused a NullPointerException here.
+                    Specialization specialization = (Specialization) adapterView.getItemAtPosition(i);
+                    if (specialization == null) {
+                        return;
+                    }
                     speciality_selected = specialization.getName();
                     String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
                     vd_special_value.setText(" " + Node.bullet + "  " + value);
@@ -4159,6 +4165,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             if (broadcastReceiverForIamgeDownlaod != null && isDownloadImageBroadcastRecRegisterd) {
                 unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+                // Reset the flag so a later onStop() doesn't try to unregister an
+                // already-unregistered receiver (which throws "Receiver not registered").
+                isDownloadImageBroadcastRecRegisterd = false;
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
