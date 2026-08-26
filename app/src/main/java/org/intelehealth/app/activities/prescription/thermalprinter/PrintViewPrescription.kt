@@ -16,7 +16,6 @@ import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.utilities.DateAndTimeUtils
-import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import org.intelehealth.app.utilities.UuidDictionary
 import java.text.NumberFormat
 import java.text.ParseException
@@ -265,7 +264,6 @@ class PrintViewPrescription(
             .append(formatReferredSpecialist())
             .append(formatAdviceFromDoctor())
             .append(formatFollowUpDate())
-            .append(formatSpecialtyNotes())
             .toString()
 
         Log.d(TAG, "Generated Prescription HTML: $prescriptionHtml")
@@ -366,16 +364,6 @@ class PrintViewPrescription(
         }
         return formatted
     }
-    private fun formatSpecialtyNotes(): String {
-        var htmlDocument = ""
-        val notes = SpecialtyNotesProvider.getNotesFor(context, clsDoctorDetails?.specialization)
-        if (!notes.isNullOrEmpty()) {
-            val notesWeb = stringToWebSms(notes.joinToString("\n"))
-            htmlDocument = "<b id=\"notes_precautions_heading\">* Notes & Precautions </b><br>$notesWeb<br>"
-        }
-        return htmlDocument
-    }
-
     private fun formatReferredSpecialist(): String {
         var htmlDocument = ""
         if (dataModel.referredSpecialist.isNotEmpty()) {

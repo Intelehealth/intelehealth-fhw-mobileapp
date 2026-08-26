@@ -16,6 +16,7 @@
     <color name="colorPrimaryLightCard">#1a00CA04</color>
     <color name="colorAccent">#0FD197</color>
     <color name="colorAccentLightCard">#1a0FD197</color>
+    <color name="close_background">#EFE8FF</color>
     <!--<color name="colorAccent">#3F9600</color>
         <color name="colorAccentLightCard">#1aF57F17</color>
     -->

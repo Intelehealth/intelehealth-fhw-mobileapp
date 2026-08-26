@@ -1022,6 +1022,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
     private String mLastTag = "";
 
+    /**
+     * If the Home fragment is the one currently shown, ask it to re-query and
+     * redisplay its prescription count. Safe to call even when Home isn't the
+     * visible fragment - it's just a no-op then.
+     */
+    private void refreshHomePrescriptionCount() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_HOME);
+        if (fragment instanceof HomeFragment_New && fragment.isAdded()) {
+            ((HomeFragment_New) fragment).refreshPrescriptionCount();
+        }
+    }
+
     private void loadFragment(Fragment fragment, String tag) {
 
         if (fragment != null) {
@@ -1315,6 +1327,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 if (flagType == AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE) {
                     updateNavHeaderUserDetails();
                     //hideSyncProgressBar(true);
+                }
+
+                if (flagType == AppConstants.SYNC_PULL_DATA_DONE) {
+                    // A pull just finished (manual sync tap, or a background sync
+                    // enqueued after a "new prescription" push notification) -
+                    // refresh the Home card's prescription count right away instead
+                    // of waiting for the fragment to go through onResume().
+                    refreshHomePrescriptionCount();
                 }
             }
             updateLastSyncTime();

@@ -785,6 +785,7 @@
     <string name="no_country_added">No country added</string>
     <string name="no_state_added">No state added</string>
     <string name="no_district_added">No district added</string>
+    <string name="no_block_added">No block added</string>
     <string name="no_city_added">No city added</string>
     <string name="no_postal_code_added">No postal code added</string>
     <string name="no_mobile_number_added">No phone number added</string>
@@ -856,7 +857,6 @@
     <string name="no_information_with_bullet">\u2022 No information</string>
     <string name="qualification">Qualification</string>
     <string name="advice">Advice</string>
-    <string name="notes_and_precautions">Notes &amp; Precautions</string>
     <string name="referred_specialist">Referred Specialist</string>
     <string name="no_follow_up_suggested">\u2022 No follow up suggested</string>
     <string name="clear">Clear</string>
@@ -903,8 +903,8 @@
     <string name="country">Country</string>
     <string name="state">State</string>
     <string name="village_town_city">Village/Town/City</string>
-    <string name="_corresponding_address_1">संबंधित पत्ता १</string>
-    <string name="_corresponding_address_2">संबंधित पत्ता २</string>
+    <string name="_corresponding_address_1">Corresponding Address 1</string>
+    <string name="_corresponding_address_2">Corresponding Address 2</string>
     <string name="other_details">Other details</string>
     <string name="camera">Camera</string>
     <string name="gallery">Gallery</string>

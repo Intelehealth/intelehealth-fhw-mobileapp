@@ -5,6 +5,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.models.pushRequestApiCall.Attribute;
+import org.intelehealth.app.models.pushRequestApiCall.AttributeJsonSerializer;
 import org.intelehealth.app.networkApiCalls.interceptors.TokenSetupInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -20,6 +22,7 @@ public class ApiClient {
     private static String apiBaseUrl = BuildConfig.SERVER_URL;    //testing server
     private static final Gson gson = new GsonBuilder()
             .setLenient()
+            .registerTypeAdapter(Attribute.class, new AttributeJsonSerializer())
             .create();
 
     /**
@@ -55,7 +58,7 @@ public class ApiClient {
 
     private static Retrofit.Builder builder =
             new Retrofit.Builder()
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .baseUrl(apiBaseUrl)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create());
 

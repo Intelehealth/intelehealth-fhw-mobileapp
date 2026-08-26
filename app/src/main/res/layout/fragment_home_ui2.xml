@@ -206,7 +206,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorPrimaryLightCard"
+                android:background="@color/close_background"
                 android:paddingStart="@dimen/common_all_card_start_padding"
                 android:paddingTop="@dimen/common_all_card_top_margin">
 

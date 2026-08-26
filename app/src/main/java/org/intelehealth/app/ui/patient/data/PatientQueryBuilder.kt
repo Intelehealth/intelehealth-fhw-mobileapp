@@ -25,6 +25,7 @@ class PatientQueryBuilder : QueryBuilder() {
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.PROFILE_IMG_TIMESTAMP.value) + " profileImageTimestamp,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CAST.value) + " caste,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.CREATED_DATE.value) + " createdDate,"
+                    + buildPatientAttributesQuery(PatientAttributesDTO.Column.REPORT_DATE_OF_PATIENT_CREATED.value) + " reportDateOfPatientCreated,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.TMH_CASE_NUMBER.value) + " tmhCaseNumber,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.REQUEST_ID.value) + " requestId,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.DISCIPLINE.value) + " discipline,"

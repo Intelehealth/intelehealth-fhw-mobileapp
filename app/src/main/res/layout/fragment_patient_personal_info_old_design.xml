@@ -6,6 +6,7 @@
     <data>
 
         <import type="android.view.View" />
+        <import type="org.intelehealth.app.utilities.StringUtils" />
 
         <variable
             name="patient"
@@ -132,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.firstName.mandatory ? @string/first_name_mandatory + ` *` : @string/first_name_mandatory}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/first_name_mandatory, personalConfig.firstName.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/first_name_mandatory" />
@@ -174,7 +175,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.middleName.mandatory ? @string/middle_name_registration + ` *` : @string/middle_name_registration}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/middle_name_registration, personalConfig.middleName.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/middle_name_registration" />
@@ -215,7 +216,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.lastName.mandatory ? @string/last_name_mandatory + ` *` : @string/last_name_mandatory}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/last_name_mandatory, personalConfig.lastName.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/last_name_mandatory" />
@@ -256,7 +257,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.gender.mandatory ? @string/gender_mandatory + ` *` : @string/gender_mandatory}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/gender_mandatory, personalConfig.gender.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         app:layout_constraintStart_toStartOf="parent"
@@ -340,7 +341,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.dob.mandatory ? @string/date_of_birth_mandatory + ` *` : @string/date_of_birth_mandatory}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/date_of_birth_mandatory, personalConfig.dob.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/date_of_birth_mandatory" />
@@ -353,7 +354,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="@{ personalConfig.dob.mandatory ? @string/date_of_birth_mandatory + ` *` : @string/date_of_birth_mandatory}"
+                        android:hint="@{StringUtils.appendMandatoryAsterisk(@string/date_of_birth_mandatory, personalConfig.dob.mandatory)}"
                         app:hintEnabled="false"
                         app:startIconDrawable="@drawable/followup_item_calendar"
                         app:startIconTint="@color/colorAccent"
@@ -389,7 +390,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/age_mandatory + ` *` : @string/age_mandatory}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/age_mandatory, personalConfig.age.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/age_mandatory" />
@@ -435,7 +436,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.guardianName.mandatory ? @string/guardian_name_non_required + ` *` : @string/guardian_name_non_required}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/guardian_name_non_required, personalConfig.guardianName.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/guardian_name_non_required" />
@@ -477,7 +478,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/guardian_type_non_required + ` *` : @string/guardian_type_non_required}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/guardian_type_non_required, personalConfig.age.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/guardian_type_non_required" />
@@ -524,7 +525,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.age.mandatory ? @string/phone_number + ` *` : @string/phone_number}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/phone_number, personalConfig.age.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/phone_number" />
@@ -553,7 +554,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/std_12dp"
-                            android:hint="@{ personalConfig.phone.mandatory ? @string/phone_number + ` *` : @string/phone_number}"
+                            android:hint="@{StringUtils.appendMandatoryAsterisk(@string/phone_number, personalConfig.phone.mandatory)}"
                             app:expandedHintEnabled="false"
                             app:hintEnabled="false"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -590,7 +591,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.emergencyContactType.mandatory ? @string/contact_type_non_required + ` *` : @string/contact_type_non_required}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/contact_type_non_required, personalConfig.emergencyContactType.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/contact_type_non_required" />
@@ -602,7 +603,7 @@
                         editMode="@{isEditMode}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@{ personalConfig.emergencyContactType.mandatory ? @string/contact_type_non_required + ` *` : @string/contact_type_non_required}"
+                        android:hint="@{StringUtils.appendMandatoryAsterisk(@string/contact_type_non_required, personalConfig.emergencyContactType.mandatory)}"
                         app:hintEnabled="false"
                         tools:hint="@string/contact_type_non_required">
 
@@ -633,7 +634,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.emergencyContactName.mandatory ? @string/emergency_contact_name_non_required + ` *` : @string/emergency_contact_name_non_required}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/emergency_contact_name_non_required, personalConfig.emergencyContactName.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/emergency_contact_name_non_required" />
@@ -645,7 +646,7 @@
                         editMode="@{isEditMode}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@{ personalConfig.emergencyContactName.mandatory ? @string/emergency_contact_name_non_required + ` *` : @string/emergency_contact_name_non_required}"
+                        android:hint="@{StringUtils.appendMandatoryAsterisk(@string/emergency_contact_name_non_required, personalConfig.emergencyContactName.mandatory)}"
                         app:hintEnabled="false"
                         tools:hint="@string/emergency_contact_name_non_required">
 
@@ -676,7 +677,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{ personalConfig.emergencyContactNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/emergency_contact_number_non_required, personalConfig.emergencyContactNumber.mandatory)}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/emergency_contact_number_non_required" />
@@ -705,7 +706,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/std_12dp"
-                            android:hint="@{ personalConfig.emergencyContactNumber.mandatory ? @string/emergency_contact_number_non_required + ` *` : @string/emergency_contact_number_non_required}"
+                            android:hint="@{StringUtils.appendMandatoryAsterisk(@string/emergency_contact_number_non_required, personalConfig.emergencyContactNumber.mandatory)}"
                             app:expandedHintEnabled="false"
                             app:hintEnabled="false"
                             app:layout_constraintEnd_toEndOf="parent"

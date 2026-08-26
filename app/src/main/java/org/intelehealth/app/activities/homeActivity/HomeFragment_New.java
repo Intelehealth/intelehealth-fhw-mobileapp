@@ -248,6 +248,43 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         };
     }
 
+    /**
+     * Re-queries the prescription counts and updates the "received/out of" text
+     * shown on the Home screen's prescription card.
+     * <p>
+     * Extracted out of {@link #initUI()} so it can also be called directly by
+     * {@link HomeScreenActivity_New} when a background sync (e.g. one triggered
+     * by an incoming "new prescription" push notification) finishes pulling data,
+     * without requiring this fragment to go through {@link #onResume()} first.
+     */
+    public void refreshPrescriptionCount() {
+        if (!isAdded() || getActivity() == null || view == null || sessionManager == null) return;
+        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        if (prescriptionCountTextView == null) return;
+        Executors.newSingleThreadExecutor().execute(() -> {
+            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
+            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
+            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
+            int total = pendingCountTotalVisits + countReceivedPrescription;
+
+            // firebase crash issue added and replace old code.
+            Activity currentActivity = getActivity(); // ✅ capture once
+            if (isAdded() && currentActivity != null) { // ✅ both checks
+                currentActivity.runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " "
+                            + currentActivity.getString(R.string.out_of)
+                            + " " + total + " "
+                            + currentActivity.getString(R.string.received).toLowerCase();
+
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+                    }
+                    prescriptionCountTextView.setText(prescCountText);
+                });
+            }
+        });
+    }
+
     private void initUI() {
         Activity activity = getActivity();
         if (!isAdded() || activity == null) return;
@@ -327,40 +364,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         });
 
 
-        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        Executors.newSingleThreadExecutor().execute(() -> {
-            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
-            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
-            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
-            //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-            // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-            int total = pendingCountTotalVisits + countReceivedPrescription;
-
-            // firebase crash issue added and replace old code.
-            Activity currentActivity = getActivity(); // ✅ capture once
-            if (isAdded() && currentActivity != null) { // ✅ both checks
-                currentActivity.runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " "
-                            + currentActivity.getString(R.string.out_of)
-                            + " " + total + " "
-                            + currentActivity.getString(R.string.received).toLowerCase();
-
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-                    }
-                    prescriptionCountTextView.setText(prescCountText);
-                });
-
-          /*  if (isAdded()) {
-                activity.runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-                    }
-                    prescriptionCountTextView.setText(prescCountText);
-                });*/
-            }
-        });
+        refreshPrescriptionCount();
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
@@ -594,7 +598,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 +" (followup_date = ? or followup_date = ?) "
                 + "AND o.value is NOT NULL "
                 + "AND followup_date is NOT NULL " +
-                "GROUP BY a.patientuuid"
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                "GROUP BY a.uuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
         CustomLog.d("COUNT_QUERY",query);

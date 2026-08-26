@@ -989,9 +989,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
-                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
                  searchQuery +
-                "GROUP BY a.patientuuid " +
+                "GROUP BY a.uuid " +
                 "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
@@ -1122,9 +1122,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL "+
-                "AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
                 searchQuery+
-                "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
+                "GROUP BY a.uuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
         Timber.tag("FOLLOWUP_QUERY").d(query);
@@ -1272,8 +1272,8 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     skipTodayAndTomorrowQuery +
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
-                    "AND a.enddate IS NULL " + // changed for visit removed when visit is closed
-                    "GROUP BY a.patientuuid " +
+                    "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                    "GROUP BY a.uuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
                     "AND value_text != '' ) " +
                     filterQuery +

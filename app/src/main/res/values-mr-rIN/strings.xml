@@ -508,8 +508,8 @@
     <string name="contact_your_admin">तुमच्या प्रशासकाशी संपर्क साधा</string>
     <string name="sync">रिफ्रेश करा</string>
     <string name="sending_otp">ओटीपी पाठवत आहे...</string>
-    <string name="province">Province</string>
-    <string name="select_province">Select Province</string>
+    <string name="province">प्रांत</string>
+    <string name="select_province">प्रांत निवडा</string>
     <string name="city">शहर</string>
     <string name="select_city">शहर निवडा</string>
     <string name="registration_address_of_health_facility">आरोग्य सुविधेचा नोंदणी पत्ता</string>
@@ -1005,11 +1005,11 @@
     <string name="relative_phone_number">नातेवाईकाचा फोन नंबर</string>
     <string name="inn">INN</string>
     <string name="enter_inn">INN प्रविष्ट करा</string>
-    <string name="code_of_the_health_facility">Code of the Health Facility</string>
-    <string name="enter_code">Enter Code</string>
-    <string name="enter_name">Enter Name</string>
-    <string name="health_facility_name">Health facility name</string>
-    <string name="code_of_the_department">Code of the Department</string>
+    <string name="code_of_the_health_facility">आरोग्य सुविधेचा कोड</string>
+    <string name="enter_code">कोड प्रविष्ट करा</string>
+    <string name="enter_name">नाव प्रविष्ट करा</string>
+    <string name="health_facility_name">आरोग्य सुविधेचे नाव</string>
+    <string name="code_of_the_department">विभागाचा कोड</string>
     <string name="annual_household_expenditure_on_food">अन्नावरील वार्षिक घरगुती खर्च</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याच्या पाण्याचा मुख्य स्त्रोत कोणता आहे?</string>
     <string name="close_">रुग्ण नोंदणी बंद करायची?</string>
@@ -1120,6 +1120,10 @@
     <string name="self">स्वतः</string>
     <string name="family">कुटुंब</string>
     <string name="enter_postal_code">पोस्टल कोड प्रविष्ट करा</string>
+    <string name="enter_state">राज्य प्रविष्ट करा</string>
+    <string name="enter_district">जिल्हा प्रविष्ट करा</string>
+    <string name="national_ID">राष्ट्रीय ओळखपत्र (नागरिकत्व आयडी, आधार क्रमांक, इत्यादी)</string>
+    <string name="enter_national_ID">राष्ट्रीय ओळखपत्र प्रविष्ट करा</string>
     <string name="india">भारत</string>
     <string name="enter_village_town_city">गाव/शहर/शहर प्रविष्ट करा</string>
     <string name="enter_patient_address">रुग्णाचा पत्ता प्रविष्ट करा</string>
@@ -1384,6 +1388,7 @@
     <string name="reset_app_new">ॲप रीसेट करा</string>
     <string name="change_photo"><u>फोटो बदला</u></string>
     <string name="add_a_picture">चित्र जोडा</string>
+    <string name="my_profile">माझी प्रोफाइल</string>
     <string name="next_new">पुढे</string>
     <string name="select_language">भाषा निवडा</string>
     <string name="economic_category">आर्थिक श्रेणी</string>

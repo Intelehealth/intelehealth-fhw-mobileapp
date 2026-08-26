@@ -18,7 +18,6 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.SpecialtyNotesProvider;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -300,7 +299,6 @@ public class PrescriptionBuilder {
                 + generateTestData(testData)
                 + generateReferredOutData(referredOutData)
                 + generateFollowUpData(followUpData)
-                + generateSpecialtyNotesData(details)
                 + rowClosingTag
                 + generateDoctorSignatureData(details)
                 + rowClosingTag;
@@ -1022,6 +1020,10 @@ public class PrescriptionBuilder {
                     }
 
                 }
+                remarks = remarks.trim();
+                if (remarks.isEmpty() || remarks.equalsIgnoreCase("null")) {
+                    remarks = "NA";
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
@@ -1046,47 +1048,6 @@ public class PrescriptionBuilder {
                 + closingDivTag;
 
         return finalFollowUpString;
-    }
-
-    private String generateSpecialtyNotesData(ClsDoctorDetails details) {
-        if (details == null) return "";
-
-        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(activityContext, details.getSpecialization());
-        if (notes == null || notes.isEmpty()) return "";
-
-        String closingDivTag = "</div>";
-        String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">";
-        String dataSectionTag = "<div class=\"data-section\">";
-        String dataSectionTitleTag = "<div class=\"data-section-title\">"
-                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/advice.svg\" alt=\"\" />"
-                + "<h6>Notes &amp; Precautions</h6>"
-                + "</div>";
-
-        String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
-        String unorderedListOpeningTag = "<ul class=\"items-list\">";
-        String unorderedListClosingTag = "</ul>";
-        String lineBreak = "<br>";
-
-        StringBuilder notesListBuilder = new StringBuilder();
-        for (String note : notes) {
-            notesListBuilder.append("<li>")
-                    .append("<div class=\"d-flex justify-content-between align-items-center\">")
-                    .append("<span>").append(note).append("</span>")
-                    .append("</div>")
-                    .append("</li>");
-        }
-
-        return openingDivTag
-                + dataSectionTag
-                + dataSectionTitleTag
-                + dataSectionContentOpeningTag
-                + unorderedListOpeningTag
-                + notesListBuilder
-                + unorderedListClosingTag
-                + closingDivTag
-                + closingDivTag
-                + closingDivTag
-                + lineBreak;
     }
 
     private String generateDoctorSignatureData(ClsDoctorDetails details) {
