@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_24"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/margin_16"
+    app:cardElevation="@dimen/margin_8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="@dimen/margin_20"
+        android:paddingVertical="@dimen/margin_24">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/abdm_title_otp_verification"
+            android:textAppearance="@style/TextAppearance.Abdm.Title" />
+
+        <TextView
+            android:id="@+id/tv_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Abdm.Subtitle"
+            tools:text="Enter the OTP sent to your mobile number 9123116015." />
+
+        <com.mukesh.OtpView
+            android:id="@+id/otp_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_20"
+            android:focusableInTouchMode="true"
+            android:inputType="number"
+            android:itemBackground="@color/otp_item_background"
+            android:textColor="@color/brand_primary_dark"
+            app:OtpItemCount="6"
+            app:OtpLineColor="@color/brand_primary_dark"
+            app:OtpViewType="line"
+            tools:text="123456" />
+
+        <TextView
+            android:id="@+id/tv_otp_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_8"
+            android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
+            android:visibility="gone"
+            tools:text="@string/abdm_error_otp_invalid"
+            tools:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/layout_resend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_15"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/abdm_label_no_otp_received"
+                android:textColor="@color/text_secondary"
+                android:textSize="@dimen/text_14" />
+
+            <TextView
+                android:id="@+id/tv_resend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_5"
+                android:text="@string/abdm_action_resend_otp"
+                android:textColor="@color/brand_primary"
+                android:textSize="@dimen/text_14"
+                tools:text="Resend in 42 seconds" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_retries_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:gravity="center"
+            android:textColor="@color/warning_red"
+            android:textSize="@dimen/text_14"
+            tools:text="Number of retries left: 2" />
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_12"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_verify"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            android:text="@string/abdm_action_verify"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/brand_primary"
+            app:cornerRadius="@dimen/margin_8" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -4,13 +4,11 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesDAO
-import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
-import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.PatientAttributeTypeMasterDTO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.room.dao.PatientRegFieldDao
 import java.util.UUID
@@ -59,6 +57,15 @@ class PatientRepository(
     }
 
 
+    /**
+     * Builds the person attributes for a save, dropping any whose value is absent.
+     *
+     * An entry is composed for every attribute type regardless of whether the field was filled or even
+     * shown — field visibility is decided in the registration fragments and is not consulted here — so
+     * without the filter a patient carries a row, and pushes an `{"attributeType": …}` with no value,
+     * for every attribute they never supplied. The server rejects the whole attributes array when it
+     * contains those, which takes the populated ones such as the phone down with them.
+     */
     private fun createPatientAttributes(patient: PatientDTO) = arrayListOf<PatientAttributesDTO>()
         .apply {
             add(
@@ -270,7 +277,7 @@ class PatientRepository(
                     patient.contactType
                 )
             )
-        }
+        }.filter { it.value.isNullOrBlank().not() }
 
     private fun createPatientAttribute(
         patientId: String,
@@ -295,11 +302,6 @@ class PatientRepository(
     }
 
     fun syncOnServer() {
-        if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
-            val syncDAO = SyncDAO()
-            val imagesPushDAO = ImagesPushDAO()
-            syncDAO.pushDataApi()
-            imagesPushDAO.patientProfileImagesPush()
-        }
+        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext())
     }
 }

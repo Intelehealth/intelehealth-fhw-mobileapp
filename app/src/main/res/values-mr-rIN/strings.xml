@@ -1539,7 +1539,14 @@
     <string name="pdf_share_flow_msg">कृपया प्रिस्क्रिप्शन या मोबाईल नंबरवर पाठवा: %1$s</string>
     <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
     <string name="feature_not_found">Feature not found</string>
-
     <string name="poor_quality_msg">खराब दर्जाचे नेटवर्क आढळले. ऑडिओ कॉलची गणना सुरू आहे.</string>
     <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">लक्षणे आणखी वाढल्यास, कृपया जवळच्या डॉक्टरांना किंवा सरकारी आरोग्य सुविधेला भेट द्या.</string>
+
+    <!--  ABDM / ABHA  -->
+    <string name="abha_number">आभा क्रमांक</string>
+    <string name="abha_address">आभा पत्ता</string>
+    <string name="view_abha_card">आभा कार्ड पाहा</string>
+    <string name="create_new_abha_address">नवीन आभा पत्ता तयार करा</string>
+    <string name="creating_more_than_six_abha_addresses_are_not_allowed">सहापेक्षा जास्त आभा पत्ते तयार करता येणार नाहीत.</string>
+    <string name="associated_abha_address">जोडलेला आभा पत्ता: %1$s</string>
 </resources>

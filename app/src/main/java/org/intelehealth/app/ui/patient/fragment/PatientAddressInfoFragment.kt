@@ -138,7 +138,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            if (patientViewModel.isEditMode && !patientViewModel.isAbhaFullFlow) {
                 saveAndNavigateToDetails()
             } else {
                 if (patientViewModel.activeStatusOtherSection.not()) {
@@ -569,6 +569,28 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 setupProvinceAndCities()
             }
+            lockAbhaFieldsIfLinked()
+        }
+    }
+
+    /**
+     * Locks the address fields a verified ABHA profile owns. Only address1 and the postal code
+     * qualify: a locked field can be updated solely by the refresh on relink, so the set locked here
+     * has to be exactly the set applyAbhaIdentity refreshes.
+     *
+     * Village, district and state are pointedly not locked. ABHA returns free text that need not
+     * match the Nashik masters, so those are the FHW's to correct and are left to the address config.
+     *
+     * Each field is locked only when it holds a value, since locking an empty one would leave the
+     * user unable to supply it at all.
+     */
+    private fun lockAbhaFieldsIfLinked() {
+        if (!hasAbha()) return
+        if (binding.textInputAddress1.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputAddress1, false)
+        }
+        if (binding.textInputPostalCode.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputPostalCode, false)
         }
     }
 

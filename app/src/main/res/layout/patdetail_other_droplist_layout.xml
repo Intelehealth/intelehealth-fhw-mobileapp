@@ -123,6 +123,7 @@
             android:layout_marginTop="@dimen/margin_8">
 
             <TableLayout
+                android:id="@+id/table_other_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:shrinkColumns="1">
@@ -633,7 +634,91 @@
                         android:textSize="14sp" />
                 </TableRow>
 
+                <!--
+                  ABHA identifiers. Unlike the rows above these are not admin-panel config fields, so
+                  the activity shows them based on whether the patient actually has an ABHA linked.
+                -->
+                <TableRow
+                    android:id="@+id/abha_number_tr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/abha_number"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/abha_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="14sp" />
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/abha_address_tr"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/margin_4"
+                    android:layout_weight="2"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="2dp"
+                        android:layout_marginEnd="@dimen/margin_5"
+                        android:layout_weight="1"
+                        android:drawableStart="@drawable/bullet_gray"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:text="@string/abha_address"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/hint_text_color"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/abha_address"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/not_provided"
+                        android:textAppearance="@style/caption"
+                        android:textColor="@color/textview_color"
+                        android:textSize="14sp" />
+                </TableRow>
+
             </TableLayout>
+
+            <Button
+                android:id="@+id/btn_view_abha_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/table_other_details"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginBottom="@dimen/margin_5"
+                android:background="@drawable/ui2_common_gray_round_stroke_bg"
+                android:text="@string/view_abha_card"
+                android:textColor="@color/primary_text"
+                android:textSize="14sp"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </RelativeLayout>
 

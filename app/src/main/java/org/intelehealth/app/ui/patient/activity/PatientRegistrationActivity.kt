@@ -24,6 +24,9 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.result.AbdmAbhaProfile
+import org.intelehealth.abdm.result.AbdmResult
+import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -39,9 +42,14 @@ import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.NetworkUtils
 import org.intelehealth.app.utilities.NetworkUtils.InternetCheckUpdateInterface
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.AbhaPhotoUtils
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.bifurcateAbhaAddress
 import org.intelehealth.config.presenter.fields.factory.PatientViewModelFactory
 import org.intelehealth.config.room.entity.FeatureActiveStatus
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 import java.util.UUID
 
@@ -140,6 +148,8 @@ class PatientRegistrationActivity : BaseActivity() {
 
     private fun extractAndBindUI() {
         intent?.let {
+            patientViewModel.isAbhaFullFlow = it.hasExtra(AbdmResult.EXTRA_ABDM_RESULT)
+
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
@@ -174,9 +184,14 @@ class PatientRegistrationActivity : BaseActivity() {
         navController.graph = navGraph
     }
 
-    private fun generatePatientId() {
+    /**
+     * Builds the record this screen will save. [existingUuid] is supplied when the ABHA resolved to a
+     * patient the server knows but this device has never pulled: reusing the server's uuid means the
+     * push reconciles with that person instead of creating a second identity for them.
+     */
+    private fun generatePatientId(existingUuid: String? = null) {
         PatientDTO().apply {
-            uuid = UUID.randomUUID().toString()
+            uuid = existingUuid?.takeIf { it.isNotBlank() } ?: UUID.randomUUID().toString()
             createdDate = DateAndTimeUtils.getTodaysDateInRequiredFormat("dd MMMM, yyyy")
             providerUUID = SessionManager.getInstance(this@PatientRegistrationActivity).providerID
             reportDateOfPatientCreated = DateAndTimeUtils.currentDateTimeFormat()
@@ -203,16 +218,161 @@ class PatientRegistrationActivity : BaseActivity() {
                 }
             }
 
+            seedFromAbhaIfPresent(this)
+
         }.also { patientViewModel.updatedPatient(it) }
     }
 
+    /**
+     * The verified ABHA profile carried on this activity's intent, when the registration originated
+     * from the ABDM flow.
+     */
+    private fun abhaProfileFromIntent(): AbdmAbhaProfile? {
+        intent?.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        return intent?.let {
+            IntentCompat.getParcelableExtra(it, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java)
+        }?.profile
+    }
+
+    /**
+     * The fields a verified ABHA profile owns, and therefore the exact set the registration stages
+     * lock. Shared by the create path, which seeds a fresh record, and the edit path, which
+     * refreshes an existing one, so the two cannot drift apart on what ABHA governs.
+     *
+     * Every write is guarded on a non-blank incoming value so a sparse profile can never blank out
+     * something already held locally. The trade-off is that a field genuinely cleared at ABDM keeps
+     * its stale local value, which is the safer way to fail.
+     *
+     * The village, district and state hierarchy is deliberately absent. ABHA returns free text that
+     * cannot be relied on to match the Nashik masters, so those columns are neither refreshed here
+     * nor locked by the address stage.
+     */
+    private fun applyAbhaIdentity(patient: PatientDTO, profile: AbdmAbhaProfile) {
+        profile.firstName.takeIf { it.isNotBlank() }?.let { patient.firstname = it }
+        profile.middleName?.takeIf { it.isNotBlank() }?.let { patient.middlename = it }
+        profile.lastName.takeIf { it.isNotBlank() }?.let { patient.lastname = it }
+        profile.gender.takeIf { it.isNotBlank() }?.let { patient.gender = it }
+        profile.pinCode.takeIf { it.isNotBlank() }?.let { patient.postalcode = it }
+        withCountryCode(profile.mobile)?.takeIf { it.isNotBlank() }
+            ?.let { patient.phonenumber = it }
+        bifurcateAbhaAddress(profile.address).address1.takeIf { it.isNotBlank() }
+            ?.let { patient.address1 = it }
+        patient.uuid?.takeIf { it.isNotBlank() }?.let { uuid ->
+            AbhaPhotoUtils.saveEncodedPhoto(this, profile.profilePhoto, uuid)
+                ?.let { photo -> patient.patientPhoto = photo }
+        }
+        parseAbhaDob(profile.dateOfBirth)?.let {
+            patient.dateofbirth = SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).format(it)
+        }
+    }
+
+    /**
+     * Copies the verified ABHA profile onto the fresh patient record so every stage sees it through
+     * the shared view model. Seeding here rather than per-fragment means a single `abhaNumber`
+     * check can drive field locking in both this flow and the edit flow, with no AbdmResult
+     * plumbing in the fragments.
+     *
+     * Beyond the ABHA-owned fields this also prefills the address hierarchy as a convenience. Those
+     * stay editable and are not refreshed on a later relink, because the FHW may have to correct
+     * them against the Nashik masters.
+     */
+    private fun seedFromAbhaIfPresent(patient: PatientDTO) {
+        val profile = abhaProfileFromIntent() ?: return
+
+        patient.abhaNumber = profile.abhaNumber
+        patient.abhaAddress = withAbhaSuffix(profile.preferredAbhaAddress)
+        applyAbhaIdentity(patient, profile)
+
+        bifurcateAbhaAddress(profile.address).let { addr ->
+            patient.cityvillage = addr.cityVillage
+            patient.district = addr.countyDistrict
+            patient.stateprovince = addr.stateProvince
+        }
+    }
+
+    /**
+     * Refreshes the ABHA-owned fields on a record loaded for editing, reached when an ABHA resolves
+     * to a patient already registered here. This is the only route by which a locked field can ever
+     * change: the profile is the sole authority for those fields, so an update made at ABDM has to
+     * arrive through here or not at all.
+     *
+     * abhaNumber and abhaAddress are pointedly not refreshed. The module's linkAbha has already
+     * written them to this row and the stored value is the authoritative one — the profile carries a
+     * single preferred address where the record may hold the full server-appended list.
+     */
+    private fun reseedAbhaOwnedFields(patient: PatientDTO) = patient.apply {
+        abhaProfileFromIntent()?.let { applyAbhaIdentity(this, it) }
+    }
+
+    /**
+     * ABHA returns a bare national number. The phone field is driven by an hbb20 CountryCodePicker
+     * whose `fullNumber` setter *parses* an international number, so handing it a bare one makes it
+     * read the leading digits as the country code. Prefixing 91 up front is what development_master
+     * does and is the shape the picker expects.
+     */
+    private fun withCountryCode(mobile: String?): String? {
+        val digits = mobile?.filter { it.isDigit() }.orEmpty()
+        if (digits.isEmpty()) return mobile
+        return if (digits.startsWith(COUNTRY_CODE_IN) && digits.length > 10) digits else "$COUNTRY_CODE_IN$digits"
+    }
+
+    /**
+     * The server sometimes returns the phr address without its environment suffix. Uses the app's
+     * own BuildConfig value rather than a hardcoded "@abdm" so sandbox builds stay on "@sbx".
+     */
+    private fun withAbhaSuffix(abhaAddress: String?): String? {
+        if (abhaAddress.isNullOrBlank()) return abhaAddress
+        val suffix = BuildConfig.ABHA_ADDRESS_SUFFIX
+        return if (abhaAddress.endsWith(suffix, ignoreCase = true)) abhaAddress else "$abhaAddress$suffix"
+    }
+
+    /** ABHA DOB arrives as "yyyy-M-d" from the verify flow or "dd-MM-yyyy" from create. */
+    private fun parseAbhaDob(value: String?): Date? {
+        if (value.isNullOrBlank()) return null
+        val patterns = arrayOf("yyyy-MM-dd", "yyyy-M-d", "dd-MM-yyyy", "d-M-yyyy")
+        for (pattern in patterns) {
+            try {
+                return SimpleDateFormat(pattern, Locale.ENGLISH).apply { isLenient = false }
+                    .parse(value.trim())
+            } catch (ignored: ParseException) {
+            }
+        }
+        return null
+    }
+
+    /**
+     * Loads the record being edited. A blank uuid on the result means no local row matched: the query
+     * finds nothing and retrievePatientDetails still returns a fresh PatientDTO rather than null, so
+     * "absent" and "loaded" are indistinguishable until something reads a field.
+     *
+     * That happens on the ABDM path, where the uuid comes from checkExistingUser and identifies a
+     * patient on the server that this device may never have pulled. Editing is then the wrong mode —
+     * the save would match no rows and report success — so registration switches to creating the
+     * record locally under that same server uuid.
+     */
     private fun fetchPatientDetails(id: String) {
         patientViewModel.loadPatientDetails(id).observe(this) {
             it ?: return@observe
             patientViewModel.handleResponse(it) { patient ->
-                patientViewModel.updatedPatient(updatePatientDetails(patient))
+                if (patient.uuid.isNullOrBlank()) {
+                    createLocallyForServerPatient(id)
+                    return@handleResponse
+                }
+                patientViewModel.updatedPatient(
+                    reseedAbhaOwnedFields(updatePatientDetails(patient))
+                )
             }
         }
+    }
+
+    /**
+     * The ABHA matched a patient held only on the server. Drops out of edit mode so the save inserts,
+     * and keeps the server's uuid so the push links to that person rather than duplicating them.
+     */
+    private fun createLocallyForServerPatient(serverPatientUuid: String) {
+        patientViewModel.isEditMode = false
+        binding.isEditMode = false
+        generatePatientId(serverPatientUuid)
     }
 
     private fun updatePatientDetails(patient: PatientDTO) = patient.apply {
@@ -302,6 +462,9 @@ class PatientRegistrationActivity : BaseActivity() {
     }
 
     companion object {
+        /** India only — matches development_master. Revisit if ABDM is ever deployed elsewhere. */
+        private const val COUNTRY_CODE_IN = "91"
+
         @JvmStatic
         fun startPatientRegistration(
             context: Context,
@@ -311,6 +474,28 @@ class PatientRegistrationActivity : BaseActivity() {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
+            }.also { context.startActivity(it) }
+        }
+
+        /**
+         * Entry point for a registration originating from the ABDM (ABHA) flow. Deliberately
+         * separate from [startPatientRegistration] rather than an extra parameter on it: the other
+         * eight call sites (seven of them Java, which does not honour Kotlin default arguments)
+         * keep binding to the signature they already use.
+         *
+         * A non-blank [AbdmResult.uuid] means the ABHA resolved to a patient already registered
+         * here, so it is passed on as PATIENT_UUID and the activity opens in edit mode against that
+         * record rather than minting a new one. Gating on the uuid rather than on the outcome enum
+         * covers every existing-patient outcome at once, since a genuinely new patient carries no
+         * uuid. The module has already written the ABHA number and address to that row via
+         * linkAbha, so the fetched record arrives with them and this path needs no ABHA seeding.
+         */
+        @JvmStatic
+        fun startPatientRegistrationFromAbha(context: Context, abdmResult: AbdmResult) {
+            Intent(context, PatientRegistrationActivity::class.java).apply {
+                abdmResult.uuid?.takeIf { it.isNotBlank() }?.let { putExtra(PATIENT_UUID, it) }
+                putExtra(PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
+                putExtra(AbdmResult.EXTRA_ABDM_RESULT, abdmResult)
             }.also { context.startActivity(it) }
         }
 

@@ -5,6 +5,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
 import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_ABHA_ADDRESS;
 import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 
 import android.content.ContentValues;
@@ -56,7 +57,8 @@ public class VisitAttributeListDAO extends BaseDao{
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_ABHA_ADDRESS)) {
                 visitsList.add(createVisitAttributeMap(visitDTO));
             }
         }
@@ -198,6 +200,53 @@ public class VisitAttributeListDAO extends BaseDao{
 
         CustomLog.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
+    }
+
+    /**
+     * Whether this visit already carries the given attribute type. insertVisitAttributes generates a
+     * fresh row uuid, so its CONFLICT_REPLACE cannot dedupe by visit and type — callers that must not
+     * duplicate have to check first and update instead.
+     */
+    public boolean isAttributeExistForVisit(String visitUuid, String attributeTypeUUID) {
+        boolean exists = false;
+        if (visitUuid == null) return false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT uuid FROM tbl_visit_attribute WHERE visit_uuid = ? AND " +
+                        "visit_attribute_type_uuid = ? AND voided = 0 LIMIT 1",
+                new String[]{visitUuid, attributeTypeUUID})) {
+            exists = cursor.moveToFirst();
+        } catch (SQLException e) {
+            CustomLog.e(TAG, e.getMessage());
+        }
+        return exists;
+    }
+
+    /**
+     * Updates an existing attribute value for a visit and marks the row unsynced so the next push
+     * carries it.
+     */
+    public boolean updateVisitAttributes(String visitUuid, String value, String attributeTypeUUID)
+            throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        try {
+            values.put("value", value);
+            values.put("sync", "0");
+            db.update("tbl_visit_attribute", values,
+                    "visit_uuid = ? AND visit_attribute_type_uuid = ?",
+                    new String[]{visitUuid, attributeTypeUUID});
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isUpdated = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isUpdated;
     }
 
     /**

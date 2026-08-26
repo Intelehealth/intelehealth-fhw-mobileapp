@@ -85,16 +85,19 @@ android {
         dev {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "false"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@sbx"'
         }
 
         staging {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@sbx"'
         }
 
         production {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@abdm"'
         }
     }
 

@@ -67,12 +67,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.bill.VisitSummaryBillModel;
-import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
-import org.intelehealth.app.ui.billgeneration.models.BillDetails;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -126,6 +120,7 @@ import com.google.gson.Gson;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.additionalDocumentsActivity.AdditionalDocumentAdapter;
+import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.activities.notification.AdapterInterface;
 import org.intelehealth.app.activities.prescription.PrescriptionBuilder;
@@ -164,11 +159,13 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.ui.billgeneration.models.BillDetails;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -182,6 +179,7 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
@@ -209,7 +207,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -400,6 +397,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private String selectedFollowupDate, selectedFollowupTime;
     private String visitType = "Consultation";
     private boolean isDownloadImageBroadcastRecRegisterd = false;
+
     public void startTextChat(View view) {
         if (!CheckInternetAvailability.isNetworkAvailable(this)) {
             Toast.makeText(this, getString(R.string.not_connected_txt), Toast.LENGTH_SHORT).show();
@@ -496,8 +494,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupSpecialization();
 
         context = VisitSummaryActivity_New.this;
-String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
-JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
+        String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
+        JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         // changing status bar color
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -640,11 +638,11 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 }, hour, minute, true);
         timePickerDialog.show();
         Button posBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
 
         Button negBt = timePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.cancel));
+        posBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -666,7 +664,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
 
         // Handling the Cancel button click
-        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this,R.string.cancel), (dialog, which) -> {
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEGATIVE, ContextCompat.getString(this, R.string.cancel), (dialog, which) -> {
             if (which == DatePickerDialog.BUTTON_NEGATIVE) {
                 // Handle the cancel button action here if needed
                 dialog.dismiss();
@@ -676,11 +674,11 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         datePickerDialog.show();
         // Change button colors dynamically after the dialog is shown
         Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this,R.string.ok));
+        posBt.setText(ContextCompat.getString(this, R.string.ok));
         posBt.setTextColor(getColor(R.color.colorPrimary)); // Change to your desired color
 
         Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        negBt.setText(ContextCompat.getString(this,R.string.cancel));
+        negBt.setText(ContextCompat.getString(this, R.string.cancel));
         negBt.setTextColor(getColor(R.color.colorPrimary));
     }
 
@@ -3259,10 +3257,12 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                 if (selectedSeverity != null) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, selectedSeverity, SEVERITY);
                 }
-                if(BuildConfig.FLAVOR_client == FlavorKeys.NAS)
+
+                if (BuildConfig.FLAVOR_client == FlavorKeys.NAS) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.getVisitUploadDateTime(), VISIT_UPLOAD_TIME);
-                else
-                visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                } else {
+                    visitAttributeListDAO.insertVisitAttributes(visitUuid, AppConstants.dateAndTimeUtils.currentDateTime(), VISIT_UPLOAD_TIME);
+                }
 
                 if (!mBinding.diagnosisTextInput.getText().toString().isEmpty()) {
                     visitAttributeListDAO.insertVisitAttributes(visitUuid, mBinding.diagnosisTextInput.getText().toString(), DIAGNOSIS);
@@ -3553,7 +3553,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     // receiver download
     public void registerBroadcastReceiverDynamically() {
-        if(!isDownloadImageBroadcastRecRegisterd) {
+        if (!isDownloadImageBroadcastRecRegisterd) {
             IntentFilter filter = new IntentFilter();
             filter.addAction("MY_BROADCAST_IMAGE_DOWNLAOD");
             ContextCompat.registerReceiver(this, broadcastReceiverForIamgeDownlaod, filter, ContextCompat.RECEIVER_NOT_EXPORTED);
@@ -3896,13 +3896,14 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         String[] patientArgs = {dataString};
 
         String table = "tbl_patient";
-        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo", "abha_number"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
                 patient.setUuid(patientUuid);
                 patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                patient.setAbhaNumber(idCursor.getString(idCursor.getColumnIndex("abha_number")));
                 patient.setFirst_name(idCursor.getString(idCursor.getColumnIndex("first_name")));
                 patient.setMiddle_name(idCursor.getString(idCursor.getColumnIndex("middle_name")));
                 patient.setLast_name(idCursor.getString(idCursor.getColumnIndex("last_name")));
@@ -4149,7 +4150,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
 
-            if(broadcastReceiverForIamgeDownlaod !=null && isDownloadImageBroadcastRecRegisterd){
+            if (broadcastReceiverForIamgeDownlaod != null && isDownloadImageBroadcastRecRegisterd) {
                 unregisterReceiver(broadcastReceiverForIamgeDownlaod);
             }
         } catch (IllegalArgumentException e) {
@@ -4337,29 +4338,24 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
     // speciality alrady exists checking
 
     /**
+     * Whether a specialization has already been chosen for this visit, which is what decides between
+     * the dropdown and the read-only card.
+     *
+     * Matched on the SPECIALITY attribute type specifically. This used to ask whether the visit had
+     * *any* visit attribute, which held only while every attribute was written by the upload action —
+     * the first write placed outside it made the screen believe a specialization existed when none
+     * did, showing an empty card and blocking the upload.
+     *
+     * Delegating to isAttributeExistForVisit keeps this on the identical predicate as
+     * getVisitAttributesList_specificVisit, which reads the value. The two must agree, or the card can
+     * be shown without a value to put in it.
+     *
      * @param uuid the visit uuid of the patient visit records is passed to the function.
-     * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
+     * @return whether a SPECIALITY attribute exists for the visit
      */
     private boolean speciality_row_exist_check(String uuid) {
-        boolean isExists = false;
-
-        if (uuid != null) {
-            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-            db.beginTransaction();
-            Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?", new String[]{uuid});
-
-            if (cursor.getCount() != 0) {
-                while (cursor.moveToNext()) {
-                    isExists = true;
-                }
-            }
-            cursor.close();
-            db.setTransactionSuccessful();
-            db.endTransaction();
-
-        }
-        return isExists;
-
+        if (uuid == null) return false;
+        return visitAttributeListDAO.isAttributeExistForVisit(uuid, SPECIALITY);
     }
 
     // start activity for result
@@ -4450,7 +4446,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
     // update image database
     private void updateImageDatabase(String imageuuid) {
-    //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
+        //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
             if (intent.hasExtra("CommonVisitData")) {
@@ -4840,7 +4836,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus, new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, UuidDictionary.VISIT_ABHA_ADDRESS));
 
 
         if (isRespiratory) {
@@ -5254,16 +5250,17 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
 
+        String abhaBlock = AbhaPrescriptionFields.htmlBlockForFormatTemplate(this, patient.getAbhaNumber(), new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, UuidDictionary.VISIT_ABHA_ADDRESS));
         if (isRespiratory) {
             String htmlDocument = String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                     /* doctorDetailStr +*/
-                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p>" + abhaBlock + "<br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                     //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
                     doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web/*""*/, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p>" + abhaBlock + "<br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -5629,7 +5626,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
             if (!value.startsWith("{") && !value.endsWith("}"))
                 value = formatHtmlToJson(value);    // NAS-881
 
-          //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
+            //  value = "{\"en\":\"►<b>Fatigue and General weakness</b>: <br/>• Duration -  4 Days.<br/>• Timing - Morning.<br/>• Eating habits -  1 - patient is irregular in taking meals. Amount - Small.<br/>• Stressful condition - No.<br/>• Prior treatment sought - None.<br/>• Additional information - जेवण जात नाही.भुक लागत नाही, डोळ्यावर धुंद येत .<br/> ►<b>Headache</b>: <br/>• Duration -  4 Days.<br/>• Site - Diffuse.<br/>• Severity - Mild.<br/>• Onset - Acute onset (Patient can recall exact time when it started).<br/>• Character of headache - Stabbing, Dull continuous.<br/>• Radiation - pain does not radiate.<br/>• Timing - No particular time.<br/>• Associated illness - Hypertension.<br/>• Exacerbating factors - bending, lifting.<br/>• Prior treatment sought - None.<br/> ►<b>Associated symptoms</b>: <br/>• Patient reports -<br/> Muscle weakness,  Disturbed sleep,  Drooping eyelids,  Depressed mood,  Muscle pain,  Dizziness/Lightheadedness,  General weakness - No mood to work, Fatigue. <br/>• Patient denies -<br/> Fever,  Chills,  Night sweats,  Breathlessness on exertion,  Heat / Cold intolerance,  Jaundice,  Daytime sleepiness,  Bleeding,  Paresthesia,  Anxiety,  Joint pain,  Increase in quantity of urine output,  Increase in frequency of urination,  Polydipsia,  Polyphagia,  Vomiting with headache,  Nausea with headache,  Malaise/Discomfort,  Cough,  Cold/Sneezing,  Fainting/Loss of conciousness,  Photophobia,  Eye pain,  Visual impairment/Change in vision,  Specific weakness in particular part or side of the body<br/>\" }";
             //boolean isInOldFormat = true;
             //Show Visit summary data in Clinical Format for English language only
             //Else for other language keep the data in Question Answer format
@@ -6460,7 +6457,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
                     if (!mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString().isEmpty() && isNumeric(mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.getText().toString()))
                         selectedTests[8] = true;
 
-                    Log.d(TAG, "onClick: selectedTests :: "+new Gson().toJson(selectedTests));
+                    Log.d(TAG, "onClick: selectedTests :: " + new Gson().toJson(selectedTests));
                     billUtils.showTestConfirmationCustomDialog(selectedTests);
 
                 }
@@ -6480,6 +6477,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         }
         return true;
     }
+
     private void setupDiagnosticsConfig() {
         mRandomGlucoseLinearLayout = findViewById(R.id.ll_glucose_random_container);
         mFastingGlucoseLinearLayout = findViewById(R.id.ll_glucose_fasting_container);
@@ -6495,7 +6493,7 @@ JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
         DiagnosticsViewModel diagnosticsViewModel = new ViewModelProvider(this, factory).get(DiagnosticsViewModel.class);
         diagnosticsViewModel.getAllEnabledLiveFields()
                 .observe(this, it -> {
-                    mPatientDiagnosticsList = it;
+                            mPatientDiagnosticsList = it;
                             CustomLog.v(TAG, new Gson().toJson(mPatientDiagnosticsList));
                             updateUIForDiagnostics();
                         }

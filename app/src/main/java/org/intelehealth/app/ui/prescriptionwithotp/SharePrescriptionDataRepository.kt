@@ -13,7 +13,7 @@ import org.intelehealth.app.utilities.UuidDictionary
 class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
     suspend fun getPatientDetails(patientUuid: String): Patient {
         return withContext(Dispatchers.IO) {
-            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender"), "uuid = ?", arrayOf(patientUuid), null, null, null)
+            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender", "abha_number"), "uuid = ?", arrayOf(patientUuid), null, null, null)
             cursor.use {
                 if (it.moveToFirst()) {
                     val patient = Patient().apply {
@@ -26,6 +26,7 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
                         address2 = it.getString(it.getColumnIndexOrThrow("address2"))
                         phone_number = it.getString(it.getColumnIndexOrThrow("phone_number"))
                         gender = it.getString(it.getColumnIndexOrThrow("gender"))
+                        abhaNumber = it.getString(it.getColumnIndexOrThrow("abha_number"))
                     }
                     patient
                 } else {

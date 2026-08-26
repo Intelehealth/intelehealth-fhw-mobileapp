@@ -1764,6 +1764,8 @@
     <string name="label_contact">Contact:</string>
     <string name="label_patient_id">Patient Id:</string>
     <string name="label_visit_date">Date of Visit:</string>
+    <string name="label_abha_number">ABHA Number:</string>
+    <string name="label_abha_address">ABHA Address:</string>
     <string name="hw_mobile_number">Health worker number</string>
     <string name="pdf_share_flow_msg">Please send the prescription to mobile number: %1$s</string>
     <string name="pdf_share_flow_title">Share Prescription</string>
@@ -1772,5 +1774,12 @@
     <string name="poor_quality_msg">Poor quality network detected.Countinuing with audio call.</string>
     <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">If symptoms worsen, Please visit the nearest doctor or government health facility</string>
 
+    <!-- ABDM / ABHA -->
+    <string name="abha_number">ABHA Number</string>
+    <string name="abha_address">ABHA Address</string>
+    <string name="view_abha_card">View ABHA Card</string>
+    <string name="create_new_abha_address">Create New ABHA Address</string>
+    <string name="creating_more_than_six_abha_addresses_are_not_allowed">Creating more than six ABHA addresses is not allowed.</string>
+    <string name="associated_abha_address">Associated Abha Address: %1$s</string>
 
 </resources>

@@ -13,7 +13,8 @@ class PatientQueryBuilder : QueryBuilder() {
         return select(
             "P.uuid, P.openmrs_id, P.first_name, P.middle_name, P.last_name, P.gender, P.date_of_birth, P.address1, P.address2, " +
                     "P.city_village, P.state_province, P.postal_code, P.country,P.phone_number, P.patient_photo, P.guardian_name, P.guardian_type," +
-                    "P.contact_type,P.em_contact_name,P.em_contact_num,P.address3,address6,countyDistrict,"
+                    "P.contact_type,P.em_contact_name,P.em_contact_num,P.address3,address6,countyDistrict," +
+                    "P.abha_number,P.abha_address,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.TELEPHONE.value) + " telephone,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.ECONOMIC_STATUS.value) + " economicStatus,"
                     + buildPatientAttributesQuery(PatientAttributesDTO.Column.EDUCATION.value) + " educationLevel,"

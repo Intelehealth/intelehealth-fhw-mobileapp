@@ -53,11 +53,29 @@
         android:textSize="@dimen/fu_male_textsize" />
 
 
+    <!--
+      The ABHA address in force when this visit was created. Absent for visits made before the
+      patient had an ABHA, and for non-ABHA patients, so the adapter hides it rather than showing a
+      dangling label.
+    -->
+    <TextView
+        android:id="@+id/tv_abha_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/visit_date_tv"
+        android:layout_marginStart="@dimen/fu_margin_start"
+        android:gravity="center_vertical"
+        android:lineSpacingExtra="3sp"
+        android:textAppearance="@style/details_head2"
+        android:textColor="@null"
+        android:textSize="@dimen/fu_male_textsize"
+        android:visibility="gone" />
+
     <View
         android:id="@+id/separator"
         android:layout_width="match_parent"
         android:layout_height="1dip"
-        android:layout_below="@id/visit_date_tv"
+        android:layout_below="@id/tv_abha_address"
         android:layout_marginVertical="@dimen/padding_12"
         android:background="@color/gray_1" />
 </RelativeLayout>

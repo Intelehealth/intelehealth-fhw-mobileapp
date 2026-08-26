@@ -139,6 +139,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.abdm.presentation.AbdmCardDownloader;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -155,6 +156,7 @@ import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
@@ -199,7 +201,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             stateTr, districtTr, blockTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
             provinceTr, cityTr, registrationAddressOfHfTr,
-            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr;
+            innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr,
+            abhaNumberTr, abhaAddressTr;
+    TextView abhaNumberTv, abhaAddressTv;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -218,6 +222,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn;
+    Button btnViewAbhaCard;
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
     //private boolean returning;
@@ -772,6 +777,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn = findViewById(R.id.cancelbtn);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
+        btnViewAbhaCard = findViewById(R.id.btn_view_abha_card);
+        abhaNumberTr = findViewById(R.id.abha_number_tr);
+        abhaAddressTr = findViewById(R.id.abha_address_tr);
+        abhaNumberTv = findViewById(R.id.abha_number);
+        abhaAddressTv = findViewById(R.id.abha_address);
 
         mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -782,6 +792,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         fetchAllConfig();
 
         setFullName();
+        setupAbhaDetails();
         initForOpenVisit();
         initForPastVisit();
     }
@@ -1322,6 +1333,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 pastVisitData.setChiefComplain(visitValue);
                                 pastVisitData.setEncounterVitals(encountervitalsLocal);
                                 pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit(visit_id));
                                 mCurrentVisitDataList.add(pastVisitData);
                                 CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
@@ -1385,6 +1397,55 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
+    /**
+     * The ABHA address recorded against a visit when it was created. Returns null when the visit has
+     * no such attribute — visits made before the patient had an ABHA, and non-ABHA patients — so the
+     * adapter can hide the label rather than render an empty one.
+     */
+    private String abhaAddressForVisit(String visitUuid) {
+        String value = new VisitAttributeListDAO()
+                .getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS);
+        return (value == null || value.trim().isEmpty()) ? null : value.trim();
+    }
+
+    /**
+     * Shows the ABHA number and address rows in the Other Details card, plus the card button beneath
+     * them. These are not admin-panel config fields like the rest of that table, so visibility is
+     * driven by whether the patient actually has an ABHA linked.
+     *
+     * Both values are read from the database rather than the patient DTO. This method runs during view
+     * init, before the details query has populated the DTO, and it must also work on routes into this
+     * screen whose query does not select the ABHA columns at all. The card image itself may not have
+     * downloaded yet; AbdmCardDownloader reports that case to the user.
+     */
+    private void setupAbhaDetails() {
+        if (patientDTO == null) return;
+        String abhaNumber = patientsDAO.getAbhaNumberByUuid(patientDTO.getUuid());
+        boolean hasAbhaNumber = abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA");
+
+        if (abhaNumberTr != null) abhaNumberTr.setVisibility(hasAbhaNumber ? View.VISIBLE : View.GONE);
+        if (hasAbhaNumber && abhaNumberTv != null) abhaNumberTv.setText(abhaNumber);
+
+        String abhaAddress = patientsDAO.getPatientAbhaAddressByUuid(patientDTO.getUuid());
+        boolean hasAbhaAddress = abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA");
+        if (abhaAddressTr != null) abhaAddressTr.setVisibility(hasAbhaAddress ? View.VISIBLE : View.GONE);
+        if (hasAbhaAddress && abhaAddressTv != null) abhaAddressTv.setText(abhaAddress);
+
+        if (btnViewAbhaCard == null) return;
+        if (!hasAbhaNumber) {
+            btnViewAbhaCard.setVisibility(View.GONE);
+            return;
+        }
+        btnViewAbhaCard.setVisibility(View.VISIBLE);
+        btnViewAbhaCard.setOnClickListener(v -> AbdmCardDownloader.viewCard(this, abhaNumber));
+    }
+
+    /**
+     * Populates the patient card from the local record. The phone is taken solely from the
+     * "Telephone Number" person attribute, never from tbl_patient.phone_number: the pull writes
+     * patients with INSERT OR REPLACE and omits that column, so it is blanked on every sync while the
+     * attribute keeps the real value.
+     */
     public void setDisplay(String dataString) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         patientDTO = new PatientDTO();
@@ -1393,7 +1454,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict",
+                "abha_number", "abha_address"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1410,7 +1472,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
-                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
 
@@ -1423,6 +1484,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setAddress3(idCursor.getString(idCursor.getColumnIndexOrThrow("address3")));//block
                 patientDTO.setAddress6(idCursor.getString(idCursor.getColumnIndexOrThrow("address6")));//household number
                 patientDTO.setDistrict(idCursor.getString(idCursor.getColumnIndexOrThrow("countyDistrict")));
+                patientDTO.setAbhaNumber(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_number")));
+                patientDTO.setAbhaAddress(idCursor.getString(idCursor.getColumnIndexOrThrow("abha_address")));
             } while (idCursor.moveToNext());
         }
         idCursor.close();
@@ -2912,6 +2975,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     pastVisitData.setChiefComplain(visitValue);
                                     pastVisitData.setEncounterVitals(encountervitalsLocal);
                                     pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                    pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit(visit_id));
                                     mPastVisitDataList.add(pastVisitData);
                                     //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
                                     //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());

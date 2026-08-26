@@ -88,6 +88,7 @@ android {
 }
 dependencies {
     implementation project(':features:ondemand:klivekit')
+    implementation project(':features:ondemand:abdm')
     api project(':fcm')
     api project(':config')
 //    api project(':common')
@@ -152,11 +153,16 @@ dependencies {
     implementation 'org.apache.commons:commons-lang3:3.6'
 
     // (Java only) Targeting S+ (version 31 and above)
-    implementation 'androidx.work:work-runtime:2.9.0'
+    // 2.10.0 handles the Android 15 dataSync foreground-service timeout; keep every WorkManager
+    // artifact on the same version, including in :config and :features:ondemand:klivekit, as there is
+    // no BOM to align them.
+    implementation 'androidx.work:work-runtime:2.10.0'
+    // Kotlin request builders used by the optimized_sync workers
+    implementation 'androidx.work:work-runtime-ktx:2.10.0'
     // optional - RxJava2 support
-    implementation 'androidx.work:work-rxjava2:2.9.0'
+    implementation 'androidx.work:work-rxjava2:2.10.0'
     // optional - Test helpers
-    androidTestImplementation 'androidx.work:work-testing:2.9.0'
+    androidTestImplementation 'androidx.work:work-testing:2.10.0'
 
     implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.9.2"
     //annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.9.2"
@@ -188,8 +194,8 @@ dependencies {
     implementation 'com.github.zerobranch:SwipeLayout:1.3.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
 
-    implementation "com.google.dagger:hilt-android:2.49" // Replace 2.x with the latest version
-    kapt "com.google.dagger:hilt-compiler:2.47"
+    implementation "com.google.dagger:hilt-android:2.51.1"
+    kapt "com.google.dagger:hilt-compiler:2.51.1"
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

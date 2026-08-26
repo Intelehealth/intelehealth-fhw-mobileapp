@@ -1,7 +1,5 @@
 package org.intelehealth.app.utilities;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import org.intelehealth.app.utilities.CustomLog;
@@ -16,6 +14,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -41,12 +40,21 @@ import java.util.List;
 
 public class PatientsFrameJson {
     private static final String TAG = "PatientsFrameJson";
+
+    /**
+     * OpenMRS PatientIdentifierType UUIDs for the ABHA identifiers. These are per-instance records,
+     * not global constants: they must exist on the target server or the patient push is rejected.
+     */
+    private static final String ABHA_ADDRESS_IDENTIFIER_TYPE_UUID = "59077d8f-8bee-4a6f-a1a8-64365a297da6";
+    private static final String ABHA_NUMBER_IDENTIFIER_TYPE_UUID = "6ad4e308-33aa-4afc-9879-6033d1984876";
+
     private PatientsDAO patientsDAO = new PatientsDAO();
     private SessionManager session;
     private VisitsDAO visitsDAO = new VisitsDAO();
     private EncounterDAO encounterDAO = new EncounterDAO();
     private ObsDAO obsDAO = new ObsDAO();
     private ProviderDAO providerDAO = new ProviderDAO();
+    private VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
 
     public PushRequestApiCall frameJson() {
         session = new SessionManager(IntelehealthApplication.getAppContext());
@@ -138,6 +146,25 @@ public class PatientsFrameJson {
                     patient.setIdentifiers(identifierList);
                 }
 
+                String abhaAddress = patientDTOList.get(i).getAbhaAddress();
+                if (abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA")) {
+                    Identifier abhaAddressIdentifier = new Identifier();
+                    abhaAddressIdentifier.setIdentifierType(ABHA_ADDRESS_IDENTIFIER_TYPE_UUID);
+                    abhaAddressIdentifier.setLocation(session.getLocationUuid());
+                    abhaAddressIdentifier.setIdentifier(abhaAddress);
+                    identifierList.add(abhaAddressIdentifier);
+                }
+
+                String abhaNumber = patientDTOList.get(i).getAbhaNumber();
+                if (abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA")) {
+                    Identifier abhaNumberIdentifier = new Identifier();
+                    abhaNumberIdentifier.setIdentifierType(ABHA_NUMBER_IDENTIFIER_TYPE_UUID);
+                    abhaNumberIdentifier.setLocation(session.getLocationUuid());
+                    abhaNumberIdentifier.setIdentifier(abhaNumber);
+                    identifierList.add(abhaNumberIdentifier);
+                }
+
+                patient.setIdentifiers(identifierList);
                 patientList.add(patient);
 
 
@@ -272,25 +299,24 @@ public class PatientsFrameJson {
 
 
     /**
+     * Whether a specialization has been chosen for this visit, which is what holds an encounter back
+     * from the push until the visit has been submitted at Visit Summary.
+     *
+     * Matched on the SPECIALITY attribute type specifically. This used to ask whether the visit had
+     * *any* visit attribute, which held only while every attribute was written by the upload action.
+     * The ABHA address is written at visit creation instead, so on an ABHA-linked patient the check
+     * passed from the moment the visit existed and that visit's encounters went up before a
+     * specialization had been picked.
+     *
+     * Delegating to isAttributeExistForVisit puts this on the same predicate as the identically named
+     * check in VisitSummaryActivity_New, which decides whether the screen offers the dropdown. The two
+     * must agree, or an encounter can be pushed for a visit the screen still considers unsubmitted.
+     *
      * @param uuid the visit uuid of the patient visit records is passed to the function.
-     * @return boolean value will be returned depending upon if the row exists in the tbl_visit_attribute tbl
+     * @return whether a SPECIALITY attribute exists for the visit
      */
     private boolean speciality_row_exist_check(String uuid) {
-        boolean isExists = false;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        db.beginTransaction();
-        Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid=?",
-                new String[]{uuid});
-
-        if (cursor.getCount() != 0) {
-            while (cursor.moveToNext()) {
-                isExists = true;
-            }
-        }
-        cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
-
-        return isExists;
+        if (uuid == null) return false;
+        return visitAttributeListDAO.isAttributeExistForVisit(uuid, UuidDictionary.SPECIALITY);
     }
 }

@@ -155,7 +155,9 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "sync TEXT DEFAULT 'false', " +
             "address3 TEXT," +
             "address6 TEXT," +
-            "countyDistrict TEXT" +
+            "countyDistrict TEXT," +
+            "abha_number TEXT," +
+            "abha_address TEXT" +
             ")";
 
     public static final String CREATE_ATTRIB_MAIN = "CREATE TABLE IF NOT EXISTS tbl_patient_attribute (" +
@@ -373,6 +375,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             // add indexes
             db.execSQL(CREATE_ENCOUNTER_INDEX);
             db.execSQL(CREATE_OBS_INDEX);
+        }
+        if (oldVersion < 6) {
+            // v5 -> v6: add ABHA identifier columns to tbl_patient (ABDM).
+            db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_number TEXT");
+            db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_address TEXT");
         }
 
     }
