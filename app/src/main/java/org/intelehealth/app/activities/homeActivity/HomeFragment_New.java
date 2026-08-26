@@ -598,6 +598,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 +" (followup_date = ? or followup_date = ?) "
                 + "AND o.value is NOT NULL "
                 + "AND followup_date is NOT NULL " +
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
                 "GROUP BY a.uuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
