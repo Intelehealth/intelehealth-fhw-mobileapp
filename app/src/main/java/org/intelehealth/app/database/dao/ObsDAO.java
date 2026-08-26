@@ -2,8 +2,8 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
-import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET;
 
 import android.content.ContentValues;
@@ -13,16 +13,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.utilities.CustomLog;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -31,6 +30,7 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class ObsDAO extends BaseDao{
@@ -578,5 +578,40 @@ public class ObsDAO extends BaseDao{
             cursor.close();
         }
         return value;
+    }
+
+    /**
+     * Fetches the vitals for a given encounterUuid and returns a VitalsObject containing the values.
+     *
+     * @param encounterUuid
+     * @return VitalsObject containing the vitals values for the encounter
+     * @throws DAOException
+     */
+    public VitalsObject getVitalsForEncounter(String encounterUuid) throws DAOException {
+        VitalsObject vitalsObject = new VitalsObject();
+        vitalsObject.setHeight(getObsValue(encounterUuid, UuidDictionary.HEIGHT));
+        vitalsObject.setWeight(getObsValue(encounterUuid, UuidDictionary.WEIGHT));
+        vitalsObject.setPulse(getObsValue(encounterUuid, UuidDictionary.PULSE));
+        vitalsObject.setBpsys(getObsValue(encounterUuid, UuidDictionary.SYSTOLIC_BP));
+        vitalsObject.setBpdia(getObsValue(encounterUuid, UuidDictionary.DIASTOLIC_BP));
+        vitalsObject.setTemperature(getObsValue(encounterUuid, UuidDictionary.TEMPERATURE));
+        vitalsObject.setResp(getObsValue(encounterUuid, UuidDictionary.RESPIRATORY));
+        vitalsObject.setSpo2(getObsValue(encounterUuid, UuidDictionary.SPO2));
+        // bmi calculation
+        if (vitalsObject.getHeight() != null && vitalsObject.getWeight() != null) {
+            try {
+                // already in height in cm, weight kg, BMI = weight (kg) / (height (m))^2
+                double numerator = Double.parseDouble(vitalsObject.getWeight()) * 10000;
+                double denominator = Double.parseDouble(vitalsObject.getHeight()) * Double.parseDouble(vitalsObject.getHeight());
+                double bmi_value = numerator / denominator;
+                vitalsObject.setBmi(String.format(Locale.ENGLISH, "%.2f", bmi_value));
+
+            } catch (NumberFormatException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                vitalsObject.setBmi(null); // Set BMI to null if parsing fails
+            }
+        }
+
+        return vitalsObject;
     }
 }
