@@ -129,6 +129,8 @@ public class PatientsFrameJson {
                 Patient patient = new Patient();
                 patient.setPerson(patientDTOList.get(i).getUuid());
 
+                List<Identifier> identifierList = new ArrayList<>();
+
                 // Only request a brand-new identifier for patients that aren't registered
                 // on the server yet. An already-registered patient (has an openmrs_id)
                 // being re-synced after a demographic edit already has one - sending
@@ -137,13 +139,11 @@ public class PatientsFrameJson {
                 // whole Person update (including the edited birthdate) to be rejected.
                 String openmrsId = patientDTOList.get(i).getOpenmrsId();
                 if (openmrsId == null || openmrsId.trim().isEmpty()) {
-                    List<Identifier> identifierList = new ArrayList<>();
                     Identifier identifier = new Identifier();
                     identifier.setIdentifierType("05a29f94-c0ed-11e2-94be-8c13b969e334");
                     identifier.setLocation(session.getLocationUuid());
                     identifier.setPreferred(true);
                     identifierList.add(identifier);
-                    patient.setIdentifiers(identifierList);
                 }
 
                 String abhaAddress = patientDTOList.get(i).getAbhaAddress();

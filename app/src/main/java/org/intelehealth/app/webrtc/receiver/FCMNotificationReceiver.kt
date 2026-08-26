@@ -6,12 +6,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.Log
-import androidx.work.Constraints
-import androidx.work.Data
-import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
@@ -25,7 +19,7 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
-import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -114,20 +108,10 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     /**
      * Enqueues the same background sync worker the Home screen's manual sync icon
      * uses, so a "new prescription" push pulls the data down on its own instead of
-     * only showing a system notification. Uses enqueueUniqueWork with KEEP so a
-     * burst of prescription pushes doesn't stack up redundant concurrent syncs.
+     * only showing a system notification.
      */
     private fun schedulePrescriptionSync(context: Context) {
-        val workData = Data.Builder().putString("fromActivity", "fcm_prescription").build()
-        val syncWorkRequest = OneTimeWorkRequest.Builder(SyncWorkerForHomeScreen::class.java)
-            .setInputData(workData)
-            .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
-            .build()
-        WorkManager.getInstance(context).enqueueUniqueWork(
-            PRESCRIPTION_SYNC_WORK_NAME,
-            ExistingWorkPolicy.KEEP,
-            syncWorkRequest
-        )
+        OptimizedSyncWorker.enqueueOneTimeWork(context)
     }
 
     private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
@@ -244,7 +228,6 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
     companion object {
         const val TAG = "FCMNotificationReceiver"
-        private const val PRESCRIPTION_SYNC_WORK_NAME = "prescription_push_sync"
     }
     private fun getNotificationTitle(notificationType: NotificationType, patientName: String, context: Context): String {
         val resources = getLocalizedResources(context)
