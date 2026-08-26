@@ -98,6 +98,8 @@ public class UuidDictionary {
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";
 
     public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
+    // concept uuid for the AI generated JSON format of the visit summary
+    public static final String AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID = "1f770363-262e-4d01-b1df-3eb164d575ef";
 
 
 }
