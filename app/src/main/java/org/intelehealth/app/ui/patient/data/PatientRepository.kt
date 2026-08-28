@@ -9,6 +9,8 @@ import org.intelehealth.app.models.dto.PatientAttributeTypeMasterDTO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
+import org.intelehealth.app.utilities.CustomLog
+import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.room.dao.PatientRegFieldDao
 import java.util.UUID
@@ -28,6 +30,11 @@ class PatientRepository(
         bindPatientAttributes(patient).let {
             val flag = patientsDao.insertPatientToDB(it, it.uuid)
             val flag2 = ImagesDAO().insertPatientProfileImages(it.patientPhoto, it.uuid)
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d(
+                "NAS1752", "patient created - uuid=${it.uuid} name=${it.firstname} ${it.lastname} " +
+                        "patientConsent=${it.patientConsentValue} abdmConsent=${it.abdmConsentValue}"
+            )
             syncOnServer()
             return flag && flag2
         }
@@ -277,6 +284,28 @@ class PatientRepository(
                     patient.contactType
                 )
             )
+
+            // NAS-1752 - Patient_Consent / ABDM_Consent. Unlike the attributes above, these two
+            // attribute types are not (yet) seeded in tbl_patient_attribute_master locally, so
+            // they're addressed directly by UuidDictionary UUID instead of going through
+            // getUuidForAttribute(name), which would resolve to null for a type this app has
+            // never synced down. Blank when the corresponding consent wasn't given on this save
+            // (e.g. patient created without going through the ABHA flow), and dropped by the
+            // filter below like every other unfilled attribute.
+            add(
+                createPatientAttributeWithTypeUuid(
+                    patient.uuid,
+                    UuidDictionary.PATIENT_CONSENT,
+                    patient.patientConsentValue
+                )
+            )
+            add(
+                createPatientAttributeWithTypeUuid(
+                    patient.uuid,
+                    UuidDictionary.ABDM_CONSENT,
+                    patient.abdmConsentValue
+                )
+            )
         }.filter { it.value.isNullOrBlank().not() }
 
     private fun createPatientAttribute(
@@ -287,6 +316,18 @@ class PatientRepository(
         uuid = UUID.randomUUID().toString()
         patientuuid = patientId
         personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
+        this.value = value
+    }
+
+    /** Like [createPatientAttribute], but for an attribute type not resolvable by name locally. */
+    private fun createPatientAttributeWithTypeUuid(
+        patientId: String,
+        attributeTypeUuid: String,
+        value: String?
+    ) = PatientAttributesDTO().apply {
+        uuid = UUID.randomUUID().toString()
+        patientuuid = patientId
+        personAttributeTypeUuid = attributeTypeUuid
         this.value = value
     }
 

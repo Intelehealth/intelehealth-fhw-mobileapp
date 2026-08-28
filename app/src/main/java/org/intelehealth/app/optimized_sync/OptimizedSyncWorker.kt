@@ -21,6 +21,7 @@ import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.appointment.dao.AppointmentDAO
 import org.intelehealth.app.appointment.model.AppointmentInfo
 import org.intelehealth.app.optimized_sync.network.NetworkConnectivityManager
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.SessionManager
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -55,10 +56,14 @@ class OptimizedSyncWorker(
         val powerState = PowerStateProvider(context = context)
 
         if (!networkManager.getCurrentStatus().hasInternet) {
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.e("NAS1752", "sync skipped - no internet per NetworkConnectivityManager")
             return Result.failure()
         }
 
         if (!powerState.isPowerRequirementMet()) {
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.e("NAS1752", "sync skipped - power requirement not met")
             return Result.failure()
         }
 
@@ -67,9 +72,13 @@ class OptimizedSyncWorker(
                 setForegroundAsync(getForegroundInfo()).get()
             }
             val isSyncSuccessful = OptimizedSyncDao().periodicSync()
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d("NAS1752", "periodicSync() returned $isSyncSuccessful")
             reviewUpcomingAppointments()
             if (isSyncSuccessful) Result.success() else Result.retry()
         } catch (e: Exception) {
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.e("NAS1752", "doWork threw - ${e.javaClass.simpleName}: ${e.message}")
             Result.retry()
         }
     }

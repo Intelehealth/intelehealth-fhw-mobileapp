@@ -101,5 +101,14 @@ public class UuidDictionary {
     // concept uuid for the AI generated JSON format of the visit summary
     public static final String AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID = "1f770363-262e-4d01-b1df-3eb164d575ef";
 
+    // Consent attributes - NAS-1752. Person attribute types unless noted otherwise. These UUIDs
+    // must be provisioned as attribute types on the OpenMRS server; this app only ever writes
+    // values tagged with them, it never defines them.
+    /** Person attribute type - "Patient_Consent". */
+    public static final String PATIENT_CONSENT = "11b990b9-2798-477a-9aad-073e5459f5d3";
+    /** Visit attribute type - "Teleconsultation_Consent". */
+    public static final String TELECONSULTATION_CONSENT = "ddabcccc-1554-4fb5-bfa2-de596b72a64c";
+    /** Person attribute type - "ABDM_Consent". */
+    public static final String ABDM_CONSENT = "9c8f0974-615e-4dd2-82ea-40cbec9e821b";
 
 }

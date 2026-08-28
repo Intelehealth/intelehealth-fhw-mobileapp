@@ -76,6 +76,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.ConsentUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -241,6 +242,22 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         try {
             visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // NAS-1752: record Teleconsultation_Consent against this visit. Consent was already
+        // confirmed on the TeleconsultationConsentActivity screen the user just came from -
+        // this is where it is persisted, at the same point VISIT_ABHA_ADDRESS and other visit
+        // attributes are written elsewhere in this app.
+        try {
+            String consentValue = ConsentUtils.buildConsentValue(
+                    sessionManager.getProviderID(), sessionManager.getAppLanguage());
+            new VisitAttributeListDAO().insertVisitAttributes(
+                    visitUuid, consentValue, UuidDictionary.TELECONSULTATION_CONSENT);
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d("NAS1752", "Teleconsultation_Consent stored - visitUuid=" + visitUuid
+                    + " patientUuid=" + patientDTO.getUuid() + " value=" + consentValue);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

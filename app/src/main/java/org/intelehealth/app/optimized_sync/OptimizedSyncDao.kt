@@ -25,6 +25,7 @@ import org.intelehealth.app.database.dao.ProviderDAO
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.NavigationUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.PatientsFrameJson
@@ -154,12 +155,21 @@ class OptimizedSyncDao {
                 .PUSH_RESPONSE_API_CALL_OBSERVABLE(url, "Basic $encoded", pushRequest)
                 .blockingGet()
 
-            val data = response?.data ?: return false
+            val data = response?.data ?: run {
+                // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+                CustomLog.e("NAS1752", "push failed - response body/data was null: $response")
+                return false
+            }
 
             val patientsDAO = PatientsDAO()
             data.patientlist?.forEach { patient ->
                 runCatching {
                     patientsDAO.updateOpemmrsId(patient.openmrsId, patient.syncd.toString(), patient.uuid)
+                    // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+                    CustomLog.d(
+                        "NAS1752", "openmrsId assigned - patientUuid=${patient.uuid} " +
+                                "openmrsId=${patient.openmrsId}"
+                    )
                 }.onFailure { FirebaseCrashlytics.getInstance().recordException(it) }
             }
 
@@ -191,6 +201,10 @@ class OptimizedSyncDao {
             broadcastSyncStatus(AppConstants.SYNC_PUSH_DATA_DONE)
             true
         } catch (e: Exception) {
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            val body = (e as? retrofit2.HttpException)?.response()?.errorBody()?.string()
+            CustomLog.e("NAS1752", "push failed - ${e.javaClass.simpleName}: ${e.message}" +
+                    (body?.let { " | serverBody=$it" } ?: ""))
             FirebaseCrashlytics.getInstance().recordException(e)
             broadcastSyncStatus(AppConstants.SYNC_FAILED)
             false
@@ -220,18 +234,25 @@ class OptimizedSyncDao {
                     .RESPONSE_DTO_CALL(url, "Basic $encoded").execute()
 
                 if (!response.isSuccessful) {
+                    // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+                    CustomLog.e("NAS1752", "pull failed - HTTP ${response.code()}: " +
+                            "${response.errorBody()?.string()}")
                     broadcastSyncStatus(AppConstants.SYNC_FAILED)
                     return false
                 }
 
                 val body = response.body()
                 val data = body?.data ?: run {
+                    // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+                    CustomLog.e("NAS1752", "pull failed - response body/data was null")
                     broadcastSyncStatus(AppConstants.SYNC_FAILED)
                     return false
                 }
 
                 sessionManager.setPulled(data.pullexecutedtime)
                 if (!syncDAO.SyncData(body, true)) {
+                    // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+                    CustomLog.e("NAS1752", "pull failed - syncDAO.SyncData returned false")
                     broadcastSyncStatus(AppConstants.SYNC_FAILED)
                     return false
                 }
@@ -247,6 +268,10 @@ class OptimizedSyncDao {
             broadcastSyncStatus(AppConstants.SYNC_PULL_DATA_DONE)
             true
         } catch (e: Exception) {
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            val body = (e as? retrofit2.HttpException)?.response()?.errorBody()?.string()
+            CustomLog.e("NAS1752", "pull failed - ${e.javaClass.simpleName}: ${e.message}" +
+                    (body?.let { " | serverBody=$it" } ?: ""))
             FirebaseCrashlytics.getInstance().recordException(e)
             broadcastSyncStatus(AppConstants.SYNC_FAILED)
             false
