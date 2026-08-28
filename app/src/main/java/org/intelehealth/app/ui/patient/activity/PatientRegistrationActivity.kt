@@ -35,6 +35,8 @@ import org.intelehealth.app.syncModule.SyncUtils
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CURRENT_STAGE
 import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_UUID
 import org.intelehealth.app.utilities.BundleKeys.Companion.PARENT_PATIENT_UUID
+import org.intelehealth.app.utilities.BundleKeys.Companion.PATIENT_CONSENT_VALUE
+import org.intelehealth.app.utilities.BundleKeys.Companion.ABDM_CONSENT_VALUE
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -197,6 +199,12 @@ class PatientRegistrationActivity : BaseActivity() {
             reportDateOfPatientCreated = DateAndTimeUtils.currentDateTimeFormat()
 
             householdLinkingUUIDlinking = UUID.randomUUID().toString()
+
+            // NAS-1752 - carried from PersonalConsentActivity. Only read here, in the
+            // fresh-record path: an edit-mode reopen (see fetchPatientDetails) loads a patient
+            // that - if it needed these - already got them the first time it went through here.
+            patientConsentValue = intent.getStringExtra(PATIENT_CONSENT_VALUE)
+            abdmConsentValue = intent.getStringExtra(ABDM_CONSENT_VALUE)
 
             val parentPatientId = if (intent.hasExtra(PARENT_PATIENT_UUID)) intent.getStringExtra(PARENT_PATIENT_UUID)
             else null
@@ -465,15 +473,20 @@ class PatientRegistrationActivity : BaseActivity() {
         /** India only — matches development_master. Revisit if ABDM is ever deployed elsewhere. */
         private const val COUNTRY_CODE_IN = "91"
 
+        @JvmOverloads
         @JvmStatic
         fun startPatientRegistration(
             context: Context,
             patientId: String? = null,
             stage: PatientRegStage = PatientRegStage.PERSONAL,
+            // NAS-1752 - set only by PersonalConsentActivity's no-ABHA path; every other
+            // (Java) call site edits an already-registered patient and leaves this null.
+            patientConsentValue: String? = null,
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
+                putExtra(PATIENT_CONSENT_VALUE, patientConsentValue)
             }.also { context.startActivity(it) }
         }
 
@@ -490,12 +503,25 @@ class PatientRegistrationActivity : BaseActivity() {
          * uuid. The module has already written the ABHA number and address to that row via
          * linkAbha, so the fetched record arrives with them and this path needs no ABHA seeding.
          */
+        @JvmOverloads
         @JvmStatic
-        fun startPatientRegistrationFromAbha(context: Context, abdmResult: AbdmResult) {
+        fun startPatientRegistrationFromAbha(
+            context: Context,
+            abdmResult: AbdmResult,
+            // NAS-1752 - only meaningful when abdmResult.uuid is blank, i.e. this is genuinely a
+            // new local patient. When it resolved to an existing one, the activity opens in edit
+            // mode (see the uuid check above) and these are never read - the caller is expected
+            // to have written Patient_Consent / ABDM_Consent directly against that patient uuid
+            // instead, since the record already exists.
+            patientConsentValue: String? = null,
+            abdmConsentValue: String? = null,
+        ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 abdmResult.uuid?.takeIf { it.isNotBlank() }?.let { putExtra(PATIENT_UUID, it) }
                 putExtra(PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
                 putExtra(AbdmResult.EXTRA_ABDM_RESULT, abdmResult)
+                putExtra(PATIENT_CONSENT_VALUE, patientConsentValue)
+                putExtra(ABDM_CONSENT_VALUE, abdmConsentValue)
             }.also { context.startActivity(it) }
         }
 
