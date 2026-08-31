@@ -18,6 +18,7 @@ import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
+import org.intelehealth.app.models.queue.QueueListResponse;
 import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
@@ -80,6 +81,11 @@ public interface ApiInterface {
     @GET
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url,
                                         @Header("Authorization") String authHeader);
+
+    // Queue microservice: /api/queue/list?status=&sort=&includeEta=&includeScore=&limit=&offset=
+    @GET
+    Call<QueueListResponse> QUEUE_LIST_CALL(@Url String url,
+                                            @Header("Authorization") String authHeader);
 
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
