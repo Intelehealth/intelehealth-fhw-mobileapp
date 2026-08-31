@@ -9,12 +9,22 @@ apply from: "whitelabel.gradle"
 apply plugin: 'kotlin-android'
 apply plugin: 'dagger.hilt.android.plugin'
 apply plugin: 'com.google.dagger.hilt.android'
+apply plugin: "com.facebook.react"
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 static def getDateTime() {
     DateFormat df = new SimpleDateFormat("yyyyMMddHHmm");
     return df.format(new Date());
+}
+
+react {
+    root = file("$rootDir/react-native")
+    reactNativeDir = file("$rootDir/react-native/node_modules/react-native")
+    codegenDir = file("$rootDir/react-native/node_modules/@react-native/codegen")
+    cliFile = file("$rootDir/react-native/node_modules/react-native/cli.js")
+    autolinkLibrariesWithApp()
 }
 
 android {
@@ -188,6 +198,9 @@ dependencies {
 
     implementation "com.google.dagger:hilt-android:2.57.2" // Replace 2.x with the latest version
     kapt "com.google.dagger:hilt-compiler:2.57.2"
+
+    implementation("com.facebook.react:react-android")
+    implementation("com.facebook.react:hermes-android")
 
 }
 apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle plugin

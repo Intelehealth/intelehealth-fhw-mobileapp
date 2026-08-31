@@ -39,7 +39,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/textlayout_find_patient"
             android:orientation="vertical"
             >
@@ -57,20 +57,33 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.25" />
 
+            <!-- Status banner (e.g. "Doctor is on Break"). Hosts the RN
+                 StatusBannerModule, mirroring queue_card_container below. -->
+            <FrameLayout
+                android:id="@+id/status_banner_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_all_card_start_margin"
+                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginEnd="@dimen/common_all_card_end_margin"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/addpatient_cardview"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
-                android:layout_marginTop="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
                 app:cardBackgroundColor="?colorPrimary"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent=".13"
                 app:layout_constraintStart_toStartOf="@id/guideline_12"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/status_banner_container"
+                app:layout_goneMarginTop="@dimen/margin_12">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
@@ -123,22 +136,35 @@
             </com.google.android.material.card.MaterialCardView>
 
 
+            <FrameLayout
+                android:id="@+id/queue_card_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/common_all_card_start_margin"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/common_all_card_end_margin"
+                android:paddingStart="3dp"
+                android:paddingEnd="3dp"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/addpatient_cardview" />
 
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/card_prescription"
                 android:layout_width="match_parent"
-                android:layout_height="0dip"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
-                app:layout_constraintHeight_percent=".25"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"
                 app:layout_constraintStart_toStartOf="@id/guideline_275"
-                app:layout_constraintTop_toBottomOf="@+id/addpatient_cardview"
+                app:layout_constraintTop_toBottomOf="@+id/queue_card_container"
+                app:layout_goneMarginTop="@dimen/margin_8"
                  >
 
 
@@ -213,11 +239,10 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/closedVisitsCardView"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/common_all_card_start_margin"
                 android:layout_marginTop="@dimen/margin_8"
                 android:layout_marginEnd="@dimen/common_all_card_end_margin"
-                app:layout_constraintHeight_percent=".25"
                 app:cardBackgroundColor="@color/white"
                 app:cardCornerRadius="@dimen/common_card_corner_radius"
                 app:cardUseCompatPadding="true"

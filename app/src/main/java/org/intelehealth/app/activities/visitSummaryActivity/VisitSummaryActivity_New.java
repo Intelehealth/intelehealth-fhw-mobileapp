@@ -116,6 +116,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.react.ReactFragment;
+import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.github.ajalt.timberkt.Timber;
@@ -206,6 +208,7 @@ import org.intelehealth.config.utility.PatientDiagnosticsConfigKeys;
 import org.intelehealth.config.utility.PatientVitalConfigKeys;
 import org.intelehealth.config.utility.ResUtils;
 import org.intelehealth.ihutils.ui.CameraActivity;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.model.RtcArgs;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -239,7 +242,7 @@ import okhttp3.ResponseBody;
  * Github: prajwalmw
  */
 @SuppressLint("Range")
-public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface {
+public class VisitSummaryActivity_New extends BaseActivity implements AdapterInterface, NetworkUtils.InternetCheckUpdateInterface, DefaultHardwareBackBtnHandler {
     private static final String TAG = VisitSummaryActivity_New.class.getSimpleName();
     private static final int PICK_IMAGE_FROM_GALLERY = 2001;
     //SQLiteDatabase db;
@@ -508,6 +511,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         //db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
 
         initUI();
+
+        // QMS (Queue Management System) gate: only show the top queue banner
+        // when QMS is configured, mirroring the home screen. When off, the
+        // container stays GONE so the patient card sits at the top as before.
+        boolean isQmsConfigured = new PreferenceHelper(this)
+                .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        if (isQmsConfigured) {
+            addQueueStatusBanner();
+        }
+
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
         setViewsData();
@@ -534,6 +547,45 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupVisibilityForSpecificFlavor();
 
         setupDiagnosticsConfig();
+    }
+
+    /**
+     * Embeds the shared React Native StatusBanner at the top of the Visit
+     * Summary (e.g. "Queue 104 · Position #2 / Next in Queue" with the wait time
+     * as a trailing pill), mirroring the home screen's addStatusBannerLayout().
+     * Content is passed as launch options so it can later be driven by real
+     * queue status.
+     */
+    private void addQueueStatusBanner() {
+        View container = findViewById(R.id.vs_queue_banner_container);
+        if (container != null) {
+            container.setVisibility(View.VISIBLE);
+        }
+
+        Bundle bannerProps = new Bundle();
+        bannerProps.putString("variant", "warning");
+        bannerProps.putString("title", "Queue 104 · Position #2");
+        bannerProps.putString("subtitle", "Next in Queue");
+        bannerProps.putString("time", "8 Mins");
+
+        ReactFragment bannerFragment = new ReactFragment.Builder()
+                .setComponentName("VisitSummaryStatusBannerModule")
+                .setLaunchOptions(bannerProps)
+                .build();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.vs_queue_banner_container, bannerFragment)
+                .commit();
+    }
+
+    /**
+     * Required by {@link ReactFragment} (via DefaultHardwareBackBtnHandler) so
+     * the embedded RN queue banner can resume. Mirrors HomeScreenActivity_New.
+     */
+    @Override
+    public void invokeDefaultOnBackPressed() {
+        super.onBackPressed();
     }
 
     private void setupVisibilityForSpecificFlavor() {
@@ -3376,9 +3428,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
                             sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
-                            Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
                             setAppointmentButtonStatus();
-                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                            // QMS on → "Visit Submitted" queue popup (patient added
+                            // to the doctor's queue, with View Queue / Back to Home).
+                            // QMS off → the plain "visit sent" success dialog.
+                            boolean isQmsConfigured = new PreferenceHelper(VisitSummaryActivity_New.this)
+                                    .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+                            if (isQmsConfigured) {
+                                visitSubmittedQueueDialog(context);
+                            } else {
+                                Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
+                                visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+                            }
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
                                     getString(R.string.visit_uploaded_successfully), 3, VisitSummaryActivity_New.this);*/
@@ -3461,6 +3522,54 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         });
 
         alertDialog.show();
+    }
+
+    /**
+     * "Visit Submitted" popup shown after a successful upload when QMS is
+     * configured. Confirms the patient was added to the doctor's queue, shows the
+     * estimated wait time, and offers "View Queue" (opens the Patient's Queue on
+     * Home) and "Back to Home".
+     */
+    private void visitSubmittedQueueDialog(Context context) {
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_visit_submitted, null);
+        alertdialogBuilder.setView(convertView);
+
+        TextView waitTimeValue = convertView.findViewById(R.id.tv_wait_time_value);
+        Button viewQueueBtn = convertView.findViewById(R.id.btn_view_queue);
+        Button backToHomeBtn = convertView.findViewById(R.id.btn_back_to_home);
+
+        // Placeholder wait time until real queue data is wired (mirrors the banner).
+        waitTimeValue.setText(getString(R.string.wait_time_default_value));
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim background
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+        alertDialog.setCancelable(false);
+
+        viewQueueBtn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            intent.putExtra(HomeScreenActivity_New.EXTRA_OPEN_QUEUE, true);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+
+        backToHomeBtn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
+        });
+
+        if (!isFinishing() && !isDestroyed()) {
+            alertDialog.show();
+        }
     }
 
     private BroadcastReceiver broadcastReceiverForIamgeDownlaod = new BroadcastReceiver() {

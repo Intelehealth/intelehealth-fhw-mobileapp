@@ -88,7 +88,6 @@ public class DateAndTimeUtils {
 
         SessionManager sessionManager = new SessionManager(context);
         String language = sessionManager.getAppLanguage();
-        CustomLog.d("LANG", "LANG: " + sessionManager.getAppLanguage());
 
         DateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
         DateFormat targetFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

@@ -73,6 +73,20 @@
         </provider>
 
         <activity
+            android:name=".reactnative.RNActivity"
+            android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".reactnative.QueueDetailsActivity"
+            android:exported="false"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize|uiMode"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
             android:name=".ui.initialsync.InitialSyncActivity"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"

@@ -122,11 +122,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <!-- Top queue banner (e.g. "Queue 104 · Position #2 / Next in
+                     Queue"). Hosts the RN VisitSummaryStatusBannerModule,
+                     mirroring the home status_banner_container. Kept GONE by
+                     default and shown only when QMS is configured. -->
+                <FrameLayout
+                    android:id="@+id/vs_queue_banner_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/fu_card_margin_updown"
+                    android:layout_marginEnd="@dimen/toolbar_margin_left"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardview_head"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/frame_10021"
+                    android:layout_below="@+id/vs_queue_banner_container"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentRight="true"
                     android:layout_marginLeft="@dimen/toolbar_margin_left"

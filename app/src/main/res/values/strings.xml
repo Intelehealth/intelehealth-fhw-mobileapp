@@ -762,6 +762,9 @@
     <string name="last_sync">Last sync</string>
     <string name="help_center">Help center</string>
     <string name="help_footer">Help</string>
+    <string name="queue">Queue</string>
+    <string name="patients_queue">Patient’s Queue</string>
+    <string name="queue_details">Queue Details</string>
     <string name="selected_date"> Selected date</string>
     <string name="today">Today</string>
     <string name="close_patient_registration">Close patient registration?</string>
@@ -836,6 +839,12 @@
     <string name="are_you_sure_you_want_to_send_visit">Are you sure you want to send the visit to the doctor?</string>
     <string name="visit_successfully_sent">Visit successfully sent!</string>
     <string name="patient_visit_sent">Patient\'s visit has been successfully sent to the doctor.</string>
+    <!-- Visit Submitted queue popup (shown when QMS is configured) -->
+    <string name="visit_submitted">Visit Submitted</string>
+    <string name="patient_added_to_doctor_queue">Patient added to the doctor\'s queue</string>
+    <string name="wait_time">Wait Time</string>
+    <string name="wait_time_default_value">8 mins</string>
+    <string name="back_to_home">Back to Home</string>
     <string name="previously_scheduled_on">Previously scheduled on</string>
     <string name="rescheduled_on">Rescheduled on</string>
     <string name="date">Date</string>
@@ -1741,5 +1750,9 @@
     <string name="sync_completed">Sync completed</string>
     <string name="feature_not_found">Feature not found</string>
 
+    <!-- Home / queue status banner -->
+    <string name="doctor_on_break">Doctor is on Break</string>
+    <string name="queue_paused">Queue Paused</string>
+    <string name="view_queue">View Queue</string>
 
 </resources>
