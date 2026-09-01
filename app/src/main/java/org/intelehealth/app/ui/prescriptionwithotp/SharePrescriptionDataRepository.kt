@@ -173,7 +173,17 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
         }
 
         if (key.isNotEmpty()) {
-            val newValue = cursor.getString(cursor.getColumnIndexOrThrow("value"))
+            val rawValue: String = cursor.getString(cursor.getColumnIndexOrThrow("value"))
+            // Strip a leading "<code>::" or "NA::" prefix (e.g. "115902018::Acute
+            // Gastroenteritis:Primary & Under Evaluation") - the diagnosis concept id
+            // isn't meant to be shown, only the diagnosis text that follows it.
+            // Mirrors the fix in PrescriptionActivity.parseData() (commit 140bb8fbe)
+            // so the WhatsApp preview/PDF path shows the same cleaned value.
+            val newValue: String = if (key == PrescriptionDetailsDataKeys.Diagnosis.PRIMARY) {
+                rawValue.replaceFirst(Regex("(?i)^(?:na|\\d+)::\\s*"), "")
+            } else {
+                rawValue
+            }
             val existingValue = adultInitialMap[key]
 
             if (existingValue.isNullOrBlank()) {
