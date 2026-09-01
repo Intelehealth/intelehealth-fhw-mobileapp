@@ -567,6 +567,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 if (object != null)
                     mVitalsObject = (VitalsObject) object;
                 if (mVitalsObject != null) {
+                    // insert json form data into database
+                    insertJsonFormattedVisitSummary();
                     //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
