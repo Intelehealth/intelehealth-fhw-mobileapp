@@ -599,6 +599,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 + "AND o.value is NOT NULL "
                 + "AND followup_date is NOT NULL " +
                 "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                "AND NOT EXISTS (SELECT 1 FROM tbl_visit v2 WHERE v2.patientuuid = a.patientuuid AND v2.voided = '0' AND v2.startdate > a.startdate) " + // A newer visit for this patient means the follow-up has already been addressed
                 "GROUP BY a.uuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
