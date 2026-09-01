@@ -327,7 +327,17 @@ class PrintViewPrescription(
 
                 val remainingStr = splitFollowDate
                     .drop(1)
-                    .mapNotNull { it.trim().takeIf { str -> str.isNotEmpty() && str != "null" } }
+                    .mapNotNull { segment ->
+                        val trimmed = segment.trim()
+                        when {
+                            trimmed.isEmpty() || trimmed.equals("null", ignoreCase = true) -> null
+                            // A blank doctor remark syncs down as a literal "Remark: null" -
+                            // show "NA" here too, matching the Follow-up Visits screen, the
+                            // end-visit reminder, and the WhatsApp preview/PDF.
+                            trimmed.matches(Regex("(?i)Remark:\\s*(null)?\\s*")) -> "Remark: NA"
+                            else -> trimmed
+                        }
+                    }
                     .joinToString(", ")
                 Log.d(TAG, "kzfollowUpWeb: remainingStr : $remainingStr")
 
