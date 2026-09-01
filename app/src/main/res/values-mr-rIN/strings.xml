@@ -1346,6 +1346,8 @@
     <string name="age_mandatory">वय</string>
     <string name="enter_age">वय प्रविष्ट करा</string>
     <string name="corresponding_address_1">संबंधित पत्ता 1</string>
+    <string name="_corresponding_address_1">संबंधित पत्ता 1</string>
+    <string name="_corresponding_address_2">संबंधित पत्ता 2</string>
     <string name="this_field_is_mandatory">हे फील्ड अनिवार्य आहे</string>
     <string name="_vitals_summary">%1$d/%2$d महत्वपूर्ण सारांश</string>
     <string name="select_one_or_multiple_reasons">एक किंवा अधिक कारणे निवडा</string>
@@ -1506,6 +1508,7 @@
     <string name="no_country_added">देश समाविष्ट केलेला नाही</string>
     <string name="no_state_added">राज्य समाविष्ट केलेले नाही</string>
     <string name="no_district_added">जिल्हा समाविष्ट केलेला नाही</string>
+    <string name="no_block_added">ब्लॉक समाविष्ट केलेले नाही</string>
     <string name="no_city_added">शहर समाविष्ट केलेले नाही</string>
     <string name="no_postal_code_added">पिनकोड समाविष्ट केलेला नाही</string>
     <string name="no_mobile_number_added">फोन नंबर समाविष्ट केलेला नाही</string>
