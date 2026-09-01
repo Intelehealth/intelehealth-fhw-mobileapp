@@ -627,6 +627,24 @@
 
                     </RelativeLayout>
 
+                    <Button
+                        android:id="@+id/btn_docs_upload"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/fu_btn_size"
+                        android:layout_below="@+id/add_additional_doc"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginTop="@dimen/margin_12"
+                        android:layout_marginEnd="@dimen/margin_12"
+                        android:layout_marginBottom="@dimen/margin_12"
+                        android:background="@drawable/ui2_common_primary_bg"
+                        android:padding="@dimen/margin_12"
+                        android:text="@string/visit_summary_button_upload"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/common_button_text_size"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        tools:visibility="visible" />
+
                 </RelativeLayout>
 
                 <!--Doctor Speciality card-->

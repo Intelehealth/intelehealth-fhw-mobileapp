@@ -109,7 +109,9 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
             }
         });
 
-        holder.hideCancel(fromVisitDetails);
+        // Hide the remove control when this whole list is read-only (fromVisitDetails) or when
+        // this specific document is not deletable (an existing / already-uploaded document).
+        holder.hideCancel(fromVisitDetails || !documentList.get(position).isDeletable());
 //        if (fromVisitDetails)
 //            holder.getDeleteDocumentImageView().setVisibility(View.GONE);
 //        else
