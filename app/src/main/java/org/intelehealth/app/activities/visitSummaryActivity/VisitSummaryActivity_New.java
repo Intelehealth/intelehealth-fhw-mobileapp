@@ -153,6 +153,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -341,6 +342,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TextView add_docs_title, tvAddNotesValueVS, reminder, incomplete_act, archieved_notifi;
     String addnotes_value = "";
     private TextInputLayout tilAdditionalNotesVS;
+    private Button btn_note_save;
 
     TextView respiratory;
     TextView respiratoryText;
@@ -886,6 +888,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 addnotes_vd_card.setVisibility(View.VISIBLE);
                 tilAdditionalNotesVS.setVisibility(View.GONE);
                 tvAddNotesValueVS.setVisibility(View.VISIBLE);
+                btn_note_save.setVisibility(View.GONE);
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
                     if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
@@ -934,6 +937,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 addnotes_vd_card.setVisibility(View.VISIBLE);
                 tilAdditionalNotesVS.setVisibility(View.VISIBLE);
                 tvAddNotesValueVS.setVisibility(View.GONE);
+                // Editing an existing visit and editing is allowed: expose the note save button
+                // (new visit creation keeps the previous flow and never reaches this block).
+                btn_note_save.setVisibility(View.VISIBLE);
+                // Pre-fill the edit field with the note already stored for this visit, if any.
+                addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
+                if (!addnotes_value.equalsIgnoreCase("")
+                        && !addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
+                    etAdditionalNotesVS.setText(addnotes_value);
+                }
                 mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
 
             }
@@ -1274,6 +1286,39 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             return true;
         }
         return false;
+    }
+
+    /**
+     * Saves the Additional Notes for an existing visit when the user taps the note save button.
+     * <p>
+     * Re-checks edit permission at click time (a "start visit" notification may have arrived while
+     * the screen was open), then upserts the note so repeated edits update the existing row instead
+     * of piling up duplicate visit-attribute rows.
+     */
+    private void saveAdditionalNote() {
+        if (blockEditIfNotAllowed()) return;
+
+        String addnotes = etAdditionalNotesVS.getText().toString().trim();
+        if (addnotes.isEmpty()) {
+            Toast.makeText(this, getString(R.string.leave_a_note_for_doctor), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            // keeping raw string as we dont want regional lang data to be stored in DB.
+            visitAttributeListDAO.updateVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+            // Mark the parent visit unsynced so the push path (unsyncedVisits) picks up the edited
+            // note. The push upserts the visit and its unsynced attributes by uuid, so this updates
+            // the existing visit in place instead of creating a new one.
+            new VisitsDAO().updateVisitSync(visitUuid, "0");
+            addnotes_value = addnotes;
+            Toast.makeText(this, getString(R.string.note_saved_successfully), Toast.LENGTH_SHORT).show();
+            // Push to the server now; no-ops when offline, and the next sync carries it up.
+            SyncUtils.syncOnServer();
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setViewsData() {
@@ -2846,6 +2891,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         doc_speciality_card = findViewById(R.id.doc_speciality_card);
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
+
+        // Save button for Additional Notes. Only shown while editing an existing visit
+        // (see edit-mode branch); hidden in the new visit creation flow and view-only mode.
+        btn_note_save = findViewById(R.id.btn_note_save);
+        btn_note_save.setOnClickListener(v -> saveAdditionalNote());
 
         priority_hint = findViewById(R.id.priority_hint);
 

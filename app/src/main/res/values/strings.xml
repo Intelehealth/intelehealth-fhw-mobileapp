@@ -863,6 +863,7 @@
     <string name="select_language">Select Language</string>
     <string name="additional_notes">Additional Notes</string>
     <string name="leave_a_note_for_doctor">Leave a note for doctor</string>
+    <string name="note_saved_successfully">Note saved successfully</string>
     <string name="add_additional_document_2">Add additional documents (2)</string>
     <string name="add_additional_documents_like">Add additional documents like reports, prescriptions, etc.\u000D</string>
     <string name="doctor_speciality">Doctor\'s Speciality</string>
