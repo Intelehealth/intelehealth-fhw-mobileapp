@@ -9,13 +9,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -27,8 +24,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.PickVisualMediaRequest;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -43,6 +38,7 @@ import com.google.gson.reflect.TypeToken;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.ai.formatter.VisitSummaryAiFormatter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -95,9 +91,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
@@ -723,6 +716,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 break;
             case STEP_7_VISIT_SUMMARY:
                 insertLocalEnFormatQAValues();
+
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
 //                intent1.putExtra("patientUuid", patientUuid);
 //                intent1.putExtra("visitUuid", visitUuid);
@@ -2200,6 +2194,8 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
     }
 
     private boolean insertLocalEnFormatQAValues() {
+        //Need the formatted string to be inserted in the database for AI AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID concept
+        insertJsonFormattedVisitSummary();
         CustomLog.i(TAG, "insertLocalEnFormatQAValues");
         boolean isInserted = false;
         try {
@@ -2234,6 +2230,49 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         return isInserted;
     }
+    /**
+     * Inserts the visit summary in JSON format into the database for the AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID concept.
+     * This method is called from insertLocalEnFormatQAValues() to ensure that the visit summary is stored in a structured format for AI processing.
+     * The JSON structure should include the following fields: encounterAdultIntials, patientGender, age, vitals, chief complaints, physical examination, patient history, and family history.
+     * The method retrieves the necessary data from the member variables and formats it using the VisitSummaryAiFormatter class before saving it to the database.
+     * This allows for easy retrieval and processing of the visit summary in a machine-readable format for AI applications.
+     */
+    private void insertJsonFormattedVisitSummary() {
+        List<Node> patientHistoryNodes = mPastMedicalHistoryNode != null ? mPastMedicalHistoryNode.getOptionsList() : null;
+        List<Node> familyHistoryNodes = mFamilyHistoryNode != null ? mFamilyHistoryNode.getOptionsList() : null;
+        List<Node> physicalExamNodes = physicalExamMap != null ? physicalExamMap.getSelectedNodes() : null;
+
+        CustomLog.i(TAG, "insertJsonFormattedVisitSummary: mFamilyHistoryNode=" + (mFamilyHistoryNode == null ? "null" : "non-null")
+                + " familyHistoryNodes.size=" + (familyHistoryNodes == null ? "null" : familyHistoryNodes.size()));
+        if (familyHistoryNodes != null) {
+            for (Node node : familyHistoryNodes) {
+                CustomLog.i(TAG, "insertJsonFormattedVisitSummary: familyHistory node text=" + node.getText()
+                        + " language=" + node.getLanguage()
+                        + " isSelected=" + node.isSelected()
+                        + " optionsSize=" + (node.getOptionsList() == null ? "null" : node.getOptionsList().size()));
+            }
+        }
+
+        // check mVitalsObject is null  then load it from db
+        if (mVitalsObject == null) {
+            try {
+                mVitalsObject = new ObsDAO().getVitalsForEncounter(encounterVitals);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+        VisitSummaryAiFormatter.formatAndSave(
+                encounterAdultIntials,
+                patientGender,
+                (int) float_ageYear_Month,
+                mVitalsObject,
+                mChiefComplainRootNodeList,
+                physicalExamNodes,
+                patientHistoryNodes,
+                familyHistoryNodes
+        );
+    }
+
     /**
      * Fetches the existing VISIT_AI_SUPPORT_DATA obs value for this visit
      * and splits it back into the four ...LocaleEn member variables.

@@ -1620,7 +1620,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 }
 
                 patientVital = (PatientVital) mBloodGroupCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getBloodGroup().isEmpty()) {
+                /*if ((patientVital != null && patientVital.isMandatory()) || !results.getBloodGroup().isEmpty()) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1631,7 +1631,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                     obsDAO.updateObs(obsDTO);
-                }
+                }*/
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();
                 try {
@@ -1804,7 +1804,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
 
             patientVital = (PatientVital) mBloodGroupCardView.getTag();
-            if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getBloodGroup().isEmpty())) {
+            /*if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getBloodGroup().isEmpty())) {
                 obsDTO = new ObsDTO();
                 //obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
                 obsDTO.setConceptuuid(patientVital.getUuid());
@@ -1818,7 +1818,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
-            }
+            }*/
         }
         return true;
     }

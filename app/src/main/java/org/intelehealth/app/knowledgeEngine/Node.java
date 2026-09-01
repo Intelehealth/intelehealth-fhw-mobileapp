@@ -179,7 +179,12 @@ public class Node implements Serializable {
      */
     public Node(JSONObject jsonNode) {
         try {
+            // check the engine version and set it to the current version if not present in the jsonNode
+            // if key not present, then set the engine version tto the default version "3.0"
             this.engineVersion = jsonNode.optString("engineVersion");
+            if (this.engineVersion.isEmpty()) {
+                this.engineVersion = "3.0";
+            }
             this.id = jsonNode.getString("id");
 
             this.isMultiChoice = jsonNode.optBoolean("multi-choice");

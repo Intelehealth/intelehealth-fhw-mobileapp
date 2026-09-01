@@ -828,71 +828,79 @@ public class SyncDAO {
                             Log.d("TAG", "push response model onSuccess: "+gson.toJson(pushRequestApiCall));
 
                             try {
-                                for (int i = 0; i < pushResponseApiCall.getData().getPatientlist()
-                                        .size(); i++) {
-                                    try {
-                                        patientsDAO.updateOpemmrsId(
-                                                pushResponseApiCall.getData().getPatientlist()
-                                                        .get(i).getOpenmrsId(),
-                                                pushResponseApiCall.getData().getPatientlist()
-                                                        .get(i).getSyncd().toString(),
-                                                pushResponseApiCall.getData().getPatientlist()
-                                                        .get(i).getUuid());
-                                        CustomLog.d("SYNC", "ProvUUDI" +
-                                                pushResponseApiCall.getData()
-                                                        .getPatientlist().get(i)
-                                                        .getUuid());
-                                    } catch (DAOException e) {
-                                        FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG, e.getMessage());
+                                if (pushResponseApiCall.getData().getPatientlist() != null) {
+                                    for (int i = 0; i < pushResponseApiCall.getData().getPatientlist()
+                                            .size(); i++) {
+                                        try {
+                                            patientsDAO.updateOpemmrsId(
+                                                    pushResponseApiCall.getData().getPatientlist()
+                                                            .get(i).getOpenmrsId(),
+                                                    pushResponseApiCall.getData().getPatientlist()
+                                                            .get(i).getSyncd().toString(),
+                                                    pushResponseApiCall.getData().getPatientlist()
+                                                            .get(i).getUuid());
+                                            CustomLog.d("SYNC", "ProvUUDI" +
+                                                    pushResponseApiCall.getData()
+                                                            .getPatientlist().get(i)
+                                                            .getUuid());
+                                        } catch (DAOException e) {
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG, e.getMessage());
+                                        }
                                     }
                                 }
 
-                                for (int i = 0;
-                                     i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
-                                    try {
-                                        visitsDAO.updateVisitSync(
-                                                pushResponseApiCall.getData().getVisitlist().get(i)
-                                                        .getUuid(),
-                                                pushResponseApiCall.getData().getVisitlist().get(i)
-                                                        .getSyncd().toString());
-                                    } catch (DAOException e) {
-                                        FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG, e.getMessage());
+                                if (pushResponseApiCall.getData().getVisitlist() != null) {
+                                    for (int i = 0;
+                                         i < pushResponseApiCall.getData().getVisitlist().size(); i++) {
+                                        try {
+                                            visitsDAO.updateVisitSync(
+                                                    pushResponseApiCall.getData().getVisitlist().get(i)
+                                                            .getUuid(),
+                                                    pushResponseApiCall.getData().getVisitlist().get(i)
+                                                            .getSyncd().toString());
+                                        } catch (DAOException e) {
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG, e.getMessage());
+                                        }
                                     }
                                 }
 
-                                for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist()
-                                        .size(); i++) {
-                                    try {
-                                        encounterDAO.updateEncounterSync(
-                                                pushResponseApiCall.getData().getEncounterlist()
-                                                        .get(i).getSyncd().toString(),
-                                                pushResponseApiCall.getData().getEncounterlist()
-                                                        .get(i).getUuid());
-                                        CustomLog.d("SYNC", "Encounter Data: " +
-                                                pushResponseApiCall.getData()
-                                                        .getEncounterlist().get(i)
-                                                        .toString());
-                                    } catch (DAOException e) {
-                                        FirebaseCrashlytics.getInstance().recordException(e);
-                                        CustomLog.e(TAG, e.getMessage());
+                                if (pushResponseApiCall.getData().getEncounterlist() != null) {
+                                    for (int i = 0; i < pushResponseApiCall.getData().getEncounterlist()
+                                            .size(); i++) {
+                                        try {
+                                            encounterDAO.updateEncounterSync(
+                                                    pushResponseApiCall.getData().getEncounterlist()
+                                                            .get(i).getSyncd().toString(),
+                                                    pushResponseApiCall.getData().getEncounterlist()
+                                                            .get(i).getUuid());
+                                            CustomLog.d("SYNC", "Encounter Data: " +
+                                                    pushResponseApiCall.getData()
+                                                            .getEncounterlist().get(i)
+                                                            .toString());
+                                        } catch (DAOException e) {
+                                            FirebaseCrashlytics.getInstance().recordException(e);
+                                            CustomLog.e(TAG, e.getMessage());
+                                        }
                                     }
                                 }
 
-                                for (int i = 0; i <
-                                        pushResponseApiCall.getData().getAppointmentList()
-                                                .size(); i++) {
-                                    try {
-                                        String sync = pushResponseApiCall.getData()
-                                                .getAppointmentList().get(i).getSync();
-                                        String visitUuid = pushResponseApiCall.getData()
-                                                .getAppointmentList().get(i).getVisitUuid();
-                                        appointmentDAO.updateAppointmentSync(visitUuid, sync);
-                                    } catch (DAOException exception) {
-                                        FirebaseCrashlytics.getInstance()
-                                                .recordException(exception);
-                                        CustomLog.e(TAG, exception.getMessage());
+                                if (pushResponseApiCall.getData().getAppointmentList() != null) {
+                                    for (int i = 0; i <
+                                            pushResponseApiCall.getData().getAppointmentList()
+                                                    .size(); i++) {
+                                        try {
+                                            String sync = pushResponseApiCall.getData()
+                                                    .getAppointmentList().get(i).getSync();
+                                            String visitUuid = pushResponseApiCall.getData()
+                                                    .getAppointmentList().get(i).getVisitUuid();
+                                            appointmentDAO.updateAppointmentSync(visitUuid, sync);
+                                        } catch (DAOException exception) {
+                                            FirebaseCrashlytics.getInstance()
+                                                    .recordException(exception);
+                                            CustomLog.e(TAG, exception.getMessage());
+                                        }
                                     }
                                 }
 
