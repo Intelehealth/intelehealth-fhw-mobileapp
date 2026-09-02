@@ -66,7 +66,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -96,6 +95,7 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
@@ -1778,6 +1778,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //new Thread(() -> {
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
+        CustomLog.e(TAG, "updateLastSyncTime: lastSyncText : " + lastSyncText);
         tvAppLastSync.setText(lastSyncText);
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
