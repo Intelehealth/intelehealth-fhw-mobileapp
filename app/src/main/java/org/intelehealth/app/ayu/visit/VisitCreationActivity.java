@@ -2217,11 +2217,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         insertJsonFormattedVisitSummary();
         CustomLog.i(TAG, "insertLocalEnFormatQAValues");
         boolean isInserted = false;
-        try {
+        // Q/A visit sumamry is not required after JSON format is implemented, but keeping this code for reference in case we need to revert back to the old format.
+
+        /*try {
             // ✅ In edit mode, restore any ...En vars that were NOT re-saved this session
-            /*if (mIsEditMode) {
+            *//*if (mIsEditMode) {
                 loadExistingAiSummaryIntoEnVars();
-            }*/
+            }*//*
             ObsDAO obsDAO = new ObsDAO();
             String insertDbEnValue = "Visit Reason (Chief Complaint):\n"  + insertionLocaleEn + "\n" + "Physical Examination:\n"+ physicalStringLocaleEn + "\n" + "Patient Medical History:\n"+ patientHistoryLocaleEn + "\n"  + "Family History:\n"+ familyHistoryLocaleEn;
 
@@ -2245,7 +2247,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
-        }
+        }*/
 
         return isInserted;
     }

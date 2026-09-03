@@ -358,6 +358,7 @@ public class SyncDAO {
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
             int totalCount = response.body().getData().getTotalCount();
+            Logger.logD("pulldata", "populatePullSuccessBackground nextPageNo: " + nextPageNo + ", totalCount: " + totalCount);
             if (nextPageNo != -1) {
                 pullData_Background(context, nextPageNo);
               //  return null;

@@ -75,13 +75,24 @@ class OptimizedSyncWorker(
             // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
             CustomLog.d("NAS1752", "periodicSync() returned $isSyncSuccessful")
             reviewUpcomingAppointments()
-            if (isSyncSuccessful) Result.success() else Result.retry()
+            if (isSyncSuccessful) Result.success() else retryOrGiveUp()
         } catch (e: Exception) {
             // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
             CustomLog.e("NAS1752", "doWork threw - ${e.javaClass.simpleName}: ${e.message}")
-            Result.retry()
+            retryOrGiveUp()
         }
     }
+
+    /**
+     * Retries up to [MAX_SYNC_ATTEMPTS] times before giving up.
+     *
+     * A unique one-time sync is chained via APPEND_OR_REPLACE, so a later save's sync waits for an
+     * earlier one to reach a terminal state before it can even start. Without a cap, a persistently
+     * failing sync (e.g. a run of network timeouts) would return Result.retry() forever and never
+     * reach one, leaving every sync queued behind it permanently BLOCKED.
+     */
+    private fun retryOrGiveUp(): Result =
+        if (runAttemptCount < MAX_SYNC_ATTEMPTS) Result.retry() else Result.failure()
 
     /**
      * Warns about appointments starting within the next three quarters of an hour and drops the ones
@@ -151,6 +162,7 @@ class OptimizedSyncWorker(
         private const val MINUTES_BEFORE_APPOINTMENT_REMINDER = 45L
 
         private const val KEY_RUN_IN_FOREGROUND = "run_in_foreground"
+        private const val MAX_SYNC_ATTEMPTS = 5
 
         /**
          * Both schedules carry the connectivity constraint the requests they replace were built with,

@@ -9,10 +9,6 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
@@ -31,6 +27,12 @@ import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.PatientsFrameJson
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UrlModifiers
+import retrofit2.Response
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 /**
  * A full sync run as one blocking sequence.
@@ -164,7 +166,11 @@ class OptimizedSyncDao {
             val patientsDAO = PatientsDAO()
             data.patientlist?.forEach { patient ->
                 runCatching {
-                    patientsDAO.updateOpemmrsId(patient.openmrsId, patient.syncd.toString(), patient.uuid)
+                    patientsDAO.updateOpemmrsId(
+                        patient.openmrsId,
+                        patient.syncd.toString(),
+                        patient.uuid
+                    )
                     // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
                     CustomLog.d(
                         "NAS1752", "openmrsId assigned - patientUuid=${patient.uuid} " +
@@ -181,13 +187,23 @@ class OptimizedSyncDao {
 
             val encounterDAO = EncounterDAO()
             data.encounterlist?.forEach { encounter ->
-                runCatching { encounterDAO.updateEncounterSync(encounter.syncd.toString(), encounter.uuid) }
+                runCatching {
+                    encounterDAO.updateEncounterSync(
+                        encounter.syncd.toString(),
+                        encounter.uuid
+                    )
+                }
                     .onFailure { FirebaseCrashlytics.getInstance().recordException(it) }
             }
 
             val appointmentDAO = AppointmentDAO()
             data.appointmentList?.forEach { appointment ->
-                runCatching { appointmentDAO.updateAppointmentSync(appointment.visitUuid, appointment.sync) }
+                runCatching {
+                    appointmentDAO.updateAppointmentSync(
+                        appointment.visitUuid,
+                        appointment.sync
+                    )
+                }
                     .onFailure { FirebaseCrashlytics.getInstance().recordException(it) }
             }
 
@@ -203,7 +219,8 @@ class OptimizedSyncDao {
         } catch (e: Exception) {
             // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
             val body = (e as? retrofit2.HttpException)?.response()?.errorBody()?.string()
-            CustomLog.e("NAS1752", "push failed - ${e.javaClass.simpleName}: ${e.message}" +
+            CustomLog.e(
+                "NAS1752", "push failed - ${e.javaClass.simpleName}: ${e.message}" +
                     (body?.let { " | serverBody=$it" } ?: ""))
             FirebaseCrashlytics.getInstance().recordException(e)
             broadcastSyncStatus(AppConstants.SYNC_FAILED)
@@ -227,16 +244,26 @@ class OptimizedSyncDao {
         return try {
             while (true) {
                 val url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/pull/pulldata/" +
-                    sessionManager.locationUuid + "/" + sessionManager.pullExcutedTime +
-                    "/" + pageNo + "/" + AppConstants.PAGE_LIMIT
-
-                val response = AppConstants.apiInterface
-                    .RESPONSE_DTO_CALL(url, "Basic $encoded").execute()
+                        sessionManager.locationUuid + "/" + sessionManager.pullExcutedTime +
+                        "/" + pageNo + "/" + AppConstants.PAGE_LIMIT
+                CustomLog.e(
+                    "OptimizedSyncDao" + "pullDataBackgroundSync",
+                    "Before API call: pageNo=$pageNo, url=$url"
+                )
+                val response = executePageWithRetry {
+                    AppConstants.apiInterface.RESPONSE_DTO_CALL(url, "Basic $encoded").execute()
+                }
+                CustomLog.e(
+                    "OptimizedSyncDao" + "pullDataBackgroundSync",
+                    "After API call: pageNo=$pageNo, url=$url"
+                )
 
                 if (!response.isSuccessful) {
                     // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
-                    CustomLog.e("NAS1752", "pull failed - HTTP ${response.code()}: " +
-                            "${response.errorBody()?.string()}")
+                    CustomLog.e(
+                        "NAS1752", "pull failed - HTTP ${response.code()}: " +
+                                "${response.errorBody()?.string()}"
+                    )
                     broadcastSyncStatus(AppConstants.SYNC_FAILED)
                     return false
                 }
@@ -250,32 +277,75 @@ class OptimizedSyncDao {
                 }
 
                 sessionManager.setPulled(data.pullexecutedtime)
+                CustomLog.e(
+                    "OptimizedSyncDao",
+                    "pullDataBackgroundSync: pageNo=$pageNo, pullexecutedtime=${data.pullexecutedtime}"
+                )
                 if (!syncDAO.SyncData(body, true)) {
                     // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
                     CustomLog.e("NAS1752", "pull failed - syncDAO.SyncData returned false")
                     broadcastSyncStatus(AppConstants.SYNC_FAILED)
                     return false
                 }
+                CustomLog.e(
+                    "OptimizedSyncDao",
+                    "pullDataBackgroundSync completed for pageNo=$pageNo"
+                )
 
                 val nextPageNo = data.pageNo
+                CustomLog.e(
+                    "OptimizedSyncDao",
+                    "pullDataBackgroundSync: pageNo=$pageNo, nextPageNo=$nextPageNo"
+                )
                 if (nextPageNo == -1) break
                 pageNo = nextPageNo
             }
 
             sessionManager.setPullExcutedTime(sessionManager.isPulled)
             sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome())
+            //sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome())
+            sessionManager.setLastSyncDateTime(
+                AppConstants.dateAndTimeUtils.getcurrentDateTime(
+                    sessionManager.getAppLanguage()
+                )
+            )
+
             sessionManager.setPullSyncFinished(true)
             broadcastSyncStatus(AppConstants.SYNC_PULL_DATA_DONE)
             true
         } catch (e: Exception) {
             // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
             val body = (e as? retrofit2.HttpException)?.response()?.errorBody()?.string()
-            CustomLog.e("NAS1752", "pull failed - ${e.javaClass.simpleName}: ${e.message}" +
+
+            CustomLog.e(
+                "NAS1752", "pull failed - ${e.javaClass.simpleName}: ${e.message}" +
                     (body?.let { " | serverBody=$it" } ?: ""))
             FirebaseCrashlytics.getInstance().recordException(e)
             broadcastSyncStatus(AppConstants.SYNC_FAILED)
             false
         }
+    }
+
+    /**
+     * Retries a single page fetch on transient network failures (timeouts, dropped connections)
+     * instead of letting one bad page abort the whole multi-page pull. Rethrows the last IOException
+     * once attempts are exhausted so the caller's existing catch block handles it unchanged.
+     */
+    private fun <T> executePageWithRetry(maxAttempts: Int = PULL_PAGE_MAX_ATTEMPTS, block: () -> Response<T>): Response<T> {
+        repeat(maxAttempts) { attempt ->
+            try {
+                return block()
+            } catch (e: IOException) {
+                CustomLog.e(
+                    "NAS1752",
+                    "pull page attempt ${attempt + 1}/$maxAttempts failed - " +
+                        "${e.javaClass.simpleName}: ${e.message}"
+                )
+                if (attempt == maxAttempts - 1) throw e
+                Thread.sleep(PULL_PAGE_RETRY_BACKOFF_MS * (attempt + 1))
+            }
+        }
+        error("unreachable")
     }
 
     private fun patientProfileImagesPushSync(): Boolean {
@@ -368,7 +438,10 @@ class OptimizedSyncDao {
         voidedObsImages.forEach { voidedObsImage ->
             runCatching {
                 AppConstants.apiInterface
-                    .DELETE_OBS_IMAGE(urlModifiers.obsImageDeleteUrl(voidedObsImage), "Basic $encoded")
+                    .DELETE_OBS_IMAGE(
+                        urlModifiers.obsImageDeleteUrl(voidedObsImage),
+                        "Basic $encoded"
+                    )
                     .ignoreElements()
                     .blockingAwait()
             }.onFailure {
@@ -403,11 +476,11 @@ class OptimizedSyncDao {
     private fun isDataPresent(request: PushRequestApiCall?): Boolean {
         if (request == null) return false
         return request.patients?.isNotEmpty() == true ||
-            request.persons?.isNotEmpty() == true ||
-            request.visits?.isNotEmpty() == true ||
-            request.encounters?.isNotEmpty() == true ||
-            request.providers?.isNotEmpty() == true ||
-            request.appointments?.isNotEmpty() == true
+                request.persons?.isNotEmpty() == true ||
+                request.visits?.isNotEmpty() == true ||
+                request.encounters?.isNotEmpty() == true ||
+                request.providers?.isNotEmpty() == true ||
+                request.appointments?.isNotEmpty() == true
     }
 
     private fun broadcastSyncStatus(status: Int) {
@@ -420,5 +493,7 @@ class OptimizedSyncDao {
 
     private companion object {
         const val THIRTY_DAYS_IN_MILLIS = 30L * 24 * 60 * 60 * 1000
+        const val PULL_PAGE_MAX_ATTEMPTS = 3
+        const val PULL_PAGE_RETRY_BACKOFF_MS = 2000L
     }
 }
