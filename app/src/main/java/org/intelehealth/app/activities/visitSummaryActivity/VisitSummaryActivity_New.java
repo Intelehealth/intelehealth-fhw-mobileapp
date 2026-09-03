@@ -7,6 +7,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPati
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchValueFromLocalDb;
+import static org.intelehealth.app.database.dao.VisitsDAO.isVisitEnded;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
@@ -94,6 +95,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -873,10 +875,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     mBinding.diagnosisCard.setVisibility(View.GONE);
                     mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
-
-                    mBinding.typeOfConsultationCard.setVisibility(View.GONE);
-                    mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
                 }
+
+                // Type of consultation keeps its spinner (no vd card); it is disabled once the visit
+                // is sent (see setViewsData / the send-success handler).
+                mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+                mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+                // mBinding.typeOfConsultationCard.setVisibility(View.GONE);
+                // mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
 
                 mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
@@ -937,13 +943,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     mBinding.diagnosisCard.setVisibility(View.VISIBLE);
                     mBinding.diagnosisVdCard.setVisibility(View.GONE);
-
-                    mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
-                    mBinding.consultationTypeVdCard.setVisibility(View.GONE);
                 }
 
-                doc_speciality_card.setVisibility(View.VISIBLE);
-                special_vd_card.setVisibility(View.GONE);
+                // Speciality is non-editable once the visit has been sent: show the read-only vd card
+                // and hide the spinner. During creation (no speciality yet) the spinner is shown.
+                doc_speciality_card.setVisibility(isVisitSpecialityExists ? View.GONE : View.VISIBLE);
+                special_vd_card.setVisibility(isVisitSpecialityExists ? View.VISIBLE : View.GONE);
+                // Type of consultation keeps its spinner (no vd card); it is just disabled once the
+                // visit is sent (see setViewsData / the send-success handler).
+                mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+                mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+                // mBinding.typeOfConsultationCard.setVisibility(isVisitSpecialityExists ? View.GONE : View.VISIBLE);
+                // mBinding.consultationTypeVdCard.setVisibility(isVisitSpecialityExists ? View.VISIBLE : View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
 
                 addnotes_vd_card.setVisibility(View.VISIBLE);
@@ -1015,10 +1026,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 mBinding.diagnosisCard.setVisibility(View.GONE);
                 mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
-
-                mBinding.typeOfConsultationCard.setVisibility(View.GONE);
-                mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
             }
+
+            // Type of consultation keeps its spinner (no vd card); it is disabled once the visit is
+            // sent (see setViewsData / the send-success handler).
+            mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+            mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+            // mBinding.typeOfConsultationCard.setVisibility(View.GONE);
+            // mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
@@ -1281,6 +1297,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * clears the edit cache while the user is already on this screen, the next edit click reflects it.
      */
     private boolean computeIsEditAllowed() {
+        // A visit that has already ended (its enddate is set) can never be edited, regardless of any
+        // local edit cache or whether the doctor has started the visit note.
+        if (isVisitEnded(visitUUID)) {
+            return false;
+        }
         boolean hasEditCache =
                 !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid).isEmpty()
                         || !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid).isEmpty()
@@ -1675,8 +1696,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //mBinding.btnGenerateBill.setVisibility(View.GONE);
         }
 
+        // Type of consultation keeps its spinner but becomes non-editable (disabled) once the visit
+        // has been created/sent; it stays editable while the visit is still being created.
+        mBinding.typeOfConsultationSpinner.setEnabled(!isVisitSpecialityExists);
 
-        // todo: speciality code comes in upload btn as well so add that too....later...
+        // A visit is considered created/sent once it has a speciality: disable the Send Visit button
+        // so it cannot be sent again, and keep it enabled while the visit is still being created.
+        setSendVisitButtonEnabled(!isVisitSpecialityExists);
+
         // speciality data - end
 
         if (visitUuid != null) {
@@ -2460,6 +2487,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String consultationType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CONSULTATION_TYPE);
         if (!TextUtils.isEmpty(consultationType)) {
             mBinding.vdConsultationTypeValue.setText(" " + Node.bullet + "  " + consultationType);
+            // Pre-fill the editable spinner with the stored consultation type so the current value is
+            // shown when the visit is opened for editing.
+            selectedConsultationType = consultationType;
+            SpinnerAdapter adapter = mBinding.typeOfConsultationSpinner.getAdapter();
+            if (adapter != null) {
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    if (consultationType.equalsIgnoreCase(String.valueOf(adapter.getItem(i)))) {
+                        mBinding.typeOfConsultationSpinner.setSelection(i);
+                        break;
+                    }
+                }
+            }
         } else {
             mBinding.vdConsultationTypeValue.setText(getString(R.string.no_data_found));
         }
@@ -3605,6 +3644,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             // ie. visit is uploded successfully.
                             Drawable drawable = ContextCompat.getDrawable(VisitSummaryActivity_New.this, R.drawable.dialog_visit_sent_success_icon);
                             setAppointmentButtonStatus();
+                            // Visit created successfully - disable Send Visit so it cannot be sent again.
+                            setSendVisitButtonEnabled(false);
                             visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
 
                             /*AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_upload),
@@ -3622,6 +3663,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
                             }
+                            // Visit just created/sent: make the type-of-consultation spinner non-editable.
+                            mBinding.typeOfConsultationSpinner.setEnabled(!isVisitSpecialityExists);
                             // Send Visit has just uploaded the documents attached during creation, so
                             // they are now existing/uploaded and must become non-deletable - clear the
                             // session set before fetchingIntent() re-applies the docs edit mode.
@@ -3669,6 +3712,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             btnAppointment.setEnabled(false);
         }
 
+    }
+
+    /**
+     * Enables or disables the Send Visit button, with a matching background so the disabled state is
+     * visible. Disabled once the visit has been created/sent (see the isVisitSpecialityExists checks
+     * and the send-success handler) so the same visit cannot be sent twice.
+     */
+    private void setSendVisitButtonEnabled(boolean enabled) {
+        if (uploadButton == null) return;
+        uploadButton.setEnabled(enabled);
+        uploadButton.setClickable(enabled);
+        uploadButton.setBackground(getDrawable(enabled
+                ? R.drawable.ui2_common_primary_bg
+                : R.drawable.ui2_bg_disabled_time_slot));
     }
 
     private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle, String neutral) {
