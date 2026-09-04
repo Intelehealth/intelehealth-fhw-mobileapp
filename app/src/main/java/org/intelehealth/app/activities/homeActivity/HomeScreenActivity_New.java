@@ -76,7 +76,6 @@ import androidx.work.WorkManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
@@ -104,7 +103,6 @@ import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.profile.MyProfileActivity;
-import org.intelehealth.app.reactnative.PatientQueueFragment;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
@@ -153,12 +151,8 @@ import io.reactivex.schedulers.Schedulers;
 import kotlin.Unit;
 import okhttp3.ResponseBody;
 
-public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface, DefaultHardwareBackBtnHandler {
-
+public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = "HomeScreenActivity";
-    // When set true on the launching Intent, the Queue tab is auto-selected once
-    // the home screen is ready (e.g. from the "View Queue" visit-submitted popup).
-    public static final String EXTRA_OPEN_QUEUE = "open_queue";
     private PreferenceHelper preferenceHelper;
     ImageView imageViewIsInternet, ivHamburger, imageview_notifications_home;
     private boolean isConnected = false;
@@ -179,7 +173,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     int i = 5;
     Context context;
     TextView tvTitleHomeScreenCommon, tvAppLastSync;
-    LinearLayout llAutoUpdate;
     BottomNavigationView bottomNav;
     private CardView survey_snackbar_cv;
     ImageView imageViewIsNotification, ivCloseDrawer, ivProfileIcon, ivNotificationIcon;
@@ -197,7 +190,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private static final String TAG_HOME = "TAG_HOME";
     private static final String TAG_ACHIEVEMENT = "TAG_ACHIEVEMENT";
     private static final String TAG_HELP = "TAG_HELP";
-    private static final String TAG_QUEUE = PatientQueueFragment.TAG;
     private NotificationReceiver notificationReceiver;
 
     private ActivityResultLauncher<Intent> scheduleExactAlarmPermissionLauncher;
@@ -213,10 +205,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         CustomLog.v(TAG, "onNewIntent");
-        // Adopt the new intent so onResume() can honour EXTRA_OPEN_QUEUE (e.g.
-        // "View Queue" from the visit-submitted popup) when this activity is
-        // already running.
-        setIntent(intent);
 //        catchFCMMessageData();
     }
 
@@ -411,23 +399,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
         loadFeatureActiveStatus();
         initializeAbdmManager();
-        preWarmReactNative();
-    }
-
-    /**
-     * Kick off React Native runtime initialization (JS bundle load + runtime/bridge
-     * startup) as soon as the home screen is up, instead of paying that one-time
-     * cost synchronously on first navigation to an RN screen. Without this, tapping
-     * the Queue tab was slow because {@link org.intelehealth.app.reactnative.PatientQueueFragment}'s
-     * ReactFragment triggered a cold RN start. start() is idempotent, so the later
-     * ReactFragment mount just reuses this already-warming host.
-     */
-    private void preWarmReactNative() {
-        try {
-            IntelehealthApplication.getInstance().getReactHost().start();
-        } catch (Exception e) {
-            CustomLog.e(TAG, "React Native pre-warm failed: " + e.getMessage());
-        }
     }
 
     private void initializeAbdmManager() {
@@ -739,7 +710,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         toolbarHome = findViewById(R.id.toolbar_home);
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
         tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
-        llAutoUpdate = toolbarHome.findViewById(R.id.layout_autoupdate);
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
         ivNotificationIcon = toolbarHome.findViewById(R.id.ivNotificationIcon);
@@ -803,11 +773,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        // QMS on → Queue tab; QMS off → Help tab (they share a slot).
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, true);
-        boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
         //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
         setLocale(HomeScreenActivity_New.this);
@@ -1144,7 +1109,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
             tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tvAppLastSync.setVisibility(View.GONE);
-            llAutoUpdate.setVisibility(View.GONE);
             ivHamburger.setVisibility(View.GONE);
             imageViewIsInternet.setVisibility(View.VISIBLE);
             imageViewIsNotification.setVisibility(View.GONE);
@@ -1225,14 +1189,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
         checkAppVer();  //auto-update feature.
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        // "View Queue" from the visit-submitted popup: open the Queue tab. Done
-        // last (after loadLastSelectedFragment reset the nav to Home) so it wins,
-        // and posted so it runs after the pending fragment transaction.
-        if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_OPEN_QUEUE, false)
-                && preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false)) {
-            getIntent().removeExtra(EXTRA_OPEN_QUEUE);
-            bottomNav.post(() -> bottomNav.setSelectedItemId(R.id.bottom_nav_queue));
-        }
         super.onResume();
     }
 
@@ -1491,7 +1447,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     CustomLog.d(TAG, "onNavigationItemSelected: bottom_nav_home_menu");
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.title_home_screen));
                     fragment = new HomeFragment_New();
-                    llAutoUpdate.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.VISIBLE);
                     loadFragment(fragment, TAG_HOME);
                     setupNotificationDotVisibility();
@@ -1500,7 +1455,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
-                    llAutoUpdate.setVisibility(View.GONE);
                     ivHamburger.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
@@ -1513,7 +1467,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help_center));
                     tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                     tvAppLastSync.setVisibility(View.GONE);
-                    llAutoUpdate.setVisibility(View.GONE);
                     imageViewIsInternet.setVisibility(View.VISIBLE);
                     imageViewIsNotification.setVisibility(View.GONE);
                     ivNotificationIcon.setVisibility(View.GONE);
@@ -1525,18 +1478,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 case R.id.bottom_nav_add_patient:
                     AddPatientUtils.navigate(HomeScreenActivity_New.this);
                     return false;
-                case R.id.bottom_nav_queue:
-                    tvTitleHomeScreenCommon.setText(getResources().getString(R.string.patients_queue));
-                    tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                    tvAppLastSync.setVisibility(View.GONE);
-                    llAutoUpdate.setVisibility(View.VISIBLE);
-                    ivHamburger.setVisibility(View.VISIBLE);
-                    imageViewIsInternet.setVisibility(View.VISIBLE);
-                    imageViewIsNotification.setVisibility(View.GONE);
-                    ivNotificationIcon.setVisibility(View.GONE);
-                    fragment = new PatientQueueFragment();
-                    loadFragment(fragment, TAG_QUEUE);
-                    return true;
             }
 
             return false;
@@ -1726,19 +1667,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             imageViewIsInternet.setVisibility(View.VISIBLE);
             tvTitleHomeScreenCommon.setText(mMyAchievementsTitle);
             tag = TAG_ACHIEVEMENT;
-        } else if (tag.equalsIgnoreCase(TAG_QUEUE)) {
-            bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setChecked(true);
-            tvTitleHomeScreenCommon.setText(getResources().getString(R.string.patients_queue));
-            tvTitleHomeScreenCommon.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-            tvAppLastSync.setVisibility(View.GONE);
-            llAutoUpdate.setVisibility(View.VISIBLE);
-            ivHamburger.setVisibility(View.VISIBLE);
-            imageViewIsInternet.setVisibility(View.VISIBLE);
-            imageViewIsNotification.setVisibility(View.GONE);
-            ivNotificationIcon.setVisibility(View.GONE);
-            tag = TAG_QUEUE;
-            // fragment left null so the existing Queue fragment (and its list
-            // state) is preserved instead of being rebuilt.
         }
         loadFragment(fragment, tag);
 
@@ -1812,11 +1740,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         }
     };
 
-    @Override
-    public void invokeDefaultOnBackPressed() {
-        super.onBackPressed();
-    }
-
 
     public class NotificationReceiver extends BroadcastReceiver {
 
@@ -1846,7 +1769,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
         tvAppLastSync.setText(lastSyncText);
-        llAutoUpdate.setVisibility(View.GONE);
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
         // }).start();

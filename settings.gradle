@@ -1,41 +1,33 @@
+//pluginManagement {
+//    repositories {
+//        gradlePluginPortal()
+//    }
+//}
 pluginManagement {
-    includeBuild("$rootDir/react-native/node_modules/@react-native/gradle-plugin")
 
+    /**
+     * The pluginManagement.repositories block configures the
+     * repositories Gradle uses to search or download the Gradle plugins and
+     * their transitive dependencies. Gradle pre-configures support for remote
+     * repositories such as JCenter, Maven Central, and Ivy. You can also use
+     * local repositories or define your own remote repositories. Here we
+     * define the Gradle Plugin Portal, Google's Maven repository,
+     * and the Maven Central Repository as the repositories Gradle should use to look for its
+     * dependencies.
+     */
 
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
-        gradlePluginPortal()
     }
 }
-
-plugins {
-    id("com.facebook.react.settings")
-}
-
-extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
-    def rnRoot = file("$rootDir/react-native")
-    ex.autolinkLibrariesFromCommand(
-            ["cmd", "/c", "npx", "@react-native-community/cli", "config"],
-            rnRoot,
-            settings.layout.rootDirectory.files(
-                    new File(rnRoot, "yarn.lock"),
-                    new File(rnRoot, "package-lock.json"),
-                    new File(rnRoot, "package.json"),
-                    new File(rnRoot, "react-native.config.js")
-            )
-    )
-}
-
-rootProject.name = "ida-hw-intelehealth-fhw-mobileapp"
-
-includeBuild("$rootDir/react-native/node_modules/@react-native/gradle-plugin")
-
-include(":app")
-include(":ihutils")
-include(":features:ondemand:klivekit")
-include(":fcm")
-include(":config")
-include(":core")
-include(":database")
-include(":features:ondemand:abdm")
+include ':app'
+//include ':webrtc'
+include ':ihutils'
+include ':features:ondemand:klivekit'
+include ':fcm'
+include ':config'
+include ':core'
+include ':database'
+include ':features:ondemand:abdm'
