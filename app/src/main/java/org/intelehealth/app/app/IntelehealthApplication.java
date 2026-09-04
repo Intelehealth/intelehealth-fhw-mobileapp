@@ -15,16 +15,6 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
-import com.facebook.react.PackageList;
-import com.facebook.react.ReactApplication;
-import com.facebook.react.ReactHost;
-import com.facebook.react.ReactNativeHost;
-import com.facebook.react.ReactPackage;
-import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
-import com.facebook.react.defaults.DefaultReactHost;
-import com.facebook.react.defaults.DefaultReactNativeHost;
-import com.facebook.react.soloader.OpenSourceMergedSoMapping;
-import com.facebook.soloader.SoLoader;
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
@@ -34,7 +24,6 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.thermalprinter.BaseEnum;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
-import org.intelehealth.app.reactnative.QueueNavigatorPackage;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
@@ -42,13 +31,9 @@ import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.intelehealth.config.Config;
 import org.intelehealth.klivekit.RtcEngine;
-import org.intelehealth.klivekit.data.PreferenceHelper;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
 import org.intelehealth.klivekit.utils.Manager;
-
-import java.io.IOException;
-import java.util.List;
 
 import dagger.hilt.android.HiltAndroidApp;
 import io.reactivex.plugins.RxJavaPlugins;
@@ -57,39 +42,9 @@ import okhttp3.OkHttpClient;
 
 //Extend Application class with MultiDexApplication for multidex support
 @HiltAndroidApp
-public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver, ReactApplication {
+public class IntelehealthApplication extends MultiDexApplication implements DefaultLifecycleObserver {
 
     private static final String TAG = IntelehealthApplication.class.getSimpleName();
-
-    private final ReactNativeHost reactNativeHost = new DefaultReactNativeHost(this) {
-        @Override
-        public List<ReactPackage> getPackages() {
-            List<ReactPackage> packages = new PackageList(this).getPackages();
-            // Bridge for opening the standalone Queue Details Activity from RN.
-            packages.add(new QueueNavigatorPackage());
-            return packages;
-        }
-
-        @Override
-        public String getJSMainModuleName() {
-            return "index";
-        }
-
-        @Override
-        public boolean getUseDeveloperSupport() {
-            return BuildConfig.DEBUG;
-        }
-
-        @Override
-        protected boolean isNewArchEnabled() {
-            return BuildConfig.IS_NEW_ARCHITECTURE_ENABLED;
-        }
-
-        @Override
-        protected Boolean isHermesEnabled() {
-            return BuildConfig.IS_HERMES_ENABLED;
-        }
-    };
     private static Context mContext;
     private static String androidId;
     private Activity currentActivity;
@@ -111,16 +66,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         return sIntelehealthApplication;
     }
 
-    @Override
-    public ReactNativeHost getReactNativeHost() {
-        return reactNativeHost;
-    }
-
-    @Override
-    public ReactHost getReactHost() {
-        return DefaultReactHost.getDefaultReactHost(getApplicationContext(), reactNativeHost, null);
-    }
-
     public static InteleHealthDatabaseHelper inteleHealthDatabaseHelper;
 //    private RealTimeDataChangedObserver dataChangedObserver;
 
@@ -138,14 +83,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     @Override
     public void onCreate() {
         super.onCreate();
-        try {
-            SoLoader.init(this, OpenSourceMergedSoMapping.INSTANCE);
-        } catch (IOException e) {
-//            throw new RuntimeException(e);
-        }
-        if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-            DefaultNewArchitectureEntryPoint.load();
-        }
         new Config.Builder(BuildConfig.SERVER_URL + ":4004");
         sIntelehealthApplication = this;
         inteleHealthDatabaseHelper = InteleHealthDatabaseHelper.getInstance(sIntelehealthApplication);
@@ -153,11 +90,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         mContext = getApplicationContext();
         sessionManager = new SessionManager(this);
-        // Pre-load the React Native context at startup so the embedded queue
-        // banners (Home + Visit Summary) render immediately instead of taking a
-        // few seconds while the JS bundle loads on first fragment mount. Only
-        // when QMS is configured, since RN surfaces are otherwise never shown.
-        warmUpReactNative();
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();
@@ -196,29 +128,6 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree());
-        }
-    }
-
-    /**
-     * Kicks off React Native context creation in the background so the first RN
-     * surface (the queue status banners) doesn't have to load the JS bundle
-     * on-screen. Idempotent and safe to call once at startup.
-     */
-    private void warmUpReactNative() {
-        try {
-            boolean qmsConfigured = new PreferenceHelper(this)
-                    .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-            if (!qmsConfigured) {
-                return;
-            }
-            if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
-                getReactHost().start();
-            } else {
-                getReactNativeHost().getReactInstanceManager()
-                        .createReactContextInBackground();
-            }
-        } catch (Exception e) {
-            CustomLog.e(TAG, "warmUpReactNative failed: " + e.getMessage());
         }
     }
 

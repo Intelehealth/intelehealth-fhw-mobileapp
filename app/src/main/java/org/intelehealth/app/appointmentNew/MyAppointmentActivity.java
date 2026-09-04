@@ -259,12 +259,12 @@ public class MyAppointmentActivity extends BaseActivity implements UpdateAppoint
                             loadFragmentForBottomNav(fragment);*/
 
                             return true;
-                        /*   case R.id.bottom_nav_help:
-                         tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
+                        case R.id.bottom_nav_help:
+                       /*     tvTitleHomeScreenCommon.setText(getResources().getString(R.string.help));
                             fragment = new HelpFragment_New();
-                            loadFragmentForBottomNav(fragment);
+                            loadFragmentForBottomNav(fragment);*/
 
-                            return true;*/
+                            return true;
                         case R.id.bottom_nav_add_patient:
 
                             return true;

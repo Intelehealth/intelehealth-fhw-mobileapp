@@ -22,7 +22,6 @@ import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
-import org.intelehealth.app.reactnative.PatientData;
 import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -42,10 +41,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.lifecycle.LifecycleObserver;
 
-import com.facebook.react.ReactFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.followuppatients.FollowUpPatientActivity_New;
@@ -75,7 +71,6 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -125,67 +120,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         return context;
     }
 
-    private void addQueueLayout() {
-        ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
-
-        PatientData currentPatient = new PatientData(
-                "Q-104",
-                "Anthony G",
-                "M",
-                50,
-                "ID-987654jK",
-                symptomList,
-                2,
-                8,
-                "https://unsplash.com"
-        );
-
-        // 3. Map your custom data class parameters directly into the Android Bundle payload
-        Bundle initialProperties = new Bundle();
-        initialProperties.putString("queueNumber", currentPatient.getQueueNumber());
-        initialProperties.putString("patientName", currentPatient.getPatientName());
-        initialProperties.putString("gender", currentPatient.getGender());
-        initialProperties.putInt("age", currentPatient.getAge());
-        initialProperties.putString("patientId", currentPatient.getPatientId());
-        initialProperties.putStringArrayList("symptoms", currentPatient.getSymptoms()); // Maps perfectly to a JavaScript Array
-        initialProperties.putInt("position", currentPatient.getPosition());
-        initialProperties.putInt("waitTimeMinutes", currentPatient.getWaitTimeMinutes());
-        initialProperties.putString("avatarUrl", currentPatient.getAvatarUrl());
-
-        // 4. Boot the pipeline layer inside your execution lifecycle hook
-        ReactFragment reactFragment = new ReactFragment.Builder()
-                .setComponentName("QueueCardModule")
-                .setLaunchOptions(initialProperties)
-                .build();
-
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.queue_card_container, reactFragment)
-                .commit();
-    }
-
-    /**
-     * Embeds the shared React Native StatusBanner ("Doctor is on Break") above
-     * the Add Patient card, mirroring {@link #addQueueLayout()}. Content is
-     * passed as launch options so it can later be driven by real queue status.
-     */
-    private void addStatusBannerLayout() {
-        Bundle bannerProps = new Bundle();
-        bannerProps.putString("variant", "alert");
-        bannerProps.putString("title", getString(R.string.doctor_on_break));
-        bannerProps.putString("subtitle", getString(R.string.queue_paused));
-        bannerProps.putString("actionLabel", getString(R.string.view_queue));
-
-        ReactFragment bannerFragment = new ReactFragment.Builder()
-                .setComponentName("StatusBannerModule")
-                .setLaunchOptions(bannerProps)
-                .build();
-
-        getChildFragmentManager()
-                .beginTransaction()
-                .replace(R.id.status_banner_container, bannerFragment)
-                .commit();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -348,14 +282,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         ImageView ivNotification = requireActivity().findViewById(R.id.imageview_notifications_home);
         tvLastSyncApp.setVisibility(View.VISIBLE);
         ivNotification.setVisibility(View.VISIBLE);
-        // "Last sync" and "Auto updating" share the same toolbar slot and are
-        // mutually exclusive. The Queue tab shows "Auto updating"; hide it here
-        // so it doesn't overlap the sync time when returning Home (e.g. back
-        // press from the queue list).
-        View llAutoUpdate = requireActivity().findViewById(R.id.layout_autoupdate);
-        if (llAutoUpdate != null) {
-            llAutoUpdate.setVisibility(View.GONE);
-        }
         BottomNavigationView bottomNav = requireActivity().findViewById(R.id.bottom_nav_home);
         bottomNav.setVisibility(View.VISIBLE);
         ivInternet = requireActivity().findViewById(R.id.imageview_is_internet);
@@ -488,19 +414,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         addpatient_cardview = view.findViewById(R.id.addpatient_cardview);
         textlayout_find_patient = view.findViewById(R.id.textlayout_find_patient);
 
-        // QMS (Queue Management System) gate: only show the home status banner
-        // and the "Next In Queue" card when QMS is configured. When off, collapse
-        // both containers so the layout falls back to the standard home screen.
-        boolean isQmsConfigured = new PreferenceHelper(requireContext())
-                .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-        if (isQmsConfigured) {
-            addStatusBannerLayout();
-            addQueueLayout();
-        } else {
-            hideContainer(R.id.status_banner_container);
-            hideContainer(R.id.queue_card_container);
-        }
-
         textlayout_find_patient.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), SearchPatientActivity_New.class);
             startActivity(intent);
@@ -514,51 +427,6 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         addpatient_cardview.setOnClickListener(v -> {
             AddPatientUtils.navigate(requireActivity());
         });
-
-        applyResponsiveCardHeights();
-    }
-
-    /**
-     * The home cards used to be sized as a percentage of screen height inside a
-     * non-scrolling (match_parent) container, which left no room for the "next in queue"
-     * card and caused the layout to break when it was shown. The container is now
-     * content-driven (wrap_content) so the screen can scroll once the queue card appears.
-     * To keep the cards at the exact same visual size as before — without hardcoding a dp
-     * height — we reapply those same fractions of the available viewport height at runtime.
-     */
-    private void applyResponsiveCardHeights() {
-        if (view == null) return;
-        view.post(() -> {
-            if (!isAdded() || view == null) return;
-            int available = view.getHeight();
-            if (textlayout_find_patient != null) {
-                available -= textlayout_find_patient.getHeight();
-            }
-            if (available <= 0) return;
-            setViewHeight(R.id.addpatient_cardview, Math.round(available * 0.13f));
-            setViewHeight(R.id.card_prescription, Math.round(available * 0.25f));
-            setViewHeight(R.id.closedVisitsCardView, Math.round(available * 0.25f));
-        });
-    }
-
-    /** Collapse a home card container (used when QMS is disabled). */
-    private void hideContainer(int viewId) {
-        if (view == null) return;
-        View target = view.findViewById(viewId);
-        if (target != null) {
-            target.setVisibility(View.GONE);
-        }
-    }
-
-    private void setViewHeight(int viewId, int heightPx) {
-        if (view == null) return;
-        View target = view.findViewById(viewId);
-        if (target == null) return;
-        ViewGroup.LayoutParams params = target.getLayoutParams();
-        if (params != null && params.height != heightPx) {
-            params.height = heightPx;
-            target.setLayoutParams(params);
-        }
     }
 
     @Override
