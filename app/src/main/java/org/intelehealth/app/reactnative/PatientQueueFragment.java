@@ -149,6 +149,18 @@ public class PatientQueueFragment extends Fragment {
         }
         Bundle initialProperties = new Bundle();
         initialProperties.putParcelableArrayList("queue", rows);
+
+        // Seed the status banner from the same persisted "queue_status" FCM
+        // payload that drives the home banner (StatusBannerUpdater), so both
+        // screens show identical queue status. Absent until a notification has
+        // been received; the RN side falls back to the default banner then.
+        android.content.Context ctx = getContext();
+        if (ctx != null) {
+            StatusBannerData banner = StatusBannerUpdater.getPersisted(ctx);
+            if (banner != null) {
+                initialProperties.putBundle("banner", StatusBannerUpdater.toBundle(banner));
+            }
+        }
         return initialProperties;
     }
 
