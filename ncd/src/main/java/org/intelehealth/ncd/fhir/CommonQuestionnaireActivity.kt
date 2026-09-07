@@ -64,57 +64,76 @@ import java.util.Locale
 
 //import org.intelehealth.ncd.fhir.QuestionnaireUtils.checkRequiredWithConditionalsKotlin
 //import androidx.activity.OnBackPressedCallback
-
+/**
+ *  @author Nagen
+ *  @date 2024-08-25
+ *
+ *
+ */
 class CommonQuestionnaireActivity : AppCompatActivity() {
+
     companion object {
+        // Tag for the QuestionnaireFragment
         const val QUESTIONNAIRE_FRAGMENT_TAG = "questionnaire_fragment_tag"
     }
 
     private var latestQuestionnaire: String? = null
 
-    // create the filename & title list
-    // for the questionnaire
+    // NCD protocol file names for the questionnaire
     private val questionnaireFiles =
         listOf(
-            //"Abdominal distention_fhir.json",
             "hypertension_screening.json",
             "anemia_screening.json",
-            //"anemia_followup.json",
             "diabetes_screening.json",
             "hypertension_followup.json",
             "anemia_followup.json"
         )
+
+    // NCD protocol titles for the questionnaire
     private val questionnaireTitles =
         listOf(
-            //"Abdominal distention",
             "Hypertension Screening",
             "Anemia Screening",
-            //"Anemia Followup",
             "Diabetes Screening",
             "Hypertension Followup",
             "Anemia Followup",
         )
 
-
+    // This variable is used to identify the questionnaire type and to determine if the questionnaire is recurring or not.
     private var isRecurring = false // set to true if you want to use recurring questionnaire
 
+    // QuestionnaireFragment builder to create the fragment instance with the questionnaire and launch context.
     var fragmentBuilder: QuestionnaireFragment.Builder? = null
+
+    // Questionnaire title
     var questionnaireTitle: String? = null
+
+    // Questionnaire Json object to hold the questionnaire
     var questionnaireJSONObject: JSONObject? = null
+
+    // Patient details to be used in the launch context for the questionnaire
     var patientName: String? = null
     var patientAge: Float? = 0f
     var patientDOB: String? = null
     var patientGender: String? = null
+
+    // QuestionnaireFragment object to hold the instance of the fragment
     var questionnaireFragment: QuestionnaireFragment? = null
     var bottomNav = null
+
+    // QuestionnaireBottomActionController object to manage the bottom action buttons in the questionnaire fragment
     var bottomActionController: QuestionnaireBottomActionController? = null
+
+    // Fragment root view object to access all the views in the questionnaire fragment
     lateinit var rootView: View
+
+    // List of views track the TextInputEditText coming in UI - But now this is not in used on 1.3.1
     val matchedViews = mutableListOf<View>()
+
+    // App language variable with default value of "en" (English).
+    // This variable can be used to store the current language setting in FHIR questionnaire .
     var appLang: String? = "en"
 
-
-    // change the locale of the activity
-//    override onC
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -122,22 +141,21 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         // Keep screen ON
         window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         // Disable/override back button
-
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
+                // show the confirmation dialog to discard the NCD visit
                 showConfirmDialog()
+                // Hinde the keybaord
                 hideKeyboard()
             }
         })
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         setupSystemBar(toolbar)
-
+        // List of protocol title from string resource - For multilingual support
         val questionnaireTitlesResources = listOf(
-            //"Abdominal distention",
             getString(R.string.questionnaire_title_hypertension_screening),
             getString(R.string.questionnaire_title_anemia_screening),
-            //getString(R.string.questionnaire_title_anemia_followup),
             getString(R.string.questionnaire_title_diabetes_screening),
             getString(R.string.questionnaire_title_hypertension_followup),
             getString(R.string.questionnaire_title_anemia_followup)
@@ -149,7 +167,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         patientGender = intent.getStringExtra("patient_gender")
         appLang = intent.getStringExtra("appLang")
         Log.d("FHIR", "Language appLang: $appLang")
-        //supportActionBar?.title = questionnaireTitle
+        //Set ActionBar title
         supportActionBar?.title =
             questionnaireTitlesResources[questionnaireTitles.indexOf(questionnaireTitle)]
         val temp = patientAge.toString().split(".")
@@ -170,9 +188,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
             }
         }
 
+        // Set Actionbar subtitle
         // patient_name, Gender & Age only year
         supportActionBar?.subtitle = "$patientName | $patientGender | $ageAndMonth"
-        // set text color of subtitle
 
         if (questionnaireTitle.equals(
                 "Hypertension Screening",
@@ -218,6 +236,9 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
     }
 
 
+    /**
+     * Function
+     */
     private fun setupSystemBar(toolbar: Toolbar) {
         val controller =
             WindowInsetsControllerCompat(window, window.decorView)
@@ -916,6 +937,7 @@ class CommonQuestionnaireActivity : AppCompatActivity() {
         return bpReadings
 
     }
+
     //
     private fun resetSubsequentReadings(index: Int) {
         for (i in (index + 1) until bpReadings.size) {

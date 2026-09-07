@@ -345,6 +345,9 @@ object QuestionnaireUtils {
         return Pair(titleEn, titleLocale)
     }
 
+    /**
+     * Generates a summary of the questionnaire response in both English and the specified local language.
+     */
     fun questionnaireResponseToSummaryV3(
         context: Context,
         title: String,
