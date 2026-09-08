@@ -153,16 +153,6 @@
                     tools:text="@string/abdm_error_aadhaar_invalid"
                     tools:visibility="visible" />
 
-                <com.google.android.material.checkbox.MaterialCheckBox
-                    android:id="@+id/cb_terms_and_conditions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/margin_10"
-                    android:text="@string/abdm_label_agree_terms_conditions"
-                    android:textColor="@color/primary_text"
-                    app:buttonTint="@color/brand_primary" />
-
             </LinearLayout>
 
             <!-- Mobile input group -->
@@ -288,6 +278,19 @@
                     tools:visibility="visible" />
 
             </LinearLayout>
+
+            <!-- Consent checkbox: shared across all three identifier methods above, not scoped to
+                 any one of them - required before Send OTP / Search Profiles / Verify can proceed
+                 regardless of which tab is selected. -->
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/cb_terms_and_conditions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/abdm_label_agree_terms_conditions"
+                android:textColor="@color/primary_text"
+                app:buttonTint="@color/brand_primary" />
 
             <!-- OTP entry (shown on EnterOtp) -->
             <com.mukesh.OtpView
