@@ -84,6 +84,7 @@ internal class AbhaVerifyViewModel @Inject constructor(
                 otpError = null,
                 resendSecondsRemaining = 0,
                 resendAttemptsRemaining = AbhaVerifyUiState.MAX_RESEND_ATTEMPTS,
+                isConsentChecked = false,
             )
         }
     }
@@ -114,6 +115,10 @@ internal class AbhaVerifyViewModel @Inject constructor(
     }
 
     private fun startVerification(state: AbhaVerifyUiState) {
+       /* Consent is required before any identifier method proceeds - the checkbox that gates this
+         is shared across all three tabs, not scoped to Aadhaar alone.*/
+        if (!state.isConsentChecked) return
+
         _uiState.update {
             it.copy(
                 resendAttemptsRemaining = AbhaVerifyUiState.MAX_RESEND_ATTEMPTS,
@@ -122,7 +127,6 @@ internal class AbhaVerifyViewModel @Inject constructor(
         }
         when (state.method) {
             AbhaVerifyMethod.Aadhaar -> {
-                if (!state.isConsentChecked) return
                 val error = validateAadhaar(state.aadhaarNumber)
                 if (error != null) {
                     _uiState.update { it.copy(aadhaarError = error) }
