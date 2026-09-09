@@ -1,4 +1,4 @@
-package org.intelehealth.app.models.queue;
+package org.intelehealth.app.models.dto;
 
 import com.google.gson.JsonObject;
 import com.google.gson.annotations.Expose;
@@ -11,7 +11,7 @@ import com.google.gson.annotations.SerializedName;
  * <p>Free-form objects in the payload ({@code vitals}) are kept as
  * {@link JsonObject} because their shape is dynamic ("additionalProp*").
  */
-public class QueueItem {
+public class QueueDTO {
 
     @SerializedName("queueEntryId")
     @Expose
@@ -219,109 +219,5 @@ public class QueueItem {
 
     public double getPriorityScore() {
         return priorityScore;
-    }
-
-    public void setQueueEntryId(long queueEntryId) {
-        this.queueEntryId = queueEntryId;
-    }
-
-    public void setVisitUuid(String visitUuid) {
-        this.visitUuid = visitUuid;
-    }
-
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public void setEmergencyLevel(String emergencyLevel) {
-        this.emergencyLevel = emergencyLevel;
-    }
-
-    public void setCaseType(String caseType) {
-        this.caseType = caseType;
-    }
-
-    public void setEscalated(boolean escalated) {
-        this.escalated = escalated;
-    }
-
-    public void setPosition(int position) {
-        this.position = position;
-    }
-
-    public void setEtaMinutes(int etaMinutes) {
-        this.etaMinutes = etaMinutes;
-    }
-
-    public void setEtaModelUsed(String etaModelUsed) {
-        this.etaModelUsed = etaModelUsed;
-    }
-
-    public void setAssignedDoctorUuid(String assignedDoctorUuid) {
-        this.assignedDoctorUuid = assignedDoctorUuid;
-    }
-
-    public void setQueuedAt(String queuedAt) {
-        this.queuedAt = queuedAt;
-    }
-
-    public void setAssignedAt(String assignedAt) {
-        this.assignedAt = assignedAt;
-    }
-
-    public void setConnectedAt(String connectedAt) {
-        this.connectedAt = connectedAt;
-    }
-
-    public void setCompletedAt(String completedAt) {
-        this.completedAt = completedAt;
-    }
-
-    public void setRequeueCount(int requeueCount) {
-        this.requeueCount = requeueCount;
-    }
-
-    public void setHeartbeatFlagged(boolean heartbeatFlagged) {
-        this.heartbeatFlagged = heartbeatFlagged;
-    }
-
-    public void setHwUserUuid(String hwUserUuid) {
-        this.hwUserUuid = hwUserUuid;
-    }
-
-    public void setPatientUuid(String patientUuid) {
-        this.patientUuid = patientUuid;
-    }
-
-    public void setLocationUuid(String locationUuid) {
-        this.locationUuid = locationUuid;
-    }
-
-    public void setFlagged(boolean flagged) {
-        this.flagged = flagged;
-    }
-
-    public void setEscalatedAt(String escalatedAt) {
-        this.escalatedAt = escalatedAt;
-    }
-
-    public void setChiefComplaint(String chiefComplaint) {
-        this.chiefComplaint = chiefComplaint;
-    }
-
-    public void setVitals(JsonObject vitals) {
-        this.vitals = vitals;
-    }
-
-    public void setWaitedMinutes(int waitedMinutes) {
-        this.waitedMinutes = waitedMinutes;
-    }
-
-    public void setPriorityScore(double priorityScore) {
-        this.priorityScore = priorityScore;
     }
 }

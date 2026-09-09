@@ -1,5 +1,6 @@
 package org.intelehealth.app.reactnative;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -15,15 +16,13 @@ import com.facebook.react.ReactFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.database.dao.PatientsDAO;
-import org.intelehealth.app.database.dao.QueueListDAO;
-import org.intelehealth.app.models.queue.QueueItem;
-import org.intelehealth.app.models.queue.QueueListData;
+import org.intelehealth.app.ui.queue.factory.QueueViewModelFactory;
+import org.intelehealth.app.ui.queue.model.QueueRow;
+import org.intelehealth.app.ui.queue.viewmodel.QueueViewModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Native host for the React Native "Patient's Queue" screen.
@@ -33,12 +32,11 @@ import java.util.Map;
  * ReactHost initialized in IntelehealthApplication. Loaded into the bottom-nav
  * container of HomeScreenActivity_New when the Queue tab is selected.
  *
- * The queue rows come from the queue microservice via
- * {@link QueueListDAO#fetchQueueList}. Because that call is asynchronous, the
- * RN view is only attached once the response arrives (or fails), with the
- * mapped rows supplied as the RN {@code queue} prop. The API row carries only
- * uuids, so patient display fields (name, gender, age, id) are looked up from
- * the local DB by {@code patientUuid}.
+ * The queue rows come from the local DB through {@link QueueViewModel} (backed
+ * by QueueRepository -> QueueDAO), which reads the queue joined with patient
+ * details in a single query. The fragment observes the ViewModel and attaches
+ * the RN view once the rows arrive, mapping each {@link QueueRow} into the RN
+ * {@code queue} prop.
  */
 public class PatientQueueFragment extends Fragment {
 
@@ -46,14 +44,7 @@ public class PatientQueueFragment extends Fragment {
 
     private static final String RN_COMPONENT_NAME = "PatientQueueModule";
 
-    // Queue list request parameters. Kept here until they are made dynamic
-    // (e.g. driven by the tab the user selects on the RN screen).
-    private static final String QUEUE_STATUS = "WAITING";
-    private static final String QUEUE_SORT = "priority";
-    private static final boolean QUEUE_INCLUDE_ETA = true;
-    private static final boolean QUEUE_INCLUDE_SCORE = false;
-    private static final int QUEUE_LIMIT = 50;
-    private static final int QUEUE_OFFSET = 0;
+    private QueueViewModel queueViewModel;
 
     @Nullable
     @Override
@@ -81,42 +72,40 @@ public class PatientQueueFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Only attach once; on re-creation the child FragmentManager restores it.
+        queueViewModel = QueueViewModelFactory.create(this);
+        // The ViewModel reads off the main thread and posts the rows here; the
+        // list survives config changes, so we observe always but load only once.
+        queueViewModel.getQueue().observe(getViewLifecycleOwner(), this::onQueueLoaded);
         if (savedInstanceState == null) {
-            loadQueueAndAttach();
+            queueViewModel.loadQueue();
         }
     }
 
     /**
-     * Fetches the queue from the server, then attaches the RN view seeded with
-     * the mapped rows. On failure the RN view is still attached (with an empty
-     * list) so the screen renders instead of staying blank.
+     * Builds the RN rows from the loaded queue and attaches the RN view. On an
+     * empty list the view is still attached so the screen renders instead of
+     * staying blank. Runs on the main thread (LiveData callback), but does no
+     * DB/IO — just an in-memory map of already-joined rows into prop bundles.
      */
-    private void loadQueueAndAttach() {
-        if (getContext() == null) {
+    private void onQueueLoaded(@Nullable List<QueueRow> rows) {
+        Context ctx = getContext();
+        if (ctx == null) {
             return;
         }
-        QueueListDAO.fetchQueueList(requireContext().getApplicationContext(),
-                QUEUE_STATUS, QUEUE_SORT, QUEUE_INCLUDE_ETA, QUEUE_INCLUDE_SCORE,
-                QUEUE_LIMIT, QUEUE_OFFSET,
-                new QueueListDAO.QueueListCallback() {
-                    @Override
-                    public void onSuccess(@NonNull QueueListData data) {
-                        attachReactFragment(buildQueueProps(data.getItems()));
-                    }
-
-                    @Override
-                    public void onError(String message) {
-                        Log.e(TAG, "queue list load failed: " + message);
-                        attachReactFragment(buildQueueProps(new ArrayList<>()));
-                    }
-                });
+        Context appContext = ctx.getApplicationContext();
+        ArrayList<Bundle> bundles = new ArrayList<>(rows != null ? rows.size() : 0);
+        if (rows != null) {
+            for (QueueRow row : rows) {
+                bundles.add(toRowBundle(appContext, row));
+            }
+        }
+        attachReactFragment(buildQueueProps(appContext, bundles));
     }
 
     /** Commit the RN fragment with the given initial properties. */
     private void attachReactFragment(Bundle initialProperties) {
-        // The callback runs after the network round-trip, so the host may be
-        // gone (user navigated away) or its state already saved — guard both.
+        // The callback runs asynchronously, so the host may be gone (user
+        // navigated away) or its state already saved — guard both.
         if (!isAdded() || isRemoving() || getActivity() == null || getActivity().isFinishing()) {
             return;
         }
@@ -136,17 +125,9 @@ public class PatientQueueFragment extends Fragment {
     }
 
     /**
-     * Maps the API {@link QueueItem}s into the prop shape the RN
-     * {@code QueueListItem} expects, under the "queue" key (an ArrayList of
-     * Bundles). Patient display fields are resolved from the local DB.
+     * Wraps the built RN rows under the "queue" key and seeds the status banner.
      */
-    private Bundle buildQueueProps(@Nullable List<QueueItem> items) {
-        ArrayList<Bundle> rows = new ArrayList<>();
-        if (items != null) {
-            for (QueueItem item : items) {
-                rows.add(toRowBundle(item));
-            }
-        }
+    private Bundle buildQueueProps(@NonNull Context ctx, @NonNull ArrayList<Bundle> rows) {
         Bundle initialProperties = new Bundle();
         initialProperties.putParcelableArrayList("queue", rows);
 
@@ -154,75 +135,63 @@ public class PatientQueueFragment extends Fragment {
         // payload that drives the home banner (StatusBannerUpdater), so both
         // screens show identical queue status. Absent until a notification has
         // been received; the RN side falls back to the default banner then.
-        android.content.Context ctx = getContext();
-        if (ctx != null) {
-            StatusBannerData banner = StatusBannerUpdater.getPersisted(ctx);
-            if (banner != null) {
-                initialProperties.putBundle("banner", StatusBannerUpdater.toBundle(banner));
-            }
+        StatusBannerData banner = StatusBannerUpdater.getPersisted(ctx);
+        if (banner != null) {
+            initialProperties.putBundle("banner", StatusBannerUpdater.toBundle(banner));
         }
         return initialProperties;
     }
 
-    /** One API row -> one RN QueueListItem prop bundle. */
-    private Bundle toRowBundle(QueueItem item) {
-        // Look up patient display fields (name, gender, age, openmrs id) that the
-        // queue API does not carry, keyed by patientUuid — same source the queue
-        // card uses (PatientsDAO#getQueueCardPatientDetails).
-        String openmrsId = "";
-        String patientName = "";
-        String gender = "";
+    /**
+     * One {@link QueueRow} -> one RN QueueListItem prop bundle. Patient display
+     * fields (openmrs id, name, gender, date_of_birth) already come joined on
+     * the row, so there is no separate lookup here.
+     */
+    private Bundle toRowBundle(@NonNull Context ctx, @NonNull QueueRow row) {
+        String openmrsId = orEmpty(row.getOpenmrsId());
+        String patientName = orEmpty(row.getPatientName());
+        String gender = orEmpty(row.getGender());
         int age = 0;
         try {
-            Map<String, String> details =
-                    new PatientsDAO().getQueueCardPatientDetails(item.getPatientUuid());
-            if (details != null && !details.isEmpty()) {
-                openmrsId = orEmpty(details.get("openmrs_id"));
-                patientName = join(details.get("first_name"), details.get("last_name"));
-                gender = orEmpty(details.get("gender"));
-                // Guard the context: this runs in the network callback, by which
-                // point the fragment may have detached.
-                android.content.Context ctx = getContext();
-                if (ctx != null) {
-                    age = DateAndTimeUtils.getAge(details.get("date_of_birth"), ctx);
-                }
-            }
+            age = DateAndTimeUtils.getAge(row.getDateOfBirth(), ctx);
         } catch (Exception e) {
-            Log.e(TAG, "patient lookup failed for " + item.getPatientUuid() + ": " + e.getMessage());
+            Log.e(TAG, "age calc failed: " + e.getMessage());
         }
 
-        Bundle row = new Bundle();
-        row.putString("queueNumber", openmrsId);
-        row.putString("patientName", patientName);
-        row.putString("gender", gender);
-        row.putInt("age", age);
-        row.putString("patientId", openmrsId);
-        row.putStringArrayList("symptoms", parseSymptoms(item.getChiefComplaint()));
-        row.putInt("position", item.getPosition());
-        row.putString("status", mapStatus(item));
+        int position = row.getPosition();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("queueNumber", openmrsId);
+        bundle.putString("patientName", patientName);
+        bundle.putString("gender", gender);
+        bundle.putInt("age", age);
+        bundle.putString("patientId", openmrsId);
+        bundle.putStringArrayList("symptoms", parseSymptoms(row.getChiefComplaint()));
+        bundle.putInt("position", position);
+        bundle.putString("status", mapStatus(position));
         // "onCall" shows elapsed duration (waited), everyone else shows wait ETA.
-        int minutes = isOnCall(item) ? item.getWaitedMinutes() : item.getEtaMinutes();
-        row.putString("time", formatMinutes(minutes));
-        return row;
+        int minutes = isOnCall(position) ? row.getWaitedMinutes() : row.getEtaMinutes();
+        bundle.putString("time", formatMinutes(minutes));
+        return bundle;
     }
 
     /**
-     * Maps the queue row to the RN status union ('onCall' | 'nextInQueue' |
+     * Maps the queue position to the RN status union ('onCall' | 'nextInQueue' |
      * 'waiting'). Derived from queue position as a placeholder until the server
      * status enum is finalised.
      */
-    private String mapStatus(QueueItem item) {
-        if (isOnCall(item)) {
+    private String mapStatus(int position) {
+        if (isOnCall(position)) {
             return "onCall";
         }
-        if (item.getPosition() == 2) {
+        if (position == 2) {
             return "nextInQueue";
         }
         return "waiting";
     }
 
-    private boolean isOnCall(QueueItem item) {
-        return item.getPosition() <= 1;
+    private boolean isOnCall(int position) {
+        return position <= 1;
     }
 
     /** Split the chief-complaint string into symptom tags. */
@@ -244,10 +213,6 @@ public class PatientQueueFragment extends Fragment {
     private String formatMinutes(int minutes) {
         int safe = Math.max(0, minutes);
         return String.format(java.util.Locale.ENGLISH, "%02d:00", safe);
-    }
-
-    private String join(@Nullable String first, @Nullable String last) {
-        return (orEmpty(first) + " " + orEmpty(last)).trim();
     }
 
     private String orEmpty(@Nullable String value) {

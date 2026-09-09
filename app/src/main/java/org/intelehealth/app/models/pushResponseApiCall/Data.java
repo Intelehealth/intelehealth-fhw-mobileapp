@@ -4,6 +4,8 @@ package org.intelehealth.app.models.pushResponseApiCall;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import org.intelehealth.app.models.queue.QueueItem;
+
 import java.util.List;
 
 public class Data {
@@ -15,6 +17,10 @@ public class Data {
     @SerializedName("patientlist")
     @Expose
     private List<Patientlist> patientlist = null;
+
+    @SerializedName("queuelist")
+    @Expose
+    private List<QueueItem> queuelist = null;
 
     @SerializedName("visitlist")
     @Expose
@@ -78,5 +84,13 @@ public class Data {
 
     public void setAppointmentList(List<AppointmentList> appointmentList) {
         this.appointmentList = appointmentList;
+    }
+
+    public List<QueueItem> getQueuelist() {
+        return queuelist;
+    }
+
+    public void setQueuelist(List<QueueItem> queuelist) {
+        this.queuelist = queuelist;
     }
 }

@@ -27,7 +27,6 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -90,6 +89,7 @@ public class SyncDAO {
         ProviderAttributeLIstDAO providerAttributeLIstDAO = new ProviderAttributeLIstDAO();
         PatientAttributesMasterDaoNew patientAttributesMasterDaoNew = new PatientAttributesMasterDaoNew();
         PatientAttributesDaoNew patientAttributesDaoNew = new PatientAttributesDaoNew();
+        QueueDAO queueDAO = new QueueDAO();
         try {
             Logger.logD(TAG, "pull sync started");
             //saveConfig(responseDTO.getData().getConfigResponse());
@@ -120,6 +120,9 @@ public class SyncDAO {
 
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
             Logger.logD(TAG, "insertProviders = " + responseDTO.getData().getProviderlist().size());
+
+            queueDAO.insertQueue(responseDTO.getData().getQueuelist());
+            Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
 
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());

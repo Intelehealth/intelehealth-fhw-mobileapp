@@ -82,11 +82,6 @@ public interface ApiInterface {
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url,
                                         @Header("Authorization") String authHeader);
 
-    // Queue microservice: /api/queue/list?status=&sort=&includeEta=&includeScore=&limit=&offset=
-    @GET
-    Call<QueueListResponse> QUEUE_LIST_CALL(@Url String url,
-                                            @Header("Authorization") String authHeader);
-
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
                                                   @Header("Authorization") String authHeader);
