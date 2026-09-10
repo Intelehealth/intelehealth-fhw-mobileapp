@@ -1611,7 +1611,7 @@ public class Node implements Serializable {
         }
     }
 
- /*   public String findDisplay() {
+    /*public String findDisplay() {
 
         SessionManager sessionManager = null;
         sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -1773,8 +1773,8 @@ public class Node implements Serializable {
                 }
             }
         }
-    }
-*/
+    }*/
+
 
     // Find display for ondemand language support. If the display for the locale is not present, it defaults to English text or display.
     public String findDisplay(String locale){
@@ -1944,6 +1944,7 @@ public class Node implements Serializable {
 
         return findDisplay(locale);
     }
+
     public String getPositiveCondition() {
         return positiveCondition;
     }
@@ -3222,7 +3223,7 @@ public class Node implements Serializable {
 
                     Timber.tag(TAG).i("ipt: nested question %s", question);
                     Timber.tag(TAG).i("ipt: nested answer stringsList%s", stringsList);
-                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType);
+                    String temp1 = mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType, locale);
 
                     Timber.tag(TAG).i("ipt: nested answer %s", temp1);
                     temp1 = temp1.replaceAll("<br/>•", ",");
@@ -3256,7 +3257,7 @@ public class Node implements Serializable {
                             || (mOptions.get(i).getText().equalsIgnoreCase("ସମ୍ପର୍କିତ ଲକ୍ଷଣଗୁଡ଼ିକ")) || (mOptions.get(i).getText().equalsIgnoreCase("સંકળાયેલ લક્ષણો")))) {
                 if (!mOptions.get(i).isTerminal()) {
                     stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay(locale) + next_line);
-                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                    stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType,locale));
                 }
 
                 if (mOptions.get(i).getOptionsList().size() > 0) {
@@ -3268,7 +3269,7 @@ public class Node implements Serializable {
 
                             if (!mOptions.get(i).isTerminal()) {
                                 stringsList.add(big_bullet + " " + mOptions.get(i).findDisplay(locale) + next_line);
-                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType));
+                                stringsList.add(mOptions.get(i).formQuestionAnswer(level + 1, isAssociateSymptomsType,locale));
                             }
                         }
                     }
@@ -3327,6 +3328,7 @@ public class Node implements Serializable {
 
         return mLanguage;
     }
+
 
     @Override
     public String toString() {
@@ -3789,7 +3791,13 @@ public class Node implements Serializable {
 
         if (optionsList != null && !optionsList.isEmpty()) {
             ArrayList<Node> selectedNodes = getSelectedNode();
-            if (isRequired() && selectedNodes.isEmpty()) return false;
+            if (isRequired() && selectedNodes.isEmpty()) {
+                // Some options (e.g. "Other") carry both nested sub-options AND their own
+                // direct text/data input. If none of the nested children were selected,
+                // fall back to checking whether the node itself captured an answer
+                // before treating it as unanswered.
+                return isUserInputsTypeNode() && isDataCaptured();
+            }
             for (Node child : selectedNodes) {
                 if (!child.checkIsAnswered()) {
                     isAnswered = false;

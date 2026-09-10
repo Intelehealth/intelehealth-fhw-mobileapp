@@ -120,6 +120,9 @@ class VisitSummaryBillUtils(
             UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID -> {
                 selectedTests.add(mContext.getString(R.string.total_cholestrol))
             }
+            UuidDictionary.DIABETES_HBA1C -> {
+                selectedTests.add(mContext.getString(R.string.diabetes_hba1c))
+            }
 
             else -> {
                 Log.i(TAG, "parseData: $value")
@@ -137,7 +140,8 @@ class VisitSummaryBillUtils(
             mContext.getString(R.string.blood_glucose_random),
             mContext.getString(R.string.uric_acid),
             mContext.getString(R.string.total_cholestrol),
-            mContext.getString(R.string.haemoglobin)
+            mContext.getString(R.string.haemoglobin),
+            mContext.getString(R.string.diabetes_hba1c)
         )
 
         val dialogView = LayoutInflater.from(mContext).inflate(R.layout.confirm_test_dialog, null)
@@ -176,6 +180,7 @@ class VisitSummaryBillUtils(
         if (checkedTests[5]) binding.uricAcidCB.isChecked = true
         if (checkedTests[6]) binding.cholesterolCB.isChecked = true
         if (checkedTests[7]) binding.haemoglobinCB.isChecked = true
+        if (checkedTests[8]) binding.diabetesHba1c.isChecked = true
 
         binding.bpCB.setOnClickListener { view ->
             checkedTests[0] = (view as CompoundButton).isChecked

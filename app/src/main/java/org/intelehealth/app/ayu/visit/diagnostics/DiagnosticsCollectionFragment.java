@@ -133,13 +133,14 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
         mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
 
-        mBinding.etvGlucoseRandom.addTextChangedListener(new MyTextWatcher(mBinding.etvGlucoseRandom));
-        mBinding.etvGlucoseFasting.addTextChangedListener(new MyTextWatcher(mBinding.etvGlucoseFasting));
-        mBinding.etvPostPrandial.addTextChangedListener(new MyTextWatcher(mBinding.etvPostPrandial));
-        mBinding.etvHemoglobin.addTextChangedListener(new MyTextWatcher(mBinding.etvHemoglobin));
-        mBinding.etvUricAcid.addTextChangedListener(new MyTextWatcher(mBinding.etvUricAcid));
-        mBinding.etvCholesterol.addTextChangedListener(new MyTextWatcher(mBinding.etvCholesterol));
-        mBinding.etvDiabetesHba1c.addTextChangedListener(new MyTextWatcher(mBinding.etvDiabetesHba1c));
+        //mBinding.etvNonFastingGlucose.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvNonFastingGlucose));
+        mBinding.etvGlucoseRandom.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvGlucoseRandom));
+        mBinding.etvGlucoseFasting.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvGlucoseFasting));
+        mBinding.etvPostPrandial.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvPostPrandial));
+        mBinding.etvHemoglobin.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvHemoglobin));
+        mBinding.etvUricAcid.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvUricAcid));
+        mBinding.etvCholesterol.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvCholesterol));
+        mBinding.etvDiabetesHba1c.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvDiabetesHba1c));
 
         mBinding.btnSubmit.setOnClickListener(this);
         mBinding.btnCancel.setOnClickListener(this);
@@ -389,37 +390,41 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.llCholestrolContainer.setVisibility(View.GONE);
         mBinding.llDiabetesHba1cContainer.setVisibility(View.GONE);
 
-        for (Diagnostics d : mPatientDiagnosticsList) {
-            CustomLog.v(TAG, d.getName() + "\t" + d.getDiagnosticsKey());
-            switch (d.getDiagnosticsKey()) {
-                case PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR:
-                    mBinding.llGlucoseRandomContainer.setVisibility(View.VISIBLE);
-                    mBinding.llGlucoseRandomContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvGlucoseRandomLbl);    break;
-                case PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR:
-                    mBinding.llGlusoseFastingContainer.setVisibility(View.VISIBLE);
-                    mBinding.llGlusoseFastingContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvGlusoseFastingLbl);   break;
-                case PatientDiagnosticsConfigKeys.POST_PRANDIAL_BLOOD_SUGAR:
-                    mBinding.llPostPrandialContainer.setVisibility(View.VISIBLE);
-                    mBinding.llPostPrandialContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvPostPrandialLbl);     break;
-                case PatientDiagnosticsConfigKeys.HEAMOGLOBIN:
-                    mBinding.llHemoglobinContainer.setVisibility(View.VISIBLE);
-                    mBinding.llHemoglobinContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvHemoglobinLbl);       break;
-                case PatientDiagnosticsConfigKeys.URIC_ACID:
-                    mBinding.llUricAcidContainer.setVisibility(View.VISIBLE);
-                    mBinding.llUricAcidContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvUricAcidLbl);         break;
-                case PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL:
-                    mBinding.llCholestrolContainer.setVisibility(View.VISIBLE);
-                    mBinding.llCholestrolContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvCholestrolLbl);       break;
-                case PatientDiagnosticsConfigKeys.DIABETES_HBA1C:
-                    mBinding.llDiabetesHba1cContainer.setVisibility(View.VISIBLE);
-                    mBinding.llDiabetesHba1cContainer.setTag(d);
-                    appendMandatory(d.isMandatory(), mBinding.tvDiabetesHba1cLabel);  break;
+        for (Diagnostics diagnostics : mPatientDiagnosticsList) {
+            CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
+
+            if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
+                mBinding.llGlucoseRandomContainer.setVisibility(View.VISIBLE);
+                mBinding.llGlucoseRandomContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvGlucoseRandomLbl);
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR)) {
+                mBinding.llGlusoseFastingContainer.setVisibility(View.VISIBLE);
+                mBinding.llGlusoseFastingContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvGlusoseFastingLbl);
+            }/* else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
+                mBinding.llNonFastingContainer.setVisibility(View.VISIBLE);
+                mBinding.llNonFastingContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvNonFastingLbl);
+            }*/ else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.POST_PRANDIAL_BLOOD_SUGAR)) {
+                mBinding.llPostPrandialContainer.setVisibility(View.VISIBLE);
+                mBinding.llPostPrandialContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvPostPrandialLbl);
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.HEAMOGLOBIN)) {
+                mBinding.llHemoglobinContainer.setVisibility(View.VISIBLE);
+                mBinding.llHemoglobinContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvHemoglobinLbl);
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.URIC_ACID)) {
+                mBinding.llUricAcidContainer.setVisibility(View.VISIBLE);
+                mBinding.llUricAcidContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvUricAcidLbl);
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
+                mBinding.llCholestrolContainer.setVisibility(View.VISIBLE);
+                mBinding.llCholestrolContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvCholestrolLbl);
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
+                mBinding.llDiabetesHba1cContainer.setVisibility(View.VISIBLE);
+                mBinding.llDiabetesHba1cContainer.setTag(diagnostics);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvDiabetesHba1cLabel);
             }
         }
     }
@@ -441,6 +446,117 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
     private void setIfNotEmpty(EditText et, String val) {
         if (val != null && !val.isEmpty()) et.setText(val);
+    }
+
+    private boolean isValidForm() {
+        boolean isValid = true;
+
+        // Utility method to validate each field
+        isValid &= validateField(
+                mBinding.etvGlucoseRandom.getText().toString().trim(),
+                (Diagnostics) mBinding.llGlucoseRandomContainer.getTag(),
+                mBinding.tvGlucoseRandomError,
+                mBinding.etvGlucoseRandom,
+                R.string.error_field_required,
+                R.string.glucose_random_error,
+                AppConstants.MINIMUM_GLUCOSE_RANDOM,
+                AppConstants.MAXIMUM_GLUCOSE_RANDOM
+        );
+
+        isValid &= validateField(
+                mBinding.etvGlucoseFasting.getText().toString().trim(),
+                (Diagnostics) mBinding.llGlusoseFastingContainer.getTag(),
+                mBinding.tvGlucoseFastingError,
+                mBinding.etvGlucoseFasting,
+                R.string.error_field_required,
+                R.string.glucose_fasting_error,
+                AppConstants.MINIMUM_GLUCOSE_FASTING,
+                AppConstants.MAXIMUM_GLUCOSE_FASTING
+        );
+
+        isValid &= validateField(
+                mBinding.etvPostPrandial.getText().toString().trim(),
+                (Diagnostics) mBinding.llPostPrandialContainer.getTag(),
+                mBinding.etvPostPrandialError,
+                mBinding.etvPostPrandial,
+                R.string.error_field_required,
+                R.string.post_prandial_error,
+                AppConstants.MINIMUM_GLUCOSE_POST_PRANDIAL,
+                AppConstants.MAXIMUM_GLUCOSE_POST_PRANDIAL
+        );
+
+        isValid &= validateField(
+                mBinding.etvHemoglobin.getText().toString().trim(),
+                (Diagnostics) mBinding.llHemoglobinContainer.getTag(),
+                mBinding.tvHemoglobinError,
+                mBinding.etvHemoglobin,
+                R.string.error_field_required,
+                R.string.hemoglobin_error,
+                AppConstants.MINIMUM_HEMOGLOBIN,
+                AppConstants.MAXIMUM_HEMOGLOBIN
+        );
+
+        isValid &= validateField(
+                mBinding.etvUricAcid.getText().toString().trim(),
+                (Diagnostics) mBinding.llUricAcidContainer.getTag(),
+                mBinding.etvUricAcidError,
+                mBinding.etvUricAcid,
+                R.string.error_field_required,
+                R.string.uric_acid_error,
+                AppConstants.MINIMUM_URIC_ACID,
+                AppConstants.MAXIMUM_URIC_ACID
+        );
+
+        isValid &= validateField(
+                mBinding.etvCholesterol.getText().toString().trim(),
+                (Diagnostics) mBinding.llCholestrolContainer.getTag(),
+                mBinding.etvCholestrolError,
+                mBinding.etvCholesterol,
+                R.string.error_field_required,
+                R.string.cholestrol_acid_error,
+                AppConstants.MINIMUM_TOTAL_CHOLSTEROL,
+                AppConstants.MAXIMUM_TOTAL_CHOLSTEROL
+        );
+        isValid &= validateField(
+                mBinding.etvDiabetesHba1c.getText().toString().trim(),
+                (Diagnostics) mBinding.llDiabetesHba1cContainer.getTag(),
+                mBinding.tvDiabetesHba1cError,
+                mBinding.etvDiabetesHba1c,
+                R.string.error_field_required,
+                R.string.diabeteshba1c_error,
+                AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C,
+                AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C
+        );
+
+        return isValid;
+    }
+
+    private boolean validateField(String value, Diagnostics diagnosticsTag, TextView errorTextView, EditText editText, int mandatoryErrorRes, int rangeErrorRes, String minValue, String maxValue) {
+        if (diagnosticsTag != null && diagnosticsTag.isMandatory() && value.isEmpty()) {
+            errorTextView.setText(getString(mandatoryErrorRes));
+            errorTextView.setVisibility(View.VISIBLE);
+            editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+            return false;
+        }
+
+        if (!value.isEmpty()) {
+            double numericValue = Double.parseDouble(value);
+            double min = Double.parseDouble(minValue);
+            double max = Double.parseDouble(maxValue);
+
+            if (numericValue < min || numericValue > max) {
+                errorTextView.setText(getString(rangeErrorRes, minValue, maxValue));
+                errorTextView.setVisibility(View.VISIBLE);
+                editText.requestFocus();
+                editText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
+                return false;
+            }
+        }
+
+        // Clear any previous errors
+        errorTextView.setVisibility(View.GONE);
+        editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        return true;
     }
 
     private void manageBackButtonVisibility() {
@@ -480,59 +596,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         }
     }
 
-    // ── Validation ────────────────────────────────────────────────────────────
-
-    private boolean isValidForm() {
-        boolean ok = true;
-        ok &= vf(mBinding.etvGlucoseRandom,  mBinding.llGlucoseRandomContainer,
-                mBinding.tvGlucoseRandomError,   R.string.glucose_random_error,
-                AppConstants.MINIMUM_GLUCOSE_RANDOM,    AppConstants.MAXIMUM_GLUCOSE_RANDOM);
-        ok &= vf(mBinding.etvGlucoseFasting, mBinding.llGlusoseFastingContainer,
-                mBinding.tvGlucoseFastingError,  R.string.glucose_fasting_error,
-                AppConstants.MINIMUM_GLUCOSE_FASTING,   AppConstants.MAXIMUM_GLUCOSE_FASTING);
-        ok &= vf(mBinding.etvPostPrandial,   mBinding.llPostPrandialContainer,
-                mBinding.etvPostPrandialError,   R.string.post_prandial_error,
-                AppConstants.MINIMUM_GLUCOSE_POST_PRANDIAL, AppConstants.MAXIMUM_GLUCOSE_POST_PRANDIAL);
-        ok &= vf(mBinding.etvHemoglobin,     mBinding.llHemoglobinContainer,
-                mBinding.tvHemoglobinError,      R.string.hemoglobin_error,
-                AppConstants.MINIMUM_HEMOGLOBIN,        AppConstants.MAXIMUM_HEMOGLOBIN);
-        ok &= vf(mBinding.etvUricAcid,       mBinding.llUricAcidContainer,
-                mBinding.etvUricAcidError,       R.string.uric_acid_error,
-                AppConstants.MINIMUM_URIC_ACID,         AppConstants.MAXIMUM_URIC_ACID);
-        ok &= vf(mBinding.etvCholesterol,    mBinding.llCholestrolContainer,
-                mBinding.etvCholestrolError,     R.string.cholestrol_acid_error,
-                AppConstants.MINIMUM_TOTAL_CHOLSTEROL,  AppConstants.MAXIMUM_TOTAL_CHOLSTEROL);
-        ok &= vf(mBinding.etvDiabetesHba1c,  mBinding.llDiabetesHba1cContainer,
-                mBinding.tvDiabetesHba1cError,   R.string.error_field_required,
-                AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C, AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C);
-        return ok;
-    }
-
-    private boolean vf(EditText et, View container, TextView errView,
-                       int rangeRes, String min, String max) {
-        String value = et.getText().toString().trim();
-        Diagnostics tag = (Diagnostics) container.getTag();
-        if (tag != null && tag.isMandatory() && value.isEmpty()) {
-            errView.setText(getString(R.string.error_field_required));
-            errView.setVisibility(View.VISIBLE);
-            et.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-            return false;
-        }
-        if (!value.isEmpty()) {
-            double v = Double.parseDouble(value);
-            if (v < Double.parseDouble(min) || v > Double.parseDouble(max)) {
-                errView.setText(getString(rangeRes, min, max));
-                errView.setVisibility(View.VISIBLE);
-                et.requestFocus();
-                et.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
-                return false;
-            }
-        }
-        errView.setVisibility(View.GONE);
-        et.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        return true;
-    }
-
     private void setDisabledSubmit(boolean disable) {
         mBinding.btnSubmit.setClickable(!disable);
         mBinding.btnSubmit.setEnabled(!disable);
@@ -567,16 +630,43 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         c.close();
     }
 
-    private void parseData(String concept, String value) {
-        if (value == null || value.isEmpty()) return;
-        switch (concept) {
-            case UuidDictionary.BLOOD_GLUCOSE_RANDOM:        mBinding.etvGlucoseRandom.setText(value); break;
-            case UuidDictionary.BLOOD_GLUCOSE_FASTING:       mBinding.etvGlucoseFasting.setText(value); break;
-            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL: mBinding.etvPostPrandial.setText(value); break;
-            case UuidDictionary.HEMOGLOBIN:                  mBinding.etvHemoglobin.setText(value); break;
-            case UuidDictionary.URIC_ACID:                   mBinding.etvUricAcid.setText(value); break;
-            case UuidDictionary.TOTAL_CHOLESTEROL:           mBinding.etvCholesterol.setText(value); break;
-            case UuidDictionary.DIABETES_HBA1C:              mBinding.etvDiabetesHba1c.setText(value); break;
+    private void parseData(String concept_id, String value) {
+        switch (concept_id) {
+            case UuidDictionary.BLOOD_GLUCOSE_RANDOM:
+                if (value != null && !value.isEmpty())
+                    mBinding.etvGlucoseRandom.setText(value);
+                break;
+            case UuidDictionary.BLOOD_GLUCOSE_FASTING: //Pulse
+                if (value != null && !value.isEmpty())
+                    mBinding.etvGlucoseFasting.setText(value);
+                break;
+           /* case UuidDictionary.BLOOD_GLUCOSE: //Pulse
+                if (value != null && !value.isEmpty())
+                    mBinding.etvNonFastingGlucose.setText(value);
+                break;*/
+            case UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL: //Pulse
+                if (value != null && !value.isEmpty())
+                    mBinding.etvPostPrandial.setText(value);
+                break;
+            case UuidDictionary.HEMOGLOBIN: //Respiratory
+                if (value != null && !value.isEmpty())
+                    mBinding.etvHemoglobin.setText(value);
+                break;
+            case UuidDictionary.URIC_ACID: //Respiratory
+                if (value != null && !value.isEmpty())
+                    mBinding.etvUricAcid.setText(value);
+                break;
+            case UuidDictionary.TOTAL_CHOLESTEROL: //Respiratory
+                if (value != null && !value.isEmpty())
+                    mBinding.etvCholesterol.setText(value);
+                break;
+            case UuidDictionary.DIABETES_HBA1C: //Respiratory
+                if (value != null && !value.isEmpty())
+                    mBinding.etvDiabetesHba1c.setText(value);
+                break;
+            default:
+                break;
+
         }
     }
 
@@ -673,6 +763,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     Log.d(TAG, "HbA1c saved (edit): " + hba1cVal);
                 }
 
+                //making flag to false in the encounter table so it will sync again
                 EncounterDAO enc = new EncounterDAO();
                 try {
                     enc.updateEncounterSync("false", encounterVitals);
@@ -731,7 +822,6 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 } else {
                     Log.w(TAG, "❌ HbA1c insert skipped — hba1cVal is empty");
                 }
-
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
                 Log.e(TAG, "isDataReadyForSaving(insert) outer: " + e.getLocalizedMessage());

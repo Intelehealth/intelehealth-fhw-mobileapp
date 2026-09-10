@@ -5,6 +5,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         tools:context="com.myhexaville.androidwebrtc.com.shivam.androidwebrtc.tutorial.MediaStreamActivity">
 
         <include

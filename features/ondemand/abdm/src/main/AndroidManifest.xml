@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <activity
+            android:name=".presentation.abha_create.AbhaCreateActivity"
+            android:configChanges="uiMode"
+            android:exported="false"
+            android:theme="@style/Theme.Abdm.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".presentation.abha_suggestions.AbhaSuggestionsActivity"
+            android:configChanges="uiMode"
+            android:exported="false"
+            android:theme="@style/Theme.Abdm.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".presentation.abha_verify.AbhaVerifyActivity"
+            android:configChanges="uiMode"
+            android:exported="false"
+            android:theme="@style/Theme.Abdm.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".presentation.abha_verify.AbhaCompareActivity"
+            android:configChanges="uiMode"
+            android:exported="false"
+            android:theme="@style/Theme.Abdm.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+    </application>
+
+</manifest>

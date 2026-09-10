@@ -1,6 +1,7 @@
 package org.intelehealth.app.activities.onboarding
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -8,19 +9,36 @@ import android.os.LocaleList
 import android.view.View
 import android.webkit.WebView
 import android.widget.ImageView
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.IntentCompat
 import androidx.core.view.WindowCompat
+import com.google.firebase.crashlytics.FirebaseCrashlytics
+import org.intelehealth.abdm.presentation.AbdmCardDownloader
+import org.intelehealth.abdm.presentation.AbdmLauncher
+import org.intelehealth.abdm.presentation.abha_choice.AbhaChoiceDialogFragment
+import org.intelehealth.abdm.result.AbdmOutcomes
+import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
+import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ConfigUtils
+import org.intelehealth.app.utilities.ConsentUtils
+import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.WebViewStatus
+import org.intelehealth.app.utilities.exception.DAOException
 import java.util.Locale
+import java.util.UUID
 
 
 class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
@@ -30,6 +48,18 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
     private val context: Context = this
     private var sessionManager: SessionManager? = null
     private var loadingDialog: AlertDialog? = null
+
+    /**
+     * NAS-1752 - the Patient_Consent value, built the moment Accept is tapped. No patient row
+     * exists yet at that point (registration runs afterwards, possibly via the ABHA flow), so
+     * this is carried forward to PatientRegistrationActivity instead of being written here.
+     */
+    private var patientConsentValue: String? = null
+
+    private val abhaResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            handleAbhaResult(result)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +84,8 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
         )
 
         ivBack?.setOnClickListener { v: View? -> finish() }
+
+        registerAbhaChoiceListener()
 
         Thread {
             var text: String?
@@ -91,9 +123,12 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 //                IdentificationActivity_New::class.java
 //            )
 //        )
-        PatientRegistrationActivity.startPatientRegistration(this)
-        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-        finish()
+        // NAS-1752: this tap IS the "Patient_Consent given" moment, recorded now even though it
+        // can only be written to the DB later, once a patient uuid exists.
+        patientConsentValue = ConsentUtils.buildConsentValue(
+            sessionManager?.providerID, sessionManager?.appLanguage
+        )
+        offerAbhaThenRegister()
 
 //        startRosterQuestionnaire(
 //            this,
@@ -109,6 +144,134 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
               RosterQuestionnaireStage.GENERAL_ROSTER
           )*/
 
+    }
+
+    /**
+     * Registered in onCreate rather than at click time so the choice survives a configuration
+     * change while the dialog is open.
+     */
+    private fun registerAbhaChoiceListener() {
+        AbhaChoiceDialogFragment.setResultListener(supportFragmentManager, this) { choice ->
+            when (choice) {
+                AbhaChoiceDialogFragment.Choice.VERIFY_ABHA ->
+                    AbdmLauncher.startVerifyAbha(this, abhaResultLauncher)
+
+                AbhaChoiceDialogFragment.Choice.CREATE_ABHA ->
+                    AbdmLauncher.startCreateAbha(this, abhaResultLauncher)
+
+                AbhaChoiceDialogFragment.Choice.CONTINUE_WITHOUT_ABHA -> continueWithoutAbha()
+            }
+        }
+    }
+
+    private fun offerAbhaThenRegister() {
+        AbhaChoiceDialogFragment.show(supportFragmentManager)
+    }
+
+    private fun continueWithoutAbha() {
+        PatientRegistrationActivity.startPatientRegistration(
+            this, patientConsentValue = patientConsentValue
+        )
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        finish()
+    }
+
+    /**
+     * A cancelled ABHA flow deliberately leaves this screen up so the user can pick again, rather
+     * than dropping them into registration they did not ask for.
+     *
+     * The ABHA card is fetched here rather than at the end of registration. It needs only the xToken,
+     * scope and ABHA number from this result — never the saved patient — and the cache file is keyed on
+     * the ABHA number alone. Doing it here spends the one-shot token while it is freshest and keeps the
+     * download independent of how far the user gets through registration, or whether they abandon it.
+     */
+    private fun handleAbhaResult(result: ActivityResult) {
+        val data = result.data
+        if (result.resultCode != RESULT_OK || data == null) return
+        data.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        val abdmResult = IntentCompat.getParcelableExtra(
+            data, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
+        ) ?: return
+
+        AbdmCardDownloader.downloadInBackground(
+            this, abdmResult.xToken, abdmResult.cardScope, abdmResult.profile?.abhaNumber
+        )
+
+        // NAS-1752: recorded now, at the moment the ABHA create/verify flow (which required its
+        // own consent checkbox before it would send an OTP) actually completed.
+        val abdmConsentValue = ConsentUtils.buildConsentValue(
+            sessionManager?.providerID, sessionManager?.appLanguage
+        )
+
+        if (abdmResult.outcome ==
+            AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON
+        ) {
+            // The ABHA matched a patient this device already has locally - write both consent
+            // attributes directly against that existing row rather than threading them through
+            // registration (this HW did just accept personal-data processing for this patient
+            // in this same interaction, so Patient_Consent is written here too, not skipped).
+            abdmResult.uuid?.takeIf { it.isNotBlank() }
+                ?.let { recordConsentForExistingPatient(it, patientConsentValue, abdmConsentValue) }
+            Intent(this, PatientDetailActivity2::class.java).apply {
+                putExtra("patientUuid", abdmResult.uuid)
+                putExtra("tag", "newPatient")
+            }.also { startActivity(it) }
+        } else if (!abdmResult.uuid.isNullOrBlank()) {
+            // Registration below opens in edit mode against this existing uuid (see
+            // startPatientRegistrationFromAbha's doc comment) and never runs generatePatientId,
+            // so the same direct write used above is needed here too.
+            recordConsentForExistingPatient(abdmResult.uuid!!, patientConsentValue, abdmConsentValue)
+            PatientRegistrationActivity.startPatientRegistrationFromAbha(this, abdmResult)
+        } else {
+            // Genuinely new patient - no row exists yet anywhere. Defer both values to
+            // patient-creation time, same as the no-ABHA path.
+            PatientRegistrationActivity.startPatientRegistrationFromAbha(
+                this, abdmResult,
+                patientConsentValue = patientConsentValue,
+                abdmConsentValue = abdmConsentValue
+            )
+        }
+
+        setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
+        finish()
+    }
+
+    /**
+     * NAS-1752 - writes Patient_Consent / ABDM_Consent directly for a patient that already has a
+     * local row, since PatientRepository#createPatientAttributes (the deferred path used for a
+     * brand-new patient) never runs for these two cases. tbl_patient_attribute has a
+     * UNIQUE(patientuuid, person_attribute_type_uuid) constraint, so re-recording consent for the
+     * same patient replaces the previous row rather than duplicating it.
+     */
+    private fun recordConsentForExistingPatient(
+        patientUuid: String, patientConsentValue: String?, abdmConsentValue: String
+    ) {
+        try {
+            val attributes = arrayListOf<PatientAttributesDTO>().apply {
+                patientConsentValue?.let {
+                    add(PatientAttributesDTO().apply {
+                        uuid = UUID.randomUUID().toString()
+                        this.patientuuid = patientUuid
+                        personAttributeTypeUuid = UuidDictionary.PATIENT_CONSENT
+                        value = it
+                    })
+                }
+                add(PatientAttributesDTO().apply {
+                    uuid = UUID.randomUUID().toString()
+                    this.patientuuid = patientUuid
+                    personAttributeTypeUuid = UuidDictionary.ABDM_CONSENT
+                    value = abdmConsentValue
+                })
+            }
+            PatientsDAO().insertPatientAttributes(attributes)
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d(
+                "NAS1752", "consent stored for existing patient - patientUuid=$patientUuid " +
+                        "patientConsent=$patientConsentValue abdmConsent=$abdmConsentValue"
+            )
+        } catch (e: DAOException) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+        }
     }
 
     override fun attachBaseContext(newBase: Context) {

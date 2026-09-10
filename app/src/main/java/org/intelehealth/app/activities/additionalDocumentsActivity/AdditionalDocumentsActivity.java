@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -189,7 +190,16 @@ public class AdditionalDocumentsActivity extends BaseActivity implements Adapter
                     cameraActivityResult.launch(cameraIntent);
 
                 } else if (item == 1) {
-                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    galleryActivityResult.launch(intent);*/
+                    Intent intent;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+                        intent.setType("image/*");
+                    } else {
+                        intent = new Intent(Intent.ACTION_PICK);
+                        intent.setType("image/*");
+                    }
                     galleryActivityResult.launch(intent);
                 } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();

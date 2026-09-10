@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Module-owned activity theme. Self-contained so :abdm can be dropped into any host. -->
+    <style name="Theme.Abdm.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorPrimaryVariant">@color/brand_primary_dark</item>
+        <item name="android:windowBackground">@color/white</item>
+    </style>
+
+    <!-- Theme applied to the entry-point dialog so its Material widgets render regardless of host theme. -->
+    <style name="Theme.Abdm.Dialog" parent="Theme.MaterialComponents.Light.Dialog.Alert">
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="colorSurface">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+
+    <!-- Force alert dialogs to stay white even when the host is in dark mode. -->
+    <style name="ThemeOverlay.Abdm.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="colorSurface">@color/white</item>
+        <item name="android:colorBackground">@color/white</item>
+        <item name="colorOnSurface">@color/text_heading</item>
+        <item name="colorPrimary">@color/brand_primary</item>
+        <item name="android:textColorPrimary">@color/text_heading</item>
+        <item name="android:textColorSecondary">@color/subtitle_color</item>
+    </style>
+
+    <!-- Force bottom-sheet dialogs to a white sheet even when the host is in dark mode. -->
+    <style name="Theme.Abdm.BottomSheet" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Abdm.BottomSheet.Modal</item>
+    </style>
+
+    <style name="Widget.Abdm.BottomSheet.Modal" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/white</item>
+    </style>
+
+    <!-- Applied to text input fields across the ABDM flows. -->
+    <style name="TextAppearance.Abdm.InputField" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/subtitle_color</item>
+    </style>
+
+    <!-- Applied to inline validation error messages. -->
+    <style name="TextAppearance.Abdm.ErrorMessage" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_14</item>
+        <item name="android:textColor">@color/error_red</item>
+    </style>
+
+    <!-- Screen title shown in the in-screen toolbar. -->
+    <style name="TextAppearance.Abdm.Title" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_18</item>
+        <item name="android:textColor">@color/text_heading</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Secondary descriptive text under titles and inputs. -->
+    <style name="TextAppearance.Abdm.Subtitle" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/subtitle_color</item>
+    </style>
+
+    <style name="dialog_title">
+        <item name="android:textSize">@dimen/text_20</item>
+        <item name="android:textColor">@color/text_heading</item>
+    </style>
+
+    <style name="dialog_subtitle">
+        <item name="android:textSize">@dimen/text_16</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+</resources>

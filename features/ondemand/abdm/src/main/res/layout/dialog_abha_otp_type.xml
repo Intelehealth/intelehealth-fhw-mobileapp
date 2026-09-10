@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/margin_20">
+
+    <TextView
+        android:id="@+id/tv_prompt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/abdm_otp_type_prompt"
+        android:textAppearance="@style/TextAppearance.Abdm.Subtitle"
+        android:textColor="@color/text_heading" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_16"
+        android:orientation="horizontal">
+
+        <android.widget.Button
+            android:id="@+id/btn_aadhaar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:layout_weight="1"
+            android:background="@drawable/abdm_bg_tab_selected"
+            android:paddingVertical="@dimen/margin_10"
+            android:text="@string/abdm_otp_type_aadhaar"
+            android:textColor="@color/brand_primary"
+            android:textSize="@dimen/text_14" />
+
+        <android.widget.Button
+            android:id="@+id/btn_mobile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/abdm_bg_tab_unselected"
+            android:paddingVertical="@dimen/margin_10"
+            android:text="@string/abdm_otp_type_mobile"
+            android:textColor="@color/brand_primary"
+            android:textSize="@dimen/text_14" />
+
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_continue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_24"
+        android:text="@string/abdm_action_dialog_continue"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/brand_primary"
+        app:cornerRadius="@dimen/margin_8" />
+
+</LinearLayout>

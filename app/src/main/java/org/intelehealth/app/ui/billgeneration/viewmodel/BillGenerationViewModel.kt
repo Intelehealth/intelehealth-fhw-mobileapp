@@ -136,6 +136,12 @@ class BillGenerationViewModel(application: Application) : AndroidViewModel(appli
             billTestsChargeModel.uricAcidChargesVisible = true
             totalAmount += price
         }
+        if (selectedTests.contains(appContext.getString(R.string.diabetes_hba1c))) {
+            val price = BillRate.DIABETESHBA1C.value
+            billTestsChargeModel.diabeteshba1cChargeAmount = "₹$price/-"
+            billTestsChargeModel.diabeteshba1cChargesVisible = true
+            totalAmount += price
+        }
         if (selectedTests.contains(appContext.getString(R.string.haemoglobin))) {
             val price = BillRate.HEMOGLOBIN.value
             billTestsChargeModel.hemoglobinChargeAmount = "₹$price/-"

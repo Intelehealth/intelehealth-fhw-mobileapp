@@ -52,8 +52,8 @@ android {
         nas {
             dimension client
             applicationId "org.intelehealth.nas"
-            versionCode 48
-            versionName '5.0.3'
+            versionCode 56
+            versionName '5.1.1'
             archivesBaseName = "intelehealth_nas-" + versionName + " - " + date
         }
 
@@ -85,16 +85,19 @@ android {
         dev {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "false"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@sbx"'
         }
 
         staging {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@sbx"'
         }
 
         production {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@abdm"'
         }
     }
 

@@ -170,6 +170,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteVideoTrack.observe(this) { it?.let { it1 -> attachRemoteVideo(it1) } }
         videoCallViewModel.isSpeakingStatus.observe(this) { updateMicrophoneSpeakingStatus(it) }
         videoCallViewModel.remoteConnectionQuality.observe(this) { onConnectivityChanged(it) }
+        videoCallViewModel.localConnectionQuality.observe(this) { onLocalConnectivityChanged(it) }
         videoCallViewModel.screenshareEnabled.observe(this) {}
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
         videoCallViewModel.remoteParticipantDisconnected.observe(this) {
@@ -431,7 +432,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     open fun onConnectivityChanged(it: ConnectionQuality?) {
         Timber.d { "Connectivity => ${it}" }
     }
-
+    open fun onLocalConnectivityChanged(it: ConnectionQuality?) {
+        Timber.d { "Local Connectivity => ${it}" }
+        videoCallViewModel.toggleCameraOnPoorConnection(it)
+    }
     open fun onRemoteParticipantMicChange(isMuted: Boolean) {
         val speakerStatus = if (isMuted) "Muted" else "Unmuted"
         Timber.d { "RemoteParticipant speaker is $speakerStatus" }

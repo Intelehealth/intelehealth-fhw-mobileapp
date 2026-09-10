@@ -5,13 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import org.intelehealth.app.utilities.CustomLog;
 
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.WorkManager;
-
 import com.google.gson.Gson;
 
-import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 import org.intelehealth.app.database.dao.followup_notification.FollowUpNotificationDAO;
 import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.FollowUpNotificationShData;
@@ -29,7 +26,7 @@ public class BootCompleteReceiver extends BroadcastReceiver {
             Logger.logD(TAG, "onrecieve");
             return;
         }
-        WorkManager.getInstance(IntelehealthApplication.getAppContext()).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+        OptimizedSyncWorker.enqueuePeriodicWork(IntelehealthApplication.getAppContext());
 
         //normally alarm manager are not works after reboot
         //handling scheduled alarm after reboot here

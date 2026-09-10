@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="primary_text">#212121</color>
+    <color name="subtitle_color">#575555</color>
+    <color name="hint_color">#B0ADBE</color>
+    <color name="error_red">#FF475D</color>
+    <color name="input_outline">#DDDDDD</color>
+
+    <color name="brand_primary">#2E1E91</color>
+    <color name="brand_primary_dark">#201560</color>
+    <color name="text_heading">#1B163A</color>
+    <color name="text_secondary">#7F7B92</color>
+    <color name="warning_red">#F3665C</color>
+    <color name="otp_item_background">#20CE93D8</color>
+    <color name="grey_button">#EFE8FF</color>
+
+    <!-- Snackbar tones (shared across abdm screens; verbatim from legacy colorSuccess/colorFailure) -->
+    <color name="abdm_snackbar_success">#36C762</color>
+    <color name="abdm_snackbar_error">#FF475D</color>
+</resources>

@@ -30,11 +30,14 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.DialogShareprescBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.UuidDictionary
+import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.models.hwprofile.Profile
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -63,72 +66,72 @@ class ShowPrescriptionDataPdfShareDialog(
     private val scope = CoroutineScope(Dispatchers.Main + job)
     private var visitStartDate = ""
     private var hwMobileNumber = ""
-     fun sharePrescriptionInPdf() {
-         val sessionManager = SessionManager(activity)
-         hwMobileNumber= sessionManager.healthWorkerNumber
-         val binding = DialogShareprescBinding.inflate(LayoutInflater.from(activity))
-         val dialogView = binding.root
-         if (hasPrescription) {
-             var isHWNumberAvailable =false
-             var title =""
-             var body =""
-             if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
-                 isHWNumberAvailable = true
-                 title = activity.resources.getString(R.string.pdf_share_flow_title)
-                 body = activity.resources.getString(R.string.pdf_share_flow_msg, hwMobileNumber)
-             }else{
-                 title = activity.resources.getString(R.string.pdf_share_flow_title)
-                 body = activity.resources.getString(R.string.enter_mobile_number_in_profile)
-             }
-             DialogUtils.showPrescriptionPDFShareDialog(activity, ContextCompat.getDrawable(activity, R.drawable.close_patient_svg), title, body,
-                 activity.resources.getString(R.string.ok),
-                 activity.resources.getString(R.string.cancel), false
-             ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK)
-                 if (isHWNumberAvailable) {
-                     createAndSaveFile()
-                 }
-             }
+    fun sharePrescriptionInPdf() {
+        val sessionManager = SessionManager(activity)
+        hwMobileNumber= sessionManager.healthWorkerNumber
+        val binding = DialogShareprescBinding.inflate(LayoutInflater.from(activity))
+        val dialogView = binding.root
+        if (hasPrescription) {
+            var isHWNumberAvailable =false
+            var title =""
+            var body =""
+            if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
+                isHWNumberAvailable = true
+                title = activity.resources.getString(R.string.pdf_share_flow_title)
+                body = activity.resources.getString(R.string.pdf_share_flow_msg, hwMobileNumber)
+            }else{
+                title = activity.resources.getString(R.string.pdf_share_flow_title)
+                body = activity.resources.getString(R.string.enter_mobile_number_in_profile)
+            }
+            DialogUtils.showPrescriptionPDFShareDialog(activity, ContextCompat.getDrawable(activity, R.drawable.close_patient_svg), title, body,
+                activity.resources.getString(R.string.ok),
+                activity.resources.getString(R.string.cancel), false
+            ) { action -> if (action == CustomDialogListener.POSITIVE_CLICK)
+                if (isHWNumberAvailable) {
+                    createAndSaveFile()
+                }
+            }
+        }
+        /* val editText = binding.editTextMobileno
+         val shareBtn = binding.sharebtn
+         val message = binding.message
+         val errorTextView = binding.errorTextView
+
+         editText.setText(hwMobileNumber)
+         editText.isEnabled = false
+         message.text = activity.getString(R.string.hw_mobile_number)
+         editText.hint = ""
+         if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
+             errorTextView.visibility = View.GONE
+             shareBtn.isEnabled = true
+         } else {
+             errorTextView.visibility = View.VISIBLE
+             shareBtn.isEnabled = false
          }
-            /* val editText = binding.editTextMobileno
-             val shareBtn = binding.sharebtn
-             val message = binding.message
-             val errorTextView = binding.errorTextView
 
-             editText.setText(hwMobileNumber)
-             editText.isEnabled = false
-             message.text = activity.getString(R.string.hw_mobile_number)
-             editText.hint = ""
-             if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
-                 errorTextView.visibility = View.GONE
-                 shareBtn.isEnabled = true
-             } else {
-                 errorTextView.visibility = View.VISIBLE
-                 shareBtn.isEnabled = false
-             }
-
-             val alertDialog = MaterialAlertDialogBuilder(activity)
-                 .setView(dialogView)
-                 .create().apply {
-                     window?.apply {
-                         setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
-                         addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
-                         setLayout(
-                             activity.resources.getDimensionPixelSize(R.dimen.internet_dialog_width),
-                             WindowManager.LayoutParams.WRAP_CONTENT
-                         )
-                     }
+         val alertDialog = MaterialAlertDialogBuilder(activity)
+             .setView(dialogView)
+             .create().apply {
+                 window?.apply {
+                     setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg)
+                     addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND)
+                     setLayout(
+                         activity.resources.getDimensionPixelSize(R.dimen.internet_dialog_width),
+                         WindowManager.LayoutParams.WRAP_CONTENT
+                     )
                  }
-
-             shareBtn.setOnClickListener {
-                 if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
-                     alertDialog.dismiss()
-                     createAndSaveFile()
-                 } else errorTextView.visibility = View.VISIBLE
              }
-             alertDialog.show()
 
-         }*/
-     }
+         shareBtn.setOnClickListener {
+             if (!hwMobileNumber.isNullOrEmpty() && !hwMobileNumber.equals("NA", ignoreCase = true)) {
+                 alertDialog.dismiss()
+                 createAndSaveFile()
+             } else errorTextView.visibility = View.VISIBLE
+         }
+         alertDialog.show()
+
+     }*/
+    }
     private fun createAndSaveFile() {
         scope.launch {
             val visitStartDateDbValue = VisitsDAO().getVisitStartDate(visitUuid)
@@ -236,21 +239,21 @@ class ShowPrescriptionDataPdfShareDialog(
         builder.setPatientDataSections(patientDataSections)
         builder.buildDynamicUI()
         drDetails?.let { builder.createSignatureBitmap(it) }
-       /* drDetails?.let { details ->
-            val font = details.fontOfSign
-            val text = details.textOfSign
-            if (font != null && text != null) {
-                builder.createSignatureBitmap(font, activity, text, details)
-            } else {
-                Log.e("SignatureBitmap", "Font or text is null, skipping signature generation")
-            }
-        }*/
+        /* drDetails?.let { details ->
+             val font = details.fontOfSign
+             val text = details.textOfSign
+             if (font != null && text != null) {
+                 builder.createSignatureBitmap(font, activity, text, details)
+             } else {
+                 Log.e("SignatureBitmap", "Font or text is null, skipping signature generation")
+             }
+         }*/
 
         builder.build(fileName.absolutePath)
         return builder
     }
 
-   private fun formatComplaintsWithBullets(complaintHtml: String): String {
+    private fun formatComplaintsWithBullets(complaintHtml: String): String {
         val regex = Regex("<b>(.*?)</b>")
         val ignoreList = listOf("Associated symptoms")
 
@@ -274,8 +277,18 @@ class ShowPrescriptionDataPdfShareDialog(
         val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${patient.openmrs_id}"
         val visitDateLine = "${activity.getString(R.string.label_visit_date)} $visitStartDate"
 
+        val abhaNumberLine =
+            AbhaPrescriptionFields.line(activity, R.string.label_abha_number, patient.abhaNumber)
+        val abhaAddressLine = AbhaPrescriptionFields.line(
+            activity,
+            R.string.label_abha_address,
+            VisitAttributeListDAO().getVisitAttributesList_specificVisit(
+                visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
+            ),
+        )
+
         // Combine all data into one string
-        return listOf(fullName, ageGender, patientIdLine,visitDateLine)
+        return listOf(fullName, ageGender, patientIdLine, visitDateLine, abhaNumberLine, abhaAddressLine)
             .filter { it.isNotBlank() }
             .joinToString("\n")
     }
@@ -298,12 +311,13 @@ class ShowPrescriptionDataPdfShareDialog(
     private suspend fun getPatientDetails(patientUuid: String): Patient {
         return withContext(Dispatchers.IO) {
             val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
-            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender"), "uuid = ?", arrayOf(patientUuid), null, null, null
+            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender", "abha_number"), "uuid = ?", arrayOf(patientUuid), null, null, null
             )
             cursor.use {
                 if (it.moveToFirst()) {
                     val patient = Patient().apply {
                         openmrs_id = it.getString(it.getColumnIndexOrThrow("openmrs_id"))
+                        abhaNumber = it.getString(it.getColumnIndexOrThrow("abha_number"))
                         first_name = it.getString(it.getColumnIndexOrThrow("first_name"))
                         middle_name = it.getString(it.getColumnIndexOrThrow("middle_name"))
                         last_name = it.getString(it.getColumnIndexOrThrow("last_name"))

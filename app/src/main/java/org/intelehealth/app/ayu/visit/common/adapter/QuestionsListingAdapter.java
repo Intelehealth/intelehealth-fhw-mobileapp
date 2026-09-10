@@ -306,9 +306,10 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                 if (info != null) {
                     String complainLabel = info.getComplainNameByLocale();
                     if (complainLabel == null || complainLabel.isEmpty()) {
-                        complainLabel = info.getComplainName() != null ? info.getComplainName() : "";
+                        genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s", getCount(genericViewHolder.index, mappedIndex), mContext.getString(R.string.of), info.getOptionSize(), mContext.getString(R.string.questions))); //"1 of 10 questions"
+                    } else {
+                        genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s %s", getCount(genericViewHolder.index, mappedIndex), mContext.getString(R.string.of), info.getOptionSize(), complainLabel, mContext.getString(R.string.questions))); //"1 of 10 questions"
                     }
-                    genericViewHolder.tvQuestionCounter.setText(String.format("%d %s %d %s %s", getCount(genericViewHolder.index, mappedIndex), mContext.getString(R.string.of), info.getOptionSize(), complainLabel, mContext.getString(R.string.questions))); //"1 of 10 questions"
                 } else {
                     genericViewHolder.tvQuestionCounter.setText("");
                 }

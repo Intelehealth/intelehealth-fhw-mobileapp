@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
@@ -208,13 +209,44 @@ public class SyncDAO {
     }
 
     public Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context) {
+        boolean sync = false;
 
         try {
             if (!isTheConfigUpdated)
                 loadConfig();
-            SyncData(response.body(), true);
+            sync = SyncData(response.body(), true);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
+        }
+        if (sync) {
+            int nextPageNo = response.body().getData().getPageNo();
+            int totalCount = response.body().getData().getTotalCount();
+            Logger.logD("pulldata", "populatePullSuccessBackground nextPageNo: " + nextPageNo + ", totalCount: " + totalCount);
+            if (nextPageNo != -1) {
+                pullData_Background(context, nextPageNo);
+              //  return null;
+                return "";  // avoid null return
+            } else {
+                //we are not handling
+                //if(!from.equals("pres")){
+                sessionManager.setPullExcutedTime(sessionManager.isPulled());
+                Intent broadcast = new Intent();
+                broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+                context.sendBroadcast(broadcast);
+                //}
+
+                CustomLog.d(TAG, "onResponse: sync : " + sync);
+                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(
+                        sessionManager.getAppLanguage()));
+            }
+        } else {
+            IntelehealthApplication.getAppContext()
+                    .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                            .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                            .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
         }
 
         if (sessionManager.getTriggerNoti().equals("yes")) {
@@ -272,6 +304,9 @@ public class SyncDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
+//                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in
+//                progress..", 1, IntelehealthApplication.getAppContext());
+                Log.d(TAG, "pulldataonResponse: "+new Gson().toJson(response.body()));
                 if (response.body() != null && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
@@ -388,6 +423,15 @@ public class SyncDAO {
     }
 
 
+    /**
+     * this method for syncing data first time with background service
+     * we starting background service here
+     *
+     * @param context
+     * @param fromActivity
+     * @return
+     */
+    // for initial sync
     public boolean pullDataBackgroundService(final Context context, String fromActivity,
                                              int pageNo) {
 
@@ -403,6 +447,9 @@ public class SyncDAO {
         
         Call<ResponseDTO> middleWarePullResponseCall = AppConstants.apiInterface.RESPONSE_DTO_CALL(
                 url, "Basic " + encoded);
+        Log.d(TAG, "pullDataBackgroundService: pullurl : "+url);
+        Log.d(TAG, "pullDataBackgroundService: encoded : "+encoded);
+        Logger.logD("Start pull request", "Started");
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
@@ -539,6 +586,10 @@ public class SyncDAO {
                     .subscribe(new DisposableSingleObserver<PushResponseApiCall>() {
                         @Override
                         public void onSuccess(PushResponseApiCall pushResponseApiCall) {
+                            CustomLog.d(TAG, "onSuccess: in push api response");
+                            Logger.logD(TAG, "success" + pushResponseApiCall);
+                            Log.d("TAG", "push response model onSuccess: "+new Gson().toJson(pushRequestApiCall));
+
                             try {
                                 if (pushResponseApiCall.getData().getPatientlist() != null) {
                                     for (int i = 0; i < pushResponseApiCall.getData().getPatientlist()

@@ -10,7 +10,6 @@ import org.intelehealth.app.ui.patient.config.AddressInfoConfig
 import org.intelehealth.app.ui.patient.config.OtherInfoConfig
 import org.intelehealth.app.ui.patient.config.PersonalInfoConfig
 import org.intelehealth.config.room.entity.PatientRegistrationFields
-import java.lang.StringBuilder
 
 /**
  * Created by Tanvir Hasan on 30-04-2024 : 12-31.
@@ -31,15 +30,11 @@ object PatientRegFieldsUtils {
         var titleStr = titleTv?.text
         titleStr?.let {
             if (it.contains('*')) {
-                titleStr = it.toString().replace("*", "")
+                titleStr = it.toString().replace("*", "").trim()
             }
         }
-        //setting asterisk for mandatory fields
-        if (field.isMandatory) {
-            titleTv?.text = StringBuilder().append(titleStr).append(" *")
-        } else {
-            titleTv?.text = titleStr
-        }
+        //setting asterisk for mandatory fields, colored red
+        titleTv?.text = StringUtils.appendMandatoryAsterisk(titleStr?.toString(), field.isMandatory)
 
         //view updating while edit mode is false
         if (isEditMode && !field.isEditable) {

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="@dimen/margin_20"
+    android:paddingVertical="@dimen/margin_10">
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_heading"
+        android:textSize="@dimen/text_14"
+        android:textStyle="bold"
+        tools:text="First name" />
+
+    <!-- ABHA is always the saved side; both options are display-only (locked). -->
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_8"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_local"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/margin_8"
+            android:buttonTint="@color/brand_primary"
+            android:checked="false"
+            android:enabled="false"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_14"
+            tools:text="John" />
+
+        <RadioButton
+            android:id="@+id/rb_abha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:buttonTint="@color/brand_primary"
+            android:checked="true"
+            android:enabled="false"
+            android:textColor="@color/primary_text"
+            android:textSize="@dimen/text_14"
+            tools:text="Jonathan" />
+
+    </RadioGroup>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_10"
+        android:background="@color/input_outline" />
+
+</LinearLayout>

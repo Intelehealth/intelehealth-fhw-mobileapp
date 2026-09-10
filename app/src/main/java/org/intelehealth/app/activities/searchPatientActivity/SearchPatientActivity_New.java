@@ -39,9 +39,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -97,7 +102,7 @@ public class SearchPatientActivity_New extends BaseActivity {
     LinearLayout addPatientTV;
     String query;
     boolean fullyLoaded = false;
-    RelativeLayout view_nopatientfound;
+    RelativeLayout view_nopatientfound, toolbarRelative;
     public static final String TAG = "SearchPatient_New";
     private SearchRecentSuggestions suggestions;
     private SessionManager sessionManager;
@@ -117,9 +122,24 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    void enableProperPadding(){
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+            toolbarRelative.setPadding(systemBars.left,systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_search_patient_new);
         sessionManager = new SessionManager(this);
         search_recycelview = findViewById(R.id.search_recycelview);
@@ -139,7 +159,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         iconSearch = findViewById(R.id.icon_search);
         iconClear = findViewById(R.id.icon_clear);
 
-
+        toolbarRelative = findViewById(R.id.toolbar_relative);
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -147,6 +167,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
+        enableProperPadding();
         previous_SearchResults();
         queryAllPatients();
 

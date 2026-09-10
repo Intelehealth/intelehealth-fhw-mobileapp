@@ -13,6 +13,7 @@ import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -278,6 +279,14 @@ public class IDAVideoActivity extends CoreVideoCallActivity implements SwipeButt
         binding.videoCallView.statusTv.setVisibility(it == ConnectionQuality.POOR ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void onLocalConnectivityChanged(@org.jetbrains.annotations.Nullable ConnectionQuality it) {
+        super.onLocalConnectivityChanged(it);
+        if(it == ConnectionQuality.POOR){
+            Toast.makeText(this, getString(R.string.poor_quality_msg), Toast.LENGTH_SHORT).show();
+        }
+        getVideoCallViewModel().toggleCameraOnPoorConnection(it);
+    }
     @Override
     public void onRemoteParticipantCameraChange(boolean isHide) {
         super.onRemoteParticipantCameraChange(isHide);

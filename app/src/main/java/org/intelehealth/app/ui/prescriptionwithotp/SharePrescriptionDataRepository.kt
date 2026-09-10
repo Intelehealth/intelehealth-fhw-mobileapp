@@ -13,7 +13,7 @@ import org.intelehealth.app.utilities.UuidDictionary
 class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
     suspend fun getPatientDetails(patientUuid: String): Patient {
         return withContext(Dispatchers.IO) {
-            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender"), "uuid = ?", arrayOf(patientUuid), null, null, null)
+            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender", "abha_number"), "uuid = ?", arrayOf(patientUuid), null, null, null)
             cursor.use {
                 if (it.moveToFirst()) {
                     val patient = Patient().apply {
@@ -26,6 +26,7 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
                         address2 = it.getString(it.getColumnIndexOrThrow("address2"))
                         phone_number = it.getString(it.getColumnIndexOrThrow("phone_number"))
                         gender = it.getString(it.getColumnIndexOrThrow("gender"))
+                        abhaNumber = it.getString(it.getColumnIndexOrThrow("abha_number"))
                     }
                     patient
                 } else {
@@ -172,7 +173,24 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
         }
 
         if (key.isNotEmpty()) {
-            val newValue = cursor.getString(cursor.getColumnIndexOrThrow("value"))
+            val rawValue: String = cursor.getString(cursor.getColumnIndexOrThrow("value"))
+            val newValue: String = when (key) {
+                // Strip a leading "<code>::" or "NA::" prefix (e.g. "115902018::Acute
+                // Gastroenteritis:Primary & Under Evaluation") - the diagnosis concept id
+                // isn't meant to be shown, only the diagnosis text that follows it.
+                // Mirrors the fix in PrescriptionActivity.parseData() (commit 140bb8fbe)
+                // so the WhatsApp preview/PDF path shows the same cleaned value.
+                PrescriptionDetailsDataKeys.Diagnosis.PRIMARY ->
+                    rawValue.replaceFirst(Regex("(?i)^(?:na|\\d+)::\\s*"), "")
+                // When the doctor leaves the follow-up remark blank, the synced value
+                // ends in a literal "Remark: null" - show the same "NA" placeholder
+                // PrescriptionBuilder already uses for the same field, so the End
+                // Visit screen, View/Print, WhatsApp preview and WhatsApp PDF (all of
+                // which read this value) stay consistent instead of showing "null".
+                PrescriptionDetailsDataKeys.FollowUp.DATE ->
+                    rawValue.replace(Regex("(?i)Remark:\\s*(null)?\\s*$"), "Remark: NA")
+                else -> rawValue
+            }
             val existingValue = adultInitialMap[key]
 
             if (existingValue.isNullOrBlank()) {

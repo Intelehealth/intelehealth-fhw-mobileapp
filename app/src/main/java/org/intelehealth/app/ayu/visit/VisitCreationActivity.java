@@ -30,6 +30,7 @@ import android.widget.Toast;
 import androidx.activity.OnBackPressedCallback;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -43,6 +44,7 @@ import com.google.gson.reflect.TypeToken;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.visitSummaryActivity.VisitSummaryActivity_New;
+import org.intelehealth.app.ai.formatter.VisitSummaryAiFormatter;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -68,6 +70,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -81,6 +84,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.ConsentUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -98,6 +102,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -286,6 +292,26 @@ public class VisitCreationActivity extends BaseActivity implements
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
+        // NAS-1752: record Teleconsultation_Consent against this visit. Consent was already
+        // confirmed on the TeleconsultationConsentActivity screen the user just came from -
+        // this is where it is persisted, at the same point VISIT_ABHA_ADDRESS and other visit
+        // attributes are written elsewhere in this app.
+        try {
+            String consentValue = ConsentUtils.buildConsentValue(
+                    sessionManager.getProviderID(), sessionManager.getAppLanguage());
+            new VisitAttributeListDAO().insertVisitAttributes(
+                    visitUuid, consentValue, UuidDictionary.TELECONSULTATION_CONSENT);
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d("NAS1752", "Teleconsultation_Consent stored - visitUuid=" + visitUuid
+                    + " patientUuid=" + patientDTO.getUuid() + " value=" + consentValue);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // visitUuid = String.valueOf(visitLong);
+//                localdb.close();
+        //intent2.putExtra("patientUuid", patientUuid);
+        //intent2.putExtra("visitUuid", uuid);
         encounterVitals = encounterDTO.getUuid();
         mCommonVisitData.setEncounterUuidVitals(encounterVitals);
         encounterAdultIntials = UUID.randomUUID().toString();
@@ -817,6 +843,9 @@ public class VisitCreationActivity extends BaseActivity implements
             case STEP_1_VITAL_SUMMARY:
                 if (object != null) mVitalsObject = (VitalsObject) object;
                 if (mVitalsObject != null) {
+                    // insert json form data into database
+                    insertJsonFormattedVisitSummary();
+                    //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                     mSummaryFrameLayout.setVisibility(View.VISIBLE);
                     mStep1ProgressBar.setProgress(100);
                     getSupportFragmentManager().beginTransaction().replace(R.id.fl_steps_summary, VitalCollectionSummaryFragment.newInstance(mVitalsObject, isEditMode, visitUuid), VITAL_SUMMARY_FRAGMENT).commit();
@@ -891,8 +920,21 @@ public class VisitCreationActivity extends BaseActivity implements
             case STEP_7_VISIT_SUMMARY:
                 onFormSubmitted(STEP_7_VISIT_SUMMARY_FINAL, isEditMode, null); break;
             case STEP_7_VISIT_SUMMARY_FINAL:
+                storeAbhaAddressForVisit();
                 insertLocalEnFormatQAValues();
-                Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class);
+                Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
+//                intent1.putExtra("patientUuid", patientUuid);
+//                intent1.putExtra("visitUuid", visitUuid);
+//                intent1.putExtra("encounterUuidVitals", encounterVitals);
+//                intent1.putExtra("encounterUuidAdultIntial", encounterAdultIntials);
+//                intent1.putExtra("EncounterAdultInitial_LatestVisit", EncounterAdultInitial_LatestVisit);
+//                intent1.putExtra("state", state);
+//                intent1.putExtra("name", patientName);
+//                intent1.putExtra("gender", patientGender);
+//                intent1.putExtra("tag", intentTag);
+//                intent1.putExtra("float_ageYear_Month", float_ageYear_Month);
+//                intent1.putExtra("hasPrescription", "false");
+                // intent1.putStringArrayListExtra("exams", selectedExamsList);
                 mCommonVisitData.setHasPrescription(false);
                 intent1.putExtra("CommonVisitData", mCommonVisitData);
                 startActivity(intent1);
@@ -911,6 +953,37 @@ public class VisitCreationActivity extends BaseActivity implements
                 mSummaryFrameLayout.setVisibility(View.VISIBLE); mStep1ProgressBar.setProgress(100);
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_steps_summary, RecordLungSoundsFragment.newInstance(mCommonVisitData, isEditMode, mVitalsObject, visitUuid), POC_DEVICELIST_FRAGMENT).addToBackStack("LUNG").commit();
                 break;
+        }
+    }
+
+    /**
+     * Snapshots the ABHA address the patient is using onto the visit, so a past visit keeps the
+     * address that was in force when it was created rather than inheriting whichever address is
+     * current later on. Runs at the terminal summary step, which is where the visit is finalised.
+     *
+     * abha_address may be a comma-separated list of every address registered for the patient on our
+     * server; position 0 is the one in use. Upserts because this step can be re-entered.
+     *
+     * Writes nothing when the patient has no ABHA. The column can hold the literal "NA" as well as
+     * being blank, so the guard runs after the list is reduced and treats both as absent — every
+     * reader already hides the label on an empty value, so a placeholder row would carry no meaning.
+     */
+    private void storeAbhaAddressForVisit() {
+        String abhaAddress = new PatientsDAO().getPatientAbhaAddressByUuid(patientUuid);
+        if (abhaAddress == null) return;
+        if (abhaAddress.contains(",")) abhaAddress = abhaAddress.split(",")[0];
+        abhaAddress = abhaAddress.trim();
+        if (abhaAddress.isEmpty() || abhaAddress.equalsIgnoreCase("NA")) return;
+
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+        try {
+            if (visitAttributeListDAO.isAttributeExistForVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS)) {
+                visitAttributeListDAO.updateVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+            } else {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 
@@ -933,27 +1006,49 @@ public class VisitCreationActivity extends BaseActivity implements
     private boolean isSavedPhysicalExam() { return savePhysicalExamData(); }
 
     private boolean isSavedVisitReason() {
+        // load the existing AI summary into en vars before saving the new one
+        //
+        if(mIsEditMode){
+            loadExistingAiSummaryIntoEnVars();
+        }
+
+        // save to cache
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid, new Gson().toJson(mSelectedComplainList));
         sessionManager.setVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid, new Gson().toJson(mChiefComplainRootNodeList));
-        insertion = ""; insertionLocale = ""; insertionLocaleEn = "";
+        //**********
+        insertion = "";
+        insertionLocale = "";
+        insertionLocaleEn = "";
         StringBuilder stringBuilder = new StringBuilder();
         StringBuilder stringBuilderEn = new StringBuilder();
         for (int i = 0; i < mChiefComplainRootNodeList.size(); i++) {
             Node node = mChiefComplainRootNodeList.get(i);
             boolean isAssociateSymptomsType = node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS);
             String val = formatComplainRecord(node, isAssociateSymptomsType);
-            stringBuilder.append(bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType));
-            stringBuilderEn.append(bullet_arrow + node.findDisplay("en") + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType, "en"));
-            if (val == null) return false;
+            CustomLog.v(TAG, "val- " + val);
+            String answerInLocale = bullet_arrow + node.findDisplay() + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType);
+            CustomLog.v(TAG, "answerInLocale- " + answerInLocale);
+            String answerInLocaleEn = bullet_arrow + node.findDisplay("en") + "::" + node.formQuestionAnswer(0, isAssociateSymptomsType, "en");
+            CustomLog.v(TAG, "answerInLocaleEn " + answerInLocaleEn);
+
+            stringBuilder.append(answerInLocale);
+            stringBuilderEn.append(answerInLocaleEn);
+            if (val == null) {
+                return false;
+            }
         }
         insertionLocale = stringBuilder.toString();
         insertionLocaleEn = stringBuilderEn.toString();
-        if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>"))
+
+
+        if (insertion.contains("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>")) {
             insertion = insertion.replace("<br/> ►<b>" + Node.ASSOCIATE_SYMPTOMS + "</b>: <br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>", "<br/>►<b> " + Node.ASSOCIATE_SYMPTOMS + "</b>:  <br/>");
+        }
         JSONObject jsonObject = new JSONObject();
         try {
             insertionLocale = VisitUtils.replaceEnglishCommonString(insertionLocale, sessionManager.getAppLanguage());
-            insertionLocaleEn = VisitUtils.replaceEnglishCommonString(insertionLocaleEn, "en");
+            //insertionLocaleEn = VisitUtils.replaceEnglishCommonString(insertionLocaleEn, "en");
+            insertionLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(insertionLocaleEn, sessionManager.getAppLanguage());
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(insertionLocale);
             if (matchDate != null) for (String date : matchDate) insertionLocale = insertionLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
             insertion = VisitUtils.replaceToEnglishCommonString(insertion, sessionManager.getAppLanguage());
@@ -1130,7 +1225,7 @@ public class VisitCreationActivity extends BaseActivity implements
 
     String insertion = "";
     String insertionLocale = "";
-    String insertionLocaleEn = "";
+    String insertionLocaleEn ="";
     String insertionWithLocaleJsonString = "";
 
     public String formatComplainRecord(Node currentNode, boolean isAssociateSymptom) {
@@ -1153,9 +1248,30 @@ public class VisitCreationActivity extends BaseActivity implements
         try {
             ObsDAO obsDAO = new ObsDAO(); ObsDTO obsDTO = new ObsDTO();
             String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.CURRENT_COMPLAINT);
-            obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT); obsDTO.setEncounteruuid(encounterAdultIntials); obsDTO.setCreator(sessionManager.getCreatorID()); obsDTO.setValue(StringUtils.getValue1(value));
-            if (uuidOBS != null) { obsDTO.setUuid(uuidOBS); isInserted = obsDAO.updateObs(obsDTO); } else isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) { FirebaseCrashlytics.getInstance().recordException(e); }
+            CustomLog.i(TAG, "insertChiefComplainToDb: uuidOBS - " + uuidOBS);
+            obsDTO.setConceptuuid(UuidDictionary.CURRENT_COMPLAINT);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(StringUtils.getValue1(value));
+            if (uuidOBS != null) {
+                obsDTO.setUuid(uuidOBS);
+                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
+            // ✅ Edit mode: refresh the consolidated AI summary with updated CC
+            if (isInserted && mIsEditMode) {
+                insertLocalEnFormatQAValues();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+
         return isInserted;
     }
 
@@ -1198,27 +1314,65 @@ public class VisitCreationActivity extends BaseActivity implements
         try {
             ObsDAO obsDAO = new ObsDAO(); ObsDTO obsDTO = new ObsDTO();
             String uuidOBS = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.PHYSICAL_EXAMINATION);
-            obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION); obsDTO.setEncounteruuid(encounterAdultIntials); obsDTO.setCreator(sessionManager.getCreatorID()); obsDTO.setValue(StringUtils.getValue(value));
-            if (uuidOBS != null) { obsDTO.setUuid(uuidOBS); isInserted = obsDAO.updateObs(obsDTO); } else isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) { FirebaseCrashlytics.getInstance().recordException(e); }
+            CustomLog.i(TAG, "insertDbPhysicalExam: uuidOBS - " + uuidOBS);
+
+            obsDTO.setConceptuuid(UuidDictionary.PHYSICAL_EXAMINATION);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(StringUtils.getValue(value));
+
+            if (uuidOBS != null) {
+                obsDTO.setUuid(uuidOBS);
+                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
+            // ✅ Edit mode: refresh the consolidated AI summary with updated PE
+            if (isInserted && mIsEditMode) {
+                insertLocalEnFormatQAValues();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
         return isInserted;
     }
 
     String physicalString;
     String physicalStringLocale = "";
+
     String physicalStringLocaleEn = "";
+
+
     String physicalStringWithLocaleJsonString = "";
     Boolean complaintConfirmed = false;
     PhysicalExam physicalExamMap;
 
     private boolean savePhysicalExamData() {
+        // load the existing AI summary into en vars before saving the new one,
+        if(mIsEditMode){
+            loadExistingAiSummaryIntoEnVars();
+        }
+        CustomLog.v(TAG, "savePhysicalExamData");
+        // save to cache
         sessionManager.setVisitEditCache(SessionManager.PHY_EXAM + visitUuid, new Gson().toJson(physicalExamMap));
         complaintConfirmed = physicalExamMap.areRequiredAnswered();
         if (complaintConfirmed) {
             physicalString = physicalExamMap.generateFindings();
             physicalStringLocale = physicalExamMap.generateFindingsByLocale(sessionManager.getAppLanguage());
             physicalStringLocaleEn = physicalExamMap.generateFindingsByLocale("en");
-            while (physicalString.contains("[Describe")) physicalString = physicalString.replace("[Describe]", "");
+
+            CustomLog.v(TAG, "physicalStringLocale -" + physicalStringLocale);
+            CustomLog.v(TAG, "physicalStringLocaleEn" + physicalStringLocaleEn);
+
+            while (physicalString.contains("[Describe"))
+                physicalString = physicalString.replace("[Describe]", "");
+
+
             for (int i = 0; i < physicalExamMap.getTotalNumberOfExams(); i++) {
                 Node l1Node = physicalExamMap.getExamNode(i);
                 for (int j = 0; j < l1Node.getOptionsList().size(); j++) {
@@ -1233,8 +1387,14 @@ public class VisitCreationActivity extends BaseActivity implements
             JSONObject jsonObject = new JSONObject();
             try {
                 physicalStringLocale = VisitUtils.replaceEnglishCommonString(physicalStringLocale, sessionManager.getAppLanguage());
-                physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
-                if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
+                //physicalStringLocaleEn = VisitUtils.replaceEnglishCommonString(physicalStringLocaleEn, "en");
+                physicalStringLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(physicalStringLocaleEn, sessionManager.getAppLanguage());
+
+                if (physicalStringLocale != null && !sessionManager.getAppLanguage().equals("en")) {
+                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
+                    physicalStringLocale = physicalStringLocale.replaceAll("picture taken", getString(R.string.picture_taken));
+                    Timber.tag(TAG).v("physicalStringLocale - %s", physicalStringLocale);
+                }
                 String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(physicalStringLocale);
                 if (matchDate != null) for (String date : matchDate) physicalStringLocale = physicalStringLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
                 physicalString = VisitUtils.replaceToEnglishCommonString(physicalString, sessionManager.getAppLanguage());
@@ -1251,20 +1411,36 @@ public class VisitCreationActivity extends BaseActivity implements
     String patientHistoryWithLocaleJsonString = "", familyHistoryWithLocaleJsonString = "";
 
     private boolean savePastHistoryData() {
-        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) return saveOnlyFamilyHistory();
+        // load the existing AI summary into en vars before saving the new one,
+
+        if(mIsEditMode){
+            loadExistingAiSummaryIntoEnVars();
+        }
+        //for UNFPA, saving only family history
+        if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
+            return saveOnlyFamilyHistory();
+        }
+        // save to cache
         sessionManager.setVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid, new Gson().toJson(mPastMedicalHistoryNode));
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
         patientHistory = mPastMedicalHistoryNode.generateLanguage();
         patientHistoryLocale = mPastMedicalHistoryNode.formQuestionAnswer(0, false);
         patientHistoryLocaleEn = mPastMedicalHistoryNode.formQuestionAnswer(0, false, "en");
-        while (patientHistory != null && patientHistory.contains("[Describe")) patientHistory = patientHistory.replace("[Describe]", "");
+
+        while (patientHistory != null && patientHistory.contains("[Describe"))
+            patientHistory = patientHistory.replace("[Describe]", "");
+
+        //familyHistory = mFamilyHistoryNode.generateLanguage();
+
         familyHistory = generateFamilyHistoryAns(false, "en");
+        CustomLog.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             new DialogUtils().showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), getString(R.string.you_missed_the_compulsory_questions_please_answer_them), true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), action -> {});
             return false;
         }
-        familyHistoryLocale = generateFamilyHistoryAns(true, sessionManager.getAppLanguage());
+        familyHistoryLocale = generateFamilyHistoryAns(true,sessionManager.getAppLanguage());
         familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
+
         familyHistory = familyHistory.replaceAll("null.", "");
         while (familyHistory.contains("[Describe")) familyHistory = familyHistory.replace("[Describe]", "");
         List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
@@ -1272,14 +1448,18 @@ public class VisitCreationActivity extends BaseActivity implements
         JSONObject jsonObject = new JSONObject(); JSONObject jsonObject1 = new JSONObject();
         try {
             patientHistoryLocale = VisitUtils.replaceEnglishCommonString(patientHistoryLocale, sessionManager.getAppLanguage());
-            patientHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(patientHistoryLocaleEn, "en");
+            //patientHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(patientHistoryLocaleEn, "en");
+            patientHistoryLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(patientHistoryLocaleEn, sessionManager.getAppLanguage());
+
             String[] matchDate = DateAndTimeUtils.findDateFromStringDDMMMYYY(patientHistoryLocale);
             if (matchDate != null) for (String date : matchDate) patientHistoryLocale = patientHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
             patientHistory = VisitUtils.replaceToEnglishCommonString(patientHistory, sessionManager.getAppLanguage());
             jsonObject.put("en", patientHistory); jsonObject.put("l-" + sessionManager.getAppLanguage(), patientHistoryLocale);
             patientHistoryWithLocaleJsonString = jsonObject.toString().replace("\\/", "/");
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
-            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            //familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            familyHistoryLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(familyHistoryLocaleEn, sessionManager.getAppLanguage());
+
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) for (String date : matchDate1) familyHistoryLocale = familyHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
             familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
@@ -1291,13 +1471,19 @@ public class VisitCreationActivity extends BaseActivity implements
 
     private boolean saveOnlyFamilyHistory() {
         sessionManager.setVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid, new Gson().toJson(mFamilyHistoryNode));
-        familyHistory = generateFamilyHistoryAns(false, "en");
+
+        //familyHistory = mFamilyHistoryNode.generateLanguage();
+
+        familyHistory = generateFamilyHistoryAns(false,"en");
+        CustomLog.v(TAG, "familyHistory - " + familyHistory);
         if (familyHistory == null || familyHistory.trim().isEmpty()) {
             new DialogUtils().showCommonDialog(VisitCreationActivity.this, 0, getString(R.string.alert_label_txt), getString(R.string.you_missed_the_compulsory_questions_please_answer_them), true, getResources().getString(R.string.generic_ok), getResources().getString(R.string.cancel), action -> {});
             return false;
         }
-        familyHistoryLocale = generateFamilyHistoryAns(true, sessionManager.getAppLanguage());
+        familyHistoryLocale = generateFamilyHistoryAns(true,sessionManager.getAppLanguage());
         familyHistoryLocaleEn = generateFamilyHistoryAns(true, "en");
+
+
         familyHistory = familyHistory.replaceAll("null.", "");
         while (familyHistory.contains("[Describe")) familyHistory = familyHistory.replace("[Describe]", "");
         List<String> imagePathList = mFamilyHistoryNode.getImagePathList();
@@ -1305,7 +1491,9 @@ public class VisitCreationActivity extends BaseActivity implements
         JSONObject jsonObject1 = new JSONObject();
         try {
             familyHistoryLocale = VisitUtils.replaceEnglishCommonString(familyHistoryLocale, sessionManager.getAppLanguage());
-            familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            //familyHistoryLocaleEn = VisitUtils.replaceEnglishCommonString(familyHistoryLocaleEn, "en");
+            familyHistoryLocaleEn = VisitUtils.replaceLocalCommonToEnglishString(familyHistoryLocaleEn, sessionManager.getAppLanguage());
+
             String[] matchDate1 = DateAndTimeUtils.findDateFromStringDDMMMYYY(familyHistoryLocale);
             if (matchDate1 != null) for (String date : matchDate1) familyHistoryLocale = familyHistoryLocale.replaceAll(date, DateAndTimeUtils.formatInLocalDateForDDMMMYYYY(date, sessionManager.getAppLanguage()));
             familyHistory = VisitUtils.replaceToEnglishCommonString(familyHistory, sessionManager.getAppLanguage());
@@ -1324,9 +1512,14 @@ public class VisitCreationActivity extends BaseActivity implements
                 if (node.isSelected()) {
                     String familyString = !isLocale ? node.generateLanguage() : node.formQuestionAnswer(0, false, locale);
                     String toInsert = (!isLocale ? node.getText() : node.findDisplay(locale)) + " : " + familyString;
-                    toInsert = toInsert.replaceAll(" - ", ", ").replaceAll("<br/>", "");
-                    if (org.apache.commons.lang3.StringUtils.right(toInsert, 2).equals(", ")) toInsert = toInsert.substring(0, toInsert.length() - 2);
-                    familyInsertionList.add(toInsert + ".<br/>");
+                    //toInsert = toInsert.replaceAll(Node.bullet, "");
+                    toInsert = toInsert.replaceAll(" - ", ", ");
+                    toInsert = toInsert.replaceAll("<br/>", "");
+                    if (org.apache.commons.lang3.StringUtils.right(toInsert, 2).equals(", ")) {
+                        toInsert = toInsert.substring(0, toInsert.length() - 2);
+                    }
+                    toInsert = toInsert + ".<br/>";
+                    familyInsertionList.add(toInsert);
                 }
             }
         }
@@ -1349,20 +1542,54 @@ public class VisitCreationActivity extends BaseActivity implements
                 obsDTO.setConceptuuid(UuidDictionary.RHK_FAMILY_HISTORY_BLURB); obsDTO.setEncounteruuid(encounterAdultIntials); obsDTO.setCreator(sessionManager.getCreatorID()); obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(familyHistory));
                 if (uuidOBS1 != null) { obsDTO.setUuid(uuidOBS1); isInserted = obsDAO.updateObs(obsDTO); } else isInserted = obsDAO.insertObs(obsDTO);
             }
-        } catch (DAOException e) { FirebaseCrashlytics.getInstance().recordException(e); }
+            // ✅ Edit mode: refresh the consolidated AI summary with updated PMH/FH
+            if (isInserted && mIsEditMode) {
+                insertLocalEnFormatQAValues();
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
         return isInserted;
     }
 
     private boolean insertLocalEnFormatQAValues() {
+        //Need the formatted string to be inserted in the database for AI AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID concept
+        insertJsonFormattedVisitSummary();
+        CustomLog.i(TAG, "insertLocalEnFormatQAValues");
         boolean isInserted = false;
-        try {
+        // Q/A visit sumamry is not required after JSON format is implemented, but keeping this code for reference in case we need to revert back to the old format.
+
+        /*try {
+            // ✅ In edit mode, restore any ...En vars that were NOT re-saved this session
+            *//*if (mIsEditMode) {
+                loadExistingAiSummaryIntoEnVars();
+            }*//*
             ObsDAO obsDAO = new ObsDAO();
-            String insertDbEnValue = "Visit Reason (Chief Complaint)\n" + insertionLocaleEn + "\nPhysical Examination:\n" + physicalStringLocaleEn + "\nPatient Medical History:\n" + patientHistoryLocaleEn + "\nFamily History:\n" + familyHistoryLocaleEn;
+            String insertDbEnValue = "Visit Reason (Chief Complaint):\n"  + insertionLocaleEn + "\n" + "Physical Examination:\n"+ physicalStringLocaleEn + "\n" + "Patient Medical History:\n"+ patientHistoryLocaleEn + "\n"  + "Family History:\n"+ familyHistoryLocaleEn;
+
             String uuidOBS1 = obsDAO.getObsuuid(encounterAdultIntials, UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            CustomLog.i(TAG, "insertDbPastHistory familyHistory : uuidOBS - " + uuidOBS1);
             ObsDTO obsDTO = new ObsDTO();
-            obsDTO.setConceptuuid(UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID); obsDTO.setEncounteruuid(encounterAdultIntials); obsDTO.setCreator(sessionManager.getCreatorID()); obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(insertDbEnValue));
-            if (uuidOBS1 != null) { obsDTO.setUuid(uuidOBS1); isInserted = obsDAO.updateObs(obsDTO); } else isInserted = obsDAO.insertObs(obsDTO);
-        } catch (DAOException e) { FirebaseCrashlytics.getInstance().recordException(e); }
+            obsDTO.setConceptuuid(UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            obsDTO.setEncounteruuid(encounterAdultIntials);
+            obsDTO.setCreator(sessionManager.getCreatorID());
+            obsDTO.setValue(org.intelehealth.app.utilities.StringUtils.getValue(insertDbEnValue));
+
+            if (uuidOBS1 != null) {
+                obsDTO.setUuid(uuidOBS1);
+                CustomLog.v("obsDTO update", new Gson().toJson(obsDTO));
+
+                isInserted = obsDAO.updateObs(obsDTO);
+            } else {
+                CustomLog.v("obsDTO insert", new Gson().toJson(obsDTO));
+                isInserted = obsDAO.insertObs(obsDTO);
+            }
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }*/
+
         return isInserted;
     }
     ImageUtilsListener imageUtilsListener;
@@ -1409,6 +1636,61 @@ public class VisitCreationActivity extends BaseActivity implements
         } else { Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show(); }
     });
 
+    private ActivityResultLauncher<PickVisualMediaRequest> galleryIntentLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+
+                if (uri != null) {
+                    handleSelectedImage(uri);  // process the image URI (next step)
+                } else {
+                    Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                }
+
+            });
+    private void handleSelectedImage(Uri uri) {
+
+        try {
+            // Generate unique name
+            mLastSelectedImageName = UUID.randomUUID().toString() + ".jpg";
+            String destPath = AppConstants.IMAGE_PATH + mLastSelectedImageName;
+
+            // Copy URI → File
+            InputStream input = getContentResolver().openInputStream(uri);
+            OutputStream output = new FileOutputStream(destPath);
+
+            byte[] buffer = new byte[4096];
+            int length;
+            while ((length = input.read(buffer)) > 0) {
+                output.write(buffer, 0, length);
+            }
+
+            input.close();
+            output.close();
+
+            // compress if needed
+            File file = new File(destPath);
+            long fileSizeInKB = file.length() / 1024;
+            long fileSizeInMB = fileSizeInKB / 1024;
+
+            if (fileSizeInMB > 2) {
+                String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName.replace(".jpg", "_compressed.jpg");
+                compressImage(destPath, compressedPath);
+                destPath = compressedPath;
+            }
+
+            // send back to your listener
+            Bundle bundle = new Bundle();
+            bundle.putString("image", destPath);
+            imageUtilsListener.onImageReady(bundle);
+
+            Log.i("ImagePath", destPath);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to copy image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     private void compressImage(String inputPath, String outputPath) {
         Bitmap bitmap = BitmapFactory.decodeFile(inputPath, new BitmapFactory.Options());
         try { FileOutputStream out = new FileOutputStream(outputPath); bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out); out.flush(); out.close(); } catch (Exception e) { e.printStackTrace(); }
@@ -1430,7 +1712,26 @@ public class VisitCreationActivity extends BaseActivity implements
         mStartForCameraResult.launch(cameraIntent);
     }
 
-    private void galleryStart() { mStartForGalleryResult.launch(new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)); }
+    private void galleryStart() {
+        /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mStartForGalleryResult.launch(intent);*/
+        Intent intent;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
+            intent.setType("image/*");
+            mStartForGalleryResult.launch(intent);
+            /*PickVisualMediaRequest request =new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build();
+            galleryIntentLauncher.launch(request);*/
+        } else {
+            intent = new Intent(Intent.ACTION_PICK);
+            intent.setType("image/*");
+            mStartForGalleryResult.launch(intent);
+        }
+
+    }
 
     private static final int MY_CAMERA_REQUEST_CODE = 1001;
     private AlertDialog mImagePickerAlertDialog;
@@ -1533,5 +1834,93 @@ public class VisitCreationActivity extends BaseActivity implements
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) getSupportFragmentManager().popBackStack();
         else super.onBackPressed();
+    }
+
+    /**
+     * Inserts the visit summary in JSON format into the database for the AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID concept.
+     * This method is called from insertLocalEnFormatQAValues() to ensure that the visit summary is stored in a structured format for AI processing.
+     * The JSON structure should include the following fields: encounterAdultIntials, patientGender, age, vitals, chief complaints, physical examination, patient history, and family history.
+     * The method retrieves the necessary data from the member variables and formats it using the VisitSummaryAiFormatter class before saving it to the database.
+     * This allows for easy retrieval and processing of the visit summary in a machine-readable format for AI applications.
+     */
+    private void insertJsonFormattedVisitSummary() {
+        List<Node> patientHistoryNodes = mPastMedicalHistoryNode != null ? mPastMedicalHistoryNode.getOptionsList() : null;
+        List<Node> familyHistoryNodes = mFamilyHistoryNode != null ? mFamilyHistoryNode.getOptionsList() : null;
+        List<Node> physicalExamNodes = physicalExamMap != null ? physicalExamMap.getSelectedNodes() : null;
+
+        CustomLog.i(TAG, "insertJsonFormattedVisitSummary: mFamilyHistoryNode=" + (mFamilyHistoryNode == null ? "null" : "non-null")
+                + " familyHistoryNodes.size=" + (familyHistoryNodes == null ? "null" : familyHistoryNodes.size()));
+        if (familyHistoryNodes != null) {
+            for (Node node : familyHistoryNodes) {
+                CustomLog.i(TAG, "insertJsonFormattedVisitSummary: familyHistory node text=" + node.getText()
+                        + " language=" + node.getLanguage()
+                        + " isSelected=" + node.isSelected()
+                        + " optionsSize=" + (node.getOptionsList() == null ? "null" : node.getOptionsList().size()));
+            }
+        }
+
+        // check mVitalsObject is null  then load it from db
+        if (mVitalsObject == null) {
+            try {
+                mVitalsObject = new ObsDAO().getVitalsForEncounter(encounterVitals);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+        }
+        VisitSummaryAiFormatter.formatAndSave(
+                encounterAdultIntials,
+                patientGender,
+                (int) float_ageYear_Month,
+                mVitalsObject,
+                mChiefComplainRootNodeList,
+                physicalExamNodes,
+                patientHistoryNodes,
+                familyHistoryNodes
+        );
+    }
+
+    /**
+     * Fetches the existing VISIT_AI_SUPPORT_DATA obs value for this visit
+     * and splits it back into the four ...LocaleEn member variables.
+     * Call this at the top of insertLocalEnFormatQAValues() when in edit mode.
+     */
+    private void loadExistingAiSummaryIntoEnVars() {
+        try {
+            ObsDAO obsDAO = new ObsDAO();
+            String raw = obsDAO.getObsValue(encounterAdultIntials, UuidDictionary.AI_VISIT_SUMMARY_CONCEPT_UUID);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars raw => " + raw);
+            if (raw == null || raw.isEmpty()) return;
+
+            final String MARKER_CC  = "Visit Reason (Chief Complaint):\n";
+            final String MARKER_PE  = "\nPhysical Examination:\n";
+            final String MARKER_PMH = "\nPatient Medical History:\n";
+            final String MARKER_FH  = "\nFamily History:\n";
+
+            int idxCC  = raw.indexOf(MARKER_CC);
+            int idxPE  = raw.indexOf(MARKER_PE);
+            int idxPMH = raw.indexOf(MARKER_PMH);
+            int idxFH  = raw.indexOf(MARKER_FH);
+
+            if (idxCC != -1 && idxPE != -1) {
+                insertionLocaleEn = raw.substring(idxCC + MARKER_CC.length(), idxPE).trim();
+            }
+            if (idxPE != -1 && idxPMH != -1) {
+                physicalStringLocaleEn = raw.substring(idxPE + MARKER_PE.length(), idxPMH).trim();
+            }
+            if (idxPMH != -1 && idxFH != -1) {
+                patientHistoryLocaleEn = raw.substring(idxPMH + MARKER_PMH.length(), idxFH).trim();
+            }
+            if (idxFH != -1) {
+                familyHistoryLocaleEn = raw.substring(idxFH + MARKER_FH.length()).trim();
+            }
+
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars CC  => " + insertionLocaleEn);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars PE  => " + physicalStringLocaleEn);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars PMH => " + patientHistoryLocaleEn);
+            CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars FH  => " + familyHistoryLocaleEn);
+
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 }

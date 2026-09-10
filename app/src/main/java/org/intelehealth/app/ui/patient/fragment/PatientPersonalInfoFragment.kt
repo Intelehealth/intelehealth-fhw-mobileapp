@@ -175,6 +175,7 @@ class PatientPersonalInfoFragment :
         }
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
+        binding.isAbhaFullFlow = patientViewModel.isAbhaFullFlow
     }
 
     private fun fetchPersonalInfoConfig() {
@@ -188,8 +189,26 @@ class PatientPersonalInfoFragment :
             setGender()
             setClickListener()
             setInputTextChangListener()
+            lockAbhaFieldsIfLinked()
 //            binding.addOnRebindCallback(onRebindCallback)
         }
+    }
+
+    /**
+     * Locks the identity fields sourced from a verified ABHA profile. Called last in the config
+     * observer because setupDOB/setupAge/applyFilter attach the pickers and filters that would
+     * otherwise leave these fields interactive. The country-code picker is locked alongside the
+     * number so the code cannot be changed independently.
+     */
+    private fun lockAbhaFieldsIfLinked() {
+        if (!hasAbha()) return
+        binding.textInputETFName.isEnabled = false
+        binding.textInputETMName.isEnabled = false
+        binding.textInputETLName.isEnabled = false
+        binding.textInputETPhoneNumber.isEnabled = false
+        binding.countrycodeSpinner.setCcpClickable(false)
+        binding.textInputETDob.isEnabled = false
+        binding.textInputETAge.isEnabled = false
     }
 
 //    private val onRebindCallback =
@@ -209,6 +228,15 @@ class PatientPersonalInfoFragment :
         }
     }
 
+    /**
+     * The country-code picker composes its dialling code with the number field, so it returns "+91"
+     * even when nothing has been typed. Storing that gives a patient a phone value that is really just
+     * a country code — useless to read, and non-blank, so it survives the empty-attribute filter and
+     * still reaches the server. Keying off the number field keeps an unfilled phone genuinely absent.
+     */
+    private fun String?.orNullWhenNotEntered(enteredNumber: CharSequence?): String? =
+        this?.takeIf { enteredNumber.isNullOrBlank().not() }
+
     private fun savePatient() {
         patient.apply {
             bindGenderValue()
@@ -216,12 +244,14 @@ class PatientPersonalInfoFragment :
             middlename = binding.textInputETMName.text?.toString()
             lastname = binding.textInputETLName.text?.toString()
             phonenumber = binding.countrycodeSpinner.fullNumberWithPlus
+                .orNullWhenNotEntered(binding.textInputETPhoneNumber.text)
             guardianName = binding.textInputETGuardianName.text?.toString()
             emContactName = binding.textInputETECName.text?.toString()
             emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
+                .orNullWhenNotEntered(binding.textInputETEMPhoneNumber.text)
 
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            if (patientViewModel.isEditMode && !patientViewModel.isAbhaFullFlow) {
                 saveAndNavigateToDetails()
             } else {
                 if (patientViewModel.activeStatusAddressSection) {

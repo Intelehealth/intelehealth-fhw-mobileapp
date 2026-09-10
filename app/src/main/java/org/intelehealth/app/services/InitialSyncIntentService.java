@@ -68,19 +68,22 @@ public class InitialSyncIntentService extends IntentService {
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
+        CustomLog.e("TAG", "onHandleIntentsync: "+sync);
         if (sync) {
 
             int nextPageNo = responseDTO.getData().getPageNo();
             int totalCount = responseDTO.getData().getTotalCount();
             int percentage = 0; // this should be only in initialSync....
+            CustomLog.e("pulldata", "nextPageNo: " + nextPageNo + ", totalCount: " + totalCount);
 
             if (nextPageNo != -1) {
                 percentage = (int) Math.round(nextPageNo * AppConstants.PAGE_LIMIT * 100.0/totalCount);
                 Logger.logD(SyncDAO.PULL_ISSUE, "percentage: " + percentage);
+                CustomLog.e("pulldata", "percentage: " + percentage);
                 SyncDAO.setProgress(percentage);
                 syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
-                Log.d("TAG", "onHandleIntent: isFirstPageCalled : "+isFirstPageCalled);
-                Log.d("TAG", "onHandleIntent: isFirstPageCalled : "+percentage);
+                CustomLog.e("TAG", "onHandleIntent: isFirstPageCalled : "+isFirstPageCalled);
+                CustomLog.e("TAG", "onHandleIntent: isFirstPageCalled : "+percentage);
 
             }else {
                 percentage = 100;

@@ -508,8 +508,8 @@
     <string name="contact_your_admin">तुमच्या प्रशासकाशी संपर्क साधा</string>
     <string name="sync">रिफ्रेश करा</string>
     <string name="sending_otp">ओटीपी पाठवत आहे...</string>
-    <string name="province">Province</string>
-    <string name="select_province">Select Province</string>
+    <string name="province">प्रांत</string>
+    <string name="select_province">प्रांत निवडा</string>
     <string name="city">शहर</string>
     <string name="select_city">शहर निवडा</string>
     <string name="registration_address_of_health_facility">आरोग्य सुविधेचा नोंदणी पत्ता</string>
@@ -833,6 +833,7 @@
     <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
     <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम)</string>
     <string name="haemoglobin">हिमोग्लोबिन (mg/dL)</string>
+    <string name="diabetes_hba1c">मधुमेह HbA1c (%)</string>
     <string name="household_no_survey">घर क्रमांक*</string>
     <string name="result_of_visit">भेटीचा परिणाम*</string>
 
@@ -932,6 +933,7 @@
     <string name="post_prandial_error">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावी %1$s आणि %2$s</string>
     <string name="uric_acid_error">यूरिक ऍसिड दरम्यान असावे %1$s आणि %2$s</string>
     <string name="cholestrol_acid_error">एकूण कोलेस्ट्रॉल दरम्यान असावे %1$s आणि %2$s</string>
+    <string name="diabeteshba1c_error">मधुमेह HBA1C %1$s आणि %2$s च्या दरम्यान असावा.</string>
     <string name="_diagnostics_summary">%1$d/%2$d निदान सारांश</string>
     <string name="details">तपशील</string>
     <string name="change">संपादित करा</string>
@@ -1003,11 +1005,11 @@
     <string name="relative_phone_number">नातेवाईकाचा फोन नंबर</string>
     <string name="inn">INN</string>
     <string name="enter_inn">INN प्रविष्ट करा</string>
-    <string name="code_of_the_health_facility">Code of the Health Facility</string>
-    <string name="enter_code">Enter Code</string>
-    <string name="enter_name">Enter Name</string>
-    <string name="health_facility_name">Health facility name</string>
-    <string name="code_of_the_department">Code of the Department</string>
+    <string name="code_of_the_health_facility">आरोग्य सुविधेचा कोड</string>
+    <string name="enter_code">कोड प्रविष्ट करा</string>
+    <string name="enter_name">नाव प्रविष्ट करा</string>
+    <string name="health_facility_name">आरोग्य सुविधेचे नाव</string>
+    <string name="code_of_the_department">विभागाचा कोड</string>
     <string name="annual_household_expenditure_on_food">अन्नावरील वार्षिक घरगुती खर्च</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याच्या पाण्याचा मुख्य स्त्रोत कोणता आहे?</string>
     <string name="close_">रुग्ण नोंदणी बंद करायची?</string>
@@ -1118,6 +1120,10 @@
     <string name="self">स्वतः</string>
     <string name="family">कुटुंब</string>
     <string name="enter_postal_code">पोस्टल कोड प्रविष्ट करा</string>
+    <string name="enter_state">राज्य प्रविष्ट करा</string>
+    <string name="enter_district">जिल्हा प्रविष्ट करा</string>
+    <string name="national_ID">राष्ट्रीय ओळखपत्र (नागरिकत्व आयडी, आधार क्रमांक, इत्यादी)</string>
+    <string name="enter_national_ID">राष्ट्रीय ओळखपत्र प्रविष्ट करा</string>
     <string name="india">भारत</string>
     <string name="enter_village_town_city">गाव/शहर/शहर प्रविष्ट करा</string>
     <string name="enter_patient_address">रुग्णाचा पत्ता प्रविष्ट करा</string>
@@ -1340,6 +1346,8 @@
     <string name="age_mandatory">वय</string>
     <string name="enter_age">वय प्रविष्ट करा</string>
     <string name="corresponding_address_1">संबंधित पत्ता 1</string>
+    <string name="_corresponding_address_1">संबंधित पत्ता 1</string>
+    <string name="_corresponding_address_2">संबंधित पत्ता 2</string>
     <string name="this_field_is_mandatory">हे फील्ड अनिवार्य आहे</string>
     <string name="_vitals_summary">%1$d/%2$d महत्वपूर्ण सारांश</string>
     <string name="select_one_or_multiple_reasons">एक किंवा अधिक कारणे निवडा</string>
@@ -1382,6 +1390,7 @@
     <string name="reset_app_new">ॲप रीसेट करा</string>
     <string name="change_photo"><u>फोटो बदला</u></string>
     <string name="add_a_picture">चित्र जोडा</string>
+    <string name="my_profile">माझी प्रोफाइल</string>
     <string name="next_new">पुढे</string>
     <string name="select_language">भाषा निवडा</string>
     <string name="economic_category">आर्थिक श्रेणी</string>
@@ -1499,6 +1508,7 @@
     <string name="no_country_added">देश समाविष्ट केलेला नाही</string>
     <string name="no_state_added">राज्य समाविष्ट केलेले नाही</string>
     <string name="no_district_added">जिल्हा समाविष्ट केलेला नाही</string>
+    <string name="no_block_added">ब्लॉक समाविष्ट केलेले नाही</string>
     <string name="no_city_added">शहर समाविष्ट केलेले नाही</string>
     <string name="no_postal_code_added">पिनकोड समाविष्ट केलेला नाही</string>
     <string name="no_mobile_number_added">फोन नंबर समाविष्ट केलेला नाही</string>
@@ -1532,6 +1542,8 @@
     <string name="pdf_share_flow_msg">कृपया प्रिस्क्रिप्शन या मोबाईल नंबरवर पाठवा: %1$s</string>
     <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
     <string name="feature_not_found">Feature not found</string>
+    <string name="poor_quality_msg">खराब दर्जाचे नेटवर्क आढळले. ऑडिओ कॉलची गणना सुरू आहे.</string>
+    <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">लक्षणे आणखी वाढल्यास, कृपया जवळच्या डॉक्टरांना किंवा सरकारी आरोग्य सुविधेला भेट द्या.</string>
 
      <!--DIGITALSETHASCOPE-->
 
@@ -1571,6 +1583,11 @@
     <string name="sound_recorded_count_format">%1$d / %2$d रेकॉर्ड केले</string>
     <string name="sound_recorded_count_only_format">%1$d रेकॉर्ड केले</string>
 
-
-
+    <!--  ABDM / ABHA  -->
+    <string name="abha_number">आभा क्रमांक</string>
+    <string name="abha_address">आभा पत्ता</string>
+    <string name="view_abha_card">आभा कार्ड पाहा</string>
+    <string name="create_new_abha_address">नवीन आभा पत्ता तयार करा</string>
+    <string name="creating_more_than_six_abha_addresses_are_not_allowed">सहापेक्षा जास्त आभा पत्ते तयार करता येणार नाहीत.</string>
+    <string name="associated_abha_address">जोडलेला आभा पत्ता: %1$s</string>
 </resources>

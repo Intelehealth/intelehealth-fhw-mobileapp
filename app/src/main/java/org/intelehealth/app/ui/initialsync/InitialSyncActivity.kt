@@ -1,10 +1,13 @@
 package org.intelehealth.app.ui.initialsync
 
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import kotlinx.coroutines.CoroutineScope
@@ -24,6 +27,7 @@ import java.util.concurrent.Executors
 
 class InitialSyncActivity : AppCompatActivity() {
     private lateinit var binding: ActivityInitialSyncBinding
+    private var dotAnimators: List<ObjectAnimator> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,29 @@ class InitialSyncActivity : AppCompatActivity() {
             progressIndicator.progress = 0 //default
 
         }
+        startDotsAnimation()
+    }
+
+    /**
+     * Pulses the three dots below "Syncing" on a staggered, endless loop so the screen still reads as
+     * active during the long stretches between progress broadcasts.
+     */
+    private fun startDotsAnimation() {
+        val dots = listOf(binding.dot1, binding.dot2, binding.dot3)
+        dotAnimators = dots.mapIndexed { index, dot ->
+            ObjectAnimator.ofFloat(dot, View.ALPHA, 0.3f, 1f).apply {
+                duration = DOT_PULSE_DURATION_MS
+                startDelay = index * DOT_PULSE_STAGGER_MS
+                repeatCount = ValueAnimator.INFINITE
+                repeatMode = ValueAnimator.REVERSE
+                start()
+            }
+        }
+    }
+
+    private fun stopDotsAnimation() {
+        dotAnimators.forEach { it.cancel() }
+        dotAnimators = emptyList()
     }
 
     private fun doWork() {
@@ -77,6 +104,7 @@ class InitialSyncActivity : AppCompatActivity() {
     private fun handleSyncCompletion() {
         SyncDAO.getSyncProgress_LiveData().removeObserver(syncObserver)
         runOnUiThread {
+            stopDotsAnimation()
             binding.txtProgressTask.text = getString(R.string.sync_completed)
             navigateToHomeScreen()
         }
@@ -100,5 +128,15 @@ class InitialSyncActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             task()
         }
+    }
+
+    override fun onDestroy() {
+        stopDotsAnimation()
+        super.onDestroy()
+    }
+
+    private companion object {
+        const val DOT_PULSE_DURATION_MS = 400L
+        const val DOT_PULSE_STAGGER_MS = 150L
     }
 }

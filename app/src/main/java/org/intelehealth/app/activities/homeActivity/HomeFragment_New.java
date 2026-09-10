@@ -143,12 +143,18 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 if (isAdded() && activity != null) {
                     initUI();
                 } else {
-                    new Handler().postDelayed(new Runnable() {
+                    // firebase crash issue added and replce old code.
+                    new Handler().postDelayed(() -> {
+                        if (isAdded() && getActivity() != null) { // ✅ guard added
+                            initUI();
+                        }
+                    }, 2000);
+                   /* new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             initUI();
                         }
-                    }, 2000);
+                    }, 2000);*/
                 }
             }
         });
@@ -242,13 +248,50 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         };
     }
 
+    /**
+     * Re-queries the prescription counts and updates the "received/out of" text
+     * shown on the Home screen's prescription card.
+     * <p>
+     * Extracted out of {@link #initUI()} so it can also be called directly by
+     * {@link HomeScreenActivity_New} when a background sync (e.g. one triggered
+     * by an incoming "new prescription" push notification) finishes pulling data,
+     * without requiring this fragment to go through {@link #onResume()} first.
+     */
+    public void refreshPrescriptionCount() {
+        if (!isAdded() || getActivity() == null || view == null || sessionManager == null) return;
+        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        if (prescriptionCountTextView == null) return;
+        Executors.newSingleThreadExecutor().execute(() -> {
+            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
+            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
+            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
+            int total = pendingCountTotalVisits + countReceivedPrescription;
+
+            // firebase crash issue added and replace old code.
+            Activity currentActivity = getActivity(); // ✅ capture once
+            if (isAdded() && currentActivity != null) { // ✅ both checks
+                currentActivity.runOnUiThread(() -> {
+                    String prescCountText = countReceivedPrescription + " "
+                            + currentActivity.getString(R.string.out_of)
+                            + " " + total + " "
+                            + currentActivity.getString(R.string.received).toLowerCase();
+
+                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
+                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
+                    }
+                    prescriptionCountTextView.setText(prescCountText);
+                });
+            }
+        });
+    }
+
     private void initUI() {
         Activity activity = getActivity();
         if (!isAdded() || activity == null) return;
         sessionManager = new SessionManager(requireActivity());
         View layoutToolbar = requireActivity().findViewById(R.id.toolbar_home);
         layoutToolbar.setVisibility(View.VISIBLE);
-       String language = sessionManager.getAppLanguage(); //as locale already set
+        String language = sessionManager.getAppLanguage(); //as locale already set
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
             Locale.setDefault(locale);
@@ -257,7 +300,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             requireActivity().getResources().updateConfiguration(config, requireActivity().getResources().getDisplayMetrics());
         }
 
-       sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
+        sessionManager.setCurrentLang(this.getResources().getConfiguration().locale.toString());
 
         ImageView viewHamburger = requireActivity().findViewById(R.id.iv_hamburger);
         viewHamburger.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.ui2_ic_hamburger));
@@ -321,25 +364,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         });
 
 
-        TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
-        Executors.newSingleThreadExecutor().execute(() -> {
-            HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
-            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
-            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
-            //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
-           // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
-            int total = pendingCountTotalVisits + countReceivedPrescription;
-
-            if (isAdded()) {
-                activity.runOnUiThread(() -> {
-                    String prescCountText = countReceivedPrescription + " " + activity.getString(R.string.out_of) + " " + total + " " + activity.getString(R.string.received).toLowerCase();
-                    if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
-                        prescCountText = total + " मे से " + countReceivedPrescription + " प्राप्त हुये";
-                    }
-                    prescriptionCountTextView.setText(prescCountText);
-                });
-            }
-        });
+        refreshPrescriptionCount();
 
         //  int countPendingCloseVisits = getThisMonthsNotEndedVisits();    // error: IDA: 1337 - fetching wrong data.
         TextView countPendingCloseVisitsTextView = view.findViewById(R.id.textview_close_visit_no);
@@ -365,21 +390,36 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         // getChildFragmentManager().addFragmentOnAttachListener(fragmentAttachListener); // listener is not working
         Executors.newSingleThreadExecutor().execute(() -> {
             countStrPendingFollowupVisits();
-
-            if (isAdded()) {
+            //Cr
+           /* if (isAdded()) {
                 activity.runOnUiThread(() -> {
                     StringBuilder followupCount = new StringBuilder()
                             .append(todaysCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.today))
+                            .append(currentActivity.getString(R.string.today))
                             .append("\n")
                             .append(tomorrowsCount)
                             .append(" ")
-                            .append(getActivity().getString(R.string.tomorrow));
+                            .append(currentActivity.getString(R.string.tomorrow));
 
                     mCountPendingFollowupVisitsTextView.setText(
                             followupCount
-                    );
+                    );*/
+
+            //Fire base crash issue for added  and replace code
+            Activity currentActivity = getActivity(); // ✅ capture once
+            if (isAdded() && currentActivity != null) { // ✅ both checks
+                currentActivity.runOnUiThread(() -> {
+                    StringBuilder followupCount = new StringBuilder()
+                            .append(todaysCount)
+                            .append(" ")
+                            .append(currentActivity.getString(R.string.today)) // ✅ safe
+                            .append("\n")
+                            .append(tomorrowsCount)
+                            .append(" ")
+                            .append(currentActivity.getString(R.string.tomorrow)); // ✅ safe
+
+                    mCountPendingFollowupVisitsTextView.setText(followupCount);
                 });
             }
         });
@@ -405,8 +445,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     @Override
     public void onResume() {
         super.onResume();
-        setLocale(getContext());
-        initUI();
+       /* setLocale(getContext());
+        initUI();*/
+        if (getContext() != null) { // ✅ null check
+            setLocale(getContext());
+        }
+        if (isAdded() && getActivity() != null) { // ✅ guard before initUI
+            initUI();
+        }
 
     }
 
@@ -453,6 +499,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
+        if (!isAdded() || getActivity() == null || ivInternet == null) return;
         if (isInternetAvailable) {
             ivInternet.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ui2_ic_internet_available));
 
@@ -551,6 +598,8 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 +" (followup_date = ? or followup_date = ?) "
                 + "AND o.value is NOT NULL "
                 + "AND followup_date is NOT NULL " +
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                "AND NOT EXISTS (SELECT 1 FROM tbl_visit v2 WHERE v2.patientuuid = a.patientuuid AND v2.voided = '0' AND v2.startdate > a.startdate) " + // A newer visit for this patient means the follow-up has already been addressed
                 "GROUP BY a.uuid"
                 + " HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) ";
 
@@ -565,22 +614,22 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
 //                    CustomLog.v(TAG, "value_text - " + value_text);
 //                    CustomLog.v(TAG, "visitUuid - " + visitUuid);
-                        modelList.add(new FollowUpModel(visitUuid,
-                                cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("followup_date")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
-                                ))); // ie. visit is emergency visit.
+                    modelList.add(new FollowUpModel(visitUuid,
+                            cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                            StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                            cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("followup_date")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                            true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                            cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                            ))); // ie. visit is emergency visit.
 
                 } catch (Exception e) {
                     e.printStackTrace();

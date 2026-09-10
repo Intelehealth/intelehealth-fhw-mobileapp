@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/frame_10021"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:paddingStart="@dimen/my_appointment_parent_padding"
     android:paddingEnd="@dimen/my_appointment_parent_padding"
     tools:context=".appointmentNew.MyAppointmentActivity">

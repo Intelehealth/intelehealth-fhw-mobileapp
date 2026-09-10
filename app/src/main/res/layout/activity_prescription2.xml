@@ -1315,6 +1315,7 @@
                     </RelativeLayout>
                 </androidx.cardview.widget.CardView>
                 <!--Notes and Precautions - end-->
+
             </RelativeLayout>
         </ScrollView>
         <!--ScrollView - End-->

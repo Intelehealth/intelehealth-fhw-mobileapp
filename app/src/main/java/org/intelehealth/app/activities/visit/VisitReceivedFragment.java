@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 
+import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
 import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
 import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
@@ -322,7 +323,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
+                /*int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();*/
+                int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {

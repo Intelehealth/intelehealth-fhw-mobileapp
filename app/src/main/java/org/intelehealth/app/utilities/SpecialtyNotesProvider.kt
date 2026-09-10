@@ -34,7 +34,7 @@ object SpecialtyNotesProvider {
         val a = specialty.trim()
         val b = specialization.trim()
         return a.equals(b, ignoreCase = true) ||
-            a.contains(b, ignoreCase = true) ||
-            b.contains(a, ignoreCase = true)
+                a.contains(b, ignoreCase = true) ||
+                b.contains(a, ignoreCase = true)
     }
 }

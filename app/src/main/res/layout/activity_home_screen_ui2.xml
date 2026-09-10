@@ -5,13 +5,14 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     android:visibility="visible"
     tools:context=".activities.homeActivity.HomeScreenActivity_New"
     tools:openDrawer="start">
 
 
     <RelativeLayout
+        android:id="@+id/root_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

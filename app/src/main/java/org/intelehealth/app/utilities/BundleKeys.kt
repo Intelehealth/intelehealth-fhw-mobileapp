@@ -31,5 +31,10 @@ class BundleKeys {
         const val IS_EDIT_MODE = "isEditMode"
         const val IS_PREGNANCY_MODE = "isPregnant"
 
+        // NAS-1752 - consent values built by ConsentUtils, carried from PersonalConsentActivity
+        // into PatientRegistrationActivity so they can be seeded onto the new PatientDTO.
+        const val PATIENT_CONSENT_VALUE = "patientConsentValue"
+        const val ABDM_CONSENT_VALUE = "abdmConsentValue"
+
     }
 }

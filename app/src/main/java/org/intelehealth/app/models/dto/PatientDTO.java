@@ -112,6 +112,51 @@ public class PatientDTO implements Serializable {
     @SerializedName("address6")
     @Expose
     private String address6;
+    @SerializedName("abha_number")
+    @Expose
+    private String abhaNumber;
+    @SerializedName("abha_address")
+    @Expose
+    private String abhaAddress;
+
+    // NAS-1752 - pipe-separated consent values (see ConsentUtils), carried from
+    // PersonalConsentActivity into registration so PatientRepository can turn them into
+    // Patient_Consent / ABDM_Consent person attributes once the patient row is created. Local
+    // working values only, not part of any push/pull JSON contract, so no @SerializedName.
+    private String patientConsentValue;
+    private String abdmConsentValue;
+
+    public String getAbhaNumber() {
+        return abhaNumber;
+    }
+
+    public void setAbhaNumber(String abhaNumber) {
+        this.abhaNumber = abhaNumber;
+    }
+
+    public String getAbhaAddress() {
+        return abhaAddress;
+    }
+
+    public void setAbhaAddress(String abhaAddress) {
+        this.abhaAddress = abhaAddress;
+    }
+
+    public String getPatientConsentValue() {
+        return patientConsentValue;
+    }
+
+    public void setPatientConsentValue(String patientConsentValue) {
+        this.patientConsentValue = patientConsentValue;
+    }
+
+    public String getAbdmConsentValue() {
+        return abdmConsentValue;
+    }
+
+    public void setAbdmConsentValue(String abdmConsentValue) {
+        this.abdmConsentValue = abdmConsentValue;
+    }
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
     }

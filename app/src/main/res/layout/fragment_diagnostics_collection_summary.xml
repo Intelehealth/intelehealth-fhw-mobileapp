@@ -209,6 +209,7 @@
                         android:id="@+id/ll_glucose_random_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_8"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
                         android:weightSum="2">

@@ -34,6 +34,9 @@ public class DateTimeUtils {
     public static final String MMM_DD_YYYY_FORMAT = "MMM dd, yyyy";
 
     public static final String CALL_LOG_TIME_FORMAT = "EEE, dd MMM yyyy HH:mm:ss";
+
+    /** Consent-record timestamp format, e.g. "25-08-2026 19:45:45" (NAS-1752). */
+    public static final String DD_MM_YYYY_HH_MM_SS = "dd-MM-yyyy HH:mm:ss";
     @SuppressLint("SimpleDateFormat")
     public static SimpleDateFormat getSimpleDateFormat(String format, TimeZone timeZone) {
         SimpleDateFormat sdf = new SimpleDateFormat(format);

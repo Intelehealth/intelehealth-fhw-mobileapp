@@ -593,7 +593,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 if ((Double.parseDouble(wightVal) > Double.parseDouble(AppConstants.getMaxWeightByAge(mAgeInMonth))) ||
                         (Double.parseDouble(wightVal) < Double.parseDouble(AppConstants.getMinWeightByAge(mAgeInMonth)))) {
                     //et.setError(getString(R.string.bpdia_error, AppConstants.MINIMUM_BP_DSYS, AppConstants.MAXIMUM_BP_DSYS));
-                   // mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
+                    // mWeightErrorTextView.setText(getString(R.string.weight_error, AppConstants.getMinWeightByAge(mAgeInMonth), AppConstants.getMaxWeightByAge(mAgeInMonth)));
                     mWeightErrorTextView.setText(getString(R.string.weight_error,
                             AppConstants.getMinWeightByAge(mAgeInMonth),
                             AppConstants.getMaxWeightByAge(mAgeInMonth))
@@ -985,8 +985,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             if (results.getSpo2() != null && !results.getSpo2().isEmpty())
                 mSpo2EditText.setText(results.getSpo2());
-            if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty())
+            if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty()) {
                 mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(results.getBloodGroup()));
+                mBloodGroupTextView.setTag(results.getBloodGroup());
+            }
 
             if (results.getResp() != null && !results.getResp().isEmpty())
                 mRespEditText.setText(results.getResp());
