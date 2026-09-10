@@ -1698,6 +1698,10 @@
     <string name="latest">Latest</string>
     <string name="prescription_pending">Prescription Pending</string>
     <string name="referral_declined">Referral Declined</string>
+    <string name="referred_to_destination">Referred to %1$s</string>
+    <string name="referral_evaluation_instruction">Please visit %1$s for further evaluation</string>
+    <string name="waiting_for_specialist_consultation">Waiting for specialist consultation</string>
+    <string name="interim_prescription">Interim Prescription</string>
     <string name="doctor_pending_prescriptions">Doctor is yet to send the prescriptions for 35 patients, you can remind the doctor.</string>
     <string name="visit_summary">Visit summary</string>
     <string name="pending_since">Pending since</string>

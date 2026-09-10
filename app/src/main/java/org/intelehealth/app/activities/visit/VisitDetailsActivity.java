@@ -120,6 +120,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private String patientName, patientUuid, gender, age, dob, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
+    /** True only for a Referral-tab visit whose Prescription row is showing "Interim
+     *  Prescription" — see {@link #bindReferralInfo}. While true, End Visit is disabled
+     *  so the health worker can't accidentally close the visit before the NAMCO/specialist
+     *  referral is resolved (NAS-1731 visit-closure prevention). */
+    private boolean interimPrescriptionActive;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
     private ImageView profile_image, icon_presc_details;
@@ -128,6 +133,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
+    private androidx.cardview.widget.CardView referralInfoCard;
+    private TextView referralInfoTitle, referralInfoInstruction;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
             pat_call_btn, pat_whatsapp_btn;
     private ImageView dr_call_btn, dr_whatsapp_btn;
@@ -399,6 +406,19 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             }
             // presc block - end
 
+            // Referred to NAMCO/specialist banner - start
+            // Referral-tab-only: VisitReferralFragment passes the visit's Referred
+            // Specialist obs value via the "referralValue" extra when it opens this
+            // screen (see VisitReferralFragment#onReferralClicked). Received/Pending
+            // rows (VisitAdapter) don't set this extra, so the banner and the
+            // Prescription row's "Interim Prescription" relabel never appear there,
+            // even for a visit that also happens to have a referral obs.
+            referralInfoCard = findViewById(R.id.referral_info_card);
+            referralInfoTitle = findViewById(R.id.referral_info_title);
+            referralInfoInstruction = findViewById(R.id.referral_info_instruction);
+            bindReferralInfo(intent != null ? intent.getStringExtra("referralValue") : null);
+            // Referred to NAMCO/specialist banner - end
+
             patName_txt = findViewById(R.id.patname_txt);
             patName_txt.setText(patientName);
 
@@ -618,27 +638,38 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 new Handler(Looper.getMainLooper()).post(() -> {
                     if (visitNotEnded) {
                         endvisit_relative_block.setVisibility(View.VISIBLE);
-                        btn_end_visit.setOnClickListener(v -> {
-                            if (!hasPrescription) {
-                                if (mFeatureActiveStatus.getRestrictEndVisit()) {
-                                    if (dialogUtils == null) {
-                                        dialogUtils = new DialogUtils(); // Ensure a single instance
+                        if (interimPrescriptionActive) {
+                            // Referral-tab visit still on the doctor's interim prescription —
+                            // block End Visit so the health worker can't accidentally close it
+                            // before the NAMCO/specialist referral is resolved (NAS-1731).
+                            btn_end_visit.setEnabled(false);
+                            btn_end_visit.setAlpha(0.5f);
+                            btn_end_visit.setOnClickListener(null);
+                        } else {
+                            btn_end_visit.setEnabled(true);
+                            btn_end_visit.setAlpha(1f);
+                            btn_end_visit.setOnClickListener(v -> {
+                                if (!hasPrescription) {
+                                    if (mFeatureActiveStatus.getRestrictEndVisit()) {
+                                        if (dialogUtils == null) {
+                                            dialogUtils = new DialogUtils(); // Ensure a single instance
+                                        }
+                                        dialogUtils.showCommonDialog(context,
+                                                R.drawable.dialog_close_visit_icon,
+                                                context.getString(R.string.alert_label_txt),
+                                                context.getString(R.string.prescription_notprovided_msg),
+                                                true,
+                                                context.getString(R.string.ok),
+                                                context.getString(R.string.cancel),
+                                                action -> {});
+                                    } else {
+                                        checkIfAppointmentExistsForVisit(visitID);
                                     }
-                                    dialogUtils.showCommonDialog(context,
-                                            R.drawable.dialog_close_visit_icon,
-                                            context.getString(R.string.alert_label_txt),
-                                            context.getString(R.string.prescription_notprovided_msg),
-                                            true,
-                                            context.getString(R.string.ok),
-                                            context.getString(R.string.cancel),
-                                            action -> {});
                                 } else {
-                                    checkIfAppointmentExistsForVisit(visitID);
+                                    triggerEndVisit();
                                 }
-                            } else {
-                                triggerEndVisit();
-                            }
-                        });
+                            });
+                        }
                     } else {
                         endvisit_relative_block.setVisibility(View.GONE);
                     }
@@ -905,6 +936,62 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     mPastVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
                 }
             }
+        }
+
+        /**
+         * Shows/hides the "Referred to NAMCO/specialist" banner and, when a
+         * prescription already exists for this visit, relabels the Prescription
+         * row's subtitle as "Interim Prescription" — the doctor's own prescription
+         * stands in as interim until a NAMCO/specialist doctor's own prescription
+         * exists, which this app doesn't model yet (NAS-1731 backend integration
+         * is still pending). Tapping the Prescription row is unchanged either way
+         * — it always opens {@link PrescriptionActivity} for the doctor's own
+         * prescription.
+         *
+         * {@code referralValue} only ever arrives non-null via the "referralValue"
+         * intent extra {@link VisitReferralFragment} sets — Received/Pending
+         * (VisitAdapter) don't set it, so this is a no-op for those tabs even when
+         * the visit does have a Referred Specialist obs.
+         */
+        private void bindReferralInfo(String referralValue) {
+            boolean referred = referralValue != null && !referralValue.trim().isEmpty();
+            // Set before the End Visit button is wired up further down in onCreate
+            // (inside its own background task) — see the "end visit" block, which
+            // reads this to keep the button disabled for the lifetime of the screen.
+            interimPrescriptionActive = referred && hasPrescription;
+
+            if (referralInfoCard == null) return;
+            if (!referred) {
+                referralInfoCard.setVisibility(View.GONE);
+                return;
+            }
+            String destination = parseReferralDestination(referralValue);
+            referralInfoCard.setVisibility(View.VISIBLE);
+            referralInfoTitle.setText(getResources().getString(R.string.referred_to_destination, destination));
+            if (referralInfoInstruction != null) {
+                referralInfoInstruction.setText(getResources().getString(R.string.referral_evaluation_instruction, destination));
+            }
+
+            if (hasPrescription && presc_time != null) {
+                presc_time.setText(R.string.interim_prescription);
+                presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+            }
+        }
+
+        /**
+         * REFERRED_SPECIALIST obs value is a colon-joined
+         * "Specialty:Hospital:Type/Priority:Notes" string (e.g.
+         * "Namco_Dermatology:NAMCO Hospital:Elective:TEST RM") — pull out the
+         * hospital/destination segment for the banner title, falling back to
+         * the first segment (or the raw value) if it isn't in that shape.
+         */
+        private String parseReferralDestination(String rawValue) {
+            if (rawValue == null || rawValue.trim().isEmpty()) return "";
+            String[] parts = rawValue.split(":");
+            if (parts.length >= 2 && !parts[1].trim().isEmpty()) {
+                return parts[1].trim();
+            }
+            return parts[0].trim();
         }
 
         /**

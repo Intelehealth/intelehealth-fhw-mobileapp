@@ -50,16 +50,39 @@ public class VisitStatusAdapter extends RecyclerView.Adapter<VisitStatusAdapter.
         private final String photoUrl;
         private final Badge primaryBadge;
         private final Badge secondaryBadge;
+        // Identifiers needed to act on a row (e.g. open the visit's prescription) —
+        // optional, so the original 6-arg constructor still works for any caller
+        // that only needs to display a row.
+        private final String patientUuid;
+        private final String visitUuid;
+        private final String openmrsId;
+        private final String gender;
+        private final String dob;
 
         public VisitStatusItem(String patientName, String genderAge, String visitDate,
                                 @Nullable String photoUrl,
                                 @Nullable Badge primaryBadge, @Nullable Badge secondaryBadge) {
+            this(patientName, genderAge, visitDate, photoUrl, primaryBadge, secondaryBadge,
+                    null, null, null, null, null);
+        }
+
+        public VisitStatusItem(String patientName, String genderAge, String visitDate,
+                                @Nullable String photoUrl,
+                                @Nullable Badge primaryBadge, @Nullable Badge secondaryBadge,
+                                @Nullable String patientUuid, @Nullable String visitUuid,
+                                @Nullable String openmrsId, @Nullable String gender,
+                                @Nullable String dob) {
             this.patientName = patientName;
             this.genderAge = genderAge;
             this.visitDate = visitDate;
             this.photoUrl = photoUrl;
             this.primaryBadge = primaryBadge;
             this.secondaryBadge = secondaryBadge;
+            this.patientUuid = patientUuid;
+            this.visitUuid = visitUuid;
+            this.openmrsId = openmrsId;
+            this.gender = gender;
+            this.dob = dob;
         }
 
         public String getPatientName() { return patientName; }
@@ -68,6 +91,11 @@ public class VisitStatusAdapter extends RecyclerView.Adapter<VisitStatusAdapter.
         public String getPhotoUrl() { return photoUrl; }
         public Badge getPrimaryBadge() { return primaryBadge; }
         public Badge getSecondaryBadge() { return secondaryBadge; }
+        @Nullable public String getPatientUuid() { return patientUuid; }
+        @Nullable public String getVisitUuid() { return visitUuid; }
+        @Nullable public String getOpenmrsId() { return openmrsId; }
+        @Nullable public String getGender() { return gender; }
+        @Nullable public String getDob() { return dob; }
     }
 
     public interface OnItemClickListener {
@@ -89,6 +117,12 @@ public class VisitStatusAdapter extends RecyclerView.Adapter<VisitStatusAdapter.
         items.clear();
         if (newItems != null) items.addAll(newItems);
         notifyDataSetChanged();
+    }
+
+    @Nullable
+    public VisitStatusItem getItem(int position) {
+        if (position < 0 || position >= items.size()) return null;
+        return items.get(position);
     }
 
     @NonNull

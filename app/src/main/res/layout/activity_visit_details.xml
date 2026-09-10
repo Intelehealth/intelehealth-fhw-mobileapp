@@ -231,11 +231,68 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!--Referral banner - shown only when this visit has a Referred Specialist
+                obs (see VisitDetailsActivity#bindReferralInfo). No backend referral-status
+                API exists yet (NAS-1731), so this is always the generic "waiting" state.-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/referral_info_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cardview_head"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="@dimen/fu_card_margin_sides"
+                android:layout_marginTop="@dimen/margin_24"
+                android:layout_marginRight="@dimen/fu_card_margin_sides"
+                app:cardBackgroundColor="@color/cardTintLightOrange"
+                app:cardCornerRadius="@dimen/corner_radius_8dp"
+                app:cardElevation="0dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/fu_margin_start">
+
+                    <TextView
+                        android:id="@+id/referral_info_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/details_head1"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/fu_name_txt_size"
+                        tools:text="Referred to NAMCO" />
+
+                    <TextView
+                        android:id="@+id/referral_info_instruction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fu_male_margin_start"
+                        android:textAppearance="@style/details_head2"
+                        android:textColor="@null"
+                        android:textSize="@dimen/fu_male_textsize"
+                        tools:text="Please visit NAMCO for further evaluation" />
+
+                    <TextView
+                        android:id="@+id/referral_info_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/fu_male_margin_start"
+                        android:textAppearance="@style/details_head2"
+                        android:textColor="@color/referralBadgeText"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/fu_male_textsize"
+                        android:text="@string/waiting_for_specialist_consultation" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cardview_head"
+                android:layout_below="@+id/referral_info_card"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="@dimen/fu_card_margin_sides"
