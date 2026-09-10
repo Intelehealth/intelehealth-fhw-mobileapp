@@ -6,10 +6,8 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
-import org.intelehealth.app.ayu.visit.vital.VitalPreference;
-import org.intelehealth.app.utilities.CustomLog;
-
 import org.intelehealth.app.BuildConfig;
+import org.intelehealth.app.ayu.visit.vital.VitalPreference;
 
 import java.util.Set;
 
@@ -25,6 +23,7 @@ public class SessionManager {
     private static final String KEY_PREF_SETUP_COMPLETE = "setup";
     private static final String KEY_BLACKOUT = "blackout";
     private static final String APP_LANGUAGE = "Language";
+    private static final String APP_LANGUAGE_SET_ONCE = "LanguageSetOnce";
     private static final String SESSION_ID = "sessionid";
     private static final String CREATOR_ID = "creatorid";
     private static final String PROVIDER_ID = "providerid";
@@ -171,8 +170,15 @@ public class SessionManager {
 
     public void setAppLanguage(String pullExcutedTime) {
         editor.putString(APP_LANGUAGE, pullExcutedTime);
+        // set a flag for all language set once
+        editor.putBoolean(APP_LANGUAGE_SET_ONCE, true);
         editor.commit();
     }
+    public boolean isAppLanguageSetOnce() {
+        return pref.getBoolean(APP_LANGUAGE_SET_ONCE, false);
+    }
+
+
 
     public boolean isSetupComplete() {
         return pref.getBoolean(KEY_PREF_SETUP_COMPLETE, false);

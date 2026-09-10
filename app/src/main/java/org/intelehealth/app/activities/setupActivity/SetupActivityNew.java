@@ -590,6 +590,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                             }
                                                             CustomLog.i(TAG, "onPostExecute: Parse init");
                                                             sessionManager.setIsLoggedIn(true);
+                                                            sessionManager.setLogout(false);
                                                             Intent intent = new Intent(SetupActivityNew.this, InitialSyncActivity.class);
                                                             // Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                             intent.putExtra("setup", true);
