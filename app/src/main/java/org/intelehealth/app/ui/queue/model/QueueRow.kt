@@ -12,6 +12,7 @@ data class QueueRow(
     val patientName: String?,
     val gender: String?,
     val dateOfBirth: String?,
+    val status: String?,
     val position: Int,
     val chiefComplaint: String?,
     val waitedMinutes: Int,

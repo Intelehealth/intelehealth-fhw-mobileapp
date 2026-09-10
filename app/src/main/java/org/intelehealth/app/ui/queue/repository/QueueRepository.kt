@@ -31,6 +31,7 @@ class QueueRepository(private val queueDao: QueueDAO) {
             patientName = name,
             gender = c.str("gender"),
             dateOfBirth = c.str("date_of_birth"),
+            status = c.str("status"),
             position = c.int("position"),
             chiefComplaint = c.str("chiefComplaint"),
             waitedMinutes = c.int("waitedMinutes"),

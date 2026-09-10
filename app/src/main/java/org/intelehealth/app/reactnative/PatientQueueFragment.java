@@ -16,6 +16,7 @@ import com.facebook.react.ReactFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.models.queue.QueueStatus;
 import org.intelehealth.app.ui.queue.factory.QueueViewModelFactory;
 import org.intelehealth.app.ui.queue.model.QueueRow;
 import org.intelehealth.app.ui.queue.viewmodel.QueueViewModel;
@@ -159,6 +160,7 @@ public class PatientQueueFragment extends Fragment {
         }
 
         int position = row.getPosition();
+        String status = mapStatus(row.getStatus(), position);
 
         Bundle bundle = new Bundle();
         bundle.putString("queueNumber", openmrsId);
@@ -168,30 +170,40 @@ public class PatientQueueFragment extends Fragment {
         bundle.putString("patientId", openmrsId);
         bundle.putStringArrayList("symptoms", parseSymptoms(row.getChiefComplaint()));
         bundle.putInt("position", position);
-        bundle.putString("status", mapStatus(position));
+        bundle.putString("status", status);
         // "onCall" shows elapsed duration (waited), everyone else shows wait ETA.
-        int minutes = isOnCall(position) ? row.getWaitedMinutes() : row.getEtaMinutes();
+        int minutes = "onCall".equals(status) ? row.getWaitedMinutes() : row.getEtaMinutes();
         bundle.putString("time", formatMinutes(minutes));
         return bundle;
     }
 
     /**
-     * Maps the queue position to the RN status union ('onCall' | 'nextInQueue' |
-     * 'waiting'). Derived from queue position as a placeholder until the server
-     * status enum is finalised.
+     * Maps the DB {@link QueueStatus} (+ position) to the RN status union used
+     * by the tabs ('onCall' | 'nextInQueue' | 'waiting'):
+     * <ul>
+     *   <li>CONNECTED -> onCall</li>
+     *   <li>QUEUED at position 0 -> nextInQueue</li>
+     *   <li>QUEUED at any other position -> waiting</li>
+     *   <li>RE_QUEUED at position &gt; 0 -> waiting</li>
+     * </ul>
+     * Any other status (or unknown) is left unmapped (empty), so the row matches
+     * no specific tab and appears only under "All".
      */
-    private String mapStatus(int position) {
-        if (isOnCall(position)) {
-            return "onCall";
+    private String mapStatus(@Nullable String dbStatus, int position) {
+        QueueStatus status = QueueStatus.fromValue(dbStatus);
+        if (status == null) {
+            return "";
         }
-        if (position == 2) {
-            return "nextInQueue";
+        switch (status) {
+            case CONNECTED:
+                return "onCall";
+            case QUEUED:
+                return position == 0 ? "nextInQueue" : "waiting";
+            case RE_QUEUED:
+                return position > 0 ? "waiting" : "";
+            default:
+                return "";
         }
-        return "waiting";
-    }
-
-    private boolean isOnCall(int position) {
-        return position <= 1;
     }
 
     /** Split the chief-complaint string into symptom tags. */

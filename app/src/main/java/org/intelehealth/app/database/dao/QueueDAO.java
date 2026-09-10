@@ -90,7 +90,8 @@ public class QueueDAO extends BaseDao{
         if (db == null || !db.isOpen() || mapper == null) {
             return rows;
         }
-        String sql = "SELECT q.position AS position, q.chiefComplaint AS chiefComplaint, " +
+        String sql = "SELECT q.status AS status, q.position AS position, " +
+                "q.chiefComplaint AS chiefComplaint, " +
                 "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
                 "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +
                 "p.middle_name AS middle_name, p.last_name AS last_name, " +
