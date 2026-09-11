@@ -224,10 +224,11 @@ class AbhaVerifyActivity : AppCompatActivity() {
 
             AbhaVerifyStep.EnterOtp -> getString(R.string.abdm_action_verify)
         }
-        binding.btnPrimary.isEnabled = !loading && when {
-            state.method == AbhaVerifyMethod.Aadhaar && state.step == AbhaVerifyStep.EnterDetails ->
-                state.isConsentChecked
-
+        /* Consent is required to proceed on every identifier method, not just Aadhaar - the
+         checkbox above is shared across all three tabs(Aadhaar, Mobile Number, ABHA) rather
+         than scoped to one of them. */
+        binding.btnPrimary.isEnabled = !loading && when (state.step) {
+            AbhaVerifyStep.EnterDetails -> state.isConsentChecked
             else -> true
         }
     }
@@ -243,6 +244,7 @@ class AbhaVerifyActivity : AppCompatActivity() {
         binding.etAbhaNumber.isEnabled = detailsEditable
         binding.etAbhaAddress.isEnabled = detailsEditable
         binding.cbTermsAndConditions.isEnabled = detailsEditable
+        binding.cbTermsAndConditions.isChecked = state.isConsentChecked
         binding.otpView.isEnabled = enabled
     }
 
