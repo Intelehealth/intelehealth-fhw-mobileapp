@@ -2,6 +2,7 @@ package org.intelehealth.app.ai.formatter
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.ayu.visit.common.VisitUtils
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.VitalsObject
@@ -57,6 +58,7 @@ object VisitSummaryAiFormatter {
         patientHistoryNodes: List<Node>?,
         familyHistoryNodes: List<Node>?
     ): JSONObject? {
+        val locale = SessionManager(IntelehealthApplication.getAppContext()).appLanguage ?: "en"
         val json = buildAiSummaryJson(
             patientSex,
             patientAgeYears,
@@ -64,7 +66,8 @@ object VisitSummaryAiFormatter {
             chiefComplaintNodes,
             physicalExamNodes,
             patientHistoryNodes,
-            familyHistoryNodes
+            familyHistoryNodes,
+            locale
         )
         return if (saveAiSummaryToDb(encounterUuid, json)) json else null
     }
@@ -80,14 +83,15 @@ object VisitSummaryAiFormatter {
         chiefComplaintNodes: List<Node>?,
         physicalExamNodes: List<Node>?,
         patientHistoryNodes: List<Node>?,
-        familyHistoryNodes: List<Node>?
+        familyHistoryNodes: List<Node>?,
+        locale: String
     ): JSONObject {
         val extraction = JSONObject()
         extraction.put("demographic", buildDemographic(patientSex, patientAgeYears, vital))
-        extraction.put("chief_complaint", buildChiefComplaint(chiefComplaintNodes))
-        extraction.put("associated_symptom", buildAssociatedSymptoms(chiefComplaintNodes))
-        extraction.put("history", buildHistory(patientHistoryNodes, familyHistoryNodes))
-        extraction.put("physical_examination", buildPhysicalExamination(physicalExamNodes))
+        extraction.put("chief_complaint", buildChiefComplaint(chiefComplaintNodes, locale))
+        extraction.put("associated_symptom", buildAssociatedSymptoms(chiefComplaintNodes, locale))
+        extraction.put("history", buildHistory(patientHistoryNodes, familyHistoryNodes, locale))
+        extraction.put("physical_examination", buildPhysicalExamination(physicalExamNodes, locale))
 
         val root = JSONObject()
         root.put("extraction", extraction)
@@ -122,13 +126,13 @@ object VisitSummaryAiFormatter {
      * legacy formatComplainRecord() walk - so this processes every category
      * unconditionally and only keeps the ones that produced answered fields.
      */
-    private fun buildChiefComplaint(nodes: List<Node>?): JSONArray {
+    private fun buildChiefComplaint(nodes: List<Node>?, locale: String): JSONArray {
         val array = JSONArray()
         nodes.orEmpty()
             .filter { !it.text.equals(Node.ASSOCIATE_SYMPTOMS, ignoreCase = true) }
             .forEach { symptomNode ->
-                val symptom = nodeText(symptomNode) ?: return@forEach
-                val fields = buildProtocolFields(symptomNode)
+                val symptom = nodeText(symptomNode, locale) ?: return@forEach
+                val fields = buildProtocolFields(symptomNode, locale)
                 if (fields.length() > 0) {
                     val entry = JSONObject()
                     entry.put("symptom", symptom)
@@ -139,9 +143,9 @@ object VisitSummaryAiFormatter {
         return array
     }
 
-    private fun buildProtocolFields(symptomNode: Node): JSONObject {
+    private fun buildProtocolFields(symptomNode: Node, locale: String): JSONObject {
         val fields = JSONObject()
-        collectAnsweredFields(symptomNode.optionsList, fields)
+        collectAnsweredFields(symptomNode.optionsList, fields, locale)
         return fields
     }
 
@@ -151,11 +155,11 @@ object VisitSummaryAiFormatter {
      * picked value" (same convention the UI's chip adapters use) - so the real
      * answer always comes from [resolveValue], keyed by the QUESTION's own text.
      */
-    private fun collectAnsweredFields(nodes: List<Node>?, into: JSONObject) {
+    private fun collectAnsweredFields(nodes: List<Node>?, into: JSONObject, locale: String) {
         nodes.orEmpty().forEach { node ->
             if (!node.isSelected) return@forEach
-            val key = nodeText(node)?.let { toSnakeCase(it) } ?: return@forEach
-            val answer = resolveValue(node) ?: return@forEach
+            val key = nodeText(node, locale)?.let { toSnakeCase(it) } ?: return@forEach
+            val answer = resolveValue(node, locale) ?: return@forEach
             into.put(key, answer)
         }
     }
@@ -171,30 +175,30 @@ object VisitSummaryAiFormatter {
      * instead of collapsing away - {"diagnosed_on": "12/Aug/2026"} - so answers
      * with real follow-up structure don't lose that structure.
      */
-    private fun resolveValue(node: Node): Any? {
+    private fun resolveValue(node: Node, locale: String): Any? {
         val options = node.optionsList
         if (node.isTerminal || options.isNullOrEmpty()) {
-            return nodeText(node)
+            return nodeText(node, locale)
         }
         val selectedChild = options.firstOrNull { it.isSelected } ?: return null
         val childOptions = selectedChild.optionsList
         if (selectedChild.isTerminal || childOptions.isNullOrEmpty()) {
-            return nodeText(selectedChild)
+            return nodeText(selectedChild, locale)
         }
-        val nestedValue = resolveValue(selectedChild) ?: return nodeText(selectedChild)
-        val key = nodeText(selectedChild)?.let { toSnakeCase(it) } ?: "value"
+        val nestedValue = resolveValue(selectedChild, locale) ?: return nodeText(selectedChild, locale)
+        val key = nodeText(selectedChild, locale)?.let { toSnakeCase(it) } ?: "value"
         val wrapped = JSONObject()
         wrapped.put(key, nestedValue)
         return wrapped
     }
 
-    private fun buildAssociatedSymptoms(nodes: List<Node>?): JSONObject {
+    private fun buildAssociatedSymptoms(nodes: List<Node>?, locale: String): JSONObject {
         val associateNode = nodes.orEmpty()
             .firstOrNull { it.text.equals(Node.ASSOCIATE_SYMPTOMS, ignoreCase = true) }
         val present = JSONArray()
         val absent = JSONArray()
         associateNode?.optionsList.orEmpty().forEach { option ->
-            val label = nodeText(option) ?: return@forEach
+            val label = nodeText(option, locale) ?: return@forEach
             when {
                 option.isSelected -> present.put(label)
                 option.isNoSelected -> absent.put(label)
@@ -206,10 +210,10 @@ object VisitSummaryAiFormatter {
         return json
     }
 
-    private fun buildHistory(patientHistoryNodes: List<Node>?, familyHistoryNodes: List<Node>?): JSONObject {
+    private fun buildHistory(patientHistoryNodes: List<Node>?, familyHistoryNodes: List<Node>?, locale: String): JSONObject {
         val history = JSONObject()
-        history.put("patient_history", buildQuestionGroup(patientHistoryNodes))
-        history.put("family_history", buildQuestionGroup(familyHistoryNodes))
+        history.put("patient_history", buildQuestionGroup(patientHistoryNodes, locale))
+        history.put("family_history", buildQuestionGroup(familyHistoryNodes, locale))
         return history
     }
 
@@ -219,28 +223,28 @@ object VisitSummaryAiFormatter {
      * checkbox option; anything else is a single yes/no/free-text answer, resolved
      * the same isSelected-chain way as chief-complaint protocol fields.
      */
-    private fun buildQuestionGroup(nodes: List<Node>?): JSONObject {
+    private fun buildQuestionGroup(nodes: List<Node>?, locale: String): JSONObject {
         val json = JSONObject()
         nodes.orEmpty().forEach { node ->
-            val key = nodeText(node)?.let { toSnakeCase(it) } ?: return@forEach
+            val key = nodeText(node, locale)?.let { toSnakeCase(it) } ?: return@forEach
             val options = node.optionsList
             json.put(
                 key,
                 if (node.isMultiChoice && !options.isNullOrEmpty()) {
-                    buildCheckboxGroup(options)
+                    buildCheckboxGroup(options, locale)
                 } else {
-                    resolveValue(node) ?: JSONObject.NULL
+                    resolveValue(node, locale) ?: JSONObject.NULL
                 }
             )
         }
         return json
     }
 
-    private fun buildCheckboxGroup(options: List<Node>): JSONObject {
+    private fun buildCheckboxGroup(options: List<Node>, locale: String): JSONObject {
         val group = JSONObject()
         options.forEach { option ->
-            val key = nodeText(option)?.let { toSnakeCase(it) } ?: return@forEach
-            group.put(key, checkboxValue(option))
+            val key = nodeText(option, locale)?.let { toSnakeCase(it) } ?: return@forEach
+            group.put(key, checkboxValue(option, locale))
         }
         return group
     }
@@ -252,17 +256,17 @@ object VisitSummaryAiFormatter {
      * follow-up question (e.g. "High Blood Pressure" -> "Diagnosed on") nests it
      * via [resolveValue] instead of collapsing to a bare checkmark.
      */
-    private fun checkboxValue(option: Node): Any {
+    private fun checkboxValue(option: Node, locale: String): Any {
         if (!option.isSelected && !option.isNoSelected) return JSONObject.NULL
         val childOptions = option.optionsList
-        if (childOptions.isNullOrEmpty()) return nodeText(option) ?: ""
-        return resolveValue(option) ?: (nodeText(option) ?: "")
+        if (childOptions.isNullOrEmpty()) return nodeText(option, locale) ?: ""
+        return resolveValue(option, locale) ?: (nodeText(option, locale) ?: "")
     }
 
     /** physicalExamNodes is PhysicalExam.getSelectedNodes() - the Location level. */
-    private fun buildPhysicalExamination(nodes: List<Node>?): JSONObject {
+    private fun buildPhysicalExamination(nodes: List<Node>?, locale: String): JSONObject {
         val findings = JSONArray()
-        collectExamFindings(nodes, findings)
+        collectExamFindings(nodes, findings, locale)
         val json = JSONObject()
         json.put("findings", findings)
         return json
@@ -279,12 +283,12 @@ object VisitSummaryAiFormatter {
      * selected chain, so recursion stops there instead of rediscovering the same
      * leaf again as its own separate (and now orphaned-looking) entry.
      */
-    private fun collectExamFindings(nodes: List<Node>?, into: JSONArray) {
+    private fun collectExamFindings(nodes: List<Node>?, into: JSONArray, locale: String) {
         nodes.orEmpty().forEach { node ->
             val hasSelectedChild = node.optionsList.orEmpty().any { it.isSelected }
             if (hasSelectedChild) {
-                val name = nodeText(node)
-                val answer = resolveValue(node)
+                val name = nodeText(node, locale)
+                val answer = resolveValue(node, locale)
                 if (name != null && answer != null) {
                     val entry = JSONObject()
                     entry.put("name", name)
@@ -293,7 +297,7 @@ object VisitSummaryAiFormatter {
                     return@forEach
                 }
             }
-            collectExamFindings(node.optionsList, into)
+            collectExamFindings(node.optionsList, into, locale)
         }
     }
 
@@ -306,11 +310,18 @@ object VisitSummaryAiFormatter {
      * over the raw "text" label; "%" is a magic "no real value" placeholder used
      * throughout the mind-map data, so a language of exactly "%" is skipped in
      * favor of falling back to "text" rather than treating the whole node as blank.
+     *
+     * Free-form answers (duration/frequency) bake in locale-specific unit words
+     * from Node.java's picker dialogs (e.g. "9 दिवस" on a Marathi device) - the
+     * same normalization the old plain-text AI summary applied via
+     * VisitUtils.replaceLocalCommonToEnglishString before this JSON formatter
+     * replaced it, so it's re-applied here to keep the AI JSON English-only.
      */
-    private fun nodeText(node: Node): String? {
+    private fun nodeText(node: Node, locale: String): String? {
         val language = node.language
         val value = if (!language.isNullOrEmpty() && language != "%") language else node.text
-        return if (value.isNullOrBlank()) null else value
+        if (value.isNullOrBlank()) return null
+        return VisitUtils.replaceLocalCommonToEnglishString(value, locale)
     }
 
     private fun toSnakeCase(text: String): String =
