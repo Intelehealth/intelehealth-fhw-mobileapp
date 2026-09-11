@@ -189,6 +189,10 @@ public class VisitAttributeListDAO extends BaseDao{
             if (count != -1)
                 isInserted = true;
 
+            if (isInserted) {
+                reQueueParentVisitForSync(db, visitUuid);
+            }
+
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
@@ -200,6 +204,25 @@ public class VisitAttributeListDAO extends BaseDao{
 
         CustomLog.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
+    }
+
+    /**
+     * Marks the parent visit as unsynced again after a new/changed attribute is written for it.
+     * <p>
+     * unsyncedVisits() only looks at tbl_visit.sync to decide which visits to push, and never
+     * revisits a visit once that flag is true - it does not separately check whether the visit has
+     * unsynced tbl_visit_attribute rows. If a visit's initial "start visit" push already synced it
+     * (e.g. a periodic background sync ran mid-consult) before a later attribute - speciality,
+     * diagnosis, consultation type, etc. - was added, that attribute would otherwise sit with
+     * sync=0 forever and never be picked up by any future push. Resetting the parent's flag here
+     * puts the visit back in front of unsyncedVisits() on the next sync cycle so fetchVisitAttrs()
+     * picks up the new row along with it, without changing how already-synced, unchanged visits are
+     * treated.
+     */
+    private void reQueueParentVisitForSync(SQLiteDatabase db, String visitUuid) {
+        ContentValues visitSyncValues = new ContentValues();
+        visitSyncValues.put("sync", "0");
+        db.update("tbl_visit", visitSyncValues, "uuid=?", new String[]{visitUuid});
     }
 
     /**
@@ -238,6 +261,7 @@ public class VisitAttributeListDAO extends BaseDao{
             db.update("tbl_visit_attribute", values,
                     "visit_uuid = ? AND visit_attribute_type_uuid = ?",
                     new String[]{visitUuid, attributeTypeUUID});
+            reQueueParentVisitForSync(db, visitUuid);
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isUpdated = false;
