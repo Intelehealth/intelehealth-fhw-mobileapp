@@ -341,19 +341,48 @@ public class ObsDAO extends BaseDao{
         //db.beginTransaction();
 
         if (visitUUID != null) {
-            final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " + "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " + "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
-
-            if (cursor.moveToFirst()) {
-                do {
-                    try {
-                        result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                        CustomLog.v("value_text", "value_text: " + result);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } while (cursor.moveToNext());
+            // A referred visit can carry the Follow up visit obs on more than one
+            // encounter for the same visit — the GP's own ENCOUNTER_VISIT_NOTE (e.g.
+            // "No", since the GP referred instead of scheduling a follow-up) and, once
+            // the NAMCO/specialist doctor completes the visit, their own
+            // ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE encounter, which carries the real
+            // follow-up date along with their diagnosis/prescription (confirmed against
+            // an actual pulled visit's local rows — ENCOUNTER_VISIT_COMPLETE itself only
+            // ever carries the completing doctor's signature block, never clinical obs).
+            // The specialist's encounter is the authoritative one when present; without
+            // this, the loop below could pick up the GP's earlier "No" instead. Falling
+            // back to any encounter for the visit keeps existing (non-referred, or
+            // referred-but-not-yet-completed) behavior unchanged.
+            final Cursor specialistCursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " +
+                            "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
+                            "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
+                            "v.uuid = ? and o.conceptuuid = ? and e.encounter_type_uuid = ? " +
+                            "order by o.obsservermodifieddate desc",
+                    new String[]{visitUUID, FOLLOW_UP_VISIT, UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE});
+            if (specialistCursor.moveToFirst()) {
+                try {
+                    result = specialistCursor.getString(specialistCursor.getColumnIndexOrThrow("value_text"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-            cursor.close();
+            specialistCursor.close();
+
+            if (result == null) {
+                final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " + "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " + "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
+
+                if (cursor.moveToFirst()) {
+                    do {
+                        try {
+                            result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                            CustomLog.v("value_text", "value_text: " + result);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
 //            db.setTransactionSuccessful();
 //            db.endTransaction();
         }

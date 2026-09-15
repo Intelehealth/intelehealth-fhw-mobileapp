@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.utilities.ThreadingUtils.executeInBackground;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.REFERRED_SPECIALIST;
 
 import android.app.Activity;
 import android.content.Context;
@@ -550,7 +551,17 @@ public class VisitPendingFragment extends Fragment {
                         "WHERE e2.visituuid = v.uuid " +
                         "AND e2.encounter_type_uuid = ?" +
                         ") THEN 1 ELSE 0 " +
-                        "END AS has_visit_complete "+
+                        "END AS has_visit_complete, "+
+                        "CASE " +
+                        "WHEN EXISTS (" +
+                        "SELECT 1 FROM tbl_encounter e3, tbl_obs o3 " +
+                        "WHERE e3.visituuid = v.uuid " +
+                        "AND e3.encounter_type_uuid = ? " +
+                        "AND e3.uuid = o3.encounteruuid " +
+                        "AND o3.conceptuuid = ? " +
+                        "AND o3.voided = 0 AND o3.value IS NOT NULL AND trim(o3.value) <> ''" +
+                        ") THEN 1 ELSE 0 " +
+                        "END AS has_referral "+
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         //" v.enddate is null and" +
@@ -558,10 +569,11 @@ public class VisitPendingFragment extends Fragment {
                         " v.startdate > DATETIME('now', '-4 day') " +
                         "AND has_exit_survey = 0 "+
                         "AND has_visit_complete = 0 "+
+                        "AND has_referral = 0 "+
                         searchQ +
                         " group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE,String.valueOf(limit), String.valueOf(offset)});
+                new String[]{ENCOUNTER_VISIT_COMPLETE, ENCOUNTER_VISIT_NOTE, REFERRED_SPECIALIST, String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -867,17 +879,28 @@ public class VisitPendingFragment extends Fragment {
                         "WHERE e2.visituuid = v.uuid " +
                         "AND e2.encounter_type_uuid = ?" +
                         ") THEN 1 ELSE 0 " +
-                        "END AS has_visit_complete "+
+                        "END AS has_visit_complete, "+
+                        "CASE " +
+                        "WHEN EXISTS (" +
+                        "SELECT 1 FROM tbl_encounter e3, tbl_obs o3 " +
+                        "WHERE e3.visituuid = v.uuid " +
+                        "AND e3.encounter_type_uuid = ? " +
+                        "AND e3.uuid = o3.encounteruuid " +
+                        "AND o3.conceptuuid = ? " +
+                        "AND o3.voided = 0 AND o3.value IS NOT NULL AND trim(o3.value) <> ''" +
+                        ") THEN 1 ELSE 0 " +
+                        "END AS has_referral "+
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate <= DATETIME('now', '-4 day') " +
                         "AND has_exit_survey = 0 "+
                         "AND has_visit_complete = 0 "+
+                        "AND has_referral = 0 "+
                         searchQ +
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});
+                new String[]{ENCOUNTER_VISIT_COMPLETE, ENCOUNTER_VISIT_NOTE, REFERRED_SPECIALIST, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null && cursor.moveToFirst()) {// Move cursor to first row
             do {

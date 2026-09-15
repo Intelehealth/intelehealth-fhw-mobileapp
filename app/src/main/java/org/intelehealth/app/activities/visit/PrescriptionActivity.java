@@ -1870,19 +1870,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     // downlaod - start
     public void downloadPrescriptionDefault() {
         String visitnote = "";
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ? AND voided = ?";
-        String[] encounterIDArgs = {visitID, "0"}; // so that the deleted values dont come in the presc.
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-            do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
-            } while (encounterCursor.moveToNext());
-
+        try {
+            // Prefers the NAMCO/specialist doctor's own encounter when this visit was
+            // completed via referral, so the medications/diagnosis/follow-up shown here
+            // are the specialist's final ones rather than the GP's earlier interim note
+            // — see EncounterDAO#fetchPrescriptionEncounterUuid.
+            String prescriptionEncounterUuid = new EncounterDAO().fetchPrescriptionEncounterUuid(visitID);
+            if (prescriptionEncounterUuid != null) {
+                visitnote = prescriptionEncounterUuid;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
-        encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
@@ -2163,23 +2162,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             if (visitsDAO.getDownloadedValue(visitID).equalsIgnoreCase("false") && uploaded) {
-                String visitnote = "";
-
-                EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? AND voided = ?";
-                String[] encounterIDArgs = {visitID, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
-                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                    do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                            visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                        }
-                    } while (encounterCursor.moveToNext());
-
-                }
-                //   if (encounterCursor != null) {
-                encounterCursor.close();
-                //   }
+                // Prefers the NAMCO/specialist doctor's own encounter when this visit
+                // was completed via referral — see EncounterDAO#fetchPrescriptionEncounterUuid
+                // and downloadPrescriptionDefault() above.
+                String visitnote = new EncounterDAO().fetchPrescriptionEncounterUuid(visitID);
+                if (visitnote == null) visitnote = "";
 
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = "";

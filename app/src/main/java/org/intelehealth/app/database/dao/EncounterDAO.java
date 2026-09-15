@@ -623,6 +623,54 @@ public class EncounterDAO extends BaseDao {
     }
 
     /**
+     * The Referred Specialist obs value ("Specialty:Hospital:Type/Priority:Notes")
+     * recorded on this visit's ENCOUNTER_VISIT_NOTE encounter, or null if the visit
+     * was never referred. Used to detect a referred visit independent of which
+     * Prescriptions tab (Referral/Received/Pending) opened VisitDetailsActivity —
+     * see VisitReferralFragment#loadReferrals() for the same underlying signal.
+     */
+    public String fetchReferredSpecialistValue(String visitUUID) throws DAOException {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String value = null;
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT o.value FROM tbl_encounter e, tbl_obs o " +
+                            "WHERE e.visituuid = ? AND e.encounter_type_uuid = ? AND e.uuid = o.encounteruuid " +
+                            "AND o.conceptuuid = ? AND o.voided = 0 AND o.value IS NOT NULL AND trim(o.value) <> '' " +
+                            "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                            "ORDER BY o.obsservermodifieddate DESC LIMIT 1",
+                    new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_NOTE, UuidDictionary.REFERRED_SPECIALIST});
+            if (cursor.moveToFirst()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        return value;
+    }
+
+    /**
+     * Encounter whose obs should be read as "the prescription" for a visit —
+     * prefers the NAMCO/specialist doctor's own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
+     * encounter when the visit was completed via referral (that's where their
+     * diagnosis/medications/follow-up actually live, confirmed against a real
+     * completed referral visit — the GP's own ENCOUNTER_VISIT_NOTE still carries the
+     * doctor's earlier, now-superseded interim data), falling back to the doctor's
+     * own ENCOUNTER_VISIT_NOTE otherwise (non-referred, or referred-but-not-yet-
+     * completed visits) — unchanged from before. Returns null if neither exists.
+     */
+    public String fetchPrescriptionEncounterUuid(String visitUuid) throws DAOException {
+        String specialistEncounterUuid = getEmergencyEncounters(visitUuid, UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE);
+        if (specialistEncounterUuid != null && !specialistEncounterUuid.isEmpty()) {
+            return specialistEncounterUuid;
+        }
+        String visitNoteEncounterUuid = getEmergencyEncounters(visitUuid, getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
+        return (visitNoteEncounterUuid != null && !visitNoteEncounterUuid.isEmpty()) ? visitNoteEncounterUuid : null;
+    }
+
+    /**
      * Chief Complaint for this visituuid
      */
     public static String getChiefComplaint(String visitUUID) {

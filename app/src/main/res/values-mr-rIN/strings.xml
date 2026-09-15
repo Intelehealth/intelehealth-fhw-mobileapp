@@ -1590,4 +1590,19 @@
     <string name="create_new_abha_address">नवीन आभा पत्ता तयार करा</string>
     <string name="creating_more_than_six_abha_addresses_are_not_allowed">सहापेक्षा जास्त आभा पत्ते तयार करता येणार नाहीत.</string>
     <string name="associated_abha_address">जोडलेला आभा पत्ता: %1$s</string>
+
+    <!--  NAMCO  -->
+    <string name="referrals">रेफरल्स</string>
+    <string name="active_referrals">सक्रिय रेफरल्स</string>
+    <string name="patient_waiting_for_specialist">%1$d रुग्ण तज्ज्ञ डॉक्टरांची वाट पाहत आहे</string>
+    <string name="patients_waiting_for_specialist">%1$d रुग्ण तज्ज्ञ डॉक्टरांची वाट पाहत आहेत</string>
+    <string name="waiting_for_specialist">%1$s तज्ज्ञ डॉक्टरांची वाट पाहत आहे</string>
+    <string name="no_referrals_found">कोणतेही रेफरल आढळले नाही</string>
+    <string name="specialist_prescription">तज्ज्ञ डॉक्टरांचे प्रिस्क्रिप्शन</string>
+    <string name="latest">नवीनतम</string>
+    <string name="prescription_pending">प्रिस्क्रिप्शन प्रलंबित आहे</string>
+    <string name="referral_declined">रेफरल नाकारले</string>
+    <string name="resume">पुन्हा सुरू करा</string>
+    <string name="final_prescription_received">अंतिम प्रिस्क्रिप्शन प्राप्त झाले</string>
+    <string name="specialist_prescription_completed">तज्ज्ञांची प्रिस्क्रिप्शन पूर्ण झाली</string>
 </resources>

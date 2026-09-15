@@ -191,6 +191,11 @@ public class VisitReferralFragment extends Fragment {
         metaByVisit.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
+        // Excludes visits that already have an ENCOUNTER_VISIT_COMPLETE encounter
+        // (i.e. the NAMCO/specialist doctor has already shared the final
+        // prescription and closed the visit) — those move on to the Received tab
+        // the same way a non-referred visit does once it's complete, rather than
+        // staying listed here indefinitely.
         Cursor cursor = db.rawQuery(
                 "select p.uuid as patientuuid, p.openmrs_id, p.patient_photo, p.first_name, " +
                         "p.middle_name, p.last_name, p.gender, p.date_of_birth, " +
@@ -202,9 +207,13 @@ public class VisitReferralFragment extends Fragment {
                         "and o.conceptuuid = ? " +
                         "and o.voided = 0 and o.value is not null and trim(o.value) <> '' " +
                         "and (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "and not exists (" +
+                        "select 1 from tbl_encounter ec where ec.visituuid = v.uuid " +
+                        "and ec.encounter_type_uuid = ?" +
+                        ") " +
                         "group by v.uuid " +
                         "order by o.obsservermodifieddate DESC",
-                new String[]{UuidDictionary.ENCOUNTER_VISIT_NOTE, UuidDictionary.REFERRED_SPECIALIST});
+                new String[]{UuidDictionary.ENCOUNTER_VISIT_NOTE, UuidDictionary.REFERRED_SPECIALIST, UuidDictionary.ENCOUNTER_VISIT_COMPLETE});
 
         if (cursor.moveToFirst()) {
             do {
@@ -236,11 +245,15 @@ public class VisitReferralFragment extends Fragment {
         ReferralMeta meta = new ReferralMeta();
         meta.visitStartDate = startDate;
         meta.referralValue = referralValue;
-        try {
-            meta.hasPrescription = new EncounterDAO().isPrescriptionReceived(visitUuid);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-        }
+        // Every row here already has a non-empty Referred Specialist obs, which the
+        // doctor can only record after writing up the visit (diagnosis/advice/
+        // medications) and choosing to refer — so the GP's own (interim) prescription
+        // always exists for these visits. isPrescriptionReceived() checks for the
+        // ENCOUNTER_VISIT_COMPLETE encounter instead, which only appears once the
+        // NAMCO/specialist doctor shares the FINAL prescription and closes the visit
+        // (loadReferrals() excludes those rows already) — using it here would make
+        // every referred-and-waiting visit look like it has no prescription at all.
+        meta.hasPrescription = true;
         meta.obsservermodifieddate = EncounterDAO.fetchEncounterModifiedDateForPrescGiven(visitUuid);
         try {
             EncounterDAO encounterDAO = new EncounterDAO();

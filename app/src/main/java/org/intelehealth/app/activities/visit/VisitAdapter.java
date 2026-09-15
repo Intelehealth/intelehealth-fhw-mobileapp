@@ -68,6 +68,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     String profileImage1 = "";
     SessionManager sessionManager;
     private boolean isPdfPrescFlowEnabled = false;
+    /** Only set true for the Received tab's "Recent visits" adapter — see {@link #setShowLatestBadge}. */
+    private boolean showLatestBadge = false;
     private OnItemClickListener listener;
     public VisitAdapter(Activity context, List<PrescriptionModel> list) {
         this.context = context;
@@ -88,6 +90,16 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
     public void resetAndAddData(List<PrescriptionModel> list){
         this.list = list;
+        notifyDataSetChanged();
+    }
+
+    /**
+     * Shows the purple "Latest" badge on every row — used only by VisitReceivedFragment
+     * for its "Recent visits" adapter (recycler_recent), not "Older visits", and not by
+     * VisitPendingFragment (which never calls this, so its rows are unaffected).
+     */
+    public void setShowLatestBadge(boolean showLatestBadge) {
+        this.showLatestBadge = showLatestBadge;
         notifyDataSetChanged();
     }
 
@@ -136,12 +148,17 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             // end
 
-            // Status badge — "Specialist Prescription"/"Latest"/"Referral Declined"
-            // aren't wired up yet (no data field for them), so only the one
-            // condition we already have (hasPrescription) drives a badge for now.
+            // Status badge — "Referral Declined" isn't wired up yet (no data field for
+            // it). "Specialist Prescription" vs plain "Prescription" is driven by
+            // model.isSpecialistPrescription() (set by VisitReceivedFragment when this
+            // visit's completed prescription came via a NAMCO/specialist referral —
+            // see EncounterDAO#fetchReferredSpecialistValue). "Latest" is driven by
+            // showLatestBadge (see #setShowLatestBadge).
             if (model.isHasPrescription()) {
                 holder.badgePrimary.setVisibility(View.VISIBLE);
-                holder.badgePrimary.setText(context.getString(R.string.prescription));
+                holder.badgePrimary.setText(model.isSpecialistPrescription()
+                        ? context.getString(R.string.specialist_prescription)
+                        : context.getString(R.string.prescription));
                 holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_green);
                 holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeGreenText));
             } else {
@@ -150,7 +167,14 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_orange);
                 holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeOrangeText));
             }
-            holder.badgeSecondary.setVisibility(View.GONE);
+            if (showLatestBadge) {
+                holder.badgeSecondary.setVisibility(View.VISIBLE);
+                holder.badgeSecondary.setText(context.getString(R.string.latest));
+                holder.badgeSecondary.setBackgroundResource(R.drawable.bg_badge_purple);
+                holder.badgeSecondary.setTextColor(ContextCompat.getColor(context, R.color.badgePurpleText));
+            } else {
+                holder.badgeSecondary.setVisibility(View.GONE);
+            }
 
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 

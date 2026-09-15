@@ -135,7 +135,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
     private androidx.cardview.widget.CardView referralInfoCard;
-    private TextView referralInfoTitle, referralInfoInstruction;
+    private TextView referralInfoTitle, referralInfoInstruction, referralInfoStatus;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
             pat_call_btn, pat_whatsapp_btn;
     private ImageView dr_call_btn, dr_whatsapp_btn;
@@ -417,7 +417,18 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             referralInfoCard = findViewById(R.id.referral_info_card);
             referralInfoTitle = findViewById(R.id.referral_info_title);
             referralInfoInstruction = findViewById(R.id.referral_info_instruction);
-            bindReferralInfo(intent != null ? intent.getStringExtra("referralValue") : null);
+            referralInfoStatus = findViewById(R.id.referral_info_status);
+            // The Referral tab passes the obs value directly via the "referralValue"
+            // extra (see VisitReferralFragment#onReferralClicked). Received/Pending
+            // (VisitAdapter) don't set it, so fall back to looking the visit's own
+            // Referred Specialist obs up directly — this is how a NAMCO-referred visit
+            // that has since moved to the Received tab (final prescription received)
+            // is still recognized here, without adding a new intent extra everywhere.
+            String referralValueExtra = intent != null ? intent.getStringExtra("referralValue") : null;
+            String referralValue = (referralValueExtra != null && !referralValueExtra.trim().isEmpty())
+                    ? referralValueExtra
+                    : fetchReferralValueIfAny(visitID);
+            bindReferralInfo(referralValue);
             // Referred to NAMCO/specialist banner - end
 
             patName_txt = findViewById(R.id.patname_txt);
@@ -950,26 +961,55 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
         }
 
         /**
-         * Shows/hides the "Referred to NAMCO/specialist" banner and, when a
-         * prescription already exists for this visit, relabels the Prescription
-         * row's subtitle as "Interim Prescription" — the doctor's own prescription
-         * stands in as interim until a NAMCO/specialist doctor's own prescription
-         * exists, which this app doesn't model yet (NAS-1731 backend integration
-         * is still pending). Tapping the Prescription row is unchanged either way
-         * — it always opens {@link PrescriptionActivity} for the doctor's own
-         * prescription.
-         *
-         * {@code referralValue} only ever arrives non-null via the "referralValue"
-         * intent extra {@link VisitReferralFragment} sets — Received/Pending
-         * (VisitAdapter) don't set it, so this is a no-op for those tabs even when
-         * the visit does have a Referred Specialist obs.
+         * Looks up this visit's own Referred Specialist obs directly, for the case
+         * where VisitDetailsActivity wasn't opened from the Referral tab (so the
+         * "referralValue" intent extra is absent) but the visit was referred anyway
+         * — e.g. a NAMCO-referred visit whose final prescription has since arrived,
+         * which now surfaces on the Received tab instead (see VisitReceivedFragment).
+         */
+        private String fetchReferralValueIfAny(String visitUuid) {
+            try {
+                return new EncounterDAO().fetchReferredSpecialistValue(visitUuid);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                return null;
+            }
+        }
+
+        /**
+         * Shows/hides the "Referred to NAMCO/specialist" card and adjusts the
+         * Prescription row's subtitle for a referred visit, in either of two states:
+         * <ul>
+         *   <li>Waiting — the NAMCO/specialist doctor hasn't completed the visit yet
+         *   ({@link EncounterDAO#isPrescriptionReceived} is false): the doctor's own
+         *   prescription stands in as "Interim Prescription", the instruction line
+         *   tells the health worker where to send the patient next, and End Visit is
+         *   disabled (see {@link #interimPrescriptionActive}) so it can't be closed
+         *   before the referral is resolved.</li>
+         *   <li>Final — the NAMCO/specialist doctor has shared the final prescription
+         *   and closed the visit (isPrescriptionReceived is true): the Prescription
+         *   row instead shows "Final Prescription received", the instruction line is
+         *   hidden (there's nothing left to tell the health worker to do), and End
+         *   Visit is enabled like any other completed visit.</li>
+         * </ul>
+         * Tapping the Prescription row is unchanged either way — it always opens
+         * {@link PrescriptionActivity} for the doctor's own prescription.
          */
         private void bindReferralInfo(String referralValue) {
             boolean referred = referralValue != null && !referralValue.trim().isEmpty();
+            boolean visitComplete = false;
+            if (referred) {
+                try {
+                    visitComplete = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+            boolean referralResolved = referred && visitComplete;
             // Set before the End Visit button is wired up further down in onCreate
             // (inside its own background task) — see the "end visit" block, which
             // reads this to keep the button disabled for the lifetime of the screen.
-            interimPrescriptionActive = referred && hasPrescription;
+            interimPrescriptionActive = referred && !visitComplete;
 
             if (referralInfoCard == null) return;
             if (!referred) {
@@ -980,12 +1020,27 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             referralInfoCard.setVisibility(View.VISIBLE);
             referralInfoTitle.setText(getResources().getString(R.string.referred_to_destination, destination));
             if (referralInfoInstruction != null) {
-                referralInfoInstruction.setText(getResources().getString(R.string.referral_evaluation_instruction, destination));
+                // "Please visit <destination> for further evaluation" only makes sense
+                // while still waiting on the specialist — hide it once resolved.
+                referralInfoInstruction.setVisibility(referralResolved ? View.GONE : View.VISIBLE);
+                if (!referralResolved) {
+                    referralInfoInstruction.setText(getResources().getString(R.string.referral_evaluation_instruction, destination));
+                }
+            }
+            if (referralInfoStatus != null) {
+                referralInfoStatus.setText(referralResolved
+                        ? R.string.specialist_prescription_completed
+                        : R.string.waiting_for_specialist_consultation);
             }
 
-            if (hasPrescription && presc_time != null) {
-                presc_time.setText(R.string.interim_prescription);
-                presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+            if (presc_time != null) {
+                if (referralResolved) {
+                    presc_time.setText(R.string.final_prescription_received);
+                    presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+                } else if (hasPrescription) {
+                    presc_time.setText(R.string.interim_prescription);
+                    presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+                }
             }
         }
 

@@ -301,6 +301,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             // pagination - start
             new Handler(Looper.getMainLooper()).post(() -> {    // UI Thread.
                 recent_adapter = new VisitAdapter(getActivity(), mRecentList, this);
+                recent_adapter.setShowLatestBadge(true);
                 recycler_recent.setNestedScrollingEnabled(false);
                 applyFeatureStatusToAdapters();
                 recycler_recent.setAdapter(recent_adapter);
@@ -441,6 +442,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 CustomLog.d("TAG", "resetData: " + mRecentList.size() + ", " + mOlderList.size());
 
                 recent_adapter = new VisitAdapter(getActivity(), mRecentList,this);
+                recent_adapter.setShowLatestBadge(true);
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
 
@@ -489,6 +491,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 public void run() {
                     if(recent_adapter == null){
                         recent_adapter = new VisitAdapter(getActivity(), mRecentList);
+                        recent_adapter.setShowLatestBadge(true);
                         recycler_recent.setNestedScrollingEnabled(false);
                         recycler_recent.setAdapter(recent_adapter);
                     }else {
@@ -545,6 +548,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         else
             recent_nodata.setVisibility(View.GONE);
         recent_adapter = new VisitAdapter(getActivity(), prio_todays,this);
+        recent_adapter.setShowLatestBadge(true);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -727,6 +731,14 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                try {
+                    // Referred visit whose ENCOUNTER_VISIT_COMPLETE already exists (this
+                    // query's has_visit_complete = 1) means the NAMCO/specialist doctor
+                    // shared the final prescription — surface it as "Specialist Prescription".
+                    model.setSpecialistPrescription(new EncounterDAO().fetchReferredSpecialistValue(visitID) != null);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
                 recentList.add(model);
 
                 //  }
@@ -956,6 +968,13 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                try {
+                    // See recentVisits(int,int) above for why has_visit_complete = 1 plus a
+                    // Referred Specialist obs means this is a NAMCO/specialist final prescription.
+                    model.setSpecialistPrescription(new EncounterDAO().fetchReferredSpecialistValue(visitID) != null);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
                 olderList.add(model);
                 // }
             }
