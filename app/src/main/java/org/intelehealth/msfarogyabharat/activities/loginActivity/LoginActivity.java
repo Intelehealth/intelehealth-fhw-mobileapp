@@ -270,7 +270,7 @@ public class LoginActivity extends AppCompatActivity {
 //                        startActivity(Intent.createChooser(intent, "Send Email"));
 //                        //add email function here !
 
-                        String phoneNumberWithCountryCode = "+919503692181";
+                        String phoneNumberWithCountryCode = "+919503692181"; // Sagar's number
                         String message =
                                 getString(R.string.hello_my_name_is) + sessionManager.getChwname() +
                                         /*" from " + sessionManager.getState() + */getString(R.string.i_need_assistance);
