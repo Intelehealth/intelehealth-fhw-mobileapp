@@ -45,37 +45,7 @@
         android:paddingStart="@dimen/home_location_drawable_padding"
         android:text="@string/last_sync_toolbar"
         android:textColor="@color/textColorGray"
-        android:textSize="@dimen/common_label_text_size"
-        android:visibility="gone"/>
-
-    <LinearLayout
-        android:id="@+id/layout_autoupdate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_user_location_home"
-        android:layout_marginStart="@dimen/hamburger_margin_top"
-        android:layout_marginTop="@dimen/find_patient_margin_top"
-        android:layout_toEndOf="@+id/iv_hamburger"
-
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:visibility="gone">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/image_home_toolbar_icon_marginend"
-            android:foregroundGravity="center"
-            android:src="@drawable/ic_green_dot" />
-
-        <TextView
-            android:id="@+id/tv_app_auto_sync"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Auto updating"
-            android:textColor="@color/textColorGray"
-            android:textSize="@dimen/common_label_text_size" />
-
-    </LinearLayout>
+        android:textSize="@dimen/common_label_text_size" />
 
     <LinearLayout
         android:id="@+id/ll_host"

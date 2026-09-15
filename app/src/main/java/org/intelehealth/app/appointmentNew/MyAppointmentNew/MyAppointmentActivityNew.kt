@@ -233,8 +233,7 @@ class MyAppointmentActivityNew : BaseActivity(), UpdateAppointmentsCount,
 
             R.id.bottom_nav_achievements -> return@OnItemSelectedListener true
 
-            R.id.bottom_nav_queue -> return@OnItemSelectedListener true
-//            R.id.bottom_nav_help -> return@OnItemSelectedListener true
+            R.id.bottom_nav_help -> return@OnItemSelectedListener true
 
             R.id.bottom_nav_add_patient -> return@OnItemSelectedListener true
         }

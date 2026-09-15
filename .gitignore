@@ -1,9 +1,5 @@
 *.iml
 *.json
-!react-native/package.json
-!react-native/package-lock.json
-!react-native/app.json
-!react-native/tsconfig.json
 .gradle
 /assets
 salt.env
@@ -20,8 +16,6 @@ salt.env
 /captures
 .idea/caches/build_file_checksums.ser
 .externalNativeBuild
-.cxx/
-/deps.txt
 *.jpg
 
 .idea/

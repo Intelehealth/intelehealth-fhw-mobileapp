@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Rounded lavender surface used by the "Visit Submitted" queue dialog for the
-     wait-time card and the "Back to Home" secondary button. Scales cleanly at
-     any width, unlike the fixed-size ui2_bg_button_lavendar vector. -->
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#F5F4FF" />
-    <corners android:radius="@dimen/margin_20" />
-</shape>
