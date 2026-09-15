@@ -36,6 +36,7 @@ import org.intelehealth.app.models.pushRequestApiCall.Provider;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushRequestApiCall.Visit;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -153,6 +154,9 @@ public class PatientsFrameJson {
                 patientList.add(patient);
             }
         }
+        // Only add the "addToQueue" flag to the push payload when QMS is configured.
+        boolean isQmsConfigured = new PreferenceHelper(IntelehealthApplication.getAppContext())
+                .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
             if (!visitDTO.getAttributes().isEmpty() || visitDTO.getEnddate() != null) {
@@ -163,6 +167,9 @@ public class PatientsFrameJson {
                 visit.setVisitType(visitDTO.getVisitTypeUuid());
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
+                if (isQmsConfigured) {
+                    visit.setAddToQueue(true);
+                }
                 visitList.add(visit);
             }
 
