@@ -326,4 +326,10 @@ public class DateAndTimeUtils {
         return result;
     }
 
+    public static String getDateTimeFromTimestamp(long currentTimeMillis, String format) {
+        SimpleDateFormat simpleFormat = new SimpleDateFormat(format, Locale.ENGLISH);
+        Date date = new Date(currentTimeMillis);
+        return simpleFormat.format(date);
+    }
+
 }

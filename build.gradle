@@ -1,5 +1,8 @@
 
 buildscript {
+    ext {
+        kotlin_version = '1.9.22'
+    }
     repositories {
         google()
         jcenter()
@@ -14,6 +17,7 @@ buildscript {
         // Add the following line:
         classpath 'com.google.gms:google-services:4.4.0'  // Google Services plugin
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.9'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 

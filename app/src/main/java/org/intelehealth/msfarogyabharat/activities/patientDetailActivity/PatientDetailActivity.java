@@ -19,6 +19,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -630,7 +631,7 @@ public class PatientDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        registerReceiver(reMyreceive, filter);
+        ContextCompat.registerReceiver(this,reMyreceive, filter,ContextCompat.RECEIVER_NOT_EXPORTED);
         super.onStart();
     }
 

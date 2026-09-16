@@ -22,7 +22,7 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
+import com.gun0912.tedpermission.normal.TedPermission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,7 +157,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
         };
-        TedPermission.with(this)
+        TedPermission.create()
                 .setPermissionListener(permissionlistener)
                 .setDeniedMessage(R.string.reject_permission_results)
                 .setPermissions(getVersionAccordingMediaPermission())
