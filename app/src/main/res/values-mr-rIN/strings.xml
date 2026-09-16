@@ -1000,6 +1000,7 @@
     <string name="seconds">सेकंद</string>
     <string name="no_data_added">कोणताही डेटा जोडला नाही</string>
     <string name="open_prescription">खुले प्रिस्क्रिप्शन</string>
+    <string name="prescription_was_received">पप्रिस्क्रिप्शन मिळाले आहे!</string>
     <string name="reset">रीसेट</string>
     <string name="update_button">अपडेट करा</string>
     <string name="underweight">कमी वजनाचे</string>

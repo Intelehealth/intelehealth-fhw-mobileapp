@@ -967,6 +967,7 @@
     <string name="seconds">seconds</string>
     <string name="no_data_added">No data added</string>
     <string name="open_prescription">Open Prescription</string>
+    <string name="prescription_was_received">prescription was received!</string>
     <string name="reset">Reset</string>
     <string name="update_button">Update</string>
     <string name="underweight">Underweight</string>

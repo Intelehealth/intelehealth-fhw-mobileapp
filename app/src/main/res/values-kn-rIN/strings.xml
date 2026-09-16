@@ -962,6 +962,7 @@
     <string name="seconds">ಸೆಕೆಂಡುಗಳು</string>
     <string name="no_data_added">ಯಾವುದೇ ಡೇಟಾವನ್ನು ಸೇರಿಸಲಾಗಿಲ್ಲ</string>
     <string name="open_prescription">ತೆರೆದ ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್</string>
+    <string name="prescription_was_received">ಪ್ರಿಸ್ಕ್ರಿಪ್ಷನ್ ಸ್ವೀಕರಿಸಲಾಗಿದೆ!</string>
     <string name="reset">ಮರುಹೊಂದಿಸಿ</string>
     <string name="update_button">ನವೀಕರಿಸಿ</string>
     <string name="underweight">ಕಡಿಮೆ ತೂಕ</string>

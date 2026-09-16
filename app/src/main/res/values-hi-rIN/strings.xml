@@ -943,6 +943,7 @@
     <string name="seconds">सेकंड</string>
     <string name="no_data_added">कोई डेटा नहीं जोड़ा गया</string>
     <string name="open_prescription">प्रिस्क्रिप्शन खोलो</string>
+    <string name="prescription_was_received">प्रिस्क्रिप्शन प्राप्त हुआ!</string>
     <string name="reset">रीसेट</string>
     <string name="update_button">अपडेट</string>
     <string name="underweight">अल्प-भार</string>
