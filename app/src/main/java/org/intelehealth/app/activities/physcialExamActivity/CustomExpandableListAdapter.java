@@ -176,7 +176,11 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
             ImageView imageView = convertView.findViewById(R.id.expandable_list_item_image);
 
-            convertView.setOnClickListener(v -> {
+            // Digital Stethoscope feature disabled for this branch (QA/PM requirement) —
+            // matches the other onAyuDeviceRequest() call sites in this legacy activity
+            // chain, which are already no-ops. See VisitCreationActivity#loadPhysicalExam
+            // for where the feature is disabled at its root for the current visit flow.
+            /* convertView.setOnClickListener(v -> {
                 if (node.getInputType() != null && node.getInputType().equalsIgnoreCase("ayu_device")) {
                     String patientUuid = PhysicalExamActivity.patientUuid;
                     String visitUuid = PhysicalExamActivity.visitUuid;
@@ -187,7 +191,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                             DigitalStethoscopeDialogFragment.newInstance(node.findDisplay(), patientUuid, visitUuid, encounterUuid);
                     dialog.show(((androidx.appcompat.app.AppCompatActivity) mContext).getSupportFragmentManager(), "stethoscope_popup");
                 }
-            });
+            }); */
 
             switch (callingClass) {
 

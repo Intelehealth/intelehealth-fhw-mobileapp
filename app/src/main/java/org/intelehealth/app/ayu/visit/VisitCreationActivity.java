@@ -1107,7 +1107,11 @@ public class VisitCreationActivity extends BaseActivity implements
         int winningProtocolIndex = findWinningStethoscopeProtocolIndex(perProtocolExams);
         for (int idx = 0; idx < perProtocolExams.size(); idx++) {
             for (String exam : perProtocolExams.get(idx)) {
-                if (isStethoscopeExamEntry(exam) && idx != winningProtocolIndex) continue;
+                // Digital Stethoscope feature disabled for this branch (QA/PM requirement):
+                // drop every Sound Heart/Sound Lung exam entry unconditionally instead of
+                // keeping the "winning" protocol's copy, so no protocol's physical exam
+                // list ever contains a stethoscope-driven (ayu_device) node.
+                if (isStethoscopeExamEntry(exam)) continue;
                 physicalExams.add(exam);
             }
         }
