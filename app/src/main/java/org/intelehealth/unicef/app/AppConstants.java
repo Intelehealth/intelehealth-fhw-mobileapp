@@ -130,7 +130,7 @@ public class AppConstants {
     //public static final String DEMO_URL = "demo2.intelehealth.org";
     //public static final String DEMO_URL = "demo.intelehealth.org";
 
-    public static final String DEMO_URL = "uniceftraining.intelehealth.org";
+    public static final String DEMO_URL = "intelehealth.maddevs.co";
     //public static final String DEMO_URL = "testing.intelehealth.org";
 
     public static final int INTENT_FROM_AYU_FOR_SETUP = 1;
@@ -148,4 +148,3 @@ public class AppConstants {
 
 
 }
-
