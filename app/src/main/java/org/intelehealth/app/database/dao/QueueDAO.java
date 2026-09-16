@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.QueueDTO;
+import org.intelehealth.app.models.queue.QueueItem;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -23,6 +24,23 @@ public class QueueDAO extends BaseDao{
         List<HashMap<String, Object>> queueLists = new ArrayList<>();
         for (QueueDTO queueDTO : queueDTOS) {
             queueLists.add(createQueueMap(queueDTO));
+        }
+        executeInBackground(bulkInsert(queueLists));
+        return isInserted;
+    }
+
+
+    /**
+     * Same as {@link #insertQueue(List)} but for the {@link QueueItem} model
+     * returned by the standalone {@code /api/queue/list} microservice. Kept as a
+     * separate name because {@code insertQueue(List<QueueDTO>)} and
+     * {@code insertQueue(List<QueueItem>)} would erase to the same signature.
+     */
+    public boolean insertQueueItems(List<QueueItem> queueItems) throws DAOException {
+        boolean isInserted = true;
+        List<HashMap<String, Object>> queueLists = new ArrayList<>();
+        for (QueueItem queueItem : queueItems) {
+            queueLists.add(createQueueMap(queueItem));
         }
         executeInBackground(bulkInsert(queueLists));
         return isInserted;
@@ -64,6 +82,39 @@ public class QueueDAO extends BaseDao{
         values.put("vitals", queueDTO.getVitals() != null ? queueDTO.getVitals().toString() : null);
         values.put("waitedMinutes", queueDTO.getWaitedMinutes());
         values.put("priorityScore", queueDTO.getPriorityScore());
+        return values;
+    }
+
+    public HashMap<String, Object> createQueueMap(QueueItem queueItem) {
+        HashMap<String, Object> values = new HashMap<>();
+
+        values.put("queueEntryId", queueItem.getQueueEntryId());
+        values.put("visitUuid", queueItem.getVisitUuid());
+        values.put("speciality", queueItem.getSpeciality());
+        values.put("status", queueItem.getStatus());
+        values.put("emergencyLevel", queueItem.getEmergencyLevel());
+        values.put("caseType", queueItem.getCaseType());
+        values.put("escalated", queueItem.isEscalated() ? 1 : 0);
+        values.put("position", queueItem.getPosition());
+        values.put("etaMinutes", queueItem.getEtaMinutes());
+        values.put("etaModelUsed", queueItem.getEtaModelUsed());
+        values.put("assignedDoctorUuid", queueItem.getAssignedDoctorUuid());
+        values.put("queuedAt", queueItem.getQueuedAt());
+        values.put("assignedAt", queueItem.getAssignedAt());
+        values.put("connectedAt", queueItem.getConnectedAt());
+        values.put("completedAt", queueItem.getCompletedAt());
+        values.put("requeueCount", queueItem.getRequeueCount());
+        values.put("heartbeatFlagged", queueItem.isHeartbeatFlagged() ? 1 : 0);
+        values.put("hwUserUuid", queueItem.getHwUserUuid());
+        values.put("patientUuid", queueItem.getPatientUuid());
+        values.put("locationUuid", queueItem.getLocationUuid());
+        values.put("flagged", queueItem.isFlagged() ? 1 : 0);
+        values.put("escalatedAt", queueItem.getEscalatedAt());
+        values.put("chiefComplaint", queueItem.getChiefComplaint());
+        // TODO: proper vitals parsing handled later; store raw JSON string for now (null-safe)
+        values.put("vitals", queueItem.getVitals() != null ? queueItem.getVitals().toString() : null);
+        values.put("waitedMinutes", queueItem.getWaitedMinutes());
+        values.put("priorityScore", queueItem.getPriorityScore());
         return values;
     }
 

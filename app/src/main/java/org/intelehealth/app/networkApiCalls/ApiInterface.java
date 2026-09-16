@@ -82,6 +82,18 @@ public interface ApiInterface {
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url,
                                         @Header("Authorization") String authHeader);
 
+    //For test purpose
+    // Standalone queue microservice: /api/queue/list. Runs on a different host/port
+    // than BuildConfig.SERVER_URL, so the absolute URL is supplied via @Url.
+    @GET
+    Call<QueueListResponse> QUEUE_LIST_CALL(@Url String url,
+                                            @Query("status") String status,
+                                            @Query("sort") String sort,
+                                            @Query("includeEta") boolean includeEta,
+                                            @Query("includeScore") boolean includeScore,
+                                            @Query("limit") int limit,
+                                            @Query("offset") int offset);
+
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
                                                   @Header("Authorization") String authHeader);

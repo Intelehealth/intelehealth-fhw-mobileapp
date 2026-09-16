@@ -25,6 +25,7 @@ import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
+import org.intelehealth.app.networkApiCalls.QueueListDownloader;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -121,8 +122,12 @@ public class SyncDAO {
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
             Logger.logD(TAG, "insertProviders = " + responseDTO.getData().getProviderlist().size());
 
-            queueDAO.insertQueue(responseDTO.getData().getQueuelist());
-            Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
+            // For now the queue is fetched from the standalone /api/queue/list service and
+            // inserted into tbl_queue here, so the data is refreshed on every pull-sync.
+            // Switch back to the line below once pulldata starts returning the queue list.
+            // queueDAO.insertQueue(responseDTO.getData().getQueuelist());
+            // Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
+            new QueueListDownloader().fetchAndInsert();
 
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
