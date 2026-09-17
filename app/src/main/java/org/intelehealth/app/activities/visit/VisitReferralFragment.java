@@ -9,10 +9,12 @@ import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -71,6 +73,10 @@ public class VisitReferralFragment extends Fragment {
     private TextView noDataText;
     private RecyclerView recyclerReferrals;
     private VisitStatusAdapter adapter;
+    private androidx.appcompat.widget.SearchView searchviewReferral;
+    private ImageView searchCloseButton;
+    /** Mirrors VisitPendingFragment/VisitReceivedFragment's own searchQuery field. */
+    private String searchQuery = "";
 
     /** Extra per-row data {@link VisitStatusAdapter.VisitStatusItem} doesn't carry, keyed by visitUuid. */
     private static class ReferralMeta {
@@ -108,7 +114,47 @@ public class VisitReferralFragment extends Fragment {
         adapter = new VisitStatusAdapter(requireContext(), new ArrayList<>(), this::onReferralClicked);
         recyclerReferrals.setAdapter(adapter);
 
+        setupSearch(view);
+
         loadReferralsInBackground();
+    }
+
+    /**
+     * Same search behavior as VisitPendingFragment/VisitReceivedFragment's own
+     * search boxes: submitting a query (search/done key on the keyboard) filters
+     * the list by patient name; clearing it via the SearchView's close icon
+     * reloads the unfiltered list.
+     */
+    private void setupSearch(View view) {
+        searchviewReferral = view.findViewById(R.id.searchview_referral);
+        searchCloseButton = searchviewReferral.findViewById(androidx.appcompat.R.id.search_close_btn);
+
+        searchviewReferral.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (!query.isEmpty()) {
+                    searchQuery = query.trim();
+                    loadReferralsInBackground();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.isEmpty()) {
+                    searchviewReferral.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.blue_border_bg));
+                } else {
+                    searchviewReferral.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.ui2_common_input_bg));
+                }
+                return false;
+            }
+        });
+
+        searchCloseButton.setOnClickListener(v -> {
+            searchQuery = "";
+            searchviewReferral.setQuery("", false);
+            loadReferralsInBackground();
+        });
     }
 
     private void loadReferralsInBackground() {
@@ -129,7 +175,10 @@ public class VisitReferralFragment extends Fragment {
         recyclerReferrals.setVisibility(hasReferrals ? View.VISIBLE : View.GONE);
         noDataText.setVisibility(hasReferrals ? View.GONE : View.VISIBLE);
 
-        if (getActivity() instanceof VisitActivity) {
+        // Matches VisitPendingFragment/VisitReceivedFragment's own search: the tab
+        // header count ("Referrals (N)") stays the true total and isn't touched
+        // while a search filter is narrowing what's shown in the list below.
+        if (searchQuery.isEmpty() && getActivity() instanceof VisitActivity) {
             ((VisitActivity) getActivity()).updateReferralCount(referrals.size());
         }
     }
@@ -191,6 +240,20 @@ public class VisitReferralFragment extends Fragment {
         metaByVisit.clear();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
 
+        // Same patient_name_new + LIKE filter convention VisitPendingFragment/
+        // VisitReceivedFragment use for their own search boxes, applied only when
+        // there's an active search query.
+        String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
+        List<String> args = new ArrayList<>();
+        args.add(UuidDictionary.ENCOUNTER_VISIT_NOTE);
+        args.add(UuidDictionary.REFERRED_SPECIALIST);
+        args.add(UuidDictionary.ENCOUNTER_VISIT_COMPLETE);
+        String searchClause = "";
+        if (!searchQuery.isEmpty()) {
+            searchClause = "and (patient_name_new LIKE ?) ";
+            args.add("%" + searchQuery + "%");
+        }
+
         // Excludes visits that already have an ENCOUNTER_VISIT_COMPLETE encounter
         // (i.e. the NAMCO/specialist doctor has already shared the final
         // prescription and closed the visit) — those move on to the Received tab
@@ -198,7 +261,9 @@ public class VisitReferralFragment extends Fragment {
         // staying listed here indefinitely.
         Cursor cursor = db.rawQuery(
                 "select p.uuid as patientuuid, p.openmrs_id, p.patient_photo, p.first_name, " +
-                        "p.middle_name, p.last_name, p.gender, p.date_of_birth, " +
+                        "p.middle_name, p.last_name, " +
+                        "p.first_name || " + middleName + " || p.last_name as patient_name_new, " +
+                        "p.gender, p.date_of_birth, " +
                         "v.uuid as visituuid, v.startdate, o.value as referral_value, " +
                         "o.obsservermodifieddate " +
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o " +
@@ -211,9 +276,10 @@ public class VisitReferralFragment extends Fragment {
                         "select 1 from tbl_encounter ec where ec.visituuid = v.uuid " +
                         "and ec.encounter_type_uuid = ?" +
                         ") " +
+                        searchClause +
                         "group by v.uuid " +
                         "order by o.obsservermodifieddate DESC",
-                new String[]{UuidDictionary.ENCOUNTER_VISIT_NOTE, UuidDictionary.REFERRED_SPECIALIST, UuidDictionary.ENCOUNTER_VISIT_COMPLETE});
+                args.toArray(new String[0]));
 
         if (cursor.moveToFirst()) {
             do {
