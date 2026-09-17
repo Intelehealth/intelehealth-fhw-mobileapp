@@ -803,15 +803,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        // QMS on → Queue tab; QMS off → Help tab (they share a slot).
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, true);
-        boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
+        updateQMSBottomNavigation();
         //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
         setLocale(HomeScreenActivity_New.this);
 
+    }
+
+    private void updateQMSBottomNavigation() {
+        // QMS on → Queue tab; QMS off → Help tab (they share a slot).
+        boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
     }
 
     /**
@@ -1133,6 +1136,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
+        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, activeStatus.getActiveQms());
+        if(bottomNav != null)
+            updateQMSBottomNavigation();
     }
 
     public void selectDrawerItem(MenuItem menuItem) {

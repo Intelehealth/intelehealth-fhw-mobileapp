@@ -54,4 +54,7 @@ data class ConfigResponse(
     val patientVisitSection: List<ActiveSection>,
     @SerializedName("home_screen")
     val homeScreen: List<ActiveSection>,
+
+    @SerializedName("qms")
+    var activeQms: Boolean = false,
 )
