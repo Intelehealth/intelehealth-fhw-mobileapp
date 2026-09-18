@@ -208,7 +208,7 @@ class ShowPrescriptionDataPdfShareDialog(
         job.cancel()
     }
 
-    private fun buildAndSavePrescription(
+    private suspend fun buildAndSavePrescription(
         fileName: File,
     ): PrescriptionWithPDFBuilder {
         val drDetails= getDrDetails()

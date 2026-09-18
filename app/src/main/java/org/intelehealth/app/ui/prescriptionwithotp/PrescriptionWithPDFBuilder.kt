@@ -30,12 +30,15 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.LayoutPrescriptionPdfBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import java.io.File
 import java.io.FileOutputStream
+import java.net.URL
 import android.graphics.BitmapFactory
 import android.util.Base64
 
@@ -198,7 +201,7 @@ class PrescriptionWithPDFBuilder(
         binding.tvPatientDetails.text = patientData
     }
 
-    fun createSignatureBitmap(drDetails: ClsDoctorDetails) {
+    suspend fun createSignatureBitmap(drDetails: ClsDoctorDetails) {
       /*  val drSignTextView = binding.drSignTextview
        val font =  getFontFamily(fontFamily)
         val typeface = try {
@@ -222,9 +225,10 @@ class PrescriptionWithPDFBuilder(
         )
         drSignTextView.layout(0, 0, drSignTextView.measuredWidth, drSignTextView.measuredHeight)
         */
-        decodeBase64ToBitmap(drDetails.signature)?.let { bitmap ->
+        val bitmap = decodeSignatureBitmap(drDetails.signature)
+        if (bitmap != null) {
             binding.imageviewDrSign.setImageBitmap(bitmap)
-        } ?: run {
+        } else {
             binding.imageviewDrSign.setImageDrawable(null)
         }
 
@@ -242,6 +246,44 @@ class PrescriptionWithPDFBuilder(
         return fontFamilyFile
 
     }
+
+    /**
+     * The doctor's signature is stored two different ways depending on how/when
+     * it was captured on the doctor portal - confirmed against real synced data:
+     * either a plain image URL (https://...sign.png, the common case) or a
+     * data:image/...;base64,<data> URI. decodeBase64ToBitmap below only ever
+     * handled the second - a plain URL doesn't contain "base64," so the whole
+     * URL string was being fed straight into Base64.decode, which can't produce
+     * a real image from it. Fetches the URL case over the network (IO dispatcher
+     * - this is called from a coroutine, never the main thread) instead of
+     * treating it as inline data. A very small number of records observed on
+     * device carry a data:text/html;base64,... value instead of an image -
+     * that's a doctor-portal signature-capture bug with nothing recoverable on
+     * the mobile side, so it's deliberately left showing no signature rather
+     * than attempting to decode HTML markup as a bitmap.
+     */
+    private suspend fun decodeSignatureBitmap(signatureValue: String): Bitmap? {
+        if (signatureValue.isBlank()) return null
+        return withContext(Dispatchers.IO) {
+            try {
+                when {
+                    signatureValue.startsWith("http://", ignoreCase = true) ||
+                            signatureValue.startsWith("https://", ignoreCase = true) -> {
+                        URL(signatureValue).openStream().use { BitmapFactory.decodeStream(it) }
+                    }
+                    signatureValue.contains("base64,") &&
+                            signatureValue.substringBefore("base64,").contains("image", ignoreCase = true) -> {
+                        decodeBase64ToBitmap(signatureValue)
+                    }
+                    else -> null
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+
     fun decodeBase64ToBitmap(base64String: String): Bitmap? {
         return try {
             val base64Cleaned = if (base64String.contains("base64,")) {
