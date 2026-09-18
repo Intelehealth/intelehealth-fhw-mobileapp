@@ -16,10 +16,12 @@ import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.FollowUpNotificationData;
 import org.intelehealth.app.models.NotificationModel;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
@@ -668,6 +670,124 @@ public class EncounterDAO extends BaseDao {
         }
         String visitNoteEncounterUuid = getEmergencyEncounters(visitUuid, getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
         return (visitNoteEncounterUuid != null && !visitNoteEncounterUuid.isEmpty()) ? visitNoteEncounterUuid : null;
+    }
+
+    /**
+     * Fallback doctor identity for a visit that hasn't been completed yet — e.g.
+     * an interim/referred prescription, before the NAMCO/specialist doctor closes
+     * the visit. The doctor-details JSON snapshot every other caller reads (see
+     * ObsDAO#fetchDrDetailsFromLocalDb) is only ever written onto the
+     * ENCOUNTER_VISIT_COMPLETE encounter, i.e. at completion time, keyed to THIS
+     * visit — so there's nothing there yet. But that snapshot is really just the
+     * doctor's own (fairly static) profile, and this same doctor has typically
+     * already completed other visits whose ENCOUNTER_VISIT_COMPLETE encounter
+     * carries that exact snapshot (confirmed on-device: the same provider_uuid
+     * repeats across many completed visits, JSON identical). So this first finds
+     * the GP's provider_uuid off their ENCOUNTER_VISIT_NOTE encounter for THIS
+     * visit, then looks up their most recent snapshot from ANY OTHER completed
+     * visit — giving the real qualification/specialization/registration
+     * number/signature instead of a stub. Only if this doctor has never
+     * completed any visit yet (so no snapshot exists anywhere locally) does it
+     * fall back to just their name from the local provider record. Returns null
+     * if even that isn't available.
+     */
+    public ClsDoctorDetails fetchInterimDoctorDetails(String visitUuid) throws DAOException {
+        String visitNoteEncounterUuid = getEmergencyEncounters(visitUuid, getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
+        if (visitNoteEncounterUuid == null || visitNoteEncounterUuid.isEmpty()) return null;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String providerUuid = null;
+        try {
+            Cursor cursor = db.rawQuery("SELECT provider_uuid FROM tbl_encounter WHERE uuid = ?",
+                    new String[]{visitNoteEncounterUuid});
+            if (cursor.moveToFirst()) {
+                providerUuid = cursor.getString(cursor.getColumnIndexOrThrow("provider_uuid"));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        if (providerUuid == null || providerUuid.isEmpty()) return null;
+
+        ClsDoctorDetails fromSnapshot = fetchDoctorDetailsSnapshotByProvider(providerUuid);
+        if (fromSnapshot != null) {
+            blankOutNullFields(fromSnapshot, providerUuid);
+            return fromSnapshot;
+        }
+
+        ProviderDTO providerDTO = new ProviderDAO().getProviderInfo(providerUuid);
+        if (providerDTO == null) return null;
+
+        String givenName = providerDTO.getGivenName() != null ? providerDTO.getGivenName() : "";
+        String familyName = providerDTO.getFamilyName() != null ? providerDTO.getFamilyName() : "";
+        String name = (givenName + " " + familyName).trim();
+        if (name.isEmpty()) return null;
+
+        ClsDoctorDetails details = new ClsDoctorDetails();
+        details.setUuid(providerUuid);
+        details.setName(name);
+        blankOutNullFields(details, providerUuid);
+        return details;
+    }
+
+    /**
+     * This doctor's own doctor-details JSON — the same shape/value
+     * ObsDAO#fetchDrDetailsFromLocalDb reads for a completed visit — from
+     * whichever OTHER visit they most recently completed, matched by
+     * ENCOUNTER_VISIT_COMPLETE's provider_uuid rather than by visit. Null if
+     * this doctor has never completed a visit (nothing to find yet).
+     */
+    private ClsDoctorDetails fetchDoctorDetailsSnapshotByProvider(String providerUuid) throws DAOException {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String json = null;
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT o.value FROM tbl_encounter e, tbl_obs o " +
+                            "WHERE e.encounter_type_uuid = ? AND e.provider_uuid = ? AND e.uuid = o.encounteruuid " +
+                            "AND o.voided = 0 AND o.value IS NOT NULL AND trim(o.value) <> '' " +
+                            "ORDER BY e.modified_date DESC LIMIT 1",
+                    new String[]{UuidDictionary.ENCOUNTER_VISIT_COMPLETE, providerUuid});
+            if (cursor.moveToFirst()) {
+                json = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        if (json == null || json.isEmpty() || json.equalsIgnoreCase("null")) return null;
+        try {
+            return new Gson().fromJson(json, ClsDoctorDetails.class);
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
+    }
+
+    /**
+     * Consumers of ClsDoctorDetails (PrintViewPrescription, PrescriptionWithPDFBuilder
+     * #createSignatureBitmap) were written assuming every field of the completion-
+     * snapshot JSON is always present, and being Kotlin, either crash on a null
+     * String parameter (createSignatureBitmap's Base64 decode of the signature) or
+     * render the literal text "null" (string-template interpolation) for any field
+     * that isn't — confirmed against both on a real interim visit. A snapshot found
+     * by provider should normally have every field already, but this guarantees it
+     * regardless (e.g. an older/partial snapshot). uuid/name are left as already set.
+     */
+    private void blankOutNullFields(ClsDoctorDetails details, String providerUuid) {
+        if (details.getUuid() == null) details.setUuid(providerUuid);
+        if (details.getName() == null) details.setName("");
+        if (details.getQualification() == null) details.setQualification("");
+        if (details.getSpecialization() == null) details.setSpecialization("");
+        if (details.getRegistrationNumber() == null) details.setRegistrationNumber("");
+        if (details.getWhatsapp() == null) details.setWhatsapp("");
+        if (details.getPhoneNumber() == null) details.setPhoneNumber("");
+        if (details.getAddress() == null) details.setAddress("");
+        if (details.getEmailId() == null) details.setEmailId("");
+        if (details.getFontOfSign() == null) details.setFontOfSign("");
+        if (details.getTextOfSign() == null) details.setTextOfSign("");
+        if (details.getSignature() == null) details.setSignature("");
     }
 
     /**

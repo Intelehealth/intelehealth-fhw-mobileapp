@@ -511,6 +511,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // dr details - start
         String drDetails = fetchDrDetailsFromLocalDb(visitID);
+        if (drDetails == null || drDetails.isEmpty() || drDetails.equalsIgnoreCase("null")) {
+            // The doctor-details snapshot above is only ever written at visit
+            // completion, so an interim/referred prescription (visit not yet
+            // completed) legitimately has none yet — fall back to the GP's own
+            // identity instead of failing outright.
+            drDetails = fetchInterimDoctorDetailsJson(visitID);
+        }
         parseDoctorDetails(drDetails);
         // dr details - end
 
@@ -1412,6 +1419,23 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     // parse dr details - start
     ClsDoctorDetails details;
 
+    /**
+     * Serialized fallback used when the visit hasn't been completed yet (no
+     * ENCOUNTER_VISIT_COMPLETE doctor-details snapshot to read) — e.g. an
+     * interim/referred prescription. Returns JSON so callers can keep feeding it
+     * straight into {@link #parseDoctorDetails(String)} unchanged; null if even
+     * the fallback has nothing (no visit-note encounter/provider on file yet).
+     */
+    private String fetchInterimDoctorDetailsJson(String visitId) {
+        try {
+            ClsDoctorDetails fallback = new EncounterDAO().fetchInterimDoctorDetails(visitId);
+            return fallback != null ? new Gson().toJson(fallback) : null;
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
+    }
+
     private void parseDoctorDetails(String dbValue) {
         if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
             Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
@@ -2114,6 +2138,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // matching the lookup in ObsDAO.fetchDrDetailsFromLocalDb - calling
         // parseDoctorDetails() per-row instead overwrote dr_speciality/notes with
         // unrelated obs values (e.g. after a refresh), intermittently blanking them.
+        if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
+            // Same interim-visit fallback as the initial load above.
+            dbValue = fetchInterimDoctorDetailsJson(visitID);
+        }
         parseDoctorDetails(dbValue);
     }
     // downlaod dr - end

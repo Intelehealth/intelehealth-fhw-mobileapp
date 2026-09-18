@@ -104,6 +104,20 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         this.prescriptionLoadingListeners = prescriptionLoadingListeners;
     }
 
+    /**
+     * Required by the Fragment framework: after process death (e.g. the OS
+     * reclaims memory while the user is away in a share-sheet/WhatsApp for
+     * Share Prescription), FragmentManager restores this fragment by calling
+     * this constructor via reflection — a fragment with only a parameterized
+     * constructor crashes with "could not find Fragment constructor" the
+     * moment restoration is attempted. prescriptionLoadingListeners is
+     * re-resolved from the host Activity in onAttach() below for this path;
+     * VisitPagerAdapter's normal (non-restoration) creation still explicitly
+     * passes it via the constructor above, unchanged.
+     */
+    public VisitReceivedFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -1084,6 +1098,11 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        if (prescriptionLoadingListeners == null && context instanceof PrescriptionLoadingListeners) {
+            // Only reached when this fragment was recreated via the no-arg
+            // constructor above (state restoration) instead of VisitPagerAdapter.
+            prescriptionLoadingListeners = (PrescriptionLoadingListeners) context;
+        }
         if (context instanceof VisitActivity) {
             ((VisitActivity) context).setFeatureStatusListener(new VisitActivity.OnFeatureStatusReadyListener() {
                 @Override

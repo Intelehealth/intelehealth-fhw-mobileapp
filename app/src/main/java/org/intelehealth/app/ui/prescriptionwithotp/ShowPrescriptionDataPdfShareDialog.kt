@@ -18,6 +18,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -31,6 +32,7 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.VisitAttributeListDAO
+import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.DialogShareprescBinding
@@ -47,6 +49,7 @@ import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import org.intelehealth.app.utilities.UrlModifiers
+import org.intelehealth.app.utilities.exception.DAOException
 import timber.log.Timber
 import java.io.File
 import java.text.ParseException
@@ -350,10 +353,25 @@ class ShowPrescriptionDataPdfShareDialog(
 
     private fun getDrDetails(): ClsDoctorDetails? {
         var doctorDetailsModel: ClsDoctorDetails? = null
-        val drDetails: String = ObsDAO.fetchDrDetailsFromLocalDb(visitUuid)
+        // Was declared as non-null String here, which made Kotlin throw immediately
+        // (crashing Share Prescription) whenever fetchDrDetailsFromLocalDb legitimately
+        // returned null - which it does for any visit not completed yet (e.g. an
+        // interim/referred prescription), since that doctor-details snapshot is only
+        // ever written at completion time. Declaring it nullable lets the null-handling
+        // below (which was already written to expect this) actually run.
+        val drDetails: String? = ObsDAO.fetchDrDetailsFromLocalDb(visitUuid)
 
         if (drDetails.isNullOrEmpty() || drDetails.equals("null", ignoreCase = true)) {
-            Toast.makeText(activity, activity.getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show()
+            // Fall back to the GP's own identity (from their ENCOUNTER_VISIT_NOTE
+            // encounter) instead of failing outright; only warn if that's unavailable too.
+            try {
+                doctorDetailsModel = EncounterDAO().fetchInterimDoctorDetails(visitUuid)
+            } catch (e: DAOException) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+            }
+            if (doctorDetailsModel == null) {
+                Toast.makeText(activity, activity.getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show()
+            }
         } else {
             val gson = Gson()
             doctorDetailsModel = gson.fromJson(drDetails, ClsDoctorDetails::class.java)
