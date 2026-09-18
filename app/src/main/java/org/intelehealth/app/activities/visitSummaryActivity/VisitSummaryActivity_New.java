@@ -3307,11 +3307,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         positive_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
-            // Disable immediately on confirm so a slow tap/double-tap (or the
-            // 4s delay before the actual sync call below) can't fire a
-            // second visitUploadBlock() and send the same visit twice.
-            uploadButton.setEnabled(false);
-            uploadButton.setAlpha(0.5f);
             visitUploadBlock();
         });
 
