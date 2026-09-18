@@ -1037,9 +1037,31 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 if (referralResolved) {
                     presc_time.setText(R.string.final_prescription_received);
                     presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
-                } else if (hasPrescription) {
+                } else {
+                    // Interim state (referred, not yet complete) - independent of the entry point's hasPrescription extra.
                     presc_time.setText(R.string.interim_prescription);
                     presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+                    if (presc_arrowRight != null) presc_arrowRight.setVisibility(View.VISIBLE);
+                    if (presc_relative != null) {
+                        presc_relative.setClickable(true);
+                        // Re-attach the click listener - the one in the hasPrescription branch above doesn't run for this case.
+                        presc_relative.setOnClickListener(v -> {
+                            Intent in = new Intent(this, PrescriptionActivity.class);
+                            in.putExtra("patientname", patientName);
+                            in.putExtra("patientUuid", patientUuid);
+                            in.putExtra("patient_photo", patient_photo_path);
+                            in.putExtra("visit_ID", visitID);
+                            in.putExtra("visit_startDate", visit_startDate);
+                            in.putExtra("gender", gender);
+                            in.putExtra("encounterUuidVitals", vitalsUUID);
+                            in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+                            in.putExtra("age", age);
+                            in.putExtra("tag", "VisitDetailsActivity");
+                            in.putExtra("followupDate", followUpDate_format);
+                            in.putExtra("openmrsID", openmrsID);
+                            startActivity(in);
+                        });
+                    }
                 }
             }
         }
