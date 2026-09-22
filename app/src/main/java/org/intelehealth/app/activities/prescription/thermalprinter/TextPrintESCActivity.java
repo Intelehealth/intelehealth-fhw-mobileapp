@@ -108,6 +108,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
     private TextView drSignTextview;
     private String base64String;
     private ImageView imgDrSign;
+    private volatile Bitmap signatureBitmap;
     private ActivityTextPrintEscactivityBinding binding;
 
     @Override
@@ -221,10 +222,7 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
                 fontFamilyFile = "fonts/Almondita.ttf";
             }
         }
-        Bitmap bitmap = setBase64ToImageView();
-        if(bitmap!=null){
-            imgDrSign.setImageBitmap(bitmap);
-        }
+        loadSignatureBitmap();
         /*if (fontFamily != null) {
             Typeface face = Typeface.createFromAsset(getAssets(), fontFamilyFile);
             drSignTextview.setTypeface(face);
@@ -684,18 +682,63 @@ public class TextPrintESCActivity extends BaseActivity implements View.OnClickLi
         return bitmap;
     }
 
-    public Bitmap setBase64ToImageView() {
+    /**
+     * The doctor's signature is stored either as a plain image URL
+     * (https://...sign.png) or a data:image/...;base64,... URI - the same dual
+     * format handled in PrescriptionWithPDFBuilder.decodeSignatureBitmap() for
+     * the WhatsApp share flow. This used to only handle the base64 case, so a
+     * URL value made Base64.decode throw, silently swallowed, leaving no
+     * signature. The URL case needs a network fetch, so it's done off the main
+     * thread (escPrint()'s printing path runs via a main-thread Handler and
+     * would otherwise crash with NetworkOnMainThreadException); the result is
+     * cached in signatureBitmap for both the on-screen preview and the actual
+     * ESC/POS print bitmap (generateWrappedBitmap) to reuse.
+     */
+    private void loadSignatureBitmap() {
+        if (base64String == null || base64String.isEmpty()) return;
+        if (base64String.startsWith("http://") || base64String.startsWith("https://")) {
+            new Thread(() -> {
+                Bitmap bitmap;
+                try (java.io.InputStream in = new java.net.URL(base64String).openStream()) {
+                    bitmap = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    bitmap = null;
+                }
+                signatureBitmap = bitmap;
+                if (bitmap != null) {
+                    final Bitmap loadedBitmap = bitmap;
+                    runOnUiThread(() -> imgDrSign.setImageBitmap(loadedBitmap));
+                }
+            }).start();
+        } else if (isImageDataUri(base64String)) {
+            signatureBitmap = decodeBase64Bitmap(base64String);
+            if (signatureBitmap != null) {
+                imgDrSign.setImageBitmap(signatureBitmap);
+            }
+        }
+    }
+
+    private boolean isImageDataUri(String value) {
+        int index = value.indexOf("base64,");
+        return index >= 0 && value.substring(0, index).toLowerCase(java.util.Locale.ROOT).contains("image");
+    }
+
+    private Bitmap decodeBase64Bitmap(String value) {
         try {
-            // Remove "data:image..." prefix if it exists
-            String base64Cleaned = base64String.contains("base64,")
-                    ? base64String.substring(base64String.indexOf("base64,") + 7)
-                    : base64String;
+            String base64Cleaned = value.contains("base64,")
+                    ? value.substring(value.indexOf("base64,") + 7)
+                    : value;
             byte[] decodedBytes = Base64.decode(base64Cleaned, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.length);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public Bitmap setBase64ToImageView() {
+        return signatureBitmap;
     }
 
 }

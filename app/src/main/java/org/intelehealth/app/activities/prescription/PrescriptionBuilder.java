@@ -1102,7 +1102,20 @@ public class PrescriptionBuilder {
         String closingDivTag = "</div>";
         String openingSignatureDivTag = "<div class=\"signature w-100\">";
         String floatRightDivOpeningTag = "<div class=\"float-right my-4\">";
-        String imageTag = "<img class=\"signature\" alt=\"\" src=\"" + details.getSignature() + "\"/>";
+        // details.getSignature() is either a plain image URL or a
+        // data:image/...;base64,... URI - a WebView's <img src> renders both
+        // natively without needing the URL-fetch/base64-decode split required
+        // by the native Bitmap-based print flows (TextPrintESCActivity,
+        // PrescriptionWithPDFBuilder). What was missing here was a null/format
+        // guard: a null or blank signature produced a literal src="null" or
+        // src="" (a broken-image icon instead of no image), and a handful of
+        // doctor-portal records are known to carry a data:text/html;base64,...
+        // capture bug instead of a real image - render nothing for those too.
+        String signature = details.getSignature();
+        boolean hasRenderableSignature = signature != null && !signature.trim().isEmpty()
+                && !signature.equalsIgnoreCase("null")
+                && (signature.startsWith("http://") || signature.startsWith("https://") || isImageDataUri(signature));
+        String imageTag = hasRenderableSignature ? "<img class=\"signature\" alt=\"\" src=\"" + signature + "\"/>" : "";
         String divClassTitleNameTag = "<div class=\"title-name\">" + details.getName() + closingDivTag;
         String divClassTitleSpecializationTag = "<div class=\"title\">" + details.getSpecialization() + closingDivTag;
         String divClassRegistrationTag = "<div class=\"sub-title\">" + "Registration No: " + details.getRegistrationNumber() + closingDivTag;
@@ -1117,5 +1130,10 @@ public class PrescriptionBuilder {
                 + closingDivTag;
 
         return finalDoctorSignatureString;
+    }
+
+    private boolean isImageDataUri(String value) {
+        int index = value.indexOf("base64,");
+        return index >= 0 && value.substring(0, index).toLowerCase(java.util.Locale.ROOT).contains("image");
     }
 }
