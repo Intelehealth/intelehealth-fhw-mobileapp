@@ -49,6 +49,10 @@ public class QueueItem {
     @Expose
     private int etaMinutes;
 
+    @SerializedName("etaAt")
+    @Expose
+    private String etaAt;
+
     @SerializedName("etaModelUsed")
     @Expose
     private String etaModelUsed;
@@ -151,6 +155,14 @@ public class QueueItem {
 
     public int getEtaMinutes() {
         return etaMinutes;
+    }
+
+    public String getEtaAt() {
+        return etaAt;
+    }
+
+    public void setEtaAt(String etaAt) {
+        this.etaAt = etaAt;
     }
 
     public String getEtaModelUsed() {

@@ -28,9 +28,19 @@ export interface QueueListItemProps {
   position: number;
   // Visual + semantic state of the row.
   status: QueueStatus;
-  // Pre-formatted time string, e.g. "04:32". Rendered as the elapsed call
-  // "Duration" for onCall, otherwise as the queue "Wait time".
+  // Pre-formatted time string, e.g. "04:32". Used as the initial paint and as
+  // the fallback when no live timestamp is present. When `etaAt`/`connectedAt`
+  // are supplied, the row ticks its own value from those instead.
   time: string;
+  // ISO-8601 instant the patient is expected to be seen; drives the live
+  // "Wait time" countdown for nextInQueue/waiting rows.
+  etaAt?: string;
+  // ISO-8601 instant the call connected; drives the live "Duration" count-up
+  // for onCall rows.
+  connectedAt?: string;
+  // Current time (ms since epoch) supplied by the screen's shared 1s ticker.
+  // When present, the row recomputes its time string from etaAt/connectedAt.
+  now?: number;
   // Optional avatar image URL.
   avatarUrl?: string;
   // Fired when the row is tapped.

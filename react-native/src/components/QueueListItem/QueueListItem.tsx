@@ -58,6 +58,41 @@ const STATUS_CONFIG: Record<QueueStatus, StatusConfig> = {
   },
 };
 
+// Milliseconds -> "MM:SS" (minutes may exceed 99), clamped at zero.
+function formatMmSs(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const mm = Math.floor(totalSeconds / 60);
+  const ss = totalSeconds % 60;
+  return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+}
+
+/**
+ * Resolves the footer time string. When a live instant is available it is
+ * recomputed from `now` each tick — onCall counts up from `connectedAt`,
+ * next/waiting counts down to `etaAt`. Otherwise the pre-formatted `fallback`
+ * (from native) is used. Parsing failures also fall back.
+ */
+function computeDisplayTime(
+  status: QueueStatus,
+  etaAt: string | undefined,
+  connectedAt: string | undefined,
+  now: number | undefined,
+  fallback: string,
+): string {
+  const nowMs = now ?? Date.now();
+  const instant = status === 'onCall' ? connectedAt : etaAt;
+  if (!instant) {
+    return fallback;
+  }
+  const targetMs = Date.parse(instant);
+  if (Number.isNaN(targetMs)) {
+    return fallback;
+  }
+  // onCall: elapsed = now - connectedAt. next/waiting: remaining = etaAt - now.
+  const deltaMs = status === 'onCall' ? nowMs - targetMs : targetMs - nowMs;
+  return formatMmSs(deltaMs);
+}
+
 /**
  * A single patient row for the Patient Queue list. The surface, border and
  * status badge are driven by `status`; drop it straight into a FlatList as the
@@ -74,12 +109,27 @@ export default function QueueListItem(props: QueueListItemProps) {
     position,
     status,
     time,
+    etaAt,
+    connectedAt,
+    now,
     avatarUrl,
     onPress,
     style,
   } = props;
 
   const config = STATUS_CONFIG[status];
+
+  // Live time value. onCall counts UP from connectedAt (elapsed), everyone else
+  // counts DOWN to etaAt (remaining). Recomputed from the absolute instant on
+  // every `now` tick (self-correcting after background), and falls back to the
+  // native-formatted `time` when no timestamp is present.
+  const displayTime = computeDisplayTime(status, etaAt, connectedAt, now, time);
+
+  // Fall back to the native `avatar1` drawable when the patient has no synced
+  // photo. On Android, RN's <Image> resolves a bare `{uri}` (no path/scheme) to
+  // a drawable of that name — reusing the same placeholder the native patient
+  // lists use, so nothing extra is bundled here.
+  const avatarSource = avatarUrl ? { uri: avatarUrl } : { uri: 'avatar1' };
 
   // Collapse overflow symptoms into a "+N More" chip, matching the design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
@@ -91,17 +141,18 @@ export default function QueueListItem(props: QueueListItemProps) {
       activeOpacity={onPress ? 0.7 : 1}
       onPress={onPress}
       disabled={!onPress}>
-      {/* Header: queue number + status badge */}
-      <View style={styles.headerRow}>
+      {/* Header (queue number + status badge) hidden for now; the status badge
+          now lives at the end of the profile row instead. */}
+      {/* <View style={styles.headerRow}>
         <Text style={styles.queueNumber}>{queueNumber}</Text>
         <View style={[styles.badge, config.badge]}>
           <Text style={[styles.badgeText, config.badgeText]}>{config.label}</Text>
         </View>
-      </View>
+      </View> */}
 
-      {/* Profile: avatar + name / meta / id */}
+      {/* Profile: avatar + name / meta / id + status badge at the end */}
       <View style={styles.profileContainer}>
-        <Image source={{ uri: avatarUrl }} style={styles.avatar} />
+        <Image source={avatarSource} style={styles.avatar} />
         <View style={styles.profileDetails}>
           <Text style={styles.profileName}>
             {patientName}{' '}
@@ -110,6 +161,9 @@ export default function QueueListItem(props: QueueListItemProps) {
             </Text>
           </Text>
           <Text style={styles.profileId}>{patientId}</Text>
+        </View>
+        <View style={[styles.badge, config.badge, styles.profileBadge]}>
+          <Text style={[styles.badgeText, config.badgeText]}>{config.label}</Text>
         </View>
       </View>
 
@@ -129,12 +183,17 @@ export default function QueueListItem(props: QueueListItemProps) {
 
       {/* Footer: position + status-specific time metric */}
       <View style={styles.footerRow}>
-        <Text style={styles.footerMeta}>
+        {/* Position hidden for now. */}
+        {/* <Text style={styles.footerMeta}>
           Position <Text style={styles.boldText}>#{position}</Text>
-        </Text>
-        <Text style={styles.footerMeta}>
-          {config.timeLabel} <Text style={styles.boldText}>{time}</Text>
-        </Text>
+        </Text> */}
+        {/* Clock icon + time metric, pinned to the right end. */}
+        <View style={styles.timeMetric}>
+          <Image source={{ uri: 'ic_queue_clock' }} style={styles.clockIcon} />
+          <Text style={styles.footerMeta}>
+            {config.timeLabel} <Text style={styles.boldText}>{displayTime}</Text>
+          </Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
@@ -181,7 +240,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.avatarPlaceholder,
   },
   profileDetails: {
+    flex: 1,
     marginLeft: 12,
+  },
+  // Keep the status badge pinned to the top of the profile row so it stays put
+  // even when the patient name wraps to a second line.
+  profileBadge: {
+    alignSelf: 'flex-start',
   },
   profileName: {
     fontFamily: FontFamily.lato,
@@ -223,11 +288,24 @@ const styles = StyleSheet.create({
   },
   footerRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // Only the time metric remains (position is hidden), so keep it at the end.
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    borderTopWidth: 1,
-    borderTopColor: Colors.divider,
-    paddingTop: 12,
+    // Divider line above the footer hidden for now (position is hidden too).
+    // borderTopWidth: 1,
+    // borderTopColor: Colors.divider,
+    // paddingTop: 12,
+  },
+  // Clock icon + time text, laid out inline with the icon leading.
+  // Gap between icon and text is 11px per the Figma footer-row spec.
+  timeMetric: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  clockIcon: {
+    width: 15,
+    height: 15,
   },
   footerMeta: {
     fontFamily: FontFamily.lato,

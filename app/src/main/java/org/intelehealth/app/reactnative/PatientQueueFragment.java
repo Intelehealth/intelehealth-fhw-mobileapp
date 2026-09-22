@@ -22,8 +22,10 @@ import org.intelehealth.app.ui.queue.model.QueueRow;
 import org.intelehealth.app.ui.queue.viewmodel.QueueViewModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Native host for the React Native "Patient's Queue" screen.
@@ -171,10 +173,37 @@ public class PatientQueueFragment extends Fragment {
         bundle.putStringArrayList("symptoms", parseSymptoms(row.getChiefComplaint()));
         bundle.putInt("position", position);
         bundle.putString("status", status);
-        // "onCall" shows elapsed duration (waited), everyone else shows wait ETA.
-        int minutes = "onCall".equals(status) ? row.getWaitedMinutes() : row.getEtaMinutes();
-        bundle.putString("time", formatMinutes(minutes));
+        // Pre-formatted snapshot used as a fallback (and initial paint) when the
+        // row has no timestamp to tick from.
+        bundle.putString("time", formatTime(status, row));
+        // Raw instants so the RN screen can tick the wait time / duration every
+        // second on the JS side (no DB re-read, no bridge push). Empty when absent.
+        bundle.putString("etaAt", orEmpty(row.getEtaAt()));
+        bundle.putString("connectedAt", orEmpty(row.getConnectedAt()));
+        // Patient profile pic. patient_photo holds an absolute local file path
+        // (AppConstants.IMAGE_PATH + uuid + ".jpg"); RN's <Image> needs a URI
+        // scheme, so wrap a bare path in file://. Empty when absent, so the RN
+        // row falls back to its placeholder avatar.
+        bundle.putString("avatarUrl", toAvatarUri(row.getPatientPhoto()));
         return bundle;
+    }
+
+    /**
+     * Turns the stored patient photo value into a URI React Native's {@code Image}
+     * can load. Local filesystem paths get a {@code file://} prefix; values that
+     * already carry a scheme ({@code http}, {@code https}, {@code file},
+     * {@code content}) are used as-is. Returns "" when there is no photo.
+     */
+    private String toAvatarUri(@Nullable String photo) {
+        if (TextUtils.isEmpty(photo)) {
+            return "";
+        }
+        String trimmed = photo.trim();
+        if (trimmed.startsWith("http://") || trimmed.startsWith("https://")
+                || trimmed.startsWith("file://") || trimmed.startsWith("content://")) {
+            return trimmed;
+        }
+        return "file://" + trimmed;
     }
 
     /**
@@ -206,25 +235,83 @@ public class PatientQueueFragment extends Fragment {
         }
     }
 
-    /** Split the chief-complaint string into symptom tags. */
+    /**
+     * Chief-complaint string -> symptom tags. Uses the same parsing as the home
+     * queue card and the visit summary screen ({@link QueueCardUpdater#extractComplaintNames(String)}),
+     * so the list shows the complaint header names (e.g. "Fever", "Cough") rather
+     * than a naive comma split of the raw blob.
+     */
     private ArrayList<String> parseSymptoms(@Nullable String chiefComplaint) {
-        ArrayList<String> symptoms = new ArrayList<>();
-        if (TextUtils.isEmpty(chiefComplaint)) {
-            return symptoms;
+        return QueueCardUpdater.extractComplaintNames(chiefComplaint);
+    }
+
+    /**
+     * The footer time string for a row:
+     * <ul>
+     *   <li>{@code onCall} -> elapsed call duration (waited minutes), "MM:00".</li>
+     *   <li>{@code nextInQueue}/{@code waiting} -> live wait time counted from the
+     *       server {@code etaAt} instant ("MM:SS"); falls back to {@code etaMinutes}
+     *       when {@code etaAt} is absent/unparseable.</li>
+     * </ul>
+     */
+    private String formatTime(@Nullable String status, @NonNull QueueRow row) {
+        if ("onCall".equals(status)) {
+            // Elapsed call duration = now - connectedAt.
+            String duration = elapsedSince(row.getConnectedAt());
+            return duration != null ? duration : formatMinutes(row.getWaitedMinutes());
         }
-        for (String part : chiefComplaint.split(",")) {
-            String trimmed = part.trim();
-            if (!trimmed.isEmpty()) {
-                symptoms.add(trimmed);
-            }
+        // Wait time for next/waiting = etaAt - now.
+        String waitTime = remainingUntil(row.getEtaAt());
+        return waitTime != null ? waitTime : formatMinutes(row.getEtaMinutes());
+    }
+
+    /**
+     * Time remaining from now until a future ISO-8601 instant (server sends UTC,
+     * e.g. {@code 2026-09-17T12:14:54.000Z}), "MM:SS", clamped to {@code >= 0}.
+     * Returns null when the value is absent/unparseable so the caller can fall back.
+     */
+    @Nullable
+    private String remainingUntil(@Nullable String isoInstant) {
+        return formatMmSs(isoInstant, true);
+    }
+
+    /**
+     * Time elapsed from a past ISO-8601 instant until now, "MM:SS", clamped to
+     * {@code >= 0}. Returns null when the value is absent/unparseable.
+     */
+    @Nullable
+    private String elapsedSince(@Nullable String isoInstant) {
+        return formatMmSs(isoInstant, false);
+    }
+
+    /**
+     * Formats the gap between {@code isoInstant} and now as "MM:SS", clamped to
+     * {@code >= 0}. {@code future=true} counts instant-now (a future ETA),
+     * {@code false} counts now-instant (a past connect time). Null on parse error.
+     */
+    @Nullable
+    private String formatMmSs(@Nullable String isoInstant, boolean future) {
+        if (TextUtils.isEmpty(isoInstant)) {
+            return null;
         }
-        return symptoms;
+        try {
+            long instantMillis = Instant.parse(isoInstant.trim()).toEpochMilli();
+            long now = System.currentTimeMillis();
+            long deltaMillis = future ? instantMillis - now : now - instantMillis;
+            long totalSeconds = Math.max(0, deltaMillis / 1000L);
+            long mm = totalSeconds / 60;
+            long ss = totalSeconds % 60;
+            return String.format(Locale.ENGLISH, "%02d:%02d", mm, ss);
+        } catch (Exception e) {
+            Log.e(TAG, "formatMmSs failed: " + e.getMessage());
+            return null;
+        }
     }
 
     /** Minutes -> "MM:00" to match the RN row's pre-formatted time string. */
     private String formatMinutes(int minutes) {
         int safe = Math.max(0, minutes);
-        return String.format(java.util.Locale.ENGLISH, "%02d:00", safe);
+        return String.format(Locale.ENGLISH, "%02d:00", safe);
     }
 
     private String orEmpty(@Nullable String value) {

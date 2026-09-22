@@ -77,7 +77,8 @@ public class QueueDAO extends BaseDao{
         values.put("locationUuid", queueDTO.getLocationUuid());
         values.put("flagged", queueDTO.isFlagged() ? 1 : 0);
         values.put("escalatedAt", queueDTO.getEscalatedAt());
-        values.put("chiefComplaint", queueDTO.getChiefComplaint());
+        // chiefComplaint is not stored: it's resolved from the visit's obs
+        // (EncounterDAO.getChiefComplaint) when the queue list is read.
         // TODO: proper vitals parsing handled later; store raw JSON string for now (null-safe)
         values.put("vitals", queueDTO.getVitals() != null ? queueDTO.getVitals().toString() : null);
         values.put("waitedMinutes", queueDTO.getWaitedMinutes());
@@ -97,6 +98,7 @@ public class QueueDAO extends BaseDao{
         values.put("escalated", queueItem.isEscalated() ? 1 : 0);
         values.put("position", queueItem.getPosition());
         values.put("etaMinutes", queueItem.getEtaMinutes());
+        values.put("etaAt", queueItem.getEtaAt());
         values.put("etaModelUsed", queueItem.getEtaModelUsed());
         values.put("assignedDoctorUuid", queueItem.getAssignedDoctorUuid());
         values.put("queuedAt", queueItem.getQueuedAt());
@@ -110,7 +112,8 @@ public class QueueDAO extends BaseDao{
         values.put("locationUuid", queueItem.getLocationUuid());
         values.put("flagged", queueItem.isFlagged() ? 1 : 0);
         values.put("escalatedAt", queueItem.getEscalatedAt());
-        values.put("chiefComplaint", queueItem.getChiefComplaint());
+        // chiefComplaint is not stored: it's resolved from the visit's obs
+        // (EncounterDAO.getChiefComplaint) when the queue list is read.
         // TODO: proper vitals parsing handled later; store raw JSON string for now (null-safe)
         values.put("vitals", queueItem.getVitals() != null ? queueItem.getVitals().toString() : null);
         values.put("waitedMinutes", queueItem.getWaitedMinutes());
@@ -141,7 +144,7 @@ public class QueueDAO extends BaseDao{
         if (db == null || !db.isOpen() || mapper == null) {
             return rows;
         }
-        String sql = "SELECT q.status AS status, q.position AS position, " +
+        /*String sql = "SELECT q.status AS status, q.position AS position, " +
                 "q.chiefComplaint AS chiefComplaint, " +
                 "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
                 "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +
@@ -149,6 +152,21 @@ public class QueueDAO extends BaseDao{
                 "p.gender AS gender, p.date_of_birth AS date_of_birth " +
                 "FROM " + tableName() + " q " +
                 "LEFT JOIN tbl_patient p ON q.patientUuid = p.uuid COLLATE NOCASE " +
+                "ORDER BY q.position ASC limit ? offset ?";*/
+        // chiefComplaint is NOT read from tbl_queue (the queue service doesn't
+        // send it); the visitUuid is carried through so the complaint can be
+        // resolved from the visit's obs, exactly like the visit summary screen.
+        String sql = "SELECT q.status AS status, q.position AS position, " +
+                "q.visitUuid AS visitUuid, " +
+                "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
+                "q.etaAt AS etaAt, q.connectedAt AS connectedAt, " +
+                "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +
+                "p.middle_name AS middle_name, p.last_name AS last_name, " +
+                "p.gender AS gender, p.date_of_birth AS date_of_birth, " +
+                "p.patient_photo AS patient_photo " +
+                "FROM " + tableName() + " q " +
+                "LEFT JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
+                "LEFT JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE " +
                 "ORDER BY q.position ASC limit ? offset ?";
         Cursor cursor = null;
         try {

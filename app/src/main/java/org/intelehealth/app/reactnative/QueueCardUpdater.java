@@ -223,32 +223,48 @@ public final class QueueCardUpdater {
      * Returns an empty list when the visit or complaint isn't available locally.
      */
     private static ArrayList<String> fetchSymptoms(@Nullable String visitUuid) {
-        ArrayList<String> symptoms = new ArrayList<>();
         if (TextUtils.isEmpty(visitUuid)) {
-            return symptoms;
+            return new ArrayList<>();
         }
         try {
-            String raw = EncounterDAO.getChiefComplaint(visitUuid);
-            if (TextUtils.isEmpty(raw)) {
-                return symptoms;
-            }
-            raw = raw.replace("?<b>", Node.bullet_arrow);
-            for (String part : StringUtils.split(raw, Node.bullet_arrow)) {
-                if (part == null) {
-                    continue;
-                }
-                int colon = part.indexOf(':');
-                String name = (colon >= 0 ? part.substring(0, colon) : part)
-                        .replaceAll("<b>", "")
-                        .replaceAll("</b>", "")
-                        .replaceAll(Node.ASSOCIATE_SYMPTOMS, "")
-                        .trim();
-                if (!name.isEmpty() && !symptoms.contains(name)) {
-                    symptoms.add(name);
-                }
-            }
+            return extractComplaintNames(EncounterDAO.getChiefComplaint(visitUuid));
         } catch (Exception e) {
             Log.e(TAG, "fetchSymptoms failed: " + e.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
+    /**
+     * Extracts just the chief-complaint header names from the raw complaint blob
+     * (e.g. {@code ►<b>Fever</b>: …►<b>Cough</b>: …}), mirroring how the visit
+     * summary screen renders its complaint chips: split on {@link Node#bullet_arrow},
+     * take the text before the first {@code :}, strip the {@code <b>}/{@code </b>}
+     * markup and the associated-symptoms header, and de-dupe. Returns an empty
+     * list for null/blank input.
+     *
+     * <p>Shared so the patient queue list ({@code PatientQueueFragment}) shows the
+     * same symptom tags as the home queue card and the visit summary, instead of
+     * a naive comma split.
+     */
+    public static ArrayList<String> extractComplaintNames(@Nullable String raw) {
+        ArrayList<String> symptoms = new ArrayList<>();
+        if (TextUtils.isEmpty(raw)) {
+            return symptoms;
+        }
+        String normalized = raw.replace("?<b>", Node.bullet_arrow);
+        for (String part : StringUtils.split(normalized, Node.bullet_arrow)) {
+            if (part == null) {
+                continue;
+            }
+            int colon = part.indexOf(':');
+            String name = (colon >= 0 ? part.substring(0, colon) : part)
+                    .replaceAll("<b>", "")
+                    .replaceAll("</b>", "")
+                    .replaceAll(Node.ASSOCIATE_SYMPTOMS, "")
+                    .trim();
+            if (!name.isEmpty() && !symptoms.contains(name)) {
+                symptoms.add(name);
+            }
         }
         return symptoms;
     }

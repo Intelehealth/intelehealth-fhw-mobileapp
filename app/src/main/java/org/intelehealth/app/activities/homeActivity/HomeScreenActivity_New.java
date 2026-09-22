@@ -1136,7 +1136,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, activeStatus.getActiveQms());
+        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, true/*activeStatus.getActiveQms()*/);
         if(bottomNav != null)
             updateQMSBottomNavigation();
     }
@@ -1852,7 +1852,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
         tvAppLastSync.setText(lastSyncText);
-        llAutoUpdate.setVisibility(View.GONE);
+        // "Auto updating" (llAutoUpdate) belongs to the Queue toolbar. This method
+        // runs on every sync broadcast, so only hide it when we're NOT on the
+        // Queue tab (the Home toolbar shows the last-sync label instead); otherwise
+        // a sync while the Queue screen is open would wrongly hide "Auto updating".
+        boolean isQueueTab = bottomNav != null
+                && bottomNav.getSelectedItemId() == R.id.bottom_nav_queue;
+        if (!isQueueTab) {
+            llAutoUpdate.setVisibility(View.GONE);
+        }
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
         // }).start();

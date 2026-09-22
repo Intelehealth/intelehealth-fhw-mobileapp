@@ -87,12 +87,15 @@ public interface ApiInterface {
     // than BuildConfig.SERVER_URL, so the absolute URL is supplied via @Url.
     @GET
     Call<QueueListResponse> QUEUE_LIST_CALL(@Url String url,
+                                            @Query("locationUuid") String locationUuid,
                                             @Query("status") String status,
                                             @Query("sort") String sort,
                                             @Query("includeEta") boolean includeEta,
                                             @Query("includeScore") boolean includeScore,
                                             @Query("limit") int limit,
-                                            @Query("offset") int offset);
+                                            @Query("offset") int offset,
+                                            @Header("Authorization") String authHeader,
+                                            @Header("x-qms-secret") String token);
 
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,

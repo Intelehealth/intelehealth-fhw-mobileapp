@@ -1,5 +1,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  AppState,
   DeviceEventEmitter,
   FlatList,
   SafeAreaView,
@@ -16,7 +17,8 @@ import QueueTabs from '../../components/QueueTabs';
 import type {QueueFilter} from '../../components/QueueTabs';
 import StatusBanner from '../../components/StatusBanner';
 import type {StatusBannerVariant} from '../../components/StatusBanner';
-import {QueueNavigator} from '../../native/QueueNavigator';
+// Disabled for now: queue details navigation is turned off.
+// import {QueueNavigator} from '../../native/QueueNavigator';
 
 // Fixed gap between queue rows. Defined outside the screen so React keeps a
 // stable component type across renders (avoids remounting the list).
@@ -123,7 +125,10 @@ function PatientQueue({
     },
   ];
 
-  const source = queueProp && queueProp.length > 0 ? queueProp : mockQueue;
+  // Show mock data for now; actual data disabled temporarily.
+//   const source = queueProp && queueProp.length > 0 ? queueProp : mockQueue;
+//   const source = mockQueue;
+    const source = queueProp;
   // Attach a stable list key per row (native rows have no `key`).
   const queue: (QueueListItemProps & {key: string})[] = source.map(
     (item, index) => ({...item, key: `${item.patientId ?? item.queueNumber}-${index}`}),
@@ -133,10 +138,53 @@ function PatientQueue({
   const visibleQueue =
     filter === 'all' ? queue : queue.filter(item => item.status === filter);
 
+  // Shared 1s clock that drives the live wait time / duration on the rows. Each
+  // row recomputes its own MM:SS from this `now` against its etaAt/connectedAt,
+  // so there is a single timer for the whole list (not one per row) and no DB
+  // re-read or native bridge traffic per tick.
+  const [now, setNow] = useState(() => Date.now());
+  // Only run the timer when at least one visible row actually has an instant to
+  // count against (skips mock/timeless data and empty lists).
+  const hasLiveTime = visibleQueue.some(item => item.etaAt || item.connectedAt);
+
+  useEffect(() => {
+    if (!hasLiveTime) {
+      return;
+    }
+    let interval: ReturnType<typeof setInterval> | undefined;
+    const start = () => {
+      if (interval == null) {
+        setNow(Date.now());
+        interval = setInterval(() => setNow(Date.now()), 1000);
+      }
+    };
+    const stop = () => {
+      if (interval != null) {
+        clearInterval(interval);
+        interval = undefined;
+      }
+    };
+    // Pause the ticker in the background so it doesn't burn battery unseen; on
+    // return to foreground it restarts and recomputes from the absolute instant.
+    const sub = AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        start();
+      } else {
+        stop();
+      }
+    });
+    start();
+    return () => {
+      stop();
+      sub.remove();
+    };
+  }, [hasLiveTime]);
+
   // Row tap → open the native Queue Details Activity for that row.
-  const handleOpenDetails = useCallback((item: QueueListItemProps) => {
-    QueueNavigator.openQueueDetails(item);
-  }, []);
+  // Disabled for now: we don't want to show the queue details screen yet.
+  // const handleOpenDetails = useCallback((item: QueueListItemProps) => {
+  //   QueueNavigator.openQueueDetails(item);
+  // }, []);
 
   // The banner sits above the list (as the FlatList header) so it shares the
   // list's horizontal insets and scrolls with the content. Its fields fall back
@@ -165,8 +213,12 @@ function PatientQueue({
       <FlatList
         data={visibleQueue}
         keyExtractor={item => item.key}
+        // Re-render visible rows when the shared clock ticks.
+        extraData={now}
         renderItem={({item}) => (
-          <QueueListItem {...item} onPress={() => handleOpenDetails(item)} />
+          // onPress disabled for now: we don't want to show queue details yet.
+          // <QueueListItem {...item} onPress={() => handleOpenDetails(item)} />
+          <QueueListItem {...item} now={now} />
         )}
         contentContainerStyle={styles.listContent}
         ListHeaderComponent={listHeader}

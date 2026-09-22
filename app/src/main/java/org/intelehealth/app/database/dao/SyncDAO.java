@@ -127,7 +127,11 @@ public class SyncDAO {
             // Switch back to the line below once pulldata starts returning the queue list.
             // queueDAO.insertQueue(responseDTO.getData().getQueuelist());
             // Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
-            new QueueListDownloader().fetchAndInsert();
+
+            String encoded = "Bearer " + sessionManager.getEncoded();
+            Logger.logD(TAG, "queue list token " + encoded);
+            new QueueListDownloader().fetchAndInsert(
+                    sessionManager.getLocationUuid(), encoded);
 
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());

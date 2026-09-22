@@ -1,6 +1,7 @@
 package org.intelehealth.app.ui.queue.repository
 
 import android.database.Cursor
+import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.QueueDAO
 import org.intelehealth.app.ui.queue.model.QueueRow
 
@@ -21,6 +22,16 @@ class QueueRepository(private val queueDao: QueueDAO) {
      */
     fun getQueueList(limit: Int, offset: Int): List<QueueRow> =
         queueDao.getQueueWithPatient(limit, offset) { cursor -> mapRow(cursor) }
+            // Resolve the chief complaint from each visit's obs AFTER the queue
+            // cursor is closed (so we don't run a nested query mid-iteration).
+            // Still off the main thread — the ViewModel calls this on IO.
+            .map { row ->
+                row.copy(
+                    chiefComplaint = row.visitUuid
+                        ?.takeIf { it.isNotBlank() }
+                        ?.let { EncounterDAO.getChiefComplaint(it) }
+                )
+            }
 
     private fun mapRow(c: Cursor): QueueRow {
         val name = listOfNotNull(c.str("first_name"), c.str("last_name"))
@@ -33,9 +44,14 @@ class QueueRepository(private val queueDao: QueueDAO) {
             dateOfBirth = c.str("date_of_birth"),
             status = c.str("status"),
             position = c.int("position"),
-            chiefComplaint = c.str("chiefComplaint"),
+            visitUuid = c.str("visitUuid"),
+            // Filled in by getQueueList from the visit's obs once the cursor closes.
+            chiefComplaint = null,
             waitedMinutes = c.int("waitedMinutes"),
-            etaMinutes = c.int("etaMinutes")
+            etaMinutes = c.int("etaMinutes"),
+            etaAt = c.str("etaAt"),
+            connectedAt = c.str("connectedAt"),
+            patientPhoto = c.str("patient_photo")
         )
     }
 

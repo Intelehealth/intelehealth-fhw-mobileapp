@@ -72,6 +72,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "escalated INTEGER," +
             "position INTEGER," +
             "etaMinutes INTEGER," +
+            "etaAt TEXT," +
             "etaModelUsed TEXT," +
             "assignedDoctorUuid TEXT," +
             "queuedAt TEXT," +
@@ -85,7 +86,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "locationUuid TEXT," +
             "flagged INTEGER," +
             "escalatedAt TEXT," +
-            "chiefComplaint TEXT," +
             "vitals TEXT," +
             "waitedMinutes INTEGER," +
             "priorityScore REAL)";

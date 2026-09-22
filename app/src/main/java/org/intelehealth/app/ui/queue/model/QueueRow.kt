@@ -14,7 +14,19 @@ data class QueueRow(
     val dateOfBirth: String?,
     val status: String?,
     val position: Int,
+    // Visit the queue row belongs to; used to resolve the chief complaint from
+    // the visit's obs (the queue service does not send the complaint itself).
+    val visitUuid: String?,
+    // Chief complaint blob resolved from the visit's obs (not from tbl_queue),
+    // parsed into symptom tags the same way the visit summary screen does.
     val chiefComplaint: String?,
     val waitedMinutes: Int,
-    val etaMinutes: Int
+    val etaMinutes: Int,
+    // ISO-8601 instant the patient is expected to be seen (server "etaAt");
+    // used to show the live wait time for next/waiting rows.
+    val etaAt: String?,
+    // ISO-8601 instant the call was connected (server "connectedAt"); used to
+    // show the elapsed call duration for onCall rows.
+    val connectedAt: String?,
+    val patientPhoto: String?
 )
