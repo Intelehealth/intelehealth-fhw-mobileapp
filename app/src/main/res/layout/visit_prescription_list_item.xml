@@ -133,11 +133,11 @@
                     android:textSize="@dimen/fu_male_textsize" />
 
                 <!--
-                    Status badge row — which badges show is driven by the model
+                    Status badge row — which badge shows is driven by the model
                     (currently just hasPrescription -> Prescription/Prescription
-                    Pending). "Specialist Prescription", "Latest", and "Referral
-                    Declined" aren't wired to real conditions yet — no data field
-                    exists for them (e.g. newest-encounter check, referral status).
+                    Pending, or Specialist Prescription for a NAMCO-referred visit).
+                    "Referral Declined" isn't wired to a real condition yet — no data
+                    field exists for it.
                 -->
                 <LinearLayout
                     android:id="@+id/fu_badge_row"
@@ -162,22 +162,6 @@
                         tools:background="@drawable/bg_badge_green"
                         tools:text="Prescription"
                         tools:textColor="@color/badgeGreenText"
-                        tools:visibility="visible" />
-
-                    <TextView
-                        android:id="@+id/fu_badge_secondary"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="@dimen/margin_10"
-                        android:paddingVertical="@dimen/margin_4"
-                        android:maxLines="1"
-                        android:ellipsize="end"
-                        android:textSize="12sp"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        tools:background="@drawable/bg_badge_purple"
-                        tools:text="Latest"
-                        tools:textColor="@color/badgePurpleText"
                         tools:visibility="visible" />
 
                 </LinearLayout>

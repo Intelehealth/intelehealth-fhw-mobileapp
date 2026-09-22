@@ -68,8 +68,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
     String profileImage1 = "";
     SessionManager sessionManager;
     private boolean isPdfPrescFlowEnabled = false;
-    /** Only set true for the Received tab's "Recent visits" adapter — see {@link #setShowLatestBadge}. */
-    private boolean showLatestBadge = false;
     private OnItemClickListener listener;
     public VisitAdapter(Activity context, List<PrescriptionModel> list) {
         this.context = context;
@@ -92,18 +90,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         this.list = list;
         notifyDataSetChanged();
     }
-
-    /**
-     * Shows the purple "Latest" badge on every row — used only by VisitReceivedFragment
-     * for its "Recent visits" adapter (recycler_recent), not "Older visits", and not by
-     * VisitPendingFragment (which never calls this, so its rows are unaffected).
-     */
-    public void setShowLatestBadge(boolean showLatestBadge) {
-        this.showLatestBadge = showLatestBadge;
-        notifyDataSetChanged();
-    }
-
-
 
     @NonNull
     @Override
@@ -152,8 +138,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             // it). "Specialist Prescription" vs plain "Prescription" is driven by
             // model.isSpecialistPrescription() (set by VisitReceivedFragment when this
             // visit's completed prescription came via a NAMCO/specialist referral —
-            // see EncounterDAO#fetchReferredSpecialistValue). "Latest" is driven by
-            // showLatestBadge (see #setShowLatestBadge).
+            // see EncounterDAO#fetchReferredSpecialistValue).
             if (model.isHasPrescription()) {
                 holder.badgePrimary.setVisibility(View.VISIBLE);
                 holder.badgePrimary.setText(model.isSpecialistPrescription()
@@ -166,14 +151,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.badgePrimary.setText(context.getString(R.string.prescription_pending));
                 holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_orange);
                 holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeOrangeText));
-            }
-            if (showLatestBadge) {
-                holder.badgeSecondary.setVisibility(View.VISIBLE);
-                holder.badgeSecondary.setText(context.getString(R.string.latest));
-                holder.badgeSecondary.setBackgroundResource(R.drawable.bg_badge_purple);
-                holder.badgeSecondary.setTextColor(ContextCompat.getColor(context, R.color.badgePurpleText));
-            } else {
-                holder.badgeSecondary.setVisibility(View.GONE);
             }
 
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
@@ -279,7 +256,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         LinearLayout fu_priority_tag;
         private LinearLayout shareicon;
         private FrameLayout fl_priority;
-        private TextView badgePrimary, badgeSecondary;
+        private TextView badgePrimary;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -292,7 +269,6 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
             badgePrimary = itemView.findViewById(R.id.fu_badge_primary);
-            badgeSecondary = itemView.findViewById(R.id.fu_badge_secondary);
         }
     }
 

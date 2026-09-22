@@ -315,7 +315,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             // pagination - start
             new Handler(Looper.getMainLooper()).post(() -> {    // UI Thread.
                 recent_adapter = new VisitAdapter(getActivity(), mRecentList, this);
-                recent_adapter.setShowLatestBadge(true);
                 recycler_recent.setNestedScrollingEnabled(false);
                 applyFeatureStatusToAdapters();
                 recycler_recent.setAdapter(recent_adapter);
@@ -456,7 +455,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 CustomLog.d("TAG", "resetData: " + mRecentList.size() + ", " + mOlderList.size());
 
                 recent_adapter = new VisitAdapter(getActivity(), mRecentList,this);
-                recent_adapter.setShowLatestBadge(true);
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
 
@@ -505,7 +503,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 public void run() {
                     if(recent_adapter == null){
                         recent_adapter = new VisitAdapter(getActivity(), mRecentList);
-                        recent_adapter.setShowLatestBadge(true);
                         recycler_recent.setNestedScrollingEnabled(false);
                         recycler_recent.setAdapter(recent_adapter);
                     }else {
@@ -562,7 +559,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         else
             recent_nodata.setVisibility(View.GONE);
         recent_adapter = new VisitAdapter(getActivity(), prio_todays,this);
-        recent_adapter.setShowLatestBadge(true);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
