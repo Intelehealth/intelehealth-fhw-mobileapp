@@ -1136,7 +1136,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, true/*activeStatus.getActiveQms()*/);
+        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, activeStatus.getActiveQms());
+        preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, activeStatus.getActiveEditVisit());
         if(bottomNav != null)
             updateQMSBottomNavigation();
     }

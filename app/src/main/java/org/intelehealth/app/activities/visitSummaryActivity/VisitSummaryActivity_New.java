@@ -1349,6 +1349,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * clears the edit cache while the user is already on this screen, the next edit click reflects it.
      */
     private boolean computeIsEditAllowed() {
+        // Editing an in-progress visit can be turned off entirely via server config, regardless of
+        // any local edit cache or whether the doctor has started the visit note.
+        boolean isEditVisitConfigured = new PreferenceHelper(this)
+                .get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, true);
+        if (!isEditVisitConfigured) {
+            return false;
+        }
         // A visit that has already ended (its enddate is set) can never be edited, regardless of any
         // local edit cache or whether the doctor has started the visit note.
         if (isVisitEnded(visitUUID)) {
@@ -3697,7 +3704,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             setAppointmentButtonStatus();
                             // Visit created successfully - disable Send Visit so it cannot be sent again.
                             setSendVisitButtonEnabled(false);
-                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
+
                             // QMS on → "Visit Submitted" queue popup (patient added
                             // to the doctor's queue, with View Queue / Back to Home).
                             // QMS off → the plain "visit sent" success dialog.

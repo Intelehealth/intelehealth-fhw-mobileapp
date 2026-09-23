@@ -74,4 +74,7 @@ data class FeatureActiveStatus(
 
     @SerializedName("qms")
     var activeQms: Boolean = false
+
+    @SerializedName("edit_visit")
+    var activeEditVisit: Boolean = false
 }

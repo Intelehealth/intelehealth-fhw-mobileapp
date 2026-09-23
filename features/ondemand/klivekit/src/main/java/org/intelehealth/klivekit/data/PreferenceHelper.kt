@@ -22,6 +22,11 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         // shows Help).
         const val IS_QMS_CONFIGURE = "isQmsConfigure"
 
+        // Enables editing an in-progress visit (chief complaint, vitals, notes, etc.)
+        // on the Visit Summary screen. When disabled, editing is blocked regardless
+        // of the local edit-cache/visit-note-started logic.
+        const val IS_EDIT_VISIT_CONFIGURE = "isEditVisitConfigure"
+
         // Latest "Next In Queue" card payload (JSON), persisted from FCM
         // notifications so the home card reflects the newest queue state even
         // after the app was backgrounded when the notification arrived.
