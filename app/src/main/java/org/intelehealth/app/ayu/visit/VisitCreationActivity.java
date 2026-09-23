@@ -516,6 +516,16 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 //loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
                 //mStep2ProgressBar.setProgress(40);
+                // Unlike the other sections, the chief-complaint edit has no DB fallback: the
+                // question nodes/selected complaints only exist in the edit cache written during
+                // the original creation flow. For a synced visit (or after the cache was cleared)
+                // they are null, so opening the questions fragment would crash. Abort gracefully.
+                if (mChiefComplainRootNodeList == null || mChiefComplainRootNodeList.isEmpty()
+                        || mSelectedComplainList == null || mSelectedComplainList.isEmpty()) {
+//                    Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+                    finish();
+                    return;
+                }
                 setTitle(STEP_3_VISIT_REASON_QUESTION);
                 //Toast.makeText(this, "Show vital summary", Toast.LENGTH_SHORT).show();
                 //mSummaryFrameLayout.setVisibility(View.GONE);
@@ -1949,13 +1959,17 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
             case STEP_3_VISIT_REASON_QUESTION:
                 currentScreenIndex = visitReasonScreenIndex;
-                title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen)
-                        + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen);
+                if (mSelectedComplainList != null && !mSelectedComplainList.isEmpty()) {
+                    title += " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                }
                 break;
             case STEP_3_VISIT_REASON_QUESTION_SUMMARY:
                 currentScreenIndex = visitReasonScreenIndex;
-                title = getString(R.string._visit_reason_summary, currentScreenIndex, adjustedTotalScreen)
-                        + " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                title = getString(R.string._visit_reason_summary, currentScreenIndex, adjustedTotalScreen);
+                if (mSelectedComplainList != null && !mSelectedComplainList.isEmpty()) {
+                    title += " : " + mSelectedComplainList.get(0).getReasonNameLocalized();
+                }
                 break;
 
             case STEP_4_PHYSICAL_EXAMINATION:

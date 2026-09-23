@@ -7,6 +7,7 @@ import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPati
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterAdultInitials;
 import static org.intelehealth.app.database.dao.EncounterDAO.fetchEncounterUuidForEncounterVitals;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchValueFromLocalDb;
+import static org.intelehealth.app.database.dao.VisitsDAO.isVisitEnded;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
 import static org.intelehealth.app.ui2.utils.CheckInternetAvailability.isNetworkAvailable;
@@ -79,6 +80,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -93,6 +95,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,10 +154,12 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.RTCConnectionDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityVisitSummaryNewBinding;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.ClsDoctorDetails;
@@ -222,6 +227,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -263,6 +269,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     String encounterVitals, encounterUuidAdultIntial, EncounterAdultInitial_LatestVisit;
     SharedPreferences mSharedPreference;
     Boolean isPastVisit = false, isVisitSpecialityExists = false;
+    private boolean isAllowForEdit = true;
     Boolean isReceiverRegistered = false;
     ArrayList<String> physicalExams;
     VisitSummaryActivity_New.DownloadPrescriptionService downloadPrescriptionService;
@@ -343,6 +350,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     TextView add_docs_title, tvAddNotesValueVS, reminder, incomplete_act, archieved_notifi;
     String addnotes_value = "";
     private TextInputLayout tilAdditionalNotesVS;
+    private Button btn_note_save;
+    private Button btn_docs_upload;
+    // True only when editing an existing, editable visit (same case as the note Save button):
+    // additional documents can then be added and uploaded, while existing ones stay non-deletable.
+    private boolean isAdditionalDocEditEnabled = false;
+    // Uuids of additional documents added during the current edit session (via the add control).
+    // Only these are deletable/uploadable; documents already present when the visit was reopened
+    // are treated as existing/uploaded and stay non-deletable. Cleared once uploaded.
+    private final Set<String> sessionAddedDocUuids = new HashSet<>();
 
     TextView respiratory;
     TextView respiratoryText;
@@ -892,29 +908,35 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 e.printStackTrace();
                 CustomLog.e(TAG, e.getMessage());
             }
-            boolean isAllowForEdit = !isVisitSpecialityExists; //&& !isCompletedExitedSurvey && isPrescriptionReceived;
+            // Editable while local edit cache still exists for this visit,
+            // or the Visit Note encounter has not yet been created in the DB for it.
+            isAllowForEdit = computeIsEditAllowed();
             // Edit btn visibility based on user coming from Visit Details screen - Start
             //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
             if (!isAllowForEdit) {
-                editVitals.setVisibility(View.GONE);
-                editComplaint.setVisibility(View.GONE);
-                cc_details_edit.setVisibility(View.GONE);
-                ass_symp_edit.setVisibility(View.GONE);
-                editPhysical.setVisibility(View.GONE);
-                editFamHist.setVisibility(View.GONE);
-                editMedHist.setVisibility(View.GONE);
-                editAddDocs.setVisibility(View.GONE);
+                // Keep the edit icons visible even when editing is not allowed;
+                // an error message is shown on click instead (see edit listeners).
+                editVitals.setVisibility(View.VISIBLE);
+                editComplaint.setVisibility(View.VISIBLE);
+                editPhysical.setVisibility(View.VISIBLE);
+                editFamHist.setVisibility(View.VISIBLE);
+                editMedHist.setVisibility(View.VISIBLE);
+                editAddDocs.setVisibility(View.VISIBLE);
                 add_additional_doc.setVisibility(View.GONE);
 
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     mBinding.diagnosisCard.setVisibility(View.GONE);
                     mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
-
-                    mBinding.typeOfConsultationCard.setVisibility(View.GONE);
-                    mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
                 }
 
-                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.GONE);
+                // Type of consultation keeps its spinner (no vd card); it is disabled once the visit
+                // is sent (see setViewsData / the send-success handler).
+                mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+                mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+                // mBinding.typeOfConsultationCard.setVisibility(View.GONE);
+                // mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+
+                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
 
@@ -935,6 +957,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 addnotes_vd_card.setVisibility(View.VISIBLE);
                 tilAdditionalNotesVS.setVisibility(View.GONE);
                 tvAddNotesValueVS.setVisibility(View.VISIBLE);
+                btn_note_save.setVisibility(View.GONE);
+                isAdditionalDocEditEnabled = false;
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
                     if (addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
@@ -971,18 +995,42 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                     mBinding.diagnosisCard.setVisibility(View.VISIBLE);
                     mBinding.diagnosisVdCard.setVisibility(View.GONE);
-
-                    mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
-                    mBinding.consultationTypeVdCard.setVisibility(View.GONE);
                 }
 
-                doc_speciality_card.setVisibility(View.VISIBLE);
-                special_vd_card.setVisibility(View.GONE);
+                // Speciality is non-editable once the visit has been sent: show the read-only vd card
+                // and hide the spinner. During creation (no speciality yet) the spinner is shown.
+                doc_speciality_card.setVisibility(isVisitSpecialityExists ? View.GONE : View.VISIBLE);
+                special_vd_card.setVisibility(isVisitSpecialityExists ? View.VISIBLE : View.GONE);
+                // Type of consultation keeps its spinner (no vd card); it is just disabled once the
+                // visit is sent (see setViewsData / the send-success handler).
+                mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+                mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+                // mBinding.typeOfConsultationCard.setVisibility(isVisitSpecialityExists ? View.GONE : View.VISIBLE);
+                // mBinding.consultationTypeVdCard.setVisibility(isVisitSpecialityExists ? View.VISIBLE : View.GONE);
                 // vs_add_notes.setVisibility(View.VISIBLE);
 
                 addnotes_vd_card.setVisibility(View.VISIBLE);
                 tilAdditionalNotesVS.setVisibility(View.VISIBLE);
                 tvAddNotesValueVS.setVisibility(View.GONE);
+                // The note-save and document-upload affordances become available once the visit has
+                // actually been sent (isVisitSpecialityExists) - this includes right after "Send
+                // Visit" in the creation flow, where the visit is now editable until the doctor
+                // starts. A visit created but never sent (reopened via Open visit) has no speciality,
+                // so it correctly keeps the plain create-then-"Send Visit" flow.
+                btn_note_save.setVisibility(isVisitSpecialityExists ? View.VISIBLE : View.GONE);
+                isAdditionalDocEditEnabled = isVisitSpecialityExists;
+                if (isVisitSpecialityExists) {
+                    // Pre-fill the edit field with the note already stored for this visit.
+                    addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
+                    if (!addnotes_value.equalsIgnoreCase("")
+                            && !addnotes_value.equalsIgnoreCase("No notes added for Doctor.")) {
+                        etAdditionalNotesVS.setText(addnotes_value);
+                    }
+                    // Reconfiguring the section into edit mode (e.g. right after Send Visit) must not
+                    // make the note field steal focus and pop the cursor/keyboard. The user can still
+                    // tap it to edit.
+                    etAdditionalNotesVS.clearFocus();
+                }
                 mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
 
             }
@@ -1006,6 +1054,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         btn_bottom_vs.setVisibility(View.VISIBLE);
         CustomLog.d(TAG, "has prescription::%s", hasPrescription);
         updateUIState();
+        // Apply the additional-documents edit mode here too, so the Upload button and per-item
+        // deletability appear whenever fetchingIntent() re-runs (e.g. right after Send Visit, which
+        // refreshes via fetchingIntent() but not setViewsData()). No-op until the adapter exists.
+        applyAdditionalDocsEditMode();
 
         //here we changing the appointment button behavior
         //based on appointment status
@@ -1026,10 +1078,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 mBinding.diagnosisCard.setVisibility(View.GONE);
                 mBinding.diagnosisVdCard.setVisibility(View.VISIBLE);
-
-                mBinding.typeOfConsultationCard.setVisibility(View.GONE);
-                mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
             }
+
+            // Type of consultation keeps its spinner (no vd card); it is disabled once the visit is
+            // sent (see setViewsData / the send-success handler).
+            mBinding.typeOfConsultationCard.setVisibility(View.VISIBLE);
+            mBinding.consultationTypeVdCard.setVisibility(View.GONE);
+            // mBinding.typeOfConsultationCard.setVisibility(View.GONE);
+            // mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
+
             doc_speciality_card.setVisibility(View.GONE);
             special_vd_card.setVisibility(View.VISIBLE);
 
@@ -1284,6 +1341,179 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
 
+    /**
+     * Editable while the local edit cache still exists for this visit, or the Visit Note
+     * encounter has not yet been created in the DB for it.
+     * <p>
+     * Recomputed on demand (not cached from onCreate) so that if the "start visit" notification
+     * clears the edit cache while the user is already on this screen, the next edit click reflects it.
+     */
+    private boolean computeIsEditAllowed() {
+        // A visit that has already ended (its enddate is set) can never be edited, regardless of any
+        // local edit cache or whether the doctor has started the visit note.
+        if (isVisitEnded(visitUUID)) {
+            return false;
+        }
+        boolean hasEditCache =
+                !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty()
+                        || !sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty();
+        // The doctor has started the visit note if either the visit note encounter is already in the
+        // local DB, or the visit_started push flagged it in-memory this session (the push arrives
+        // before the encounter syncs into the DB).
+        boolean isVisitNoteStarted =
+                !EncounterDAO.getStartVisitNoteEncounterByVisitUUID(visitUUID).isEmpty()
+                        || IntelehealthApplication.isVisitNoteStarted(visitUuid);
+        return hasEditCache || !isVisitNoteStarted;
+    }
+
+    /**
+     * Guard for the edit icons. When editing is not allowed the icons are kept
+     * visible (instead of being hidden), and clicking one shows an error message.
+     * <p>
+     * Re-evaluates edit permission at click time so a "start visit" notification received while
+     * the user is on this screen takes effect immediately (the value from onCreate can be stale).
+     *
+     * @return {@code true} if editing is blocked (caller should return), {@code false} otherwise.
+     */
+    private boolean blockEditIfNotAllowed() {
+        isAllowForEdit = computeIsEditAllowed();
+        if (!isAllowForEdit) {
+            Toast.makeText(this, getString(R.string.editing_not_allowed_visit_note_present), Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Saves the Additional Notes for an existing visit when the user taps the note save button.
+     * <p>
+     * Re-checks edit permission at click time (a "start visit" notification may have arrived while
+     * the screen was open), then upserts the note so repeated edits update the existing row instead
+     * of piling up duplicate visit-attribute rows.
+     */
+    private void saveAdditionalNote() {
+        if (blockEditIfNotAllowed()) return;
+
+        String addnotes = etAdditionalNotesVS.getText().toString().trim();
+        if (addnotes.isEmpty()) {
+            Toast.makeText(this, getString(R.string.leave_a_note_for_doctor), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        try {
+            // keeping raw string as we dont want regional lang data to be stored in DB.
+            visitAttributeListDAO.updateVisitAttributes(visitUuid, addnotes, ADDITIONAL_NOTES);
+            // Mark the parent visit unsynced so the push path (unsyncedVisits) picks up the edited
+            // note. The push upserts the visit and its unsynced attributes by uuid, so this updates
+            // the existing visit in place instead of creating a new one.
+            new VisitsDAO().updateVisitSync(visitUuid, "0");
+            addnotes_value = addnotes;
+            Toast.makeText(this, getString(R.string.note_saved_successfully), Toast.LENGTH_SHORT).show();
+            // Push to the server now; no-ops when offline, and the next sync carries it up.
+            SyncUtils.syncOnServer();
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
+            Toast.makeText(this, getString(R.string.something_went_wrong), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Configures the Additional Documents section for the "edit an existing visit" case. Enables the
+     * add-document control and the Upload button, and switches the adapter to per-item delete
+     * control so existing (already uploaded) documents stay non-deletable while newly added ones can
+     * be removed until uploaded. No-op in new visit creation and view-only mode, so those flows are
+     * unchanged. Must be called after the documents adapter has been (re)created.
+     */
+    private void applyAdditionalDocsEditMode() {
+        if (recyclerViewAdapter == null) return;
+        if (!isAdditionalDocEditEnabled) {
+            btn_docs_upload.setVisibility(View.GONE);
+            return;
+        }
+        add_additional_doc.setVisibility(View.VISIBLE);
+        editAddDocs.setVisibility(View.VISIBLE);
+        btn_docs_upload.setVisibility(View.VISIBLE);
+
+        // Per-item delete control instead of the whole-list read-only mode.
+        recyclerViewAdapter.hideCancelBtnAddDoc(false);
+        markAdditionalDocsDeletability();
+    }
+
+    /**
+     * Marks a document deletable only when it was added during the current edit session and editing
+     * is enabled. Documents that were already present when the visit was reopened (existing/uploaded
+     * documents) are never in the session set, so they stay non-deletable.
+     */
+    private void markAdditionalDocsDeletability() {
+        if (rowListItem == null || rowListItem.isEmpty()) return;
+        for (DocumentObject doc : rowListItem) {
+            // documentName is the image file name (e.g. "<obs-uuid>.jpg"); strip the extension to
+            // get the obs uuid tracked in sessionAddedDocUuids.
+            String uuid = StringUtils.getFileNameWithoutExtensionString(doc.getDocumentName());
+            doc.setDeletable(isAdditionalDocEditEnabled && sessionAddedDocUuids.contains(uuid));
+        }
+        recyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Uploads the newly added (not-yet-synced) additional documents for this existing visit to the
+     * server, then locks them so those specific documents become non-editable.
+     * <p>
+     * The obs-image push only picks up images whose visit is already synced, which is the case for
+     * an existing visit, so this uploads exactly the freshly added documents and marks them synced.
+     */
+    private void uploadAdditionalDocs() {
+        if (blockEditIfNotAllowed()) return;
+
+        if (sessionAddedDocUuids.isEmpty()) {
+            Toast.makeText(this, getString(R.string.no_new_documents_to_upload), Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!NetworkConnection.isOnline(this)) {
+            Toast.makeText(this, getString(R.string.no_network), Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Toast.makeText(this, getString(R.string.upload_started), Toast.LENGTH_SHORT).show();
+        new ImagesPushDAO().obsImagesPush();
+
+        // Lock the just-uploaded documents: they leave the session set and become non-deletable /
+        // non-editable, joining the existing documents.
+        sessionAddedDocUuids.clear();
+        if (rowListItem != null) {
+            for (DocumentObject doc : rowListItem) doc.setDeletable(false);
+            if (recyclerViewAdapter != null) recyclerViewAdapter.notifyDataSetChanged();
+        }
+        Toast.makeText(this, getString(R.string.documents_uploaded_successfully), Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Discards additional documents that were attached in this edit session but never uploaded.
+     * <p>
+     * An attachment is only a pending draft until the user taps Upload - if they leave the screen
+     * without uploading, the document must not linger (it would otherwise show up on the next visit
+     * open as a non-deletable, un-uploaded item). Voids the obs row (same as the manual remove) and
+     * deletes the image file, then empties the session set.
+     */
+    private void discardUnuploadedAdditionalDocs() {
+        if (sessionAddedDocUuids.isEmpty()) return;
+        ImagesDAO imagesDAO = new ImagesDAO();
+        for (String uuid : sessionAddedDocUuids) {
+            try {
+                File file = new File(AppConstants.IMAGE_PATH + uuid + ".jpg");
+                if (file.exists()) file.delete();
+                imagesDAO.deleteImageFromDatabase(uuid);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                CustomLog.e(TAG, e.getMessage());
+            }
+        }
+        sessionAddedDocUuids.clear();
+    }
+
     private void setViewsData() {
         physicalDoumentsUpdates();
 
@@ -1483,11 +1713,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
+            applyAdditionalDocsEditMode();
 
 
             editAddDocs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (blockEditIfNotAllowed()) return;
                 /*Intent addDocs = new Intent(VisitSummaryActivity_New.this, AdditionalDocumentsActivity.class);
                 addDocs.putExtra("patientUuid", patientUuid);
                 addDocs.putExtra("visitUuid", visitUuid);
@@ -1516,8 +1748,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             //mBinding.btnGenerateBill.setVisibility(View.GONE);
         }
 
+        // Type of consultation keeps its spinner but becomes non-editable (disabled) once the visit
+        // has been created/sent; it stays editable while the visit is still being created.
+        mBinding.typeOfConsultationSpinner.setEnabled(!isVisitSpecialityExists);
 
-        // todo: speciality code comes in upload btn as well so add that too....later...
+        // A visit is considered created/sent once it has a speciality: disable the Send Visit button
+        // so it cannot be sent again, and keep it enabled while the visit is still being created.
+        setSendVisitButtonEnabled(!isVisitSpecialityExists);
+
         // speciality data - end
 
         if (visitUuid != null) {
@@ -1558,6 +1796,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editVitals.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 Intent intent1 = new Intent(VisitSummaryActivity_New.this, VisitCreationActivity.class);
 //                intent1.putExtra("patientUuid", patientUuid);
 //                intent1.putExtra("visitUuid", visitUuid);
@@ -1582,6 +1821,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editComplaint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -1732,6 +1972,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editPhysical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 final MaterialAlertDialogBuilder physicalDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 physicalDialog.setTitle(getString(R.string.visit_summary_on_examination));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -1878,6 +2119,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editMedHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 final MaterialAlertDialogBuilder historyDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 historyDialog.setTitle(getString(R.string.visit_summary_medical_history));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -2015,6 +2257,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         editFamHist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 //final MaterialAlertDialogBuilder famHistDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this,R.style.AlertDialogStyle);
                 famHistDialog.setTitle(getString(R.string.visit_summary_family_history));
@@ -2209,6 +2452,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (blockEditIfNotAllowed()) return;
                 Intent intent1 = new Intent(context, VisitCreationActivity.class);
 
                 mCommonVisitData.setEditFor(VisitCreationActivity.STEP_2_DIAGNOSTICS);
@@ -2257,7 +2501,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i != 0) {
                     CustomLog.d("SPINNER", "SPINNER_Selected: " + adapterView.getItemAtPosition(i).toString());
-                    Specialization specialization = (Specialization) view.getTag(R.id.speciality_spinner);
+                    // Read the model from the adapter data, not from view.getTag(): during a
+                    // programmatic setSelection() the row view is null (fired via SelectionNotifier
+                    // before layout), which previously caused a NullPointerException here.
+                    Specialization specialization = (Specialization) adapterView.getItemAtPosition(i);
+                    if (specialization == null) {
+                        return;
+                    }
                     speciality_selected = specialization.getName();
                     String value = ResUtils.getStringResourceByName(VisitSummaryActivity_New.this, specialization.getSKey());
                     vd_special_value.setText(" " + Node.bullet + "  " + value);
@@ -2289,6 +2539,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         String consultationType = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, CONSULTATION_TYPE);
         if (!TextUtils.isEmpty(consultationType)) {
             mBinding.vdConsultationTypeValue.setText(" " + Node.bullet + "  " + consultationType);
+            // Pre-fill the editable spinner with the stored consultation type so the current value is
+            // shown when the visit is opened for editing.
+            selectedConsultationType = consultationType;
+            SpinnerAdapter adapter = mBinding.typeOfConsultationSpinner.getAdapter();
+            if (adapter != null) {
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    if (consultationType.equalsIgnoreCase(String.valueOf(adapter.getItem(i)))) {
+                        mBinding.typeOfConsultationSpinner.setSelection(i);
+                        break;
+                    }
+                }
+            }
         } else {
             mBinding.vdConsultationTypeValue.setText(getString(R.string.no_data_found));
         }
@@ -2842,6 +3104,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         addnotes_vd_card = findViewById(R.id.addnotes_vd_card);
         special_vd_card = findViewById(R.id.special_vd_card);
 
+        // Save button for Additional Notes. Only shown while editing an existing visit
+        // (see edit-mode branch); hidden in the new visit creation flow and view-only mode.
+        btn_note_save = findViewById(R.id.btn_note_save);
+        btn_note_save.setOnClickListener(v -> saveAdditionalNote());
+
         priority_hint = findViewById(R.id.priority_hint);
 
         priority_hint.setOnClickListener(v -> {
@@ -2962,6 +3229,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         obsImgdir = new File(AppConstants.IMAGE_PATH);
 
         add_additional_doc = findViewById(R.id.add_additional_doc);
+
+        // Upload button for additional documents. Only shown while editing an existing visit
+        // (see applyAdditionalDocsEditMode); hidden in new visit creation and view-only mode.
+        btn_docs_upload = findViewById(R.id.btn_docs_upload);
+        btn_docs_upload.setOnClickListener(v -> uploadAdditionalDocs());
 
         // navigation for book appointmnet
         btnAppointment = findViewById(R.id.btn_vs_appointment);
@@ -3421,14 +3693,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         SyncUtils syncUtils = new SyncUtils();
                         boolean isSynced = syncUtils.syncForeground("visitSummary");
                         if (isSynced) {
-                            // remove the local cache
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid);
-                            sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid);
                             // ie. visit is uploded successfully.
                             setAppointmentButtonStatus();
+                            // Visit created successfully - disable Send Visit so it cannot be sent again.
+                            setSendVisitButtonEnabled(false);
+                            visitSentSuccessDialog(context, drawable, getResources().getString(R.string.visit_successfully_sent), getResources().getString(R.string.patient_visit_sent), getResources().getString(R.string.okay));
                             // QMS on → "Visit Submitted" queue popup (patient added
                             // to the doctor's queue, with View Queue / Back to Home).
                             // QMS off → the plain "visit sent" success dialog.
@@ -3456,7 +3725,25 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                                 flag.setEnabled(true);
                                 flag.setClickable(true);
                             }
+                            // Visit just created/sent: make the type-of-consultation spinner non-editable.
+                            mBinding.typeOfConsultationSpinner.setEnabled(!isVisitSpecialityExists);
+                            // Send Visit has just uploaded the documents attached during creation, so
+                            // they are now existing/uploaded and must become non-deletable - clear the
+                            // session set before fetchingIntent() re-applies the docs edit mode.
+                            sessionAddedDocUuids.clear();
                             fetchingIntent();
+                            // Collapse the additional-notes section after sending so the visit returns
+                            // to a tidy, view-like state (the note field no longer stays open/focused).
+                            // The user can re-expand it to edit until the doctor starts. Keep the
+                            // open-all/close-all counter and label in sync, mirroring the header collapse.
+                            if (vd_addnotes_header_expandview.getVisibility() == View.VISIBLE) {
+                                vd_addnotes_header_expandview.setVisibility(View.GONE);
+                                if (mOpenCount > 0) mOpenCount--;
+                                if (mOpenCount == 0) {
+                                    openall_btn.setText(getResources().getString(R.string.open_all));
+                                    openall_btn.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_baseline_keyboard_arrow_down_24, 0);
+                                }
+                            }
                         } else {
                             AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
                         }
@@ -3489,6 +3776,20 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     }
 
+    /**
+     * Enables or disables the Send Visit button, with a matching background so the disabled state is
+     * visible. Disabled once the visit has been created/sent (see the isVisitSpecialityExists checks
+     * and the send-success handler) so the same visit cannot be sent twice.
+     */
+    private void setSendVisitButtonEnabled(boolean enabled) {
+        if (uploadButton == null) return;
+        uploadButton.setEnabled(enabled);
+        uploadButton.setClickable(enabled);
+        uploadButton.setBackground(getDrawable(enabled
+                ? R.drawable.ui2_common_primary_bg
+                : R.drawable.ui2_bg_disabled_time_slot));
+    }
+
     private void visitSentSuccessDialog(Context context, Drawable drawable, String title, String subTitle, String neutral) {
 
         MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
@@ -3519,6 +3820,17 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
           /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
             alertDialog.dismiss();
+            // When this success dialog closes, focus returns to the activity and would land back in
+            // the additional-notes field (it held focus while entering the note during creation),
+            // popping the cursor/keyboard. Clear it after the window regains focus. The user can
+            // still tap the note to edit it.
+            if (etAdditionalNotesVS != null) {
+                etAdditionalNotesVS.post(() -> {
+                    etAdditionalNotesVS.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    if (imm != null) imm.hideSoftInputFromWindow(etAdditionalNotesVS.getWindowToken(), 0);
+                });
+            }
         });
 
         alertDialog.show();
@@ -3646,7 +3958,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     @Override
     public void deleteAddDoc_Item(List<DocumentObject> documentList, int position) {
-        documentList.remove(position);
+        if (position >= 0 && position < documentList.size()) {
+            // Drop the removed document from the session set so it is no longer counted as a
+            // pending upload.
+            String uuid = StringUtils.getFileNameWithoutExtensionString(documentList.get(position).getDocumentName());
+            sessionAddedDocUuids.remove(uuid);
+            documentList.remove(position);
+        }
         add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
     }
 
@@ -4223,6 +4541,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             if (broadcastReceiverForIamgeDownlaod != null && isDownloadImageBroadcastRecRegisterd) {
                 unregisterReceiver(broadcastReceiverForIamgeDownlaod);
+                // Reset the flag so a later onStop() doesn't try to unregister an
+                // already-unregistered receiver (which throws "Receiver not registered").
+                isDownloadImageBroadcastRecRegisterd = false;
             }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
@@ -4239,6 +4560,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     @Override
     public void onPause() {
         super.onPause();
+        // Leaving the screen for good (not a temporary pause like the image picker or an edit
+        // section) with documents attached but not uploaded: discard those pending attachments so
+        // they don't persist as un-uploaded, non-deletable items on the next open. Only relevant in
+        // the edit-existing-visit mode; the creation flow commits its docs via Send Visit.
+        if (isFinishing() && isAdditionalDocEditEnabled) {
+            discardUnuploadedAdditionalDocs();
+        }
         if (receiver != null) {
             LocalBroadcastManager.getInstance(context).unregisterReceiver(receiver);
             receiver = null;
@@ -4297,6 +4625,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             mAdditionalDocsRecyclerView.setAdapter(recyclerViewAdapter);
             add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
+            applyAdditionalDocsEditMode();
 
 //            if (recyclerViewAdapter != null) {
 //                if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
@@ -4481,7 +4810,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
 
             recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+            String imageUuid = StringUtils.getFileNameWithoutExtension(photo);
+            updateImageDatabase(imageUuid);
+            // Remember this as a document added in the current edit session so it stays deletable
+            // (and uploadable) until the user uploads it. Existing documents are never tracked here.
+            sessionAddedDocUuids.add(imageUuid);
         }
     }
 
@@ -5645,6 +5978,19 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                         (mBinding, VisitSummaryActivity_New.this, null,
                                 VisitSummaryActivity_New.this, encounterVitals, mCommonVisitData);
                 visitDiagnosticsSummary.initViews();
+
+                // An edit section (vitals / complaint / physical exam / medical / family history /
+                // diagnostics) was just completed. Push the edited data to the server on returning
+                // to the Visit Summary screen. syncOnServer() no-ops when offline.
+                //
+                // Only sync when the visit has actually been sent (isVisitSpecialityExists). Before
+                // "Send Visit" the visit has no speciality, so an edit made during creation - or on a
+                // never-sent visit reopened via Open visit - is not pushed early (which would upload
+                // an incomplete visit and break the later Send Visit). After the visit is sent, edits
+                // are pushed as intended.
+                if (intentTag != null && !intentTag.isEmpty() && isVisitSpecialityExists) {
+                    SyncUtils.syncOnServer();
+                }
             }
         }
     });

@@ -872,6 +872,9 @@
     <string name="select_language">Select Language</string>
     <string name="additional_notes">Additional Notes</string>
     <string name="leave_a_note_for_doctor">Leave a note for doctor</string>
+    <string name="note_saved_successfully">Note saved successfully</string>
+    <string name="no_new_documents_to_upload">No new documents to upload</string>
+    <string name="documents_uploaded_successfully">Documents uploaded successfully</string>
     <string name="add_additional_document_2">Add additional documents (2)</string>
     <string name="add_additional_documents_like">Add additional documents like reports, prescriptions, etc.\u000D</string>
     <string name="doctor_speciality">Doctor\'s Speciality</string>
@@ -1749,6 +1752,7 @@
     <string name="sync_progress_percentage">%1$d%%</string>
     <string name="sync_completed">Sync completed</string>
     <string name="feature_not_found">Feature not found</string>
+    <string name="editing_not_allowed_visit_note_present">This visit is progress and cannot be edited.</string>
 
     <!-- Home / queue status banner -->
     <string name="doctor_on_break">Doctor is on Break</string>

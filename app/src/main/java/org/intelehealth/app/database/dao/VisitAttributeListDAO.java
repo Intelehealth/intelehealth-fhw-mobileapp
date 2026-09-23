@@ -196,6 +196,51 @@ public class VisitAttributeListDAO extends BaseDao{
     }
 
     /**
+     * Upserts a visit attribute value. If a non-voided row for the given visit and attribute type
+     * already exists, its value is updated in place (keeping the same uuid) and marked unsynced so
+     * it re-syncs; otherwise a new row is inserted. This avoids piling up duplicate rows when a note
+     * is edited and saved multiple times for an existing visit.
+     *
+     * @param visitUuid         visit uuid the attribute belongs to
+     * @param value             new value to store
+     * @param attributeTypeUUID visit attribute type uuid
+     * @return {@code true} if the row was updated or inserted successfully
+     * @throws DAOException on SQL error
+     */
+    public boolean updateVisitAttributes(String visitUuid, String value, String attributeTypeUUID) throws
+            DAOException {
+        boolean isUpdated = false;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put("value", value);
+            values.put("sync", "0");
+
+            int rows = db.update("tbl_visit_attribute", values,
+                    "visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0",
+                    new String[]{visitUuid, attributeTypeUUID});
+
+            isUpdated = rows > 0;
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+
+        // No existing row for this attribute type yet: fall back to a fresh insert.
+        if (!isUpdated) {
+            isUpdated = insertVisitAttributes(visitUuid, value, attributeTypeUUID);
+        }
+
+        CustomLog.d("isUpdated", "isUpdated: " + isUpdated);
+        return isUpdated;
+    }
+
+    /**
      * Fetching speciality value for the visit.
      *
      * @param visitUUID
