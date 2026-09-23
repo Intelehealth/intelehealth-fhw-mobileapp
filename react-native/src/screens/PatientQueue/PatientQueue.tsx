@@ -135,8 +135,18 @@ function PatientQueue({
   );
 
   // Tabs narrow the list by status; 'all' shows everything.
-  const visibleQueue =
+  const byStatus =
     filter === 'all' ? queue : queue.filter(item => item.status === filter);
+
+  // Search narrows further by patient name / id / queue number (case-insensitive).
+  const searchTerm = search.trim().toLowerCase();
+  const visibleQueue = searchTerm
+    ? byStatus.filter(item =>
+        [item.patientName, item.patientId, item.queueNumber]
+          .filter(Boolean)
+          .some(field => field.toLowerCase().includes(searchTerm)),
+      )
+    : byStatus;
 
   // Shared 1s clock that drives the live wait time / duration on the rows. Each
   // row recomputes its own MM:SS from this `now` against its etaAt/connectedAt,
