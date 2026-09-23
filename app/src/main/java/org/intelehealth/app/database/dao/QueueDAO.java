@@ -21,11 +21,13 @@ public class QueueDAO extends BaseDao{
 
     public boolean insertQueue(List<QueueDTO> queueDTOS) throws DAOException {
         boolean isInserted = true;
-        List<HashMap<String, Object>> queueLists = new ArrayList<>();
-        for (QueueDTO queueDTO : queueDTOS) {
-            queueLists.add(createQueueMap(queueDTO));
+        if (queueDTOS != null && !queueDTOS.isEmpty()) {
+            List<HashMap<String, Object>> queueLists = new ArrayList<>();
+            for (QueueDTO queueDTO : queueDTOS) {
+                queueLists.add(createQueueMap(queueDTO));
+            }
+            executeInBackground(bulkInsert(queueLists));
         }
-        executeInBackground(bulkInsert(queueLists));
         return isInserted;
     }
 

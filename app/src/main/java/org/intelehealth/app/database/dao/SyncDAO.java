@@ -125,13 +125,14 @@ public class SyncDAO {
             // For now the queue is fetched from the standalone /api/queue/list service and
             // inserted into tbl_queue here, so the data is refreshed on every pull-sync.
             // Switch back to the line below once pulldata starts returning the queue list.
-            // queueDAO.insertQueue(responseDTO.getData().getQueuelist());
-            // Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
+             queueDAO.insertQueue(responseDTO.getData().getQueuelist());
+             Logger.logD(TAG, "insertQueue = " /*+ responseDTO.getData().getQueuelist().size()*/);
+             Logger.logD(TAG, "insertQueue data = " + new Gson().toJson(responseDTO.getData().getQueuelist()));
 
-            String encoded = "Bearer " + sessionManager.getEncoded();
-            Logger.logD(TAG, "queue list token " + encoded);
-            new QueueListDownloader().fetchAndInsert(
-                    sessionManager.getLocationUuid(), encoded);
+//            String encoded = "Bearer " + sessionManager.getEncoded();
+//            Logger.logD(TAG, "queue list token " + encoded);
+//            new QueueListDownloader().fetchAndInsert(
+//                    sessionManager.getLocationUuid(), encoded);
 
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
@@ -149,6 +150,8 @@ public class SyncDAO {
             }
             Logger.logD(TAG, "insertVisitAttributeList = " +
                     responseDTO.getData().getVisitAttributeList().size());
+            Logger.logD(TAG, "insertVisitAttributeList data = " +
+                    new Gson().toJson(responseDTO.getData().getVisitAttributeList()));
 
             //downloading images if not found
             //downloadPatientImages(responseDTO.getData().getPatientDTO());  // Commented while sync issue //as per dicscussed with Mithun commenting this code due sync load - In dsm 11 march 2025
@@ -809,11 +812,11 @@ public class SyncDAO {
         String temp = gson.toJson(pushRequestApiCall);
         CustomLog.d(TAG, "pushDataApi: encoded : " + encoded);
         Logger.logD(TAG, "push request model" + gson.toJson(pushRequestApiCall));
-        CustomLog.e(TAG, "push request model" + gson.toJson(pushRequestApiCall));
         String pushRequestModel = gson.toJson(pushRequestApiCall);
         String url = BuildConfig.SERVER_URL + "/EMR-Middleware/webapi/push/pushdata";
         Logger.logD(TAG, "push request url - " + url);
         Logger.logD(TAG, "push request encoded - " + encoded);
+        Logger.logD(TAG, "push request data - " + pushRequestModel);
         if (!pushRequestApiCall.getVisits().isEmpty()
                 || !pushRequestApiCall.getPersons().isEmpty()
                 || !pushRequestApiCall.getPatients().isEmpty()

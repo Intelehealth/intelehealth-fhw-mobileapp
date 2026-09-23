@@ -168,6 +168,7 @@ public class PatientsFrameJson {
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
                 if (isQmsConfigured) {
+                    Logger.logD(TAG, "push request added to queue data - ");
                     visit.setAddToQueue(true);
                 }
                 visitList.add(visit);
