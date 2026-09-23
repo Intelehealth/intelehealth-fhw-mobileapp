@@ -57,8 +57,8 @@ import java.util.concurrent.Executors;
  * banner also appears if this same visit is opened via Received/Pending.
  *
  * The obs value is a colon-joined "Specialty:Hospital:Type/Priority:Notes"
- * string; {@link #parseDestination(String)} pulls the hospital/destination
- * segment out of it for the badge.
+ * string; {@link EncounterDAO#parseReferralDestination(String)} pulls the
+ * hospital/destination segment out of it for the badge.
  *
  * Once Backend defines a real referral/transfer status contract, replace
  * {@link #loadReferrals()}'s query (and the always-"waiting" badge) with
@@ -340,7 +340,7 @@ public class VisitReferralFragment extends Fragment {
                 : (gender != null ? gender : "");
 
         VisitStatusAdapter.Badge badge = new VisitStatusAdapter.Badge(
-                getString(R.string.waiting_for_specialist, parseDestination(referralValue)),
+                getString(R.string.waiting_for_specialist, EncounterDAO.parseReferralDestination(referralValue)),
                 VisitStatusAdapter.BadgeColor.ORANGE);
 
         return new VisitStatusAdapter.VisitStatusItem(
@@ -363,19 +363,4 @@ public class VisitReferralFragment extends Fragment {
         return "";
     }
 
-    /**
-     * REFERRED_SPECIALIST obs value is a colon-joined
-     * "Specialty:Hospital:Type/Priority:Notes" string (e.g.
-     * "Namco_Dermatology:NAMCO Hospital:Elective:TEST RM") — pull out the
-     * hospital/destination segment for the badge, falling back to the first
-     * segment (or the raw value) if it isn't in that shape.
-     */
-    private String parseDestination(@Nullable String rawValue) {
-        if (rawValue == null || rawValue.trim().isEmpty()) return "";
-        String[] parts = rawValue.split(":");
-        if (parts.length >= 2 && !parts[1].trim().isEmpty()) {
-            return parts[1].trim();
-        }
-        return parts[0].trim();
-    }
 }

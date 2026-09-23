@@ -4,6 +4,7 @@ import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -118,7 +119,8 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
         ImageView fu_item_calendar, profile_imgview;
         LinearLayout priority_tag_imgview;
         PatientDTO patientDTO;
-        CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV;
+        CardView presc_pendingCV, presc_receivingCV, visitNotUploadCV, presc_referralWaitingCV;
+        TextView search_referral_waiting_text, search_presc_received_text;
         FrameLayout fl_priority;
 
         public SearchHolderView(@NonNull View itemView) {
@@ -134,6 +136,9 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
             presc_pendingCV = itemView.findViewById(R.id.presc_pending_CV);
             presc_receivingCV = itemView.findViewById(R.id.presc_received_CV);
             visitNotUploadCV = itemView.findViewById(R.id.presc_visit_not_uploaded_CV);
+            presc_referralWaitingCV = itemView.findViewById(R.id.presc_referral_waiting_CV);
+            search_referral_waiting_text = itemView.findViewById(R.id.search_referral_waiting_text);
+            search_presc_received_text = itemView.findViewById(R.id.search_presc_received_text);
         }
 
         void bind(PatientDTO model){
@@ -155,10 +160,30 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
 
                 //  4. Visit Start Date else No visit created text display.
                 if (model.getVisit_startdate() != null) {
-                    if (model.isPrescription_exists()) {
+                    // Referral-waiting takes priority over Received/Pending
+                    // (see SearchPatientActivity_New#applyNamcoReferralStatus).
+                    if (model.getReferralWaitingLabel() != null) {
+                        presc_referralWaitingCV.setVisibility(View.VISIBLE);
+                        search_referral_waiting_text.setText(model.getReferralWaitingLabel());
+                        presc_receivingCV.setVisibility(View.GONE);
+                        presc_pendingCV.setVisibility(View.GONE);
+                    } else if (model.isPrescription_exists()) {
+                        presc_referralWaitingCV.setVisibility(View.GONE);
                         presc_receivingCV.setVisibility(View.VISIBLE);
                         presc_pendingCV.setVisibility(View.GONE);
-                    } else if (!model.isPrescription_exists()) {
+                        // Match Received tab's "Specialist Prescription" style (color+bold).
+                        // Use Typeface.DEFAULT, not getTypeface() - recycled rows can get stuck bold.
+                        if (model.isSpecialistPrescription()) {
+                            search_presc_received_text.setText(R.string.specialist_prescription);
+                            search_presc_received_text.setTextColor(ContextCompat.getColor(context, R.color.badgeGreenText));
+                            search_presc_received_text.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+                        } else {
+                            search_presc_received_text.setText(R.string.presc_received);
+                            search_presc_received_text.setTextColor(android.graphics.Color.parseColor("#1B163A"));
+                            search_presc_received_text.setTypeface(Typeface.DEFAULT, Typeface.NORMAL);
+                        }
+                    } else {
+                        presc_referralWaitingCV.setVisibility(View.GONE);
                         presc_pendingCV.setVisibility(View.VISIBLE);
                         presc_receivingCV.setVisibility(View.GONE);
                     }
@@ -171,6 +196,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                             //visitNotUploadCV.setVisibility(View.VISIBLE);
                             presc_pendingCV.setVisibility(View.GONE);
                             presc_receivingCV.setVisibility(View.GONE);
+                            presc_referralWaitingCV.setVisibility(View.GONE);
                         }
 
                         if (model.getVisitDTO().getEnddate() != null) {
@@ -188,6 +214,7 @@ public class SearchPatientAdapter_New extends RecyclerView.Adapter<SearchPatient
                 } else {
                     presc_pendingCV.setVisibility(View.GONE);
                     presc_receivingCV.setVisibility(View.GONE);
+                    presc_referralWaitingCV.setVisibility(View.GONE);
 
                     fu_item_calendar.setVisibility(View.GONE);
                     //search_date_relative.setText(R.string.no_visit_created);

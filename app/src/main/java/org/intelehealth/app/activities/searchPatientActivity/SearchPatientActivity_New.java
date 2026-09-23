@@ -505,6 +505,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
+                applyNamcoReferralStatus(patientDTOList.get(i), visitDTO.getUuid());
 
                 // checking if visit is uploaded or not - start
                 patientDTOList.get(i).setVisitDTO(visitDTO);
@@ -519,6 +520,26 @@ public class SearchPatientActivity_New extends BaseActivity {
         }
 
         return patientDTOList;
+    }
+
+    /**
+     * Overrides the generic prescription-exists tag when the visit was referred
+     * to a NAMCO specialist: "Waiting for {destination}" if still pending, or flags
+     * "Specialist Prescription" if the specialist's prescription is already in.
+     */
+    private void applyNamcoReferralStatus(PatientDTO patientDTO, String visitUuid) {
+        try {
+            String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitUuid);
+            if (referralValue == null || referralValue.trim().isEmpty()) return;
+            if (new EncounterDAO().isPrescriptionReceived(visitUuid)) {
+                patientDTO.setSpecialistPrescription(true); // specialist already completed it
+                return;
+            }
+            String destination = EncounterDAO.parseReferralDestination(referralValue);
+            patientDTO.setReferralWaitingLabel(getString(R.string.waiting_for_specialist, destination));
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     private Observable<List<PatientDTO>> fetchDataForTagObs(List<PatientDTO> patientDTOList) {
@@ -559,6 +580,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                     } else {
                         patientDTOList.get(i).setPrescription_exists(false);
                     }
+                    applyNamcoReferralStatus(patientDTOList.get(i), visitDTO.getUuid());
 
                     // checking if visit is uploaded or not - start
                     patientDTOList.get(i).setVisitDTO(visitDTO);

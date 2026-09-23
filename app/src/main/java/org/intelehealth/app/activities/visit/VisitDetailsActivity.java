@@ -1016,7 +1016,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 referralInfoCard.setVisibility(View.GONE);
                 return;
             }
-            String destination = parseReferralDestination(referralValue);
+            String destination = EncounterDAO.parseReferralDestination(referralValue);
             referralInfoCard.setVisibility(View.VISIBLE);
             referralInfoTitle.setText(getResources().getString(R.string.referred_to_destination, destination));
             if (referralInfoInstruction != null) {
@@ -1064,22 +1064,6 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     }
                 }
             }
-        }
-
-        /**
-         * REFERRED_SPECIALIST obs value is a colon-joined
-         * "Specialty:Hospital:Type/Priority:Notes" string (e.g.
-         * "Namco_Dermatology:NAMCO Hospital:Elective:TEST RM") — pull out the
-         * hospital/destination segment for the banner title, falling back to
-         * the first segment (or the raw value) if it isn't in that shape.
-         */
-        private String parseReferralDestination(String rawValue) {
-            if (rawValue == null || rawValue.trim().isEmpty()) return "";
-            String[] parts = rawValue.split(":");
-            if (parts.length >= 2 && !parts[1].trim().isEmpty()) {
-                return parts[1].trim();
-            }
-            return parts[0].trim();
         }
 
         /**

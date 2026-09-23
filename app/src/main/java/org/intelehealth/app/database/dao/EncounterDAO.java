@@ -654,6 +654,19 @@ public class EncounterDAO extends BaseDao {
     }
 
     /**
+     * Extracts the hospital/destination from a Referred Specialist obs value
+     * ("Specialty:Hospital:..."). Shared across screens to avoid duplicate parsing.
+     */
+    public static String parseReferralDestination(String rawValue) {
+        if (rawValue == null || rawValue.trim().isEmpty()) return "";
+        String[] parts = rawValue.split(":");
+        if (parts.length >= 2 && !parts[1].trim().isEmpty()) {
+            return parts[1].trim();
+        }
+        return parts[0].trim();
+    }
+
+    /**
      * Encounter whose obs should be read as "the prescription" for a visit —
      * prefers the NAMCO/specialist doctor's own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
      * encounter when the visit was completed via referral (that's where their
