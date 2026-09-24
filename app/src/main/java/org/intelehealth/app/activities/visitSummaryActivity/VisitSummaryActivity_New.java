@@ -810,6 +810,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 CustomLog.e(TAG, e.getMessage());
                 throw new RuntimeException(e);
             }
+            updateEndVisitMenuItemState();
 
             Set<String> selectedExams = sessionManager.getVisitSummary(patientUuid);
             if (physicalExams == null) physicalExams = new ArrayList<>();
@@ -2166,6 +2167,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         filter.setOnClickListener(v -> {
             // filter options
+            updateEndVisitMenuItemState();
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
@@ -2387,6 +2389,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             }
         });
+    }
+
+    // Grey out "End Visit" until a prescription exists - mirrors VisitDetailsActivity's
+    // btn_end_visit gating so both entry points enforce the same rule.
+    private void updateEndVisitMenuItemState() {
+        if (incomplete_act == null) return;
+        incomplete_act.setEnabled(hasPrescription);
+        incomplete_act.setAlpha(hasPrescription ? 1f : 0.5f);
     }
 
     private void showEndVisitConfirmationDialog() {

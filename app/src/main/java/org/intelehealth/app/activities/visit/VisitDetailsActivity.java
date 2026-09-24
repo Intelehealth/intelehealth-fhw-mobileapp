@@ -660,7 +660,10 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 new Handler(Looper.getMainLooper()).post(() -> {
                     if (visitNotEnded) {
                         endvisit_relative_block.setVisibility(View.VISIBLE);
-                        if (interimPrescriptionActive) {
+                        // End Visit stays disabled until a prescription exists for this visit -
+                        // regardless of the restrictEndVisit remote flag, which only used to
+                        // gate a click-time warning dialog, not the button's enabled state.
+                        if (interimPrescriptionActive || !hasPrescription) {
                             // Referral-tab visit still on the doctor's interim prescription —
                             // block End Visit so the health worker can't accidentally close it
                             // before the NAMCO/specialist referral is resolved (NAS-1731).
@@ -670,27 +673,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                         } else {
                             btn_end_visit.setEnabled(true);
                             btn_end_visit.setAlpha(1f);
-                            btn_end_visit.setOnClickListener(v -> {
-                                if (!hasPrescription) {
-                                    if (mFeatureActiveStatus.getRestrictEndVisit()) {
-                                        if (dialogUtils == null) {
-                                            dialogUtils = new DialogUtils(); // Ensure a single instance
-                                        }
-                                        dialogUtils.showCommonDialog(context,
-                                                R.drawable.dialog_close_visit_icon,
-                                                context.getString(R.string.alert_label_txt),
-                                                context.getString(R.string.prescription_notprovided_msg),
-                                                true,
-                                                context.getString(R.string.ok),
-                                                context.getString(R.string.cancel),
-                                                action -> {});
-                                    } else {
-                                        checkIfAppointmentExistsForVisit(visitID);
-                                    }
-                                } else {
-                                    triggerEndVisit();
-                                }
-                            });
+                            btn_end_visit.setOnClickListener(v -> triggerEndVisit());
                         }
                     } else {
                         endvisit_relative_block.setVisibility(View.GONE);
