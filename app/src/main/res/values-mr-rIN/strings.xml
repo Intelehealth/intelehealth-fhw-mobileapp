@@ -1607,5 +1607,5 @@
     <string name="specialist_prescription_completed">तज्ज्ञांची प्रिस्क्रिप्शन पूर्ण झाली</string>
     <string name="interim_prescription">तात्पुरते प्रिस्क्रिप्शन</string>
     <string name="waiting_for_specialist_consultation">तज्ञांच्या सल्ल्याची वाट पाहत आहे</string>
-    <string name="referral_evaluation_instruction">पुढील तपासणीसाठी कृपया %1$s ला भेट द्या</string>
+    <string name="referral_evaluation_instruction">पुढील तपासणीसाठी कृपया NAMCO डॉक्टरांचा सल्ला घ्या</string>
 </resources>
