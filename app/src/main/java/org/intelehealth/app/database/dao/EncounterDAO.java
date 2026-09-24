@@ -667,6 +667,19 @@ public class EncounterDAO extends BaseDao {
     }
 
     /**
+     * Pulls the referred specialty (e.g. "Namco_Physician") - the first segment
+     * of the same obs value parseReferralDestination reads. Fallback doctor
+     * speciality label for a referred-and-resolved visit where no specialist
+     * ever completed their own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE (the GP
+     * recorded the referral and also closed the visit themselves) - same raw
+     * value the View/Print "Referred Specialist" section already shows.
+     */
+    public static String parseReferralSpecialty(String rawValue) {
+        if (rawValue == null || rawValue.trim().isEmpty()) return "";
+        return rawValue.split(":")[0].trim();
+    }
+
+    /**
      * Encounter whose obs should be read as "the prescription" for a visit —
      * prefers the NAMCO/specialist doctor's own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
      * encounter when the visit was completed via referral (that's where their
@@ -683,6 +696,81 @@ public class EncounterDAO extends BaseDao {
         }
         String visitNoteEncounterUuid = getEmergencyEncounters(visitUuid, getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE"));
         return (visitNoteEncounterUuid != null && !visitNoteEncounterUuid.isEmpty()) ? visitNoteEncounterUuid : null;
+    }
+
+    /**
+     * ObsDAO#fetchDrDetailsFromLocalDb reads the ENCOUNTER_VISIT_COMPLETE snapshot,
+     * which keeps the referring GP's own provider_uuid even after a NAMCO specialist
+     * completes the referral — so it still reports the GP's speciality, not theirs.
+     * This instead resolves the doctor from the visit's own
+     * ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE encounter (same one fetchPrescriptionEncounterUuid
+     * prefers), reusing fetchDoctorDetailsSnapshotByProvider to get that provider's
+     * own profile. Null if there's no specialist encounter yet, or no snapshot on file.
+     */
+    public ClsDoctorDetails fetchResolvedSpecialistDoctorDetails(String visitUuid) throws DAOException {
+        String specialistEncounterUuid = getEmergencyEncounters(visitUuid, UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE);
+        if (specialistEncounterUuid == null || specialistEncounterUuid.isEmpty()) return null;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String providerUuid = null;
+        try {
+            Cursor cursor = db.rawQuery("SELECT provider_uuid FROM tbl_encounter WHERE uuid = ?",
+                    new String[]{specialistEncounterUuid});
+            if (cursor.moveToFirst()) {
+                providerUuid = cursor.getString(cursor.getColumnIndexOrThrow("provider_uuid"));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        if (providerUuid == null || providerUuid.isEmpty()) return null;
+
+        ClsDoctorDetails details = fetchDoctorDetailsSnapshotByProvider(providerUuid);
+        if (details != null) {
+            blankOutNullFields(details, providerUuid);
+        }
+        return details;
+    }
+
+    /**
+     * Last resort when a referred visit never got its own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
+     * at all (the GP recorded the referral and also closed the visit themselves -
+     * fetchResolvedSpecialistDoctorDetails returns null in that case). NAMCO/specialist
+     * doctors are a fixed, shared set of provider accounts, so a doctor whose own
+     * completion snapshot carries this exact specialization (e.g. "Namco_Physician")
+     * typically already exists locally from some OTHER visit they completed -
+     * matched purely by the specialization text already on completion snapshots,
+     * not any hardcoded doctor/specialty name, so this works for any specialty.
+     * Returns null if no matching snapshot is on file anywhere locally.
+     */
+    public ClsDoctorDetails fetchDoctorDetailsBySpecialization(String specialization) throws DAOException {
+        if (specialization == null || specialization.trim().isEmpty()) return null;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String json = null;
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT o.value FROM tbl_encounter e, tbl_obs o " +
+                            "WHERE e.encounter_type_uuid = ? AND e.uuid = o.encounteruuid " +
+                            "AND o.voided = 0 AND o.value IS NOT NULL AND trim(o.value) <> '' " +
+                            "AND o.value LIKE ? " +
+                            "ORDER BY e.modified_date DESC LIMIT 1",
+                    new String[]{UuidDictionary.ENCOUNTER_VISIT_COMPLETE, "%\"specialization\":\"" + specialization.trim() + "\"%"});
+            if (cursor.moveToFirst()) {
+                json = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        if (json == null || json.isEmpty() || json.equalsIgnoreCase("null")) return null;
+        try {
+            return new Gson().fromJson(json, ClsDoctorDetails.class);
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
     }
 
     /**

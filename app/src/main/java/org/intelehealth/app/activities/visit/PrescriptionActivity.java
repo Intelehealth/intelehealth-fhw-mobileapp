@@ -1448,6 +1448,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details == null) {
             return;
         }
+        details = resolveActualPrescribingDoctor(details);
         CustomLog.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         try {
@@ -1468,6 +1469,46 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
         showSpecialtyNotesAndPrecautions(details.getSpecialization());
+    }
+
+    /**
+     * original is whichever doctor's own ENCOUNTER_VISIT_COMPLETE snapshot is on
+     * file for this visit - for a referred visit that can still be the GP, not
+     * the specialist (see EncounterDAO#fetchResolvedSpecialistDoctorDetails).
+     * Once the referral is resolved, replace the WHOLE doctor object (name,
+     * qualification, signature, speciality together) with the actual
+     * specialist's own profile, rather than patching individual fields - so
+     * name/qualification/signature/speciality on this screen, and in the
+     * exported PDF (PrescriptionBuilder, which reads this same `details`
+     * object), all consistently belong to the same doctor. Resolution order:
+     * 1) the specialist's own encounter on this visit if one was created;
+     * 2) NAMCO/specialist doctors are a fixed, shared set of accounts, so a
+     *    doctor whose own snapshot elsewhere carries this exact specialization
+     *    (matched by text, not by any hardcoded name) if no distinct encounter
+     *    was ever created for this visit;
+     * 3) otherwise keep the original doctor object unchanged.
+     */
+    private ClsDoctorDetails resolveActualPrescribingDoctor(ClsDoctorDetails original) {
+        try {
+            String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitID);
+            if (referralValue == null || referralValue.trim().isEmpty()) return original;
+            if (!new EncounterDAO().isPrescriptionReceived(visitID)) return original; // still pending, not resolved yet
+
+            ClsDoctorDetails specialistDetails = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
+            if (specialistDetails != null && specialistDetails.getSpecialization() != null
+                    && !specialistDetails.getSpecialization().trim().isEmpty()) {
+                return specialistDetails;
+            }
+
+            String referredSpecialty = EncounterDAO.parseReferralSpecialty(referralValue);
+            ClsDoctorDetails bySpecialization = new EncounterDAO().fetchDoctorDetailsBySpecialization(referredSpecialty);
+            if (bySpecialization != null) {
+                return bySpecialization;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return original;
     }
 
     private void showSpecialtyNotesAndPrecautions(String specialization) {

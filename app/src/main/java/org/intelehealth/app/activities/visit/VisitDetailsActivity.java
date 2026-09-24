@@ -592,6 +592,10 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             visit_speciality_txt = findViewById(R.id.visit_speciality);
             visit_speciality = fetchSpecialityValue(visitID);
             visit_speciality_txt.setText(visit_speciality);
+            // bindReferralInfo() above already ran and would have set this to the
+            // NAMCO specialist's speciality, but this fixed pre-visit attribute
+            // value overwrites it unconditionally - reapply after, not before.
+            updateSpecialityForResolvedReferral(referralValue);
 
        /* if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);
@@ -1063,6 +1067,38 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                         });
                     }
                 }
+            }
+        }
+
+        /**
+         * visit_speciality_txt is set from fetchSpecialityValue() above - a fixed
+         * pre-visit routing attribute that never changes after the visit is
+         * created. Once a NAMCO referral is resolved, the speciality should
+         * reflect the specialist who actually completed it - fetchDrDetailsFromLocalDb
+         * doesn't help here since it keeps the referring GP's own provider_uuid even
+         * after referral, so use the specialist's own encounter/profile instead.
+         * Some referred visits never get a distinct specialist encounter at all
+         * (the GP recorded the referral and also closed the visit themselves) -
+         * for those, fall back to the specialty named in the referral obs itself,
+         * the same raw value View/Print's "Referred Specialist" section shows.
+         */
+        private void updateSpecialityForResolvedReferral(String referralValue) {
+            if (visit_speciality_txt == null) return;
+            boolean referred = referralValue != null && !referralValue.trim().isEmpty();
+            if (!referred) return;
+            try {
+                if (!new EncounterDAO().isPrescriptionReceived(visitID)) return; // still pending, not resolved yet
+                ClsDoctorDetails details = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
+                if (details != null && details.getSpecialization() != null && !details.getSpecialization().trim().isEmpty()) {
+                    visit_speciality_txt.setText(details.getSpecialization());
+                    return;
+                }
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            String fallbackSpecialty = EncounterDAO.parseReferralSpecialty(referralValue);
+            if (!fallbackSpecialty.isEmpty()) {
+                visit_speciality_txt.setText(fallbackSpecialty);
             }
         }
 
