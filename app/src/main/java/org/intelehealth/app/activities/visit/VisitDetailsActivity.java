@@ -983,12 +983,20 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
          * {@link PrescriptionActivity} for the doctor's own prescription.
          */
         private void bindReferralInfo(String referralValue) {
-            boolean referred = referralValue != null && !referralValue.trim().isEmpty();
+            boolean referredBySpecialistObs = referralValue != null && !referralValue.trim().isEmpty();
             boolean declined = false;
             boolean visitComplete = false;
+            try {
+                // Some declined referrals never get a REFERRED_SPECIALIST obs (declined
+                // before a specialist/hospital was chosen) - the consent obs alone still
+                // proves a referral was proposed, so check it regardless of referredBySpecialistObs.
+                declined = new EncounterDAO().isReferralDeclined(visitID);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            boolean referred = referredBySpecialistObs || declined;
             if (referred) {
                 try {
-                    declined = new EncounterDAO().isReferralDeclined(visitID);
                     visitComplete = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);

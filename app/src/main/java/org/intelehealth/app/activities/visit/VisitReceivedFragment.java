@@ -746,8 +746,11 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                     // query's has_visit_complete = 1) means a doctor shared the final
                     // prescription. Only tag "Specialist Prescription" if consent was
                     // given; declined referrals show "Referral Declined" instead.
-                    boolean referred = encounterDAO.fetchReferredSpecialistValue(visitID) != null;
-                    boolean declined = referred && encounterDAO.isReferralDeclined(visitID);
+                    // A declined referral doesn't always get a REFERRED_SPECIALIST obs
+                    // (some are declined before the specialist/hospital is chosen) -
+                    // the consent obs alone is still proof a referral was proposed.
+                    boolean declined = encounterDAO.isReferralDeclined(visitID);
+                    boolean referred = declined || encounterDAO.fetchReferredSpecialistValue(visitID) != null;
                     model.setSpecialistPrescription(referred && !declined);
                     model.setReferralDeclined(declined);
                 } catch (DAOException e) {
@@ -985,8 +988,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 try {
                     // See recentVisits(int,int) above - same rule, declined referrals
                     // show "Referral Declined" instead of "Specialist Prescription".
-                    boolean referred = encounterDAO.fetchReferredSpecialistValue(visitID) != null;
-                    boolean declined = referred && encounterDAO.isReferralDeclined(visitID);
+                    boolean declined = encounterDAO.isReferralDeclined(visitID);
+                    boolean referred = declined || encounterDAO.fetchReferredSpecialistValue(visitID) != null;
                     model.setSpecialistPrescription(referred && !declined);
                     model.setReferralDeclined(declined);
                 } catch (DAOException e) {
