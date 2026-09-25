@@ -1024,6 +1024,12 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             referralInfoCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.cardTintLightOrange));
             referralInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
             String destination = EncounterDAO.parseReferralDestination(referralValue);
+            // Destination text (e.g. "NAMCO Hospital") comes from the referral obs
+            // itself, so it's always in English - localize just the generic "Hospital"
+            // word rather than the NAMCO name.
+            if (sessionManager.getAppLanguage().equalsIgnoreCase("mr")) {
+                destination = destination.replaceAll("(?i)\\bhospital\\b", "रुग्णालय");
+            }
             referralInfoTitle.setText(getResources().getString(R.string.referred_to_destination, destination));
             if (referralInfoInstruction != null) {
                 // "Please visit <destination> for further evaluation" only makes sense

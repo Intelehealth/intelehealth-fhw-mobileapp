@@ -123,6 +123,9 @@ public class VisitActivity extends BaseActivity implements
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
         });
+        // Not wired anywhere else (no android:onClick in the layout either) -
+        // without this, tapping the icon did nothing at all.
+        refresh.setOnClickListener(this::syncNow);
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
@@ -290,6 +293,42 @@ public class VisitActivity extends BaseActivity implements
         super.onStart();
         //register receiver for internet check
       //  networkUtils.callBroadcastReceiver();
+
+        // Without this, nothing ever stops the sync spinner/dialog or reloads the
+        // tab counts once syncNow()'s background sync finishes.
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.hasExtra("JOB")) {
+                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+                        if (!isFinishing()) {
+                            refresh.clearAnimation();
+                            if (syncAnimator != null) syncAnimator.cancel();
+                        }
+                        hideProgressbar();
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> configureTabLayout(), 300);
+                    }
+                }
+                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                    if (flagType == AppConstants.SYNC_FAILED) {
+                        refresh.clearAnimation();
+                        if (syncAnimator != null) syncAnimator.cancel();
+                        hideProgressbar();
+                    }
+                }
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        ContextCompat.registerReceiver(
+                this,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     private void hideProgressbar() {
@@ -302,6 +341,11 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void onStop() {
         super.onStop();
+        try {
+            unregisterReceiver(mBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         /*try {
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();

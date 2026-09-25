@@ -1604,9 +1604,10 @@
     <string name="referral_declined">रेफरल नाकारले</string>
     <string name="referral_declined_by_patient">रुग्णाने रेफरल नाकारले</string>
     <string name="referral_declined_description">रेफरलची शिफारस करण्यात आली होती परंतु रुग्णाने ती नाकारली</string>
+    <string name="referred_to_destination">%1$s कडे रेफर केले</string>
     <string name="resume">पुन्हा सुरू करा</string>
     <string name="final_prescription_received">अंतिम प्रिस्क्रिप्शन प्राप्त झाले</string>
-    <string name="specialist_prescription_completed">तज्ज्ञांची प्रिस्क्रिप्शन पूर्ण झाली</string>
+    <string name="specialist_prescription_completed">तज्ज्ञांचे प्रिस्क्रिप्शन पूर्ण झाले</string>
     <string name="interim_prescription">तात्पुरते प्रिस्क्रिप्शन</string>
     <string name="waiting_for_specialist_consultation">तज्ञांच्या सल्ल्याची वाट पाहत आहे</string>
     <string name="referral_evaluation_instruction">पुढील तपासणीसाठी कृपया NAMCO डॉक्टरांचा सल्ला घ्या</string>
