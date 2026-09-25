@@ -293,80 +293,11 @@ class PrintViewPrescription(
     private fun followUpWeb(): String {
         val followUpDate = dataModel.followUpDate
         Log.d(TAG, "kzfollowUpWeb: followUpDate : $followUpDate")
-
-        if (followUpDate.isNullOrBlank()) {
-            return stringToWebSms("NA")
-        }
-
-        var followUpDateStr = ""
-
-        if (followUpDate.contains(",")) {
-            val splitFollowDate = followUpDate.split(",")
-            val rawDate = splitFollowDate.getOrNull(0)?.trim()
-            Log.d(TAG, "kzfollowUpWeb: splitFollowDate : $splitFollowDate")
-            Log.d(TAG, "kzfollowUpWeb: rawDate : $rawDate")
-
-            if (!rawDate.isNullOrEmpty()) {
-                val formattedDate = when {
-                    rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
-                        // Format: dd-MM-yyyy
-                        DateAndTimeUtils.date_formatter(
-                            rawDate,
-                            "dd-MM-yyyy",
-                            "dd MMM, yyyy"
-                        )
-                    }
-                    rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
-                        // Format: yyyy-MM-dd
-                        DateAndTimeUtils.date_formatter(
-                            rawDate,
-                            "yyyy-MM-dd",
-                            "dd MMM, yyyy"
-                        )
-                    }
-                    else -> null
-                } ?: "NA"
-
-                val remainingStr = splitFollowDate
-                    .drop(1)
-                    .mapNotNull { segment ->
-                        val trimmed = segment.trim()
-                        when {
-                            trimmed.isEmpty() || trimmed.equals("null", ignoreCase = true) -> null
-                            // A blank doctor remark syncs down as a literal "Remark: null" -
-                            // show "NA" here too, matching the Follow-up Visits screen, the
-                            // end-visit reminder, and the WhatsApp preview/PDF.
-                            trimmed.matches(Regex("(?i)Remark:\\s*(null)?\\s*")) -> "Remark: NA"
-                            else -> trimmed
-                        }
-                    }
-                    .joinToString(", ")
-                Log.d(TAG, "kzfollowUpWeb: remainingStr : $remainingStr")
-
-                followUpDateStr = if (remainingStr.isNotEmpty()) {
-                    "$formattedDate, $remainingStr"
-                } else {
-                    formattedDate
-                }
-            } else {
-                followUpDateStr = followUpDate
-            }
-        } else {
-            val rawDate = followUpDate.trim()
-            followUpDateStr = when {
-                rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
-                    DateAndTimeUtils.date_formatter(rawDate, "dd-MM-yyyy", "dd MMM, yyyy") ?: "NA"
-                }
-                rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
-                    DateAndTimeUtils.date_formatter(rawDate, "yyyy-MM-dd", "dd MMM, yyyy") ?: "NA"
-                }
-                // "No" is the raw value when no follow-up was needed at all - same "NA"
-                // placeholder used elsewhere (PrescriptionBuilder, WhatsApp preview/PDF).
-                else -> if (rawDate.equals("null", ignoreCase = true) || rawDate.equals("No", ignoreCase = true)) "NA" else rawDate
-            }
-        }
-
-        return stringToWebSms(followUpDateStr.ifBlank { "NA" })
+        // Shared with the native Follow Up card and the Share Prescription PDF -
+        // handles the plain-date, "No", and date+Time/Remark/Type obs value shapes
+        // consistently (e.g. "26 Sep, 2026 Time 9:00 AM"), "NA" when there's no
+        // valid follow-up date.
+        return stringToWebSms(DateAndTimeUtils.formatFollowUpDisplay(followUpDate))
     }
 
     private fun stringToWebSms(input: String?): String {

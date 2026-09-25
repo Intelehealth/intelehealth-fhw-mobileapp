@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.models.dto.ObsDTO
 import org.intelehealth.app.utilities.UuidDictionary
@@ -56,7 +57,8 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
             val vitalEncounter = UuidDictionary.ENCOUNTER_VITALS
             val adultInitial = UuidDictionary.ENCOUNTER_ADULTINITIAL
             val encounterVisitNote = UuidDictionary.ENCOUNTER_VISIT_NOTE
-
+            val specialistVisitNote = UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
+            var specialistEncounterUuid: String? = null
 
             cursor.use {
                 while (it.moveToNext()) {
@@ -67,11 +69,33 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
                         vitalEncounter -> result[PrescriptionDetailsDataKeys.EncounterType.VITAL.key] = encounterUuid
                         adultInitial -> result[PrescriptionDetailsDataKeys.EncounterType.ADULT_INITIAL.key] = encounterUuid
                         encounterVisitNote -> result[PrescriptionDetailsDataKeys.EncounterType.VISIT_COMPLETE.key] = encounterUuid
+                        specialistVisitNote -> specialistEncounterUuid = encounterUuid
                     }
                 }
             }
 
+            // A NAMCO/specialist referral's actual prescription (diagnosis,
+            // medications, follow-up, etc.) lives on the specialist's own encounter
+            // when one exists - it takes priority over the GP's ENCOUNTER_VISIT_NOTE,
+            // matching EncounterDAO.fetchPrescriptionEncounterUuid().
+            specialistEncounterUuid?.let {
+                result[PrescriptionDetailsDataKeys.EncounterType.VISIT_COMPLETE.key] = it
+            }
+
             result
+        }
+    }
+
+    /**
+     * A visit can carry more than one FOLLOW_UP_VISIT obs row (e.g. an initial
+     * "No" later superseded by a real date) - the generic per-row bullet
+     * accumulator in getVisitCompleteEncounterData() would show both as separate
+     * bullets. This resolves the single correct value the same way the Follow Up
+     * card and View/Print do (specialist encounter takes priority, latest row wins).
+     */
+    suspend fun getFullFollowupValue(visitUuid: String): String? {
+        return withContext(Dispatchers.IO) {
+            ObsDAO.getFullFollowupValueForVisitUUID(visitUuid)
         }
     }
 

@@ -334,6 +334,53 @@ public class ObsDAO extends BaseDao{
      * @param visitUUID
      * @return Followup date Eg. 30-11-2022
      */
+    /**
+     * Same specialist-encounter-priority/latest-row resolution as
+     * getFollowupDataForVisitUUID(), but returns the FULL raw obs value (date, plus
+     * any "Time:"/"Remark:"/"Type:" segments) instead of just the first 10 chars -
+     * for screens that also need to show the follow-up time, not just the date.
+     */
+    public static String getFullFollowupValueForVisitUUID(String visitUUID) {
+        String result = null;
+        if (visitUUID == null) return null;
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+
+        final Cursor specialistCursor = db.rawQuery("select o.value from " +
+                        "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
+                        "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
+                        "v.uuid = ? and o.conceptuuid = ? and e.encounter_type_uuid = ? " +
+                        "order by o.obsservermodifieddate desc",
+                new String[]{visitUUID, FOLLOW_UP_VISIT, UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE});
+        if (specialistCursor.moveToFirst()) {
+            try {
+                result = specialistCursor.getString(specialistCursor.getColumnIndexOrThrow("value"));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        specialistCursor.close();
+
+        if (result == null) {
+            final Cursor cursor = db.rawQuery("select o.value from " +
+                            "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
+                            "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
+                            "v.uuid = ? and o.conceptuuid = ? " +
+                            "order by o.obsservermodifieddate desc",
+                    new String[]{visitUUID, FOLLOW_UP_VISIT});
+            if (cursor.moveToFirst()) {
+                try {
+                    result = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            cursor.close();
+        }
+
+        return result;
+    }
+
     public static String getFollowupDataForVisitUUID(String visitUUID) {
         String result = null;
 

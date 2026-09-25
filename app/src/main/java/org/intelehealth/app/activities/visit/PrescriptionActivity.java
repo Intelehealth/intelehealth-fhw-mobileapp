@@ -110,6 +110,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
@@ -1756,13 +1757,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
             case UuidDictionary.FOLLOW_UP_VISIT: {
-                if (!followUpDate.isEmpty() && !followUpDate.contains(value)) {
-                    followUpDate = followUpDate + "," + value;
-                } else {
-                    followUpDate = value;
-                }
+                // Resolve the one correct follow-up value directly (specialist
+                // encounter takes priority, latest row wins) instead of blindly
+                // concatenating every FOLLOW_UP_VISIT obs row this cursor loop sees
+                // across encounters - that used to produce a garbled multi-value
+                // string that failed to parse and fell back to this screen's
+                // leftover placeholder hint ("15 May, 2022").
+                followUpDate = ObsDAO.getFullFollowupValueForVisitUUID(visitID);
+                String followUpDateToken = DateAndTimeUtils.extractFollowUpDateToken(followUpDate);
 
-                if (followUpDate == null || followUpDate.isEmpty() || followUpDate.equalsIgnoreCase("No")) {
+                if (followUpDateToken == null) {
 
                     no_followup_txt.setVisibility(View.VISIBLE);
                     followup_date_block.setVisibility(View.GONE);
@@ -1777,19 +1781,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 }
 
-                if (followup_date_block.getVisibility() != View.VISIBLE) {
-                    followup_date_block.setVisibility(View.VISIBLE);
-                }
-                if (no_followup_txt.getVisibility() == View.VISIBLE) {
-                    no_followup_txt.setVisibility(View.GONE);
-                }
-                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
+                String followUpDatePattern = DateAndTimeUtils.followUpDateTokenPattern(followUpDateToken);
+                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDateToken, followUpDatePattern, "dd MMMM,yyyy");
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
-                followup_date_txt.setText(followUpDate_format);
+                String followUpTimeToken = DateAndTimeUtils.extractFollowUpTimeToken(followUpDate);
+                followup_date_txt.setText(followUpTimeToken != null
+                        ? followUpDate_format + "\n" + followUpTimeToken
+                        : followUpDate_format);
                 CustomLog.v("Prescriotion", "followUpDate - " + followUpDate);
 
-                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
+                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDateToken, followUpDatePattern)) {
                     String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         followUpSubText = StringUtils.en__hi_dob(followUpSubText);
