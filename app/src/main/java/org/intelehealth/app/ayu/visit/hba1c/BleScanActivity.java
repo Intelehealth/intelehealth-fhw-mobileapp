@@ -10,11 +10,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import org.intelehealth.app.R;
 
@@ -37,6 +41,7 @@ public class BleScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ble_scan);
+        applySystemBarInsets();
 
         ListView listView = findViewById(R.id.listDevices);
         Button btnScan = findViewById(R.id.btnScan);
@@ -64,6 +69,25 @@ public class BleScanActivity extends AppCompatActivity {
             result.putExtra("device_name", name);
             setResult(RESULT_OK, result);
             finish();
+        });
+    }
+
+    /**
+     * targetSdk 35+ enforces edge-to-edge, so the content is laid out behind the status,
+     * navigation and cutout areas. Add those insets on top of the layout's own padding so the
+     * scan button and device list stay below the system bars on every screen size.
+     */
+    private void applySystemBarInsets() {
+        View root = findViewById(R.id.root_lay);
+        int left = root.getPaddingLeft();
+        int top = root.getPaddingTop();
+        int right = root.getPaddingRight();
+        int bottom = root.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout());
+            view.setPadding(left + bars.left, top + bars.top, right + bars.right, bottom + bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
         });
     }
 
