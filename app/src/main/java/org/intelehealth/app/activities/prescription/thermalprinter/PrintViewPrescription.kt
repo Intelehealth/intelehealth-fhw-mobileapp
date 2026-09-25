@@ -360,7 +360,9 @@ class PrintViewPrescription(
                 rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
                     DateAndTimeUtils.date_formatter(rawDate, "yyyy-MM-dd", "dd MMM, yyyy") ?: "NA"
                 }
-                else -> if (rawDate != "null") rawDate else "NA"
+                // "No" is the raw value when no follow-up was needed at all - same "NA"
+                // placeholder used elsewhere (PrescriptionBuilder, WhatsApp preview/PDF).
+                else -> if (rawDate.equals("null", ignoreCase = true) || rawDate.equals("No", ignoreCase = true)) "NA" else rawDate
             }
         }
 

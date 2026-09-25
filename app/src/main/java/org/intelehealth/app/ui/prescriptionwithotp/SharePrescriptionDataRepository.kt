@@ -187,8 +187,11 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
                 // PrescriptionBuilder already uses for the same field, so the End
                 // Visit screen, View/Print, WhatsApp preview and WhatsApp PDF (all of
                 // which read this value) stay consistent instead of showing "null".
+                // When no follow-up was needed at all, the whole value is just "No" -
+                // same "NA" placeholder, mirroring PrescriptionBuilder.generateFollowUpData().
                 PrescriptionDetailsDataKeys.FollowUp.DATE ->
-                    rawValue.replace(Regex("(?i)Remark:\\s*(null)?\\s*$"), "Remark: NA")
+                    if (rawValue.trim().equals("No", ignoreCase = true)) "NA"
+                    else rawValue.replace(Regex("(?i)Remark:\\s*(null)?\\s*$"), "Remark: NA")
                 else -> rawValue
             }
             val existingValue = adultInitialMap[key]
