@@ -29,6 +29,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -264,6 +265,29 @@ public class VisitActivity extends BaseActivity implements
 
     }
 
+    /**
+     * configureTabLayout() only ever creates the ViewPager's adapter/fragments
+     * once - once they exist, a sync completing never reaches them again, so the
+     * Received/Pending/Referrals lists stayed stale until the whole screen was
+     * recreated. Reuses each fragment's own existing reload method instead of a
+     * new/duplicate query path.
+     */
+    private void reloadVisitTabs() {
+        if (viewPager == null || viewPager.getAdapter() == null) return;
+        Fragment received = getSupportFragmentManager().findFragmentByTag("f0");
+        if (received instanceof VisitReceivedFragment) {
+            ((VisitReceivedFragment) received).reloadData();
+        }
+        Fragment pending = getSupportFragmentManager().findFragmentByTag("f1");
+        if (pending instanceof VisitPendingFragment) {
+            ((VisitPendingFragment) pending).reloadData();
+        }
+        Fragment referral = getSupportFragmentManager().findFragmentByTag("f2");
+        if (referral instanceof VisitReferralFragment) {
+            ((VisitReferralFragment) referral).reloadData();
+        }
+    }
+
    /* private void updateCounts(boolean isForReceivedPrescription) {
         Executors.newSingleThreadExecutor().execute(() -> {
             int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
@@ -308,7 +332,10 @@ public class VisitActivity extends BaseActivity implements
                             if (syncAnimator != null) syncAnimator.cancel();
                         }
                         hideProgressbar();
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> configureTabLayout(), 300);
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            configureTabLayout();
+                            reloadVisitTabs();
+                        }, 300);
                     }
                 }
                 if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {

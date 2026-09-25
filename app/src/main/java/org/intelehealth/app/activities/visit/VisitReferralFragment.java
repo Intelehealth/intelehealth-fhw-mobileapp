@@ -157,6 +157,12 @@ public class VisitReferralFragment extends Fragment {
         });
     }
 
+    /** Re-queries from the DB (e.g. after a sync completes) - reuses the same
+     *  reload logic already wired to the search-close button. */
+    public void reloadData() {
+        loadReferralsInBackground();
+    }
+
     private void loadReferralsInBackground() {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {

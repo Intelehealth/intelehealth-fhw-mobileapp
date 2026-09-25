@@ -430,6 +430,12 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     }
 
 
+    /** Re-queries from the top (e.g. after a sync completes) - reuses the same
+     *  reset-and-reload logic already wired to the search-close button. */
+    public void reloadData() {
+        resetData();
+    }
+
     private void resetData() {
         if (commonLoadingDialog == null) {
             commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(getActivity(), getString(R.string.loading), "");
