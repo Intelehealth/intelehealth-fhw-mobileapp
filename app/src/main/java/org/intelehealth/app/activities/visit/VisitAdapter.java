@@ -134,11 +134,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
 
             // end
 
-            // Status badge — "Referral Declined" isn't wired up yet (no data field for
-            // it). "Specialist Prescription" vs plain "Prescription" is driven by
-            // model.isSpecialistPrescription() (set by VisitReceivedFragment when this
-            // visit's completed prescription came via a NAMCO/specialist referral —
-            // see EncounterDAO#fetchReferredSpecialistValue).
+            // "Specialist Prescription" only for a consented NAMCO referral;
+            // "Referral Declined" badge covers the declined case (see PrescriptionModel).
             if (model.isHasPrescription()) {
                 holder.badgePrimary.setVisibility(View.VISIBLE);
                 holder.badgePrimary.setText(model.isSpecialistPrescription()
@@ -152,6 +149,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_orange);
                 holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeOrangeText));
             }
+            // Set explicitly both ways - view is recycled, must not keep a stale state.
+            holder.badgeSecondary.setVisibility(model.isReferralDeclined() ? View.VISIBLE : View.GONE);
 
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
@@ -257,6 +256,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         private LinearLayout shareicon;
         private FrameLayout fl_priority;
         private TextView badgePrimary;
+        private TextView badgeSecondary;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -269,6 +269,7 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
             badgePrimary = itemView.findViewById(R.id.fu_badge_primary);
+            badgeSecondary = itemView.findViewById(R.id.fu_badge_secondary);
         }
     }
 

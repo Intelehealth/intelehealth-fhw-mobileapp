@@ -984,27 +984,46 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
          */
         private void bindReferralInfo(String referralValue) {
             boolean referred = referralValue != null && !referralValue.trim().isEmpty();
+            boolean declined = false;
             boolean visitComplete = false;
             if (referred) {
                 try {
+                    declined = new EncounterDAO().isReferralDeclined(visitID);
                     visitComplete = new EncounterDAO().isPrescriptionReceived(visitID);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
-            boolean referralResolved = referred && visitComplete;
+            // Declined referral never reaches the specialist - can't be resolved.
+            boolean referralResolved = referred && !declined && visitComplete;
             // Set before the End Visit button is wired up further down in onCreate
             // (inside its own background task) — see the "end visit" block, which
             // reads this to keep the button disabled for the lifetime of the screen.
-            interimPrescriptionActive = referred && !visitComplete;
+            interimPrescriptionActive = referred && !declined && !visitComplete;
 
             if (referralInfoCard == null) return;
             if (!referred) {
                 referralInfoCard.setVisibility(View.GONE);
                 return;
             }
-            String destination = EncounterDAO.parseReferralDestination(referralValue);
             referralInfoCard.setVisibility(View.VISIBLE);
+
+            if (declined) {
+                referralInfoCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.referralDeclinedCardBg));
+                referralInfoTitle.setText(R.string.referral_declined_by_patient);
+                referralInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                if (referralInfoInstruction != null) {
+                    referralInfoInstruction.setVisibility(View.VISIBLE);
+                    referralInfoInstruction.setText(R.string.referral_declined_description);
+                    referralInfoInstruction.setTextColor(ContextCompat.getColor(this, R.color.textColorGray));
+                }
+                if (referralInfoStatus != null) referralInfoStatus.setVisibility(View.GONE);
+                return;
+            }
+
+            referralInfoCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.cardTintLightOrange));
+            referralInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            String destination = EncounterDAO.parseReferralDestination(referralValue);
             referralInfoTitle.setText(getResources().getString(R.string.referred_to_destination, destination));
             if (referralInfoInstruction != null) {
                 // "Please visit <destination> for further evaluation" only makes sense
@@ -1015,12 +1034,14 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 }
             }
             if (referralInfoStatus != null) {
+                referralInfoStatus.setVisibility(View.VISIBLE);
                 referralInfoStatus.setText(referralResolved
                         ? R.string.specialist_prescription_completed
                         : R.string.waiting_for_specialist_consultation);
             }
 
-            if (presc_time != null) {
+            // Declined referral - leave the normal "Received <date>" text as-is.
+            if (presc_time != null && !declined) {
                 if (referralResolved) {
                     presc_time.setText(R.string.final_prescription_received);
                     presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
@@ -1070,6 +1091,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             boolean referred = referralValue != null && !referralValue.trim().isEmpty();
             if (!referred) return;
             try {
+                if (new EncounterDAO().isReferralDeclined(visitID)) return; // never handed off - keep the original doctor's speciality
                 if (!new EncounterDAO().isPrescriptionReceived(visitID)) return; // still pending, not resolved yet
                 ClsDoctorDetails details = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
                 if (details != null && details.getSpecialization() != null && !details.getSpecialization().trim().isEmpty()) {

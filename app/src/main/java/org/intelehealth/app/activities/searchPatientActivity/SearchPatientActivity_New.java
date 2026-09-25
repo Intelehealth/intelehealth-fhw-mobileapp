@@ -531,6 +531,7 @@ public class SearchPatientActivity_New extends BaseActivity {
         try {
             String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitUuid);
             if (referralValue == null || referralValue.trim().isEmpty()) return;
+            if (new EncounterDAO().isReferralDeclined(visitUuid)) return; // never handed off - not a specialist prescription
             if (new EncounterDAO().isPrescriptionReceived(visitUuid)) {
                 patientDTO.setSpecialistPrescription(true); // specialist already completed it
                 return;

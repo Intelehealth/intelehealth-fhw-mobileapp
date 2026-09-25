@@ -1701,6 +1701,8 @@
     <string name="latest">Latest</string>
     <string name="prescription_pending">Prescription Pending</string>
     <string name="referral_declined">Referral Declined</string>
+    <string name="referral_declined_by_patient">Referral declined by patient</string>
+    <string name="referral_declined_description">Referral was recommended but declined by the patient</string>
     <string name="referred_to_destination">Referred to %1$s</string>
     <string name="referral_evaluation_instruction">Please Consult NAMCO Doctor for further evaluation</string>
     <string name="waiting_for_specialist_consultation">Waiting for specialist consultation</string>

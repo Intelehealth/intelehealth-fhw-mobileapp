@@ -680,6 +680,51 @@ public class EncounterDAO extends BaseDao {
     }
 
     /**
+     * Raw referral consent obs value, e.g. "NAMCO:No". Null if never recorded.
+     */
+    public String fetchReferralConsentValue(String visitUUID) throws DAOException {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        String value = null;
+        try {
+            Cursor cursor = db.rawQuery(
+                    "SELECT o.value FROM tbl_encounter e, tbl_obs o " +
+                            "WHERE e.visituuid = ? AND e.encounter_type_uuid = ? AND e.uuid = o.encounteruuid " +
+                            "AND o.conceptuuid = ? AND o.voided = 0 AND o.value IS NOT NULL AND trim(o.value) <> '' " +
+                            "AND (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                            "ORDER BY o.obsservermodifieddate DESC LIMIT 1",
+                    new String[]{visitUUID, UuidDictionary.ENCOUNTER_VISIT_NOTE, UuidDictionary.REFERRAL_CONSENT});
+            if (cursor.moveToFirst()) {
+                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
+            }
+            cursor.close();
+        } catch (SQLiteException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            throw new DAOException(e);
+        }
+        return value;
+    }
+
+    /**
+     * True only for an explicit "...:No". Missing/malformed values default to
+     * false so older visits without this obs are unaffected.
+     */
+    public static boolean isReferralConsentDeclined(String rawConsentValue) {
+        if (rawConsentValue == null || rawConsentValue.trim().isEmpty()) return false;
+        String[] parts = rawConsentValue.split(":");
+        if (parts.length < 2) return false;
+        return "no".equalsIgnoreCase(parts[1].trim());
+    }
+
+    /**
+     * True if the referral existed but the patient declined consent - the
+     * specialist never received the patient, so specialist-prescription logic
+     * must skip this visit.
+     */
+    public boolean isReferralDeclined(String visitUUID) throws DAOException {
+        return isReferralConsentDeclined(fetchReferralConsentValue(visitUUID));
+    }
+
+    /**
      * Encounter whose obs should be read as "the prescription" for a visit —
      * prefers the NAMCO/specialist doctor's own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
      * encounter when the visit was completed via referral (that's where their

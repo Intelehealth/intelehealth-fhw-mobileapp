@@ -133,25 +133,24 @@
                     android:textSize="@dimen/fu_male_textsize" />
 
                 <!--
-                    Status badge row — which badge shows is driven by the model
-                    (currently just hasPrescription -> Prescription/Prescription
-                    Pending, or Specialist Prescription for a NAMCO-referred visit).
-                    "Referral Declined" isn't wired to a real condition yet — no data
-                    field exists for it.
+                    Badges are data-driven (see PrescriptionModel). FlexboxLayout so a
+                    second badge wraps to its own line instead of overflowing on
+                    narrow screens.
                 -->
-                <LinearLayout
+                <com.google.android.flexbox.FlexboxLayout
                     android:id="@+id/fu_badge_row"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/fu_date_txtview"
                     android:layout_marginTop="@dimen/margin_8"
-                    android:orientation="horizontal">
+                    app:flexWrap="wrap">
 
                     <TextView
                         android:id="@+id/fu_badge_primary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
                         android:paddingHorizontal="@dimen/margin_10"
                         android:paddingVertical="@dimen/margin_4"
                         android:maxLines="1"
@@ -164,7 +163,24 @@
                         tools:textColor="@color/badgeGreenText"
                         tools:visibility="visible" />
 
-                </LinearLayout>
+                    <TextView
+                        android:id="@+id/fu_badge_secondary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/margin_8"
+                        android:paddingHorizontal="@dimen/margin_10"
+                        android:paddingVertical="@dimen/margin_4"
+                        android:maxLines="1"
+                        android:ellipsize="end"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:visibility="gone"
+                        android:background="@drawable/bg_badge_purple"
+                        android:text="@string/referral_declined"
+                        android:textColor="@color/badgePurpleText"
+                        tools:visibility="visible" />
+
+                </com.google.android.flexbox.FlexboxLayout>
 
             </RelativeLayout>
         </RelativeLayout>

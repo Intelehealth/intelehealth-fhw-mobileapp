@@ -1602,6 +1602,8 @@
     <string name="latest">नवीनतम</string>
     <string name="prescription_pending">प्रिस्क्रिप्शन प्रलंबित आहे</string>
     <string name="referral_declined">रेफरल नाकारले</string>
+    <string name="referral_declined_by_patient">रुग्णाने रेफरल नाकारले</string>
+    <string name="referral_declined_description">रेफरलची शिफारस करण्यात आली होती परंतु रुग्णाने ती नाकारली</string>
     <string name="resume">पुन्हा सुरू करा</string>
     <string name="final_prescription_received">अंतिम प्रिस्क्रिप्शन प्राप्त झाले</string>
     <string name="specialist_prescription_completed">तज्ज्ञांची प्रिस्क्रिप्शन पूर्ण झाली</string>

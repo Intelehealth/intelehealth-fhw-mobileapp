@@ -27,6 +27,8 @@ public class PrescriptionModel {
     String obsservermodifieddate = "";
     /** True when this visit's (final) prescription was completed via a NAMCO/specialist referral. */
     boolean specialistPrescription = false;
+    /** True when a NAMCO/specialist referral was recorded but the patient declined consent. */
+    boolean referralDeclined = false;
 
     public String getEncounterUuid() {
         return encounterUuid;
@@ -186,5 +188,13 @@ public class PrescriptionModel {
 
     public void setSpecialistPrescription(boolean specialistPrescription) {
         this.specialistPrescription = specialistPrescription;
+    }
+
+    public boolean isReferralDeclined() {
+        return referralDeclined;
+    }
+
+    public void setReferralDeclined(boolean referralDeclined) {
+        this.referralDeclined = referralDeclined;
     }
 }

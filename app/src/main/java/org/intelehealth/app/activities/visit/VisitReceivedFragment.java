@@ -743,9 +743,13 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
                 try {
                     // Referred visit whose ENCOUNTER_VISIT_COMPLETE already exists (this
-                    // query's has_visit_complete = 1) means the NAMCO/specialist doctor
-                    // shared the final prescription — surface it as "Specialist Prescription".
-                    model.setSpecialistPrescription(new EncounterDAO().fetchReferredSpecialistValue(visitID) != null);
+                    // query's has_visit_complete = 1) means a doctor shared the final
+                    // prescription. Only tag "Specialist Prescription" if consent was
+                    // given; declined referrals show "Referral Declined" instead.
+                    boolean referred = encounterDAO.fetchReferredSpecialistValue(visitID) != null;
+                    boolean declined = referred && encounterDAO.isReferralDeclined(visitID);
+                    model.setSpecialistPrescription(referred && !declined);
+                    model.setReferralDeclined(declined);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
@@ -979,9 +983,12 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
                 try {
-                    // See recentVisits(int,int) above for why has_visit_complete = 1 plus a
-                    // Referred Specialist obs means this is a NAMCO/specialist final prescription.
-                    model.setSpecialistPrescription(new EncounterDAO().fetchReferredSpecialistValue(visitID) != null);
+                    // See recentVisits(int,int) above - same rule, declined referrals
+                    // show "Referral Declined" instead of "Specialist Prescription".
+                    boolean referred = encounterDAO.fetchReferredSpecialistValue(visitID) != null;
+                    boolean declined = referred && encounterDAO.isReferralDeclined(visitID);
+                    model.setSpecialistPrescription(referred && !declined);
+                    model.setReferralDeclined(declined);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }

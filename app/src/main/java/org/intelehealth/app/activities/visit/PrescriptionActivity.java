@@ -1492,6 +1492,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitID);
             if (referralValue == null || referralValue.trim().isEmpty()) return original;
+            if (new EncounterDAO().isReferralDeclined(visitID)) return original; // never handed off - keep the original doctor
             if (!new EncounterDAO().isPrescriptionReceived(visitID)) return original; // still pending, not resolved yet
 
             ClsDoctorDetails specialistDetails = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
