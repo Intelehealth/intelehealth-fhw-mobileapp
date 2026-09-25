@@ -35,6 +35,7 @@ import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.network.response.ConfigResponse;
+import org.intelehealth.config.worker.ConfigSyncWorker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +45,11 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import timber.log.Timber;
 
 /**
  * Created by Intelehealth on 17/04/17.
@@ -61,7 +64,7 @@ public class SyncDAO {
     String appLanguage;
 
     static SyncProgress liveDataSync = new SyncProgress();
-    static boolean isTheConfigUpdated = false;
+    boolean isTheConfigUpdated = false;
 
 
     public boolean SyncData(ResponseDTO responseDTO, boolean isAppSetupDone) throws DAOException {
@@ -719,7 +722,15 @@ public class SyncDAO {
     public static SyncProgress getSyncProgress_LiveData() {
         return liveDataSync;
     }
+    /**
+     * Refreshes the server config (feature flags such as webrtcSection/video/chat) on every sync.
+     * FCMNotificationReceiver only shows an incoming video call when videoSection is enabled.
+     */
     public void loadConfig() {
+        ConfigSyncWorker.Companion.startConfigSyncWorker(IntelehealthApplication.getAppContext(), it -> {
+            Timber.d("Worker state sync " + it);
+            return Unit.INSTANCE;
+        });
         isTheConfigUpdated = true;
     }
 }
