@@ -242,7 +242,9 @@ public class VisitActivity extends BaseActivity implements
                                     : R.string.referrals))
             ).attach();
 
-            viewPager.setOffscreenPageLimit(1); // Optimize memory usage
+            // 2 keeps all 3 tabs (Received/Pending/Referrals) created up front, so each
+            // tab's count loads immediately instead of only once the user opens it.
+            viewPager.setOffscreenPageLimit(2);
         }
           /*String language = sessionManager.getAppLanguage();
       if (!language.equalsIgnoreCase("")) {
