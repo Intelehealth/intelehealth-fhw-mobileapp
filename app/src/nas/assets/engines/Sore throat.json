@@ -1,0 +1,484 @@
+{
+    "id": "ID_1961234253",
+    "text": "Sore throat",
+    "perform-physical-exam": "Mouth:Back of throat (redness, swelling);Any Location:Lumps;Throat:Congestion;Throat:Tonsils;Throat:Post-nasal drip;",
+    "display-or": "ଗଲା ଦାହ",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_754961813",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1005814222",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "କେବେଠାରୁ",
+                    "display-hi": "(कब से है, दर्ज करें)",
+                    "display-mr": "लिहा (कधी पासून  आहे ते)"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "हे लक्षण तुम्हाला कधी पासून आहे"
+        },
+        {
+            "id": "ID_211021709",
+            "text": "Onset",
+            "display": "How did the symptom start?",
+            "multi-choice": false,
+            "display-or": "କେମିତି ଆରମ୍ଭ ହେଲା",
+            "options": [
+                {
+                    "id": "ID_1696872731",
+                    "text": "Very sudden",
+                    "display-or": "ହଠାତ",
+                    "display-hi": "एकाएक/ अचानक",
+                    "display-mr": "अचानक"
+                },
+                {
+                    "id": "ID_1753690119",
+                    "text": "Gradual",
+                    "display-or": "ଧୀରେ ଧୀରେ",
+                    "display-hi": "धीरे-धीरे",
+                    "display-mr": "हळू हळू"
+                },
+                {
+                    "id": "ID_1741109728",
+                    "text": "Intermittent",
+                    "display-or": "ମଝିରେ ମଝିରେ",
+                    "display-hi": "रुक-रुक कर",
+                    "display-mr": "राहून राहून"
+                }
+            ],
+            "display-hi": "इस लक्षण की शुरुआत कैसे हुई?",
+            "display-mr": "या लक्षणाची सुरुवात कशी झाली"
+        },
+        {
+            "id": "ID_784180596",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_1563138130",
+                    "text": "Drooling",
+                    "display-or": "ଲାଲ ବହିବା",
+                    "display-hi": "लार टपकना",
+                    "display-mr": "तोंडातून लाळ गळणे"
+                },
+                {
+                    "id": "ID_1127548639",
+                    "text": "Difficulty breathing",
+                    "display-or": "ନିଶ୍ୱାସ ପ୍ରଶ୍ୱାସରେ କଷ୍ଠ",
+                    "display-hi": "साँस लेने में तकलीफ",
+                    "display-mr": "श्वास घेण्यास त्रास"
+                },
+                {
+                    "id": "ID_250348148",
+                    "text": "Cough",
+                    "display-or": "କାଶ",
+                    "multi-choice": false,
+                    "options": [
+                        {
+                            "id": "ID_666739841",
+                            "text": "Dry",
+                            "display-or": "ଶୁଖିଲା",
+                            "display-hi": "सूखी",
+                            "display-mr": "सुका"
+                        },
+                        {
+                            "id": "ID_688803727",
+                            "text": "Productive (With sputum)",
+                            "display-or": "କଫି",
+                            "options": [
+                                {
+                                    "id": "ID_40884973",
+                                    "text": "Color of sputum",
+                                    "display-or": "କଫ ର ରଙ୍ଗ",
+                                    "options": [
+                                        {
+                                            "id": "ID_127709783",
+                                            "text": "Clear",
+                                            "display-or": "ସ୍ୱଚ୍ଛ କଫ",
+                                            "display-hi": "साफ़",
+                                            "display-mr": "साफ"
+                                        },
+                                        {
+                                            "id": "ID_1390255618",
+                                            "text": "Yellow",
+                                            "display-or": "ହଳଦିଆ କଫ",
+                                            "display-hi": "पीला",
+                                            "display-mr": "पिवळा"
+                                        },
+                                        {
+                                            "id": "ID_1829782527",
+                                            "text": "Green",
+                                            "display-or": "ନୀଳ କଫ",
+                                            "display-hi": "हरा",
+                                            "display-mr": "हिरवा"
+                                        },
+                                        {
+                                            "id": "ID_1306609508",
+                                            "text": "Red or pink",
+                                            "display-or": "ଲାଲ ବା ଧୂସର କଫ",
+                                            "display-hi": "लाल या गुलाबी",
+                                            "display-mr": "लाल किवा गुलाबी"
+                                        },
+                                        {
+                                            "id": "ID_254084860",
+                                            "text": "Brown",
+                                            "display-or": "ଧୂସର ବା ଫିକା କଫ",
+                                            "display-hi": "भूरा",
+                                            "display-mr": "तपकिरी"
+                                        },
+                                        {
+                                            "id": "ID_1146006116",
+                                            "text": "Black or grey",
+                                            "display-or": "କଲା ବା ଅଳପ ଧୂସର କଫ",
+                                            "display-hi": "काला या स्लेटी",
+                                            "display-mr": "काळा किंवा राखाडी"
+                                        }
+                                    ],
+                                    "display-hi": "बलगम का रंग",
+                                    "display-mr": "थुंकी/ कफाचा रंग"
+                                }
+                            ],
+                            "display-hi": "उत्पन्न करने वाला (बलगम के साथ)",
+                            "display-mr": "थुंकी/ कफासह"
+                        }
+                    ],
+                    "display-hi": "खांसी",
+                    "display-mr": "खोकला"
+                },
+                {
+                    "id": "ID_925342076",
+                    "text": "Barking cough",
+                    "display": "Cough that sounds like barking",
+                    "display-or": "କର୍କଶ କାଶ",
+                    "display-hi": "कुक्कुर खाँसी",
+                    "display-mr": "खरखर आवाज करणारा खोकला"
+                },
+                {
+                    "id": "ID_1060058209",
+                    "text": "Difficulty swallowing",
+                    "display-or": "ଚଳିବାରେ କଷ୍ଟ",
+                    "display-hi": "निगलने में तकलीफ",
+                    "display-mr": "गिळण्यास त्रास"
+                },
+                {
+                    "id": "ID_570727475",
+                    "text": "Neck pain",
+                    "display-or": "ବେକ ଯନ୍ତ୍ରଣା",
+                    "display-hi": "गले में दर्द",
+                    "display-mr": "माने मध्ये वेदना"
+                },
+                {
+                    "id": "ID_1862814791",
+                    "text": "Feeling of a lump in the throat",
+                    "display-or": "ଗଳାରେ ଫୁଲିବା",
+                    "display-hi": "गले में सूजन या घुमड़ लगना",
+                    "display-mr": "घशात सूज जाणवणे"
+                },
+                {
+                    "id": "ID_896570466",
+                    "text": "Weight change (kg)",
+                    "multi-choice": true,
+                    "language": "%",
+                    "display-or": "ଓଜନ ପରିବର୍ତନ",
+                    "options": [
+                        {
+                            "id": "ID_867149692",
+                            "text": "Weight gain",
+                            "input-type": "number",
+                            "language": "Patient reports weight gain (kgs)",
+                            "display-or": "ବୃଦ୍ଧି",
+                            "display-hi": "वजन बढ़ना",
+                            "display-mr": "वजन वाढणे"
+                        },
+                        {
+                            "id": "ID_362965028",
+                            "text": "Weight loss",
+                            "input-type": "number",
+                            "language": "Patient reports weight loss (kgs)",
+                            "display-or": "ହ୍ରାସ",
+                            "display-hi": "वजन घटना",
+                            "display-mr": "वजन कमी होणे"
+                        },
+                        {
+                            "id": "ID_894111749",
+                            "text": "since when",
+                            "input-type": "duration",
+                            "language": "since",
+                            "display-or": "କେବେ ଠାରୁ ଲେଖ",
+                            "display-hi": "कब से",
+                            "display-mr": "कधी पासून"
+                        }
+                    ],
+                    "display-hi": "वजन में बदलाव (किलोग्राम)",
+                    "display-mr": "वजना मध्ये बदल"
+                },
+                {
+                    "id": "ID_267576410",
+                    "text": "Fever with sore throat",
+                    "display-or": "ଜ୍ୱର ସହିତ ଗାଲରେ ଘା ହେବା",
+                    "isRequired": true,
+                    "options": [
+                        {
+                            "id": "ID_1234321810",
+                            "text": "Severity of Fever",
+                            "display-or": "ମାତ୍ର",
+                            "language": "%",
+                            "options": [
+                                {
+                                    "id": "ID_107199083",
+                                    "text": "Low",
+                                    "display-or": "ଅଳ୍ପ",
+                                    "language": "Patient reports severity of fever is low",
+                                    "display-hi": "कम",
+                                    "display-mr": "कमी"
+                                },
+                                {
+                                    "id": "ID_1269790101",
+                                    "text": "Moderate",
+                                    "display-or": "ମଧ୍ୟମ",
+                                    "language": "Patient reports severity of fever is moderate",
+                                    "display-hi": "मध्यम",
+                                    "display-mr": "मध्यम"
+                                },
+                                {
+                                    "id": "ID_1406542099",
+                                    "text": "High",
+                                    "display-or": "ଉଚ",
+                                    "language": "Patient reports severity of fever is high",
+                                    "display-hi": "अधिक",
+                                    "display-mr": "जास्त"
+                                },
+                                {
+                                    "id": "ID_489074591",
+                                    "text": "Combined high and low",
+                                    "display-or": "ଉଚ ଅଳ୍ପ",
+                                    "language": "Patient reports severity of fever is combined high and low",
+                                    "display-hi": "अधिक और कम मिला-जुला",
+                                    "display-mr": "कमी आणि जास्त मिश्र"
+                                }
+                            ],
+                            "display-hi": "बुखार की तीव्रता",
+                            "display-mr": "तापाचे प्रमाण"
+                        }
+                    ],
+                    "display-hi": "गले में खराश/ दर्द के साथ बुखार",
+                    "display-mr": "घसा खवखवणे, तापा सहित"
+                },
+                {
+                    "id": "ID_1810025148",
+                    "text": "Muscle pain",
+                    "display-or": "ମାଂସ ପେଶୀରେ ଯନ୍ତ୍ରଣା ହେବା",
+                    "display-hi": "मांसपेशियों में दर्द",
+                    "display-mr": "स्नायू मध्ये वेदना"
+                },
+                {
+                    "id": "ID_1747687827",
+                    "text": "Headache",
+                    "display-or": "ମୁଣ୍ଡ ଆବିନ୍ଧା",
+                    "display-hi": "सरदर्द",
+                    "display-mr": "डोकेदुखी"
+                },
+                {
+                    "id": "ID_492530355",
+                    "text": "Cervical lymphadenopathy",
+                    "display": "Palpable, tender mass (Neck)",
+                    "display-or": "ହାତକୁ ଲାଗୁଥିବା ଫୁଲ",
+                    "display-hi": "महसूस होने वाला, नरम कोमल पिंड (गला)",
+                    "display-mr": "स्पर्श करता येण्यासारखी, मऊ गाठ (मान)"
+                },
+				{
+                    "id": "ID_1436155996",
+                    "text": "Stomatitis",
+                    "display": "Redness of skin inside the mouth",
+                    "display-hi": "मुँह के अंदर की त्वचा का लाल हो जाना ",
+                    "display-mr": "तोंडाच्या आतील त्वचेवर लालसरपणा"
+                },
+                {
+                    "id": "ID_251958068",
+                    "text": "Loss of smell/taste sensation",
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1073430151",
+                            "text": "Loss of smell",
+                            "language": "Patient has loss of smell",
+                            "display-hi": "घ्राण शक्ति का ह्रास ",
+                            "display-mr": "वासाची संवेदना कमी होणे"
+                        },
+                        {
+                            "id": "ID_1443972825",
+                            "text": "Loss of taste sensation",
+                            "language": "Patient has loss of taste sensation",
+                            "display-hi": "स्वाद का खत्म हो जाना ",
+                            "display-mr": "चवीची संवेदना कमी होणे"
+                        }
+                    ],
+                    "display-hi": "स्वाद/गंध का खत्म हो जाना ",
+                    "display-mr": "वास/ चवीची संवेदना कमी होणे"
+                },
+                {
+                    "id": "ID_479794474",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर ( वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको ये लक्षण हैं?",
+            "display-mr": "आपल्याला ही सगळी लक्षणे आहेत का"
+        },
+        {
+            "id": "ID_109089467",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "multi-choice": true,
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ଚିହ୍ନଟ ହୋଇଥିଲା କି?",
+            "options": [
+                {
+                    "id": "ID_1656332265",
+                    "text": "Recent upper respiratory tract infection",
+                    "display-or": "ସ୍ୱାଶ ନଳୀ  ବା  ଗଳା  ସଂକ୍ରମଣ",
+                    "display-hi": "हाली ही में सांस की ऊपरी नली का संक्रमण",
+                    "display-mr": "श्वासनलिकेच्या वरच्या भागाला संसर्ग"
+                },
+                {
+                    "id": "ID_436595727",
+                    "text": "Dental problem",
+                    "display-or": "ଦାନ୍ତ ସମସ୍ୟା",
+                    "display-hi": "दांत की समस्या",
+                    "display-mr": "दातांच्या समस्या"
+                },
+                {
+                    "id": "ID_112459252",
+                    "text": "Trauma",
+                    "display-or": "ଆଘାତ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1840970924",
+                            "text": "Type of trauma",
+                            "display-or": "କେଉଁ ପ୍ରକାର",
+                            "options": [
+                                {
+                                    "id": "ID_49970570",
+                                    "text": "Injury (Face & Neck)",
+                                    "display-or": "ଖଣ୍ଡିଆ",
+                                    "display-hi": "चोट (चेहरे और गले में)",
+                                    "display-mr": "दुखापत (चेहरा आणि मानेवर)"
+                                },
+                                {
+                                    "id": "ID_750859327",
+                                    "text": "Thermal injury (Burn)",
+                                    "perform-physical-exam": "Any Location:Burn;",
+                                    "display-or": "ପୋଡା ଜଳ",
+                                    "display-hi": "गर्मी से जख्म (जलने से)",
+                                    "display-mr": "आगीमुळे इजा (भाजणे)"
+                                },
+                                {
+                                    "id": "ID_1300765412",
+                                    "text": "Other (Describe)",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟ",
+                                    "display-hi": "अन्य (वर्णन करें)",
+                                    "display-mr": "इतर ( वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "आघात के प्रकार",
+                            "display-mr": "आघाताचा प्रकार"
+                        },
+                        {
+                            "id": "ID_1099910393",
+                            "text": "When",
+                            "input-type": "duration",
+                            "language": "%",
+                            "display-or": "କେବେ",
+                            "display-hi": "कब",
+                            "display-mr": "कधी"
+                        }
+                    ],
+                    "display-hi": "आघात (ट्रोमा)",
+                    "display-mr": "आघात"
+                },
+                {
+                    "id": "ID_1794578958",
+                    "text": "None",
+                    "display-or": "କିଛି ନକଲେ/ ମନା",
+                    "exclude-from-multi-choice": true,
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-gu": "ના",
+                    "display-as": "একো নাই",
+                    "display-bn": "কোনোটিই নয়",
+                    "display-kn": "ಯಾವುದೂ ಇಲ್ಲ",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या कभी आपमें किसी निम्न बीमारी को निदान किया गया है?",
+            "display-mr": "खाली दिलेल्या आजारांचे निदान आपण कधी केले आहे का"
+        },
+        {
+            "id": "ID_185237335",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "isRequired": false,
+            "multi-choice": false,
+            "options": [
+                {
+                    "id": "ID_683943643",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हां (वर्णन करें)",
+                    "display-mr": "हो ( वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टर ला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1478899556",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_1232919423",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "(अन्य जानकारी दर्ज करें)",
+                    "display-mr": "[इतर माहिती भरा]"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "इतर माहिती"
+        }
+    ],
+    "display-hi": "गले में खराश/ गल-शोथ",
+    "display-mr": "घसा खवखवणे "
+}

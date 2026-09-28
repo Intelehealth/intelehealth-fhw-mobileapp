@@ -2,7 +2,6 @@ package org.intelehealth.app.ui2.calendarviewcustom;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -44,7 +43,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class CalendarViewDemoActivity extends BaseActivity implements SendSelectedDateInterface{
+public class CalendarViewDemoActivity extends BaseActivity implements
+        SendSelectedDateInterface{
     private static final String TAG = "CalendarViewDemoActivit";
     RecyclerView rvCalendarView;
     Spinner spinnerMonths, spinnerYear;

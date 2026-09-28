@@ -247,6 +247,4 @@ public class VisitDiagnosticsSummary {
             }
         }
     }
-
-
 }

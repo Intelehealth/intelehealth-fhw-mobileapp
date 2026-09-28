@@ -1,0 +1,532 @@
+{
+    "id": "ID_871843771",
+    "text": "Red or painful eye",
+    "perform-physical-exam": "Eyes:Redness;Eyes:Discharge;Eyes:Swelling;Eyes:Pupillary movement;Any Location:Skin Rash;",
+    "display-or": "ଲାଲ/କିମ୍ବା ସ୍ପଷ୍ଟ ଦାୟକ ଆଖି",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1978648532",
+            "text": "Site",
+            "display": "Which eye(s) is affected?",
+            "display-or": "ଜାଗା",
+            "isRequired": true,
+            "multi-choice": false,
+            "options": [
+                {
+                    "id": "ID_1097385521",
+                    "text": "Right eye",
+                    "display-or": "ଡାହାଣ",
+                    "display-hi": "दायीं आंख ",
+                    "display-mr": "उजवा डोळा"
+                },
+                {
+                    "id": "ID_618722849",
+                    "text": "Left eye",
+                    "display-or": "ବାମ",
+                    "display-hi": "बायीं आंख",
+                    "display-mr": "डावा डोळा"
+                },
+                {
+                    "id": "ID_318026989",
+                    "text": "Both eyes",
+                    "display-or": "ଉଭୟ",
+                    "display-hi": "दोनों आंख",
+                    "display-mr": "दोन्ही डोळे"
+                }
+            ],
+            "display-hi": "कौन-सी आंख प्रभावित है?",
+            "display-mr": "कोणत्या डोळ्यावर परिणाम झाला आहे?"
+        },
+        {
+            "id": "ID_1688922032",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "isRequired": true,
+            "display-or": "କେବେଠାରୁ",
+            "options": [
+                {
+                    "id": "ID_1269819311",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "କେବେଠାରୁ",
+                    "display-hi": "[कब से है, दर्ज करें]",
+                    "display-mr": "( केव्हा पासून आहे ते भरा)"
+                }
+            ],
+            "display-hi": "यह लक्षण कब से है?",
+            "display-mr": "हे लक्षण केव्हा पासून आहे"
+        },
+        {
+            "id": "ID_1659553582",
+            "text": "Any foreign body in the eye(s) ",
+            "display": "Did something get in your eye?",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "ଆଖିରେ କିଛି ପଡିଥିଲା କି",
+            "options": [
+                {
+                    "id": "ID_1483938393",
+                    "text": "Yes",
+                    "display-or": "ହଁ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_99817485",
+                            "text": "When",
+                            "input-type": "duration",
+                            "language": "occured",
+                            "display-or": "କେବେ",
+                            "display-hi": "कब",
+                            "display-mr": "केव्हा"
+                        },
+                        {
+                            "id": "ID_1210633510",
+                            "text": "Describe the foreign body",
+                            "input-type": "text",
+                            "language": "description of foreign body:",
+                            "display-or": "କଣ",
+                            "display-hi": "उस बाहरी पिंड/चीज के बारे में बताएं",
+                            "display-mr": "डोळ्यात गेलेल्या वस्तूचे वर्णन करा"
+                        }
+                    ],
+                    "display-hi": "हां",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_361136702",
+                    "text": "No",
+                    "display-or": "ନାଁ",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपके आंख में कुछ पड़ गया ?",
+            "display-mr": "तुमच्या डोळ्यात काही गेले होते का?"
+        },
+        {
+            "id": "ID_951322718",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "isRequired": true,
+            "pos-condition": "",
+            "neg-condition": "s.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_541253484",
+                    "text": "Visual impairment/Change in vision",
+                    "display-or": "ଢୃସ୍ତି ଶକ୍ତିର ପରିବର୍ତନ ଅନୁଭବ",
+                    "options": [
+                        {
+                            "id": "ID_1280591515",
+                            "text": "Double vision",
+                            "display-or": "ଟେରା ଦୃଷ୍ଟି",
+                            "display-hi": "दोहरी दृष्टि (डबल विजन)",
+                            "display-mr": "दुहेरी दृष्टी (एक वस्तू दोन असल्याप्रमाणे दिसणे)"
+                        },
+                        {
+                            "id": "ID_1998825623",
+                            "text": "Blurred vision",
+                            "display-or": "ଅନ୍ଧାରିଆ ଦେଖାଯିବା",
+                            "display-hi": "धुंधलापन",
+                            "display-mr": "धूसर दृष्टी (धुरकट दृष्टी)"
+                        },
+                        {
+                            "id": "ID_1108042093",
+                            "text": "Decreased eyesight",
+                            "display-or": "ଦୃଷ୍ଟି ଶକ୍ତି କାମ ହେବା",
+                            "display-hi": "आंख का कमजोर पड़ना ",
+                            "display-mr": "दृष्टी कमी होणे"
+                        },
+                        {
+                            "id": "ID_134482317",
+                            "text": "Change in field of vision",
+                            "display-or": "ଦେଖେଇବା କ୍ଷେତ୍ରରେ ପରିଵର୍ତନ ହେବା",
+                            "display-hi": "देखने के क्षेत्र में बदलाव",
+                            "display-mr": "डोळ्यांनी बघू शकणाऱ्या एकूण जागेच्या आकारात/ क्षेत्रामध्ये बदल"
+                        },
+                        {
+                            "id": "ID_1714394067",
+                            "text": "Other",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                            "display-hi": "अन्य",
+                            "display-mr": "इतर"
+                        }
+                    ],
+                    "display-hi": "दृष्टि दोष/दृष्टि में परिवर्तन",
+                    "display-mr": "दृष्टीदोष/दृष्टीत बदल"
+                },
+                {
+                    "id": "ID_215102956",
+                    "text": "Foreign-body sensation",
+                    "display-or": "ବାହାର ବସ୍ତୁ ସମ୍ବେଦନ",
+                    "display-hi": "बाहरी पिंड/चीज का अनुभव",
+                    "display-mr": "डोळ्यात बाहेरून काहीतरी गेल्याचे जाणवणे"
+                },
+                {
+                    "id": "ID_1591664073",
+                    "text": "Photophobia",
+                    "display": "Eye discomfort due to light exposure",
+                    "display-or": "ଆଲୋକ ସହିପାରୁ ନ ଥିବା",
+                    "display-hi": "रोशनी के कारण आंखों में परेशानी",
+                    "display-mr": "प्रकाशाचा डोळ्यांना त्रास"
+                },
+                {
+                    "id": "ID_1783657317",
+                    "text": "Nausea",
+                    "display-or": "ବାନ୍ତି ଲାଗିବା",
+                    "display-hi": "मिचली",
+                    "display-mr": "मळमळ"
+                },
+                {
+                    "id": "ID_72863531",
+                    "text": "Vomiting",
+                    "display-or": "ବାନ୍ତି ହେବା",
+                    "display-hi": "उल्टी",
+                    "display-mr": "उलटी"
+                },
+                {
+                    "id": "ID_86400000",
+                    "text": "Eyelid swelling",
+                    "display-or": "ଆଖି ପଟ ଫୁଲିବା",
+                    "display-hi": "पलक में सूजन",
+                    "display-mr": "पापण्यावर सूज"
+                },
+                {
+                    "id": "ID_72549314",
+                    "text": "Discharge from the eye",
+                    "display-or": "ଆଖିରୁ ଶ୍ରାବ ହେଵ",
+                    "options": [
+                        {
+                            "id": "ID_1004739225",
+                            "text": "Clear discharge",
+                            "display-or": "ପାଣି",
+                            "display-hi": "साफ़ रिसाव",
+                            "display-mr": "स्वच्छ स्त्राव"
+                        },
+                        {
+                            "id": "ID_1592912865",
+                            "text": "Pus",
+                            "display-or": "ପୂଜ",
+                            "display-hi": "पस",
+                            "display-mr": "पू"
+                        },
+                        {
+                            "id": "ID_157417128",
+                            "text": "Blood",
+                            "display-or": "ରକ୍ତ",
+                            "display-hi": "खून",
+                            "display-mr": "रक्त"
+                        }
+                    ],
+                    "display-hi": "आँख से पानी आना ",
+                    "display-mr": "डोळ्यातून पाणी येणे"
+                },
+                {
+                    "id": "ID_1126788498",
+                    "text": "Itching (Eye/Nose)",
+                    "display-or": "କୁଣ୍ଡେଇବା (ଆଖି, ନାକ)",
+                    "display-hi": "खुजली (आँख/नाक)",
+                    "display-mr": "खाज (डोळा/नाक)"
+                },
+                {
+                    "id": "ID_84705162",
+                    "text": "Sneezing",
+                    "display-or": "ଛିଙ୍କ ଆସିବା",
+                    "display-hi": "छींक आना",
+                    "display-mr": "शिंकणे"
+                },
+                {
+                    "id": "ID_913288614",
+                    "text": "Painful skin lesion",
+                    "display-or": "କଷ୍ଟ ଦାୟକ ଚର୍ମ ଘା",
+                    "display-hi": "दर्द करने वाला त्वचा का जख्म",
+                    "display-mr": "त्वचेवर वेदनादायक जखमा"
+                },
+                {
+                    "id": "ID_1239993509",
+                    "text": "Dry eye",
+                    "display-or": "ଶୁଖିଲା ଆଖି",
+                    "display-hi": "सूखी आंख",
+                    "display-mr": "कोरडे डोळे"
+                },
+                {
+                    "id": "ID_1265671189",
+                    "text": "Joint pain",
+                    "perform-physical-exam": "Joint:Swelling;Joint:Redness;Joint:Deformity;Joint:Tenderness;Joint:Movement Pain;",
+                    "display-or": "ଗଣ୍ଠି ଯନ୍ତ୍ରଣା",
+                    "options": [
+                        {
+                            "id": "ID_385555119",
+                            "text": "Involvement",
+                            "language": "with involvement of",
+                            "display": "Does the pain involve single or multiple joints?",
+                            "display-or": "କେତେଟା ଗଣ୍ଠି",
+                            "options": [
+                                {
+                                    "id": "ID_1452749525",
+                                    "text": "Single joint [Describe which joint]",
+                                    "input-type": "text",
+                                    "display-or": "ଗୋଟେ (କେଉଁ ଗଣ୍ଠି)",
+                                    "language": "single joint",
+                                    "display-hi": "एक जोड़ (बताएं कि कौन-सा जोड़)",
+                                    "display-mr": "एका सांध्यामध्ये (कोणत्या सांध्या मध्ये)"
+                                },
+                                {
+                                    "id": "ID_1850264673",
+                                    "text": "Multiple joints [Describe which joints]",
+                                    "display-or": "ବହୁତ (କେଉଁ ଗଣ୍ଠି ରେ)",
+                                    "input-type": "text",
+                                    "language": "multiple joints",
+                                    "display-hi": "कई जोड़ (बताएं कि कौन-से जोड़)",
+                                    "display-mr": "अनेक सांध्यांमध्ये ( कोणते सांधे)"
+                                }
+                            ],
+                            "display-hi": "दर्द एक जोड़ में होता है, कि कई जोड़ों में?",
+                            "display-mr": "वेदना एका सांध्यामध्ये आहे की अनेक सांध्यांमध्ये"
+                        },
+                        {
+                            "id": "ID_1930789915",
+                            "text": "Migratory",
+                            "language": "%",
+                            "display": "Does the pain move to other parts of the body?",
+                            "display-or": "ଯନ୍ତ୍ରଣା ଅନ୍ଯଯାଗାକୁ ଯାଉଛି",
+                            "options": [
+                                {
+                                    "id": "ID_1924496479",
+                                    "text": "No",
+                                    "language": "pain is not migratory in nature",
+                                    "display-or": "ନାହିଁ",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                },
+                                {
+                                    "id": "ID_790875526",
+                                    "text": "Yes",
+                                    "language": "pain is migratory in nature",
+                                    "display-or": "ହଁ",
+                                    "display-hi": "हां",
+                                    "display-mr": "हो"
+                                }
+                            ],
+                            "display-hi": "क्या दर्द शरीर के अन्य भाग में जाता है?",
+                            "display-mr": "वेदना शरीराच्या इतर भागात जाते का"
+                        }
+                    ],
+                    "display-hi": "जोड़ों का दर्द",
+                    "display-mr": "सांध्या मध्ये वेदना"
+                },
+                {
+                    "id": "ID_650077534",
+                    "text": "Join stiffness",
+                    "display-or": "ଗଣ୍ଠିର କଠୋରତା",
+                    "display-hi": "जोड़ों का कड़ापन",
+                    "display-mr": "सांधे कडक होणे"
+                },
+                {
+                    "id": "ID_104942820",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ଯାନ୍ଯ",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "तुम्हाला खालील लक्षणे आहेत का?"
+        },
+        {
+            "id": "ID_1521285902",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "pos-condition": "",
+            "neg-condition": "no h/o",
+            "isRequired": true,
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ଚିହ୍ନଟ ହୋଇଥିଲା କି?",
+            "options": [
+                {
+                    "id": "ID_1705863765",
+                    "text": "Trauma (Eye)",
+                    "display-or": "ଆଘାତ(ଆଖିରେ)",
+                    "options": [
+                        {
+                            "id": "ID_716796627",
+                            "text": "Blunting trauma",
+                            "display-or": "ସରୁ ଆଘାତ",
+                            "display-hi": "कुंठित आघात",
+                            "display-mr": "साधा आघात / चुरचुरणे"
+                        },
+                        {
+                            "id": "ID_547780478",
+                            "text": "Eye rubbing",
+                            "display-or": "ଆଖିରେ ଘଷି ହେବ",
+                            "display-hi": "आँख की रगड़",
+                            "display-mr": "डोळे टोचणे"
+                        },
+                        {
+                            "id": "ID_1824417196",
+                            "text": "Other (Describe)",
+                            "input-type": "text",
+                            "display-or": "ଅନ୍ୟ(ବର୍ଣନା କର)",
+                            "language": "%",
+                            "display-hi": "अन्य (वर्णन करें)",
+                            "display-mr": "इतर (वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "आघात (आँख में)",
+                    "display-mr": "आघात( डोळ्यांवर)"
+                },
+                {
+                    "id": "ID_1185634077",
+                    "text": "Ocular surgery",
+                    "display-or": "ଆଖି operation",
+                    "options": [
+                        {
+                            "id": "ID_1880990859",
+                            "text": "When",
+                            "input-type": "date",
+                            "language": "on",
+                            "display-or": "କେବେ",
+                            "display-hi": "कब",
+                            "display-mr": "केव्हा"
+                        }
+                    ],
+                    "display-hi": "आँख का ऑपरेशन",
+                    "display-mr": "डोळ्यांवर ऑपरेशन"
+                },
+                {
+                    "id": "ID_523705081",
+                    "text": "Atopic dermatitis",
+                    "display": "Skin disorders/problems",
+                    "display-or": "ଚର୍ମ ଜନିତ ରୋଗ",
+                    "options": [
+                        {
+                            "id": "ID_372314474",
+                            "text": "[Describe]",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ବର୍ଣ୍ଣନାରେ",
+                            "display-hi": "(वर्णन करें)",
+                            "display-mr": "वर्णन करा"
+                        }
+                    ],
+                    "display-hi": "त्वचा संबंधी परेशानी/समस्याएं",
+                    "display-mr": "त्वचा संबंधी आजार/ समस्या"
+                },
+                {
+                    "id": "ID_1064561798",
+                    "text": "Brain stroke",
+                    "display-or": "ମସ୍ତିସ୍କ ଷ୍ଟ୍ରୋକ(ପାରାଲାସିସ)",
+                    "display-hi": "मस्तिष्क का आघात (ब्रेन स्ट्रोक)",
+                    "display-mr": "डोक्यावर आघात"
+                },
+                {
+                    "id": "ID_1428181895",
+                    "text": "Syphilis",
+                    "display-or": "ଯୌନାଂଗ ରୋଗ",
+                    "display-hi": "उपदंश रोग",
+                    "display-mr": "गुप्तरोग"
+                },
+                {
+                    "id": "ID_1476572755",
+                    "text": "Gonorrhoea",
+                    "display-hi": "सूजाक / गनोरिया ",
+                    "display-mr": "गोनोरिया"
+                },
+                {
+                    "id": "ID_1860648670",
+                    "text": "Neonate patient",
+                    "display": "Is the patient a 1-2 month old child?",
+                    "language": "%",
+                    "age_min": "0",
+                    "age_max": "1",
+                    "options": [
+                        {
+                            "id": "ID_774940461",
+                            "text": "Yes",
+                            "language": "Patient is a neonate child",
+                            "display-hi": "हां",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_1716038008",
+                            "text": "No",
+                            "language": "Patient is not a neonate child",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "क्या रोगी 1-2 महीने का बच्चा है ",
+                    "display-mr": "रुग्ण हे १-२ महिन्यांचं मूल आहे का"
+                },
+                {
+                    "id": "ID_1791178958",
+                    "text": "None",
+                    "display-or": "କିଛି ନକଲେ/ ମନା",
+                    "exclude-from-multi-choice": true,
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-gu": "ના",
+                    "display-as": "একো নাই",
+                    "display-bn": "কোনোটিই নয়",
+                    "display-kn": "ಯಾವುದೂ ಇಲ್ಲ",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या कभी आपमें किसी निम्न बीमारी को निदान किया गया है?",
+            "display-mr": "आपण खाली दिलेल्या आजारांचे निदान कधी केले आहे का"
+        },
+        {
+            "id": "ID_1629650785",
+            "text": "Prior treatment sought",
+            "isRequired": true,
+            "multi-choice": true,
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_426045304",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हां (वर्णन करें)",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टर ला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_589675339",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_702986537",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "(अन्य जानकारी दर्ज करें)",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "आंखों का लाल होना या आंख दर्द",
+    "display-mr": "डोळा लाल किंवा डोळ्या मध्ये वेदना होणे"
+}

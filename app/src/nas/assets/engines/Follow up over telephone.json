@@ -1,0 +1,231 @@
+{
+    "id": "ID_178219815",
+    "text": "Follow up over telephone",
+    "options": [
+        {
+            "id": "ID_47030936",
+            "text": "Did you get the prescribed medicine?",
+            "options": [
+                {
+                    "id": "ID_1731022830",
+                    "text": "Yes",
+                    "display": "Yes",
+                    "language": "Got the medicines as prescribed",
+                    "options": [
+                        {
+                            "id": "ID_1500097647",
+                            "text": "Did you take the medicines as prescribed",
+                            "options": [
+                                {
+                                    "id": "ID_1797412490",
+                                    "text": "Yes",
+                                    "display": "Yes",
+                                    "language": "Took the medicines as prescribed",
+                                    "display-mr": "हो"
+                                },
+                                {
+                                    "id": "ID_1537499384",
+                                    "text": "No",
+                                    "display": "No",
+                                    "language": "Did not take the medicines as prescribed",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-mr": "तुम्ही लिहून दिल्याप्रमाणे औषधे घेतलीत का?"
+                        }
+                    ],
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1408955705",
+                    "text": "No",
+                    "display": "No",
+                    "language": "Did not get the medicines as prescribed",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-mr": "तुम्हाला लिहून दिलेले औषध मिळाले का?"
+        },
+        {
+            "id": "ID_1726588846",
+            "text": "Did you avail the medicine delivery service via Intelehealth health worker?",
+            "options": [
+                {
+                    "id": "ID_1743756510",
+                    "text": "Yes",
+                    "display": "Yes",
+                    "language": "Availed the medicine delivery service via Intelehealth health worker",
+                    "options": [
+                        {
+                            "id": "ID_1303051454",
+                            "text": "What is your feedback for the service? [Describe]",
+                            "input-type": "text",
+                            "display-mr": "तुम्हाला मिळालेल्या सेवेबद्दल तुमचे काय मत आहे? [वर्णन करा]"
+                        }
+                    ],
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1472806961",
+                    "text": "No",
+                    "display": "No",
+                    "language": "Did not avail the medicine delivery service via Intelehealth health worker",
+                    "options": [
+                        {
+                            "id": "ID_470174515",
+                            "text": "What was the reason for not availing the service? [Describe]",
+                            "input-type": "text",
+                            "display-mr": "सेवेचा लाभ न घेण्याचे कारण काय होते? [वर्णन करा]"
+                        }
+                    ],
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-mr": "तुम्ही इंटेलहेल्थ आरोग्य सेविकेमार्फत घरपोच औषधाची सेवा घेतली का?"
+        },
+        {
+            "id": "ID_157380783",
+            "text": "Were you advised to seek referral?",
+            "options": [
+                {
+                    "id": "ID_73208679",
+                    "text": "Yes",
+                    "display": "Yes",
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1084369245",
+                            "text": "Did you seek the referral?",
+                            "options": [
+                                {
+                                    "id": "ID_1285531585",
+                                    "text": "Yes",
+                                    "display": "Yes",
+                                    "language": "Sought the referral; which resulted in",
+                                    "options": [
+                                        {
+                                            "id": "ID_1931119695",
+                                            "text": "What was the outcome of seeking the referral care? [Describe]",
+                                            "input-type": "text",
+                                            "display-mr": "अन्य डॉक्टरकडे/ अधिक तपासणी साठी गेल्याचा काय निष्कर्ष/परिणाम झाला? [वर्णन करा]"
+                                        }
+                                    ],
+                                    "display-mr": "हो"
+                                },
+                                {
+                                    "id": "ID_964218566",
+                                    "text": "No",
+                                    "display": "No",
+                                    "language": "Did not seek the referral as advise; due to -",
+                                    "options": [
+                                        {
+                                            "id": "ID_614771093",
+                                            "text": "What was the reason for not seeking referral care? [Describe]",
+                                            "input-type": "text",
+                                            "display-mr": "अन्य डॉक्टरकडे/ अधिक तपासणी न जाण्याचे काय कारण होते? [वर्णन करा]"
+                                        }
+                                    ],
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-mr": "तुम्ही अन्य कोणत्या डॉक्टरकडे/ अधिक तपासणी साठी गेलात का?"
+                        }
+                    ],
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1250128738",
+                    "text": "No",
+                    "display": "No",
+                    "language": "Was not advised referral",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-mr": "तुम्हाला अन्य कोणत्या डॉक्टरकडे/ अधिक तपासणी साठी रेफरल चा सल्ला दिला होता का?"
+        },
+        {
+            "id": "ID_1079202834",
+            "text": "Patient's response from the follow up visit",
+            "options": [
+                {
+                    "id": "ID_498832580",
+                    "text": "Patient is better",
+                    "display": "Feeling better",
+                    "language": "Patient is feeling better",
+                    "options": [
+                        {
+                            "id": "ID_1877570594",
+                            "text": "Feedback for the health service received [Describe]",
+                            "input-type": "text",
+                            "display-mr": "प्राप्त झालेल्या आरोग्य सेवेप्रति अभिप्राय [वर्णन करा]"
+                        }
+                    ],
+                    "display-mr": "बरे वाटले/तब्येत बरी झाली"
+                },
+                {
+                    "id": "ID_1941646714",
+                    "text": "Patient's condition is still same",
+                    "display": "Condition is still same",
+                    "language": "Patient's condition is still the same",
+                    "options": [
+                        {
+                            "id": "ID_1368489162",
+                            "text": "Schedule an in person follow-up",
+                            "input-type": "date",
+                            "display-mr": "प्रत्यक्ष रुग्ण/पालकांशी भेटून करावयाच्या पुनर्तपासणीची तारीख ठरवा"
+                        }
+                    ],
+                    "display-mr": "परिस्थिती अजूनही तशीच आहे"
+                },
+                {
+                    "id": "ID_386497579",
+                    "text": "Patient has come with test reports",
+                    "display": "Has latest reports",
+                    "language": "Patient shared latest test reports",
+                    "options": [
+                        {
+                            "id": "ID_1100340990",
+                            "text": "Schedule an in person follow-up",
+                            "input-type": "date",
+                            "display-mr": "प्रत्यक्ष रुग्ण/पालकांशी भेटून करावयाच्या पुनर्तपासणीची तारीख ठरवा"
+                        }
+                    ],
+                    "display-mr": "चाचणीचे ताजे/नवे रिपोर्ट मिळाले आहेत"
+                },
+                {
+                    "id": "ID_270498368",
+                    "text": "Patient's condition has worsened",
+                    "display": "Condition has worsened",
+                    "language": "Patient's condition has worsesend",
+                    "options": [
+                        {
+                            "id": "ID_510056708",
+                            "text": "Schedule an in person follow-up",
+                            "input-type": "date",
+                            "display-mr": "प्रत्यक्ष रुग्ण/पालकांशी भेटून करावयाच्या पुनर्तपासणीची तारीख ठरवा"
+                        }
+                    ],
+                    "display-mr": "परिस्थिती बिघडली आहे"
+                },
+                {
+                    "id": "ID_1235889851",
+                    "text": "Others [Describe]",
+                    "display": "Others [Describe]",
+                    "input-type": "text",
+                    "Language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1553491956",
+                            "text": "Schedule an in person follow-up",
+                            "input-type": "date",
+                            "display-mr": "प्रत्यक्ष रुग्ण/पालकांशी भेटून करावयाच्या पुनर्तपासणीची तारीख ठरवा"
+                        }
+                    ],
+                    "display-mr": "अन्य [वर्णन करा]"
+                }
+            ],
+            "display-mr": "पुनर्तपासणी दरम्यान रुग्णाची प्रतिक्रिया"
+        }
+    ],
+    "display-mr": "रुग्ण/पालकांशी फोनवर बोलून पुनर्तपासणी"
+}

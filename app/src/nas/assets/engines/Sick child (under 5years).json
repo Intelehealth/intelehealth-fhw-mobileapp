@@ -1,0 +1,1140 @@
+{
+    "id": "ID_983435415",
+    "text": "Sick child (under 5years)",
+    "perform-physical-exam": "Sick Child:Lethargy;Sick Child:Fast Breathing;Sick Child:Stridor;Sick Child:Chest indrawing;Physical Growth:MUAC;Physical growth:Oedema;Physical growth:Wasting;Neck:Stiffness;",
+    "display-or": "ଅସୁସ୍ଥ ପିଲା (୫ ବର୍ଷ ରୁ କମ )",
+    "age_min": "0",
+    "age_max": "5",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_207965551",
+            "text": "Main symptom",
+            "display-or": "ମୁଖ୍ୟ ଲକ୍ଷଣ",
+            "multi-choice": true,
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_560327678",
+                    "text": "Cough",
+                    "display-or": "କାଶ",
+                    "options": [
+                        {
+                            "id": "ID_88649572",
+                            "text": "Type of cough",
+                            "display": "What is the type of cough ?",
+                            "display-or": "ଶୁଖିଲା କାଶ କି କଫ କାଶ ?",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_1538929543",
+                                    "text": "Dry Cough (No sputum)",
+                                    "display-or": "ଶୁଖିଲା କାଶ",
+                                    "display-hi": "सूखी खांसी",
+                                    "display-mr": "सुका खोकला"
+                                },
+                                {
+                                    "id": "ID_1222106302",
+                                    "text": "Productive(with sputum)",
+                                    "display-or": "କଫ କାଶ",
+                                    "multi-choice": true,
+                                    "options": [
+                                        {
+                                            "id": "ID_1622352976",
+                                            "text": "Sputum color",
+                                            "input-type": "text",
+                                            "display-or": "କଫ ର ରଙ୍ଗ କଣ ?",
+                                            "display-hi": "बलगम का रंग",
+                                            "display-mr": "बेडक्या चा रंग"
+                                        },
+                                        {
+                                            "id": "ID_1398300581",
+                                            "text": "Amount of sputum",
+                                            "display-or": "କଫ ର ପରିମାଣ କେତେ ?",
+                                            "options": [
+                                                {
+                                                    "id": "ID_1758361583",
+                                                    "text": "Large",
+                                                    "display-or": "ବହୁତ",
+                                                    "display-hi": "ज्यादा ",
+                                                    "display-mr": "जास्त"
+                                                },
+                                                {
+                                                    "id": "ID_1824631887",
+                                                    "text": "Moderate",
+                                                    "display-or": "ମଧ୍ୟମ",
+                                                    "display-hi": "सामान्य",
+                                                    "display-mr": "सामान्य"
+                                                },
+                                                {
+                                                    "id": "ID_945187001",
+                                                    "text": "Scanty",
+                                                    "display-or": "ଅଳ୍ପ",
+                                                    "display-hi": "कम",
+                                                    "display-mr": "थोड"
+                                                }
+                                            ],
+                                            "display-hi": "बलगम की मात्रा",
+                                            "display-mr": "थुंकी/ कफाचं प्रमाण"
+                                        },
+                                        {
+                                            "id": "ID_1907479127",
+                                            "text": "Odor of sputum",
+                                            "input-type": "text",
+                                            "display-or": "କଫ ର ଗନ୍ଧ କଣ?",
+                                            "display-hi": "बलगम की गंध",
+                                            "display-mr": "बेडक्याचा वास"
+                                        }
+                                    ],
+                                    "display-hi": "बलगम वाली खांसी",
+                                    "display-mr": "बेडक्या सहित खोकला"
+                                }
+                            ],
+                            "display-hi": "किस प्रकार की खांसी है?",
+                            "display-mr": "कोणत्या प्रकारचा खोकला"
+                        },
+                        {
+                            "id": "ID_448800992",
+                            "text": "No",
+                            "display-or": "ନା",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "खांसी/ कफ़",
+                    "display-mr": "खोकला"
+                },
+                {
+                    "id": "ID_184173473",
+                    "text": "Difficult breathing",
+                    "display-or": "ନିଶ୍ୱାସ ପ୍ରଶ୍ୱାସରେ କଷ୍ଠ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1537676411",
+                            "text": "Onset",
+                            "display": "How does this symptom start?",
+                            "display-or": "କେମିତି ଆରମ୍ଭ ହେଲା",
+                            "options": [
+                                {
+                                    "id": "ID_1801845361",
+                                    "text": "Sudden ",
+                                    "display-or": "ହଠାତ୍",
+                                    "display-hi": "अचानक",
+                                    "display-mr": "अचानक"
+                                },
+                                {
+                                    "id": "ID_1357546942",
+                                    "text": "Gradual",
+                                    "display-or": "ଧୀରେ ଧୀରେ",
+                                    "display-hi": "धीरे-धीरे",
+                                    "display-mr": "हळू हळू"
+                                }
+                            ],
+                            "display-hi": "यह लक्षण कैसे शुरू हुआ?",
+                            "display-mr": "हे लक्षण कसे सुरू झाले"
+                        },
+                        {
+                            "id": "ID_1606955749",
+                            "text": "Associated symptoms",
+                            "display": "Does your child have the following symptom(s)?",
+                            "pos-condition": "c.",
+                            "neg-condition": "s.",
+                            "display-or": "ଅନ୍ୟ କୌଣସି ଲକ୍ଷଣ ଦେଖା ଯାଉଛି କି?",
+                            "options": [
+                                {
+                                    "id": "ID_1589026365",
+                                    "text": "Color change of lips/hands/feet",
+                                    "display-or": "ହୋତା, ହାତ, ଗୋଡ ରେ ରଙ୍ଗ ପରିବର୍ତନ",
+                                    "display-hi": "होंठ/हाथ/पैर के रंग का बदलाव",
+                                    "display-mr": "ओठ/ हात/ पायाच्या रंगात बदल"
+                                },
+                                {
+                                    "id": "ID_721701359",
+                                    "text": "Change in voice/Hoarse voice",
+                                    "display-or": "ସ୍ବର ପରିବର୍ତନ / କଣ୍ଠ ପଡି ଯାଇ ଚି",
+                                    "display-hi": "आवाज़ में बदलाव/ आवाज़ में  खरखराहट",
+                                    "display-mr": "आवाजात बदल/ आवाजात खरखर"
+                                },
+                                {
+                                    "id": "ID_1682839034",
+                                    "text": "Wheezing",
+                                    "display-or": "ଶ୍ୱାସରେ ଶଦ୍ଦ",
+                                    "display-hi": "सांस की घरघराहट",
+                                    "display-mr": "घरघर"
+                                },
+                                {
+                                    "id": "ID_1804952768",
+                                    "text": "Other [describe]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                                    "display-hi": "अन्य (वर्णन करें)",
+                                    "display-mr": "इतर ( वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "क्या आपके बच्चे को निम्न लक्षण है/हैं?",
+                            "display-mr": "तुमच्या मुलाला खाली दिलेली लक्षण आहेत का"
+                        }
+                    ],
+                    "display-hi": "सांस लेने में तकलीफ",
+                    "display-mr": "श्वास घेण्यास अडथळा"
+                },
+                {
+                    "id": "ID_290457033",
+                    "text": "Diarrhea",
+                    "display-or": "ଝାଡା",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_542470862",
+                            "text": "Frequency",
+                            "input-type": "frequency",
+                            "display-or": "କେତେ ଥର",
+                            "display-hi": "कितनी बार",
+                            "display-mr": "किती वेळा"
+                        },
+                        {
+                            "id": "ID_1052283087",
+                            "text": "Characteristics",
+                            "display-or": "ପ୍ରକାର",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_1522859806",
+                                    "text": "Bloody",
+                                    "display-or": "ରକ୍ତ",
+                                    "display-hi": "खुनी",
+                                    "display-mr": "रक्तयुक्त"
+                                },
+                                {
+                                    "id": "ID_204022976",
+                                    "text": "Watery",
+                                    "display-or": "ପାଣି",
+                                    "display-hi": "पानी जैसा",
+                                    "display-mr": "पाण्या सारखा"
+                                }
+                            ],
+                            "display-hi": "प्रकार",
+                            "display-mr": "प्रकार"
+                        },
+                        {
+                            "id": "ID_1340744128",
+                            "text": "Associated symptoms",
+                            "display": "Does your child have the following symptom(s)?",
+                            "pos-condition": "c.",
+                            "neg-condition": "s.",
+                            "display-or": "ତମର ଶିଶୁ କୁଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+                            "options": [
+                                {
+                                    "id": "ID_120934554",
+                                    "text": "Abdominal pain",
+                                    "display-or": "ପେଟ କାଟିବା",
+                                    "display-hi": "पेट दर्द",
+                                    "display-mr": "पोटदुखी"
+                                },
+                                {
+                                    "id": "ID_587201373",
+                                    "text": "Other [describe]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                                    "display-hi": "अन्य (वर्णन करें)",
+                                    "display-mr": "इतर ( वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "क्या आपके बच्चे को निम्न लक्षण है/हैं?",
+                            "display-mr": "आपल्या मुलाला खाली दिलेली लक्षण आहेत का"
+                        }
+                    ],
+                    "display-hi": "दस्त",
+                    "display-mr": "जुलाब"
+                },
+                {
+                    "id": "ID_1129106210",
+                    "text": "Fever",
+                    "perform-physical-exam": "Umbilicus:Redness;Umbilicus:Discharge;Umbilicus:Shape;Neck:Neck stiffness (Part 1);Neck:Neck stiffness (Part 2);Any Location:Skin Rash;Any Location:Lumps;",
+                    "display-or": "ଜ୍ୱର",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1851308351",
+                            "text": "Associated symptoms",
+                            "display": "Does your child have the following symptom(s)?",
+                            "pos-condition": "c.",
+                            "neg-condition": "s.",
+                            "display-or": "ତମର ଶିଶୁ କୁଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+                            "options": [
+                                {
+                                    "id": "ID_1101629130",
+                                    "text": "Runny nose",
+                                    "display-or": "ନାକରୁ ପାଣି ବା ଥଣ୍ଡା",
+                                    "display-hi": "बहती नाक",
+                                    "display-mr": "नाक वाहणे"
+                                },
+                                {
+                                    "id": "ID_1967599366",
+                                    "text": "Skin rash",
+                                    "display-or": "ଚର୍ମ ଚିହ୍ନ",
+                                    "display-hi": "त्वचा पर चकत्ते ",
+                                    "display-mr": "त्वचेवर पुरळ"
+                                },
+                                {
+                                    "id": "ID_1273162547",
+                                    "text": "Red eyes",
+                                    "display-or": "ନାଲି ଆଖି",
+                                    "display-hi": "लाल आँखें",
+                                    "display-mr": "डोळे लाल होणे"
+                                },
+                                {
+                                    "id": "ID_1931521264",
+                                    "text": "Other [describe]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                                    "display-hi": "अन्य (वर्णन करें)",
+                                    "display-mr": "इतर ( वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "क्या आपके बच्चे को निम्न लक्षण है/हैं?",
+                            "display-mr": "आपल्या मुलाला खाली दिलेली लक्षण आहेत का"
+                        },
+                        {
+                            "id": "ID_570262661",
+                            "text": "Nature of Fever",
+                            "display": "How has fever changed?",
+                            "display-or": "ଜର କେମିତି ବଦଳୁଛି ?",
+                            "options": [
+                                {
+                                    "id": "ID_1434989288",
+                                    "text": "All day/ Constant",
+                                    "display-or": "ପୁରା ଦିନ",
+                                    "display-hi": "पूरे दिन/ एक जैसा",
+                                    "display-mr": "पूर्ण दिवस/ एक सारखा"
+                                },
+                                {
+                                    "id": "ID_2420513",
+                                    "text": "Irregular (comes & goes)",
+                                    "display-or": "ଆସେ ଯାଏ",
+                                    "display-hi": "अनियमित (आ-जा रहा है)",
+                                    "display-mr": "येतोय , जातोय"
+                                },
+                                {
+                                    "id": "ID_1220882698",
+                                    "text": "Periodic",
+                                    "display-or": "ଅନ୍ତରାଳ",
+                                    "options": [
+                                        {
+                                            "id": "ID_1877805872",
+                                            "text": "Alternate days",
+                                            "display-or": "ଦିଅଁ ଛାଡ ଦିନେ",
+                                            "display-hi": "एक दिन छोड़ कर ",
+                                            "display-mr": "एक दिवस आड"
+                                        },
+                                        {
+                                            "id": "ID_1188913049",
+                                            "text": "Every few hours",
+                                            "display-or": "କିଛି ଘଣ୍ଟା ଛାଡି",
+                                            "display-hi": "हर कुछ घंटे में",
+                                            "display-mr": "प्रत्येक काही तासांनी"
+                                        },
+                                        {
+                                            "id": "ID_881523069",
+                                            "text": "Every few days",
+                                            "display-or": "ପ୍ରତି ଅଳ୍ପ ଦିନରେ",
+                                            "display-hi": "हर कुछ दिन में",
+                                            "display-mr": "प्रत्येक काही दिवसांनी"
+                                        },
+                                        {
+                                            "id": "ID_99907657",
+                                            "text": "Other [describe]",
+                                            "input-type": "text",
+                                            "language": "%",
+                                            "display-or": "ଅନ୍ୟାନ୍ୟ",
+                                            "display-hi": "अन्य (वर्णन करें)",
+                                            "display-mr": "इतर (वर्णन करा)"
+                                        }
+                                    ],
+                                    "display-hi": "समय-समय पर आता है ",
+                                    "display-mr": "ठराविक वेळानंतर"
+                                }
+                            ],
+                            "display-hi": " बुखार कैसे आता है?",
+                            "display-mr": "आपल्या तापात काही बदल झाला का/कमी जास्त"
+                        },
+                        {
+                            "id": "ID_1714549680",
+                            "text": "Measles history within the last 3 months",
+                            "display": "Has the baby/child had measles within the previous 3 months?",
+                            "language": "%",
+                            "display-or": "ଗତ ତିନି ମାସରେ ମିଳମିଳା",
+                            "options": [
+                                {
+                                    "id": "ID_1091419494",
+                                    "text": "Yes",
+                                    "language": "h/o measles in last 3 months",
+                                    "display-or": "ହଁ",
+                                    "display-hi": "हाँ ",
+                                    "display-mr": "हो"
+                                },
+                                {
+                                    "id": "ID_627126435",
+                                    "text": "No",
+                                    "language": "no h/o measles in past 3 months",
+                                    "display-or": "ନା",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-hi": "क्या आपके बच्चे को पिछले 3 महीने में खसरा (मीजिल्स) हुआ है?",
+                            "display-mr": "मागील 3 महिन्यांत बाळाला/मुलाला गोवर झाला आहे का?"
+                        }
+                    ],
+                    "display-hi": "बुखार",
+                    "display-mr": "ताप"
+                },
+                {
+                    "id": "ID_887317121",
+                    "text": "Ear pain",
+                    "perform-physical-exam": "Ear:Bleeding;Ear:Discharge;Ear:Redness;Ear:Swelling;",
+                    "display-or": "କଣ ଯନ୍ତ୍ରଣା",
+                    "options": [
+                        {
+                            "id": "ID_1078199479",
+                            "text": "Ear discharge",
+                            "display-or": "କାନରେ ଝରିବା",
+                            "display": "Any ear discharge?",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_740615069",
+                                    "text": "No",
+                                    "display-or": "ନା",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                },
+                                {
+                                    "id": "ID_1516184532",
+                                    "text": "Clear",
+                                    "display-or": "ପାଣି",
+                                    "display-hi": "साफ़",
+                                    "display-mr": "साफ"
+                                },
+                                {
+                                    "id": "ID_1563668689",
+                                    "text": "Pus",
+                                    "display-or": "ପୂଜ",
+                                    "display-hi": "पस वाला",
+                                    "display-mr": "पू"
+                                },
+                                {
+                                    "id": "ID_225988098",
+                                    "text": "Bloody",
+                                    "display-or": "ରକ୍ତ",
+                                    "display-hi": "खुनी",
+                                    "display-mr": "रक्तयुक्त"
+                                }
+                            ],
+                            "display-hi": "कान बहना",
+                            "display-mr": "कानामधून स्त्राव"
+                        }
+                    ],
+                    "display-hi": "कान का दर्द",
+                    "display-mr": "कानामध्ये वेदना"
+                },
+                {
+                    "id": "ID_1839428155",
+                    "text": "Jaundice",
+                    "display": "Yellow eyes/skin",
+                    "perform-physical-exam": "Abdomen:Distension;Abdomen:Tenderness;Abdomen:Lumps;",
+                    "display-or": "ହଳଦିଆ ଆଖି ବା ଚର୍ମ",
+                    "options": [
+                        {
+                            "id": "ID_749851373",
+                            "text": "Palm/soles involvement",
+                            "language": "%",
+                            "display-or": "ପାପୁଲି ବା ପାଦ",
+                            "options": [
+                                {
+                                    "id": "ID_146956158",
+                                    "text": "Yes",
+                                    "language": "involves palm / soles pain",
+                                    "display-or": "ହଁ",
+                                    "display-hi": "हाँ ",
+                                    "display-mr": "हो"
+                                },
+                                {
+                                    "id": "ID_812798599",
+                                    "text": "No",
+                                    "language": "Does not involve Palm / soles pain",
+                                    "display-or": "ନା",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-hi": "हथेली/तलवे में भी तकलीफ ",
+                            "display-mr": "हाताचे तळवे/पायाचे तळवे यावर"
+                        }
+                    ],
+                    "display-hi": "पीली आँखें/त्वचा",
+                    "display-mr": "पिवळे डोळे/ त्वचा"
+                }
+            ],
+            "display-hi": "मुख्य लक्षण",
+            "display-mr": "मुख्य लक्षण"
+        },
+        {
+            "id": "ID_178840515",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1250493396",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "କେବେଠାରୁ",
+                    "display-hi": "(कब से है, भरें)",
+                    "display-mr": "कधी पासून ते भरा"
+                }
+            ],
+            "display-hi": " आपको कब से यह लक्षण हैं?",
+            "display-mr": "तुम्हाला ही लक्षणे कधी पासून दिसत आहेत"
+        },
+        {
+            "id": "ID_1089252797",
+            "text": "Currently breastfeeding",
+            "display": "Are you currently breastfeeding the child?",
+            "display-or": "ବର୍ତମାନ ସ୍ତନ ପାନ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1730066682",
+                    "text": "Yes",
+                    "display-or": "ହଁ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1036819013",
+                            "text": "Frequency",
+                            "input-type": "frequency",
+                            "display-or": "କେତେ ଥର",
+                            "display-hi": "कितनी बार",
+                            "display-mr": "किती वेळा"
+                        },
+                        {
+                            "id": "ID_839592773",
+                            "text": "Exclusive breast feeding",
+                            "language": "%",
+                            "display-or": "କେବଳ ସ୍ତନ ପାନ",
+                            "options": [
+                                {
+                                    "id": "ID_1314901547",
+                                    "text": "Yes",
+                                    "language": "Child is exclusively breastfed",
+                                    "display-or": "ହଁ",
+                                    "display-hi": "हाँ ",
+                                    "display-mr": "हो"
+                                },
+                                {
+                                    "id": "ID_1851450126",
+                                    "text": "No (With other food/drink)",
+                                    "language": "Child is given food / drink along with breast feeding",
+                                    "display-or": "ନା",
+                                    "multi-choice": true,
+                                    "options": [
+                                        {
+                                            "id": "ID_1976934114",
+                                            "text": "Frequency",
+                                            "input-type": "frequency",
+                                            "display-or": "କେତେ ଥର",
+                                            "display-hi": "कितनी बार",
+                                            "display-mr": "किती वेळा"
+                                        },
+                                        {
+                                            "id": "ID_1096274872",
+                                            "text": "Food/drink (Describe)",
+                                            "input-type": "text",
+                                            "language": "%",
+                                            "display-or": "ଖାଦ୍ୟ/ପାନୀୟ (ବର୍ଣନା କର)",
+                                            "display-hi": "भोजन/पेय (वर्णन करें)",
+                                            "display-mr": "जेवण/ पेय ( वर्णन करा)"
+                                        }
+                                    ],
+                                    "display-hi": "नहीं (अन्य भोजन/पेय)",
+                                    "display-mr": "नाही( इतर जेवण/ पेय)"
+                                }
+                            ],
+                            "display-hi": "सिर्फ स्तन पान कर रहा है",
+                            "display-mr": "फक्त स्तनपान करत आहे"
+                        }
+                    ],
+                    "display-hi": "हाँ ",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1256017452",
+                    "text": "No",
+                    "display-or": "ନା",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपका बच्चा अभी स्तनपान कर रहा है?",
+            "display-mr": "आपल मूल आत्ता स्तनपान करत आहे का"
+        },
+        {
+            "id": "ID_1392114445",
+            "text": "Danger signs",
+            "display": "Does the baby/child have the following danger symtpom?",
+            "display-or": "ତମର ଶିଶୁ କୁଏହି ବିପଦ ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "isRequired": true,
+            "multi-choice": true,
+            "options": [
+                {
+                    "id": "ID_1017967578",
+                    "text": "Drinking/breastfeeding",
+                    "display": "Is the child drinking/breastfeeding normally?",
+                    "display-or": "ପିଇବା/ସ୍ଥାନପନ",
+                    "options": [
+                        {
+                            "id": "ID_1840963745",
+                            "text": "Normal",
+                            "display-or": "ଠିକ",
+                            "display-hi": "सामान्य",
+                            "display-mr": "सामान्य"
+                        },
+                        {
+                            "id": "ID_379542848",
+                            "text": "Abnormal",
+                            "display-or": "ଠିକ ନାହିଁ",
+                            "display-hi": "असामान्य",
+                            "display-mr": "असामान्य"
+                        }
+                    ],
+                    "display-hi": "क्या आपका बच्चा सामान्य रूप से स्तनपान कर रहा है या सामान्य रूप से दूध, पानी आदि पी रहा है?",
+                    "display-mr": "आपल मूल सामान्य स्वरूपात स्तनपान करत आहे का?"
+                },
+                {
+                    "id": "ID_348298739",
+                    "text": "Vomit everything",
+                    "display": "Does the child vomit everything?",
+                    "language": "%",
+                    "display-or": "ବାନ୍ତି",
+                    "options": [
+                        {
+                            "id": "ID_827175001",
+                            "text": "Yes",
+                            "language": "Child vomits everything",
+                            "display-or": "ହଁ",
+                            "display-hi": "हाँ ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_482272294",
+                            "text": "No",
+                            "language": "Child does not vomit everything",
+                            "display-or": "ନା",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "क्या आपका बच्चा सब कुछ उल्टी कर देता है?",
+                    "display-mr": "बाळाने काहीही खाल्ले तरी उलट्या करते का?"
+                },
+                {
+                    "id": "ID_14409162",
+                    "text": "Convulsions",
+                    "display-or": "ବାତ",
+                    "options": [
+                        {
+                            "id": "ID_580083998",
+                            "text": "Yes",
+                            "display-or": "ହଁ",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_1700203444",
+                                    "text": "Frequency",
+                                    "input-type": "frequency",
+                                    "display-or": "କେତେ ଥର",
+                                    "display-hi": "कितनी बार",
+                                    "display-mr": "किती वेळा"
+                                },
+                                {
+                                    "id": "ID_1025383388",
+                                    "text": "Since when",
+                                    "input-type": "duration",
+                                    "language": "since",
+                                    "display-or": "କେବେ ଠାରୁ",
+                                    "display-hi": "कब से",
+                                    "display-mr": "कधी पासून"
+                                }
+                            ],
+                            "display-hi": "हाँ ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_1067905726",
+                            "text": "No",
+                            "display-or": "ନା",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "शरीर में ऐंठन/मरोड़",
+                    "display-mr": "चक्कर"
+                },
+                {
+                    "id": "ID_286552621",
+                    "text": "Movement (Age <2months)",
+                    "display-or": "ଚାଲ ଚଂଚଳ/ହାତ ଗୋଡ ହଲଚଲ",
+                    "options": [
+                        {
+                            "id": "ID_1885364117",
+                            "text": "Normal",
+                            "display-or": "ଠିକ",
+                            "display-hi": "सामान्य",
+                            "display-mr": "सामान्य"
+                        },
+                        {
+                            "id": "ID_282232741",
+                            "text": "Movement only when stimulated",
+                            "display-or": "ହଲଚଲ କେଲେ ହଲଚଲ ହୁଏ",
+                            "display-hi": "हिलना-डुलना तभी, जब उत्तेजित किया जाए या छुआ आदि जाए",
+                            "display-mr": "हालचाल फक्त उत्तेजीत केल्यावर"
+                        },
+                        {
+                            "id": "ID_503134636",
+                            "text": "No movement",
+                            "display-or": "ନାହିଁ",
+                            "display-hi": "हिलता-डुलता नहीं है ",
+                            "display-mr": "काही हालचाल नाही"
+                        }
+                    ],
+                    "display-hi": "हिलना-डुलना (आयु 2 महीने से कम)",
+                    "display-mr": "हालचाल ( वय २ वर्षा पेक्षा कमी)"
+                }
+            ],
+            "display-hi": "क्या आपके बच्चे को निम्न खतरनाक लक्षण है/हैं?",
+            "display-mr": "तुमच्या मुलाला खाली दिलेली घातक लक्षणं आहेत का?"
+        },
+        {
+            "id": "ID_1662561260",
+            "text": "Associated symptoms",
+            "display": "Does your child have the following symptom(s)?",
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "isRequired": true,
+            "display-or": "ତମର ଶିଶୁ କୁଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_43499979",
+                    "text": "Mouth pain",
+                    "display-or": "ପାଟି କଷ୍ଟ",
+                    "display-hi": "मुंह में दर्द",
+                    "display-mr": "तोंडामध्ये वेदना"
+                },
+                {
+                    "id": "ID_404322592",
+                    "text": "White coating/patches on the tongue/mouth/inner/cheeks/the back of the throat",
+                    "display-or": "ଜିଭ/ପାଟି/ଗ୍ଳାଭିତର/ଗାଲରେ/ଢାଲଛିଞ୍ଚ ପଡିବ",
+                    "perform-physical-exam": "Mouth:Oral thrush;",
+                    "display-hi": "जीभ पर/मुंह/गाल पर अंदर या बाहर/गले के पिछले भाग में सफेदी लिए परत",
+                    "display-mr": "जिभेवर/तोंडावर/आतील/गालावर/घशाच्या मागील बाजूस पांढर आवरण/चट्टा"
+                },
+                {
+                    "id": "ID_1255360406",
+                    "text": "Fever for over 1 month",
+                    "display-or": "ଏକ ମାସେରୁଅଧିକ ଜ୍ୱର",
+                    "display-hi": "1 महीने से बुखार",
+                    "display-mr": "१ महिन्या पासून ताप"
+                },
+                {
+                    "id": "ID_378312136",
+                    "text": "Diarrhea for over 14 days",
+                    "display-or": "ଚୌଡା ଦିନରୁ ଅଧିକ ଝଡ଼",
+                    "display-hi": "14 दिनों से दस्त",
+                    "display-mr": "१४ दिवसा पासून जुलाब"
+                },
+                {
+                    "id": "ID_1516597491",
+                    "text": "Skin rash",
+                    "display-or": "ଚର୍ମ ଚିହ୍ନ",
+                    "display-hi": "त्वचा पर चकत्ते ",
+                    "display-mr": "त्वचेवर पुरळ"
+                },
+                {
+                    "id": "ID_485544343",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                },
+				{
+                    "id": "ID_802250306",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "यापैकी काहीही नाही"
+                }
+            ],
+            "display-hi": "क्या आपके बच्चे को निम्न लक्षण है/हैं?",
+            "display-mr": "तुमच्या मुलाला खाली दिलेली लक्षण आहेत का"
+        },
+        {
+            "id": "ID_1989844813",
+            "text": "HIV status of the mother",
+            "display-or": "ମା ର ଏଚ ଆଇ ଭି ସ୍ତିଥି",
+            "options": [
+                {
+                    "id": "ID_882729624",
+                    "text": "Unknown",
+                    "display-or": "ଜଣ ନାହିଁ",
+                    "display-hi": "कोई जानकारी नहीं",
+                    "display-mr": "माहिती नाही"
+                },
+                {
+                    "id": "ID_939613126",
+                    "text": "No",
+                    "language": "Mother of child does not have HIV",
+                    "display-or": "ନା",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                },
+                {
+                    "id": "ID_644478527",
+                    "text": "Yes",
+                    "language": "Mother of child has HIV",
+                    "display-or": "ହଁ",
+                    "options": [
+                        {
+                            "id": "ID_1881481341",
+                            "text": "HIV of mother was diagnosed but not treated",
+                            "display-or": "ହଁ(ଜଣାଅଛି/ଚିକିତ୍ସା ହୋଇନି)",
+                            "options": [
+                                {
+                                    "id": "ID_1684180296",
+                                    "text": "Diagnosed on ",
+                                    "input-type": "date",
+                                    "display-or": "କେବେ ଜଣାପଡିଲା",
+                                    "display-hi": "कब पता चला ",
+                                    "display-mr": "निदान कधी झाले"
+                                }
+                            ],
+                            "display-hi": "माँ को एच. आई. वी. हुआ था पर इलाज़ नहीं हुआ",
+                            "display-mr": "आई ला एच. आय. व्हीं. झाला होता , पण उपचार झाले नाहीत"
+                        },
+                        {
+                            "id": "ID_301418939",
+                            "text": "HIV of mother was diagnosed and treated",
+                            "display-or": "ହଁ(ଜଣା ଅଛି/ଚିକିତ୍ସା ହୋଇଛି)",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_1983633024",
+                                    "text": "Diagnosed on",
+                                    "input-type": "date",
+                                    "display-or": "କେବେ ଚିକିତ୍ସା ହୋଇଥିଲା",
+                                    "display-hi": "कब पता चला ",
+                                    "display-mr": "कधी निदान झाले"
+                                },
+                                {
+                                    "id": "ID_53087073",
+                                    "text": "Medication",
+                                    "display-or": "ଔଷଧ",
+                                    "multi-choice": true,
+                                    "options": [
+                                        {
+                                            "id": "ID_301163296",
+                                            "text": "Since when",
+                                            "input-type": "duration",
+                                            "language": "since",
+                                            "display-or": "କେବେ ଠାର",
+                                            "display-hi": "कब से",
+                                            "display-mr": "कधी पासून"
+                                        },
+                                        {
+                                            "id": "ID_1981612616",
+                                            "text": "Medication name (Describe)",
+                                            "input-type": "text",
+                                            "language": "medication name",
+                                            "display-or": "ଔଷଧ ନାମ",
+                                            "display-hi": "दवा का नाम (वर्णन करें)",
+                                            "display-mr": "औषधाचे नाव (वर्णन करा)"
+                                        }
+                                    ],
+                                    "display-hi": "दवा",
+                                    "display-mr": "औषध"
+                                }
+                            ],
+                            "display-hi": "माँ को एच. आई. वी. हुआ था और उसका इलाज़ भी हुआ ",
+                            "display-mr": "आई ला एच. आय. व्हि. झाला आणि त्यावर उपचार पण झाला"
+                        }
+                    ],
+                    "display-hi": "हाँ ",
+                    "display-mr": "हो"
+                }
+            ],
+            "display-hi": "माँ को एच. आई. वी. तो नहीं",
+            "display-mr": "आईला एच. आय. व्ही. चा इतिहास"
+        },
+        {
+            "id": "ID_1627456178",
+            "text": "HIV status of the child",
+            "display-or": "ପିଲାର ଏଚ ଆଇ ଭି ସ୍ତିଥି",
+            "options": [
+                {
+                    "id": "ID_1401427314",
+                    "text": "No",
+                    "language": "Child does not have HIV",
+                    "display-or": "ନା",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                },
+                {
+                    "id": "ID_1240780060",
+                    "text": "Unknown",
+                    "display-or": "ଜଣାନାହିଁ",
+                    "display-hi": "कोई जानकारी नहीं",
+                    "display-mr": "माहिती नाही"
+                },
+                {
+                    "id": "ID_1803107427",
+                    "text": "Yes",
+                    "language": "Child has HIV",
+                    "display-or": "ହଁ",
+                    "options": [
+                        {
+                            "id": "ID_1683715654",
+                            "text": "Child's HIV was diagnosed but not treated",
+                            "display-or": "ହଁ(ଜଣାଅଛି/ଚିକିତ୍ସା ହୋଇନି)",
+                            "options": [
+                                {
+                                    "id": "ID_1221797255",
+                                    "text": "Diagnosed on ",
+                                    "input-type": "date",
+                                    "display-or": "କେବେ ଜଣାପଡିଲା",
+                                    "display-hi": "कब पता चला ",
+                                    "display-mr": "निदान कधी झाले"
+                                }
+                            ],
+                            "display-hi": "बच्चे को एच. आई. वी. हुआ था पर इलाज़ नहीं हुआ",
+                            "display-mr": "मुलाला एच. आय. व्हि. झाला होता, पण उपचार झाला नाही"
+                        },
+                        {
+                            "id": "ID_1644573369",
+                            "text": "Child's HIV was diagnosed and treated",
+                            "display-or": "ହଁ(ଜଣା ଅଛି/ଚିକିତ୍ସା ହୋଇଛି)",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_1632178620",
+                                    "text": "Diagnosed on ",
+                                    "input-type": "date",
+                                    "display-or": "କେବେ ଜଣାପଡିଲା",
+                                    "display-hi": "कब पता चला ",
+                                    "display-mr": "निदान कधी झाले"
+                                },
+                                {
+                                    "id": "ID_1173184947",
+                                    "text": "Medication",
+                                    "display-or": "ଔଷଧ",
+                                    "multi-choice": true,
+                                    "options": [
+                                        {
+                                            "id": "ID_1275471882",
+                                            "text": "Since when",
+                                            "input-type": "duration",
+                                            "language": "since",
+                                            "display-or": "କେବେଠାରୁ",
+                                            "display-hi": "कब से",
+                                            "display-mr": "कधी पासून"
+                                        },
+                                        {
+                                            "id": "ID_917767294",
+                                            "text": "Medication name (Describe)",
+                                            "input-type": "text",
+                                            "language": "%",
+                                            "display-or": "ଔଷଧର ନାମ",
+                                            "display-hi": "दवा का नाम (वर्णन करें)",
+                                            "display-mr": "औषधाचे नाव (वर्णन करा)"
+                                        }
+                                    ],
+                                    "display-hi": "दवा",
+                                    "display-mr": "औषध"
+                                }
+                            ],
+                            "display-hi": "माँ को एच. आई. वी. हुआ था और उसका इलाज़ भी हुआ",
+                            "display-mr": "आई ला एच. आय. व्हि. झाला आणि उपचार पण झाला"
+                        }
+                    ],
+                    "display-hi": "हाँ ",
+                    "display-mr": "हो"
+                }
+            ],
+            "display-hi": "बच्चे में एच. आई. वी. की स्थिति",
+            "display-mr": "मुलाच्या एच. आय. व्हि. चा इतिहास"
+        },
+        {
+            "id": "ID_1819787065",
+            "text": "Immunization/supplement history",
+            "display-or": "ଟୀକା ବିତରଣୀ",
+            "multi-choice": true,
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1151501448",
+                    "text": "Unknown",
+                    "display-or": "ଜଣାନାହିଁ",
+                    "display-hi": "कोई जानकारी नहीं",
+                    "display-mr": "माहिती नाही"
+                },
+                {
+                    "id": "ID_539183464",
+                    "text": "Vaccine",
+                    "display-or": "ଟୀକା",
+                    "options": [
+                        {
+                            "id": "ID_1366738232",
+                            "text": "Yes",
+                            "display-or": "ହଁ",
+                            "display-hi": "हाँ ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_1144390923",
+                            "text": "No",
+                            "display-or": "ନା",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_1898781474",
+                            "text": "Unknown",
+                            "display-or": "ଜଣାନାହିଁ",
+                            "display-hi": "कोई जानकारी नहीं",
+                            "display-mr": "माहिती नाही"
+                        }
+                    ],
+                    "display-hi": "टीका",
+                    "display-mr": "लस"
+                },
+                {
+                    "id": "ID_1429322932",
+                    "text": "Vitamin A ",
+                    "display-or": "ଭିଟାମିନ ଏ",
+                    "options": [
+                        {
+                            "id": "ID_254788964",
+                            "text": "Yes",
+                            "display-or": "ହଁ",
+                            "display-hi": "हाँ ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_432137563",
+                            "text": "No",
+                            "display-or": "ନା",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_499449342",
+                            "text": "Unknown",
+                            "display-or": "ଜଣାନାହିଁ",
+                            "display-hi": "कोई जानकारी नहीं",
+                            "display-mr": "माहिती नाही"
+                        }
+                    ],
+                    "display-hi": "विटामिन ए",
+                    "display-mr": "अ- जीवनसत्व"
+                },
+                {
+                    "id": "ID_476586209",
+                    "text": "Worm treatment",
+                    "display-or": "କୃମି ଚିକିତ୍ସା",
+                    "options": [
+                        {
+                            "id": "ID_223386196",
+                            "text": "Yes",
+                            "display-or": "ହଁ",
+                            "display-hi": "हाँ ",
+                            "display-mr": "हो"
+                        },
+                        {
+                            "id": "ID_1301645260",
+                            "text": "No",
+                            "display-or": "ନା",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_1677637795",
+                            "text": "Unknown",
+                            "display-or": "ଜଣାନାହିଁ",
+                            "display-hi": "कोई जानकारी नहीं",
+                            "display-mr": "माहिती नाही"
+                        }
+                    ],
+                    "display-hi": "पेट के कीड़ों का इलाज ",
+                    "display-mr": "जंत उपचार"
+                }
+            ],
+            "display-hi": "प्रतिरक्षा इतिहास",
+            "display-mr": "लसीकरण/पूरक इतिहास"
+        },
+        {
+            "id": "ID_1270557284",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1505986090",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हां (वर्णन करें)",
+                    "display-mr": "हो (वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "या पैकी कोणतेही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने, आज यहां आने से पहले, इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचार) घेतले आहेत किंवा कोणत्याही डॉक्टर ला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1769744008",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_651811445",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "(अन्य जानकारी दर्ज करें)",
+                    "display-mr": "(अधिक माहिती भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अधिक माहिती"
+        }
+    ],
+    "display-hi": "बीमार बच्चा (5 साल से कम उम्र का)",
+    "display-mr": "आजारी मूल ( ५ वर्षा पेक्षा कमी)"
+}

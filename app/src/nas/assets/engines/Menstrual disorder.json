@@ -1,0 +1,457 @@
+{
+    "id": "ID_8102449",
+    "text": "Menstrual disorder",
+    "perform-physical-exam": "Face:Swollen Face;Neck:Thyroid swelling;Abdomen:Scars;",
+    "display-or": "ମାସିକିଅା ଅସୁବିଧା",
+    "gender": "0",
+    "age_min": "8",
+    "age_max": "120",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1892712557",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "isRequired": true,
+            "display-or": "କେତେଦିନଧରି",
+            "options": [
+                {
+                    "id": "ID_171957737",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "କେବେଠାରୁ",
+                    "display-hi": "[कब से है, दर्ज करें]",
+                    "display-mr": "[केव्हापासून ते लिहा/ भरा ]"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "तुम्हाला हे लक्षण कधीपासून आहे?"
+        },
+        {
+            "id": "ID_1829292272",
+            "text": "Marital status",
+            "display-or": "ବୈବାହିକ ସ୍ତିତି",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_461461913",
+                    "text": "Married",
+                    "display-or": "ବାହା ହେବା",
+                    "options": [
+                        {
+                            "id": "ID_1160909789",
+                            "text": "Birth history",
+                            "display-or": "ପ୍ରସୂତି ସୂଚନା",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_1087011684",
+                                    "text": "Number of pregnancies",
+                                    "input-type": "number",
+                                    "display-or": "କେତେଥର ଗର୍ଭ ଧାରଣ",
+                                    "display-hi": "कितनी बार गर्भवती हुईं?",
+                                    "display-mr": "किती वेळा गर्भधारणा झाली"
+                                },
+                                {
+                                    "id": "ID_1219576368",
+                                    "text": "Number of survived babies",
+                                    "input-type": "number",
+                                    "display-or": "ବଞ୍ଚତ୍ଥିବା ପିଲା ସଂଖ୍ଯା",
+                                    "display-hi": "जीवित शिशुओं की संख्या ",
+                                    "display-mr": "जीवित बालकांची संख्या"
+                                },
+                                {
+                                    "id": "ID_1140283509",
+                                    "text": "Living with a husband",
+                                    "display": "Are you currently living with your husband?",
+                                    "language": "%",
+                                    "display-or": "ସ୍ବାମୀ ସହ ଏବେ ଅଛନ୍ତି",
+                                    "options": [
+                                        {
+                                            "id": "ID_810319948",
+                                            "text": "Yes",
+                                            "language": "patient is currently living with her husband",
+                                            "display-or": "ହଁ",
+                                            "display-hi": "हाँ",
+                                            "display-mr": "हो"
+                                        },
+                                        {
+                                            "id": "ID_1858680774",
+                                            "text": "No",
+                                            "language": "patient is not currently living with her husband",
+                                            "display-or": "ନାଁ",
+                                            "display-hi": "नहीं",
+                                            "display-mr": "नाही"
+                                        }
+                                    ],
+                                    "display-hi": "क्या आप वर्तमान में अपने पति के साथ रह रही हैं?",
+                                    "display-mr": "तुम्ही सध्या तुमच्या पतीसोबत राहत आहात का?"
+                                }
+                            ],
+                            "display-hi": "जन्म  देने का इतिहास",
+                            "display-mr": "गर्भधारणेचा इतिहास"
+                        }
+                    ],
+                    "display-hi": "विवाहित",
+                    "display-mr": "वैवाहिक"
+                },
+                {
+                    "id": "ID_1578195228",
+                    "text": "Unmarried",
+                    "display-or": "ଅବିବାହିତ",
+                    "display-hi": "अविवाहित",
+                    "display-mr": "अविवाहित"
+                }
+            ],
+            "display-hi": "वैवाहिक स्थिति",
+            "display-mr": "वैवाहिक स्थिती"
+        },
+        {
+            "id": "ID_1004615569",
+            "text": "Menstrual history",
+            "isRequired": true,
+            "display-or": "ମାସିକିଅା ସୂଚନାvv",
+            "options": [
+                {
+                    "id": "ID_1484332563",
+                    "text": "Primary amenorrhea (have not started menstruation)",
+                    "perform-physical-exam": "Physical Growth:Sexual Maturation;",
+                    "display": "Not started menstruation",
+                    "display-or": "ଅାରମ୍ଭ ହେଇନି",
+                    "display-hi": "मासिक धर्म अभी शुरू नहीं हुआ",
+                    "display-mr": "मासिक पाळी चालू झाली नाही"
+                },
+                {
+                    "id": "ID_214674338",
+                    "text": "Menarche <= 15 years old",
+                    "language": "Has started menstruation (<=15 yrs old)",
+                    "display-or": "ଅାରମ୍ଭ ହୋଇଛି",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1304298427",
+                            "text": "Age at onset (years old)",
+                            "input-type": "number",
+                            "display-or": "କେତେବର୍ଷରେ",
+                            "display-hi": "कौन-से वर्ष में शुरू हुआ (वर्ष)?",
+                            "display-mr": "मासिक पाळी चालू झाली तेव्हाचे वय"
+                        },
+                        {
+                            "id": "ID_932612317",
+                            "text": "Last menstruation period",
+                            "input-type": "date",
+                            "display-or": "ଶେଷଥର କେବେ",
+                            "display-hi": "पिछला मासिक धर्म (मेंस्ट्रुएशन)",
+                            "display-mr": "शेवटची मासिक पाळी"
+                        },
+                        {
+                            "id": "ID_1240564817",
+                            "text": "Regularity",
+                            "display-or": "ଠିକ୍ସମୟରେ",
+                            "options": [
+                                {
+                                    "id": "ID_897522197",
+                                    "text": "Irregular",
+                                    "display-or": "ଅସମୟରେ",
+                                    "options": [
+                                        {
+                                            "id": "ID_637468024",
+                                            "text": "Since when ",
+                                            "input-type": "duration",
+                                            "language": "since",
+                                            "display-or": "କେବେଠାରୁ",
+                                            "display-hi": "कब से",
+                                            "display-mr": "कधी पासून"
+                                        }
+                                    ],
+                                    "display-hi": "अनियमितता",
+                                    "display-mr": "अनियमित"
+                                },
+                                {
+                                    "id": "ID_1375856204",
+                                    "text": "Regular",
+                                    "display-or": "ଠିକ୍ ସମୟରେ",
+                                    "display-hi": "नियमित",
+                                    "display-mr": "नियमित"
+                                }
+                            ],
+                            "display-hi": "नियमितता",
+                            "display-mr": "नियमितता"
+                        },
+                        {
+                            "id": "ID_1008850971",
+                            "text": "Cycle length (days)",
+                            "input-type": "range",
+                            "display-or": "କେତେଦିନରେ ମାସିକିଅା",
+                            "display-hi": "चक्र की लंबाई (दिन)",
+                            "display-mr": "मासिक पाळीचा काळ (दर किती दिवसांनी येते )"
+                        },
+                        {
+                            "id": "ID_309605964",
+                            "text": "Duration",
+                            "display-or": "କେତେଦିନ ହୁଏ",
+                            "options": [
+                                {
+                                    "id": "ID_479640931",
+                                    "text": "<= 7days",
+                                    "display-or": "7ଦିନରେ ମାସିକିଅା",
+                                    "display-hi": "7 दिन या अधिक",
+                                    "display-mr": "७ दिवस किंवा त्या पेक्षा कमी"
+                                },
+                                {
+                                    "id": "ID_1108516620",
+                                    "text": "> 7 days",
+                                    "display-or": "7 ଦିନରୁ ଅଧିକା",
+                                    "options": [
+                                        {
+                                            "id": "ID_1862214328",
+                                            "text": "Since when ",
+                                            "input-type": "duration",
+                                            "language": "since",
+                                            "display-or": "କେବେଠାରୁ",
+                                            "display-hi": "कब से",
+                                            "display-mr": "कधी पासून"
+                                        }
+                                    ],
+                                    "display-hi": "7 दिन से कम",
+                                    "display-mr": "७ दिवसा पेक्षा जास्त"
+                                }
+                            ],
+                            "display-hi": "अवधि",
+                            "display-mr": "कालावधी"
+                        }
+                    ],
+                    "display-hi": "15 वर्ष की आयु या उससे अधिक उम्र वाली महिला में रजोदर्शन (मनार्की) होती है",
+                    "display-mr": "मासिक पाळी १५ वर्षे वयापूर्वी  चालू झाली"
+                }
+            ],
+            "display-hi": "मासिक धर्म का इतिहास",
+            "display-mr": "मासिक पाळीचा इतिहास"
+        },
+        {
+            "id": "ID_1629790622",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "options": [
+                {
+                    "id": "ID_40277118",
+                    "text": "Morning nausea",
+                    "display-or": "ସକାଳୁ ବାନ୍ତି",
+                    "display-hi": "सुबह की मिचली ",
+                    "display-mr": "सकाळी मळमळ"
+                },
+                {
+                    "id": "ID_113448592",
+                    "text": "Headache",
+                    "display-or": "ମୁଣ୍ଡବିନ୍ଧା",
+                    "display-hi": "सिर दर्द",
+                    "display-mr": "डोकेदुखी"
+                },
+                {
+                    "id": "ID_226304961",
+                    "text": "Milky nipple discharge ",
+                    "display-or": "ସ୍ତ୍ରନରୁ କ୍ଷୀର ଝରିବା",
+                    "display-hi": "स्तन के अग्र भाग से दूध का रिसाव",
+                    "display-mr": "दुधाळ स्तनाग्र स्त्राव"
+                },
+                {
+                    "id": "ID_271202201",
+                    "text": "Loss of the sense of smell",
+                    "display-or": "ଅାଘ୍ରାଣରେ ହ୍ରାସ",
+                    "display-hi": "सूंघने में कमी आना",
+                    "display-mr": "वासाची जाणीव कमी होणे"
+                },
+                {
+                    "id": "ID_484099060",
+                    "text": "Cramping lower abdominal pain with the onset of menstrual bleeding",
+                    "display-or": "ମାସିକିଅା ବେଳେ ତଳି ପେଟ ଯନ୍ତ୍ରଣା",
+                    "display-hi": "मासिक धर्म के रक्तस्राव की शुरुआत के साथ पेट के निचले हिस्से में दर्द ",
+                    "display-mr": "मासिक पाळीच्या रक्तस्त्रावाच्या प्रारंभासह ओटीपोटात खालील बाजूस दुखणे"
+                },
+                {
+                    "id": "ID_1554702208",
+                    "text": "Diarrhea",
+                    "display-or": "ପତଳା ଝାଡ଼ା",
+                    "display-hi": "दस्त",
+                    "display-mr": "अतिसार"
+                },
+                {
+                    "id": "ID_620150910",
+                    "text": "Painful intercourse",
+                    "display-or": "ସହବାସରେ କଷ୍ଟ",
+                    "display-hi": "संभोग करते समय बहुत ही तेज दर्द ",
+                    "display-mr": "वेदनादायक संभोग"
+                },
+                {
+                    "id": "ID_64525474",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ଯାନ୍ଯ",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर ( वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं? ",
+            "display-mr": "तुम्हाला खालील लक्षणे आहेत का?"
+        },
+        {
+            "id": "ID_1698533657",
+            "text": "Eating habits",
+            "display-or": "ଖାଇବା ଅଭ୍ଯାସ",
+            "isRequired": true,
+            "multi-choice": true,
+            "options": [
+                {
+                    "id": "ID_880233973",
+                    "text": "No. of meals/day",
+                    "input-type": "number",
+                    "display-or": "ଦିନକୁ କେତେଥର",
+                    "display-hi": "पूरे दिन में भोजन कितनी बार ग्रहण करती हैं",
+                    "display-mr": "जेवण दिवसात किती वेळा?"
+                },
+                {
+                    "id": "ID_1441309354",
+                    "text": "Customary meal (Describe)",
+                    "input-type": "text",
+                    "language": "Customary meals",
+                    "display-or": "କଣ ଖାନ୍ତି",
+                    "display-hi": "प्रथागत भोजन [वर्णन करें]",
+                    "display-mr": "रोजचं/ नेहमीचं (वर्णन करा)"
+                }
+            ],
+            "display-hi": "खान-पान",
+            "display-mr": "जेवणाच्या सवयी"
+        },
+        {
+            "id": "ID_828391031",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ଚିହ୍ନଟ ହୋଇଥିଲା କି?",
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_703942111",
+                    "text": "Curettage for pregnancy complications treatment",
+                    "display-or": "ଗର୍ଭଧାରଣ ବେଳେ ଜରାୟୁ ଅପରେସନ",
+                    "options": [
+                        {
+                            "id": "ID_1216690943",
+                            "text": "When",
+                            "input-type": "date",
+                            "language": "on",
+                            "display-or": "କେବେ",
+                            "display-hi": "कब ",
+                            "display-mr": "कधी"
+                        }
+                    ],
+                    "display-hi": "गर्भावस्था की जटिलताओं के उपचार के लिए आखुरण (curettage)",
+                    "display-mr": "गुंतागुंतीच्या गर्भधारणेच्या उपचारांसाठी क्युरेटेज (गर्भाशय पिशवीची सफाई)"
+                },
+                {
+                    "id": "ID_369750276",
+                    "text": "Radiation therapy (Head)",
+                    "display-or": "ଅାଲୋକ ବିକରଣ",
+                    "display-hi": "विकिरण चिकित्सा (सिर)",
+                    "display-mr": "रेडिएशन थेरपी (डोकं)"
+                },
+                {
+                    "id": "ID_1956856295",
+                    "text": "Postpartum bleeding",
+                    "display-or": "ପ୍ରସୂତି ପରେ ରକ୍ତସ୍ରାବ",
+                    "display-hi": "प्रसवोत्तर रक्तस्राव ",
+                    "display-mr": "प्रसवोत्तर / प्रसूतीनंतर रक्तस्त्राव"
+                },
+                {
+                    "id": "ID_728493173",
+                    "text": "Chronic liver/renal/lung disease",
+                    "display-or": "ଯକୃତ ବା ବୃକକ ବା ଫୁସଫୁସ ରୋଗ",
+                    "display-hi": "जीर्ण लीवर / गुर्दे / फेफड़ों की बीमारी ",
+                    "display-mr": "जुना यकृत/ मुत्र/ फुफ्फुसाचे आजार"
+                }
+            ],
+            "display-hi": "क्या आपमें कभी भी निम्न में से किसी भी बीमारी का निदान हुआ है?",
+            "display-mr": "तुम्हाला खालीलपैकी कोणत्याही विशिष्ट आजाराचे निदान झाले आहे का?"
+        },
+        {
+            "id": "ID_750367751",
+            "text": "Type of disorder",
+            "display": "What type of menstrual problem are you experiencing?",
+            "display-or": "କେଉଁ ପ୍ରକାରର",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_703419126",
+                    "text": "Amenorrhea / Oligomenorrhea",
+                    "display": "Decreased/absent menstruation",
+                    "display-or": "କମିଯାଏ ବା ହୁଏନି",
+                    "display-hi": "माहवारी में कमी / माहवारी का नहीं होना ",
+                    "display-mr": "मासिक पाळी कमी / मासिक पाळी न येणे "
+                },
+                {
+                    "id": "ID_1648889299",
+                    "text": "Dysmenorrhea",
+                    "display": "Severe pain during menstruation",
+                    "display-or": "କଷ୍ଟ ମାସିକିଆ",
+                    "display-hi": "माहवारी में बहुत तेज दर्द ",
+                    "display-mr": "मासिक पाळी दरम्यान तीव्र वेदना"
+                }
+			],
+            "display-hi": "मासिक धर्म में आपको किस प्रकार की तकलीफ हो रही है?",
+            "display-mr": "तुम्हाला कोणत्या प्रकारची मासिक पाळीची समस्या आहे?"
+        },
+        {
+            "id": "ID_932055455",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_1744791288",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो ( वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "या पैकी कोणतेही नाही."
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-औषध किंवा घरगुती उपचार) घेतले आहेत किंवा कोणत्याही डॉक्टरांना दाखवेल आहे का?"
+        },
+        {
+            "id": "ID_135141703",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_1708206876",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अन्य जानकारी - दर्ज करें]",
+                    "display-mr": "(अधिक माहिती भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अधिक माहिती."
+        }
+    ],
+    "display-hi": "मासिक धर्म की अनियमितता (मेंस्ट्रुअल डिसऑर्डर)",
+    "display-mr": "मासिक पाळीचे विकार"
+}

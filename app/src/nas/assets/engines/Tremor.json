@@ -1,0 +1,843 @@
+{
+    "id": "ID_635234179",
+    "text": "Tremor",
+    "perform-physical-exam": "Head:Injury;Neurologic Exam:Neurologic Exam 1;Neurologic Exam:Neurologic Exam 2;Neurologic Exam:Neurologic Exam 3;Neurologic Exam:Neurologic Exam 4;Neurologic Exam:Neurologic Exam 5;Hands:Power 1;Hands:Power 2;Hands:Power 3;Leg:Strength;Language:Repetition;",
+    "display-or": "ଦେହ ହାତ ଗୋଡ ଥରିବା",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1861166324",
+            "text": "Site",
+            "display": "In which part of the body is the tremor observed?",
+            "display-or": "କେଉଁ ଅଂଶ",
+            "isRequired": true,
+            "multi-choice": true,
+            "options": [
+                {
+                    "id": "ID_405074632",
+                    "text": "Head",
+                    "display-or": "ମୁଣ୍ଡ",
+                    "display-hi": "सिर",
+                    "display-mr": "डोके"
+                },
+                {
+                    "id": "ID_877868528",
+                    "text": "Face/jaw",
+                    "display-or": "ମୁଂହ /ମାଢି",
+                    "display-hi": "चेहरा / जबड़ा ",
+                    "display-mr": "चेहरा/ जबडा"
+                },
+                {
+                    "id": "ID_803924855",
+                    "text": "Legs",
+                    "display-or": "ଗୋଡ",
+                    "display-hi": "पैर ",
+                    "display-mr": "पाय"
+                },
+                {
+                    "id": "ID_1570794882",
+                    "text": "Hands/arms",
+                    "display-or": "ହାତ / ବହୁ",
+                    "display-hi": "हाथ / बांह ",
+                    "display-mr": "हात/तळहात"
+                },
+                {
+                    "id": "ID_310050803",
+                    "text": "Voice",
+                    "display-or": "ସ୍ୱର",
+                    "display-hi": "बोली / आवाज़ ",
+                    "display-mr": "आवाज"
+                },
+                {
+                    "id": "ID_651418639",
+                    "text": "Other (Describe)",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                    "display-hi": "अन्य (वर्णन करे) ",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "शरीर के किस अंग में कंपन देखा ?",
+            "display-mr": "शरीराच्या कोणत्या भागात कंपन जाणवले?"
+        },
+        {
+            "id": "ID_761857825",
+            "text": "Involvement",
+            "display-or": "କଉ ପଟ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_488994692",
+                    "text": "Unilateral (One side)",
+                    "display-or": "ଗୋଟେ ପଟ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1222854664",
+                            "text": "Right",
+                            "display-or": "ଡାହାଣ",
+                            "display-hi": "दाहिना ",
+                            "display-mr": "उजवा"
+                        },
+                        {
+                            "id": "ID_899320249",
+                            "text": "Left",
+                            "display-or": "ବାମ",
+                            "display-hi": "बांया ",
+                            "display-mr": "डावा"
+                        }
+                    ],
+                    "display-hi": "एक तरफ ",
+                    "display-mr": "एका बाजूला"
+                },
+                {
+                    "id": "ID_700850402",
+                    "text": "Bilateral (Both sides)",
+                    "display-or": "ଉଭୟ ପଟ",
+                    "display-hi": "दोनों तरफ ",
+                    "display-mr": "दोन्ही बाजूंना"
+                }
+            ],
+            "display-hi": "सम्बद्ध / ग्रस्त ",
+            "display-mr": "कोणत्या जागी"
+        },
+        {
+            "id": "ID_313791833",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_826155781",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "display-or": "କେବେଠାରୁ",
+                    "language": "since",
+                    "display-hi": "(भरें, कब से है)",
+                    "display-mr": "(केव्हा पासून आहे ते भरा)"
+                }
+            ],
+            "display-hi": "ये लक्षण आपको कब से है ?",
+            "display-mr": "तुम्हाला हे लक्षण केव्हा पासून आहे?"
+        },
+        {
+            "id": "ID_1678359266",
+            "text": "Onset",
+            "display": "How did the symptom start?",
+            "display-or": "କେମିତି ଆରମ୍ଭ ହେଲା",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_162813648",
+                    "text": "Sudden",
+                    "display-or": "ହଠାତ",
+                    "display-hi": "अचानक ",
+                    "display-mr": "अचानक"
+                },
+                {
+                    "id": "ID_1450119844",
+                    "text": "Gradual",
+                    "display-or": "ଧୀରେ ଧୀରେ",
+                    "display-hi": "धीरे-धीरे ",
+                    "display-mr": "हळूहळू"
+                }
+            ],
+            "display-hi": "लक्षण कैसे शुरू हुआ ? ",
+            "display-mr": "हे लक्षण कसे सुरू झाले?"
+        },
+        {
+            "id": "ID_1485439189",
+            "text": "Progress",
+            "display": "How has the symptom progressed?",
+            "display-or": "ଲକ୍ଷଣ ଗତି",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1048447580",
+                    "text": "Progressive (Worsening)",
+                    "display-or": "ବଢୁଛି",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1342085429",
+                            "text": "Symptom has gotten worsen",
+                            "display-or": "କେତେ ବେଳେ ଅଧିକ ହୁଏ",
+                            "display-hi": "सबसे अधिक कष्टकर अवस्था ",
+                            "display-mr": "लक्षण अधिक कष्टदायक झाले"
+                        },
+                        {
+                            "id": "ID_53856026",
+                            "text": "Symptom involves other body parts",
+                            "display-or": "ଶରୀରର ଅନ୍ୟ ଅଂଶରେ ହୁଏ",
+                            "display-hi": "लक्षण शरीर के अन्य भाग में भी हुये ",
+                            "display-mr": "लक्षणे शरीराच्या इतर भागांमध्ये ही आहेत"
+                        }
+                    ],
+                    "display-hi": "प्रगतिशील (सबसे कष्टकर)",
+                    "display-mr": "हळूहळू (त्रास वाढला)"
+                },
+                {
+                    "id": "ID_1614768820",
+                    "text": "Static (Not changed)",
+                    "display-or": "ସ୍ଥିର",
+                    "display-hi": "स्थिर (कोई बदलाव नहीं)",
+                    "display-mr": "स्थिर (काही बदल नाही)"
+                },
+                {
+                    "id": "ID_1375819941",
+                    "text": "Recurring/relapsing",
+                    "display-or": "ବାରମ୍ବାର ହୁଏ / ହୁଏ ଛାଡେ",
+                    "display-hi": "बार - बार / दुबारा ",
+                    "display-mr": "पुन्हा पुन्हा/ परत"
+                }
+            ],
+            "display-hi": "लक्षण आगे किस प्रकार बढ़ा ?",
+            "display-mr": "लक्षण कशा प्रकारे वाढले?"
+        },
+        {
+            "id": "ID_1964371917",
+            "text": "Aggravating factors",
+            "display": "Does the symptom get worse with the following situation(s)?",
+            "display-or": "ନିମ୍ନ ଲିହିତ କାରଣପାଇଁ ଆପଣଙ୍କ ଲକ୍ଷଣ ବଢ଼ୁ ଛି କି?",
+            "isRequired": true,
+            "multi-choice": true,
+            "options": [
+                {
+                    "id": "ID_1092178439",
+                    "text": "Rest",
+                    "display-or": "ବିଶ୍ରାମ ସମୟରେ",
+                    "display-hi": "आराम  या सोने पर ",
+                    "display-mr": "आराम करताना किंवा झोपल्यावर"
+                },
+                {
+                    "id": "ID_1283921014",
+                    "text": "With posture (holding something/maintaining a post)",
+                    "display-or": "ବାସ ଉଠରେ ପରିବର୍ତନ ବେଳେ",
+                    "display-hi": "स्थिति / हाव भाव  (किसी वस्तु को पकड़ने पर)",
+                    "display-mr": "स्थिती/ हावभाव (एखादी वस्तू पकडल्या वर)"
+                },
+                {
+                    "id": "ID_731978574",
+                    "text": "With action ",
+                    "display-or": "କାମ କଲେ",
+                    "display-hi": "कार्य करते हुये",
+                    "display-mr": "काम करताना"
+                },
+                {
+                    "id": "ID_930489978",
+                    "text": "With walking only",
+                    "display-or": "ଚାଲିଲେ",
+                    "display-hi": "सिर्फ चलते हुये ",
+                    "display-mr": "फक्त चालताना"
+                },
+                {
+                    "id": "ID_591441231",
+                    "text": "With only one specific action",
+                    "display-or": "ଏକ ନିର୍ଦ୍ଧିଷ୍ଟ କାମ କଲେ",
+                    "display-hi": "केवल किसी खास स्थिति में ",
+                    "display-mr": "फक्त काही विशिष्ट स्थितीमध्ये"
+                },
+                {
+                    "id": "ID_1049474066",
+                    "text": "With action when reaching the target",
+                    "display-or": "ଏକ ନିର୍ଦ୍ଧିଷ୍ଟ ସ୍ତନକୁ ପହଁଚିଲେ",
+                    "display-hi": "किसी निश्चित स्थान पर पहुँचने  पर ",
+                    "display-mr": "एखाद्या निश्चित ठिकाणी पोहचल्यावर /विशिष्ट क्रिया करतांना"
+                },
+                {
+                    "id": "ID_1130415859",
+                    "text": "Other (Describe)",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                    "display-hi": "अन्य (वर्णन करे) ",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या निम्न अवस्था में लक्षण और बुरे हुये ?",
+            "display-mr": "खालील परिस्थितीमध्ये त्रास अधिक वाढतो का ?"
+        },
+        {
+            "id": "ID_1722039560",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "isRequired": true,
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_1059088510",
+                    "text": "Muscle weakness",
+                    "display-or": "ମାଂସ ପେଶୀ ଦୁର୍ବଳତା",
+                    "display-hi": "मांसपेशी में कमजोरी ",
+                    "display-mr": "स्नायूंचा अशक्तपणा"
+                },
+                {
+                    "id": "ID_741136605",
+                    "text": "Paresthesia",
+                    "display": "Abnormal sensations in body",
+                    "display-or": "ଅପ୍ରାକୃତିକ ସମବେଦନା",
+                    "options": [
+                        {
+                            "id": "ID_603801793",
+                            "text": "Characteristics",
+                            "language": "patient feels the following sensations",
+                            "display": "Describe the abnormal sensation",
+                            "display-or": "ସମବେଦନା କୁ ବର୍ଣନା କର",
+                            "multi-choice": true,
+                            "options": [
+                                {
+                                    "id": "ID_417523401",
+                                    "text": "Numbness",
+                                    "display-or": "ବଧିରା",
+                                    "display-hi": "चेतना-शून्य ",
+                                    "display-mr": "बधिरपणा"
+                                },
+                                {
+                                    "id": "ID_1878819194",
+                                    "text": "Burning",
+                                    "display-or": "ପୋଡ଼ା",
+                                    "display-hi": "जलन ",
+                                    "display-mr": "जळजळ"
+                                },
+                                {
+                                    "id": "ID_1620124885",
+                                    "text": "Prickling",
+                                    "display-or": "ଫୋଡ଼ି ହେବା",
+                                    "display-hi": "चुभन ",
+                                    "display-mr": "टोचणे"
+                                },
+                                {
+                                    "id": "ID_314222488",
+                                    "text": "Tingling",
+                                    "display-or": "ଝିମଝିମ୍",
+                                    "display-hi": "झुनझुनी / चूभन",
+                                    "display-mr": "झिणझिण्या"
+                                },
+                                {
+                                    "id": "ID_343053877",
+                                    "text": "Itching",
+                                    "display-or": "କୁଣ୍ଡେଇ",
+                                    "display-hi": "खुजली ",
+                                    "display-mr": "खाज"
+                                },
+                                {
+                                    "id": "ID_350655551",
+                                    "text": "Sensory loss",
+                                    "display-or": "ବଧିରା",
+                                    "display-hi": "चेतना शून्य / अनुभव न होना ",
+                                    "display-mr": "संवेदना नष्ट होणे"
+                                },
+                                {
+                                    "id": "ID_188567601",
+                                    "text": "Metallic taste",
+                                    "display-or": "ଧାତୁ ଭଳି ଲାଗିବା",
+                                    "display-hi": "धातुनुमा स्वाद ",
+                                    "display-mr": "धातू सारखी चव"
+                                },
+                                {
+                                    "id": "ID_580434807",
+                                    "text": "Other (Describe)",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                                    "display-hi": "अन्य (वर्णन करे) ",
+                                    "display-mr": "इतर (वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "अजीब सनसनाहट का वर्णन करे ",
+                            "display-mr": "असामान्य संवेदनेचे वर्णन करा"
+                        },
+                        {
+                            "id": "ID_50309311",
+                            "text": "Progression",
+                            "display": "Does the sensation stay the same or is it gradually increasing?",
+                            "display-or": "ଅବସ୍ଥା",
+                            "options": [
+                                {
+                                    "id": "ID_927369208",
+                                    "text": "Stays the same (Static)",
+                                    "display-or": "ଯେମିତି ସେମିତି",
+                                    "display-hi": "स्थिर है (कोई गति या परिवर्तन नहीं))",
+                                    "display-mr": "स्थिर आहे (काही बदल नाही)"
+                                },
+                                {
+                                    "id": "ID_1637292204",
+                                    "text": "Gradually increasing (Progressive)",
+                                    "display-or": "ବଢ଼ୁଥିଲା",
+                                    "display-hi": "धीरे-धीरे बढ़ता हुआ (प्रगतिशील) ",
+                                    "display-mr": "हळू हळू वाढणारी (प्रगतिशील)"
+                                }
+                            ],
+                            "display-hi": "क्या चेतना एक समान है या धीरे-धीरे बढती है ? ",
+                            "display-mr": "संवेदना एकसारखी आहे की हळू हळू वाढत जाते"
+                        },
+                        {
+                            "id": "ID_807121433",
+                            "text": "Affected areas (Describe)",
+                            "input-type": "text",
+                            "language": "Affected areas",
+                            "display-or": "ସ୍ଥାନର ନାମ କୁହ",
+                            "display-hi": "प्रभावित स्थान (वर्णन करें)",
+                            "display-mr": "शरीराचा प्रभावित भाग/ जागा ( वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "अजीब सी सनसनी पूरे शरीर में ",
+                    "display-mr": "शरीरात असामान्य संवेदना"
+                },
+                {
+                    "id": "ID_578042209",
+                    "text": "Difficulty hearing",
+                    "display-or": "ଶୁଣିବାରେ ଅସୁବିଧା",
+                    "options": [
+                        {
+                            "id": "ID_818114222",
+                            "text": "Both ears",
+                            "display-or": "ଉଭୟ",
+                            "display-hi": "दोनों कान ",
+                            "display-mr": "दोन्ही कान"
+                        },
+                        {
+                            "id": "ID_1660211070",
+                            "text": "Right ear",
+                            "display-or": "ଡ଼ାହାଣ",
+                            "display-hi": "दाहिना कान ",
+                            "display-mr": "उजवा कान"
+                        },
+                        {
+                            "id": "ID_569441319",
+                            "text": "Left ear",
+                            "display-or": "ବାମ",
+                            "display-hi": "बांया  कान ",
+                            "display-mr": "डावा कान"
+                        }
+                    ],
+                    "display-hi": "सुनने में दिक्कत ",
+                    "display-mr": "ऐकण्यास अडचण"
+                },
+                {
+                    "id": "ID_541253484",
+                    "text": "Visual impairment/Change in vision",
+                    "display-or": "ଢୃସ୍ତି ଶକ୍ତିର ପରିବର୍ତନ ଅନୁଭବ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1280591515",
+                            "text": "Double vision",
+                            "display-or": "ଟେରା ଦୃଷ୍ଟି",
+                            "display-hi": "दो-दो आकृति / चित्र ",
+                            "display-mr": "दोन चित्रे दिसणे"
+                        },
+                        {
+                            "id": "ID_1998825623",
+                            "text": "Blurred vision",
+                            "display-or": "ଅନ୍ଧାରିଆ ଦେଖାଯିବା",
+                            "display-hi": "धुंधली आकृति ",
+                            "display-mr": "अंधुक दिसणे"
+                        },
+                        {
+                            "id": "ID_1108042093",
+                            "text": "Decreased eyesight",
+                            "display-or": "ଦୃଷ୍ଟି ଶକ୍ତି କାମ ହେବା",
+                            "display-hi": "देखने कि शक्ति में गिरावट / दृष्टि दोष ",
+                            "display-mr": "दृष्टी कमी होणे"
+                        },
+                        {
+                            "id": "ID_134482317",
+                            "text": "Change in field of vision",
+                            "display-or": "ଦେଖେଇବା କ୍ଷେତ୍ରରେ ପରିଵର୍ତନ ହେବା",
+                            "display-hi": "देखने में बदलाव ",
+                            "display-mr": "दृष्टी क्षेत्रात बदल होणे"
+                        },
+                        {
+                            "id": "ID_1714394067",
+                            "text": "Other",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                            "display-hi": "अन्य ",
+                            "display-mr": "इतर"
+                        }
+                    ],
+                    "display-hi": "दृष्टि दोष / दृष्टि में बदलाव ",
+                    "display-mr": "दृष्टीदोष/ दृष्टी मध्ये बदल"
+                },
+                {
+                    "id": "ID_1969010838",
+                    "text": "Vertigo",
+                    "display-or": "ମୁଣ୍ଡ",
+                    "display-hi": "चक्कर आना / घुमरी , सिर में चक्कर आना ",
+                    "display-mr": "चक्कर येणे"
+                },
+                {
+                    "id": "ID_1223665139",
+                    "text": "Slurred/slow speech ",
+                    "display-or": "ଅସ୍ପଷ୍ଟ କଥା",
+                    "display-hi": "शब्दों का अस्पष्ट उच्चारण ",
+                    "display-mr": "शब्दांचा अस्पष्ट उच्चार"
+                },
+                {
+                    "id": "ID_945438732",
+                    "text": "Difficulty swallowing",
+                    "display-or": "ଗିଳିବାରେ କଷ୍ଟ",
+                    "display-hi": "निगलने /  घोंटने में कष्ट ",
+                    "display-mr": "गिळण्यास त्रास होणे"
+                },
+                {
+                    "id": "ID_1289430285",
+                    "text": "Stiffness",
+                    "display-or": "ଟାଣ ହେବା",
+                    "display-hi": "कड़ापन ",
+                    "display-mr": "ताठरता"
+                },
+                {
+                    "id": "ID_1152039636",
+                    "text": "Slowness of movement",
+                    "display-or": "ଚଳ ପ୍ରଚଳ ଶୀଥିଳତା",
+                    "display-hi": "हिलने-डुलने में धीमापन  ",
+                    "display-mr": "हालचाल मंदावणे"
+                },
+                {
+                    "id": "ID_1716885869",
+                    "text": "Gait abnormalities",
+                    "display-or": "ଠିଆ ହେବା ବା ଚଳିବାରେ ପରିବର୍ତନ",
+                    "display-hi": "चलने में असामान्यता ",
+                    "display-mr": "चालण्यास अडथळा"
+                },
+                {
+                    "id": "ID_1496698245",
+                    "text": "Heat / Cold intolerance",
+                    "perform-physical-exam": "Face:Swollen Face;Neck:Thyroid swelling;",
+                    "display": "Feeling uncomfortable in hot/cold environments",
+                    "display-or": "ଥଣ୍ଡା / ଗରମ ସହି ନ ପାରିବ",
+                    "options": [
+                        {
+                            "id": "ID_1057424061",
+                            "text": "Heat intolerance",
+                            "display": "Feels uncomfortable in hot environments",
+                            "display-or": "ଥଣ୍ଡା ସହି ନ ପାରିବ",
+                            "display-hi": "गर्म मौसम में असुविधा महसूस करना ",
+                            "display-mr": "गरम वातावरणात अस्वस्थ वाटणे"
+                        },
+                        {
+                            "id": "ID_1030198983",
+                            "text": "Cold intolerance",
+                            "display": "Feels uncomfortable in cold environments",
+                            "display-or": "ଗରମ ସହି ନ ପାରିବ",
+                            "display-hi": "ठंढ वातावरण में असुविधा महसूस करना ",
+                            "display-mr": "थंड वातावरणात अस्वस्थ वाटणे"
+                        }
+                    ],
+                    "display-hi": "गर्म या ठंढ मौसम में असुविधा महसूस करना ",
+                    "display-mr": "गरम/थंड वातावरणात अस्वस्थ वाटणे"
+                },
+                {
+                    "id": "ID_1235813575",
+                    "text": "Swelling or nodule in neck",
+                    "perform-physical-exam": "Neck:Swelling;",
+                    "display-hi": "गर्दन में सूजन या गांठ",
+                    "display-mr": "मानेमध्ये सूज किंवा गाठ"
+                },
+                {
+                    "id": "ID_1051869854",
+                    "text": "Increase in quantity of urine output",
+                    "perform-physical-exam": "Mouth:Tongue Dryness;",
+                    "display-or": "ମୂତ୍ର ପରିମାଣ ଅଧିକ ହେବ",
+                    "display-hi": "पेशाब के परिमाण में वृद्धि ",
+                    "display-mr": "लघवीचे प्रमाण वाढणे"
+                },
+                {
+                    "id": "ID_47301353",
+                    "text": "Increase in frequency of urination",
+                    "perform-physical-exam": "Mouth:Tongue Dryness;",
+                    "display-or": "ବାର ବାର ପରିସ୍ରା ଯିବା",
+                    "display-hi": "पेशाब में  बारम्बार कि वृद्धि ",
+                    "display-mr": "लघवीच्या वारंवारतेत वाढ होणे"
+                },
+                {
+                    "id": "ID_585613375",
+                    "text": "Polydipsia",
+                    "display": "Increased/excessive thirst",
+                    "perform-physical-exam": "Mouth:Tongue Dryness;",
+                    "display-or": "ଶୋଷ ଲାଗିବା",
+                    "display-hi": "अधिक प्यास लगना ",
+                    "display-mr": "तहान वाढणे"
+                },
+                {
+                    "id": "ID_145924908",
+                    "text": "Polyphagia",
+                    "display": "Increased hunger",
+                    "perform-physical-exam": "Mouth:Tongue Dryness;",
+                    "display-or": "ଭୁକ ବଢିବା",
+                    "display-hi": "अधिक भूख लगना ",
+                    "display-mr": "भूक वाढणे"
+                },
+                {
+                    "id": "ID_326567485",
+                    "text": "Hallucination",
+                    "display-or": "ଭୁଲ ଚିହ୍ନଟ କରିବା (ଦଉଡ଼ିକୁ ସାପ ଭାବହିବ )",
+                    "display-hi": "दृष्टि भ्रम या मतिभ्रम ",
+                    "display-mr": "दृष्टी भ्रम किंवा भास होणे"
+                },
+                {
+                    "id": "ID_1107969930",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନନ୍ୟ",
+                    "display-hi": "अन्य (वर्णन करे) ",
+                    "display-mr": "इतर ( वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है  ?",
+            "display-mr": "तुम्हाला खालील लक्षणे आहेत का?"
+        },
+        {
+            "id": "ID_1081019946",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "isRequired": true,
+            "multi-choice": true,
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ଚିହ୍ନଟ ହୋଇଥିଲା କି?",
+            "options": [
+                {
+                    "id": "ID_181583588",
+                    "text": "Anxiety disorder",
+                    "display-or": "ବ୍ୟଗ୍ରତା",
+                    "display-hi": "मानसिक चिंता ",
+                    "display-mr": "मानसिक चिंता"
+                },
+                {
+                    "id": "ID_1720231971",
+                    "text": "Brain stroke",
+                    "display-or": "ମୁଣ୍ଡ ଷ୍ଟ୍ରୋକ ବା ପକ୍ଷପାତ",
+                    "display-hi": "मस्तिष्क पर आघात ",
+                    "display-mr": "लकवा"
+                },
+                {
+                    "id": "ID_1865548579",
+                    "text": "Thyroid disease",
+                    "display-or": "ଗଳଗ୍ରନ୍ଥୀ",
+                    "display-hi": "थायरायड / गलग्रंथि कि बीमारी ",
+                    "display-mr": "थायरॉईड"
+                },
+                {
+                    "id": "ID_610290788",
+                    "text": "Chronic kidney disease",
+                    "display-or": "ପୁରୁଣା ବୃକକ ରୋଗ",
+                    "display-hi": "गुर्दे की लम्बी बीमारी ",
+                    "display-mr": "जुना किडनीचा आजार"
+                },
+                {
+                    "id": "ID_653256095",
+                    "text": "Parkinson's disease",
+                    "display-or": "ହାତ ଗୋଡ ଥରିବା",
+                    "display-hi": "मांसपेशियों के दुर्बल होने पर अंगो के काम्पने का रोग ",
+                    "display-mr": "पार्किन्सन्स/स्नायू दुर्बल झाल्यावर कंप पावणे हा रोग"
+                }
+            ],
+            "display-hi": "निम्न बिमारियों का क्या कभी आपने निदान / पहचान कराया ?",
+            "display-mr": "तुम्हाला खाली दिलेल्या आजारांचे निदान कधी झाले आहे का?"
+        },
+        {
+            "id": "ID_1134396268",
+            "text": "H/o addiction to alcohol/smoking",
+            "display": "Have you ever been addicted to alcohol or smoking?",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1749646529",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो (वर्णन करा)"
+                },
+                {
+                    "id": "ID_249800966",
+                    "text": "No",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "यदि आप कभी भी शराब या धूम्रपान के आदी हुए है?",
+            "display-mr": "तुम्हाला कधी दारू किंवा धूम्रपानाचे व्यसन लागले होते का?"
+        },
+        {
+            "id": "ID_709307805",
+            "text": "Exposure to toxic material",
+            "display": "Have you ever been exposed to chemicals/heavy metals/pesticides?",
+            "language": "%",
+            "isRequired": true,
+            "display-or": "ରସାୟନ ପଦାର୍ଥ/ ଧାତୁ / କୀଟ ନାଶକ ସଂସ୍ପର୍ଶ",
+            "options": [
+                {
+                    "id": "ID_678866657",
+                    "text": "Yes",
+                    "language": "Patient has h/o exposure to toxic material",
+                    "display-or": "ହଁ",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_708789142",
+                            "text": "From",
+                            "input-type": "date",
+                            "display-or": "କେବେ ଠାରୁ",
+                            "display-hi": "कहाँ से ",
+                            "display-mr": "कधीपासून"
+                        },
+                        {
+                            "id": "ID_1587990375",
+                            "text": "To",
+                            "input-type": "date",
+                            "display-or": "କେଉଁ ପର୍ଯ୍ୟନ୍ତ",
+                            "display-hi": "किसको ",
+                            "display-mr": "कधी पर्यंत"
+                        },
+                        {
+                            "id": "ID_1597266311",
+                            "text": "Material name (Describe)",
+                            "input-type": "text",
+                            "language": "material name",
+                            "display-or": "ନା",
+                            "display-hi": "पदार्थ का नाम (वर्णन करें)",
+                            "display-mr": "पदार्थाचे/वस्तूचे नाव ( वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "हाँ ",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1191077092",
+                    "text": "No",
+                    "language": "Patient has no h/o exposure to toxic material",
+                    "display-or": "ନା",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या कभी आपने रासायनिक / कीटनाशक लीया है ?",
+            "display-mr": "तुम्ही कधी रसायने/जड धातू/कीटकनाशकांच्या संपर्कात आला आहात का?"
+        },
+        {
+            "id": "ID_1452971497",
+            "text": "Family history",
+            "display-or": "ପରିବାର ବିବରଣୀ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_954729826",
+                    "text": "Tremor history of",
+                    "display-or": "ହାତ ଗୋଡ ଥରିବା",
+                    "multi-choice": true,
+                    "options": [
+                        {
+                            "id": "ID_1848359570",
+                            "text": "Parents",
+                            "display-or": "ବାପା ମା",
+                            "display-hi": "माँ - बाप ",
+                            "display-mr": "आई वडील"
+                        },
+                        {
+                            "id": "ID_852562272",
+                            "text": "Grand parents",
+                            "display-or": "ଜେଜେ/ଅଜା ଆଇ",
+                            "display-hi": "दादा-दादी ",
+                            "display-mr": "आजोबा आजी"
+                        },
+                        {
+                            "id": "ID_557241421",
+                            "text": "Sibling",
+                            "display-or": "ଭାଇ ଭଉଣୀ",
+                            "display-hi": "बच्चें ",
+                            "display-mr": "मुले"
+                        },
+                        {
+                            "id": "ID_33995120",
+                            "text": "Aunt/uncle",
+                            "display-or": "ଦାଦା /ମା ମା",
+                            "display-hi": "चाची / चाचा ",
+                            "display-mr": "काका काकी"
+                        },
+                        {
+                            "id": "ID_1576477168",
+                            "text": "Other (Describe)",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟାନ୍ୟ",
+                            "display-hi": "अन्य (वर्णन करे) ",
+                            "display-mr": "इतर (वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "कंपन का इतिहास ",
+                    "display-mr": "कंपनाचा त्रास असल्याचा इतिहास"
+                },
+                {
+                    "id": "ID_48682785",
+                    "text": "Disease name (Describe if known)",
+                    "input-type": "text",
+                    "language": "disease name",
+                    "display-or": "ରୋଗର ନାମ",
+                    "display-hi": "बीमारी का नाम (वर्णन करें अगर जानते हैं)",
+                    "display-mr": "आजाराचे नाव (माहित असेल तर वर्णन करा)"
+                }
+            ],
+            "display-hi": "परिवार का इतिहास  ",
+            "display-mr": "कुटुंबाचा इतिहास"
+        },
+        {
+            "id": "ID_644946313",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_131001267",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो (वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "नहीं ",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "यहाँ आज आने के पहले क्या कभी आपने निदान (स्वयं दवा या घरेलू उपचार) किसी डॉक्टर से कराया था ?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टरला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_87240998",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1885316731",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "(अतिरिक्त जानकारी भरें)",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अलग से कोई जानकारी ",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "हल्का कंपन",
+    "display-mr": "कंप/थरथर"
+}

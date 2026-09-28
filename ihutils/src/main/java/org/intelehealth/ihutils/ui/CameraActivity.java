@@ -358,6 +358,8 @@ public class CameraActivity extends AppCompatActivity {
         CameraActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
+    private int mStartCameraRetryCount = 0;
+
     @NeedsPermission(Manifest.permission.CAMERA)
     void startCamera() {
         if (mDialogMessage != null) {
@@ -372,8 +374,28 @@ public class CameraActivity extends AppCompatActivity {
             AlertDialog dialog = builder.show();
             //IntelehealthApplication.setAlertDialogCustomTheme(this, dialog);
         }
-        if (mCameraView != null)
-            mCameraView.start();
+        if (mCameraView != null) {
+            try {
+                mCameraView.start();
+                mStartCameraRetryCount = 0;
+            } catch (IllegalArgumentException e) {
+                // Known race in the unmaintained google/cameraview library:
+                // Camera2.collectCameraInfo() iterates the device's camera id
+                // map on this thread while a camera-availability callback can
+                // mutate the same map concurrently, throwing here instead of
+                // failing gracefully (crash log: "Expected index to be within
+                // 0..size()-1"). Retry a few times after the camera
+                // subsystem's internal state settles rather than crashing.
+                Log.e(TAG, "mCameraView.start() failed, retryCount=" + mStartCameraRetryCount, e);
+                if (mStartCameraRetryCount < 3) {
+                    mStartCameraRetryCount++;
+                    mCameraView.postDelayed(this::startCamera, 300);
+                } else {
+                    mStartCameraRetryCount = 0;
+                    Toast.makeText(this, R.string.util_camera_start_failed, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
     }
 
 
@@ -443,7 +465,19 @@ public class CameraActivity extends AppCompatActivity {
     public void takeImage(View view) {
         if (mCameraView != null && fabClickFlag == true) {
             fabClickFlag = false;
-            mCameraView.takePicture();
+            try {
+                mCameraView.takePicture();
+            } catch (NullPointerException e) {
+                // Known race in the unmaintained google/cameraview library:
+                // onCameraOpened() fires before Camera2's internal capture
+                // session finishes configuring (there is no public callback
+                // for that state), so takePicture() can reach
+                // CameraCaptureSession.capture() while the session is still
+                // null. Surface a retry instead of crashing.
+                Log.e(TAG, "mCameraView.takePicture() failed, capture session not ready yet", e);
+                Toast.makeText(this, R.string.util_camera_start_failed, Toast.LENGTH_SHORT).show();
+                fabClickFlag = true;
+            }
         }
     }
 

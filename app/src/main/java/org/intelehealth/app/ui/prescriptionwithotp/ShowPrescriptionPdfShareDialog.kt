@@ -139,7 +139,7 @@ class ShowPrescriptionPdfShareDialog(
         builder.setPatientData(createPatientData())
         builder.setPatientDataSections(patientDataSections)
         builder.buildDynamicUI()
-        builder.createSignatureBitmap(doctorDetails)
+        kotlinx.coroutines.runBlocking { builder.createSignatureBitmap(doctorDetails) }
         builder.build(fileName)
         return builder;
     }

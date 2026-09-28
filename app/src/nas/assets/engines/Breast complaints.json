@@ -1,0 +1,887 @@
+{
+    "id": "ID_428847383",
+    "text": "Breast complaints",
+    "perform-physical-exam": "Breast:Examination instructions;Breast:Lumps;Breast:Scars;Breast:Ulcer;Breast:Skin colour;Breast:Nipple;Breast:Discharge;",
+    "display-or": "ସ୍ତନ ସମସ୍ଯା",
+    "gender": "0",
+    "age_min": "10",
+    "age_max": "120",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_706528500",
+            "text": "Primary complaint",
+            "display": "What is the main problem in your breast(s)?*",
+            "isRequired": true,
+            "multi-choice": true,
+            "display-or": "ପ୍ରଧାନ ସମସ୍ଯା",
+            "options": [
+                {
+                    "id": "ID_1046646389",
+                    "text": "Breast lump",
+                    "display-or": "ଫୁଲା",
+                    "options": [
+                        {
+                            "id": "ID_450072351",
+                            "text": "Size (cm x cm)",
+                            "input-type": "area",
+                            "display-or": "ମାପ",
+                            "display-hi": "माप (सेमी x सेमी)",
+                            "display-mr": "माप (सेमी * सेमी)"
+                        },
+                        {
+                            "id": "ID_1024371288",
+                            "text": "Number of lumps",
+                            "display-or": "ସଂଖ୍ଯା",
+                            "language": "%",
+                            "options": [
+                                {
+                                    "id": "ID_1116331342",
+                                    "text": "Single lump",
+                                    "display-or": "= 1 ଗୋଟେ",
+                                    "display-hi": "एक गांठ",
+                                    "display-mr": "एक गाठ"
+                                },
+                                {
+                                    "id": "ID_1954001412",
+                                    "text": "Multiple lumps",
+                                    "display-or": "1 ଅଧିକା",
+                                    "display-hi": "अनेक गांठ",
+                                    "display-mr": "अनेक गाठी"
+                                }
+                            ],
+                            "display-hi": "गांठ की संख्या",
+                            "display-mr": "गाठींची संख्या"
+                        }
+                    ],
+                    "display-hi": "स्तन में गांठ",
+                    "display-mr": "स्तनामध्ये गाठ"
+                },
+                {
+                    "id": "ID_1726240521",
+                    "text": "Nipple discharge",
+                    "display-or": "ସ୍ତ୍ରନ ଝରା",
+                    "options": [
+                        {
+                            "id": "ID_1316791138",
+                            "text": "Involvement",
+                            "language": "involving",
+                            "display-or": "ପଟ",
+                            "options": [
+                                {
+                                    "id": "ID_1951692736",
+                                    "text": "Right breast",
+                                    "display-or": "ଡ଼ାହାଣ",
+                                    "display-hi": "दाहिना स्तन",
+                                    "display-mr": "उजवा स्तन"
+                                },
+                                {
+                                    "id": "ID_1769162610",
+                                    "text": "Left breast",
+                                    "display-or": "ବାମ",
+                                    "display-hi": "बायां स्तन",
+                                    "display-mr": "डावा स्तन"
+                                },
+                                {
+                                    "id": "ID_818619404",
+                                    "text": "Both breasts",
+                                    "display-or": "ଦୁଇ ପଟ",
+                                    "display-hi": "दोनों स्तन",
+                                    "display-mr": "दोन्ही स्तन"
+                                }
+                            ],
+                            "display-hi": "किसमें",
+                            "display-mr": "कोणता स्तन"
+                        },
+                        {
+                            "id": "ID_1344582955",
+                            "text": "Nature of discharge ",
+                            "display-or": "ପ୍ରକାର",
+                            "options": [
+                                {
+                                    "id": "ID_1237141115",
+                                    "text": "Clear",
+                                    "display-or": "ପାଣି",
+                                    "display-hi": "साफ़",
+                                    "display-mr": "साफ"
+                                },
+                                {
+                                    "id": "ID_1841919344",
+                                    "text": "Pus",
+                                    "display-or": "ପୂଜ",
+                                    "display-hi": "पस",
+                                    "display-mr": "पू"
+                                },
+                                {
+                                    "id": "ID_696367938",
+                                    "text": "Blood",
+                                    "display-or": "ରକ୍ତ",
+                                    "display-hi": "खून",
+                                    "display-mr": "रक्त"
+                                },
+                                {
+                                    "id": "ID_859614565",
+                                    "text": "Milky",
+                                    "display-or": "କ୍ଷୀର",
+                                    "display-hi": "दूध मिला",
+                                    "display-mr": "दुधाळ"
+                                }
+                            ],
+                            "display-hi": "रिसाव का प्रकार",
+                            "display-mr": "स्त्रावाचा प्रकार"
+                        },
+                        {
+                            "id": "ID_413993595",
+                            "text": "Amount",
+                            "display-or": "ମାତ୍ରା",
+                            "options": [
+                                {
+                                    "id": "ID_1766251228",
+                                    "text": "Small",
+                                    "display-or": "ଅଳ୍ପ",
+                                    "display-hi": "कम",
+                                    "display-mr": "कमी"
+                                },
+                                {
+                                    "id": "ID_586245755",
+                                    "text": "Moderate",
+                                    "display-or": "ମଧ୍ୟମ",
+                                    "display-hi": "सामान्य",
+                                    "display-mr": "मध्यम"
+                                },
+                                {
+                                    "id": "ID_409722745",
+                                    "text": "Large",
+                                    "display-or": "ବହୁତ",
+                                    "display-hi": "ज्यादा",
+                                    "display-mr": "जास्त"
+                                }
+                            ],
+                            "display-hi": "मात्रा",
+                            "display-mr": "प्रमाण"
+                        }
+                    ],
+                    "display-hi": "स्तन के अग्र भाग से रिसाव",
+                    "display-mr": "स्तनाग्र स्त्राव"
+                },
+                {
+                    "id": "ID_24238861",
+                    "text": "Breast pain",
+                    "display-or": "ସ୍ତ୍ରନ ଯନ୍ତ୍ରଣା",
+                    "display-hi": "स्तन में दर्द",
+                    "display-mr": "स्तनामध्ये वेदना"
+                },
+                {
+                    "id": "ID_1185633090",
+                    "text": "Ulcer [Describe]",
+                    "options": [
+                        {
+                            "id": "ID_309833639",
+                            "text": "Simple ulcer",
+                            "display-hi": "साधारण अल्सर",
+                            "display-mr": "सामान्य अल्सर"
+                        },
+                        {
+                            "id": "ID_1226916465",
+                            "text": "Growth over ulcer",
+                            "display-hi": "अल्सर के ऊपर वृद्धि",
+                            "display-mr": "अल्सरवर वाढ"
+                        },
+                        {
+                            "id": "ID_171250930",
+                            "text": "Attached to lump",
+                            "display-hi": "गाँठ से जुड़ा हुआ",
+                            "display-mr": "गाठीशी संलग्न"
+                        }
+                    ],
+                    "display-hi": "अल्सर [वर्णन करें]",
+                    "display-mr": "पुरळ (वर्णन करा)"
+                }
+            ],
+            "display-hi": "आपके स्तन (स्तनों) में मुख्य तकलीफ क्या है?",
+            "display-mr": "तुमच्या स्तनामध्ये मुख्य समस्या काय आहे?"
+        },
+        {
+            "id": "ID_313791833",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?*",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "language": "%",
+            "options": [
+                {
+                    "id": "ID_826155781",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "Since",
+                    "display-or": "କେବେ ଠାରୁ ଲେଖ",
+                    "display-hi": "[कब से है– दर्ज करें]",
+                    "display-mr": "कधीपासून ते भरा"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "तुम्हाला हे लक्षण कधीपासून आहे?"
+        },
+        {
+            "id": "ID_1678359266",
+            "text": "Onset",
+            "display": "How did the symptom start?",
+            "display-or": "କେମିତି ଅାରମ୍ଭ ହେଲା",
+            "multi-choice": false,
+            "options": [
+                {
+                    "id": "ID_162813648",
+                    "text": "Sudden",
+                    "display-or": "ହଠାତ୍",
+                    "display-hi": "एकाएक",
+                    "display-mr": "अचानक"
+                },
+                {
+                    "id": "ID_1450119844",
+                    "text": "Gradual",
+                    "display-or": "ଧିରେ ଧିରେ",
+                    "display-hi": "धीरे-धीरे",
+                    "display-mr": "हळूहळू"
+                }
+            ],
+            "display-hi": "लक्षण कैसे शुरू हुआ?",
+            "display-mr": "लक्षण कसे सुरू झाले?"
+        },
+        {
+            "id": "ID_1485439189",
+            "text": "Progress",
+            "display": "How have the symptom(s) progressed?*",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "ଲକ୍ଷଣ କେମିତି ବଢ଼ୁଛି",
+            "options": [
+                {
+                    "id": "ID_1048447580",
+                    "text": "Progressive (Worsening)",
+                    "display-or": "ବଢ଼େ",
+                    "display-hi": "बढ़ गया ",
+                    "display-mr": "वाढत गेले"
+                },
+                {
+                    "id": "ID_1614768820",
+                    "text": "Static (Not changed)",
+                    "display-or": "ବଢ଼େନାହିଁ",
+                    "display-hi": "स्थिर (नहीं बदला)",
+                    "display-mr": "स्थिर(बदलले नाही)"
+                },
+                {
+                    "id": "ID_1375819941",
+                    "text": "Recurring / Relapsing",
+                    "display-or": "ବାରମ୍ବାର ହୁଏ ଓ ଛାଡ଼େ",
+                    "display-hi": "बार बार होना/दोहराना",
+                    "display-mr": "अधूनमधून (येते आणि जाते)"
+                }
+            ],
+            "display-hi": "लक्षण कैसे-कैसे बढ़ा?",
+            "display-mr": "लक्षणात वाढ कशी झाली?*"
+        },
+        {
+            "id": "ID_761857825",
+            "text": "Involvement of breasts*",
+            "display-or": "ପଟ",
+            "isRequired": true,
+            "multi-choice": false,
+            "language": "Involves",
+            "options": [
+                {
+                    "id": "ID_1688271529",
+                    "text": "Right breast",
+                    "display-or": "ଡ଼ାହାଣ",
+                    "display-hi": "दाहिना स्तन",
+                    "display-mr": "उजवा स्तन"
+                },
+                {
+                    "id": "ID_609224445",
+                    "text": "Left breast",
+                    "display-or": "ବାମ",
+                    "display-hi": "बायां स्तन",
+                    "display-mr": "डावा स्तन"
+                },
+                {
+                    "id": "ID_700850402",
+                    "text": "Both breasts",
+                    "display-or": "ଉଭୟ",
+                    "display-hi": "दोनों स्तन",
+                    "display-mr": "दोन्ही स्तन"
+                }
+            ],
+            "display-hi": "कौन से स्तन",
+            "display-mr": "कोणता स्तन"
+        },
+        {
+            "id": "ID_1253546038",
+            "text": "Associated with periods",
+            "display": "Does the complaint increase/decrease with periods?*",
+            "display-or": "ମାସିକିଅା ସହ",
+            "isRequired": true,
+            "multi-choice": false,
+            "language": "%",
+            "options": [
+                {
+                    "id": "ID_1034206754",
+                    "text": "Changes with periods",
+                    "display-or": "ମାସିକିଆ ସହ ପରିବର୍ତନ ହୁଏ",
+                    "display-hi": "माहवारी (पीरियड्स) के साथ बदलती है",
+                    "display-mr": "मासिकपाळी सोबत बदलते"
+                },
+                {
+                    "id": "ID_584268148",
+                    "text": "No change with periods",
+                    "display-or": "ହୁଏ ନାହିଁ",
+                    "display-hi": "माहवारी (पीरियड्स) के साथ नहीं बदलती है",
+                    "display-mr": "मासिकपाळी सोबत बदलत नाही"
+                }
+            ],
+            "display-hi": "क्या माहवारी (पीरियड्स) से तकलीफ बढ़ती है या घटती है?",
+            "display-mr": "मासिकपाळी सोबत तक्रार वाढते/कमी होते का?*"
+        },
+        {
+            "id": "ID_150558862",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?*",
+            "isRequired": true,
+            "display-or": "ଅନ୍ଯ ଲକ୍ଷଣ",
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "options": [
+                {
+                    "id": "ID_650112067",
+                    "text": "Fever",
+                    "display-or": "ଜ୍ୱର",
+                    "display-hi": "बुखार",
+                    "display-mr": "ताप"
+                },
+                {
+                    "id": "ID_462463326",
+                    "text": "Inflammation",
+                    "display": "Skin redness/warm/tenderness",
+                    "display-or": "ଚର୍ମ ନାଲି/ଗରମ/ଦରଜ",
+                    "display-hi": "त्वचा की लालिमा/गरम/मुलायम",
+                    "display-mr": "त्वचेचा लालसरपणा/ उबदारपणा/ अतिशय नाजूक बनणे "
+                },
+                {
+                    "id": "ID_776628445",
+                    "text": "Headache",
+                    "display-or": "ମୁଣ୍ଡବିନ୍ଧା",
+                    "display-hi": "सिर दर्द",
+                    "display-mr": "डोकेदुखी"
+                },
+                {
+                    "id": "ID_910943768",
+                    "text": "Dry, scaly skin in the breast lesion",
+                    "display-or": "ଶୁଖା/ କାତି ଛାଡିଲା ପରି",
+                    "display-hi": "स्तन में घाव होने पर सूखी, शल्की त्वचा",
+                    "display-mr": "स्तनाच्या जखमांमध्ये कोरडी, खवले युक्त त्वचा"
+                },
+                {
+                    "id": "ID_109649730",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर(वर्णन)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "तुम्हाला खालील लक्षणे आहेत का?"
+        },
+        {
+            "id": "ID_954729826",
+            "text": "Family history of breast cancer",
+            "display": "Did any of your immediate family members have breast cancer?*",
+            "display-or": "ସ୍ତନ କର୍କଟ ପରିବାରରେ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1175199236",
+                    "text": "Yes",
+                    "language": "in",
+                    "display-or": "ହଁ",
+                    "options": [
+                        {
+                            "id": "ID_1848359570",
+                            "text": "Parents",
+                            "display-or": "ବାପାମା",
+                            "display-hi": "माता-पिता",
+                            "display-mr": "आई वडील"
+                        },
+                        {
+                            "id": "ID_852562272",
+                            "text": "Grand parents",
+                            "display-or": "ଜେଜେ/ଅଜା ଅାଇ",
+                            "display-hi": "दादा-दादी/नाना-नानी",
+                            "display-mr": "आजी आजोबा"
+                        },
+                        {
+                            "id": "ID_557241421",
+                            "text": "Sibling",
+                            "display-or": "ଭାଇ ଭଉଣୀ",
+                            "display-hi": "भाई-बहन",
+                            "display-mr": "भाऊ बहीण"
+                        },
+                        {
+                            "id": "ID_33995120",
+                            "text": "Aunt/uncle",
+                            "display-or": "ଦାଦା, ମାମୁଁ",
+                            "display-hi": "चाचा/चाची",
+                            "display-mr": "काका काकी"
+                        },
+                        {
+                            "id": "ID_1311814802",
+                            "text": "Other (Describe)",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                            "display-hi": "अन्य (वर्णन करें)",
+                            "display-mr": "इतर (वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "हाँ",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_650323525",
+                    "text": "No",
+                    "display-or": "ନାଁ",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपके परिवार के किसी सदस्य को स्तन कैंसर था?",
+            "display-mr": "तुमच्या जवळच्या कुटुंबातील कोणाला स्तनाचा कर्करोग झाला आहे का?"
+        },
+        {
+            "id": "ID_1683882718",
+            "text": "Pregnancy history*",
+            "display-or": "ଗର୍ଭ ଇତିହାସ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1087011684",
+                    "text": "Number of pregnancies",
+                    "input-type": "number",
+                    "display-or": "କେତେ ଥର ଗର୍ଭବତୀ ହୋଇଛି",
+                    "display-hi": "कितनी बार गर्भवती हुईं",
+                    "display-mr": "गर्भधारणेची संख्या"
+                },
+                {
+                    "id": "ID_570879798",
+                    "text": "Age at first live birth (years old)",
+                    "input-type": "number",
+                    "display-or": "ପ୍ରଥମ ଜୀବିତ ପିଲା ହେବ ବେଳେ ମା ର ବୟସ କେତେ ହେଇଥିଲା",
+                    "display-hi": "पहले बच्चे के समय आपकी उम्र क्या थी (वर्षों में)",
+                    "display-mr": "पहिल्या बाळंतपणात तुमचे वय किती होते(वर्ष)?"
+                },
+                {
+                    "id": "ID_315005003",
+                    "text": "Last delivery",
+                    "input-type": "date",
+                    "display-hi": "अंतिम प्रसव कब हुआ",
+                    "display-mr": "शेवटचे बाळंतपण"
+                }
+            ],
+            "display-hi": "गर्भधारण का इतिहास",
+            "display-mr": "गर्भधारणेचा इतिहास"
+        },
+        {
+            "id": "ID_1004615569",
+            "text": "Menstrual history",
+            "display-or": "ମାସିକିଆ ଇତିହାସ",
+            "options": [
+                {
+                    "id": "ID_1484332563",
+                    "text": "Has not started menstruation",
+                    "display-or": "ମାସିକିଅା ଅାରମ୍ଭ ହୋଇନି",
+                    "display-hi": "मासिक धर्म शुरू नहीं हुआ है",
+                    "display-mr": "मासिकपाळी सुरू झाली नाही"
+                },
+                {
+                    "id": "ID_214674338",
+                    "text": "Is menstruating",
+                    "display-or": "ମାସିକିଅା ହେଲାଣି",
+                    "options": [
+                        {
+                            "id": "ID_729832905",
+                            "text": "Age at onset ",
+                            "input-type": "number",
+                            "display-or": "କେତେ ବୟସରଙ୍କ ଅାରମ୍ଭ",
+                            "display-hi": "शुरू होने के समय उम्र",
+                            "display-mr": "सुरु होण्याचे वय"
+                        },
+                        {
+                            "id": "ID_654931080",
+                            "text": "Last menstruation period",
+                            "input-type": "date",
+                            "display-or": "ଶେଷ ମାସିକିଅା",
+                            "language": "LMP",
+                            "display-hi": "आखरी मासिक धर्म कब हुआ",
+                            "display-mr": "शेवटची मासिकपाळी कधी झाली?"
+                        },
+                        {
+                            "id": "ID_1240564817",
+                            "text": "Regularity",
+                            "language": "%",
+                            "display-or": "ନିୟମିତତା",
+                            "options": [
+                                {
+                                    "id": "ID_897522197",
+                                    "text": "Irregular",
+                                    "display-or": "ଅନିୟମିତ",
+                                    "language": "Periods are irregular",
+                                    "options": [
+                                        {
+                                            "id": "ID_637468024",
+                                            "text": "[Enter since when]",
+                                            "input-type": "duration",
+                                            "language": "since",
+                                            "display-or": "କେବେଠାରୁ",
+                                            "display-hi": "[कब से है – दर्ज करें]",
+                                            "display-mr": "[अनियमित कधीपासून ते भरा]"
+                                        }
+                                    ],
+                                    "display-hi": "अनियमित",
+                                    "display-mr": "अनियमित"
+                                },
+                                {
+                                    "id": "ID_1375856204",
+                                    "text": "Regular",
+                                    "display-or": "ଠିକ୍ ସମୟରେ",
+                                    "language": "Periods are regular",
+                                    "display-hi": "नियमित",
+                                    "display-mr": "नियमित"
+                                }
+                            ],
+                            "display-hi": "नियमितता",
+                            "display-mr": "नियमित"
+                        },
+                        {
+                            "id": "ID_1008850971",
+                            "text": "Cycle length (weeks)",
+                            "input-type": "range",
+                            "display-or": "କେତେଦିନ ଧରି ହୁଏ",
+                            "display-hi": "सप्ताह में कितने दिन",
+                            "display-mr": "आठवड्यात किती दिवस"
+                        },
+                        {
+                            "id": "ID_309605964",
+                            "text": "Duration",
+                            "display": "How long does the menstration continue usually?",
+                            "display-or": "କେତେଦିନ ହୁଏ",
+                            "options": [
+                                {
+                                    "id": "ID_479640931",
+                                    "text": "<= 7days",
+                                    "display-or": "7 ଦିନରୁ କମ୍",
+                                    "display-hi": "7 दिन से कम या बराबर",
+                                    "display-mr": "7 दिवसा पेक्षा कमी किंवा 7 दिवस"
+                                },
+                                {
+                                    "id": "ID_1108516620",
+                                    "text": "> 7 days",
+                                    "display-or": "7 ଦିନରୁ ଅଧିକ",
+                                    "options": [
+                                        {
+                                            "id": "ID_1862214328",
+                                            "text": "Since when ",
+                                            "input-type": "duration",
+                                            "display-or": "କେବେ ଠାରୁ ଲେଖ",
+                                            "display-hi": "कब से",
+                                            "display-mr": "कधी पासून"
+                                        }
+                                    ],
+                                    "display-hi": "7 दिन से ज्यादा",
+                                    "display-mr": "7 दिवसा पेक्षा जास्त"
+                                }
+                            ],
+                            "display-hi": "मासिक धर्म कितने दिन तक जारी रहता है?",
+                            "display-mr": "मासिकपाळी सहसा किती काळ चालू राहते?"
+                        }
+                    ],
+                    "display-hi": "मासिक धर्म शुरू है",
+                    "display-mr": "मासिकपाळी सुरू झाली आहे"
+                },
+                {
+                    "id": "ID_1420686231",
+                    "text": "Is menopausal",
+                    "display-or": "ହେଲାଣି",
+                    "options": [
+                        {
+                            "id": "ID_745440603",
+                            "text": "Age at menopause ",
+                            "input-type": "number",
+                            "display-or": "କେତେ ବୟସରେ",
+                            "display-hi": "रजोनिवृत्ति (मेनोपॉज) के समय उम्र",
+                            "display-mr": "रजोनिवृत्तीचे वय"
+                        }
+                    ],
+                    "display-hi": "क्या रजोनिवृत्ति है",
+                    "display-mr": "रजोनिवृत्ती झाली आहे?"
+                }
+            ],
+            "display-hi": "मासिक धर्म का इतिहास",
+            "display-mr": "मासिकपाळीचा इतिहास"
+        },
+        {
+            "id": "ID_1294148047",
+            "text": "Postmenopausal medications/contraceptives intake history",
+            "display": "Have you taken postmenopausal medicine/contraceptives?",
+            "display-or": "ଏବେ ମାସିକିଆ ବଂଦ ହେବ ପରେ କୋଣସି ଔଷଧ ବା ଗରବାହା ନିରୋଧକ ବଟିକା ନେଉଛନ୍ତି କି",
+            "language": "%",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_665409869",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "language": "Patient is not taking postmenopausal medications or contraceptives",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "यापैकी काहीही नाही"
+                },
+                {
+                    "id": "ID_560057523",
+                    "text": "Don't know",
+                    "display-or": "ଜାଣି ନାହିଁ",
+                    "language": "%",
+                    "display-hi": "पता नहीं",
+                    "display-mr": "माहित नाही"
+                },
+                {
+                    "id": "ID_465969786",
+                    "text": "Yes",
+                    "language": "Patient is taking/has recently taken postmenopausal medications/contraceptives",
+                    "display-or": "ହଁ",
+                    "options": [
+                        {
+                            "id": "ID_227507943",
+                            "text": "Medication name",
+                            "input-type": "Text",
+                            "display-or": "ଔଷଧର ନାମ",
+                            "display-hi": "दवा का नाम",
+                            "display-mr": "औषधाचे नाव"
+                        },
+                        {
+                            "id": "ID_1689701069",
+                            "text": "From",
+                            "input-type": "date",
+                            "display-or": "କେବେ ଠାରୁ",
+                            "display-hi": "कब से",
+                            "display-mr": "कधी पासून"
+                        },
+                        {
+                            "id": "ID_1008011661",
+                            "text": "To",
+                            "input-type": "date",
+                            "display-or": "କେବେ ପର୍ଯ୍ୟନ୍ତ",
+                            "display-hi": "कब तक",
+                            "display-mr": "कधी पर्यंत"
+                        },
+                        {
+                            "id": "ID_76975619",
+                            "text": "Taken/is taking oral/injectable contraceptives for more than 5 years",
+                            "display-hi": "इन्जेक्शन वाले/मुंह से लेने वाले गर्भनिरोधक 5 साल से ले रही हूँ /ले चुकी हूँ",
+                            "display-mr": "5 वर्षांपेक्षा जास्त काळ तोंडी/इंजेक्टेबल गर्भनिरोधक घेतले/घेत आहेत?"
+                        }
+                    ],
+                    "display-hi": "हाँ",
+                    "display-mr": "हो"
+                }
+            ],
+            "display-hi": "रोगी रजोनिवृति के बाद की दवाइयाँ / गर्भनिरोधक ले रही है / ले चुकी है",
+            "display-mr": "तुम्ही नुकतेच रजोनिवृत्तीनंतरचे औषध/गर्भनिरोधक घेतले आहेत का?"
+        },
+        {
+            "id": "ID_954267424",
+            "text": "Currently lactating",
+            "display": "Are you currently lactating?",
+            "language": "%",
+            "options": [
+                {
+                    "id": "ID_1229242532",
+                    "text": "Yes",
+                    "language": "Patient is currently lactating",
+                    "display-hi": "हाँ",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1323602573",
+                    "text": "No",
+                    "language": "Patient is currently not lactating",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपको अभी दूध उतर रहा है",
+            "display-mr": "तुम्ही सध्या स्तनपान करवत आहात?"
+        },
+        {
+            "id": "ID_168871915",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ର ଲକ୍ଷଣ ମାନ ଦେଖାଇଥିଲା କି?",
+            "isRequired": true,
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "options": [
+                {
+                    "id": "ID_769853616",
+                    "text": "Prior breast cancer",
+                    "display-or": "ସ୍ତ୍ରନ କର୍କଟ",
+                    "display-hi": "स्तन कैंसर से पहले",
+                    "display-mr": "स्तनाचा कर्करोग"
+                },
+                {
+                    "id": "ID_865242627",
+                    "text": "Prior neck/chest radiation",
+                    "display-or": "ବେକ ବା ଛାତିରେ ରଞ୍ଜନରଶ୍ମି ବିକିରଣ",
+                    "display-hi": "गले या छाती में रेडिएशन से पहले",
+                    "display-mr": "मान/छातीचे रेडियेशन"
+                },
+                {
+                    "id": "ID_475243584",
+                    "text": "Recent trauma in the chest",
+                    "display-or": "ଛାତିରେ ଅାଘାତ",
+                    "options": [
+                        {
+                            "id": "ID_766330857",
+                            "text": "When",
+                            "input-type": "date",
+                            "language": "occured on",
+                            "display-or": "କେବେ",
+                            "display-hi": "कब",
+                            "display-mr": "कधी?"
+                        }
+                    ],
+                    "display-hi": "छाती में हाल का आघात",
+                    "display-mr": "नजीकच्या काळात छाती मध्ये आघात"
+                },
+                {
+                    "id": "ID_174977276",
+                    "text": "Uterine/ovary surgery",
+                    "display-or": "ଜରାୟୁ ବା ଅଣ୍ଡାଘର ଅପରେସନ",
+                    "options": [
+                        {
+                            "id": "ID_651534017",
+                            "text": "When",
+                            "input-type": "date",
+                            "language": "occured on",
+                            "display-or": "କେବେ",
+                            "display-hi": "कब",
+                            "display-mr": "कधी?"
+                        }
+                    ],
+                    "display-hi": "गर्भाशय या अंडाशय की सर्जरी",
+                    "display-mr": "गर्भाशय/अंडाशय ऑपरेशन"
+                },
+                {
+                    "id": "ID_1536156421",
+                    "text": "Prior breast feeding",
+                    "display-or": "ସ୍ତ୍ରନ ପାନ",
+                    "options": [
+                        {
+                            "id": "ID_463390993",
+                            "text": "Up to",
+                            "input-type": "date",
+                            "display-or": "ପର୍ଯ୍ଯନ୍ତ",
+                            "display-hi": "कब तक",
+                            "display-mr": "कधी पर्यंत?"
+                        }
+                    ],
+                    "display-hi": "स्तन पान से पहले",
+                    "display-mr": "स्तनपान करायच्या आधी"
+                },
+                {
+                    "id": "ID_890310708",
+                    "text": "Chronic liver disease",
+                    "display-or": "ପୁରୁଣା ଯକୃତ ରୋଗ",
+                    "display-hi": "जीर्ण गुर्दे की बीमारी",
+                    "display-mr": "यकृताचा जुनाट  रोग"
+                },
+                {
+                    "id": "ID_1497001746",
+                    "text": "Obesity",
+                    "display-or": "ମୋଟା",
+                    "display-hi": "मोटापा",
+                    "display-mr": "लठ्ठपणा"
+                }
+            ],
+            "display-hi": "क्या आपमें कभी निम्न किसी बिमारी का पता चला है?",
+            "display-mr": "तुम्हाला खालीलपैकी कोणत्याही विशिष्ट आजाराचे निदान झाले आहे का?"
+        },
+        {
+            "id": "ID_464949195",
+            "text": "H/o trauma",
+            "display": "Have you recently experienced trauma on the breast?",
+            "language": "%",
+            "options": [
+                {
+                    "id": "ID_668441624",
+                    "text": "Yes",
+                    "language": "H/o trauma on breast",
+                    "display-hi": "हाँ",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1105239698",
+                    "text": "No",
+                    "language": "No h/o trauma on breast",
+                    "display-hi": "नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपने हाल में स्तन मे दर्द महसूस किया है",
+            "display-mr": "तुम्हाला अलीकडेच स्तनावर आघात झाला आहे का?"
+        },
+        {
+            "id": "ID_573035068",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_1763201920",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो (वर्णन करा)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "यापैकी काहीही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टरांना दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1962864824",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_239409896",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अतिरिक्त जानकारी- दर्ज करें]",
+                    "display-mr": "[अजून काही माहिती असल्यास भरा]"
+                }
+            ],
+            "display-hi": "अतिरिक्त जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "स्तन में तकलीफ/स्तन संबंधी परेशानी",
+    "display-mr": "स्तनाच्या तक्रारी"
+}

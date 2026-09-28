@@ -1,0 +1,613 @@
+{
+    "id": "ID_318844166",
+    "text": "Animal bites and Insect stings",
+    "perform-physical-exam": "Any Location:Skin Rash;Any Location:Skin Bruise;Any Location:Injury Discolouration;Any Location:Ulcer;Any Location:Boils;Tongue and lips:Central cyanosis;",
+    "display-or": "ପଶୁ ଓ କୀଟ କାମୁଡ଼ା",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_884371457",
+            "text": "Type of bites/stings",
+            "display": "What animal/insect bit/stung you?*",
+            "display-or": "କେଉଁ ପଶୁ/ କୀଟ କାମୁଡି ଥିଲା?",
+            "isRequired": true,
+            "multi-choice": false,
+            "language": "Patient has been bitten/stung by",
+            "options": [
+                {
+                    "id": "ID_757805207",
+                    "text": "Dog",
+                    "display-or": "କୁକୁର",
+                    "display-hi": "कुत्ता",
+                    "display-mr": "कुत्रा"
+                },
+                {
+                    "id": "ID_679051724",
+                    "text": "Cat",
+                    "display-or": "ବିଲେଇ",
+                    "display-hi": "बिल्ली",
+                    "display-mr": "मांजर"
+                },
+                {
+                    "id": "ID_1217548350",
+                    "text": "Snake",
+                    "display-or": "ସାପ",
+                    "options": [
+                        {
+                            "id": "ID_347335290",
+                            "text": "Type of Snake",
+                            "input-type": "text",
+                            "display-or": "କେଉଁ ସାପ",
+                            "display-hi": "किस प्रकार का सांप",
+                            "display-mr": "सापाचा प्रकार"
+                        },
+                        {
+                            "id": "ID_517306413",
+                            "text": "Unknown",
+                            "language": "unknown type",
+                            "display-or": "ଜଣା ନାହିଁ",
+                            "display-hi": "नहीं जानते",
+                            "display-mr": "माहीत नाही"
+                        }
+                    ],
+                    "display-hi": "सांप",
+                    "display-mr": "साप"
+                },
+                {
+                    "id": "ID_474477729",
+                    "text": "Small rodents (rats/mice)",
+                    "display-or": "ଛୋଟ ମୁଷା",
+                    "display-hi": "छोटे कृन्तक (चूहे/मूस)",
+                    "display-mr": "उंदीर"
+                },
+                {
+                    "id": "ID_864891474",
+                    "text": "Human",
+                    "display-or": "ମଣିଷ",
+                    "display-hi": "मनुष्य",
+                    "display-mr": "मानव"
+                },
+                {
+                    "id": "ID_723017945",
+                    "text": "Spider",
+                    "display-or": "ବୁଢ଼ୀଅାଣି",
+                    "display-hi": "मकड़ी",
+                    "display-mr": "कोळी"
+                },
+                {
+                    "id": "ID_1171046908",
+                    "text": "Scorpion",
+                    "display-or": "ବିଛା",
+                    "display-hi": "बिच्छू",
+                    "display-mr": "विंचू"
+                },
+                {
+                    "id": "ID_1213779344",
+                    "text": "Bee/wasp",
+                    "display-or": "ମହୁମାଛି",
+                    "display-hi": "मधुमक्खी",
+                    "display-mr": "मधमाशी"
+                },
+                {
+                    "id": "ID_622370096",
+                    "text": "Tick/mite",
+                    "display-or": "ଟିଙ୍କି",
+                    "display-hi": "खटमल/घुन",
+                    "display-mr": "ढेकूण"
+                },
+                {
+                    "id": "ID_695558928",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "display-hi": "अन्य (वर्णन करें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "आपको किस पशु/कीड़े ने काटा या डंक मारा??",
+            "display-mr": "तुम्हाला कोणत्या प्राण्याने/कीटकाने चावले/डंख मारला?"
+        },
+        {
+            "id": "ID_1747261121",
+            "text": "Duration",
+            "display": "How long ago did this occur?*",
+            "language": "Occured on",
+            "isRequired": true,
+            "display-or": "କେବେ ବା କେତେ ଦିନ ତଳେ",
+            "options": [
+                {
+                    "id": "ID_317387022",
+                    "text": "[Enter when this occured]",
+                    "input-type": "date",
+                    "display-or": "କେବେ",
+                    "display-hi": "[[कब यह घटित हुआ- दर्ज करें]",
+                    "display-mr": "[हे केव्हा घडले ते भरा]"
+                }
+            ],
+            "display-hi": "कितने दिन पहले ऐसा हुआ??",
+            "display-mr": "हे किती दिवसांपूर्वी घडले?"
+        },
+        {
+            "id": "ID_738671089",
+            "text": "No. of bites/stings",
+            "isRequired": true,
+            "multi-choice": false,
+            "display": "Do you have single or multiple bites/stings?",
+            "display-or": "କେତେଟା ଯାଗାରେ",
+            "options": [
+                {
+                    "id": "ID_1625759609",
+                    "text": "Single",
+                    "display-or": "ଗୋଟେ",
+                    "display-hi": "एक स्थान पर",
+                    "display-mr": "एकाच जागी दंश/डंख"
+                },
+                {
+                    "id": "ID_734860906",
+                    "text": "Multiple bites / Stings",
+                    "display-or": "ବହୁତ",
+                    "display-hi": "अनेक स्थान पर",
+                    "display-mr": "अनेक जागी दंश/डंख"
+                }
+            ],
+            "display-hi": "एक ही ही जगह पर या अनेक जगहों पर आपको काटा/ डंक मारा गया है?",
+            "display-mr": "तुम्हाला शरीरावर एकाच ठिकाणी की अन्य ठिकाणीही दंश/डंख मारले आहेत?"
+        },
+        {
+            "id": "ID_813807383",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?*",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "options": [
+                {
+                    "id": "ID_1916510338",
+                    "text": "Drooping of eyelids",
+                    "display-hi": "पलकों का मुँदना ",
+                    "display-mr": "पापण्या जड होणे/मिटत राहणे"
+                },
+                {
+                    "id": "ID_1671654591",
+                    "text": "Drooling",
+                    "perform-physical-exam": "Hands:Nails cyanosis;",
+                    "display-or": "ଲାଳ ବୋହିବା",
+                    "display-hi": "लार टपकना",
+                    "display-mr": "लाळ गळत राहणे"
+                },
+                {
+                    "id": "ID_1596172613",
+                    "text": "Difficulty swallowing",
+                    "perform-physical-exam": "Hands:Nails cyanosis;",
+                    "display-or": "ଗିଳିବାରେ କଷ୍ଟ",
+                    "display-hi": "निगलने में दिक्कत",
+                    "display-mr": "गिळण्यास त्रास होणे"
+                },
+                {
+                    "id": "ID_279095737",
+                    "text": "Slurred speech",
+                    "display-hi": "बोली में लड़खड़ाहट ",
+                    "display-mr": "अस्पष्ट उच्चार/बोलणे"
+                },
+                {
+                    "id": "ID_1298150609",
+                    "text": "Difficulty breathing",
+                    "perform-physical-exam": "Hands:Nails cyanosis;",
+                    "display-or": "ନିଶ୍ୱାସ ନେବାରେ କଷ୍ଟ",
+                    "display-hi": "सांस लेने में दिक्कत",
+                    "display-mr": "श्वास घेण्यात अडचण"
+                },
+                {
+                    "id": "ID_1503083012",
+                    "text": "Bluish discoloration of tongue and lips",
+                    "display-hi": "जीभ और होंठों का लाल पड़ जाना ",
+                    "display-mr": "जीभ आणि ओठांचा रंग निळसर होणे"
+                },
+                {
+                    "id": "ID_712984173",
+                    "text": "Muscle weakness",
+                    "perform-physical-exam": "Head:Injury;Hands:Power 1;Hands:Power 2;Hands:Power 3; Leg:Strength;Neurologic Exam:Neurologic Exam 1;Neurologic Exam:Neurologic Exam 2;Neurologic Exam:Neurologic Exam 3;Neurologic Exam:Neurologic Exam 4;Neurologic Exam:Neurologic Exam 5;Language:Repetition;",
+                    "display-or": "ମାଂସପେଶୀ ଦୁର୍ବଳ",
+                    "display-hi": "मांसपेशी में कमज़ोरी",
+                    "display-mr": "स्नायूंमध्ये अशक्तपणा"
+                },
+                {
+                    "id": "ID_239042431",
+                    "text": "Skin rash",
+                    "perform-physical-exam": "Mouth:Gum bleeding;Any Location:Skin Rash;Any Location:Skin Bruise;",
+                    "display-or": "ଚର୍ମ ଚିହ୍ନ",
+                    "display-hi": "चकत्ता बनना",
+                    "display-mr": "त्वचेवर पुरळ"
+                },
+                {
+                    "id": "ID_1641068584",
+                    "text": "Gum bleeding",
+                    "perform-physical-exam": "Mouth:Gum bleeding;Any Location:Skin Rash;Any Location:Skin Bruise;",
+                    "display-or": "ମାଢ଼ିରୁ ରକ୍ତ",
+                    "display-hi": "मसूड़ों से खून आना",
+                    "display-mr": "हिरड्यांतून रक्त येणे"
+                },
+                {
+                    "id": "ID_608992412",
+                    "text": "Fresh menstrual bleeding",
+                    "gender": "0",
+                    "age_min": "8",
+                    "age_max": "120",
+                    "display-hi": "ताजा ताजा माहवारी वाला खून आना ",
+                    "display-mr": "मासिकपाळी-सारखा रक्तस्त्राव"
+                },
+                {
+                    "id": "ID_1512007915",
+                    "text": "Skin bruises",
+                    "perform-physical-exam": "Mouth:Gum bleeding;Any Location:Skin Rash;Any Location:Skin Bruise;",
+                    "display-or": "ଚର୍ମରେ ଗୋଲାକାର ଘା ପରି ଦେଖାଯିବ",
+                    "display-hi": "त्वचा पर पर चोट के निशान",
+                    "display-mr": "त्वचेवर जखमा"
+                },
+                {
+                    "id": "ID_198039122",
+                    "text": "Fever",
+                    "display-or": "ଜ୍ୱର",
+                    "display-hi": "बुखार",
+                    "display-mr": "ताप"
+                },
+                {
+                    "id": "ID_97023824",
+                    "text": "Vomiting",
+                    "perform-physical-exam": "Abdomen:Tenderness;",
+                    "display-or": "ବାନ୍ତି",
+                    "display-hi": "उल्टी",
+                    "display-mr": "उलटी"
+                },
+                {
+                    "id": "ID_1145733293",
+                    "text": "Extensive perspiration",
+                    "display-hi": "बहुत ज्यादा पसीना आना ",
+                    "display-mr": "अतिशय घाम येणे"
+                },
+                {
+                    "id": "ID_1366865745",
+                    "text": "Swelling / Redness / Warm at bites / Sting sites",
+                    "perform-physical-exam": "Any Location:Injury Discoloration;Any Location:Ulcer;Any Location:Boils;",
+                    "display-or": "କାମୁଡ଼ିବା ଯାଗାରେ ନାଲି/ଫୁଲା",
+                    "display-hi": "सूजन/लाली/काटे हुए स्थान पर गर्मी लगनाा/डंक स्थान",
+                    "display-mr": "चाव्याच्या/डंखाच्या ठिकाणी सूज/लालसरपणा/जळजळ"
+                },
+                {
+                    "id": "ID_825884326",
+                    "text": "Pain at site(s) of bite/sting",
+                    "perform-physical-exam": "Any Location:Injury Discoloration;Any Location:Ulcer;Any Location:Boils;",
+                    "display-or": "ଯନ୍ତ୍ରଣା",
+                    "display-hi": "काटे या डंक वाले वाले स्थान पर पर दर्द",
+                    "display-mr": "चाव्याच्या/दंशाच्या जागेवर वेदना"
+                },
+                {
+                    "id": "ID_1581052027",
+                    "text": "Itching at Bites/sting sites",
+                    "perform-physical-exam": "Any Location:Injury Discoloration;Any Location:Ulcer;Any Location:Boils;",
+                    "language": "Itching at site of bites/sting",
+                    "display-or": "କାମୁଡ଼ିବା ଯାଗାର କୁଣ୍ଡେଇହବା",
+                    "options": [
+                        {
+                            "id": "ID_1634697785",
+                            "text": "Aggravated by",
+                            "display-or": "ବଢି ବା ଦ୍ୱାରା",
+                            "language": "%",
+                            "options": [
+                                {
+                                    "id": "ID_1904652408",
+                                    "text": "Night time",
+                                    "display-or": "ରାତିରେ",
+                                    "language": "aggravated at night time",
+                                    "display-hi": "रात के समय",
+                                    "display-mr": "रात्रीच्या वेळी"
+                                },
+                                {
+                                    "id": "ID_1832003180",
+                                    "text": "Hot water bath",
+                                    "display-or": "ଗରମ ପାଣିରେ",
+                                    "language": "aggravated with hot water bath",
+                                    "display-hi": "गरम पानी से नहाने पर",
+                                    "display-mr": "गरम पाण्याने आंघोळ केल्यावर"
+                                }
+                            ],
+                            "display-hi": "गंभीर हो जाता है",
+                            "display-mr": "वेदना तीव्र होण्याच्या वेळा कोणत्या?"
+                        }
+                    ],
+                    "display-hi": "काटे या डंक वाले वाले स्थान पर पर खुजली",
+                    "display-mr": "चाव्याच्या/दंशाच्या जागेवर खाज सुटणे"
+                },
+                {
+                    "id": "ID_1229716100",
+                    "text": "Discharge at injury site",
+                    "isRequired": true,
+                    "perform-physical-exam": "Any Location:Injury Discoloration;Any Location:Ulcer;Any Location:Boils;",
+                    "language": "Discharge at injury site. Nature of discharge",
+                    "display-or": "ଅାଘାତ ଯାଗାରୁ",
+                    "options": [
+                        {
+                            "id": "ID_1143529398",
+                            "text": "Pus",
+                            "display-or": "ପୂଜ",
+                            "display-hi": "पस बहने पर",
+                            "display-mr": "पू"
+                        },
+                        {
+                            "id": "ID_172469304",
+                            "text": "Blood",
+                            "display-or": "ରକ୍ତ",
+                            "display-hi": "खून आने पर",
+                            "display-mr": "रक्त"
+                        },
+                        {
+                            "id": "ID_1575654099",
+                            "text": "Clear",
+                            "display-or": "ପାଣି",
+                            "display-hi": "साफ़ करने पर",
+                            "display-mr": "पाणी येणे"
+                        }
+                    ],
+                    "display-hi": "चोटिल स्थान पर रिसाव",
+                    "display-mr": "इजा झालेल्या जागेतून स्त्राव"
+                },
+                {
+                    "id": "ID_1265671189",
+                    "text": "Joint pain",
+                    "perform-physical-exam": "Joint:Swelling;Joint:Redness;Joint:Deformity;Joint:Tenderness;Joint:Movement Pain;",
+                    "display-or": "ଗଣ୍ଠି ଯନ୍ତ୍ରଣା",
+                    "options": [
+                        {
+                            "id": "ID_385555119",
+                            "text": "Involvement",
+                            "language": "with involvement of",
+                            "display": "Does the pain involve single or multiple joints?",
+                            "display-or": "କେତେଟା ଗଣ୍ଠି",
+                            "options": [
+                                {
+                                    "id": "ID_1452749525",
+                                    "text": "Single joint [Describe which joint]",
+                                    "input-type": "text",
+                                    "display-or": "ଗୋଟେ (କେଉଁ ଗଣ୍ଠି)",
+                                    "language": "single joint",
+                                    "display-hi": "एक जोड़ (कौन--सा जोड़, वर्णन करें)",
+                                    "display-mr": "एकच सांधा (कोणता ते वर्णन करा)"
+                                },
+                                {
+                                    "id": "ID_1850264673",
+                                    "text": "Multiple joints [Describe which joints]",
+                                    "display-or": "ବହୁତ (କେଉଁ ଗଣ୍ଠି ରେ)",
+                                    "input-type": "text",
+                                    "language": "multiple joints",
+                                    "display-hi": "अनेक जोड़ (कौन-से जोड़, वर्णन करें)",
+                                    "display-mr": "अनेक सांधे (कोणते ते वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "क्या दर्द एक या कई जोड़ों में होता है?",
+                            "display-mr": "वेदना एका वा एकाहून अधिक सांध्यांमध्ये आढळतात?"
+                        },
+                        {
+                            "id": "ID_1930789915",
+                            "text": "Migratory",
+                            "language": "%",
+                            "display": "Does the pain move to other parts of the body?",
+                            "display-or": "ଯନ୍ତ୍ରଣା ଅନ୍ଯଯାଗାକୁ ଯାଉଛି",
+                            "options": [
+                                {
+                                    "id": "ID_1924496479",
+                                    "text": "No",
+                                    "language": "pain is not migratory in nature",
+                                    "display-or": "ନାହିଁ",
+                                    "display-hi": "हाँ",
+                                    "display-mr": "हो"
+                                },
+                                {
+                                    "id": "ID_790875526",
+                                    "text": "Yes",
+                                    "language": "pain is migratory in nature",
+                                    "display-or": "ହଁ",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-hi": "क्या दर्द शरीर शरीर के अन्य भाग में जाता है?",
+                            "display-mr": "वेदना शरीराच्या इतर भागात जातात का?"
+                        }
+                    ],
+                    "display-hi": "जोड़ों में दर्द",
+                    "display-mr": "सांधे दुखी"
+                },
+                {
+                    "id": "ID_741136605",
+                    "text": "Paresthesia",
+                    "display": "Abnormal sensations in body",
+                    "display-or": "ଅପ୍ରାକୃତିକ ସମବେଦନା",
+                    "isRequired": true,
+                    "perform-physical-exam": "Head:Injury;Hands:Power 1;Hands:Power 2;Hands:Power 3; Leg:Strength;Neurologic Exam:Neurologic Exam 1;Neurologic Exam:Neurologic Exam 2;Neurologic Exam:Neurologic Exam 3;Neurologic Exam:Neurologic Exam 4;Neurologic Exam:Neurologic Exam 5;Language:Repetition;",
+                    "options": [
+                        {
+                            "id": "ID_603801793",
+                            "text": "Characteristics",
+                            "language": "patient feels the following sensations",
+                            "display": "Describe the abnormal sensation",
+                            "display-or": "ସମବେଦନା କୁ ବର୍ଣନା କର",
+                            "options": [
+                                {
+                                    "id": "ID_417523401",
+                                    "text": "Numbness",
+                                    "display-or": "ବଧିରା",
+                                    "display-hi": "सुन्नता (कुछ महसूस ना होना)",
+                                    "display-mr": "बधीरपणा"
+                                },
+                                {
+                                    "id": "ID_1878819194",
+                                    "text": "Burning",
+                                    "display-or": "ପୋଡ଼ା",
+                                    "display-hi": "जलन",
+                                    "display-mr": "जळजळ"
+                                },
+                                {
+                                    "id": "ID_1620124885",
+                                    "text": "Prickling",
+                                    "display-or": "ଫୋଡ଼ି ହେବା",
+                                    "display-hi": "सिहरन",
+                                    "display-mr": "टोचणे"
+                                },
+                                {
+                                    "id": "ID_314222488",
+                                    "text": "Tingling",
+                                    "display-or": "ଝିମଝିମ୍",
+                                    "display-hi": "झनझनाहट",
+                                    "display-mr": "मुंग्या येणे"
+                                },
+                                {
+                                    "id": "ID_343053877",
+                                    "text": "Itching",
+                                    "display-or": "କୁଣ୍ଡେଇ",
+                                    "display-hi": "खुजली",
+                                    "display-mr": "खाज सुटणे"
+                                },
+                                {
+                                    "id": "ID_350655551",
+                                    "text": "Sensory loss",
+                                    "display-or": "ବଧିରା",
+                                    "display-hi": "संवेदी हानिसंवेदी हानि",
+                                    "display-mr": "संवेदना नष्ट होणे"
+                                },
+                                {
+                                    "id": "ID_188567601",
+                                    "text": "Metallic taste",
+                                    "display-or": "ଧାତୁ ଭଳି ଲାଗିବା",
+                                    "display-hi": "धातु जैसा स्वाद",
+                                    "display-mr": "धातू सारखी चव लागणे"
+                                },
+                                {
+                                    "id": "ID_580434807",
+                                    "text": "Other [Describe]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ୟାନ୍ୟ",
+                                    "display-hi": "अन्य (वर्णन करेंरें)",
+                                    "display-mr": "इतर (वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "अजीब अनुभूति का वर्णन करें",
+                            "display-mr": "संवेदना कशाप्रकारे जाणवतात (वर्णन करा)"
+                        },
+                        {
+                            "id": "ID_50309311",
+                            "text": "Progression",
+                            "display": "Does the sensation stay the same or is it gradually increasing?",
+                            "display-or": "ଅବସ୍ଥା",
+                            "options": [
+                                {
+                                    "id": "ID_927369208",
+                                    "text": "Stays the same (Static)",
+                                    "display-or": "ଯେମିତି ସେମିତି",
+                                    "display-hi": "एक जैसी (स्थिर)",
+                                    "display-mr": "एकसारखी (स्थिर)"
+                                },
+                                {
+                                    "id": "ID_1637292204",
+                                    "text": "Worsening (Progressive)",
+                                    "display-or": "ବଢ଼ୁଥିଲା",
+                                    "display-hi": "बदतर (बढ़ती हुई)",
+                                    "display-mr": "वाढत जाते"
+                                }
+                            ],
+                            "display-hi": "क्या संवेदना वही रहती है या यह धीरे-धीरे बढ़ती जाती है?",
+                            "display-mr": "संवेदना एकसारखी राहते की हळूहळू वाढत जाते?"
+                        },
+                        {
+                            "id": "ID_807121433",
+                            "text": "Affected areas [Describe]",
+                            "input-type": "text",
+                            "language": "Affected areas",
+                            "display-or": "ସ୍ଥାନର ନାମ କୁହ",
+                            "display-hi": "प्रभावित क्षेत्र (वर्णन करें)",
+                            "display-mr": "प्रभावित जागा [वर्णन करा]/ अपाय झालेले शरीराचे भाग सांगा"
+                        }
+                    ],
+                    "display-hi": "शरीर में अजीब सा महसूस होना",
+                    "display-mr": "शरीरात असामान्य संवेदना जाणवणे"
+                },
+                {
+                    "id": "ID_1612872214",
+                    "text": "Other [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य (वर्णन करेंरें)",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपमें निम्न लक्षण हैं ",
+            "display-mr": "रुग्णाला खालील संबंधित लक्षणे आहेत का?"
+        },
+        {
+            "id": "ID_1838020588",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "display-or": "ତମେ କେବେ ଆଗରୁ ଏହି ବିଶିଷ୍ଟ ରୋଗ ର ଲକ୍ଷସହାନ ଦେଖେଇ ଥିଲ କି?",
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "options": [
+                {
+                    "id": "ID_511925692",
+                    "text": "Chronic liver disease",
+                    "display-or": "ପୁରୁଣା ଯକୃତ ରୋଗ",
+                    "display-hi": "गुर्दे की पुरानी बीमारी",
+                    "display-mr": "दीर्घकाळापासून असलेला मूत्रपिंडाचा रोग"
+                }
+            ],
+            "display-hi": "क्या आपने निम्न में से किसी भी विशिष्ट बीमारी का कभी भी निदान कराया है?",
+            "display-mr": "तुम्हाला खालीलपैकी कोणत्याही विशिष्ट आजाराचे निदान झाले आहे का?"
+        },
+        {
+            "id": "ID_811421813",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_412480003",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो (वर्णन करा)"
+                },
+                {
+                    "id": "ID_264450220",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई भी नहीं",
+                    "display-mr": "यापैकी काही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचार) घेतले आहेत किंवा कोणत्याही डॉक्टरला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1103446377",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_58175367",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अतिरिक्त जानकारी दर्ज करें]",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अतिरिक्त जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "पशु का काटना और कीड़े की डंक",
+    "display-mr": "प्राण्यांकडून चावा किंवा कीटकांकडून डंख"
+}

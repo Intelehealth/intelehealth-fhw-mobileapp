@@ -1,0 +1,306 @@
+{
+    "id": "ID_1651917306",
+    "text": "Domestic Violence-Resolution and Feedback",
+    "options": [
+        {
+            "id": "ID_1824593726",
+            "text": "Suggestions given by the helpline",
+            "options": [
+                {
+                    "id": "ID_1984815818",
+                    "text": "Referral",
+                    "display-hi": "रेफरल"
+                },
+                {
+                    "id": "ID_1743220117",
+                    "text": "Counseling for husband/ in-laws/ partner/ person who is in relationship/ family members",
+                    "display-hi": "पति / ससुराल / साथी / रिश्ते में रहने वाले व्यक्ति / परिवार के सदस्यों के लिए परामर्श (काउन्सलिंग)"
+                },
+                {
+                    "id": "ID_408887295",
+                    "text": "Police station",
+                    "display-hi": "पुलिस स्टेशन"
+                },
+                {
+                    "id": "ID_400106630",
+                    "text": "Court/ legal",
+                    "display-hi": "अदालत /कानूनी"
+                },
+                {
+                    "id": "ID_958190933",
+                    "text": "Medical",
+                    "display-hi": "मेडिकल"
+                },
+                {
+                    "id": "ID_236848067",
+                    "text": "Digital lockbox",
+                    "display-hi": "डिजिटल लॉकबॉक्स"
+                },
+                {
+                    "id": "ID_1876973197",
+                    "text": "Other (please specify) ",
+                    "input-type": "text",
+                    "display-hi": "अन्य (कृपया निर्दिष्ट करें)"
+                }
+            ],
+            "display-hi": "हेल्पलाइन द्वारा दिए गए सुझाव"
+        },
+        {
+            "id": "ID_413821964",
+            "text": "What kind of help do you need?",
+            "language": "Help requested",
+            "options": [
+                {
+                    "id": "ID_1687659933",
+                    "text": "Consultant",
+                    "display-hi": "सलाहकार (कंसलटेंट)"
+                },
+                {
+                    "id": "ID_1373083995",
+                    "text": "Police assistance",
+                    "display-hi": "पुलिस सहायता"
+                },
+                {
+                    "id": "ID_1305427394",
+                    "text": "Assistance for initiation of criminal proceedings",
+                    "display-hi": "पुलिस कार्यवाही "
+                },
+                {
+                    "id": "ID_112270985",
+                    "text": "Shelter home",
+                    "display-hi": "आश्रय गृह (शेल्टर होम)"
+                },
+                {
+                    "id": "ID_303344515",
+                    "text": "Medical facilities",
+                    "display-hi": "चिकित्सकीय सुविधाएं (मेडिकल फैसिलिटीज)"
+                },
+                {
+                    "id": "ID_238548884",
+                    "text": "Legal aid",
+                    "display-hi": "कानूनी सहायता"
+                },
+                {
+                    "id": "ID_1440142848",
+                    "text": "Government schemes",
+                    "display-hi": "सरकारी योजनाएं (गवर्नमेंट स्कीम्स)"
+                },
+                {
+                    "id": "ID_763483680",
+                    "text": "Home visit",
+                    "display-hi": "होम विजिट"
+                },
+                {
+                    "id": "ID_1084398735",
+                    "text": "Digital lockbox",
+                    "display-hi": "डिजिटल लॉकबॉक्स"
+                }
+            ],
+            "display-hi": "आपको किस तरह की मदद चाहिए ?"
+        },
+        {
+            "id": "ID_852724147",
+            "text": "Help given by the helpline",
+            "options": [
+                {
+                    "id": "ID_547061910",
+                    "text": "Referral",
+                    "input-type": "text",
+                    "display-hi": "रेफरल"
+                },
+                {
+                    "id": "ID_1486143655",
+                    "text": "Counseling for husband/ in-laws/ partner/ person who is in relationship/ family members",
+                    "input-type": "text",
+                    "display-hi": "पति / ससुराल / साथी / रिश्ते में रहने वाले व्यक्ति / परिवार के सदस्यों के लिए परामर्श (काउन्सलिंग)"
+                },
+                {
+                    "id": "ID_184035100",
+                    "text": "Police station",
+                    "input-type": "text",
+					"language":"%",
+					"display":"Police",
+                    "display-hi": "पुलिस स्टेशन"
+                },
+                {
+                    "id": "ID_1959311750",
+                    "text": "Court/ legal",
+                    "input-type": "text",
+                    "display-hi": "अदालत /कानूनी"
+                },
+                {
+                    "id": "ID_784670379",
+                    "text": "Medical",
+                    "input-type": "text",
+                    "display-hi": "मेडिकल"
+                },
+                {
+                    "id": "ID_665317834",
+                    "text": "Digital lockbox",
+                    "input-type": "text",
+                    "display-hi": "डिजिटल लॉकबॉक्स"
+                },
+                {
+                    "id": "ID_449169478",
+                    "text": "Other (please specify) ",
+                    "input-type": "text",
+                    "display-hi": "अन्य (कृपया निर्दिष्ट करें)"
+                }
+            ],
+            "display-hi": "हेल्पलाइन द्वारा दी गई मदद"
+        },
+        {
+            "id": "ID_1983442899",
+            "text": "Referred to whom/where?",
+            "options": [
+                {
+                    "id": "ID_1196045496",
+                    "text": "Counseling (please specify)",
+                    "input-type": "text",
+                    "display-hi": "काउंसिलिंग (कृपया निर्दिष्ट करें)"
+                },
+                {
+                    "id": "ID_1068976998",
+                    "text": "CWC",
+                    "input-type": "text",
+                    "display-hi": "सीडब्ल्यूसी (CWC)"
+                },
+                {
+                    "id": "ID_63359638",
+                    "text": "Police station",
+                    "input-type": "text",
+                    "display-hi": "पुलिस स्टेशन"
+                },
+                {
+                    "id": "ID_251706242",
+                    "text": "Short stay home",
+                    "input-type": "text",
+                    "display-hi": "अल्पावास गृह"
+                },
+                {
+                    "id": "ID_131692721",
+                    "text": "NGOs",
+                    "input-type": "text",
+                    "display-hi": "गैर सरकारी संगठन (एनजीओ)"
+                },
+                {
+                    "id": "ID_1345437583",
+                    "text": "Mahila Sala Suraksha Kendra",
+                    "input-type": "text",
+                    "display-hi": "महिला सुरक्षा एवं सलाह केंद्र"
+                },
+                {
+                    "id": "ID_501643039",
+                    "text": "Other (please specify)",
+                    "input-type": "text",
+                    "display-hi": "अन्य (कृपया निर्दिष्ट करें)"
+                },
+                {
+                    "id": "ID_1323572481",
+                    "text": "Prefer not to say",
+                    "display-hi": "चुप रहना पसंद करेंगे"
+                }
+            ],
+            "display-hi": "किसको/कहां रेफर किया गया?"
+        },
+        {
+            "id": "ID_464278878",
+            "text": "Satisfied with information",
+            "display": "Do you feel like the counselor you spoke with today considered your circumstances when giving you information? - Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_594308133",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "क्या आपको ऐसा लगता है कि जिस परामर्शदाता से आपने आज बात की, उसने आपको जानकारी देते समय आपकी परिस्थितियों पर विचार किया? - 0-5 के पैमाने का उपयोग करें, जहां 0= बिल्कुल नहीं, और 5= हां, पूरी तरह से\""
+        },
+        {
+            "id": "ID_1527863095",
+            "text": "Satisfied with involvement with decision making",
+            "display": "Do you feel like you were involved in as much as you wanted in making decisions about your life when speaking to the counselor?- Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_686794943",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "क्या आपको ऐसा लगता है कि आप काउंसलर से बात करते समय आप अपने जीवन के बारे में निर्णय लेने में समर्थ हो पाए? - 0-5 के पैमाने का उपयोग करते हुए अंक दीजिये, जहां 0 = बिल्कुल नहीं, और 5 = हाँ, पूरी तरह से"
+        },
+        {
+            "id": "ID_842952026",
+            "text": "Supported by Counsellor",
+            "display": "Did you feel supported by the counselor you spoke with today?- Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_1528466850",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "क्या आपने आज जिस काउंसलर से बात की, वह आपको मददगार लगी? - 0-5 के पैमाने का उपयोग करते हुए अंक दीजिये, जहां 0= बिल्कुल नहीं, और 5= हां, पूरी तरह से"
+        },
+        {
+            "id": "ID_369331329",
+            "text": "Felt mentally prepared for the next steps",
+            "display": "Do you feel prepared (mentally/emotionally) for the next steps the counselor shared with you today?- Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_1371727406",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "आप किसी ऐसे मित्र या परिवार के सदस्य, जिनको इसी प्रकार की मदद की जरूरत है, तो क्या उनको हेल्पलाइन के बारे में बतायेंगे? - 0-5 के पैमाने का उपयोग करते हुए अंक दीजिये, जहां 0= बिल्कुल नहीं, और 5= हां, पूरी तरह से"
+        },
+        {
+            "id": "ID_1188055859",
+            "text": "Recommend to friends and family",
+            "display": "How likely are you to recommend Vikalp Helpline to a friend or family member who needs similar support?- Use a scale of 0-5, where 0= not at all, and 5= yes, completely",
+            "options": [
+                {
+                    "id": "ID_1613963786",
+                    "text": "[Enter between 0-5]",
+                    "input-type": "number",
+                    "display-hi": "[0-5 के बीच दर्ज करें]"
+                }
+            ],
+            "display-hi": "आज काउंसलर ने आपके साथ अगले चरणों के लिए चर्चा की, तो क्या आप उनके तैयार (मानसिक/भावनात्मक रूप से) हैं? 0-5 के पैमाने का उपयोग करते हुए अंक दीजिये, जहां 0= बिल्कुल नहीं, और 5= हां, पूरी तरह से"
+        },
+        {
+            "id": "ID_1889475483",
+            "text": "Recommendation by Caller",
+            "display": "Is there anything you would recommend in order to improve the support you received?",
+            "options": [
+                {
+                    "id": "ID_1643838677",
+                    "text": "[Describe]",
+                    "input-type": "text",
+                    "display-hi": "[वर्णन करना]"
+                }
+            ],
+            "display-hi": "आपको विकल्प हेल्पलाइन से आपको जो सलाह और मदद मिली है, उसको और भी बेहतर बनाने के लिए, क्या आप कुछ सुझाव देंगे?"
+        },
+        {
+            "id": "ID_1071628725",
+            "text": "Follow-up date",
+            "display": "Enter Follow-up date (If caller has agreed)",
+            "options": [
+                {
+                    "id": "ID_715674310",
+                    "text": "[Enter Date]",
+                    "input-type": "date",
+                    "display-hi": "[तारीख दर्ज करें]"
+                }
+            ],
+            "display-hi": "फिर से कॉल करने की तारीख दर्ज करें (यदि कॉलर सहमत हो गया है)"
+        }
+    ],
+    "display-hi": "घरेलू हिंसा-समाधान और प्रतिक्रिया"
+}

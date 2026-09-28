@@ -104,6 +104,20 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         this.prescriptionLoadingListeners = prescriptionLoadingListeners;
     }
 
+    /**
+     * Required by the Fragment framework: after process death (e.g. the OS
+     * reclaims memory while the user is away in a share-sheet/WhatsApp for
+     * Share Prescription), FragmentManager restores this fragment by calling
+     * this constructor via reflection — a fragment with only a parameterized
+     * constructor crashes with "could not find Fragment constructor" the
+     * moment restoration is attempted. prescriptionLoadingListeners is
+     * re-resolved from the host Activity in onAttach() below for this path;
+     * VisitPagerAdapter's normal (non-restoration) creation still explicitly
+     * passes it via the constructor above, unchanged.
+     */
+    public VisitReceivedFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -416,6 +430,12 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     }
 
 
+    /** Re-queries from the top (e.g. after a sync completes) - reuses the same
+     *  reset-and-reload logic already wired to the search-close button. */
+    public void reloadData() {
+        resetData();
+    }
+
     private void resetData() {
         if (commonLoadingDialog == null) {
             commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(getActivity(), getString(R.string.loading), "");
@@ -727,6 +747,21 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                try {
+                    // Referred visit whose ENCOUNTER_VISIT_COMPLETE already exists (this
+                    // query's has_visit_complete = 1) means a doctor shared the final
+                    // prescription. Only tag "Specialist Prescription" if consent was
+                    // given; declined referrals show "Referral Declined" instead.
+                    // A declined referral doesn't always get a REFERRED_SPECIALIST obs
+                    // (some are declined before the specialist/hospital is chosen) -
+                    // the consent obs alone is still proof a referral was proposed.
+                    boolean declined = encounterDAO.isReferralDeclined(visitID);
+                    boolean referred = declined || encounterDAO.fetchReferredSpecialistValue(visitID) != null;
+                    model.setSpecialistPrescription(referred && !declined);
+                    model.setReferralDeclined(declined);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
                 recentList.add(model);
 
                 //  }
@@ -956,6 +991,16 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
+                try {
+                    // See recentVisits(int,int) above - same rule, declined referrals
+                    // show "Referral Declined" instead of "Specialist Prescription".
+                    boolean declined = encounterDAO.isReferralDeclined(visitID);
+                    boolean referred = declined || encounterDAO.fetchReferredSpecialistValue(visitID) != null;
+                    model.setSpecialistPrescription(referred && !declined);
+                    model.setReferralDeclined(declined);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
                 olderList.add(model);
                 // }
             }
@@ -1065,6 +1110,11 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
+        if (prescriptionLoadingListeners == null && context instanceof PrescriptionLoadingListeners) {
+            // Only reached when this fragment was recreated via the no-arg
+            // constructor above (state restoration) instead of VisitPagerAdapter.
+            prescriptionLoadingListeners = (PrescriptionLoadingListeners) context;
+        }
         if (context instanceof VisitActivity) {
             ((VisitActivity) context).setFeatureStatusListener(new VisitActivity.OnFeatureStatusReadyListener() {
                 @Override

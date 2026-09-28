@@ -23,6 +23,8 @@ public class UuidDictionary {
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
     public static final String REFERRED_SPECIALIST = "605b6f15-8f7a-4c45-b06d-14165f6974be";
+    // Patient's referral consent answer, e.g. "NAMCO:No".
+    public static final String REFERRAL_CONSENT = "11c16a5b-d4df-4274-abf1-d02e91d308f1";
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
@@ -46,6 +48,8 @@ public class UuidDictionary {
     public static final String ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
+    public static final String ENCOUNTER_TYPE_REFERRAL = "95f4ae7f-6caa-4c66-950f-7f3d6072ce56";
+    public static final String ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE = "086f323a-b90b-49aa-a3ca-fb9ed8ab7426";
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
@@ -96,7 +100,6 @@ public class UuidDictionary {
     public static final String OBS_TYPE_DIAGNOSTICS_SET = "57ab8f1b-0a7f-41ba-88b4-3bbf8234cf90";
     public static final String OBS_TYPE_VITAL_SET = "521ef8a8-ea42-4930-bd24-216e17f8c936";
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";
-
     public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
     // concept uuid for the AI generated JSON format of the visit summary
     public static final String AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID = "1f770363-262e-4d01-b1df-3eb164d575ef";

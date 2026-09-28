@@ -1,0 +1,326 @@
+{
+    "id": "ID_711793369",
+    "text": "Burns",
+    "perform-physical-exam": "Any location:Burn;",
+    "display-or": "ଜଳା ପୋଡ଼ା",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_1694557598",
+            "text": "Location",
+            "display": "Where did you get burnt?",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_430386241",
+                    "text": "[Mention all locations]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-hi": "[सभी जगहों का वर्णन करें]",
+                    "display-mr": "[सगळ्या जागांचा उल्लेख करा]"
+                }
+            ],
+            "display-hi": "आप कहाँ पर जल गए हैं",
+            "display-mr": "आपण कुठे भाजले आहात/चटका बसला आहे?*"
+        },
+        {
+            "id": "ID_1847781322",
+            "text": "Duration",
+            "display": "When did you get burned?",
+            "isRequired": true,
+            "language": "%",
+            "display-or": "କେବେ ହୋଇଥିଲା",
+            "options": [
+                {
+                    "id": "ID_1004183409",
+                    "text": "[Enter how long ago]",
+                    "input-type": "duration",
+                    "language": "When it happened",
+                    "display-or": "କେବେ ହୋଇଥିଲା",
+                    "display-hi": "[कितने दिन पहले- दर्ज करें]",
+                    "display-mr": "(किती दिवस आधी)"
+                }
+            ],
+            "display-hi": "आप आग से कब जख्मी हुए?",
+            "display-mr": "तुम्ही आगीमुळे कधी भाजले आहात का?/ तुम्हाला कधी पोळले ?*"
+        },
+        {
+            "id": "ID_1897569901",
+            "text": "How did you get burnt?",
+            "display": "How did you get burnt?",
+            "language": "How it happened",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_1742572639",
+                    "text": "[Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-hi": "वर्णन करें",
+                    "display-mr": "(वर्णन करा)"
+                }
+            ],
+            "display-hi": "आप कैसे जल गए",
+            "display-mr": "तुम्ही कसे भाजला गेला /कशाने भाजलात*"
+        },
+        {
+            "id": "ID_1232679078",
+            "text": "Cause",
+            "display": "What caused the burn?",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "କେଉଁଥିରେ",
+            "options": [
+                {
+                    "id": "ID_1735111410",
+                    "text": "Flame",
+                    "multi-choice": false,
+                    "display-or": "ବମର ବନ୍ଦ ଘରେ",
+                    "options": [
+                        {
+                            "id": "ID_1770662712",
+                            "text": "Enclosed fire space",
+                            "display-or": "ବନ୍ଦ ଘରେ",
+                            "options": [
+                                {
+                                    "id": "ID_103934282",
+                                    "text": "Burned substance",
+                                    "input-type": "text",
+                                    "display-or": "କେଉଁ ଥିରେ",
+                                    "display-hi": "जला हुआ पदार्थ",
+                                    "display-mr": "जळालेला पदार्थ"
+                                }
+                            ],
+                            "display-hi": "आग वाली जगह (फायर स्पेस) बंद होने से",
+                            "display-mr": "आग लागलेली जागा बंदिस्त होती का"
+                        },
+                        {
+                            "id": "ID_1747411098",
+                            "text": "Open fire space",
+                            "display-or": "ଖୋଲା ଯାଗା",
+                            "display-hi": "आग वाली जगह (फायर स्पेस) खुले होने से",
+                            "display-mr": "खुली आगीची जागा"
+                        }
+                    ],
+                    "display-hi": "लपट से",
+                    "display-mr": "ज्वाला"
+                },
+                {
+                    "id": "ID_1361801589",
+                    "text": "Scald (Hot liquids) [Describe]",
+                    "input-type": "text",
+                    "language": "Scald (Hot liquids)",
+                    "display-or": "ଫୁଟନ୍ତା ପାଣି ବା ଗରମ ଦ୍ରବ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "तप्तद्रवदाह (गर्म तरल पदार्थ) [वर्णन करें]",
+                    "display-mr": "गरम द्रव (वर्णन करा)"
+                },
+                {
+                    "id": "ID_813538378",
+                    "text": "Contact (Hot or cold solid materials) [Describe]",
+                    "input-type": "text",
+                    "language": "Contact (Hot or cold solid materials)",
+                    "display-or": "ଗରମ କିମ୍ବା ଥଣ୍ଡା ପଦାର୍ଥ ଛୁଇଁଦ୍ୱାରା (ବର୍ଣନା କର)",
+                    "display-hi": "संपर्क (गर्म या ठोस पदार्थ) [वर्णन करें]",
+                    "display-mr": "संपर्क ( गरम किंवा घन पदार्थ)"
+                },
+                {
+                    "id": "ID_1114938889",
+                    "text": "Chemicals [Describe]",
+                    "input-type": "text",
+                    "language": "Chemicals",
+                    "display-or": "ରାସାୟନିକ ପଦାର୍ଥ (ବର୍ଣନା କର)",
+                    "display-hi": "रसायन [वर्णन करें]",
+                    "display-mr": "रसायन ( वर्णन करा)"
+                },
+                {
+                    "id": "ID_1235320475",
+                    "text": "Electricity",
+                    "display-or": "ବିଦ୍ୟୁତ",
+                    "display-hi": "बिजली",
+                    "display-mr": "वीज"
+                }
+            ],
+            "display-hi": "जलने का क्या कारण है?",
+            "display-mr": "भाजण्याचे कारण काय होते*"
+        },
+        {
+            "id": "ID_168871915",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ର ଲକ୍ଷଣ ମାନ ଦେଖାଇଥିଲା କି?",
+            "isRequired": true,
+            "multi-choice": true,
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "options": [
+                {
+                    "id": "ID_1001294302",
+                    "text": "Diabetes",
+                    "display-hi": "डायबिटीज",
+                    "display-mr": "डायबेटीज"
+                },
+                {
+                    "id": "ID_1941552521",
+                    "text": "Epilepsy",
+                    "display-hi": "मिर्गी",
+                    "display-mr": "चक्कर"
+                },
+                {
+                    "id": "ID_330618630",
+                    "text": "Leprosy",
+                    "display-hi": "कोढ़/कुष्ठ रोग",
+                    "display-mr": "कुष्ठरोग"
+                },
+                {
+                    "id": "ID_1794978099",
+                    "text": "None",
+                    "display-or": "କିଛି ନକଲେ/ ମନା",
+                    "exclude-from-multi-choice": true,
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-gu": "ના",
+                    "display-as": "একো নাই",
+                    "display-bn": "কোনোটিই নয়",
+                    "display-kn": "ಯಾವುದೂ ಇಲ್ಲ",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपमें निम्न में से किसी भी विशिष्ट बीमारी का कभी भी निदान हुआ है?",
+            "display-mr": "खाली दिलेल्या आजारांचे निदान कधी झाले आहे का*"
+        },
+        {
+            "id": "ID_1271327059",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "display-or": "ଅନ୍ଯ ଲକ୍ଷଣ",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "options": [
+                {
+                    "id": "ID_1511139407",
+                    "text": "Fever",
+                    "display-or": "ଜ୍ୱର",
+                    "display-hi": "बुखार",
+                    "display-mr": "ताप"
+                },
+                {
+                    "id": "ID_1732702460",
+                    "text": "Decreased urine volume",
+                    "display-or": "ପରସ୍ରା ପରିମାଣ ହ୍ରାସ",
+                    "options": [
+                        {
+                            "id": "ID_797320498",
+                            "text": "[Enter since when]",
+                            "input-type": "duration",
+                            "language": "since",
+                            "display-or": "କେବେ ଠାରୁ ଲେଖ",
+                            "display-hi": "(कब से- दर्ज करें)",
+                            "display-mr": "(कधी ते भरा)"
+                        }
+                    ],
+                    "display-hi": "मूत्र की मात्रा में कमी",
+                    "display-mr": "लघवी कमी होणे"
+                },
+                {
+                    "id": "ID_361436541",
+                    "text": "Palpitations",
+                    "display-or": "ଛାତି ଧଡ଼ଧଡ଼",
+                    "display-hi": "दिल की धड़कन की लय में उतार-चढ़ाव (पैल्पिटेशन)",
+                    "display-mr": "छातीत धडधडणे"
+                },
+                {
+                    "id": "ID_1593516793",
+                    "text": "Progressive hoarseness",
+                    "display-or": "ଗଳା କର୍କଷ",
+                    "display-hi": "घरघराहट में बढ़ोतरी",
+                    "display-mr": "घरघर होणे"
+                },
+                {
+                    "id": "ID_1160746202",
+                    "text": "Difficulty breathing",
+                    "display-or": "ନିଶ୍ୱାସ ନେବାରେ କଷ୍ଟ",
+                    "display-hi": "साँस लेने में तकलीफ",
+                    "display-mr": "श्वास घेण्यास अडचण"
+                },
+                {
+                    "id": "ID_350538524",
+                    "text": "Skin redness in the burn sites",
+                    "display-or": "ଚର୍ମ ନାଲି ପଡ଼ିବା",
+                    "display-hi": "जले हुए स्थान में लाल होना",
+                    "display-mr": "भाजलेल्या जागी लाल झाले आहे"
+                },
+                {
+                    "id": "ID_863416873",
+                    "text": "Fainting/Loss of conciousness",
+                    "display-or": "ବେହୋସ ବା ଅଚେତ୍",
+                    "display-hi": "बेहोशी/ चेतनाशून्यता",
+                    "display-mr": "बेशुद्ध अवस्था"
+                },
+                {
+                    "id": "ID_1463674631",
+                    "text": "Pain in burned areas",
+                    "display-or": "ପୋଡ଼ା ଯାଗାରେ ଯନ୍ତ୍ରଣା",
+                    "display-hi": "जलने वाले स्थान पर दर्द",
+                    "display-mr": "भाजलेल्या जागी वेदना"
+                },
+                {
+                    "id": "ID_748187466",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर (वर्णन करा)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "तुम्हाला खाली दिलेली लक्षण आहेत का*"
+        },
+        {
+            "id": "ID_573035068",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_1763201920",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें]",
+                    "display-mr": "हो"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "इनमें से कोई नहीं",
+                    "display-mr": "नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वयं-उपचार किंवा घरगुती उपचारांसह) घेतले आहेत किंवा कोणत्याही डॉक्टरला दाखवले आहे का?"
+        },
+        {
+            "id": "ID_1962864824",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_239409896",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अतिरिक्त जानकारी दर्ज करें]",
+                    "display-mr": "(अधिक माहिती भरा)"
+                }
+            ],
+            "display-hi": "अतिरिक्त जानकारी",
+            "display-mr": "अधिक माहिती"
+        }
+    ],
+    "display-hi": "आग से जलना/जलन के घाव",
+    "display-mr": "आगीमुळे भाजणे/जळणे/चटका लागणे/ बसणे"
+}

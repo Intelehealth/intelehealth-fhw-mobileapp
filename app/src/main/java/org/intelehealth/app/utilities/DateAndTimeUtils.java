@@ -454,6 +454,76 @@ public class DateAndTimeUtils {
     }
 
     /**
+     * Follow-up-visit obs values can be a plain date ("yyyy-MM-dd"/"dd-MM-yyyy"),
+     * "No", or a date plus extra comma segments like
+     * "2026-09-26,Time:9:00 AM,Remark:check,Type:In person". Pulls out just the
+     * date token in its original source format, ignoring the other segments -
+     * null if there's no valid date segment.
+     */
+    public static String extractFollowUpDateToken(String rawValue) {
+        if (rawValue == null) return null;
+        for (String segment : rawValue.split(",")) {
+            String trimmed = segment.trim();
+            if (trimmed.matches("\\d{4}-\\d{2}-\\d{2}") || trimmed.matches("\\d{2}-\\d{2}-\\d{4}")) {
+                return trimmed;
+            }
+        }
+        return null;
+    }
+
+    /** Source pattern matching a token returned by extractFollowUpDateToken(). */
+    public static String followUpDateTokenPattern(String dateToken) {
+        return dateToken != null && dateToken.matches("\\d{4}-\\d{2}-\\d{2}") ? "yyyy-MM-dd" : "dd-MM-yyyy";
+    }
+
+    /** Pulls out the follow-up "Time:" segment's value (e.g. "9:00 AM"), or null. */
+    public static String extractFollowUpTimeToken(String rawValue) {
+        if (rawValue == null) return null;
+        for (String segment : rawValue.split(",")) {
+            String trimmed = segment.trim();
+            if (trimmed.regionMatches(true, 0, "Time:", 0, 5)) {
+                String time = trimmed.substring(5).trim();
+                return time.isEmpty() ? null : time;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Pulls out the follow-up "Remark:" segment's value - "NA" if the segment is
+     * present but blank/"null" (matches PrescriptionBuilder.generateFollowUpData()),
+     * or null if there's no "Remark:" segment at all.
+     */
+    public static String extractFollowUpRemarkToken(String rawValue) {
+        if (rawValue == null) return null;
+        for (String segment : rawValue.split(",")) {
+            String trimmed = segment.trim();
+            if (trimmed.regionMatches(true, 0, "Remark:", 0, 7)) {
+                String remark = trimmed.substring(7).trim();
+                return (remark.isEmpty() || remark.equalsIgnoreCase("null")) ? "NA" : remark;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * "26 Sep, 2026 Time 9:00 AM, Remark: ..." style display for a follow-up obs
+     * value - "NA" when there's no valid follow-up date (blank, "No", or
+     * unparsable). Reason-for-follow-up (Remark) is only appended when the doctor
+     * actually recorded one, matching PrescriptionBuilder.generateFollowUpData().
+     */
+    public static String formatFollowUpDisplay(String rawValue) {
+        String dateToken = extractFollowUpDateToken(rawValue);
+        if (dateToken == null) return "NA";
+        String formattedDate = date_formatter(dateToken, followUpDateTokenPattern(dateToken), "dd MMM, yyyy");
+        if (formattedDate == null) return "NA";
+        String time = extractFollowUpTimeToken(rawValue);
+        String display = time != null ? formattedDate + " Time " + time : formattedDate;
+        String remark = extractFollowUpRemarkToken(rawValue);
+        return remark != null ? display + ", Remark: " + remark : display;
+    }
+
+    /**
      * This function is used to calculate value like Eg: '2 hours ago' or '2 minutes ago'.
      *
      * @param datetime

@@ -110,6 +110,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
@@ -135,6 +136,7 @@ import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SpecialtyNotesProvider;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.AbhaPrescriptionFields;
@@ -185,7 +187,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private LinearLayout presc_profile_header;
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext, notes_precautions_txt;
+    private View notesPrecautionsCard;
     private ImageView priorityTag, profile_image;
     private ActivityPrescription2Binding mBinding;
     private SessionManager sessionManager;
@@ -391,6 +394,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         followup_date_txt = findViewById(R.id.followup_date_txt);
         followup_subtext = findViewById(R.id.followup_info);
         followup_date_block = findViewById(R.id.followup_date_block);
+        notesPrecautionsCard = findViewById(R.id.notesPrecautionsCard);
+        notes_precautions_txt = findViewById(R.id.notes_precautions_txt);
 
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
@@ -507,6 +512,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // dr details - start
         String drDetails = fetchDrDetailsFromLocalDb(visitID);
+        if (drDetails == null || drDetails.isEmpty() || drDetails.equalsIgnoreCase("null")) {
+            // The doctor-details snapshot above is only ever written at visit
+            // completion, so an interim/referred prescription (visit not yet
+            // completed) legitimately has none yet — fall back to the GP's own
+            // identity instead of failing outright.
+            drDetails = fetchInterimDoctorDetailsJson(visitID);
+        }
         parseDoctorDetails(drDetails);
         // dr details - end
 
@@ -1408,6 +1420,23 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     // parse dr details - start
     ClsDoctorDetails details;
 
+    /**
+     * Serialized fallback used when the visit hasn't been completed yet (no
+     * ENCOUNTER_VISIT_COMPLETE doctor-details snapshot to read) — e.g. an
+     * interim/referred prescription. Returns JSON so callers can keep feeding it
+     * straight into {@link #parseDoctorDetails(String)} unchanged; null if even
+     * the fallback has nothing (no visit-note encounter/provider on file yet).
+     */
+    private String fetchInterimDoctorDetailsJson(String visitId) {
+        try {
+            ClsDoctorDetails fallback = new EncounterDAO().fetchInterimDoctorDetails(visitId);
+            return fallback != null ? new Gson().toJson(fallback) : null;
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
+    }
+
     private void parseDoctorDetails(String dbValue) {
         if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
             Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
@@ -1420,6 +1449,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details == null) {
             return;
         }
+        details = resolveActualPrescribingDoctor(details);
         CustomLog.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         try {
@@ -1439,6 +1469,63 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details.getQualification() != null && !details.getQualification().isEmpty())
             qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
+        showSpecialtyNotesAndPrecautions(details.getSpecialization());
+    }
+
+    /**
+     * original is whichever doctor's own ENCOUNTER_VISIT_COMPLETE snapshot is on
+     * file for this visit - for a referred visit that can still be the GP, not
+     * the specialist (see EncounterDAO#fetchResolvedSpecialistDoctorDetails).
+     * Once the referral is resolved, replace the WHOLE doctor object (name,
+     * qualification, signature, speciality together) with the actual
+     * specialist's own profile, rather than patching individual fields - so
+     * name/qualification/signature/speciality on this screen, and in the
+     * exported PDF (PrescriptionBuilder, which reads this same `details`
+     * object), all consistently belong to the same doctor. Resolution order:
+     * 1) the specialist's own encounter on this visit if one was created;
+     * 2) NAMCO/specialist doctors are a fixed, shared set of accounts, so a
+     *    doctor whose own snapshot elsewhere carries this exact specialization
+     *    (matched by text, not by any hardcoded name) if no distinct encounter
+     *    was ever created for this visit;
+     * 3) otherwise keep the original doctor object unchanged.
+     */
+    private ClsDoctorDetails resolveActualPrescribingDoctor(ClsDoctorDetails original) {
+        try {
+            String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitID);
+            if (referralValue == null || referralValue.trim().isEmpty()) return original;
+            if (new EncounterDAO().isReferralDeclined(visitID)) return original; // never handed off - keep the original doctor
+            if (!new EncounterDAO().isPrescriptionReceived(visitID)) return original; // still pending, not resolved yet
+
+            ClsDoctorDetails specialistDetails = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
+            if (specialistDetails != null && specialistDetails.getSpecialization() != null
+                    && !specialistDetails.getSpecialization().trim().isEmpty()) {
+                return specialistDetails;
+            }
+
+            String referredSpecialty = EncounterDAO.parseReferralSpecialty(referralValue);
+            ClsDoctorDetails bySpecialization = new EncounterDAO().fetchDoctorDetailsBySpecialization(referredSpecialty);
+            if (bySpecialization != null) {
+                return bySpecialization;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return original;
+    }
+
+    private void showSpecialtyNotesAndPrecautions(String specialization) {
+        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(this, specialization);
+        if (notes == null || notes.isEmpty()) {
+            notesPrecautionsCard.setVisibility(View.GONE);
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (String note : notes) {
+            builder.append("• ").append(note).append("\n");
+        }
+        if (builder.length() > 0) builder.setLength(builder.length() - 1);
+        notes_precautions_txt.setText(builder.toString());
+        notesPrecautionsCard.setVisibility(View.VISIBLE);
     }
 
     private String addBulletPoints(String inputString) {
@@ -1670,13 +1757,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
             case UuidDictionary.FOLLOW_UP_VISIT: {
-                if (!followUpDate.isEmpty() && !followUpDate.contains(value)) {
-                    followUpDate = followUpDate + "," + value;
-                } else {
-                    followUpDate = value;
-                }
+                // Resolve the one correct follow-up value directly (specialist
+                // encounter takes priority, latest row wins) instead of blindly
+                // concatenating every FOLLOW_UP_VISIT obs row this cursor loop sees
+                // across encounters - that used to produce a garbled multi-value
+                // string that failed to parse and fell back to this screen's
+                // leftover placeholder hint ("15 May, 2022").
+                followUpDate = ObsDAO.getFullFollowupValueForVisitUUID(visitID);
+                String followUpDateToken = DateAndTimeUtils.extractFollowUpDateToken(followUpDate);
 
-                if (followUpDate == null || followUpDate.isEmpty() || followUpDate.equalsIgnoreCase("No")) {
+                if (followUpDateToken == null) {
 
                     no_followup_txt.setVisibility(View.VISIBLE);
                     followup_date_block.setVisibility(View.GONE);
@@ -1691,19 +1781,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 }
 
-                if (followup_date_block.getVisibility() != View.VISIBLE) {
-                    followup_date_block.setVisibility(View.VISIBLE);
-                }
-                if (no_followup_txt.getVisibility() == View.VISIBLE) {
-                    no_followup_txt.setVisibility(View.GONE);
-                }
-                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
+                String followUpDatePattern = DateAndTimeUtils.followUpDateTokenPattern(followUpDateToken);
+                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDateToken, followUpDatePattern, "dd MMMM,yyyy");
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
-                followup_date_txt.setText(followUpDate_format);
+                String followUpTimeToken = DateAndTimeUtils.extractFollowUpTimeToken(followUpDate);
+                followup_date_txt.setText(followUpTimeToken != null
+                        ? followUpDate_format + "\n" + followUpTimeToken
+                        : followUpDate_format);
                 CustomLog.v("Prescriotion", "followUpDate - " + followUpDate);
 
-                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
+                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDateToken, followUpDatePattern)) {
                     String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         followUpSubText = StringUtils.en__hi_dob(followUpSubText);
@@ -1850,19 +1938,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     // downlaod - start
     public void downloadPrescriptionDefault() {
         String visitnote = "";
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ? AND voided = ?";
-        String[] encounterIDArgs = {visitID, "0"}; // so that the deleted values dont come in the presc.
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-            do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
-            } while (encounterCursor.moveToNext());
-
+        try {
+            // Prefers the NAMCO/specialist doctor's own encounter when this visit was
+            // completed via referral, so the medications/diagnosis/follow-up shown here
+            // are the specialist's final ones rather than the GP's earlier interim note
+            // — see EncounterDAO#fetchPrescriptionEncounterUuid.
+            String prescriptionEncounterUuid = new EncounterDAO().fetchPrescriptionEncounterUuid(visitID);
+            if (prescriptionEncounterUuid != null) {
+                visitnote = prescriptionEncounterUuid;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
-        encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
@@ -2095,6 +2182,10 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         // matching the lookup in ObsDAO.fetchDrDetailsFromLocalDb - calling
         // parseDoctorDetails() per-row instead overwrote dr_speciality/notes with
         // unrelated obs values (e.g. after a refresh), intermittently blanking them.
+        if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
+            // Same interim-visit fallback as the initial load above.
+            dbValue = fetchInterimDoctorDetailsJson(visitID);
+        }
         parseDoctorDetails(dbValue);
     }
     // downlaod dr - end
@@ -2143,23 +2234,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             if (visitsDAO.getDownloadedValue(visitID).equalsIgnoreCase("false") && uploaded) {
-                String visitnote = "";
-
-                EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? AND voided = ?";
-                String[] encounterIDArgs = {visitID, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
-                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                    do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                            visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                        }
-                    } while (encounterCursor.moveToNext());
-
-                }
-                //   if (encounterCursor != null) {
-                encounterCursor.close();
-                //   }
+                // Prefers the NAMCO/specialist doctor's own encounter when this visit
+                // was completed via referral — see EncounterDAO#fetchPrescriptionEncounterUuid
+                // and downloadPrescriptionDefault() above.
+                String visitnote = new EncounterDAO().fetchPrescriptionEncounterUuid(visitID);
+                if (visitnote == null) visitnote = "";
 
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = "";

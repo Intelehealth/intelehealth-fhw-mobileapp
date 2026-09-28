@@ -1,0 +1,1225 @@
+{
+    "id": "ID_303783560",
+    "text": "Fever",
+    "perform-physical-exam": "Mouth:Back of throat (redness, swelling);Abdomen:Liver;Abdomen:Spleen;Arm:Malaria (RDT);Any Location:Skin Rash;Any Location:Ulcer;Abdomen:Tenderness;",
+    "display-or": "ଜ୍ୱର",
+    "engineVersion": "3.0",
+    "options": [
+        {
+            "id": "ID_313791833",
+            "text": "Duration",
+            "display": "Since when have you had this symptom?",
+            "display-or": "କେବେଠାରୁ",
+            "isRequired": true,
+            "options": [
+                {
+                    "id": "ID_826155781",
+                    "text": "[Enter since when]",
+                    "input-type": "duration",
+                    "language": "since",
+                    "display-or": "କେବେଠାରୁ",
+                    "display-hi": "[कब से है, दर्ज करें]",
+                    "display-mr": "( केव्हापासून भरा)"
+                }
+            ],
+            "display-hi": "यह लक्षण आपको कब से है?",
+            "display-mr": "तुम्हाला हे लक्षण कधी पासून आहे?"
+        },
+        {
+            "id": "ID_570262661",
+            "text": "Nature of fever",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "ପ୍ରକାର",
+            "options": [
+                {
+                    "id": "ID_1434989288",
+                    "text": "All day/ Constant",
+                    "display-or": "ପୂରା ଦିନ",
+                    "display-hi": "पूरे दिन/सतत",
+                    "display-mr": "दिवसभर/ सतत"
+                },
+                {
+                    "id": "ID_2420513",
+                    "text": "Irregular (comes & goes)",
+                    "display-or": "ଅସମୟରେ ଅାସେ ଓ ଯାଏ",
+                    "display-hi": "अनियमित (आता और जाता है)",
+                    "display-mr": "अनियमित ( येतो आणि जातो )"
+                },
+                {
+                    "id": "ID_1877805872",
+                    "text": "Alternate days",
+                    "display-or": "ଦିନେ ଛଡ଼ା ଦିନେ",
+                    "display-hi": "एक दिन छोड़कर",
+                    "display-mr": "पर्यायी दिवस"
+                },
+                {
+                    "id": "ID_1188913049",
+                    "text": "Every few hours",
+                    "display-or": "କିଛି ଘଣ୍ଟାରେ ଥରେ",
+                    "display-hi": "हर कुछ घंटे में",
+                    "display-mr": "दर काही तासांनी"
+                },
+                {
+                    "id": "ID_881523069",
+                    "text": "Every few days",
+                    "display-or": "କିଛି ଦିନରେ ଥରେ",
+                    "display-hi": "हर कुछ दिन में",
+                    "display-mr": "दर काही दिवसांनी"
+                },
+                {
+                    "id": "ID_99907657",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर (वर्णन)"
+                }
+            ],
+            "display-hi": "बुखार का स्वरुप",
+            "display-mr": "तापाचे स्वरूप"
+        },
+        {
+            "id": "ID_1515765694",
+            "text": "Timing",
+            "display": "In a day, when do you feel fever the most?",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "ଦିନରେ କେତେବେଳେ",
+            "options": [
+                {
+                    "id": "ID_1012801036",
+                    "text": "All day",
+                    "display-or": "ପୂରା ଦିନ",
+                    "display-hi": "पूरे दिन",
+                    "display-mr": "संपूर्ण दिवस"
+                },
+                {
+                    "id": "ID_1350825896",
+                    "text": "Morning",
+                    "display-or": "ସକାଳେ",
+                    "display-hi": "सुबह",
+                    "display-mr": "सकाळ"
+                },
+                {
+                    "id": "ID_757091275",
+                    "text": "Evening",
+                    "display-or": "ସନ୍ଧ୍ଯାରେ",
+                    "display-hi": "शाम",
+                    "display-mr": "संध्याकाळ"
+                },
+                {
+                    "id": "ID_1340390501",
+                    "text": "Night",
+                    "display-or": "ରାତିରେ",
+                    "display-hi": "रात",
+                    "display-mr": "रात्री"
+                },
+                {
+                    "id": "ID_1906994892",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर (वर्णन)"
+                }
+            ],
+            "display-hi": "पूरे दिन में, आपको सबसे अधिक बुखार कब लगता है?",
+            "display-mr": "एका दिवसात, तुम्हाला सर्वात जास्त ताप कधी येतो?"
+        },
+        {
+            "id": "ID_1234321810",
+            "text": "Severity",
+            "isRequired": true,
+            "multi-choice": false,
+            "display-or": "ମାତ୍ରା",
+            "options": [
+                {
+                    "id": "ID_107199083",
+                    "text": "Low",
+                    "display-or": "କମ",
+                    "display-hi": "कम",
+                    "display-mr": "कमी"
+                },
+                {
+                    "id": "ID_1269790101",
+                    "text": "Moderate",
+                    "display-or": "ମଧ୍ୟମ",
+                    "display-hi": "सामान्य",
+                    "display-mr": "मध्यम"
+                },
+                {
+                    "id": "ID_1406542099",
+                    "text": "High",
+                    "display-or": "ବହୁତ",
+                    "display-hi": "ज्यादा",
+                    "display-mr": "उच्च"
+                },
+                {
+                    "id": "ID_489074591",
+                    "text": "Combined high and low",
+                    "display-or": "ବହୁତ, କମ",
+                    "display-hi": "ज्यादा और कम दोनों",
+                    "display-mr": "उच्च आणि कमी एकत्रित"
+                },
+                {
+                    "id": "ID_739994206",
+                    "text": "Did you recently measure fever using thermometer?",
+                    "language": "%",
+                    "isRequired": true,
+                    "multi-choice": false,
+                    "display-or": "ଏବେ ମାପିଥିଲେ",
+                    "options": [
+                        {
+                            "id": "ID_961113183",
+                            "text": "Yes",
+                            "language": "Patient recently measured fever using a thermometer",
+                            "display-or": "ହଁ",
+                            "options": [
+                                {
+                                    "id": "ID_1919807442",
+                                    "text": "When",
+                                    "input-type": "date",
+                                    "language": "measured on",
+                                    "display-or": "କେବେ",
+                                    "display-hi": "कब",
+                                    "display-mr": "कधी"
+                                },
+                                {
+                                    "id": "ID_751092164",
+                                    "text": "Body Temperature (F)",
+                                    "input-type": "text",
+                                    "display-or": "ଶରୀର ତାପମାତ୍ରା କେତେ ହୋଇ ଛି",
+                                    "display-hi": "शरीर का तापमान (F)",
+                                    "display-mr": "शरीराचे तापमान (F)"
+                                }
+                            ],
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        },
+                        {
+                            "id": "ID_617241106",
+                            "text": "No",
+                            "language": "Patient did not measure their temperature recently",
+                            "display-or": "ନାଁ",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        }
+                    ],
+                    "display-hi": "क्या आपने हाल में थर्मामीटर से बुखार नपवाया है?",
+                    "display-mr": "आपण अलीकडे थर्मामीटरने ताप मोजला आहे का?"
+                }
+            ],
+            "display-hi": "गंभीरता",
+            "display-mr": "तीव्रता"
+        },
+        {
+            "id": "ID_1422717482",
+            "text": "Associated symptoms",
+            "display": "Do you have the following symptom(s)?",
+            "isRequired": true,
+            "pos-condition": "c.",
+            "neg-condition": "s.",
+            "display-or": "ତମର ଏହି ଲକ୍ଷଣ ସବୁ ଅଛି କି?",
+            "options": [
+                {
+                    "id": "ID_558962385",
+                    "text": "Chills",
+                    "display-or": "ଥଣ୍ଡାରେ ଥରିବା",
+                    "display-hi": "ठंड लगना",
+                    "display-mr": "थंडी वाजणे"
+                },
+                {
+                    "id": "ID_251958068",
+                    "text": "Loss of smell/taste sensation",
+                    "language": "%",
+                    "options": [
+                        {
+                            "id": "ID_1073430151",
+                            "text": "Loss of smell",
+                            "language": "Patient has loss of smell",
+                            "display-hi": "गंध का नाश",
+                            "display-mr": "वास कमी होणे"
+                        },
+                        {
+                            "id": "ID_1443972825",
+                            "text": "Loss of taste sensation",
+                            "language": "Patient has loss of taste sensation",
+                            "display-hi": "स्वाद संवेदना का नाश  ",
+                            "display-mr": "चव संवेदना कमी होणे"
+                        }
+                    ],
+                    "display-hi": "गंध / स्वाद संवेदना क नाश",
+                    "display-mr": "वास/चव संवेदना कमी होणे"
+                },
+                {
+                    "id": "ID_157243198",
+                    "text": "Cough",
+                    "display-or": "କାଶ",
+                    "options": [
+                        {
+                            "id": "ID_1699941000",
+                            "text": "Dry",
+                            "display-or": "ଶୁଖିଲା",
+                            "display-hi": "सूखी",
+                            "display-mr": "कोरडा"
+                        },
+                        {
+                            "id": "ID_66542167",
+                            "text": "Productive (With sputum)",
+                            "display-or": "କଫି",
+                            "options": [
+                                {
+                                    "id": "ID_40884973",
+                                    "text": "Color of sputum",
+                                    "display-or": "କଫ ର ରଙ୍ଗ",
+                                    "options": [
+                                        {
+                                            "id": "ID_127709783",
+                                            "text": "Clear",
+                                            "display-hi": "साफ़",
+                                            "display-mr": "साफ"
+                                        },
+                                        {
+                                            "id": "ID_1390255618",
+                                            "text": "Yellow",
+                                            "display-hi": "पीला",
+                                            "display-mr": "पिवळा"
+                                        },
+                                        {
+                                            "id": "ID_1829782527",
+                                            "text": "Green",
+                                            "display-hi": "हरा",
+                                            "display-mr": "हिरवा"
+                                        },
+                                        {
+                                            "id": "ID_1306609508",
+                                            "text": "Red or pink",
+                                            "display-hi": "लाल या गुलाबी",
+                                            "display-mr": "लाल किंवा गुलाबी"
+                                        },
+                                        {
+                                            "id": "ID_254084860",
+                                            "text": "Brown",
+                                            "display-hi": "भूरा",
+                                            "display-mr": "तपकिरी"
+                                        },
+                                        {
+                                            "id": "ID_1146006116",
+                                            "text": "Black or grey",
+                                            "display-hi": "काली या स्लेटी",
+                                            "display-mr": "काळा किंवा राखाडी"
+                                        }
+                                    ],
+                                    "display-hi": "बलगम का रंग",
+                                    "display-mr": "थुंकीचा रंग"
+                                }
+                            ],
+                            "display-hi": "बलगम वाली खांसी",
+                            "display-mr": "थुंकीयुक्त खोकला/ ओला खोकला"
+                        }
+                    ],
+                    "display-hi": "खांसी",
+                    "display-mr": "खोकला"
+                },
+                {
+                    "id": "ID_222702672",
+                    "text": "Chest pain/discomfort",
+                    "display-or": "ଛାତି ଯନ୍ତ୍ରଣା",
+                    "options": [
+                        {
+                            "id": "ID_1954469802",
+                            "text": "Site",
+                            "language": "Pain/Discomfort in",
+                            "options": [
+                                {
+                                    "id": "ID_1123683503",
+                                    "text": "[Describe location of pain/discomfort]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଯନ୍ତ୍ରଣା କେଉଁ ଜାଗାରେ ଅନୁଭୂତ ହେବା",
+                                    "display-hi": "[दर्द / परेशानी का स्थान बताएं] ",
+                                    "display-mr": "( वेदना/ अस्वस्थतेचे स्थान निवडा )"
+                                }
+                            ],
+                            "display-hi": "स्थान",
+                            "display-mr": "जागा"
+                        },
+                        {
+                            "id": "ID_1368282417",
+                            "text": "Chest indrawing",
+                            "display": "Whil breathing in, do both sides of the lower chest get pulled in?",
+                            "language": "%",
+                            "options": [
+                                {
+                                    "id": "ID_810449194",
+                                    "text": "Yes",
+                                    "language": "Patient has indrawing of chest",
+                                    "display-hi": "हाँ",
+                                    "display-mr": "होय"
+                                },
+                                {
+                                    "id": "ID_814205553",
+                                    "text": "No",
+                                    "language": "No indrawing of chest",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-hi": "सांस लेते समय, क्या निचली छाती के दोनों किनारे अंदर खींचे जाते हैं? ",
+                            "display-mr": "श्वास घेताना, छातीच्या खालच्या दोन्ही बाजू आत ओढल्या जातात का?"
+                        },
+                        {
+                            "id": "ID_533345475",
+                            "text": "Stridor/Grunting",
+                            "display": "Do you experience a grunting noise in chest while breathing?",
+                            "options": [
+                                {
+                                    "id": "ID_143619094",
+                                    "text": "Yes",
+                                    "language": "Present",
+                                    "display-hi": "हाँ",
+                                    "display-mr": "होय"
+                                },
+                                {
+                                    "id": "ID_325507657",
+                                    "text": "No",
+                                    "language": "Absent",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-hi": "क्या आपको सांस लेते समय छाती में गंभीर दर्द का अनुभव होता है? ",
+                            "display-mr": "श्वास घेताना छातीत कर्कश आवाज येतो का?"
+                        }
+                    ],
+                    "display-hi": "सीने में दर्द/बेचैनी",
+                    "display-mr": "छातीत दुखणे/ अस्वस्थता"
+                },
+                {
+                    "id": "ID_1055037560",
+                    "text": "Abdominal pain",
+                    "display-or": "ପେଟ ଯନ୍ତ୍ରଣା",
+                    "options": [
+                        {
+                            "id": "ID_1222159742",
+                            "text": "Site",
+                            "display": "Which part of the abdomen do you feel pain?",
+                            "display-or": "ପଟରେ କେଉଁ ଅଂଶ",
+                            "options": [
+                                {
+                                    "id": "ID_1171292387",
+                                    "text": "Upper (R) - Right Hypochondrium",
+                                    "display-or": "ଡାହାଣ ଉପରକୁ",
+                                    "display-hi": "ऊपरी (R) – दाहिना हाइपोकॉन्ड्रिअम",
+                                    "display-mr": "वरचा (आर) उजवा hypochondrum)"
+                                },
+                                {
+                                    "id": "ID_8122628",
+                                    "text": "Upper (C) - Epigastric",
+                                    "display-or": "ନାଭି ଉପରକୁ",
+                                    "display-hi": "ऊपरी (C) - एपीगैस्ट्रिक",
+                                    "display-mr": "वरचा (सी) Epigastric"
+                                },
+                                {
+                                    "id": "ID_644900116",
+                                    "text": "Upper (L) - Left Hypochondrium",
+                                    "display-or": "ବାମ ଉପରକୁ",
+                                    "display-hi": "ऊपरी (L) - बायां हाइपोकॉन्ड्रिअम",
+                                    "display-mr": "वरचा (एल) डावा Hypochondrium"
+                                },
+                                {
+                                    "id": "ID_1364093220",
+                                    "text": "Middle (R) - Right Lumbar",
+                                    "display-or": "ଡ଼ାହାଣ ମଝି",
+                                    "display-hi": "मध्य (R) – दाहिने लम्बर",
+                                    "display-mr": "मध्य (आर) उजवा लंबर"
+                                },
+                                {
+                                    "id": "ID_1223060155",
+                                    "text": "Middle (C) - Umbilical",
+                                    "display-or": "ନାଭି ଚାରିକଡ଼େ",
+                                    "display-hi": "मध्य (C) – नाभि (अम्बिलिकल) ",
+                                    "display-mr": "मध्य (सी) नाभी संबंधी"
+                                },
+                                {
+                                    "id": "ID_93338445",
+                                    "text": "Middle (L) - Left Lumbar",
+                                    "display-or": "ବାମ ମଝି",
+                                    "display-hi": "मध्य (L) – बायां लम्बर",
+                                    "display-mr": "मध्य (एल) डावा कमर"
+                                },
+                                {
+                                    "id": "ID_1410298606",
+                                    "text": "Lower (R) - Right Illiac Fossa",
+                                    "display-or": "ଡ଼ାହାଣ ତଳ",
+                                    "display-hi": "निम्न (R) – दाहिना इलिएक फोसा ",
+                                    "display-mr": "खालचा (आर) उजवा इलियाक फोसा"
+                                },
+                                {
+                                    "id": "ID_370931941",
+                                    "text": "Lower (C) - Hypogastric/Suprapubic",
+                                    "display-or": "ନାଭି ତଳକୁ",
+                                    "display-hi": "निम्न (C) – हाइपोगैस्ट्रिक/सुपराप्यूबिक ",
+                                    "display-mr": "लोअर (सी) - हायपोगॅस्ट्रिक/सुप्राप्युबिक"
+                                },
+                                {
+                                    "id": "ID_1690364840",
+                                    "text": "Lower (R) - Left Illiac Fossa",
+                                    "display-or": "ବାମତଳ",
+                                    "display-hi": "निम्न (R) – बायां इलिएक फोसा",
+                                    "display-mr": "खालचा (आर) डावा इलीयाक फोसा"
+                                },
+                                {
+                                    "id": "ID_1857481579",
+                                    "text": "All over",
+                                    "display-or": "ଚାରିଅାଡ଼େ",
+                                    "display-hi": "हर तरफ",
+                                    "display-mr": "सगळीकडे"
+                                }
+                            ],
+                            "display-hi": "पेट के किस भाग में आपको दर्द महसूस होता है?",
+                            "display-mr": "पोटाच्या कोणत्या भागात तुम्हाला वेदना जाणवते?"
+                        },
+                        {
+                            "id": "ID_1706692177",
+                            "text": "Onset",
+                            "display": "How did the abdominal pain start?",
+                            "display-or": "କେମିତି ଆରମ୍ଭ ହୁଏ",
+                            "options": [
+                                {
+                                    "id": "ID_942947807",
+                                    "text": "Rapid",
+                                    "display-or": "ହଠାତ",
+                                    "display-hi": "तुरंत",
+                                    "display-mr": "जलद"
+                                },
+                                {
+                                    "id": "ID_571381179",
+                                    "text": "Gradual",
+                                    "display-or": "ଧୀରେ ଧୀରେ",
+                                    "display-hi": "धीरे-धीरे",
+                                    "display-mr": "हळूहळू"
+                                }
+                            ],
+                            "display-hi": "पेट दर्द कैसे शुरू हुआ?",
+                            "display-mr": "पोटाच्या दुखणे कसे सुरु झाले?"
+                        },
+                        {
+                            "id": "ID_294905282",
+                            "text": "Progress",
+                            "display": "How has the abdominal pain progressed?",
+                            "display-or": "ଗତି",
+                            "options": [
+                                {
+                                    "id": "ID_17566095",
+                                    "text": "Intermittent",
+                                    "display-or": "ମଝିରେ ମଝିରେ",
+                                    "display-hi": "रुक-रुक कर",
+                                    "display-mr": "अधूनमधून"
+                                },
+                                {
+                                    "id": "ID_1804140726",
+                                    "text": "Static (Not change)",
+                                    "display-or": "ସ୍ଥିର",
+                                    "display-hi": "स्थिर (कोई बदलाव नहीं)",
+                                    "display-mr": "स्थिर (बदल नाही)"
+                                },
+                                {
+                                    "id": "ID_78861762",
+                                    "text": "Progressive",
+                                    "display-or": "ବଢେ",
+                                    "display-hi": "बढ़ रहा है",
+                                    "display-mr": "वाढत जाते"
+                                }
+                            ],
+                            "display-hi": "पेट का दर्द कैसे बढ़ा?",
+                            "display-mr": "पोटाच्या दुखणे कसे वाढले आहे?"
+                        },
+                        {
+                            "id": "ID_1006123211",
+                            "text": "Character",
+                            "display": "Describe the pain",
+                            "display-or": "ପ୍ରକାର",
+                            "options": [
+                                {
+                                    "id": "ID_705163029",
+                                    "text": "Constant",
+                                    "display-or": "ସବୁ ସମୟରେ",
+                                    "display-hi": "लगातार",
+                                    "display-mr": "सतत"
+                                },
+                                {
+                                    "id": "ID_1351032341",
+                                    "text": "Colicky / Intermittent (comes & goes)",
+                                    "display-or": "ବେଳେ ବେଳେ",
+                                    "display-hi": "पेट दर्द संबंधी (कोलिकी) / सविरामी (आता और जाता है)",
+                                    "display-mr": "पोटशूळ / मधूनमधून (येतो आणि जातो)"
+                                },
+                                {
+                                    "id": "ID_165714922",
+                                    "text": "Gnawing/chewing",
+                                    "display-or": "ଚିପିଲା ପରି",
+                                    "display-hi": "काटना/ चबाना",
+                                    "display-mr": "आतून चावल्यासारखे वाटणे / पिळल्यासारखे वाटणे"
+                                },
+                                {
+                                    "id": "ID_526451132",
+                                    "text": "Cramping",
+                                    "display-or": "କାମୁଡ଼ିଲା ପରି",
+                                    "display-hi": "ऐंठन",
+                                    "display-mr": "कळ येणे"
+                                },
+                                {
+                                    "id": "ID_1599113080",
+                                    "text": "Dull, aching",
+                                    "display-or": "ଅାସ୍ତେ ଅାସ୍ତେ",
+                                    "display-hi": "धीमा दर्द",
+                                    "display-mr": "पोटात काहीतरी विचित्र/खराब वाटणे / वेदनादायक"
+                                },
+                                {
+                                    "id": "ID_28757576",
+                                    "text": "Stabbing",
+                                    "display-or": "ଭୂଷିବା",
+                                    "display-hi": "चुभने वाला",
+                                    "display-mr": "जोरात मारल्यागत दुखणे"
+                                },
+                                {
+                                    "id": "ID_1313108015",
+                                    "text": "Burning",
+                                    "display-or": "ଜଳିବା",
+                                    "display-hi": "जलन",
+                                    "display-mr": "जळजळ"
+                                },
+                                {
+                                    "id": "ID_488909943",
+                                    "text": "Bloating",
+                                    "display-or": "ପେଟ ଫମ୍ପାଇବା",
+                                    "display-hi": "सूजन",
+                                    "display-mr": "फुगणे/ गोळा येणे"
+                                },
+                                {
+                                    "id": "ID_1177644681",
+                                    "text": "Other [describe]",
+                                    "input-type": "text",
+                                    "language": "%",
+                                    "display-or": "ଅନ୍ଯାନ୍ଯ",
+                                    "display-hi": "अन्य [वर्णन करें]",
+                                    "display-mr": "इतर (वर्णन)"
+                                }
+                            ],
+                            "display-hi": "दर्द का वर्णन करें",
+                            "display-mr": "वेदनांचे वर्णन करा"
+                        },
+                        {
+                            "id": "ID_707408856",
+                            "text": "Timing",
+                            "display": "When does the pain increase?",
+                            "display-or": "କେତେ ବେଳେ କଷ୍ଟ ବଢ଼େ",
+                            "options": [
+                                {
+                                    "id": "ID_573070298",
+                                    "text": "Postprandial",
+                                    "display": "After eating",
+                                    "display-or": "ଖାଇସାରିଲେ",
+                                    "display-hi": "खाने के बाद",
+                                    "display-mr": "खाल्ल्यानंतर"
+                                },
+                                {
+                                    "id": "ID_1104658718",
+                                    "text": "Preprandial",
+                                    "display": "Before eating",
+                                    "display-or": "ଖାଇବା ପୂର୍ବରୁ",
+                                    "display-hi": "खाने से पहले",
+                                    "display-mr": "खाण्यापूर्वी"
+                                },
+                                {
+                                    "id": "ID_892774884",
+                                    "text": "Continous",
+                                    "display-or": "ସବୁବେଳେ",
+                                    "display-hi": "लगातार",
+                                    "display-mr": "सतत"
+                                }
+                            ],
+                            "display-hi": "दर्द कब बढ़ता है?",
+                            "display-mr": "वेदना कधी वाढतात?"
+                        },
+                        {
+                            "id": "ID_1102887290",
+                            "text": "Radiation",
+                            "display": "Does the pain go to other part of the body?",
+                            "display-or": "ଅନ୍ଯଯାଗାକୁ କଷ୍ଟ ଯାଏ",
+                            "options": [
+                                {
+                                    "id": "ID_820060321",
+                                    "text": "Yes",
+                                    "language": "pain radiates",
+                                    "display-or": "ହଁ",
+                                    "options": [
+                                        {
+                                            "id": "ID_419003548",
+                                            "text": "to the chest/neck",
+                                            "display-or": "ଛାତି ବା ବେକକୁ",
+                                            "display-hi": "छाती/गर्दन की तरफ",
+                                            "display-mr": "छाती/ मान पर्यंत"
+                                        },
+                                        {
+                                            "id": "ID_872125040",
+                                            "text": "to the back",
+                                            "display-or": "ପିଠିକୁ",
+                                            "display-hi": "पीठ की तरफ़",
+                                            "display-mr": "मागच्या बाजूस"
+                                        }
+                                    ],
+                                    "display-hi": "हाँ",
+                                    "display-mr": "होय"
+                                },
+                                {
+                                    "id": "ID_497482497",
+                                    "text": "No",
+                                    "language": "pain does not radiate",
+                                    "display-or": "ନାଁ",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                }
+                            ],
+                            "display-hi": "क्या दर्द शरीर के किसी और भाग में जाता है?",
+                            "display-mr": "वेदना शरीराच्या इतर भगत जाते का?"
+                        }
+                    ],
+                    "display-hi": "पेट दर्द",
+                    "display-mr": "पोटदुखी"
+                },
+                {
+                    "id": "ID_1265671189",
+                    "text": "Joint pain",
+                    "perform-physical-exam": "Joint:Swelling;Joint:Redness;Joint:Deformity;Joint:Tenderness;Joint:Movement Pain;",
+                    "display-or": "ଗଣ୍ଠି ଯନ୍ତ୍ରଣା",
+                    "options": [
+                        {
+                            "id": "ID_385555119",
+                            "text": "Involvement",
+                            "language": "with involvement of",
+                            "display": "Does the pain involve single or multiple joints?",
+                            "display-or": "କେତେଟା ଗଣ୍ଠି",
+                            "options": [
+                                {
+                                    "id": "ID_1452749525",
+                                    "text": "Single joint [Describe which joint]",
+                                    "input-type": "text",
+                                    "display-or": "ଗୋଟେ (କେଉଁ ଗଣ୍ଠି)",
+                                    "language": "single joint",
+                                    "display-hi": "एक जोड़ [कौन-सा जोड़ - वर्णन करें]",
+                                    "display-mr": "एक सांधा ( कोणत्या सांध्याचे वर्णन करा)"
+                                },
+                                {
+                                    "id": "ID_1850264673",
+                                    "text": "Multiple joints [Describe which joints]",
+                                    "display-or": "ବହୁତ (କେଉଁ ଗଣ୍ଠି ରେ)",
+                                    "input-type": "text",
+                                    "language": "multiple joints",
+                                    "display-hi": "अनेक जोड़ [कौन-से जोड़ - वर्णन करें]",
+                                    "display-mr": "अनेक सांधे ( कोणत्या सांध्याचे वर्णन करा)"
+                                }
+                            ],
+                            "display-hi": "दर्द सिर्फ एक जोड़ में होता है या अनेक जोड़ों में होता है?",
+                            "display-mr": "वेदना एक किंवा अनेक सांध्यांचा समावेश आहे का?"
+                        },
+                        {
+                            "id": "ID_1930789915",
+                            "text": "Migratory",
+                            "language": "%",
+                            "display": "Does the pain move to other parts of the body?",
+                            "display-or": "ଯନ୍ତ୍ରଣା ଅନ୍ଯଯାଗାକୁ ଯାଉଛି",
+                            "options": [
+                                {
+                                    "id": "ID_1924496479",
+                                    "text": "No",
+                                    "language": "pain is not migratory in nature",
+                                    "display-or": "ନାହିଁ",
+                                    "display-hi": "नहीं",
+                                    "display-mr": "नाही"
+                                },
+                                {
+                                    "id": "ID_790875526",
+                                    "text": "Yes",
+                                    "language": "pain is migratory in nature",
+                                    "display-or": "ହଁ",
+                                    "display-hi": "हाँ",
+                                    "display-mr": "होय"
+                                }
+                            ],
+                            "display-hi": "क्या दर्द शरीर के किसी और भाग में जाता है?",
+                            "display-mr": "वेदना शरीराच्या इतर भागामध्ये जाते का?"
+                        }
+                    ],
+                    "display-hi": "जोड़ो का दर्द",
+                    "display-mr": "सांधे दुखी"
+                },
+                {
+                    "id": "ID_1013072886",
+                    "text": "Ear pain",
+                    "display-or": "କାନ ଯନ୍ତ୍ରଣା",
+                    "display-hi": "कान में दर्द",
+                    "display-mr": "कान दुखणे"
+                },
+                {
+                    "id": "ID_1645426383",
+                    "text": "Pain in any other location ",
+                    "display-or": "ଯନ୍ତ୍ରଣା",
+                    "perform-physical-exam": "Head:Injury;Neck:Neck stiffness (Part 1);Neck:Neck stiffness (Part 2);Any Location:Redness;Any Location:Swelling;",
+                    "options": [
+                        {
+                            "id": "ID_1276851370",
+                            "text": "[Describe location of pain]",
+                            "input-type": "text",
+                            "language": "%",
+                            "display-or": "ଯନ୍ତ୍ରଣା କେଉଁ ଜାଗାରେ ଅନୁଭୂତ ହେବା",
+                            "display-hi": "[दर्द की जगह बताएं]",
+                            "display-mr": "(वेदनांचे स्थान वर्णन करा)"
+                        }
+                    ],
+                    "display-hi": "किसी और जगह दर्द",
+                    "display-mr": "इतर कोणत्याही ठिकाणी वेदना"
+                },
+                {
+                    "id": "ID_936898754",
+                    "text": "General weakness",
+                    "display-or": "ଦୁର୍ବଳତା",
+                    "display-hi": "सामान्य कमज़ोरी",
+                    "display-mr": "सामान्य अशक्तपणा"
+                },
+                {
+                    "id": "ID_1431006973",
+                    "text": "Night sweats",
+                    "display-or": "ରାତିରେ ଝାଳ",
+                    "display-hi": "रात को पसीना आना",
+                    "display-mr": "रात्रीचा घाम"
+                },
+                {
+                    "id": "ID_1310566684",
+                    "text": "Headache",
+                    "perform-physical-exam": "Head:Injury;Neck:Neck stiffness (Part 1);Neck:Neck stiffness (Part 2);",
+                    "display-or": "ମୁଣ୍ଡବିନ୍ଧା",
+                    "display-hi": "सिर दर्द",
+                    "display-mr": "डोकेदुखी"
+                },
+                {
+                    "id": "ID_851509891",
+                    "text": "Neck stiffness",
+                    "perform-physical-exam": "Head:Injury;Neck:Neck stiffness (Part 1);Neck:Neck stiffness (Part 2);",
+                    "display-or": "ବେକ ଟାଣ",
+                    "display-hi": "गर्दन में अकड़न",
+                    "display-mr": "मान ताठर  होणे"
+                },
+                {
+                    "id": "ID_757040944",
+                    "text": "Diarrhea",
+                    "display-or": "ପତଳା ଝାଡ଼ା",
+                    "display-hi": "दस्त",
+                    "display-mr": "अतिसार"
+                },
+                {
+                    "id": "ID_1783657317",
+                    "text": "Nausea",
+                    "display-or": "ବାନ୍ତି ଲାଗିବା",
+                    "display-hi": "मिचली",
+                    "display-mr": "मळमळ"
+                },
+                {
+                    "id": "ID_72863531",
+                    "text": "Vomiting",
+                    "display-or": "ବାନ୍ତି ହେବା",
+                    "display-hi": "उल्टी",
+                    "display-mr": "उलट्या होणे"
+                },
+                {
+                    "id": "ID_1111135541",
+                    "text": "Jaundice",
+                    "display": "Yellow eyes/skin",
+                    "display-or": "ହଳଦିଅା ଅାଖି ବା ଚର୍ମ",
+                    "options": [
+                        {
+                            "id": "ID_202931153",
+                            "text": "Since when",
+                            "input-type": "date",
+                            "language": "since",
+                            "display-or": "କେବେଠାରୁ",
+                            "display-hi": "कब से",
+                            "display-mr": "केव्हा पासून"
+                        }
+                    ],
+                    "display-hi": "पीली आँखें/ पीली त्वचा",
+                    "display-mr": "पिवळे डोळे/ त्वचा"
+                },
+                {
+                    "id": "ID_1270871982",
+                    "text": "Burning sensation during urination",
+                    "display-or": "ପରିଶ୍ରା ର ପୋଡ଼ା ଜାଲା",
+                    "display-hi": "पेशाब के दौरान जलन",
+                    "display-mr": "लघवी करतांना जळजळ होणे"
+                },
+                {
+                    "id": "ID_1688596384",
+                    "text": "Change in frequency of urination [describe]",
+                    "input-type": "text",
+                    "language": "change in frequency of urination",
+                    "display-or": "ପରିଶ୍ରା ର ଆଭୂତି ର ପରିବର୍ତନ",
+                    "display-hi": "बार-बार पेशाब करने में बदलाव [वर्णन करें]",
+                    "display-mr": "लघवीच्या वारंवारतेत बदल (वर्णन)"
+                },
+                {
+                    "id": "ID_1444846270",
+                    "text": "Color change in urine [describe]",
+                    "input-type": "text",
+                    "language": "Color change in urine",
+                    "display-or": "ଋଙ୍ଗ ପରିବର୍ତନ (ବର୍ଣନା କର)",
+                    "display-hi": "पेशाब के रंग में बदलाव [वर्णन करें]",
+                    "display-mr": "मूत्रात रंग बदलणे (वर्णन)"
+                },
+                {
+                    "id": "ID_1358984123",
+                    "text": "Pain during urination",
+                    "display-or": "ପରିଶ୍ରା କରିବା ସମୟରେ ଯନ୍ତ୍ରଣା ଅନୁଭୂତ ହେଵ",
+                    "display-hi": "पेशाब करते वक़्त दर्द",
+                    "display-mr": "लघवी करतांना वेदना"
+                },
+                {
+                    "id": "ID_879257907",
+                    "text": "Trouble when starting to urinate or trouble maintaining flow of urine",
+                    "display-or": "ପରିଶ୍ରା କରିବା ସମୟରେ ଅସୁବିଧା ଅନୁଭୂତ ହେବା",
+                    "display-hi": "पेशाब करते समय परेशानी या पेशाब के प्रवाह को बनाए रखने में परेशानी होती है",
+                    "display-mr": "लघवी करण्यास सुरुवात करतांना समस्या किंवा लघवीचा प्रवाह राखण्यात अडचण"
+                },
+                {
+                    "id": "ID_1359276592",
+                    "text": "Skin rash",
+                    "display-or": "ଚର୍ମ ଚିହ୍ନ",
+                    "display-hi": "चकत्ता",
+                    "display-mr": "त्वचेवर पुरळ"
+                },
+                {
+                    "id": "ID_1295072716",
+                    "text": "Photosensitivity",
+                    "display-or": "ଆଲୁଅ ରେ ୱାଲେର୍ଜ୍ୟ",
+                    "display-hi": "प्रकाशसुग्राहिता (फोटोसेंसिटिविटी)",
+                    "display-mr": "प्रकाश संवेदनशीलता"
+                },
+                {
+                    "id": "ID_1350555004",
+                    "text": "Other [describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅନ୍ୟାନ୍ୟ (ବର୍ଣନା କର)",
+                    "display-hi": "अन्य [वर्णन करें]",
+                    "display-mr": "इतर (वर्णन)"
+                }
+            ],
+            "display-hi": "क्या आपको निम्न लक्षण है/हैं?",
+            "display-mr": "तुम्हाला खालील लक्षण आहे का?"
+        },
+        {
+            "id": "ID_1006867618",
+            "text": "H/o specific illness",
+            "display": "Have you ever been diagnosed with any of the following specific diseases?",
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "display-or": "ତମକୁ କେବେ ଆଗରୁ ନିମ୍ନ ଲିଖିତ ବିଶିଷ୍ଟ ରୋଗ ଚିହ୍ନଟ ହୋଇଥିଲା କି?",
+            "options": [
+                {
+                    "id": "ID_313022533",
+                    "text": "Chronic liver disease",
+                    "display-or": "ପୁରୁଣା ଯକୃତ ରୋଗ",
+                    "display-hi": " पूरानी यकृत (लीवर) की बीमारी",
+                    "display-mr": "दीर्घकाळापासून असलेला यकृत रोग"
+                },
+                {
+                    "id": "ID_1288475275",
+                    "text": "Chronic renal disease",
+                    "display-or": "ପୁରୁଣା ବୃକକ ରୋଗ",
+                    "display-hi": "पूरानी गुरदे की बीमारी",
+                    "display-mr": "दीर्घकाळापासून असलेला मूत्रपिंडाचा रोग"
+                },
+                {
+                    "id": "ID_786460262",
+                    "text": "HIV/AIDS",
+                    "display-or": "ଏଡ୍ସ",
+                    "options": [
+                        {
+                            "id": "ID_179615514",
+                            "text": "Since when",
+                            "input-type": "duration",
+                            "language": "since",
+                            "display-or": "କେବେଠାରୁ",
+                            "display-hi": "कब से",
+                            "display-mr": "केव्हा पासून"
+                        }
+                    ],
+                    "display-hi": "एचआईवी/एड्स",
+                    "display-mr": "एचआयव्ही / एड्स"
+                }, 
+				{
+					"id":"ID_1582518374",
+					"text":"None",
+					"display-hi": "कोई नहीं ",
+                    "display-mr": "यांपैकी नाही"
+				}
+            ],
+            "display-hi": "क्या आपने कभी भी निम्न में से किसी बीमारी का निदान करवाया है?",
+            "display-mr": "तुम्हाला खालीलपैकी कोणत्याही विशिष्ट रोगांचे निदान झाले आहे का?"
+        },
+        {
+            "id": "ID_679451870",
+            "text": "Recent h/o specific events",
+            "display": "Have you experienced the following situation within the previous months before fever started?",
+            "pos-condition": "h/o",
+            "neg-condition": "no h/o",
+            "display-or": "ଜ୍ଵର ଆରମ୍ଭ ହେବାର ମାସେ ପୂର୍ବରୁ ଏପରି ଅବସ୍ଥା ହୋଇଥିଲା କି?",
+            "options": [
+                {
+                    "id": "ID_720863845",
+                    "text": "Recent contact with persons having fever",
+                    "display": "Any recent contact with any persons with fever?*",
+                    "isRequired": true,
+                    "display-or": "ଅନ୍ଯ ଜ୍ୱର ବ୍ଯକ୍ତିସହ ସଂସ୍ପର୍ଷ",
+                    "options": [
+                        {
+                            "id": "ID_781457946",
+                            "text": "No",
+                            "display-or": "ନାଁ",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_139847654",
+                            "text": "Yes",
+                            "display-or": "ହଁ",
+                            "options": [
+                                {
+                                    "id": "ID_1897055931",
+                                    "text": "when",
+                                    "input-type": "date",
+                                    "language": "on",
+                                    "display-or": "କେବେ",
+                                    "display-hi": "कब",
+                                    "display-mr": "कधी"
+                                }
+                            ],
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        }
+                    ],
+                    "display-hi": "हाल में किसी ऐसे व्यक्ति के संपर्क में आएं हैं, जिसे बुखार हो?",
+                    "display-mr": "अलीकडच्या काळात ताप असलेल्या कोणत्याही व्यक्तीशी संपर्क?"
+                },
+                {
+                    "id": "ID_382852578",
+                    "text": "Recent travel",
+                    "display": "Did you/your family travel recently?*",
+                    "isRequired": true,
+                    "language": "%",
+                    "display-or": "ଏଇ ଭିତରେ ୟାତ୍ରା କରିଥିଲା କି ?",
+                    "options": [
+                        {
+                            "id": "ID_1914522243",
+                            "text": "No",
+                            "language": "No recent h/o travel",
+                            "display-or": "ହଁ",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_1670552427",
+                            "text": "Yes",
+                            "language": "Patient has recent h/o travel",
+                            "display-or": "ନାଁ",
+                            "options": [
+                                {
+                                    "id": "ID_1089527845",
+                                    "text": "When",
+                                    "input-type": "date",
+                                    "display": "on",
+                                    "display-or": "କେବେ",
+                                    "display-hi": "कब",
+                                    "display-mr": "चालू"
+                                },
+                                {
+                                    "id": "ID_289225269",
+                                    "text": "Where",
+                                    "input-type": "text",
+                                    "language": "to",
+                                    "display-or": "କେଉଁ ଯାଗା",
+                                    "display-hi": "कहाँ",
+                                    "display-mr": "कोठे"
+                                }
+                            ],
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        }
+                    ],
+                    "display-hi": "क्या आपने या आपके परिवार ने  हाल-फिलहाल में यात्रा की है?",
+                    "display-mr": "तुम्ही/ तुमच्या कुटुंबानी नुकताच कुठे प्रवास केला आहे का?"
+                },
+                {
+                    "id": "ID_1746357268",
+                    "text": "Recent hospitalization",
+                    "display": "Have you recently been hospitalized?",
+                    "language": "%",
+                    "isRequired": true,
+                    "display-or": "ହସ୍ପିଟାଲହସ୍ପିଟାଲରେ ଭର୍ତ୍ତିରେ ଭର୍ତ୍ତି",
+                    "options": [
+                        {
+                            "id": "ID_144523400",
+                            "text": "No",
+                            "language": "No recent h/o hospitalization",
+                            "display-or": "ହଁ",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_843774285",
+                            "text": "Yes",
+                            "language": "Patient has recently been hospitalized",
+                            "display-or": "ନାଁ",
+                            "options": [
+                                {
+                                    "id": "ID_1143673149",
+                                    "text": "when",
+                                    "input-type": "date",
+                                    "language": "on",
+                                    "display-or": "କେବେ",
+                                    "display-hi": "कब",
+                                    "display-mr": "कधी"
+                                }
+                            ],
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        }
+                    ],
+                    "display-hi": "क्या आप हाल-फिलहाल में अस्पताल में भरती हुए हैं?",
+                    "display-mr": "तुम्हाला अलीकडेच रुग्णालयात दाखल करण्यात आले आहे का?"
+                },
+                {
+                    "id": "ID_905772600",
+                    "text": "Needles use (for drug)",
+                    "display": "Have you recently used any needles (eg: for drugs)?",
+                    "display-or": "ଏଇ ଭୀତରୀ ଛଞ୍ଚିରେ ବ୍ୟବହାର କରିଥିଲା କି? (ଉଦାହରଣ: ଇଞ୍ଜେକ୍ସନ, ଚିତା, ମାଦକ ଦ୍ରବ୍ୟ)",
+                    "options": [
+                        {
+                            "id": "ID_858421266",
+                            "text": "No",
+                            "display-or": "ହଁ",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_937068930",
+                            "text": "Yes",
+                            "display-or": "ନାଁ",
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        }
+                    ],
+                    "display-hi": "क्या आपने हाल में सुई का प्रयोग किया है (जैसे इंजेक्शन आदि)?",
+                    "display-mr": "तुम्ही अलीकडे कोणत्याही सुया वापरल्या आहेत ( उदा. औषधांसाठी)"
+                },
+                {
+                    "id": "ID_1453769451",
+                    "text": "Relapse",
+                    "display": "Have you had this fever before as well?",
+                    "options": [
+                        {
+                            "id": "ID_1163900695",
+                            "text": "No",
+                            "language": "No h/o relapse of this illness",
+                            "display-hi": "नहीं",
+                            "display-mr": "नाही"
+                        },
+                        {
+                            "id": "ID_1047335892",
+                            "text": "Yes",
+                            "language": "Patient has had relapse of this illness",
+                            "display-hi": "हाँ",
+                            "display-mr": "होय"
+                        }
+                    ],
+                    "display-hi": "क्या आपको भी इससे पहले बुखार था? ",
+                    "display-mr": "तुम्हाला यापूर्वी हा ताप आला आहे का?"
+                }
+            ],
+            "display-hi": "बुखार शुरू होने से पहले क्या आपने पिछले महीनों के भीतर निम्न स्थिति का अनुभव किया है?",
+            "display-mr": "ताप सुरु होण्यापूर्वी मागील महिन्यांमध्ये तुम्ही खालील परिस्थिती अनुभवली आहे का?"
+        },
+        {
+            "id": "ID_1227240076",
+            "text": "H/o of specific epidemic in community",
+            "display": "Has there been a recent epidemic in the community (other than Covid-19)?",
+            "options": [
+                {
+                    "id": "ID_1818381577",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-hi": "हाँ [वर्णन करें] ",
+                    "display-mr": "इतर (वर्णन)"
+                },
+                {
+                    "id": "ID_780075488",
+                    "text": "None",
+                    "display-hi": "कोई नहीं ",
+                    "display-mr": "काहीही नाही"
+                }
+            ],
+            "display-hi": "क्या समुदाय में हाल ही में महामारी हुई है (कोविद -19 के अलावा)? ",
+            "display-mr": "तुमच्या समुदायात अलीकडच्या काळात (कोविद-१९ व्यतिरिक्त) साथ पसरली होती का?"
+        },
+        {
+            "id": "ID_1979920311",
+            "text": "Prior treatment sought",
+            "display": "Have you taken any treatment (including self-medication or home remedies) or seen any health provider for this problem before coming here today?",
+            "display-or": "ତମେ ଆଗରୁ କୌଣସି  ପ୍ରାକାର ଔଷଦ ନଇଥିଲ କି? (ନିଜେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଘରୋଇ ଉପଚାର)",
+            "options": [
+                {
+                    "id": "ID_830833900",
+                    "text": "Yes [Describe]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ହାଁ (ବର୍ଣନା କର)",
+                    "display-hi": "हाँ [वर्णन करें] ",
+                    "display-mr": "इतर (वर्णन)"
+                },
+                {
+                    "id": "ID_1226925547",
+                    "text": "None",
+                    "display-or": "କିଛି ନାହିଁ",
+                    "display-hi": "कोई नहीं ",
+                    "display-mr": "काहीही नाही"
+                }
+            ],
+            "display-hi": "क्या आपने आज यहां आने से पहले इस तकलीफ के लिए कोई उपचार किया (स्वयं-दवा या घरेलू उपचार सहित) या किसी डॉक्टर को दिखाया है?",
+            "display-mr": "आज येथे येण्यापूर्वी तुम्ही या समस्येसाठी कोणतेही उपचार (स्वतःच्या मनाने औषध किंवा घरगुती उपचारांसह) घेतले आहेत का किंवा कोणत्याही कोणत्याही डॉक्टर किंवा आरोग्य सेवा देणाऱ्याला दाखवले आहे का ?"
+        },
+        {
+            "id": "ID_1436146669",
+            "text": "Additional information",
+            "display-or": "ଅତିରିକ୍ତ ସୂଚନା",
+            "options": [
+                {
+                    "id": "ID_451991982",
+                    "text": "[Enter additional information]",
+                    "input-type": "text",
+                    "language": "%",
+                    "display-or": "ଅତିରିକ୍ତ ସୂଚନା ପ୍ରଦାନ କରିବା",
+                    "display-hi": "[अन्य जानकारी - दर्ज करें]",
+                    "display-mr": "(अजून काही माहिती असल्यास भरा)"
+                }
+            ],
+            "display-hi": "अन्य जानकारी",
+            "display-mr": "अजून काही माहिती असल्यास भरा"
+        }
+    ],
+    "display-hi": "बुखार",
+    "display-mr": "ताप"
+}
