@@ -207,7 +207,7 @@
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
 
-                    <!-- ── DEBUG-ONLY VIEWS — visible only in debug builds via code ─────── -->
+                    <!-- ── DEBUG-ONLY VIEWS — hidden from the UI; logging still runs in code ─ -->
                     <TextView
                         android:id="@+id/tv_debug_log"
                         android:layout_width="match_parent"
@@ -227,6 +227,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_marginTop="4dp"
+                        android:visibility="gone"
                         android:weightSum="2">
 
                         <Button

@@ -230,9 +230,11 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 startActivityForResult(
                         new Intent(getActivity(), BleScanActivity.class), REQ_BLE));
         if (BuildConfig.DEBUG) {
-            mBinding.tvDebugLog.setVisibility(View.VISIBLE);
+            // Debug log panel and Copy/Email buttons are kept hidden from the UI;
+            // logging below still runs so mDebugLog stays available internally.
+            /*mBinding.tvDebugLog.setVisibility(View.VISIBLE);
             mBinding.btnCopyDebugLog.setVisibility(View.VISIBLE);
-            mBinding.btnEmailDebugLog.setVisibility(View.VISIBLE);
+            mBinding.btnEmailDebugLog.setVisibility(View.VISIBLE);*/
 
             appendDebugLog("=== HbA1c Debug Session Started ===");
             appendDebugLog("Device model: " + android.os.Build.MODEL);
