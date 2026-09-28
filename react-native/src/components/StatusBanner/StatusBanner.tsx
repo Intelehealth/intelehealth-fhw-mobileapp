@@ -110,6 +110,8 @@ export default function StatusBanner(props: StatusBannerProps) {
     variant = 'warning',
     title,
     subtitle,
+    titleStyle,
+    subtitleStyle,
     icon,
     iconChipStyle,
     actionLabel,
@@ -141,11 +143,14 @@ export default function StatusBanner(props: StatusBannerProps) {
 
       {/* Accent-coloured title + sub-lines */}
       <View style={styles.content}>
-        <Text style={[styles.title, config.accent]} numberOfLines={2}>
+        <Text style={[styles.title, config.accent, titleStyle]} numberOfLines={2}>
           {title}
         </Text>
         {subtitleLines.map((line, index) => (
-          <Text key={index} style={styles.subtitle} numberOfLines={1}>
+          <Text
+            key={index}
+            style={[styles.subtitle, subtitleStyle]}
+            numberOfLines={1}>
             {line}
           </Text>
         ))}

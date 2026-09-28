@@ -236,6 +236,12 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.Executors;
+
+import org.intelehealth.app.database.dao.QueueDAO;
+import org.intelehealth.app.reactnative.QueueRowFormatter;
+import org.intelehealth.app.ui.queue.model.QueueRow;
+import org.intelehealth.app.ui.queue.repository.QueueRepository;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -528,17 +534,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         initUI();
 
-        // QMS (Queue Management System) gate: only show the top queue banner
-        // when QMS is configured, mirroring the home screen. When off, the
-        // container stays GONE so the patient card sits at the top as before.
-        boolean isQmsConfigured = new PreferenceHelper(this)
-                .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-        if (isQmsConfigured) {
-            addQueueStatusBanner();
-        }
-
         networkUtils = new NetworkUtils(this, this);
         fetchingIntent();
+        // After fetchingIntent(): the banner needs the visit uuid from the intent.
+        updateQueueStatusBanner();
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
@@ -565,24 +564,69 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupDiagnosticsConfig();
     }
 
+    private void updateQueueStatusBanner() {
+
+        // QMS (Queue Management System) gate: only show the top queue banner
+        // when QMS is configured and visit not ended
+        boolean isQmsConfigured = new PreferenceHelper(this)
+                .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        if (isQmsConfigured && !TextUtils.isEmpty(visitUuid) && !isVisitEnded(visitUuid)) {
+            loadQueueStatusBanner(visitUuid);
+        }
+    }
+
+    /**
+     * Reads this visit's queue row off the main thread (same joined query as
+     * the Patient's Queue list), then shows the banner. The banner stays hidden
+     * when the visit has no queue entry.
+     */
+    private void loadQueueStatusBanner(String visitUuid) {
+        QueueRepository queueRepository = new QueueRepository(new QueueDAO());
+        Executors.newSingleThreadExecutor().execute(() -> {
+            QueueRow visitRow = queueRepository.getQueueRowForVisit(visitUuid);
+            // TODO: testing only — remove this fallback. When this visit has no
+            // queue row, show the first row in tbl_queue (dummy record).
+            if (visitRow == null) {
+                List<QueueRow> rows = queueRepository.getQueueList(1, 0);
+                visitRow = rows.isEmpty() ? null : rows.get(0);
+            }
+            QueueRow row = visitRow;
+            runOnUiThread(() -> {
+                if (row != null && !isFinishing() && !isDestroyed()) {
+                    addQueueStatusBanner(row);
+                }
+            });
+        });
+    }
+
     /**
      * Embeds the shared React Native StatusBanner at the top of the Visit
      * Summary (e.g. "Queue 104 · Position #2 / Next in Queue" with the wait time
      * as a trailing pill), mirroring the home screen's addStatusBannerLayout().
-     * Content is passed as launch options so it can later be driven by real
-     * queue status.
+     * Status and wait time come from {@link QueueRowFormatter}, so they match
+     * this visit's row on the Patient's Queue list; the raw etaAt/connectedAt
+     * instants let the RN banner tick the time live, like the list item.
      */
-    private void addQueueStatusBanner() {
+    private void addQueueStatusBanner(@NonNull QueueRow row) {
         View container = findViewById(R.id.vs_queue_banner_container);
         if (container != null) {
             container.setVisibility(View.VISIBLE);
         }
 
+        int position = row.getPosition();
+        String status = QueueRowFormatter.mapStatus(row.getStatus(), position);
+        // Queue id shown the same way as the list item's queueNumber (openmrs id).
+        String queueId = row.getOpenmrsId() != null ? row.getOpenmrsId() : "";
+
         Bundle bannerProps = new Bundle();
         bannerProps.putString("variant", "warning");
-        bannerProps.putString("title", "Queue 104 · Position #2");
-        bannerProps.putString("subtitle", "Next in Queue");
-        bannerProps.putString("time", "8 Mins");
+        bannerProps.putString("title", "Queue " + queueId + " · Position #" + position);
+        bannerProps.putString("subtitle", QueueRowFormatter.statusLabel(status));
+        bannerProps.putString("status", status);
+        // Pre-formatted snapshot (initial paint / fallback when no instant).
+        bannerProps.putString("time", QueueRowFormatter.formatTimeInMinutes(status, row));
+        bannerProps.putString("etaAt", row.getEtaAt() != null ? row.getEtaAt() : "");
+        bannerProps.putString("connectedAt", row.getConnectedAt() != null ? row.getConnectedAt() : "");
 
         ReactFragment bannerFragment = new ReactFragment.Builder()
                 .setComponentName("VisitSummaryStatusBannerModule")
@@ -592,7 +636,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.vs_queue_banner_container, bannerFragment)
-                .commit();
+                .commitAllowingStateLoss();
     }
 
     /**

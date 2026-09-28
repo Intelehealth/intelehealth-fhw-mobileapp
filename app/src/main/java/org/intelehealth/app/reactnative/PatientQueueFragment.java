@@ -16,16 +16,13 @@ import com.facebook.react.ReactFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.models.queue.QueueStatus;
 import org.intelehealth.app.ui.queue.factory.QueueViewModelFactory;
 import org.intelehealth.app.ui.queue.model.QueueRow;
 import org.intelehealth.app.ui.queue.viewmodel.QueueViewModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Native host for the React Native "Patient's Queue" screen.
@@ -162,7 +159,7 @@ public class PatientQueueFragment extends Fragment {
         }
 
         int position = row.getPosition();
-        String status = mapStatus(row.getStatus(), position);
+        String status = QueueRowFormatter.mapStatus(row.getStatus(), position);
 
         Bundle bundle = new Bundle();
         bundle.putString("queueNumber", openmrsId);
@@ -175,7 +172,7 @@ public class PatientQueueFragment extends Fragment {
         bundle.putString("status", status);
         // Pre-formatted snapshot used as a fallback (and initial paint) when the
         // row has no timestamp to tick from.
-        bundle.putString("time", formatTime(status, row));
+        bundle.putString("time", QueueRowFormatter.formatTime(status, row));
         // Raw instants so the RN screen can tick the wait time / duration every
         // second on the JS side (no DB re-read, no bridge push). Empty when absent.
         bundle.putString("etaAt", orEmpty(row.getEtaAt()));
@@ -207,35 +204,6 @@ public class PatientQueueFragment extends Fragment {
     }
 
     /**
-     * Maps the DB {@link QueueStatus} (+ position) to the RN status union used
-     * by the tabs ('onCall' | 'nextInQueue' | 'waiting'):
-     * <ul>
-     *   <li>CONNECTED -> onCall</li>
-     *   <li>QUEUED at position 0 -> nextInQueue</li>
-     *   <li>QUEUED at any other position -> waiting</li>
-     *   <li>RE_QUEUED at position &gt; 0 -> waiting</li>
-     * </ul>
-     * Any other status (or unknown) is left unmapped (empty), so the row matches
-     * no specific tab and appears only under "All".
-     */
-    private String mapStatus(@Nullable String dbStatus, int position) {
-        QueueStatus status = QueueStatus.fromValue(dbStatus);
-        if (status == null) {
-            return "";
-        }
-        switch (status) {
-            case CONNECTED:
-                return "onCall";
-            case QUEUED:
-                return position == 0 ? "nextInQueue" : "waiting";
-            case RE_QUEUED:
-                return position > 0 ? "waiting" : "";
-            default:
-                return "";
-        }
-    }
-
-    /**
      * Chief-complaint string -> symptom tags. Uses the same parsing as the home
      * queue card and the visit summary screen ({@link QueueCardUpdater#extractComplaintNames(String)}),
      * so the list shows the complaint header names (e.g. "Fever", "Cough") rather
@@ -243,75 +211,6 @@ public class PatientQueueFragment extends Fragment {
      */
     private ArrayList<String> parseSymptoms(@Nullable String chiefComplaint) {
         return QueueCardUpdater.extractComplaintNames(chiefComplaint);
-    }
-
-    /**
-     * The footer time string for a row:
-     * <ul>
-     *   <li>{@code onCall} -> elapsed call duration (waited minutes), "MM:00".</li>
-     *   <li>{@code nextInQueue}/{@code waiting} -> live wait time counted from the
-     *       server {@code etaAt} instant ("MM:SS"); falls back to {@code etaMinutes}
-     *       when {@code etaAt} is absent/unparseable.</li>
-     * </ul>
-     */
-    private String formatTime(@Nullable String status, @NonNull QueueRow row) {
-        if ("onCall".equals(status)) {
-            // Elapsed call duration = now - connectedAt.
-            String duration = elapsedSince(row.getConnectedAt());
-            return duration != null ? duration : formatMinutes(row.getWaitedMinutes());
-        }
-        // Wait time for next/waiting = etaAt - now.
-        String waitTime = remainingUntil(row.getEtaAt());
-        return waitTime != null ? waitTime : formatMinutes(row.getEtaMinutes());
-    }
-
-    /**
-     * Time remaining from now until a future ISO-8601 instant (server sends UTC,
-     * e.g. {@code 2026-09-17T12:14:54.000Z}), "MM:SS", clamped to {@code >= 0}.
-     * Returns null when the value is absent/unparseable so the caller can fall back.
-     */
-    @Nullable
-    private String remainingUntil(@Nullable String isoInstant) {
-        return formatMmSs(isoInstant, true);
-    }
-
-    /**
-     * Time elapsed from a past ISO-8601 instant until now, "MM:SS", clamped to
-     * {@code >= 0}. Returns null when the value is absent/unparseable.
-     */
-    @Nullable
-    private String elapsedSince(@Nullable String isoInstant) {
-        return formatMmSs(isoInstant, false);
-    }
-
-    /**
-     * Formats the gap between {@code isoInstant} and now as "MM:SS", clamped to
-     * {@code >= 0}. {@code future=true} counts instant-now (a future ETA),
-     * {@code false} counts now-instant (a past connect time). Null on parse error.
-     */
-    @Nullable
-    private String formatMmSs(@Nullable String isoInstant, boolean future) {
-        if (TextUtils.isEmpty(isoInstant)) {
-            return null;
-        }
-        try {
-            long instantMillis = Instant.parse(isoInstant.trim()).toEpochMilli();
-            long now = System.currentTimeMillis();
-            long deltaMillis = future ? instantMillis - now : now - instantMillis;
-            long totalSeconds = Math.max(0, deltaMillis / 1000L);
-            long mm = totalSeconds / 60;
-            long ss = totalSeconds % 60;
-            return String.format(Locale.ENGLISH, "%02d:%02d", mm, ss);
-        } catch (Exception e) {
-            Log.e(TAG, "formatMmSs failed: " + e.getMessage());
-            return null;
-        }
-    }
-
-    /** Minutes -> "MM:00" to match the RN row's pre-formatted time string. */
-    private String formatMinutes(int minutes) {
-        int safe = Math.max(0, minutes);
-        return String.format(Locale.ENGLISH, "%02d:00", safe);
     }
 
     private String orEmpty(@Nullable String value) {

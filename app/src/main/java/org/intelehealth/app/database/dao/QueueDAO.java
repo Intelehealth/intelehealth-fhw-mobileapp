@@ -158,17 +158,7 @@ public class QueueDAO extends BaseDao{
         // chiefComplaint is NOT read from tbl_queue (the queue service doesn't
         // send it); the visitUuid is carried through so the complaint can be
         // resolved from the visit's obs, exactly like the visit summary screen.
-        String sql = "SELECT q.status AS status, q.position AS position, " +
-                "q.visitUuid AS visitUuid, " +
-                "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
-                "q.etaAt AS etaAt, q.connectedAt AS connectedAt, " +
-                "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +
-                "p.middle_name AS middle_name, p.last_name AS last_name, " +
-                "p.gender AS gender, p.date_of_birth AS date_of_birth, " +
-                "p.patient_photo AS patient_photo " +
-                "FROM " + tableName() + " q " +
-                "LEFT JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
-                "LEFT JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE " +
+        String sql = queueWithPatientSelect() +
                 "ORDER BY q.position ASC limit ? offset ?";
         Cursor cursor = null;
         try {
@@ -186,6 +176,53 @@ public class QueueDAO extends BaseDao{
             }
         }
         return rows;
+    }
+
+    /**
+     * Same joined row as {@link #getQueueWithPatient(int, int, QueueRowMapper)},
+     * but for the single queue entry of {@code visitUuid} (e.g. the Visit
+     * Summary queue banner). Synchronous — call it off the main thread. Returns
+     * null when the visit has no queue row or on any error.
+     */
+    public <T> T getQueueWithPatientByVisit(String visitUuid, QueueRowMapper<T> mapper) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        if (db == null || !db.isOpen() || mapper == null || visitUuid == null || visitUuid.isEmpty()) {
+            return null;
+        }
+        String sql = queueWithPatientSelect() +
+                "WHERE q.visitUuid = ? COLLATE NOCASE limit 1";
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(sql, new String[]{visitUuid});
+            if (cursor != null && cursor.moveToFirst()) {
+                return mapper.map(cursor);
+            }
+        } catch (Exception e) {
+            CustomLog.d(TAG, "getQueueWithPatientByVisit: e " + e.getLocalizedMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Shared SELECT + JOIN (queue -> visit -> patient) used by the queue list
+     * and the per-visit lookup, so both map the exact same columns.
+     */
+    private String queueWithPatientSelect() {
+        return "SELECT q.status AS status, q.position AS position, " +
+                "q.visitUuid AS visitUuid, " +
+                "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
+                "q.etaAt AS etaAt, q.connectedAt AS connectedAt, " +
+                "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +
+                "p.middle_name AS middle_name, p.last_name AS last_name, " +
+                "p.gender AS gender, p.date_of_birth AS date_of_birth, " +
+                "p.patient_photo AS patient_photo " +
+                "FROM " + tableName() + " q " +
+                "LEFT JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
+                "LEFT JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE ";
     }
 
     /**

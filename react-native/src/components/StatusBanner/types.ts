@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { StyleProp, ViewStyle } from 'react-native';
+import type { StyleProp, TextStyle, ViewStyle } from 'react-native';
 
 /**
  * Types for the StatusBanner component.
@@ -24,6 +24,12 @@ export interface StatusBannerProps {
   // Secondary line(s) under the title. A string[] renders each on its own line
   // (e.g. "Position #2 → #3" then "5 mins wait").
   subtitle?: string | string[];
+
+  // Optional text style overrides, applied on top of the defaults (title in the
+  // variant accent, subtitle muted). Used e.g. by the Visit Summary banner,
+  // whose design swaps them (muted title, accent subtitle).
+  titleStyle?: StyleProp<TextStyle>;
+  subtitleStyle?: StyleProp<TextStyle>;
 
   // Overrides the default per-variant leading glyph (e.g. a native drawable
   // <Image />). When omitted, the variant's built-in glyph is shown.

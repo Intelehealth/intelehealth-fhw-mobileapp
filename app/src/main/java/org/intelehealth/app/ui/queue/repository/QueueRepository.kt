@@ -33,6 +33,14 @@ class QueueRepository(private val queueDao: QueueDAO) {
                 )
             }
 
+    /**
+     * The queue row for a single visit (Visit Summary queue banner), mapped the
+     * same way as the list rows. Null when the visit is not in the queue.
+     * Synchronous — call it off the main thread.
+     */
+    fun getQueueRowForVisit(visitUuid: String): QueueRow? =
+        queueDao.getQueueWithPatientByVisit(visitUuid) { cursor -> mapRow(cursor) }
+
     private fun mapRow(c: Cursor): QueueRow {
         val name = listOfNotNull(c.str("first_name"), c.str("last_name"))
             .joinToString(" ")
