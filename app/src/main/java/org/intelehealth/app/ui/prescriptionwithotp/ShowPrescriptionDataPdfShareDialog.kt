@@ -216,7 +216,12 @@ class ShowPrescriptionDataPdfShareDialog(
         val diagnosis = prescriptionData.visitCompleteEncData?.get("Primary Diagnosis").orEmpty()
         val vital= formatVitalsAndDiagnostics(prescriptionData.vitals)
         val diagnostic= formatVitalsAndDiagnostics(prescriptionData.diagnostics)
-        val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").toString())
+        val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").orEmpty())
+        // Follow-up is the one PDF field that reads "No" rather than "NA" when the doctor
+        // set no date. formatFollowUpDisplay() (shared with View/Print) returns "NA" for
+        // that case, and a visit with no prescription encounter has no value at all.
+        val followUp = PrescriptionWithPDFBuilder.checkValueAndReturnNA(prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
+            .let { if (it.trim().equals("NA", ignoreCase = true)) "No" else it }
         val specialtyNotes = SpecialtyNotesProvider.getNotesFor(activity, drDetails?.specialization)
 
         val patientDataSections: Map<String, Map<String, String?>> = mapOf(
@@ -228,7 +233,7 @@ class ShowPrescriptionDataPdfShareDialog(
             "General Advice" to mapOf(PrescriptionDetailsDataKeys.GeneralAdvice.toString() to formatedAdvice),
             "Tests" to mapOf(PrescriptionDetailsDataKeys.Tests.toString() to prescriptionData.visitCompleteEncData?.get("Tests")),
             "Referred Specialist" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referred Specialist")),
-            "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
+            "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to followUp)
         ) + if (!specialtyNotes.isNullOrEmpty()) {
             mapOf("Notes & Precautions" to mapOf(PrescriptionDetailsDataKeys.NotesPrecautions.toString() to specialtyNotes.joinToString("\n") { "• $it" }))
         } else {
@@ -275,9 +280,9 @@ class ShowPrescriptionDataPdfShareDialog(
 
     private fun createPatientData(patient: Patient): String {
         val fullName = listOfNotNull(patient.first_name, patient.middle_name.takeIf { !it.isNullOrBlank() }, patient.last_name).joinToString(" ")
-        val ageGender = "${activity.getString(R.string.label_age)} ${getPatientAge(patient.date_of_birth)} | ${activity.getString(R.string.label_gender)} ${patient.gender}"
+        val ageGender = "${activity.getString(R.string.label_age)} ${getPatientAge(patient.date_of_birth)} | ${activity.getString(R.string.label_gender)} ${PrescriptionWithPDFBuilder.checkValueAndReturnNA(patient.gender)}"
 
-        val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${patient.openmrs_id}"
+        val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${PrescriptionWithPDFBuilder.checkValueAndReturnNA(patient.openmrs_id)}"
         val visitDateLine = "${activity.getString(R.string.label_visit_date)} $visitStartDate"
 
         val abhaNumberLine =
@@ -339,7 +344,7 @@ class ShowPrescriptionDataPdfShareDialog(
     }
 
     private fun formatVitalsAndDiagnostics(data: HashMap<String, String>?): String {
-        return data?.entries?.joinToString(" | ") { "${it.key}=${it.value}" } ?: ""
+        return data?.entries?.joinToString(" | ") { "${it.key}=${PrescriptionWithPDFBuilder.checkValueAndReturnNA(it.value)}" } ?: ""
     }
     private fun formatGeneralAdvice(input: String): String {
         val htmlTagWithContentRegex = Regex("<[^>]+>.*?</[^>]+>", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))

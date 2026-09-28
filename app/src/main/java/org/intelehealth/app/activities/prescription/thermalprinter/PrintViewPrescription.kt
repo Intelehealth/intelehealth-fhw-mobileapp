@@ -296,8 +296,10 @@ class PrintViewPrescription(
         // Shared with the native Follow Up card and the Share Prescription PDF -
         // handles the plain-date, "No", and date+Time/Remark/Type obs value shapes
         // consistently (e.g. "26 Sep, 2026 Time 9:00 AM"), "NA" when there's no
-        // valid follow-up date.
-        return stringToWebSms(DateAndTimeUtils.formatFollowUpDisplay(followUpDate))
+        // valid follow-up date - shown here as "No", same as the shared PDF.
+        val followUpDisplay = DateAndTimeUtils.formatFollowUpDisplay(followUpDate)
+            .let { if (it.trim().equals("NA", ignoreCase = true)) "No" else it }
+        return stringToWebSms(followUpDisplay)
     }
 
     private fun stringToWebSms(input: String?): String {

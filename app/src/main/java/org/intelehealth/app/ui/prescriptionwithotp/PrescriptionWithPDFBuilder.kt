@@ -189,8 +189,22 @@ class PrescriptionWithPDFBuilder(
         return "${baseName}.pdf"
     }
 
-    private fun checkValueAndReturnNA(value: String?): String {
-        return if (value.isNullOrBlank()) "NA" else value
+    companion object {
+        private val NULL_TOKEN_REGEX = Regex("(?i)\\bnull\\b")
+
+        /**
+         * Every value printed on the shared PDF goes through here. A missing, blank,
+         * bullet-only ("• ") or literal "null" value shows as "NA", and so does a
+         * standalone "null" part inside an otherwise valid value (e.g. a medicine
+         * synced without a remark - "Paracetamol:500mg:5 days:null" - or a vital
+         * with no value - "Temperature=null"). Valid values are returned unchanged.
+         */
+        fun checkValueAndReturnNA(value: String?): String {
+            if (value == null) return "NA"
+            val content = value.replace("•", "").trim()
+            if (content.isEmpty() || content.equals("null", ignoreCase = true)) return "NA"
+            return value.replace(NULL_TOKEN_REGEX, "NA")
+        }
     }
 
     fun setPatientDataSections(data: Map<String, Map<String, String?>>) {
@@ -225,14 +239,17 @@ class PrescriptionWithPDFBuilder(
         )
         drSignTextView.layout(0, 0, drSignTextView.measuredWidth, drSignTextView.measuredHeight)
         */
-        val bitmap = decodeSignatureBitmap(drDetails.signature)
+        // A completed visit's doctor details are parsed straight from the synced JSON,
+        // so any field the doctor portal left out is null here - a null signature
+        // would crash decodeSignatureBitmap and the text fields would print "null".
+        val bitmap = decodeSignatureBitmap(drDetails.signature.orEmpty())
         if (bitmap != null) {
             binding.imageviewDrSign.setImageBitmap(bitmap)
         } else {
             binding.imageviewDrSign.setImageDrawable(null)
         }
 
-        val drDetailsVal = "${drDetails.name}\n${drDetails.qualification}, ${drDetails.specialization}\n${drDetails.registrationNumber}"
+        val drDetailsVal = "${checkValueAndReturnNA(drDetails.name)}\n${checkValueAndReturnNA(drDetails.qualification)}, ${checkValueAndReturnNA(drDetails.specialization)}\n${checkValueAndReturnNA(drDetails.registrationNumber)}"
         binding.drDetailsTextview.text = drDetailsVal
     }
     private fun getFontFamily(fontFamily: String): String{
