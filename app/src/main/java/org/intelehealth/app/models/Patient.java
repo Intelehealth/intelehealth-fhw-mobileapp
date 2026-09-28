@@ -8,6 +8,8 @@ public class Patient {
     private String last_name;
     private String date_of_birth; // ISO 8601
     private String phone_number;
+    /** ABHA number as held on the patient record. "NA" when the patient has no ABHA. */
+    private String abhaNumber;
     private String address1;
     private String address2;
     private String city_village;
@@ -200,5 +202,13 @@ public class Patient {
 
     public void setNationalID(String nationalID) {
         this.nationalID = nationalID;
+    }
+
+    public String getAbhaNumber() {
+        return abhaNumber;
+    }
+
+    public void setAbhaNumber(String abhaNumber) {
+        this.abhaNumber = abhaNumber;
     }
 }

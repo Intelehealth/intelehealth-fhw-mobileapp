@@ -985,9 +985,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL " +
-                //"AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
-                 //searchQuery +
-                "GROUP BY a.patientuuid " +
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                "AND NOT EXISTS (SELECT 1 FROM tbl_visit v2 WHERE v2.patientuuid = a.patientuuid AND v2.voided = '0' AND v2.startdate > a.startdate) " + // A newer visit for this patient means the follow-up has already been addressed
+                 searchQuery +
+                "GROUP BY a.uuid " +
                 "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
@@ -1119,9 +1120,10 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "AND  followup_date = ? " +
                 "AND o.value is NOT NULL " +
                 "AND followup_date is NOT NULL "+
-                //"AND a.enddate IS NULL " + // changed for visit removed when visit is closed-NN
-                //searchQuery+
-                "GROUP BY a.patientuuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
+                "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                "AND NOT EXISTS (SELECT 1 FROM tbl_visit v2 WHERE v2.patientuuid = a.patientuuid AND v2.voided = '0' AND v2.startdate > a.startdate) " + // A newer visit for this patient means the follow-up has already been addressed
+                searchQuery+
+                "GROUP BY a.uuid HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' AND value_text != '' ) "
                 + sortQuery;
 
         Timber.tag("FOLLOWUP_QUERY").d(query);
@@ -1270,8 +1272,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     skipTodayAndTomorrowQuery +
                     "AND o.value is NOT NULL " +
                     "AND followup_date is NOT NULL " +
-                    //"AND a.enddate IS NULL " + // changed for visit removed when visit is closed
-                    "GROUP BY a.patientuuid " +
+                    "AND (a.enddate IS NOT NULL AND a.enddate != '') " + // Visit must be ended by Health Worker before it is eligible as a Follow-up Visit
+                    "AND NOT EXISTS (SELECT 1 FROM tbl_visit v2 WHERE v2.patientuuid = a.patientuuid AND v2.voided = '0' AND v2.startdate > a.startdate) " + // A newer visit for this patient means the follow-up has already been addressed
+                    "GROUP BY a.uuid " +
                     "HAVING (value_text is NOT NULL AND LOWER(value_text) != 'no' " +
                     "AND value_text != '' ) " +
                     filterQuery +

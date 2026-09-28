@@ -4,13 +4,13 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.github.ajalt.timberkt.Timber
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.ImagesDAO
-import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
-import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.PatientAttributeTypeMasterDTO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.utilities.NetworkConnection
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
+import org.intelehealth.app.utilities.CustomLog
+import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository
 import org.intelehealth.config.room.dao.PatientRegFieldDao
 import java.util.UUID
@@ -30,6 +30,11 @@ class PatientRepository(
         bindPatientAttributes(patient).let {
             val flag = patientsDao.insertPatientToDB(it, it.uuid)
             val flag2 = ImagesDAO().insertPatientProfileImages(it.patientPhoto, it.uuid)
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d(
+                "NAS1752", "patient created - uuid=${it.uuid} name=${it.firstname} ${it.lastname} " +
+                        "patientConsent=${it.patientConsentValue} abdmConsent=${it.abdmConsentValue}"
+            )
             syncOnServer()
             return flag && flag2
         }
@@ -59,6 +64,15 @@ class PatientRepository(
     }
 
 
+    /**
+     * Builds the person attributes for a save, dropping any whose value is absent.
+     *
+     * An entry is composed for every attribute type regardless of whether the field was filled or even
+     * shown — field visibility is decided in the registration fragments and is not consulted here — so
+     * without the filter a patient carries a row, and pushes an `{"attributeType": …}` with no value,
+     * for every attribute they never supplied. The server rejects the whole attributes array when it
+     * contains those, which takes the populated ones such as the phone down with them.
+     */
     private fun createPatientAttributes(patient: PatientDTO) = arrayListOf<PatientAttributesDTO>()
         .apply {
             add(
@@ -270,7 +284,29 @@ class PatientRepository(
                     patient.contactType
                 )
             )
-        }
+
+            // NAS-1752 - Patient_Consent / ABDM_Consent. Unlike the attributes above, these two
+            // attribute types are not (yet) seeded in tbl_patient_attribute_master locally, so
+            // they're addressed directly by UuidDictionary UUID instead of going through
+            // getUuidForAttribute(name), which would resolve to null for a type this app has
+            // never synced down. Blank when the corresponding consent wasn't given on this save
+            // (e.g. patient created without going through the ABHA flow), and dropped by the
+            // filter below like every other unfilled attribute.
+            add(
+                createPatientAttributeWithTypeUuid(
+                    patient.uuid,
+                    UuidDictionary.PATIENT_CONSENT,
+                    patient.patientConsentValue
+                )
+            )
+            add(
+                createPatientAttributeWithTypeUuid(
+                    patient.uuid,
+                    UuidDictionary.ABDM_CONSENT,
+                    patient.abdmConsentValue
+                )
+            )
+        }.filter { it.value.isNullOrBlank().not() }
 
     private fun createPatientAttribute(
         patientId: String,
@@ -280,6 +316,18 @@ class PatientRepository(
         uuid = UUID.randomUUID().toString()
         patientuuid = patientId
         personAttributeTypeUuid = patientsDao.getUuidForAttribute(attrName)
+        this.value = value
+    }
+
+    /** Like [createPatientAttribute], but for an attribute type not resolvable by name locally. */
+    private fun createPatientAttributeWithTypeUuid(
+        patientId: String,
+        attributeTypeUuid: String,
+        value: String?
+    ) = PatientAttributesDTO().apply {
+        uuid = UUID.randomUUID().toString()
+        patientuuid = patientId
+        personAttributeTypeUuid = attributeTypeUuid
         this.value = value
     }
 
@@ -295,11 +343,6 @@ class PatientRepository(
     }
 
     fun syncOnServer() {
-        if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
-            val syncDAO = SyncDAO()
-            val imagesPushDAO = ImagesPushDAO()
-            syncDAO.pushDataApi()
-            imagesPushDAO.patientProfileImagesPush()
-        }
+        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext())
     }
 }

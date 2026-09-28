@@ -5,6 +5,7 @@ import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
 import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_ABHA_ADDRESS;
 import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 
 import android.content.ContentValues;
@@ -56,7 +57,8 @@ public class VisitAttributeListDAO extends BaseDao{
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_ABHA_ADDRESS)) {
                 visitsList.add(createVisitAttributeMap(visitDTO));
             }
         }
@@ -187,6 +189,10 @@ public class VisitAttributeListDAO extends BaseDao{
             if (count != -1)
                 isInserted = true;
 
+            if (isInserted) {
+                reQueueParentVisitForSync(db, visitUuid);
+            }
+
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
@@ -198,6 +204,73 @@ public class VisitAttributeListDAO extends BaseDao{
 
         CustomLog.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
+    }
+
+    /**
+     * Marks the parent visit as unsynced again after a new/changed attribute is written for it.
+     * <p>
+     * unsyncedVisits() only looks at tbl_visit.sync to decide which visits to push, and never
+     * revisits a visit once that flag is true - it does not separately check whether the visit has
+     * unsynced tbl_visit_attribute rows. If a visit's initial "start visit" push already synced it
+     * (e.g. a periodic background sync ran mid-consult) before a later attribute - speciality,
+     * diagnosis, consultation type, etc. - was added, that attribute would otherwise sit with
+     * sync=0 forever and never be picked up by any future push. Resetting the parent's flag here
+     * puts the visit back in front of unsyncedVisits() on the next sync cycle so fetchVisitAttrs()
+     * picks up the new row along with it, without changing how already-synced, unchanged visits are
+     * treated.
+     */
+    private void reQueueParentVisitForSync(SQLiteDatabase db, String visitUuid) {
+        ContentValues visitSyncValues = new ContentValues();
+        visitSyncValues.put("sync", "0");
+        db.update("tbl_visit", visitSyncValues, "uuid=?", new String[]{visitUuid});
+    }
+
+    /**
+     * Whether this visit already carries the given attribute type. insertVisitAttributes generates a
+     * fresh row uuid, so its CONFLICT_REPLACE cannot dedupe by visit and type — callers that must not
+     * duplicate have to check first and update instead.
+     */
+    public boolean isAttributeExistForVisit(String visitUuid, String attributeTypeUUID) {
+        boolean exists = false;
+        if (visitUuid == null) return false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT uuid FROM tbl_visit_attribute WHERE visit_uuid = ? AND " +
+                        "visit_attribute_type_uuid = ? AND voided = 0 LIMIT 1",
+                new String[]{visitUuid, attributeTypeUUID})) {
+            exists = cursor.moveToFirst();
+        } catch (SQLException e) {
+            CustomLog.e(TAG, e.getMessage());
+        }
+        return exists;
+    }
+
+    /**
+     * Updates an existing attribute value for a visit and marks the row unsynced so the next push
+     * carries it.
+     */
+    public boolean updateVisitAttributes(String visitUuid, String value, String attributeTypeUUID)
+            throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        try {
+            values.put("value", value);
+            values.put("sync", "0");
+            db.update("tbl_visit_attribute", values,
+                    "visit_uuid = ? AND visit_attribute_type_uuid = ?",
+                    new String[]{visitUuid, attributeTypeUUID});
+            reQueueParentVisitForSync(db, visitUuid);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isUpdated = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isUpdated;
     }
 
     /**

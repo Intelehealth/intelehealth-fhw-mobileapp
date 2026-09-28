@@ -17,6 +17,17 @@ public class Identifier {
     @SerializedName("preferred")
     @Expose
     private Boolean preferred;
+    @SerializedName("identifier")
+    @Expose
+    private String identifier;
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
     @SerializedName("identifier")
     @Expose

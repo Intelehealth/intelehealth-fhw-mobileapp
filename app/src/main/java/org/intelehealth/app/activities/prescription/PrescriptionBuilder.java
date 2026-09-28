@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.VitalsObject;
@@ -48,7 +49,8 @@ public class PrescriptionBuilder {
             String referredOutData,
             String followUpData,
             ClsDoctorDetails details,
-            FeatureActiveStatus featureActiveStatus
+            FeatureActiveStatus featureActiveStatus,
+            String abhaAddress
     ) {
         mFeatureActiveStatus = featureActiveStatus;
         String prescriptionHTML = "";
@@ -59,7 +61,7 @@ public class PrescriptionBuilder {
         prescriptionHTML = headingDocTypeTag
                 + headingHTMLLangTag
                 + buildHeadData()
-                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
+                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details, abhaAddress)
                 + buildDisclaimerData()
                 + htmlClosingTag;
 
@@ -123,7 +125,8 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
-            ClsDoctorDetails details
+            ClsDoctorDetails details,
+            String abhaAddress
     ) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
@@ -139,7 +142,7 @@ public class PrescriptionBuilder {
                 + generatePrescriptionHeadingSection()
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
-                + generatePatientDetailsData(patient)
+                + generatePatientDetailsData(patient, abhaAddress)
                 + generateMainRowData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
@@ -158,7 +161,7 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generatePatientDetailsData(Patient patient) {
+    private String generatePatientDetailsData(Patient patient, String abhaAddress) {
         String patientProfilePhoto = "";
         if (patient.getPatient_photo() != null && !patient.getPatient_photo().isEmpty()) {
 
@@ -229,7 +232,35 @@ public class PrescriptionBuilder {
                 + "<p>\n <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n " + patientPhoneNumber + "\n"
                 + "</div>\n"
                 + "</div>\n"
+                + abhaSection(patient.getAbhaNumber(), abhaAddress)
                 + "</div>";
+    }
+
+    /**
+     * The ABHA column of the patient grid, or nothing at all when the patient has neither identifier.
+     *
+     * Each row is independent: a patient may hold a number without an address, or an address issued
+     * before the number was linked, and an absent value drops its row rather than printing a blank one.
+     */
+    private String abhaSection(String abhaNumber, String abhaAddress) {
+        boolean hasNumber = AbhaPrescriptionFields.isPresent(abhaNumber);
+        boolean hasAddress = AbhaPrescriptionFields.isPresent(abhaAddress);
+        if (!hasNumber && !hasAddress) return "";
+
+        String section = "<div class=\"col-md-3 patient-info-section p-3\">\n";
+        if (hasNumber) {
+            section += "<div class=\"patient-info-item mb-3\">\n"
+                    + "<h6>" + activityContext.getString(R.string.label_abha_number) + "</h6>\n"
+                    + "<p>" + abhaNumber.trim() + "</p>\n"
+                    + "</div>\n";
+        }
+        if (hasAddress) {
+            section += "<div class=\"patient-info-item\">\n"
+                    + "<h6>" + activityContext.getString(R.string.label_abha_address) + "</h6>\n"
+                    + "<p>" + abhaAddress.trim() + "</p>\n"
+                    + "</div>\n";
+        }
+        return section + "</div>\n";
     }
 
     /**
@@ -271,7 +302,6 @@ public class PrescriptionBuilder {
                 + generateTestData(testData)
                 + generateReferredOutData(referredOutData)
                 + generateFollowUpData(followUpData)
-                + generateSpecialtyNotesData(details)
                 + rowClosingTag
                 + generateDoctorSignatureData(details)
                 + rowClosingTag;
@@ -1007,6 +1037,10 @@ public class PrescriptionBuilder {
                     }
 
                 }
+                remarks = remarks.trim();
+                if (remarks.isEmpty() || remarks.equalsIgnoreCase("null")) {
+                    remarks = "NA";
+                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
@@ -1031,47 +1065,6 @@ public class PrescriptionBuilder {
                 + closingDivTag;
 
         return finalFollowUpString;
-    }
-
-    private String generateSpecialtyNotesData(ClsDoctorDetails details) {
-        if (details == null) return "";
-
-        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(activityContext, details.getSpecialization());
-        if (notes == null || notes.isEmpty()) return "";
-
-        String closingDivTag = "</div>";
-        String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">";
-        String dataSectionTag = "<div class=\"data-section\">";
-        String dataSectionTitleTag = "<div class=\"data-section-title\">"
-                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/advice.svg\" alt=\"\" />"
-                + "<h6>Notes &amp; Precautions</h6>"
-                + "</div>";
-
-        String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
-        String unorderedListOpeningTag = "<ul class=\"items-list\">";
-        String unorderedListClosingTag = "</ul>";
-        String lineBreak = "<br>";
-
-        StringBuilder notesListBuilder = new StringBuilder();
-        for (String note : notes) {
-            notesListBuilder.append("<li>")
-                    .append("<div class=\"d-flex justify-content-between align-items-center\">")
-                    .append("<span>").append(note).append("</span>")
-                    .append("</div>")
-                    .append("</li>");
-        }
-
-        return openingDivTag
-                + dataSectionTag
-                + dataSectionTitleTag
-                + dataSectionContentOpeningTag
-                + unorderedListOpeningTag
-                + notesListBuilder
-                + unorderedListClosingTag
-                + closingDivTag
-                + closingDivTag
-                + closingDivTag
-                + lineBreak;
     }
 
     private String generateDoctorSignatureData(ClsDoctorDetails details) {

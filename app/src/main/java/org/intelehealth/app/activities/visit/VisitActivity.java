@@ -94,7 +94,16 @@ public class VisitActivity extends BaseActivity implements
 
         if (activeStatus != null) {
             mFeatureActiveStatus = activeStatus;
-            featureStatusListener.onFeatureStatusReady(activeStatus);
+            // The feature-status LiveData can fire before VisitReceivedFragment has
+            // attached and called setFeatureStatusListener() - e.g. when the value is
+            // already cached and Room/LiveData delivers it synchronously on subscribe,
+            // which is timing-dependent (seen on some emulators, not on others). Safe
+            // to skip here: mFeatureActiveStatus is cached above, and
+            // setFeatureStatusListener() already delivers it as soon as a listener
+            // registers late.
+            if (featureStatusListener != null) {
+                featureStatusListener.onFeatureStatusReady(activeStatus);
+            }
         }
     }
     public FeatureActiveStatus getFeatureActiveStatus() {

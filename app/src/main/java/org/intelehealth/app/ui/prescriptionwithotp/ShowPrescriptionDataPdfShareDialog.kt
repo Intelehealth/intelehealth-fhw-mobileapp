@@ -30,11 +30,14 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.DialogShareprescBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.UuidDictionary
+import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.models.hwprofile.Profile
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -42,7 +45,6 @@ import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.SessionManager
-import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import org.intelehealth.app.utilities.UrlModifiers
 import timber.log.Timber
 import java.io.File
@@ -211,7 +213,6 @@ class ShowPrescriptionDataPdfShareDialog(
         val vital= formatVitalsAndDiagnostics(prescriptionData.vitals)
         val diagnostic= formatVitalsAndDiagnostics(prescriptionData.diagnostics)
         val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").toString())
-        val specialtyNotes = SpecialtyNotesProvider.getNotesFor(activity, drDetails?.specialization)
 
         val patientDataSections: Map<String, Map<String, String?>> = mapOf(
             "Vitals" to mapOf(PrescriptionDetailsDataKeys.Vitals.toString() to vital),
@@ -223,11 +224,7 @@ class ShowPrescriptionDataPdfShareDialog(
             "Tests" to mapOf(PrescriptionDetailsDataKeys.Tests.toString() to prescriptionData.visitCompleteEncData?.get("Tests")),
             "Referred Specialist" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referred Specialist")),
             "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
-        ) + if (!specialtyNotes.isNullOrEmpty()) {
-            mapOf("Notes & Precautions" to mapOf(PrescriptionDetailsDataKeys.NotesPrecautions.toString() to specialtyNotes.joinToString("\n") { "• $it" }))
-        } else {
-            emptyMap()
-        }
+        )
 
         val patientData = createPatientData(prescriptionData.patient)
 
@@ -274,8 +271,18 @@ class ShowPrescriptionDataPdfShareDialog(
         val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${patient.openmrs_id}"
         val visitDateLine = "${activity.getString(R.string.label_visit_date)} $visitStartDate"
 
+        val abhaNumberLine =
+            AbhaPrescriptionFields.line(activity, R.string.label_abha_number, patient.abhaNumber)
+        val abhaAddressLine = AbhaPrescriptionFields.line(
+            activity,
+            R.string.label_abha_address,
+            VisitAttributeListDAO().getVisitAttributesList_specificVisit(
+                visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
+            ),
+        )
+
         // Combine all data into one string
-        return listOf(fullName, ageGender, patientIdLine,visitDateLine)
+        return listOf(fullName, ageGender, patientIdLine, visitDateLine, abhaNumberLine, abhaAddressLine)
             .filter { it.isNotBlank() }
             .joinToString("\n")
     }
@@ -298,12 +305,13 @@ class ShowPrescriptionDataPdfShareDialog(
     private suspend fun getPatientDetails(patientUuid: String): Patient {
         return withContext(Dispatchers.IO) {
             val db = IntelehealthApplication.inteleHealthDatabaseHelper.readableDatabase
-            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender"), "uuid = ?", arrayOf(patientUuid), null, null, null
+            val cursor = db.query("tbl_patient", arrayOf("openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "phone_number", "gender", "abha_number"), "uuid = ?", arrayOf(patientUuid), null, null, null
             )
             cursor.use {
                 if (it.moveToFirst()) {
                     val patient = Patient().apply {
                         openmrs_id = it.getString(it.getColumnIndexOrThrow("openmrs_id"))
+                        abhaNumber = it.getString(it.getColumnIndexOrThrow("abha_number"))
                         first_name = it.getString(it.getColumnIndexOrThrow("first_name"))
                         middle_name = it.getString(it.getColumnIndexOrThrow("middle_name"))
                         last_name = it.getString(it.getColumnIndexOrThrow("last_name"))

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/margin_16"
+    app:cardElevation="@dimen/margin_8">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_24">
+
+        <TextView
+            android:id="@+id/tv_dialog_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/you_have_an_existing_abha_address_present"
+            android:textAppearance="@style/TextAppearance.Abdm.Subtitle" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_abha_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="3"
+            tools:listitem="@layout/item_abha_address_checklist" />
+
+        <TextView
+            android:id="@+id/tv_error"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_12"
+            android:gravity="center"
+            android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
+            android:visibility="gone"
+            tools:text="@string/you_have_more_than_six_abha_addresses_error"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_proceed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_24"
+            android:text="@string/proceed"
+            android:textColor="@color/white"
+            app:backgroundTint="@color/brand_primary"
+            app:cornerRadius="@dimen/margin_8" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_create_new"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:text="@string/create_new"
+            android:textColor="@color/brand_primary"
+            app:cornerRadius="@dimen/margin_8"
+            app:strokeColor="@color/brand_primary" />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

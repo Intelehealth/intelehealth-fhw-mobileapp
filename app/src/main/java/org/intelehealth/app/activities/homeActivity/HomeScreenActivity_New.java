@@ -66,12 +66,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -102,11 +96,11 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
 import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -810,7 +804,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));*/
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            OptimizedSyncWorker.enqueuePeriodicWork(this);
             //saveToken();
 //            requestPermission();
         }
@@ -1075,6 +1069,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private String mLastTag = "";
+
+    /**
+     * If the Home fragment is the one currently shown, ask it to re-query and
+     * redisplay its prescription count. Safe to call even when Home isn't the
+     * visible fragment - it's just a no-op then.
+     */
+    private void refreshHomePrescriptionCount() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_HOME);
+        if (fragment instanceof HomeFragment_New && fragment.isAdded()) {
+            ((HomeFragment_New) fragment).refreshPrescriptionCount();
+        }
+    }
 
     private void loadFragment(Fragment fragment, String tag) {
 
@@ -1371,6 +1377,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
                     //hideSyncProgressBar(true);
                 }
+
+                if (flagType == AppConstants.SYNC_PULL_DATA_DONE) {
+                    // A pull just finished (manual sync tap, or a background sync
+                    // enqueued after a "new prescription" push notification) -
+                    // refresh the Home card's prescription count right away instead
+                    // of waiting for the fragment to go through onResume().
+                    refreshHomePrescriptionCount();
+                }
             }
             updateLastSyncTime();
 
@@ -1400,7 +1414,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        OptimizedSyncWorker.enqueuePeriodicWork(HomeScreenActivity_New.this);
                     }
                 }, 10000);
             }
@@ -1813,6 +1827,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         //new Thread(() -> {
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
+        CustomLog.e(TAG, "updateLastSyncTime: lastSyncText : " + lastSyncText);
         tvAppLastSync.setText(lastSyncText);
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
@@ -1820,21 +1835,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void syncDataFromHome() {
-        Data workData = new Data.Builder()
-                .putString("fromActivity", "home")
-                .build();
-
-        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(SyncWorkerForHomeScreen.class)
-                .setInputData(workData)
-                .setConstraints(
-                        new Constraints.Builder()
-                                .setRequiredNetworkType(NetworkType.CONNECTED)
-                                .build()
-                )
-                .build();
-
-        WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .enqueue(syncWorkRequest);
+        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext());
     }
 
 }

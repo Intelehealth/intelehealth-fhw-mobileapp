@@ -10,14 +10,12 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.EncounterDAO
-import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.ObsDAO
-import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.EncounterDTO
 import org.intelehealth.app.models.dto.ObsDTO
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
 import org.intelehealth.app.ui.billgeneration.models.BillDetails
 import org.intelehealth.app.ui.billgeneration.utils.BillRate
-import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.exception.DAOException
@@ -137,12 +135,7 @@ class BillRepository(private val sessionManager: SessionManager, private val con
     }
     suspend fun syncOnServer() {
         withContext(Dispatchers.IO) {
-            if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
-                val syncDAO = SyncDAO()
-                val imagesPushDAO = ImagesPushDAO()
-                syncDAO.pushDataApi()
-                imagesPushDAO.patientProfileImagesPush()
-            }        }
-
+            OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext())
+        }
     }
 }

@@ -60,6 +60,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
@@ -73,6 +74,7 @@ import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
+import org.intelehealth.app.utilities.ConsentUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
@@ -239,6 +241,22 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         try {
             visitsDAO.insertPatientToDB(visitDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+
+        // NAS-1752: record Teleconsultation_Consent against this visit. Consent was already
+        // confirmed on the TeleconsultationConsentActivity screen the user just came from -
+        // this is where it is persisted, at the same point VISIT_ABHA_ADDRESS and other visit
+        // attributes are written elsewhere in this app.
+        try {
+            String consentValue = ConsentUtils.buildConsentValue(
+                    sessionManager.getProviderID(), sessionManager.getAppLanguage());
+            new VisitAttributeListDAO().insertVisitAttributes(
+                    visitUuid, consentValue, UuidDictionary.TELECONSULTATION_CONSENT);
+            // TODO(NAS-1752): temporary QA logging, remove once consent testing is done.
+            CustomLog.d("NAS1752", "Teleconsultation_Consent stored - visitUuid=" + visitUuid
+                    + " patientUuid=" + patientDTO.getUuid() + " value=" + consentValue);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -717,6 +735,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 }
                 break;
             case STEP_7_VISIT_SUMMARY:
+                storeAbhaAddressForVisit();
                 insertLocalEnFormatQAValues();
 
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
@@ -737,6 +756,37 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 startActivity(intent1);
                 finish();
                 break;
+        }
+    }
+
+    /**
+     * Snapshots the ABHA address the patient is using onto the visit, so a past visit keeps the
+     * address that was in force when it was created rather than inheriting whichever address is
+     * current later on. Runs at the terminal summary step, which is where the visit is finalised.
+     *
+     * abha_address may be a comma-separated list of every address registered for the patient on our
+     * server; position 0 is the one in use. Upserts because this step can be re-entered.
+     *
+     * Writes nothing when the patient has no ABHA. The column can hold the literal "NA" as well as
+     * being blank, so the guard runs after the list is reduced and treats both as absent — every
+     * reader already hides the label on an empty value, so a placeholder row would carry no meaning.
+     */
+    private void storeAbhaAddressForVisit() {
+        String abhaAddress = new PatientsDAO().getPatientAbhaAddressByUuid(patientUuid);
+        if (abhaAddress == null) return;
+        if (abhaAddress.contains(",")) abhaAddress = abhaAddress.split(",")[0];
+        abhaAddress = abhaAddress.trim();
+        if (abhaAddress.isEmpty() || abhaAddress.equalsIgnoreCase("NA")) return;
+
+        VisitAttributeListDAO visitAttributeListDAO = new VisitAttributeListDAO();
+        try {
+            if (visitAttributeListDAO.isAttributeExistForVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS)) {
+                visitAttributeListDAO.updateVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+            } else {
+                visitAttributeListDAO.insertVisitAttributes(visitUuid, abhaAddress, UuidDictionary.VISIT_ABHA_ADDRESS);
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
     }
 

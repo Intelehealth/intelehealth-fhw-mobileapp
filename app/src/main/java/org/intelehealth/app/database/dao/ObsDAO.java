@@ -2,8 +2,8 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
-import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
+import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET;
 
 import android.content.ContentValues;
@@ -13,9 +13,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
-import org.intelehealth.app.models.dto.VisitDTO;
-import org.intelehealth.app.utilities.CustomLog;
-
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
@@ -24,6 +21,7 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -582,6 +580,13 @@ public class ObsDAO extends BaseDao{
         return value;
     }
 
+    /**
+     * Fetches the vitals for a given encounterUuid and returns a VitalsObject containing the values.
+     *
+     * @param encounterUuid
+     * @return VitalsObject containing the vitals values for the encounter
+     * @throws DAOException
+     */
     public VitalsObject getVitalsForEncounter(String encounterUuid) throws DAOException {
         VitalsObject vitalsObject = new VitalsObject();
         vitalsObject.setHeight(getObsValue(encounterUuid, UuidDictionary.HEIGHT));

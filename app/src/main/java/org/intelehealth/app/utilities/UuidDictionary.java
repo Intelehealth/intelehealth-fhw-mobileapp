@@ -58,6 +58,7 @@ public class UuidDictionary {
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
+    public static final String VISIT_ABHA_ADDRESS = "ca0ec991-0ac4-4572-8c7a-d1b8556429ee";
 
     public static final String SEVERITY = "6593f000-f1f8-4f35-a3b9-8d1909f5c945";
     public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
@@ -97,7 +98,17 @@ public class UuidDictionary {
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";
 
     public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
+    // concept uuid for the AI generated JSON format of the visit summary
     public static final String AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID = "1f770363-262e-4d01-b1df-3eb164d575ef";
 
+    // Consent attributes - NAS-1752. Person attribute types unless noted otherwise. These UUIDs
+    // must be provisioned as attribute types on the OpenMRS server; this app only ever writes
+    // values tagged with them, it never defines them.
+    /** Person attribute type - "Patient_Consent". */
+    public static final String PATIENT_CONSENT = "11b990b9-2798-477a-9aad-073e5459f5d3";
+    /** Visit attribute type - "Teleconsultation_Consent". */
+    public static final String TELECONSULTATION_CONSENT = "ddabcccc-1554-4fb5-bfa2-de596b72a64c";
+    /** Person attribute type - "ABDM_Consent". */
+    public static final String ABDM_CONSENT = "9c8f0974-615e-4dd2-82ea-40cbec9e821b";
 
 }

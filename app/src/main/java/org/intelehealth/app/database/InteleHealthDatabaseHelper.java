@@ -380,6 +380,11 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             db.execSQL(CREATE_ENCOUNTER_INDEX);
             db.execSQL(CREATE_OBS_INDEX);
         }
+        if (oldVersion < 6) {
+            // v5 -> v6: add ABHA identifier columns to tbl_patient (ABDM).
+            db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_number TEXT");
+            db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_address TEXT");
+        }
 
     }
     //new changes for count update-> onconfigure() newly added

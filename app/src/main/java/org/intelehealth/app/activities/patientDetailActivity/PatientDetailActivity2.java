@@ -144,6 +144,7 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.abdm.presentation.AbdmCardDownloader;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -160,6 +161,7 @@ import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
@@ -193,7 +195,7 @@ import okhttp3.ResponseBody;
 public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils.InternetCheckUpdateInterface {
     private static final String TAG = PatientDetailActivity2.class.getSimpleName();
     TextView name_txtview, openmrsID_txt, patientname, gender, patientdob, patientage, phone,
-            postalcode, patientcountry, patientstate, patientdistrict, village, address1, addr2View,
+            postalcode, patientcountry, patientstate, patientdistrict, blockTv, village, address1, addr2View,
             son_daughter_wife, patientoccupation, patientcaste, patienteducation, patienteconomicstatus, patientNationalID,
             guardina_name_tv, guardian_type_tv, contact_type_tv, em_contact_name_tv, em_contact_number_tv,
             tmh_case_number_tv, request_id_tv, relative_phone_num_tv, discipline_tv, department_tv,
@@ -202,11 +204,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     TableRow nameTr, genderTr, dobTr, ageTr, phoneNumTr, guardianTypeTr, guardianNameTr,
             emContactNameTr, emContactTypeTr, emContactNumberTr, postalCodeTr, countryTr,
-            stateTr, districtTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
+            stateTr, districtTr, blockTr, villageCityTr, addressOneTr, addressTwoTr, nidTr, occupationTr, socialCategoryTr,
             educationTr, economicCategoryTr, tmhCaseNumberTr, requestIdTr, relativePhnNumTr, disciplineTr, departmentTr,
             provinceTr, cityTr, registrationAddressOfHfTr,
             innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr,
-            abhaAddressTr, abhaNumberTr;
+            abhaNumberTr, abhaAddressTr;
+    TextView abhaNumberTv, abhaAddressTv;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
@@ -225,6 +228,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     Myreceiver reMyreceive;
     IntentFilter filter;
     Button startVisitBtn;
+    Button btnViewAbhaCard;
     EncounterDTO encounterDTO;
     ImageView cancelBtn;
     //private boolean returning;
@@ -755,6 +759,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         countryTr = findViewById(R.id.country_tr);
         stateTr = findViewById(R.id.state_tr);
         districtTr = findViewById(R.id.district_tr);
+        blockTr = findViewById(R.id.block_tr);
         villageCityTr = findViewById(R.id.village_city_tr);
         guardianTypeTr = findViewById(R.id.guardian_type_table_row);
         addressOneTr = findViewById(R.id.address1_tr);
@@ -783,6 +788,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         patientcountry = findViewById(R.id.country);
         patientstate = findViewById(R.id.state);
         patientdistrict = findViewById(R.id.district);
+        blockTv = findViewById(R.id.block);
         village = findViewById(R.id.village);
         address1 = findViewById(R.id.address1);
         addr2View = findViewById(R.id.addr2View);
@@ -805,6 +811,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         cancelbtn = findViewById(R.id.cancelbtn);
 
         startVisitBtn = findViewById(R.id.startVisitBtn);
+        btnViewAbhaCard = findViewById(R.id.btn_view_abha_card);
+        abhaNumberTr = findViewById(R.id.abha_number_tr);
+        abhaAddressTr = findViewById(R.id.abha_address_tr);
+        abhaNumberTv = findViewById(R.id.abha_number);
+        abhaAddressTv = findViewById(R.id.abha_address);
 
         mCurrentVisitsRecyclerView = findViewById(R.id.rcv_open_visits);
         mCurrentVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -812,14 +823,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         mPastVisitsRecyclerView = findViewById(R.id.rcv_past_visits);
         mPastVisitsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
-        abhaAddressTv = findViewById(R.id.abhaAddress);
+        /*abhaAddressTv = findViewById(R.id.abhaAddress);
         abhaNumberTv = findViewById(R.id.abhaNo);
         abhaAddressTr = findViewById(R.id.trAbhaAddress);
         abhaNumberTr = findViewById(R.id.trAbhaNo);
-
+*/
         fetchAllConfig();
 
         setFullName();
+        setupAbhaDetails();
         initForOpenVisit();
         initForPastVisit();
     }
@@ -965,6 +977,14 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         false,
                         fields,
                         districtTr,
+                        null,
+                        null,
+                        null
+                );
+                case PatientRegConfigKeys.BLOCK -> PatientRegFieldsUtils.INSTANCE.configField(
+                        false,
+                        fields,
+                        blockTr,
                         null,
                         null,
                         null
@@ -1305,24 +1325,22 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             List<String> list = new ArrayList<>();
                             String appLanguage = sessionManager.getAppLanguage();
 
-                            StringBuilder stringBuilder = new StringBuilder();
-                            for (String s : spt) {
-                                String complainName = "";
-                                if (s.isEmpty()) continue;
-                                if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
-                                    continue;
-                                }
+                                StringBuilder stringBuilder = new StringBuilder();
+                                for (String s : spt) {
+                                    String complainName = "";
+                                    if (s.isEmpty()) continue;
+                                    //String s1 =  new String(s.getBytes(), "UTF-8");
+                                    System.out.println(s);
+                                    String[] spt1 = s.split("::");
+                                    complainName = spt1[0];
 
-                                String[] spt1 = s.split("::●");
-                                complainName = spt1[0];
-
-                                //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                    System.out.println(complainName);
-                                    if (!stringBuilder.toString().isEmpty())
-                                        stringBuilder.append(", ");
-                                    stringBuilder.append(complainName);
-                                }
+                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))
+                                            && !complainName.trim().startsWith(VisitUtils.getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()))) {
+                                        System.out.println(complainName);
+                                        if (!stringBuilder.toString().isEmpty())
+                                            stringBuilder.append(", ");
+                                        stringBuilder.append(complainName);
+                                    }
 
                             }
                                 /*StringBuilder stringBuilder = new StringBuilder();
@@ -1346,17 +1364,18 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                         try {
 
-                            Date formatted = currentDate.parse(date);
-                            String visitDate = currentDate.format(formatted);
-                            //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                            PastVisitData pastVisitData = new PastVisitData();
-                            pastVisitData.setVisitDate(visitDate);
-                            pastVisitData.setVisitUUID(visit_id);
-                            pastVisitData.setChiefComplain(visitValue);
-                            pastVisitData.setEncounterVitals(encountervitalsLocal);
-                            pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                            mCurrentVisitDataList.add(pastVisitData);
-                            CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
+                                Date formatted = currentDate.parse(date);
+                                String visitDate = currentDate.format(formatted);
+                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                PastVisitData pastVisitData = new PastVisitData();
+                                pastVisitData.setVisitDate(visitDate);
+                                pastVisitData.setVisitUUID(visit_id);
+                                pastVisitData.setChiefComplain(visitValue);
+                                pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit(visit_id));
+                                mCurrentVisitDataList.add(pastVisitData);
+                                CustomLog.v(TAG, new Gson().toJson(mCurrentVisitDataList));
 
                         } catch (ParseException e) {
                             FirebaseCrashlytics.getInstance().recordException(e);
@@ -1418,6 +1437,55 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         }
     }
 
+    /**
+     * The ABHA address recorded against a visit when it was created. Returns null when the visit has
+     * no such attribute — visits made before the patient had an ABHA, and non-ABHA patients — so the
+     * adapter can hide the label rather than render an empty one.
+     */
+    private String abhaAddressForVisit(String visitUuid) {
+        String value = new VisitAttributeListDAO()
+                .getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS);
+        return (value == null || value.trim().isEmpty()) ? null : value.trim();
+    }
+
+    /**
+     * Shows the ABHA number and address rows in the Other Details card, plus the card button beneath
+     * them. These are not admin-panel config fields like the rest of that table, so visibility is
+     * driven by whether the patient actually has an ABHA linked.
+     *
+     * Both values are read from the database rather than the patient DTO. This method runs during view
+     * init, before the details query has populated the DTO, and it must also work on routes into this
+     * screen whose query does not select the ABHA columns at all. The card image itself may not have
+     * downloaded yet; AbdmCardDownloader reports that case to the user.
+     */
+    private void setupAbhaDetails() {
+        if (patientDTO == null) return;
+        String abhaNumber = patientsDAO.getAbhaNumberByUuid(patientDTO.getUuid());
+        boolean hasAbhaNumber = abhaNumber != null && !abhaNumber.isEmpty() && !abhaNumber.equalsIgnoreCase("NA");
+
+        if (abhaNumberTr != null) abhaNumberTr.setVisibility(hasAbhaNumber ? View.VISIBLE : View.GONE);
+        if (hasAbhaNumber && abhaNumberTv != null) abhaNumberTv.setText(abhaNumber);
+
+        String abhaAddress = patientsDAO.getPatientAbhaAddressByUuid(patientDTO.getUuid());
+        boolean hasAbhaAddress = abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA");
+        if (abhaAddressTr != null) abhaAddressTr.setVisibility(hasAbhaAddress ? View.VISIBLE : View.GONE);
+        if (hasAbhaAddress && abhaAddressTv != null) abhaAddressTv.setText(abhaAddress);
+
+        if (btnViewAbhaCard == null) return;
+        if (!hasAbhaNumber) {
+            btnViewAbhaCard.setVisibility(View.GONE);
+            return;
+        }
+        btnViewAbhaCard.setVisibility(View.VISIBLE);
+        btnViewAbhaCard.setOnClickListener(v -> AbdmCardDownloader.viewCard(this, abhaNumber));
+    }
+
+    /**
+     * Populates the patient card from the local record. The phone is taken solely from the
+     * "Telephone Number" person attribute, never from tbl_patient.phone_number: the pull writes
+     * patients with INSERT OR REPLACE and omits that column, so it is blanked on every sync while the
+     * attribute keeps the real value.
+     */
     public void setDisplay(String dataString) {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
         patientDTO = new PatientDTO();
@@ -1426,7 +1494,8 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         String[] patientColumns = {"uuid", "openmrs_id", "first_name", "middle_name", "last_name", "gender",
                 "date_of_birth", "address1", "address2", "city_village", "state_province",
                 "postal_code", "country", "phone_number", "gender", "sdw",
-                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict", "abha_number", "abha_address"};
+                "patient_photo", "guardian_type", "guardian_name", "contact_type", "em_contact_name", "em_contact_num", "address3", "address6", "countyDistrict",
+                "abha_number", "abha_address"};
         Cursor idCursor = db.query("tbl_patient", patientColumns, patientSelection, patientArgs, null, null, null);
         if (idCursor.moveToFirst()) {
             do {
@@ -1443,7 +1512,6 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 patientDTO.setStateprovince(idCursor.getString(idCursor.getColumnIndexOrThrow("state_province")));
                 patientDTO.setPostalcode(idCursor.getString(idCursor.getColumnIndexOrThrow("postal_code")));
                 patientDTO.setCountry(idCursor.getString(idCursor.getColumnIndexOrThrow("country")));
-                patientDTO.setPhonenumber(idCursor.getString(idCursor.getColumnIndexOrThrow("phone_number")));
                 patientDTO.setGender(idCursor.getString(idCursor.getColumnIndexOrThrow("gender")));
                 patientDTO.setPatientPhoto(idCursor.getString(idCursor.getColumnIndexOrThrow("patient_photo")));
 
@@ -1879,6 +1947,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             patientdistrict.setText(getDistrictTranslated(state, district, sessionManager.getAppLanguage()));
         } else {
             patientdistrict.setText(getResources().getString(R.string.no_district_added));
+        }
+
+        // setting block
+        if (patientDTO.getAddress3() != null && patientDTO.getAddress3().length() > 0) {
+            blockTv.setText(getBlockTranslated(state, district, patientDTO.getAddress3(), sessionManager.getAppLanguage()));
+        } else {
+            blockTv.setText(getResources().getString(R.string.no_block_added));
         }
 
         if (city_village != null) {
@@ -2431,6 +2506,53 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         return desiredVal;
     }
 
+    private String getBlockTranslated(String state, String district, String block, String language) {
+        if (block == null) return block;
+
+        String json = FileUtils.encodeJSON(this, "state_district_tehsil.json").toString();
+        StateDistMaster stateDistMaster = new Gson().fromJson(json, StateDistMaster.class);
+
+        if (stateDistMaster == null || stateDistMaster.getStateDataList() == null) {
+            return block; // Return original if JSON is invalid
+        }
+
+        StateData stateData = stateDistMaster.getStateDataList().stream()
+                .filter(s -> s.getState().equalsIgnoreCase(state))
+                .findFirst()
+                .orElse(null);
+
+        if (stateData == null || stateData.getDistDataList() == null) {
+            return block; // Return original if state or districts are not found
+        }
+
+        DistData districtData = stateData.getDistDataList().stream()
+                .filter(d -> d.getName().equalsIgnoreCase(district))
+                .findFirst()
+                .orElse(null);
+
+        if (districtData == null || districtData.getBlocks() == null) {
+            return block; // Return original if district or blocks are not found
+        }
+
+        Block blockData = districtData.getBlocks().stream()
+                .filter(b -> b.getName().equalsIgnoreCase(block))
+                .findFirst()
+                .orElse(null);
+
+        if (blockData == null) {
+            return block; // Return original if block is not found
+        }
+
+        switch (language.toLowerCase()) {
+            case "hi":
+                return blockData.getNameHindi() != null ? blockData.getNameHindi() : block;
+            case "mr":
+                return blockData.getNameMarathi() != null ? blockData.getNameMarathi() : block;
+            default:
+                return blockData.getName() != null ? blockData.getName() : block;
+        }
+    }
+
     // profile pic download
     public void profilePicDownloaded() {
         UrlModifiers urlModifiers = new UrlModifiers();
@@ -2857,28 +2979,25 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 CustomLog.v(TAG, visitValue);
                                 //►दस्त::● आपको ये लक्षण कब से है• 6 घंटे● दस्त शुरू कैसे हुए?•धीरे धीरे● २४ घंटे में कितनी बार दस्त हुए?•३ से कम बार● दस्त किस प्रकार के है?•पक्का● क्या आपको पिछले महीनो में दस्त शुरू होने से पहले किसी असामान्य भोजन/तरल पदार्थ से अपच महसूस हुआ है•नहीं● क्या आपने आज यहां आने से पहले इस समस्या के लिए कोई उपचार (स्व-दवा या घरेलू उपचार सहित) लिया है या किसी स्वास्थ्य प्रदाता को दिखाया है?•कोई नहीं● अतिरिक्त जानकारी•bsbdbd►क्या आपको निम्न लक्षण है::•उल्टीPatient denies -•दस्त के साथ पेट दर्द•सुजन•मल में खून•बुखार•अन्य [वर्णन करे]
 
-                                String[] spt = visitValue.split("►");
-                                List<String> list = new ArrayList<>();
-                                String appLanguage = sessionManager.getAppLanguage();
-                                StringBuilder stringBuilder = new StringBuilder();
+                                    String[] spt = visitValue.split("►");
+                                    List<String> list = new ArrayList<>();
 
-                                for (String s : spt) {
-                                    String complainName = "";
-                                    if (s.isEmpty()) continue;
-                                    if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
-                                        continue;
-                                    }
+                                    StringBuilder stringBuilder = new StringBuilder();
+                                    for (String s : spt) {
+                                        String complainName = "";
+                                        if (s.isEmpty()) continue;
+                                        //String s1 =  new String(s.getBytes(), "UTF-8");
+                                        System.out.println(s);
+                                        String[] spt1 = s.split("::");
+                                        complainName = spt1[0];
 
-                                    String[] spt1 = s.split("::●");
-                                    complainName = spt1[0];
-
-                                    //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
-                                    if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))) {
-                                        System.out.println(complainName);
-                                        if (!stringBuilder.toString().isEmpty())
-                                            stringBuilder.append(", ");
-                                        stringBuilder.append(complainName);
-                                    }
+                                        if (!complainName.trim().contains(VisitUtils.getTranslatedPatientDenies(sessionManager.getAppLanguage()))
+                                                && !complainName.trim().startsWith(VisitUtils.getTranslatedAssociatedSymptomQString(sessionManager.getAppLanguage()))) {
+                                            System.out.println(complainName);
+                                            if (!stringBuilder.toString().isEmpty())
+                                                stringBuilder.append(", ");
+                                            stringBuilder.append(complainName);
+                                        }
 
                                 }
                                 /*StringBuilder stringBuilder = new StringBuilder();
@@ -2902,18 +3021,19 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                             try {
 
-                                Date formatted = currentDate.parse(date);
-                                String visitDate = currentDate.format(formatted);
-                                //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
-                                PastVisitData pastVisitData = new PastVisitData();
-                                pastVisitData.setVisitDate(visitDate);
-                                pastVisitData.setVisitUUID(visit_id);
-                                pastVisitData.setChiefComplain(visitValue);
-                                pastVisitData.setEncounterVitals(encountervitalsLocal);
-                                pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
-                                mPastVisitDataList.add(pastVisitData);
-                                //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
-                                //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());
+                                    Date formatted = currentDate.parse(date);
+                                    String visitDate = currentDate.format(formatted);
+                                    //createOldVisit(visitDate, visit_id, end_date, visitValue, encountervitalsLocal, encounterlocalAdultintial);
+                                    PastVisitData pastVisitData = new PastVisitData();
+                                    pastVisitData.setVisitDate(visitDate);
+                                    pastVisitData.setVisitUUID(visit_id);
+                                    pastVisitData.setChiefComplain(visitValue);
+                                    pastVisitData.setEncounterVitals(encountervitalsLocal);
+                                    pastVisitData.setEncounterAdultInitial(encounterlocalAdultintial);
+                                    pastVisitData.setAbhaAddressForVisit(abhaAddressForVisit(visit_id));
+                                    mPastVisitDataList.add(pastVisitData);
+                                    //CustomLog.v(TAG, new Gson().toJson(mPastVisitDataList));
+                                    //CustomLog.v(TAG, "mPastVisitDataList size : "+mPastVisitDataList.size());
 
                             } catch (ParseException e) {
                                 FirebaseCrashlytics.getInstance().recordException(e);

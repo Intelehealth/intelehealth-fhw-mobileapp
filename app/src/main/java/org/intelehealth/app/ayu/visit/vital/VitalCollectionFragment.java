@@ -985,8 +985,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             if (results.getSpo2() != null && !results.getSpo2().isEmpty())
                 mSpo2EditText.setText(results.getSpo2());
-            if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty())
+            if (results.getBloodGroup() != null && !results.getBloodGroup().isEmpty()) {
                 mBloodGroupTextView.setText(VisitUtils.getBloodPressureEnStringFromCode(results.getBloodGroup()));
+                mBloodGroupTextView.setTag(results.getBloodGroup());
+            }
 
             if (results.getResp() != null && !results.getResp().isEmpty())
                 mRespEditText.setText(results.getResp());

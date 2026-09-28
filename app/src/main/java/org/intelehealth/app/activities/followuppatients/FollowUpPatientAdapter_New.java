@@ -262,8 +262,12 @@ public class FollowUpPatientAdapter_New extends RecyclerView.Adapter<FollowUpPat
                         if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                             followupDate = StringUtils.en__hi_dob(followupDate);
                         fu_date_txtview.setText(followupDate);
-                    } catch (Exception e) {
+                    } /*catch (Exception e) {
                         fu_date_txtview.setText(followupDateTime);
+                    }*/catch (Exception e){
+                        // Show "N/A" instead of a literal "null" when no remark was entered.
+                        String displayText = followupDateTime.replaceFirst("(?i)Remark:\\s*(null)?\\s*$", "Remark:N/A");
+                        fu_date_txtview.setText(displayText);
                     }
                 }
 
