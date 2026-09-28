@@ -707,11 +707,17 @@ public class EncounterDAO extends BaseDao {
     /**
      * True only for an explicit "...:No". Missing/malformed values default to
      * false so older visits without this obs are unaffected.
+     *
+     * The web app's "No Referral needed" option is saved in the same
+     * "<referral type>:<consent>" shape (e.g. "No referral:No"), but there was no
+     * referral for the patient to decline - it's the normal, non-referred flow,
+     * same as a plain "No referral" value.
      */
     public static boolean isReferralConsentDeclined(String rawConsentValue) {
         if (rawConsentValue == null || rawConsentValue.trim().isEmpty()) return false;
         String[] parts = rawConsentValue.split(":");
         if (parts.length < 2) return false;
+        if (parts[0].trim().regionMatches(true, 0, "No referral", 0, 11)) return false;
         return "no".equalsIgnoreCase(parts[1].trim());
     }
 
