@@ -1583,6 +1583,9 @@
     <!--Strings from excel-->
     <string name="hba1c_range">HbA1c should be in between %1$s and %2$s</string>
     <string name="hba1c">HbA1c</string>
+    <string name="hba1c_lost_connection_tap_scan">Lost connection to HbA1c device. Please tap Scan to reconnect.</string>
+    <string name="scan_devices">Scan Devices</string>
+    <string name="scan_hba1c_device">Scan HbA1c Device</string>
     <string name="who_are_we">Who are we?</string>
     <string name="arogya_sampada_intro">Arogya Sampada is an innovative telemedicine platform designed to bridge healthcare access gap in remote regions by connecting frontline health worker and patient with a virtual doctor to provide high-quality health services</string>
     <string name="provide_prescriptions">Provide prescriptions</string>

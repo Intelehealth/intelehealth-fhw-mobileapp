@@ -1034,6 +1034,9 @@
     <!--Strings from excel-->
     <string name="hba1c_range">HbA1c %1$s आणि %2$s मध्ये असले पाहिजे</string>
     <string name="hba1c">HbA1c</string>
+    <string name="hba1c_lost_connection_tap_scan">HbA1c उपकरणाशी असलेला संपर्क तुटला आहे. पुन्हा जोडणी करण्यासाठी कृपया \'स्कॅन\' (Scan) वर टॅप करा.</string>
+    <string name="scan_devices">उपकरणे स्कॅन करा</string>
+    <string name="scan_hba1c_device">HbA1c उपकरण स्कॅन करा</string>
     <string name="who_are_we">आम्ही कोण आहोत?</string>
     <string name="arogya_sampada_intro">आरोग्य संपदा हे एक अत्याधुनिक टेलिमेडिसिन प्लॅटफॉर्म आहे जे रुग्णांना आणि फ्रंटलाइन आरोग्यसेवा कर्मचाऱ्यांना व्हर्च्युअल डॉक्टरशी जोडते जेणेकरून उच्च दर्जाची वैद्यकीय सेवा मिळते, ज्यामुळे दुर्गम भागात आरोग्यसेवेच्या उपलब्धतेतील तफावत भरून निघते.</string>
     <string name="provide_prescriptions">प्रिस्क्रिप्शन प्रदान करा</string>

@@ -566,7 +566,7 @@ public class VisitCreationActivity extends BaseActivity implements
         prefs.edit().putBoolean(PREF_LOST_CONNECTION_NOTIFIED, true).apply();
         runOnUiThread(() -> Toast.makeText(
                 this,
-                "Lost connection to HbA1c device. Please tap Scan to reconnect.",
+                getString(R.string.hba1c_lost_connection_tap_scan),
                 Toast.LENGTH_LONG).show());
     }
 
