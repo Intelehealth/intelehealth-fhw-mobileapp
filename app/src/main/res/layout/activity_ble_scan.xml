@@ -8,7 +8,7 @@
 
     <Button
         android:id="@+id/btnScan"
-        android:text="Scan Devices"
+        android:text="@string/scan_devices"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

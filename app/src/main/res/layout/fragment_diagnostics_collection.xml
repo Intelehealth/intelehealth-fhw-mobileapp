@@ -197,7 +197,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
                                 android:background="@color/colorPrimary"
-                                android:text="Scan HbA1c Device" />
+                                android:text="@string/scan_hba1c_device" />
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/recyclerDevices"

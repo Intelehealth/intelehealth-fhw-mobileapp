@@ -122,6 +122,10 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
             UuidDictionary.URIC_ACID -> PrescriptionDetailsDataKeys.Diagnostics.URIC_ACID
             UuidDictionary.TOTAL_CHOLESTEROL -> PrescriptionDetailsDataKeys.Diagnostics.TOTAL_CHOLESTEROL
             UuidDictionary.HEMOGLOBIN -> PrescriptionDetailsDataKeys.Diagnostics.HAEMOGLOBIN
+            // HbA1c is saved on the same Vitals encounter as the other diagnostics
+            // (DiagnosticsCollectionFragment) and View/Print already shows it - without
+            // this mapping it was silently dropped here, so the shared PDF never had it.
+            UuidDictionary.DIABETES_HBA1C -> PrescriptionDetailsDataKeys.Diagnostics.DIABETES_HBA1C
             else -> ""
         }
 

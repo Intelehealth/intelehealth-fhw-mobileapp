@@ -182,6 +182,10 @@ public class VisitCreationActivity extends BaseActivity implements
     private ControlCentre mControlCentre;
     private String mHba1cDeviceAddress;
     private static final String PREF_BLE_ADDRESS = "hba1c_ble_address";
+    // true once "Lost connection" has been shown for the current disconnection —
+    // kept in prefs (not a field) so a new/recreated VisitCreationActivity doesn't
+    // show it again for the same disconnection. Cleared on connect or a new Scan.
+    private static final String PREF_LOST_CONNECTION_NOTIFIED = "hba1c_lost_connection_notified";
 
     // Reconnect / resilience
     private final Handler mBleHandler = new Handler(Looper.getMainLooper());
@@ -512,6 +516,9 @@ public class VisitCreationActivity extends BaseActivity implements
         getSharedPreferences(PREFS_HBA1C, MODE_PRIVATE)
                 .edit()
                 .putString(PREF_BLE_ADDRESS, deviceAddress)
+                // User explicitly picked a device from Scan — a new connection
+                // attempt, so a failure after this is a new disconnection event
+                .remove(PREF_LOST_CONNECTION_NOTIFIED)
                 .apply();
         mUserInitiatedDisconnect = false;
         mReconnectAttempt = 0;
@@ -525,10 +532,7 @@ public class VisitCreationActivity extends BaseActivity implements
         if (mReconnectAttempt >= MAX_RECONNECT_ATTEMPTS) {
             Log.w("HBA1C_DEBUG", "scheduleReconnect: giving up after "
                     + mReconnectAttempt + " attempts");
-            runOnUiThread(() -> Toast.makeText(
-                    this,
-                    "Lost connection to HbA1c device. Please tap Scan to reconnect.",
-                    Toast.LENGTH_LONG).show());
+            notifyLostConnectionOnce();
             return;
         }
         // Exponential backoff: 2s → 4s → 8s → 16s → 32s
@@ -543,6 +547,27 @@ public class VisitCreationActivity extends BaseActivity implements
                 startHba1cControlCentre(mHba1cDeviceAddress);
             }
         }, delay);
+    }
+
+    /**
+     * Shows "Lost connection" once per disconnection. After giving up, the SDK
+     * keeps firing setConnectionStatus(false) for every failed connect it retries,
+     * and every new VisitCreationActivity auto-connects to the saved address and
+     * gives up again - each of those used to show the Toast again over whichever
+     * visit step was on screen. Runs on the UI thread (via setConnectionStatus),
+     * so the check-and-set can't race.
+     */
+    private void notifyLostConnectionOnce() {
+        SharedPreferences prefs = getSharedPreferences(PREFS_HBA1C, MODE_PRIVATE);
+        if (prefs.getBoolean(PREF_LOST_CONNECTION_NOTIFIED, false)) {
+            Log.d("HBA1C_DEBUG", "notifyLostConnectionOnce: already shown for this disconnection — skip");
+            return;
+        }
+        prefs.edit().putBoolean(PREF_LOST_CONNECTION_NOTIFIED, true).apply();
+        runOnUiThread(() -> Toast.makeText(
+                this,
+                getString(R.string.hba1c_lost_connection_tap_scan),
+                Toast.LENGTH_LONG).show());
     }
 
     private void registerBluetoothStateReceiver() {
@@ -673,6 +698,9 @@ public class VisitCreationActivity extends BaseActivity implements
             if (isConnected) {
                 mReconnectAttempt = 0;
                 mBleHandler.removeCallbacksAndMessages(null);
+                // Reconnected — the next disconnection is a new event and may notify again
+                getSharedPreferences(PREFS_HBA1C, MODE_PRIVATE)
+                        .edit().remove(PREF_LOST_CONNECTION_NOTIFIED).apply();
 
                 // Delay before signalling ready — CCCD write needs time to complete
                 // BioHermes broadcasts ONCE when countdown ends — if CCCD not done,

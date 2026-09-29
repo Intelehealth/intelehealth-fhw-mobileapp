@@ -657,6 +657,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         filter.setOnClickListener(v -> {
             // filter options
+            updateEndVisitMenuItemState();
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
@@ -687,6 +688,29 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+    }
+
+    // Grey out "End Visit" while a NAMCO referral is still on the doctor's Interim
+    // Prescription - mirrors VisitDetailsActivity's interimPrescriptionActive gating.
+    // hasPrescription can't be used here: downloadPrescriptionDefault() also sets it
+    // for the interim prescription's obs.
+    private void updateEndVisitMenuItemState() {
+        if (incomplete_act == null) return;
+        boolean interimPrescriptionActive = isInterimPrescriptionActive();
+        incomplete_act.setEnabled(!interimPrescriptionActive);
+        incomplete_act.setAlpha(interimPrescriptionActive ? 0.5f : 1f);
+    }
+
+    private boolean isInterimPrescriptionActive() {
+        try {
+            EncounterDAO encounterDAO = new EncounterDAO();
+            String referralValue = encounterDAO.fetchReferredSpecialistValue(visitID);
+            if (referralValue == null || referralValue.trim().isEmpty()) return false;
+            return !encounterDAO.isReferralDeclined(visitID) && !encounterDAO.isPrescriptionReceived(visitID);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return false;
+        }
     }
 
     private void showEndVisitConfirmationDialog() {

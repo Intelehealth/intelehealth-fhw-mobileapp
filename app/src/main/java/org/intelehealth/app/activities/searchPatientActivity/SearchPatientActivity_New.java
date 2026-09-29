@@ -72,6 +72,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -536,7 +537,8 @@ public class SearchPatientActivity_New extends BaseActivity {
                 patientDTO.setSpecialistPrescription(true); // specialist already completed it
                 return;
             }
-            String destination = EncounterDAO.parseReferralDestination(referralValue);
+            String destination = StringUtils.localizeReferralHospital(
+                    EncounterDAO.parseReferralDestination(referralValue), sessionManager.getAppLanguage(), "रुग्णालयाच्या");
             patientDTO.setReferralWaitingLabel(getString(R.string.waiting_for_specialist, destination));
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
