@@ -25,6 +25,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -346,7 +347,9 @@ public class VisitReferralFragment extends Fragment {
                 : (gender != null ? gender : "");
 
         VisitStatusAdapter.Badge badge = new VisitStatusAdapter.Badge(
-                getString(R.string.waiting_for_specialist, EncounterDAO.parseReferralDestination(referralValue)),
+                getString(R.string.waiting_for_specialist, StringUtils.localizeReferralHospital(
+                        EncounterDAO.parseReferralDestination(referralValue),
+                        new SessionManager(requireContext()).getAppLanguage(), "रुग्णालयाच्या")),
                 VisitStatusAdapter.BadgeColor.ORANGE);
 
         return new VisitStatusAdapter.VisitStatusItem(

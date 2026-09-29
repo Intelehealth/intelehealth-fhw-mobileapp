@@ -1596,7 +1596,7 @@
     <string name="active_referrals">सक्रिय रेफरल्स</string>
     <string name="patient_waiting_for_specialist">%1$d रुग्ण तज्ज्ञ डॉक्टरांची वाट पाहत आहे</string>
     <string name="patients_waiting_for_specialist">%1$d रुग्ण तज्ज्ञ डॉक्टरांची वाट पाहत आहेत</string>
-    <string name="waiting_for_specialist">%1$s तज्ज्ञ डॉक्टरांची वाट पाहत आहे</string>
+    <string name="waiting_for_specialist">%1$s तज्ञांची प्रतीक्षा</string>
     <string name="no_referrals_found">कोणतेही रेफरल आढळले नाही</string>
     <string name="specialist_prescription">तज्ज्ञ डॉक्टरांचे प्रिस्क्रिप्शन</string>
     <string name="latest">नवीनतम</string>
