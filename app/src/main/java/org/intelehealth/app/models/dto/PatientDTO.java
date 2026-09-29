@@ -4,11 +4,8 @@ package org.intelehealth.app.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.intelehealth.abdm.utils.AbdmUtils;
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 public class PatientDTO implements Serializable {
 
@@ -707,23 +704,23 @@ public class PatientDTO implements Serializable {
     @Expose
     private String address3;
 
-    public String getAbhaAddress() {
-        return abhaAddress;
-    }
-
-    public String getFormattedAbhaAddress() {
-        return AbdmUtils.formatAbhaAddress(abhaAddress);
-    }
-
-    public void setAbhaAddress(String abhaAddress) {
-        this.abhaAddress = abhaAddress;
-    }
-
-    public String getAbhaNumber() {
-        return abhaNumber;
-    }
-
-    public void setAbhaNumber(String abhaNumber) {
-        this.abhaNumber = abhaNumber;
-    }
+//    public String getAbhaAddress() {
+//        return abhaAddress;
+//    }
+//
+//    public String getFormattedAbhaAddress() {
+//        return AbdmUtils.formatAbhaAddress(abhaAddress);
+//    }
+//
+//    public void setAbhaAddress(String abhaAddress) {
+//        this.abhaAddress = abhaAddress;
+//    }
+//
+//    public String getAbhaNumber() {
+//        return abhaNumber;
+//    }
+//
+//    public void setAbhaNumber(String abhaNumber) {
+//        this.abhaNumber = abhaNumber;
+//    }
 }

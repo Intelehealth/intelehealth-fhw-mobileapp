@@ -29,9 +29,6 @@ public class Identifier {
         this.identifier = identifier;
     }
 
-    @SerializedName("identifier")
-    @Expose
-    private String identifier;
 
     public String getIdentifierType() {
         return identifierType;
@@ -57,12 +54,6 @@ public class Identifier {
         this.preferred = preferred;
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
 
 }

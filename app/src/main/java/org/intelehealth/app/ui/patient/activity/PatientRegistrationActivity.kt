@@ -15,18 +15,15 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
-import org.intelehealth.abdm.constants.AbdmConstant
-import org.intelehealth.abdm.model.AbhaProfileResponse
-import org.intelehealth.abdm.model.OTPVerificationResponse
 import org.intelehealth.abdm.result.AbdmAbhaProfile
 import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.BuildConfig
@@ -81,15 +78,10 @@ class PatientRegistrationActivity : BaseActivity() {
         binding = ActivityPatientRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val controller = WindowInsetsControllerCompat(window, window.decorView)
+        val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
         controller.isAppearanceLightNavigationBars = true
         controller.isAppearanceLightStatusBars = true
-
-// NAS solution
-//        val controller =
-//            WindowInsetsControllerCompat(window, window.decorView)
-//        controller.isAppearanceLightNavigationBars = true
-//        controller.isAppearanceLightStatusBars = true
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent)) { view: View, insets: WindowInsetsCompat ->
 
@@ -163,17 +155,6 @@ class PatientRegistrationActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
-            patientViewModel.accessToken = it.getStringExtra(AbdmConstant.ACCESS_TOKEN)
-            patientViewModel.xToken = it.getStringExtra(AbdmConstant.X_TOKEN)
-
-            patientViewModel.otpResponse = it.getSerializableExtra(
-                AbdmConstant.PAYLOAD
-            ) as? OTPVerificationResponse
-
-            patientViewModel.abhaResponse = it.getSerializableExtra(
-                AbdmConstant.MOBILE_PAYLOAD
-            ) as? AbhaProfileResponse
-
             patientId?.let { id ->
                 patientViewModel.isEditMode = true
                 binding.isEditMode = patientViewModel.isEditMode
@@ -229,24 +210,20 @@ class PatientRegistrationActivity : BaseActivity() {
             else null
 
             parentPatientId?.let {
-                patientViewModel.loadPatientDetails(parentPatientId)
-                    .observe(this@PatientRegistrationActivity) {
-                        it ?: return@observe
-                        patientViewModel.handleResponse(it) { patient ->
-                            address1 = patient.address1 // household value
-                            householdLinkingUUIDlinking = patient.householdLinkingUUIDlinking
-                            cityvillage = patient.cityvillage
-                            postalcode = patient.postalcode
-                            address3 =
-                                patient.address3//after migration discussion block will be saved in address3
+                patientViewModel.loadPatientDetails(parentPatientId).observe(this@PatientRegistrationActivity) {
+                    it ?: return@observe
+                    patientViewModel.handleResponse(it) { patient ->
+                        address1 = patient.address1 // household value
+                        householdLinkingUUIDlinking = patient.householdLinkingUUIDlinking
+                        cityvillage = patient.cityvillage
+                        postalcode = patient.postalcode
+                        address3 = patient.address3//after migration discussion block will be saved in address3
 
-                            // TODO: add postalcode, village, state, block, district, country.
-                            Log.v(
-                                "Familyyy", "patreg: " + address1 + " :" + cityvillage + " : "
-                                        + postalcode + " : " + householdLinkingUUIDlinking
-                            )
-                        }
+                        // TODO: add postalcode, village, state, block, district, country.
+                        Log.v("Familyyy", "patreg: " + address1 + " :" + cityvillage + " : "
+                                + postalcode + " : " + householdLinkingUUIDlinking)
                     }
+                }
             }
 
             seedFromAbhaIfPresent(this)
@@ -474,10 +451,7 @@ class PatientRegistrationActivity : BaseActivity() {
                 binding.otherActiveStatus = it.activeStatusPatientOther
             }
             patientViewModel.activeStatusRosterSection = it.activeStatusRosterQuestionnaireSection
-            Log.d(
-                "TAG",
-                "onFeatureActiveStatusLoaded: FeatureActiveStatus : " + Gson().toJson(activeStatus)
-            )
+            Log.d("TAG", "onFeatureActiveStatusLoaded: FeatureActiveStatus : "+Gson().toJson(activeStatus))
         }
     }
 

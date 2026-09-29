@@ -1,3 +1,4 @@
+/*
 package org.intelehealth.app.utilities
 
 import android.app.Activity
@@ -106,4 +107,4 @@ class AbhaCardDownloadUtil(
         )
         return File(dir, "${patientDto.abhaNumber}.png")
     }
-}
+}*/

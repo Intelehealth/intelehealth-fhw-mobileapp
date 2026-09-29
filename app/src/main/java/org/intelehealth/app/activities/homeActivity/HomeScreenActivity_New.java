@@ -76,7 +76,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.abdm.utils.AbdmManager;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
@@ -323,7 +322,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         // set text as per local language
                         String lng = sessionManager.getAppLanguage();
                         String title = activeSection.getLang().get(lng);
-                        if (title != null && !title.trim().isEmpty()) {
+                         if (title != null && !title.trim().isEmpty()) {
                             mMyAchievementsTitle = title;
 
                         } else {
@@ -390,10 +389,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
 
-        setStatusBarChanges();
-
-
-        //enableProperPadding();
+        enableProperPadding();
 
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
@@ -438,50 +434,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setMigration(true);
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
         loadFeatureActiveStatus();
-        initializeAbdmManager();
-    }
-
-    private void initializeAbdmManager() {
-        AbdmManager.setBaseUrl(BuildConfig.SERVER_URL);
-        AbdmManager.setEncoded(sessionManager.getEncoded());
-        AbdmManager.setLocationUuid(sessionManager.getLocationUuid());
-        AbdmManager.setHwFullName(sessionManager.getChwname());
-        AbdmManager.setDbClient(IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb());
-    }
-
-    private void setStatusBarChanges() {
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-        getWindow().setNavigationBarColor(Color.TRANSPARENT);
-
-        WindowInsetsControllerCompat controller =
-                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
-        controller.setAppearanceLightNavigationBars(true);
-        controller.setAppearanceLightStatusBars(false);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return WindowInsetsCompat.CONSUMED;
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationview), (view, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            // Getting current layout params and cast to MarginLayoutParams
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-
-            // Apply insets as margins
-            lp.leftMargin = systemBars.left;
-            lp.rightMargin = systemBars.right;
-            lp.bottomMargin = systemBars.bottom;
-            lp.topMargin = systemBars.top;
-
-            // Reapplying the updated layout params
-            view.setLayoutParams(lp);
-
-            return WindowInsetsCompat.CONSUMED;
-        });
-
     }
 
     private void checkAlarmAndReminderPermission() {

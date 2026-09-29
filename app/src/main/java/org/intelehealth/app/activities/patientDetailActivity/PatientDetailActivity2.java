@@ -1,7 +1,5 @@
 package org.intelehealth.app.activities.patientDetailActivity;
 
-import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
-import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
 import static org.intelehealth.app.ui.rosterquestionnaire.utilities.RoasterConstantKt.FEMALE;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 import static org.intelehealth.app.utilities.StringUtils.en__as_dob;
@@ -50,7 +48,6 @@ import static org.intelehealth.app.utilities.StringUtils.switch_ta_education_edi
 import static org.intelehealth.app.utilities.StringUtils.switch_te_caste_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_economic_edit;
 import static org.intelehealth.app.utilities.StringUtils.switch_te_education_edit;
-import static org.intelehealth.app.utilities.StringUtils.translateLocation;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
@@ -71,23 +68,6 @@ import android.os.Environment;
 import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.identificationActivity.model.Block;
-import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
-import org.intelehealth.app.activities.identificationActivity.model.StateData;
-import org.intelehealth.app.activities.identificationActivity.model.Village;
-import org.intelehealth.app.models.dto.PatientAttributesDTO;
-
-import org.intelehealth.app.models.FamilyMemberRes;
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.models.dto.PatientAttributesDTO;
-import org.intelehealth.app.models.pushRequestApiCall.Attribute;
-import org.intelehealth.app.ui.householdSurvey.HouseholdSurveyActivity;
-import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
-import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
-import org.intelehealth.app.utilities.CustomLog;
-
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -119,10 +99,15 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
+import org.intelehealth.abdm.presentation.AbdmCardDownloader;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.identificationActivity.model.Block;
 import org.intelehealth.app.activities.identificationActivity.model.DistData;
+import org.intelehealth.app.activities.identificationActivity.model.GramPanchayat;
+import org.intelehealth.app.activities.identificationActivity.model.StateData;
 import org.intelehealth.app.activities.identificationActivity.model.StateDistMaster;
+import org.intelehealth.app.activities.identificationActivity.model.Village;
 import org.intelehealth.app.activities.searchPatientActivity.SearchPatientActivity_New;
 import org.intelehealth.app.activities.visit.adapter.PastVisitListingAdapter;
 import org.intelehealth.app.activities.visit.model.PastVisitData;
@@ -136,17 +121,24 @@ import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.databinding.ActivityPatientDetail2Binding;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.EncounterDTO;
+import org.intelehealth.app.models.dto.PatientAttributesDTO;
 import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.models.pushRequestApiCall.Attribute;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.abdm.presentation.AbdmCardDownloader;
+import org.intelehealth.app.ui.householdSurvey.HouseholdSurveyActivity;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
+import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity;
+import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage;
 import org.intelehealth.app.utilities.AgeUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -161,7 +153,6 @@ import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.fields.data.RegFieldRepository;
@@ -209,7 +200,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             provinceTr, cityTr, registrationAddressOfHfTr,
             innTr, codeOfHealthFacilityTr, healthFacilityNameTr, codeOfDepartmentTr, householdNumberTr,
             abhaNumberTr, abhaAddressTr;
-    TextView abhaNumberTv, abhaAddressTv;
+    //TextView abhaNumberTv, abhaAddressTv;
 
     SessionManager sessionManager = null;
     //    Patient patientDTO = new Patient();
