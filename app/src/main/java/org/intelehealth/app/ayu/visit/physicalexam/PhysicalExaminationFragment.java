@@ -196,6 +196,10 @@ public class PhysicalExaminationFragment extends Fragment  {
             mQuestionsListingAdapter = new QuestionsListingAdapter(recyclerView, requireActivity(), false, true, physicalExam, 0, mRootComplainBasicInfoHashMap, mIsEditMode, new OnItemSelection() {
                 @Override
                 public void onSelect(Node node, int index, boolean isSkipped, Node parentNode) {
+                    // avoid the scroll for old data change
+                    if (mCurrentComplainNodeOptionsIndex - index >= 1) {
+                        return;
+                    }
                     if (isSkipped) {
                         mQuestionsListingAdapter.geItems().get(index).setSelected(false);
                         mQuestionsListingAdapter.geItems().get(index).setDataCaptured(false);
@@ -662,20 +666,11 @@ public class PhysicalExaminationFragment extends Fragment  {
     }
 
     /**
-     * Called when there are no more exam questions to ask in this protocol —
-     * the LAST sound (or any other final question) has been answered.
-     *
-     * Sequence:
-     *   1. STEP_4_PHYSICAL_SUMMARY_EXAMINATION — refreshes the side summary panel
-     *      so the captured exam observations show up there.
-     *   2. STEP_5_PAST_MEDICAL_HISTORY — auto-advances the body fragment to the
-     *      next major step (Past Medical History), since otherwise the user is
-     *      stuck on the completed exam screen with no Continue button.
-     *
+     * Called when the last exam question has been answered.
+     * Saves the exam and shows its preview (STEP_4_PHYSICAL_SUMMARY_EXAMINATION);
+     * the preview's Proceed button moves on to Past Medical History.
      * Edit mode keeps the original "click Submit to proceed" behavior.
      */
-    private boolean mAdvancedToHistory = false;
-
     private void finishPhysicalExamAndAdvance() {
         if (mIsEditMode) {
             Toast.makeText(requireActivity(),
@@ -683,30 +678,8 @@ public class PhysicalExaminationFragment extends Fragment  {
                     Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // One-shot: avoid double-transition if both the sound_done listener
-        // and the onAyuDeviceRequest safety-net both fire in the same flow.
-        if (mAdvancedToHistory) {
-            Log.d("SOUND_FLOW", "finishPhysicalExamAndAdvance: already advanced; ignoring");
-            return;
-        }
-        mAdvancedToHistory = true;
-
-        Log.d("SOUND_FLOW", "Physical exam complete — advancing to past history");
-
-        // 1) Refresh the summary side panel.
-    /*    mActionListener.onFormSubmitted(
-                VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION,
-                mIsEditMode,
-                null
-        );*/
-
-        // 2) Move the main body to the next major step (Past Medical History).
-        // Both transactions go through the FragmentManager queue and commit in
-        // order; the summary panel and the body replacement target different
-        // containers, so they don't conflict.
         mActionListener.onFormSubmitted(
-                VisitCreationActivity.STEP_5_PAST_MEDICAL_HISTORY,
+                VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION,
                 mIsEditMode,
                 null
         );
