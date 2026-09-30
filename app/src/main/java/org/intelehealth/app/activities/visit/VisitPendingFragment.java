@@ -67,6 +67,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -648,7 +649,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     boolean isExist = false;
                     for (PrescriptionModel item : recentList) {
-                        if (item.getOpenmrs_id().equals(model.getOpenmrs_id())) {
+                        if (Objects.equals(item.getOpenmrs_id(), model.getOpenmrs_id())) { // openmrs_id is null until server assigns it
                             isExist = true;
                             break;
                         }
@@ -758,7 +759,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     boolean isExist = false;
                     for (PrescriptionModel item : recentList) {
-                        if (item.getOpenmrs_id().equals(model.getOpenmrs_id())) {
+                        if (Objects.equals(item.getOpenmrs_id(), model.getOpenmrs_id())) { // openmrs_id is null until server assigns it
                             isExist = true;
                             break;
                         }
