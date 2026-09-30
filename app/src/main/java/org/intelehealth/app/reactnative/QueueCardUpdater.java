@@ -13,6 +13,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
 
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.knowledgeEngine.Node;
@@ -253,14 +254,13 @@ public final class QueueCardUpdater {
         }
         String normalized = raw.replace("?<b>", Node.bullet_arrow);
         for (String part : StringUtils.split(normalized, Node.bullet_arrow)) {
-            if (part == null) {
+            if (part == null || isAssociatedSymptomsChunk(part)) {
                 continue;
             }
             int colon = part.indexOf(':');
             String name = (colon >= 0 ? part.substring(0, colon) : part)
                     .replaceAll("<b>", "")
                     .replaceAll("</b>", "")
-                    .replaceAll(Node.ASSOCIATE_SYMPTOMS, "")
                     .trim();
             if (!name.isEmpty() && !symptoms.contains(name)) {
                 symptoms.add(name);
@@ -268,6 +268,30 @@ public final class QueueCardUpdater {
         }
         return symptoms;
     }
+
+    /**
+     * True for the associated-symptoms block of the complaint blob, which must
+     * not be shown as a chief-complaint tag. Matches both formats the visit
+     * summary screen handles: the HTML "Associated symptoms" header and the
+     * question/answer "Do you have the following symptom(s)?" / "Patient
+     * denies -" form, in each supported language.
+     */
+    private static boolean isAssociatedSymptomsChunk(String part) {
+        String text = part.replaceAll("<.*?>", "").trim().toLowerCase();
+        if (text.startsWith(Node.ASSOCIATE_SYMPTOMS.toLowerCase())
+                || text.contains("patient reports -")) {
+            return true;
+        }
+        for (String lang : ASSOCIATED_SYMPTOM_LANGS) {
+            if (text.contains(VisitUtils.getTranslatedAssociatedSymptomQString(lang).toLowerCase())
+                    || text.contains(VisitUtils.getTranslatedPatientDenies(lang).toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static final String[] ASSOCIATED_SYMPTOM_LANGS = {"en", "hi", "or"};
 
     /**
      * Minutes from now until an ISO-8601 instant — the {@code etaTime} the

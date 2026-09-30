@@ -52,8 +52,7 @@ interface PatientQueueProps {
  *
  * Hosted natively via a ReactFragment (component name "PatientQueueModule")
  * inside the bottom-nav host. The `queue` prop is supplied by the native
- * fragment from VisitsDAO; when absent (e.g. standalone dev) it falls back to
- * a small mock set.
+ * fragment from the local queue table (tbl_queue).
  */
 function PatientQueue({
   queue: queueProp,
@@ -88,47 +87,9 @@ function PatientQueue({
     return () => subscription.remove();
   }, []);
 
-  // Fallback mock used only when the native host doesn't supply data.
-  const mockQueue: QueueListItemProps[] = [
-    {
-      queueNumber: 'Q-104',
-      patientName: 'Anthony G',
-      gender: 'M',
-      age: 50,
-      patientId: 'ID-987654jK',
-      symptoms: ['Abdominal Pain', 'Nausea', 'Fever'],
-      position: 1,
-      status: 'onCall',
-      time: '04:32',
-    },
-    {
-      queueNumber: 'Q-105',
-      patientName: 'Anthony G',
-      gender: 'M',
-      age: 50,
-      patientId: 'ID-987654jK',
-      symptoms: ['Abdominal Pain', 'Nausea', 'Fever'],
-      position: 2,
-      status: 'nextInQueue',
-      time: '02:59',
-    },
-    {
-      queueNumber: 'Q-106',
-      patientName: 'Anthony G',
-      gender: 'M',
-      age: 50,
-      patientId: 'ID-987654jK',
-      symptoms: ['Abdominal Pain', 'Nausea', 'Fever'],
-      position: 3,
-      status: 'waiting',
-      time: '08:59',
-    },
-  ];
-
-  // Show mock data for now; actual data disabled temporarily.
-//   const source = queueProp && queueProp.length > 0 ? queueProp : mockQueue;
-//   const source = mockQueue;
-    const source = queueProp;
+  // Rows come from the native host (tbl_queue, filled by the pull-data sync);
+  // an absent prop renders an empty list.
+  const source = queueProp ?? [];
   // Attach a stable list key per row (native rows have no `key`).
   const queue: (QueueListItemProps & {key: string})[] = source.map(
     (item, index) => ({...item, key: `${item.patientId ?? item.queueNumber}-${index}`}),
@@ -154,7 +115,7 @@ function PatientQueue({
   // re-read or native bridge traffic per tick.
   const [now, setNow] = useState(() => Date.now());
   // Only run the timer when at least one visible row actually has an instant to
-  // count against (skips mock/timeless data and empty lists).
+  // count against (skips timeless rows and empty lists).
   const hasLiveTime = visibleQueue.some(item => item.etaAt || item.connectedAt);
 
   useEffect(() => {

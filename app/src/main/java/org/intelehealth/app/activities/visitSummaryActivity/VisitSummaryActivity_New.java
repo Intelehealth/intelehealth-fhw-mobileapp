@@ -567,11 +567,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void updateQueueStatusBanner() {
 
         // QMS (Queue Management System) gate: only show the top queue banner
-        // when QMS is configured and visit not ended
+        // when QMS is configured, the visit has been submitted (Send Visit adds the
+        // speciality attribute) and the visit is not ended
         boolean isQmsConfigured = new PreferenceHelper(this)
                 .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-        if (isQmsConfigured && !TextUtils.isEmpty(visitUuid) && !isVisitEnded(visitUuid)) {
+        boolean isVisitSubmitted = !TextUtils.isEmpty(visitUuid) && speciality_row_exist_check(visitUuid);
+        if (isQmsConfigured && isVisitSubmitted && !isVisitEnded(visitUuid)) {
             loadQueueStatusBanner(visitUuid);
+        } else {
+            View container = findViewById(R.id.vs_queue_banner_container);
+            if (container != null) {
+                container.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -583,14 +590,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private void loadQueueStatusBanner(String visitUuid) {
         QueueRepository queueRepository = new QueueRepository(new QueueDAO());
         Executors.newSingleThreadExecutor().execute(() -> {
-            QueueRow visitRow = queueRepository.getQueueRowForVisit(visitUuid);
-            // TODO: testing only — remove this fallback. When this visit has no
-            // queue row, show the first row in tbl_queue (dummy record).
-            if (visitRow == null) {
-                List<QueueRow> rows = queueRepository.getQueueList(1, 0);
-                visitRow = rows.isEmpty() ? null : rows.get(0);
-            }
-            QueueRow row = visitRow;
+            QueueRow row = queueRepository.getQueueRowForVisit(visitUuid);
             runOnUiThread(() -> {
                 if (row != null && !isFinishing() && !isDestroyed()) {
                     addQueueStatusBanner(row);
@@ -3783,6 +3783,8 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             // session set before fetchingIntent() re-applies the docs edit mode.
                             sessionAddedDocUuids.clear();
                             fetchingIntent();
+                            // Visit is now submitted - show the queue status banner.
+                            updateQueueStatusBanner();
                             // Collapse the additional-notes section after sending so the visit returns
                             // to a tidy, view-like state (the note field no longer stays open/focused).
                             // The user can re-expand it to edit until the doctor starts. Keep the

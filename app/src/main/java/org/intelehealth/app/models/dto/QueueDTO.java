@@ -49,6 +49,12 @@ public class QueueDTO {
     @Expose
     private int etaMinutes;
 
+    // ISO-8601 instant the patient is expected to be seen; drives the live
+    // wait-time countdown / "Overdue" count-up on the queue list.
+    @SerializedName("etaAt")
+    @Expose
+    private String etaAt;
+
     @SerializedName("etaModelUsed")
     @Expose
     private String etaModelUsed;
@@ -151,6 +157,10 @@ public class QueueDTO {
 
     public int getEtaMinutes() {
         return etaMinutes;
+    }
+
+    public String getEtaAt() {
+        return etaAt;
     }
 
     public String getEtaModelUsed() {

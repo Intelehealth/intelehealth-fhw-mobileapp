@@ -1,7 +1,6 @@
 package org.intelehealth.app.ui.queue.repository
 
 import android.database.Cursor
-import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.QueueDAO
 import org.intelehealth.app.ui.queue.model.QueueRow
 
@@ -20,18 +19,20 @@ class QueueRepository(private val queueDao: QueueDAO) {
      * [limit]/[offset] (same convention as VisitsDAO's listing queries). Runs a
      * synchronous query, so call it off the main thread (the ViewModel does).
      */
-    fun getQueueList(limit: Int, offset: Int): List<QueueRow> =
-        queueDao.getQueueWithPatient(limit, offset) { cursor -> mapRow(cursor) }
-            // Resolve the chief complaint from each visit's obs AFTER the queue
-            // cursor is closed (so we don't run a nested query mid-iteration).
-            // Still off the main thread — the ViewModel calls this on IO.
-            .map { row ->
-                row.copy(
-                    chiefComplaint = row.visitUuid
-                        ?.takeIf { it.isNotBlank() }
-                        ?.let { EncounterDAO.getChiefComplaint(it) }
-                )
-            }
+    fun getQueueList(limit: Int, offset: Int): List<QueueRow> {
+        val rows = queueDao.getQueueWithPatient(limit, offset) { cursor -> mapRow(cursor) }
+        // Resolve the chief complaint from each visit's obs AFTER the queue
+        // cursor is closed (so we don't run a nested query mid-iteration).
+        // Still off the main thread — the ViewModel calls this on IO. Read on the
+        // queue's own connection (QueueDAO), same query as EncounterDAO's.
+        return rows.map { row ->
+            row.copy(
+                chiefComplaint = row.visitUuid
+                    ?.takeIf { it.isNotBlank() }
+                    ?.let { queueDao.getChiefComplaint(it) }
+            )
+        }
+    }
 
     /**
      * The queue row for a single visit (Visit Summary queue banner), mapped the

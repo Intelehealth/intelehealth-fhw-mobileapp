@@ -58,19 +58,27 @@ const STATUS_CONFIG: Record<QueueStatus, StatusConfig> = {
   },
 };
 
-// Milliseconds -> "MM:SS" (minutes may exceed 99), clamped at zero.
+// Milliseconds -> "MM:SS", or "HH:MM:SS" once it reaches an hour (so long
+// waits read as 05:18:28 rather than 318:28). Clamped at zero.
 function formatMmSs(ms: number): string {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-  const mm = Math.floor(totalSeconds / 60);
+  const hh = Math.floor(totalSeconds / 3600);
+  const mm = Math.floor((totalSeconds % 3600) / 60);
   const ss = totalSeconds % 60;
-  return `${String(mm).padStart(2, '0')}:${String(ss).padStart(2, '0')}`;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return hh > 0 ? `${pad(hh)}:${pad(mm)}:${pad(ss)}` : `${pad(mm)}:${pad(ss)}`;
 }
+
+// Footer label shown instead of "Wait time" once the ETA has passed.
+const OVERDUE_LABEL = 'Overdue';
 
 /**
  * Resolves the footer time string. When a live instant is available it is
  * recomputed from `now` each tick — onCall counts up from `connectedAt`,
- * next/waiting counts down to `etaAt`. Otherwise the pre-formatted `fallback`
- * (from native) is used. Parsing failures also fall back.
+ * next/waiting counts down to `etaAt`. Once a next/waiting countdown reaches
+ * zero the row is `overdue` and the value counts up from `etaAt` instead
+ * (time past the ETA). Otherwise the pre-formatted `fallback` (from native) is
+ * used. Parsing failures also fall back.
  */
 function computeDisplayTime(
   status: QueueStatus,
@@ -78,19 +86,26 @@ function computeDisplayTime(
   connectedAt: string | undefined,
   now: number | undefined,
   fallback: string,
-): string {
+): { text: string; overdue: boolean } {
   const nowMs = now ?? Date.now();
   const instant = status === 'onCall' ? connectedAt : etaAt;
   if (!instant) {
-    return fallback;
+    return { text: fallback, overdue: false };
   }
   const targetMs = Date.parse(instant);
   if (Number.isNaN(targetMs)) {
-    return fallback;
+    return { text: fallback, overdue: false };
   }
-  // onCall: elapsed = now - connectedAt. next/waiting: remaining = etaAt - now.
-  const deltaMs = status === 'onCall' ? nowMs - targetMs : targetMs - nowMs;
-  return formatMmSs(deltaMs);
+  if (status === 'onCall') {
+    // Elapsed = now - connectedAt.
+    return { text: formatMmSs(nowMs - targetMs), overdue: false };
+  }
+  // Remaining = etaAt - now; at/after zero, show how far past the ETA we are.
+  const remainingMs = targetMs - nowMs;
+  if (remainingMs <= 0) {
+    return { text: formatMmSs(-remainingMs), overdue: true };
+  }
+  return { text: formatMmSs(remainingMs), overdue: false };
 }
 
 /**
@@ -122,8 +137,17 @@ export default function QueueListItem(props: QueueListItemProps) {
   // Live time value. onCall counts UP from connectedAt (elapsed), everyone else
   // counts DOWN to etaAt (remaining). Recomputed from the absolute instant on
   // every `now` tick (self-correcting after background), and falls back to the
-  // native-formatted `time` when no timestamp is present.
-  const displayTime = computeDisplayTime(status, etaAt, connectedAt, now, time);
+  // native-formatted `time` when no timestamp is present. Once the wait
+  // countdown hits zero the label switches to "Overdue" and the value shows the
+  // time elapsed past the ETA.
+  const { text: displayTime, overdue } = computeDisplayTime(
+    status,
+    etaAt,
+    connectedAt,
+    now,
+    time,
+  );
+  const timeLabel = overdue ? OVERDUE_LABEL : config.timeLabel;
 
   // Fall back to the native `avatar1` drawable when the patient has no synced
   // photo. On Android, RN's <Image> resolves a bare `{uri}` (no path/scheme) to
@@ -191,7 +215,7 @@ export default function QueueListItem(props: QueueListItemProps) {
         <View style={styles.timeMetric}>
           <Image source={{ uri: 'ic_queue_clock' }} style={styles.clockIcon} />
           <Text style={styles.footerMeta}>
-            {config.timeLabel} <Text style={styles.boldText}>{displayTime}</Text>
+            {timeLabel} <Text style={styles.boldText}>{displayTime}</Text>
           </Text>
         </View>
       </View>

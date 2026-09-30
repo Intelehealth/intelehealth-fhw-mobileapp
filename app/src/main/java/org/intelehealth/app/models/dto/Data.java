@@ -50,9 +50,9 @@ public class Data {
     @Expose
     private List<VisitAttributeDTO> visitAttributeList = null;
 
-    @SerializedName("queuelist")
+    @SerializedName("queueData")
     @Expose
-    private List<QueueDTO> queuelist = null;
+    private QueueDataDTO queueData = null;
 
     @SerializedName("pageNo")
     @Expose
@@ -62,11 +62,7 @@ public class Data {
     private int totalCount;
 
     public List<QueueDTO> getQueuelist() {
-        return queuelist;
-    }
-
-    public void setQueuelist(List<QueueDTO> queuelist) {
-        this.queuelist = queuelist;
+        return queueData != null ? queueData.getItems() : null;
     }
 
     @SerializedName("propertyContents")

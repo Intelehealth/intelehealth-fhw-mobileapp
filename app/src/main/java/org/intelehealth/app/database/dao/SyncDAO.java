@@ -126,8 +126,7 @@ public class SyncDAO {
             // inserted into tbl_queue here, so the data is refreshed on every pull-sync.
             // Switch back to the line below once pulldata starts returning the queue list.
              queueDAO.insertQueue(responseDTO.getData().getQueuelist());
-             Logger.logD(TAG, "insertQueue = " /*+ responseDTO.getData().getQueuelist().size()*/);
-             Logger.logD(TAG, "insertQueue data = " + new Gson().toJson(responseDTO.getData().getQueuelist()));
+             Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
 
 //            String encoded = "Bearer " + sessionManager.getEncoded();
 //            Logger.logD(TAG, "queue list token " + encoded);
@@ -150,8 +149,6 @@ public class SyncDAO {
             }
             Logger.logD(TAG, "insertVisitAttributeList = " +
                     responseDTO.getData().getVisitAttributeList().size());
-            Logger.logD(TAG, "insertVisitAttributeList data = " +
-                    new Gson().toJson(responseDTO.getData().getVisitAttributeList()));
 
             //downloading images if not found
             //downloadPatientImages(responseDTO.getData().getPatientDTO());  // Commented while sync issue //as per dicscussed with Mithun commenting this code due sync load - In dsm 11 march 2025

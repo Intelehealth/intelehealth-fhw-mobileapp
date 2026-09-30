@@ -161,18 +161,24 @@ public final class QueueRowFormatter {
             long now = System.currentTimeMillis();
             long deltaMillis = future ? instantMillis - now : now - instantMillis;
             long totalSeconds = Math.max(0, deltaMillis / 1000L);
-            long mm = totalSeconds / 60;
+            long hh = totalSeconds / 3600;
+            long mm = (totalSeconds % 3600) / 60;
             long ss = totalSeconds % 60;
-            return String.format(Locale.ENGLISH, "%02d:%02d", mm, ss);
+            // "HH:MM:SS" once it reaches an hour, matching the RN QueueListItem.
+            return hh > 0
+                    ? String.format(Locale.ENGLISH, "%02d:%02d:%02d", hh, mm, ss)
+                    : String.format(Locale.ENGLISH, "%02d:%02d", mm, ss);
         } catch (Exception e) {
             Log.e(TAG, "formatMmSs failed: " + e.getMessage());
             return null;
         }
     }
 
-    /** Minutes -> "MM:00" to match the RN row's pre-formatted time string. */
+    /** Minutes -> "MM:00" (or "HH:MM:00" from an hour) to match the RN row's time string. */
     private static String formatMinutes(int minutes) {
         int safe = Math.max(0, minutes);
-        return String.format(Locale.ENGLISH, "%02d:00", safe);
+        return safe >= 60
+                ? String.format(Locale.ENGLISH, "%02d:%02d:00", safe / 60, safe % 60)
+                : String.format(Locale.ENGLISH, "%02d:00", safe);
     }
 }
