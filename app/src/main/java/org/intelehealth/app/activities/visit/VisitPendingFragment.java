@@ -584,7 +584,8 @@ public class VisitPendingFragment extends Fragment {
                         "AND e3.uuid = o3.encounteruuid " +
                         "AND o3.conceptuuid = ? " +
                         "AND o3.voided = 0 AND o3.value IS NOT NULL AND trim(o3.value) <> ''" +
-                        ") THEN 1 ELSE 0 " +
+                        // PHC: normal flow for now.
+                        ") AND NOT " + EncounterDAO.phcReferralSql("v.uuid") + " THEN 1 ELSE 0 " +
                         "END AS has_referral "+
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
@@ -912,7 +913,8 @@ public class VisitPendingFragment extends Fragment {
                         "AND e3.uuid = o3.encounteruuid " +
                         "AND o3.conceptuuid = ? " +
                         "AND o3.voided = 0 AND o3.value IS NOT NULL AND trim(o3.value) <> ''" +
-                        ") THEN 1 ELSE 0 " +
+                        // PHC: normal flow for now.
+                        ") AND NOT " + EncounterDAO.phcReferralSql("v.uuid") + " THEN 1 ELSE 0 " +
                         "END AS has_referral "+
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +

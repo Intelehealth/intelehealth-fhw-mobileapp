@@ -283,6 +283,8 @@ public class VisitReferralFragment extends Fragment {
                         "select 1 from tbl_encounter ec where ec.visituuid = v.uuid " +
                         "and ec.encounter_type_uuid = ?" +
                         ") " +
+                        // PHC: normal flow for now.
+                        "and not " + EncounterDAO.phcReferralSql("v.uuid") + " " +
                         searchClause +
                         "group by v.uuid " +
                         "order by o.obsservermodifieddate DESC",

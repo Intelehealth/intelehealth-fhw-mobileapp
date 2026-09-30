@@ -730,6 +730,28 @@ public class EncounterDAO extends BaseDao {
         return isReferralConsentDeclined(fetchReferralConsentValue(visitUUID));
     }
 
+    /** Referral type is PHC ("PHC", "PHC:Yes") - follows the normal GP flow until PHC flow is built. */
+    public static boolean isPhcReferralType(String rawConsentValue) {
+        if (rawConsentValue == null || rawConsentValue.trim().isEmpty()) return false;
+        return "PHC".equalsIgnoreCase(rawConsentValue.split(":")[0].trim());
+    }
+
+    public boolean isPhcReferral(String visitUUID) throws DAOException {
+        return isPhcReferralType(fetchReferralConsentValue(visitUUID));
+    }
+
+    /** SQL version of {@link #isPhcReferral}; never NULL, safe under NOT. */
+    public static String phcReferralSql(String visitUuidColumn) {
+        return "((coalesce(upper(trim((SELECT po.value FROM tbl_encounter pe, tbl_obs po " +
+                "WHERE pe.visituuid = " + visitUuidColumn + " " +
+                "AND pe.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_VISIT_NOTE + "' " +
+                "AND pe.uuid = po.encounteruuid " +
+                "AND po.conceptuuid = '" + UuidDictionary.REFERRAL_CONSENT + "' " +
+                "AND po.voided = 0 AND po.value IS NOT NULL AND trim(po.value) <> '' " +
+                "AND (po.sync = 1 OR po.sync = 'TRUE' OR po.sync = 'true') " +
+                "ORDER BY po.obsservermodifieddate DESC LIMIT 1))), '') || ':') LIKE 'PHC:%')";
+    }
+
     /**
      * Encounter whose obs should be read as "the prescription" for a visit —
      * prefers the NAMCO/specialist doctor's own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE

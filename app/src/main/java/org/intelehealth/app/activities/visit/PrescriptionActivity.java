@@ -706,6 +706,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             EncounterDAO encounterDAO = new EncounterDAO();
             String referralValue = encounterDAO.fetchReferredSpecialistValue(visitID);
             if (referralValue == null || referralValue.trim().isEmpty()) return false;
+            if (encounterDAO.isPhcReferral(visitID)) return false; // PHC: normal flow for now
             return !encounterDAO.isReferralDeclined(visitID) && !encounterDAO.isPrescriptionReceived(visitID);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
@@ -1517,6 +1518,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         try {
             String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitID);
             if (referralValue == null || referralValue.trim().isEmpty()) return original;
+            if (new EncounterDAO().isPhcReferral(visitID)) return original; // PHC: normal flow for now
             if (new EncounterDAO().isReferralDeclined(visitID)) return original; // never handed off - keep the original doctor
             if (!new EncounterDAO().isPrescriptionReceived(visitID)) return original; // still pending, not resolved yet
 

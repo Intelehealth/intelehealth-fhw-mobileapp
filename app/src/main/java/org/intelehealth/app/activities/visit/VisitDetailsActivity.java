@@ -963,6 +963,16 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             }
         }
 
+        /** PHC: normal flow for now. */
+        private boolean isPhcReferral(String visitUuid) {
+            try {
+                return new EncounterDAO().isPhcReferral(visitUuid);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                return false;
+            }
+        }
+
         /**
          * Shows/hides the "Referred to NAMCO/specialist" card and adjusts the
          * Prescription row's subtitle for a referred visit, in either of two states:
@@ -983,6 +993,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
          * {@link PrescriptionActivity} for the doctor's own prescription.
          */
         private void bindReferralInfo(String referralValue) {
+            if (isPhcReferral(visitID)) { // PHC: normal flow for now
+                interimPrescriptionActive = false;
+                if (referralInfoCard != null) referralInfoCard.setVisibility(View.GONE);
+                return;
+            }
             boolean referredBySpecialistObs = referralValue != null && !referralValue.trim().isEmpty();
             boolean declined = false;
             boolean visitComplete = false;
@@ -1100,6 +1115,7 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             boolean referred = referralValue != null && !referralValue.trim().isEmpty();
             if (!referred) return;
             try {
+                if (new EncounterDAO().isPhcReferral(visitID)) return; // PHC: normal flow for now
                 if (new EncounterDAO().isReferralDeclined(visitID)) return; // never handed off - keep the original doctor's speciality
                 if (!new EncounterDAO().isPrescriptionReceived(visitID)) return; // still pending, not resolved yet
                 ClsDoctorDetails details = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
