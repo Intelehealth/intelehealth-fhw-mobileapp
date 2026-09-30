@@ -31,14 +31,12 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
-import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.DialogShareprescBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
-import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.models.hwprofile.Profile
 import org.intelehealth.app.utilities.CustomLog
@@ -290,9 +288,7 @@ class ShowPrescriptionDataPdfShareDialog(
         val abhaAddressLine = AbhaPrescriptionFields.line(
             activity,
             R.string.label_abha_address,
-            VisitAttributeListDAO().getVisitAttributesList_specificVisit(
-                visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
-            ),
+            AbhaPrescriptionFields.addressForVisit(visitUuid),
         )
 
         // Combine all data into one string

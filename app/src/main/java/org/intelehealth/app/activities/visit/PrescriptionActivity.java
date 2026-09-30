@@ -1315,7 +1315,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(details.getEmailId()) ? getString(R.string.dr_email) + details.getEmailId() : "") + "</span><br>" + "</div>";
         }
 
-        String abhaBlock = AbhaPrescriptionFields.htmlBlockForFormatTemplate(this, patient.getAbhaNumber(), new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitID, UuidDictionary.VISIT_ABHA_ADDRESS));
+        String abhaBlock = AbhaPrescriptionFields.htmlBlockForFormatTemplate(this, patient.getAbhaNumber(), AbhaPrescriptionFields.addressForVisit(visitID));
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                     /* doctorDetailStr +*/
@@ -2879,7 +2879,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus, new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitID, UuidDictionary.VISIT_ABHA_ADDRESS));
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus, AbhaPrescriptionFields.addressForVisit(visitID));
 
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +

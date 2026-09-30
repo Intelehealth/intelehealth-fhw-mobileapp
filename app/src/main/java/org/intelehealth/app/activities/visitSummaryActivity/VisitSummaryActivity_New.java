@@ -5466,7 +5466,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus, new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, UuidDictionary.VISIT_ABHA_ADDRESS));
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, objClsDoctorDetails, mFeatureActiveStatus, AbhaPrescriptionFields.addressForVisit(visitUUID));
 
 
         if (isRespiratory) {
@@ -5880,7 +5880,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 //            mDoctorName.setText(doctrRegistartionNum + "\n" + Html.fromHtml(doctorDetailStr));
         }
 
-        String abhaBlock = AbhaPrescriptionFields.htmlBlockForFormatTemplate(this, patient.getAbhaNumber(), new VisitAttributeListDAO().getVisitAttributesList_specificVisit(visitUUID, UuidDictionary.VISIT_ABHA_ADDRESS));
+        String abhaBlock = AbhaPrescriptionFields.htmlBlockForFormatTemplate(this, patient.getAbhaNumber(), AbhaPrescriptionFields.addressForVisit(visitUUID));
         if (isRespiratory) {
             String htmlDocument = String.format(/*font_face +*/ "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                     /* doctorDetailStr +*/

@@ -12,12 +12,10 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
-import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.SpecialtyNotesProvider
-import org.intelehealth.app.utilities.UuidDictionary
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -186,9 +184,7 @@ class PrintViewPrescription(
             AbhaPrescriptionFields.line(
                 context,
                 R.string.label_abha_address,
-                VisitAttributeListDAO().getVisitAttributesList_specificVisit(
-                    dataModel.visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
-                )
+                AbhaPrescriptionFields.addressForVisit(dataModel.visitUuid)
             ),
         ).filter { it.isNotEmpty() }
             .joinToString("") { "<span style=\"font-size:11pt; margin: 0px; padding: 0px;\">$it</span><br>" }
