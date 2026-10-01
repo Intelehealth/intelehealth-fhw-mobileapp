@@ -12,8 +12,6 @@ import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import org.intelehealth.app.BuildConfig;
-import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,6 +43,7 @@ import com.google.android.material.slider.RangeSlider;
 import com.google.android.material.slider.Slider;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.common.OnItemSelection;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -54,6 +53,7 @@ import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
 import org.intelehealth.app.shared.FirstLetterUpperCaseInputFilter;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
@@ -103,13 +103,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathList().add(image);
         if (mIsForPhysicalExam) {
-            final String parent_name;
-            if (BuildConfig.FLAVOR_client == FlavorKeys.NAS)
-                parent_name = mPhysicalExam.getExamParentNodeName_NAS(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
-            else
-                parent_name = mPhysicalExam.getExamParentNodeName(mLastImageCaptureSelectedNodeIndex);  // since for marathi lang it was takign marathi string.
-
-            mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, parent_name);
+            // parent_name is the full trace from the exam section down to the currently
+            // selected node, e.g. "Head Examination - Head - Injury - Inspect the head
+            // from all sides and look for injuries"
+            String nodeTraceString = mPhysicalExam.getExamNodeTrace(mLastImageCaptureSelectedNodeIndex);
+            CustomLog.d("showCameraView", "addImageInLastNode nodeTraceString - " + nodeTraceString);
+            mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag().put(image, nodeTraceString);
             CustomLog.v("showCameraView", "addImageInLastNode getImagePathListWithSectionTag - " + mItemList.get(mLastImageCaptureSelectedNodeIndex).getImagePathListWithSectionTag());
 
         }

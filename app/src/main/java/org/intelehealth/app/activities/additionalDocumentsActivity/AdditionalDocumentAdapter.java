@@ -88,8 +88,9 @@ public class AdditionalDocumentAdapter extends RecyclerView.Adapter<AdditionalDo
 
     @Override
     public void onBindViewHolder(final AdditionalDocumentViewHolder holder, int position) {
-        holder.getDocumentNameTextView().setText
-                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
+//        holder.getDocumentNameTextView().setText
+//                (holder.itemView.getContext().getString(R.string.document_) + (position + 1));
+        holder.getDocumentNameTextView().setText(documentList.get(position).getDocumentName());
 
         final File image = new File(documentList.get(position).getDocumentPhoto());
         RequestBuilder<Drawable> requestBuilder = Glide.with(holder.itemView.getContext())

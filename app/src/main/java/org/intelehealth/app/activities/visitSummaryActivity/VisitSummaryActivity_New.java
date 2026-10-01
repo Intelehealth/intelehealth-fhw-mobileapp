@@ -32,7 +32,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -68,14 +67,6 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-
-import org.intelehealth.app.activities.bill.VisitSummaryBillUtils;
-import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
-import org.intelehealth.app.ayu.visit.pocdevice.RecordingData;
-import org.intelehealth.app.database.InteleHealthDatabaseHelper;
-import org.intelehealth.app.ui.billgeneration.models.BillDetails;
-import org.intelehealth.app.utilities.CustomLog;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -153,7 +144,10 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
+import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
+import org.intelehealth.app.ayu.visit.pocdevice.RecordingData;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -178,6 +172,7 @@ import org.intelehealth.app.ui.billgeneration.models.BillDetails;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
 import org.intelehealth.app.ui2.utils.CheckInternetAvailability;
+import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.BitmapUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -195,7 +190,6 @@ import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.TooltipWindow;
 import org.intelehealth.app.utilities.UrlModifiers;
-import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
@@ -1444,15 +1438,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // additional doc data
         ImagesDAO imagesDAO = new ImagesDAO();
         ArrayList<String> fileuuidList = new ArrayList<String>();
+        ArrayList<String> fileTypeNamesList = new ArrayList<String>();
+        List<ObsDTO> fileObsList = new ArrayList<ObsDTO>();
         ArrayList<File> fileList = new ArrayList<File>();
 
         if (encounterUuidAdultIntial != null) {
             try {
-                fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
-                for (String fileuuid : fileuuidList) {
-                    String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                //fileuuidList = imagesDAO.getImageUuid(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+                fileObsList = imagesDAO.getImageObs(encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD);
+                //for (String fileuuid : fileuuidList) {
+                 //   String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
+                for (ObsDTO obsDTO : fileObsList) {
+                    String filename = AppConstants.IMAGE_PATH + obsDTO.getUuid() + ".jpg";
+                    String fileTypeName = obsDTO.getComments().replace(AppConstants.IMAGE_ADDITIONAL_DOC+"-","").trim();
+
                     if (new File(filename).exists()) {
                         fileList.add(new File(filename));
+                        fileTypeNamesList.add(fileTypeName);
                     }
                 }
             } catch (DAOException e) {
@@ -1461,8 +1463,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             }
             rowListItem = new ArrayList<>();
 
-            for (File file : fileList)
-                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+            for (File file : fileList) {
+//                rowListItem.add(new DocumentObject(file.getName(), file.getAbsolutePath()));
+                rowListItem.add(new DocumentObject(fileTypeNamesList.get(fileList.indexOf(file)), file.getAbsolutePath()));
+            }
 
             RecyclerView.LayoutManager linearLayoutManager = new LinearLayoutManager(this);
             mAdditionalDocsRecyclerView.setHasFixedSize(true);
@@ -2787,26 +2791,27 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     // Permission - end
-    private AlertDialog mImagePickerAlertDialog;
+    private String mSelectedAdditionalDocType;
 
     /**
-     * Open dialog to Select douments from Image and Camera as Per the Choices
+     * Open the single dialog that lets the user pick the additional document's type
+     * (Previous Prescription, Old Test Reports, Old Medicine, or a custom "Other" type)
+     * and then, in the same dialog, take a photo or choose one from the gallery.
      */
     private void selectImage() {
-        mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.additional_doc_image_picker_title), new DialogUtils.ImagePickerDialogListener() {
+        DialogUtils.showDocumentTypeAndImagePickerDialog(this, new DialogUtils.DocumentTypeImagePickerListener() {
             @Override
-            public void onActionDone(int action) {
-                mImagePickerAlertDialog.dismiss();
-                if (action == DialogUtils.ImagePickerDialogListener.CAMERA) {
-                    checkPerm(action);
+            public void onTakePhoto(String documentType) {
+                mSelectedAdditionalDocType = documentType;
+                checkPerm(DialogUtils.ImagePickerDialogListener.CAMERA);
+            }
 
-                } else if (action == DialogUtils.ImagePickerDialogListener.GALLERY) {
-                    checkPerm(action);
-                }
+            @Override
+            public void onChooseGallery(String documentType) {
+                mSelectedAdditionalDocType = documentType;
+                checkPerm(DialogUtils.ImagePickerDialogListener.GALLERY);
             }
         });
-
-
     }
 
     private void initUI() {
@@ -5034,8 +5039,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 System.out.println("File not found : " + e.getMessage() + e);
             }
 
-            recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
-            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo));
+            //recyclerViewAdapter.add(new DocumentObject(photo.getName(), photo.getAbsolutePath()));
+            recyclerViewAdapter.add(new DocumentObject(mSelectedAdditionalDocType, photo.getAbsolutePath()));
+            updateImageDatabase(StringUtils.getFileNameWithoutExtension(photo), mSelectedAdditionalDocType);
         }
     }
 
@@ -5075,7 +5081,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     }
 
     // update image database
-    private void updateImageDatabase(String imageuuid) {
+    private void updateImageDatabase(String imageuuid, String selectedConsultationType) {
         //added due to in some case the adult initial encounter is not getting saved aginst additional doc images obs
         final Intent intent = this.getIntent(); // The intent was passed to the activity
         if (intent != null) {
@@ -5087,7 +5093,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         ImagesDAO imagesDAO = new ImagesDAO();
         try {
-            imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, AppConstants.IMAGE_ADDITIONAL_DOC);
+            imagesDAO.insertObsImageDatabase(imageuuid, encounterUuidAdultIntial, UuidDictionary.COMPLEX_IMAGE_AD, AppConstants.IMAGE_ADDITIONAL_DOC+"-"+selectedConsultationType);
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
         }

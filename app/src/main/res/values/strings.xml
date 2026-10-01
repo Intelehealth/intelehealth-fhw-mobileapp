@@ -342,6 +342,14 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="additional_doc_image_picker_title">Add Additional Document!</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
+    <string name="doc_type_picker_title">Select Document Type</string>
+    <string name="doc_type_previous_prescription">Prescription</string>
+    <string name="doc_type_old_test_reports">Test Reports</string>
+    <string name="doc_type_old_medicine">Medicine</string>
+    <string name="doc_type_other">Other</string>
+    <string name="doc_type_other_input_title">Enter Document Type</string>
+    <string name="doc_type_selection_required">Select a document type</string>
+    <string name="doc_type_other_input_error">Enter a document type</string>
 
     <!--    Strings for special Check-->
     <string name="loading_more">Loading more...</string>
