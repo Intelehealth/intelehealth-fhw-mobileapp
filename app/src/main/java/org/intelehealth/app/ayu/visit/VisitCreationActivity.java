@@ -1411,8 +1411,16 @@ public class VisitCreationActivity extends BaseActivity implements
                     Node l2Node = l1Node.getOptionsList().get(j);
                     List<String> imagePathList = l2Node.getImagePathList();
                     if (imagePathList != null && imagePathList.size() > 0) {
-                        if (l2Node.isImageUploaded()) { for (String imagePath : imagePathList) { String comments = l2Node.getImagePathListWithSectionTag().get(imagePath); String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0]; updateImageDatabase(fileName, comments); } }
-                        else { Toast.makeText(this, getString(R.string.image_upload_pending_alert), Toast.LENGTH_SHORT).show(); return false; }
+                        if (l2Node.isImageUploaded()) {
+                            for (String imagePath : imagePathList) {
+                                String comments = l2Node.getImagePathListWithSectionTag().get(imagePath);
+                                String fileName = imagePath.substring(imagePath.lastIndexOf("/") + 1).split("\\.")[0];
+                                updateImageDatabase(fileName, comments);
+                            }
+                        } else {
+                            Toast.makeText(this, getString(R.string.image_upload_pending_alert), Toast.LENGTH_SHORT).show();
+                            return false;
+                        }
                     }
                 }
             }
