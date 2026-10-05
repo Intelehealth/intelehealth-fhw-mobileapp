@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +20,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.msfarogyabharat.R;
@@ -50,6 +54,9 @@ public class SyncDAO {
     InteleHealthDatabaseHelper mDbHelper;
     private SQLiteDatabase db;
     String appLanguage;
+    // Single thread so pulls are saved one after another, never in parallel.
+    private static final ExecutorService PULL_EXECUTOR = Executors.newSingleThreadExecutor();
+    private static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
 
     public boolean SyncData(ResponseDTO responseDTO) throws DAOException {
         boolean isSynced = true;
@@ -113,76 +120,79 @@ public class SyncDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-                // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
-                if (response.body() != null && response.body().getData() != null) {
-                    sessionManager.setPulled(response.body().getData().getPullexecutedtime());
-                }
-                if (response.isSuccessful()) {
-
-                    // SyncDAO syncDAO = new SyncDAO();
-                    boolean sync = false;
-                    try {
-                        sync = SyncData(response.body());
-                        Logger.logD("sync", "" + sync);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                        e.printStackTrace();
+                // Saving the pulled data can take several seconds on the first sync, so it must not run on the main thread (ANR).
+                PULL_EXECUTOR.execute(() -> {
+                    // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
+                    if (response.body() != null && response.body().getData() != null) {
+                        sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                     }
-                    if (sync) {
-                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+                    if (response.isSuccessful()) {
 
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
+                        // SyncDAO syncDAO = new SyncDAO();
+                        boolean sync = false;
+                        try {
+                            sync = SyncData(response.body());
+                            Logger.logD("sync", "" + sync);
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            e.printStackTrace();
+                        }
+                        if (sync) {
+                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
 
-                    }
-                    //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
-                    else {
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                    }
-                    //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
+    //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
+    //                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
+    //                            CalculateAgoTime(context);
+    //                        }
 
-                    if (sessionManager.getTriggerNoti().equals("yes")) {
-                        if (response.body().getData() != null) {
-                            ArrayList<String> listPatientUUID = new ArrayList<String>();
-                            List<VisitDTO> listVisitDTO = new ArrayList<>();
-                            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-                            for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
-                                if (response.body().getData().getEncounterDTO().get(i)
-                                        .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
-                                    encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
-                                }
-                            }
-                            listVisitDTO.addAll(response.body().getData().getVisitDTO());
-                            for (int i = 0; i < encounterVisitUUID.size(); i++) {
-                                for (int j = 0; j < listVisitDTO.size(); j++) {
-                                    if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
-                                        listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                        }
+                        //   AppConstants.notificationUtils.DownloadDone("Sync", "Successfully synced", 1, IntelehealthApplication.getAppContext());
+                        else {
+                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        }
+                        //AppConstants.notificationUtils.DownloadDone("Sync", "Failed synced,You can try again", 1, IntelehealthApplication.getAppContext());
+
+                        if (sessionManager.getTriggerNoti().equals("yes")) {
+                            if (response.body().getData() != null) {
+                                ArrayList<String> listPatientUUID = new ArrayList<String>();
+                                List<VisitDTO> listVisitDTO = new ArrayList<>();
+                                ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                                for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                                    if (response.body().getData().getEncounterDTO().get(i)
+                                            .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                                        encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
                                     }
                                 }
-                            }
+                                listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                                for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                                    for (int j = 0; j < listVisitDTO.size(); j++) {
+                                        if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                                            listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                        }
+                                    }
+                                }
 
-                            if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
+                                if (listPatientUUID.size() > 0) {
+                                    triggerVisitNotification(listPatientUUID);
+                                }
                             }
+                        } else {
+                            sessionManager.setTriggerNoti("yes");
                         }
-                    } else {
-                        sessionManager.setTriggerNoti("yes");
                     }
-                }
 
-                Logger.logD("End Pull request", "Ended");
-                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+                    Logger.logD("End Pull request", "Ended");
+                    sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
 
-                //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
-                /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
-                IntelehealthApplication.getAppContext().startService(intent);*/
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+                    //Workmanager request is used in ForeGround sync in place of this as per Intele_safe
+                    /*Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                    IntelehealthApplication.getAppContext().startService(intent);*/
+                    IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                            .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                            .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+                });
             }
 
             @Override
@@ -213,98 +223,100 @@ public class SyncDAO {
         middleWarePullResponseCall.enqueue(new Callback<ResponseDTO>() {
             @Override
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
-//                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
-                if (response.body() != null && response.body().getData() != null) {
-                    sessionManager.setPulled(response.body().getData().getPullexecutedtime());
-                }
-                if (response.isSuccessful()) {
-                    CustomLog.d("PULL_DATA_RESPONSE",new Gson().toJson(response.body()));
-
-                    // SyncDAO syncDAO = new SyncDAO();
-                    boolean sync = false;
-                    try {
-                        sync = SyncData(response.body());
-                    } catch (DAOException e) {
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                        FirebaseCrashlytics.getInstance().recordException(e);
+                // Saving the pulled data can take several seconds on the first sync, so it must not run on the main thread (ANR).
+                PULL_EXECUTOR.execute(() -> {
+    //                AppConstants.notificationUtils.showNotifications("Sync background", "Sync in progress..", 1, IntelehealthApplication.getAppContext());
+                    if (response.body() != null && response.body().getData() != null) {
+                        sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                     }
-                    if (sync) {
-                        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
-//                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
-//                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
-//                            CalculateAgoTime(context);
-//                        }
-//                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
+                    if (response.isSuccessful()) {
 
-                        if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-//                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
-//                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
+                        // SyncDAO syncDAO = new SyncDAO();
+                        boolean sync = false;
+                        try {
+                            sync = SyncData(response.body());
+                        } catch (DAOException e) {
+                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                            FirebaseCrashlytics.getInstance().recordException(e);
                         }
-//                        else {
-//                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
-//                        }
-                    } else {
-//                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
+                        if (sync) {
+                            sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime());
+    //                        if (!sessionManager.getLastSyncDateTime().equalsIgnoreCase("- - - -")
+    //                                && Locale.getDefault().toString().equalsIgnoreCase("en")) {
+    //                            CalculateAgoTime(context);
+    //                        }
+    //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.successfully_synced), 1, IntelehealthApplication.getAppContext());
 
-                        if (fromActivity.equalsIgnoreCase("home")) {
-                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
-                            Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show();
-                        } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
-                            Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show();
-                        }
-//                        else {
-//                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
-//                        }
-                        IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
-                    }
-
-                    if (sessionManager.getTriggerNoti().equals("yes")) {
-                        if (response.body().getData() != null) {
-                            ArrayList<String> listPatientUUID = new ArrayList<String>();
-                            List<VisitDTO> listVisitDTO = new ArrayList<>();
-                            ArrayList<String> encounterVisitUUID = new ArrayList<String>();
-                            for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
-                                if (response.body().getData().getEncounterDTO().get(i)
-                                        .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
-                                    encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
-                                }
+                            if (fromActivity.equalsIgnoreCase("home")) {
+                                MAIN_HANDLER.post(() -> Toast.makeText(context, context.getResources().getString(R.string.successfully_synced), Toast.LENGTH_LONG).show());
+                            } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
+                                MAIN_HANDLER.post(() -> Toast.makeText(context, context.getResources().getString(R.string.visit_uploaded_successfully), Toast.LENGTH_LONG).show());
+                            } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+    //                            AppConstants.notificationUtils.DownloadDone(context.getString(R.string.download_from_doctor), context.getString(R.string.prescription_downloaded), 3, context);
+    //                            Toast.makeText(context, context.getString(R.string.prescription_downloaded), Toast.LENGTH_LONG).show();
                             }
-                            listVisitDTO.addAll(response.body().getData().getVisitDTO());
-                            for (int i = 0; i < encounterVisitUUID.size(); i++) {
-                                for (int j = 0; j < listVisitDTO.size(); j++) {
-                                    if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
-                                        listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+    //                        else {
+    //                            Toast.makeText(context, context.getString(R.string.successfully_synced), Toast.LENGTH_LONG).show();
+    //                        }
+                        } else {
+    //                        AppConstants.notificationUtils.DownloadDone(context.getString(R.string.sync), context.getString(R.string.failed_synced), 1, IntelehealthApplication.getAppContext());
+
+                            if (fromActivity.equalsIgnoreCase("home")) {
+                                MAIN_HANDLER.post(() -> Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show());
+                            } else if (fromActivity.equalsIgnoreCase("visitSummary")) {
+                                MAIN_HANDLER.post(() -> Toast.makeText(context, context.getString(R.string.visit_not_uploaded), Toast.LENGTH_LONG).show());
+                            } else if (fromActivity.equalsIgnoreCase("downloadPrescription")) {
+                                MAIN_HANDLER.post(() -> Toast.makeText(context, context.getString(R.string.prescription_not_downloaded_check_internet), Toast.LENGTH_LONG).show());
+                            }
+    //                        else {
+    //                            Toast.makeText(context, context.getString(R.string.failed_synced), Toast.LENGTH_LONG).show();
+    //                        }
+                            IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+                        }
+
+                        if (sessionManager.getTriggerNoti().equals("yes")) {
+                            if (response.body().getData() != null) {
+                                ArrayList<String> listPatientUUID = new ArrayList<String>();
+                                List<VisitDTO> listVisitDTO = new ArrayList<>();
+                                ArrayList<String> encounterVisitUUID = new ArrayList<String>();
+                                for (int i = 0; i < response.body().getData().getEncounterDTO().size(); i++) {
+                                    if (response.body().getData().getEncounterDTO().get(i)
+                                            .getEncounterTypeUuid().equalsIgnoreCase("bd1fbfaa-f5fb-4ebd-b75c-564506fc309e")) {
+                                        encounterVisitUUID.add(response.body().getData().getEncounterDTO().get(i).getVisituuid());
                                     }
                                 }
-                            }
+                                listVisitDTO.addAll(response.body().getData().getVisitDTO());
+                                for (int i = 0; i < encounterVisitUUID.size(); i++) {
+                                    for (int j = 0; j < listVisitDTO.size(); j++) {
+                                        if (encounterVisitUUID.get(i).equalsIgnoreCase(listVisitDTO.get(j).getUuid())) {
+                                            listPatientUUID.add(listVisitDTO.get(j).getPatientuuid());
+                                        }
+                                    }
+                                }
 
-                            if (listPatientUUID.size() > 0) {
-                                triggerVisitNotification(listPatientUUID);
+                                if (listPatientUUID.size() > 0) {
+                                    triggerVisitNotification(listPatientUUID);
+                                }
                             }
+                        } else {
+                            sessionManager.setTriggerNoti("yes");
                         }
-                    } else {
-                        sessionManager.setTriggerNoti("yes");
                     }
-                }
 
-                Logger.logD("End Pull request", "Ended");
-                sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
+                    Logger.logD("End Pull request", "Ended");
+                    sessionManager.setLastPulledDateTime(AppConstants.dateAndTimeUtils.currentDateTimeInHome());
 
-                //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
-               /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
-                IntelehealthApplication.getAppContext().startService(intent);*/
-                IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+                    //Workmanager request is used in ForeGround sync in place of this as per the intele_Safe
+                   /* Intent intent = new Intent(IntelehealthApplication.getAppContext(), LastSyncIntentService.class);
+                    IntelehealthApplication.getAppContext().startService(intent);*/
+                    IntelehealthApplication.getAppContext().sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                            .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                            .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_PULL_DATA_DONE));
+                });
             }
 
             @Override
