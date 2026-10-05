@@ -132,7 +132,7 @@
     <!-- Example settings for Notifications -->
 
 
-    <string name="title_activity_additional_documents">अतिरिक्त कागदपत्रे</string>
+    <string name="title_activity_additional_documents">अतिरिक्त दस्तऐवज</string>
     <string name="title_activity_video_library">व्हिडिओ लायब्ररी</string>
     <string name="visit_summary_patient_details">भेट द्या तपशील</string>
 
@@ -354,6 +354,14 @@
     <string name="take_photo">फोटो काधा</string>
     <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
+    <string name="doc_type_picker_title">दस्तऐवज प्रकार निवडा</string>
+    <string name="doc_type_previous_prescription">प्रिस्क्रिप्शन</string>
+    <string name="doc_type_old_test_reports">चाचणी अहवाल</string>
+    <string name="doc_type_old_medicine">औषधे</string>
+    <string name="doc_type_other">इतर</string>
+    <string name="doc_type_other_input_title">दस्तऐवज प्रकार प्रविष्ट करा</string>
+    <string name="doc_type_selection_required">दस्तऐवज प्रकार निवडा</string>
+    <string name="doc_type_other_input_error">दस्तऐवज प्रकार प्रविष्ट करा</string>
 
     <string name="loading_more">अधिक लोड करत आहे...</string>
     <string name="warning_app_update">कृपया ॲप नवीनतम आवृत्तीवर अपडेट करा.</string>
@@ -1217,7 +1225,7 @@
     <string name="chief_complaints">मुख्य तक्रारी</string>
     <string name="additional_notes">अतिरिक्त नोट्स</string>
     <string name="leave_a_note_for_doctor">डॉक्टरांसाठी एक नोट सोडा</string>
-    <string name="add_additional_documents_like">अतिरिक्त दस्तऐवज जसे की रिपोर्ट, प्रिस्क्रिप्शन इ. जोडा.</string>
+    <string name="add_additional_documents_like">अतिरिक्त दस्तऐवज जसे की अहवाल, प्रिस्क्रिप्शन इ. जोडा.</string>
     <string name="doctor_speciality">डॉक्टरांची तज्ञता</string>
     <string name="select_specialization">तज्ञता निवडा</string>
     <string name="appointment">अपॉइंटमेंट</string>

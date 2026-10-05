@@ -1450,7 +1450,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                  //   String filename = AppConstants.IMAGE_PATH + fileuuid + ".jpg";
                 for (ObsDTO obsDTO : fileObsList) {
                     String filename = AppConstants.IMAGE_PATH + obsDTO.getUuid() + ".jpg";
-                    String fileTypeName = obsDTO.getComments().replace(AppConstants.IMAGE_ADDITIONAL_DOC+"-","").trim();
+                    String comments = obsDTO.getComments();
+                    String docTypePrefix = AppConstants.IMAGE_ADDITIONAL_DOC + "-";
+                    // older images saved before document-type tagging existed have either no
+                    // comments, or just the bare "ADDITIONAL_DOC" constant with no "-type" suffix
+                    String fileTypeName = (comments != null && comments.startsWith(docTypePrefix))
+                            ? comments.substring(docTypePrefix.length()).trim()
+                            : getString(R.string.document_) + (fileList.size() + 1);
 
                     if (new File(filename).exists()) {
                         fileList.add(new File(filename));

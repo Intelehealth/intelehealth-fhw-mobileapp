@@ -296,10 +296,11 @@ public class PhysicalExam extends Node {
 
         if (node.getOptionsList() != null) {
             for (Node child : node.getOptionsList()) {
-                // A question-level node (e.g. "Is there jaundice?*") may not itself be marked
-                // selected even though its own answer is - descend via anySubSelected() too,
-                // so the chosen answer isn't dropped from the trace.
-                if (child.isSelected() || child.anySubSelected()) {
+                // A question-level node (e.g. "Is there any rash?*") may not itself be marked
+                // selected even though the chosen answer further down is - descend whenever
+                // this child or any of its own descendants is selected, however deep, so the
+                // chosen answer isn't dropped from the trace.
+                if (hasSelectedDescendant(child)) {
                     String childTrace = buildSelectedNodeTrace(child);
                     if (!childTrace.isEmpty()) {
                         trace = trace.isEmpty() ? childTrace : trace + " - " + childTrace;
@@ -308,6 +309,21 @@ public class PhysicalExam extends Node {
             }
         }
         return trace;
+    }
+
+    private boolean hasSelectedDescendant(Node node) {
+        if (node.isSelected()) {
+            return true;
+        }
+        if (node.getOptionsList() == null) {
+            return false;
+        }
+        for (Node child : node.getOptionsList()) {
+            if (hasSelectedDescendant(child)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     //Check to see if all required exams have been answered before moving on.
