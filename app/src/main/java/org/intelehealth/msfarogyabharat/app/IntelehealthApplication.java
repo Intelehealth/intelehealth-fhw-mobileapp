@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
@@ -22,6 +24,7 @@ import com.parse.Parse;
 import org.intelehealth.msfarogyabharat.BuildConfig;
 import org.intelehealth.msfarogyabharat.R;
 import org.intelehealth.msfarogyabharat.database.InteleHealthDatabaseHelper;
+import org.intelehealth.msfarogyabharat.utilities.EdgeToEdgeHelper;
 import org.intelehealth.msfarogyabharat.utilities.SessionManager;
 
 
@@ -107,6 +110,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Appl
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void onActivityPostCreated(@NonNull Activity activity, @Nullable Bundle savedInstanceState) {
+        // Runs after the activity's setContentView; only does anything on Android 15+.
+        EdgeToEdgeHelper.apply(activity);
     }
 
     @Override
