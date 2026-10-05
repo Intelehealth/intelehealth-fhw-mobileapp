@@ -5,11 +5,11 @@ apply plugin: 'kotlin-android'
 
 android {
     namespace 'org.intelehealth.msfarogyabharat'
-    compileSdk 34
+    compileSdk 35
     defaultConfig {
         applicationId "org.intelehealth.vikalphelpline"
         minSdk 21
-        targetSdk 34
+        targetSdk 36
         versionCode 20
         versionName "1.11.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -121,7 +121,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-crashlytics'
     implementation 'com.google.firebase:firebase-analytics'
 
-    def camerax_version = "1.4.0-alpha03"
+    def camerax_version = "1.4.1"
     implementation "androidx.camera:camera-core:${camerax_version}"
     implementation "androidx.camera:camera-camera2:${camerax_version}"
     implementation "androidx.camera:camera-lifecycle:${camerax_version}"
