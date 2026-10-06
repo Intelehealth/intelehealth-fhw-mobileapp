@@ -3,9 +3,12 @@ package org.intelehealth.app.utilities;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.media.ExifInterface;
+import android.util.Log;
 import org.intelehealth.app.utilities.CustomLog;
 
 import java.io.ByteArrayInputStream;
@@ -19,6 +22,176 @@ import java.io.OutputStream;
 
 public class BitmapUtils {
     private static final String TAG = "BitmapUtils";
+
+    /*
+     * Upload policy for obs images (physical exam and additional documents). These images are sent
+     * to POST /openmrs/ws/rest/v1/obs as multipart "file" parts during sync.
+     *
+     * - nginx in front of OpenMRS rejects request bodies above its configured limit with HTTP 413
+     *   (observed: multi-MB uploads rejected, ~0.5 MB accepted; exact limit not yet confirmed).
+     * - 1280 px on the longest side at JPEG quality 85 gives ~100-350 KB for typical phone photos
+     *   and screenshots: well inside the accepted size, yet sharper than the camera flow (612x816).
+     *
+     * Revisit these values together with the backend upload limit, not in isolation.
+     */
+    public static final int UPLOAD_IMAGE_MAX_SIDE_PX = 1280;
+    public static final int UPLOAD_IMAGE_JPEG_QUALITY = 85;
+
+    /**
+     * Opens a new stream to a source image each time it is called.
+     * <p>
+     * {@link #saveAsJpeg} reads the source three times (dimensions, pixels, EXIF) and an InputStream
+     * can only be consumed once, so callers pass a factory instead of a stream, e.g.
+     * {@code () -> getContentResolver().openInputStream(uri)} or {@code () -> new FileInputStream(file)}.
+     */
+    public interface StreamSource {
+        InputStream open() throws IOException;
+    }
+
+    /**
+     * Returns the real format of an image file by reading its first bytes ("magic numbers"):
+     * "JPEG", "PNG", "WEBP", "HEIF", "UNKNOWN(&lt;hex&gt;)", or "MISSING"/"UNREADABLE".
+     * <p>
+     * The file extension cannot be trusted: every obs image is stored as {@code <obsUuid>.jpg},
+     * but older builds copied gallery files byte-for-byte, so a ".jpg" may actually hold PNG data.
+     */
+    public static String detectImageFormat(File file) {
+        if (file == null || !file.exists()) return "MISSING";
+        byte[] header = new byte[12];
+        int read;
+        try (InputStream in = new FileInputStream(file)) {
+            read = in.read(header);
+        } catch (IOException e) {
+            return "UNREADABLE";
+        }
+        StringBuilder hex = new StringBuilder();
+        for (int i = 0; i < Math.max(read, 0); i++) hex.append(String.format("%02x", header[i]));
+        String h = hex.toString();
+        if (h.startsWith("ffd8ff")) return "JPEG";     // FF D8 FF
+        if (h.startsWith("89504e47")) return "PNG";    // 89 'P' 'N' 'G'
+        if (h.startsWith("52494646")) return "WEBP";   // "RIFF" container
+        if (h.length() >= 16 && h.substring(8, 16).equals("66747970")) return "HEIF"; // "ftyp" at byte 4
+        return "UNKNOWN(" + h + ")";
+    }
+
+    /**
+     * True if the file can be uploaded as-is: it is a real JPEG and its longest side is within
+     * {@link #UPLOAD_IMAGE_MAX_SIDE_PX}. Reads only the header (inJustDecodeBounds), so it is cheap.
+     * <p>
+     * The obs image sync uses this to spot files saved by older builds (PNG renamed to .jpg, or
+     * multi-MB originals) that the server would reject, and re-encodes them before uploading.
+     */
+    public static boolean isUploadReadyJpeg(File file) {
+        if (!"JPEG".equals(detectImageFormat(file))) return false;
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(file.getAbsolutePath(), bounds);
+        return Math.max(bounds.outWidth, bounds.outHeight) <= UPLOAD_IMAGE_MAX_SIDE_PX;
+    }
+
+    /**
+     * Decodes any image Android can read (JPEG, PNG, WEBP, HEIF...) and writes it to {@code dest}
+     * as a JPEG the server accepts. Used for gallery picks and to repair already-saved images.
+     * <p>
+     * Why each step exists:
+     * <ul>
+     *   <li><b>JPEG output</b>: OpenMRS (ImageHandler) saves the upload in the format implied by the
+     *       ".jpg" file name. Its JPEG writer fails on images with an alpha channel (e.g. PNG
+     *       screenshots) and the API returns HTTP 500 "Trying to write complex obs to the file system".</li>
+     *   <li><b>White background</b>: JPEG has no transparency. Drawing onto opaque white removes the
+     *       alpha channel and keeps transparent areas from turning black.</li>
+     *   <li><b>Downscale to maxSide</b>: keeps the request under the nginx body limit (HTTP 413).
+     *       Smaller images are never upscaled.</li>
+     *   <li><b>EXIF rotation</b>: phone photos often store orientation only as EXIF metadata, which is
+     *       dropped when re-encoding (and ignored by the server), so the rotation is applied to the pixels.</li>
+     *   <li><b>Temp file + rename</b>: a failure never leaves a half-written file, and {@code dest} may
+     *       be the very file the source reads from (in-place repair during sync).</li>
+     * </ul>
+     * Does disk and CPU work; call it from a background thread.
+     *
+     * @param source  opens a new stream to the original image on each call
+     * @param dest    output file; may be the same file the source reads from
+     * @param maxSide maximum width/height of the output in pixels
+     * @param quality JPEG quality, 0-100
+     * @return true if {@code dest} now holds the converted JPEG; false if the image could not be
+     *         decoded or written, in which case {@code dest} is left unchanged
+     */
+    public static boolean saveAsJpeg(StreamSource source, File dest, int maxSide, int quality) {
+        Bitmap decoded = null;
+        Bitmap output = null;
+        File temp = new File(dest.getAbsolutePath() + ".tmp");
+        try {
+            // 1. Read only the dimensions; no pixel memory is allocated.
+            BitmapFactory.Options bounds = new BitmapFactory.Options();
+            bounds.inJustDecodeBounds = true;
+            try (InputStream in = source.open()) {
+                BitmapFactory.decodeStream(in, null, bounds);
+            }
+            if (bounds.outWidth <= 0 || bounds.outHeight <= 0) return false; // not a decodable image
+
+            // 2. Decode at reduced size so a large photo never needs full-resolution memory
+            //    (a 50 MP image would be ~200 MB as a bitmap). inSampleSize must be a power of two;
+            //    use the largest one that still keeps the long side >= maxSide, so the exact
+            //    resize in step 3 loses no detail.
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 1;
+            int longSide = Math.max(bounds.outWidth, bounds.outHeight);
+            while (longSide / (options.inSampleSize * 2) >= maxSide) options.inSampleSize *= 2;
+            try (InputStream in = source.open()) {
+                decoded = BitmapFactory.decodeStream(in, null, options);
+            }
+            if (decoded == null) return false;
+
+            // 3. One transform: exact scale down to maxSide, then EXIF rotation. Rotating around the
+            //    origin moves the image into negative coordinates, so shift it back to (0,0).
+            float scale = Math.min(1f, (float) maxSide / Math.max(decoded.getWidth(), decoded.getHeight()));
+            Matrix matrix = new Matrix();
+            matrix.postScale(scale, scale);
+            matrix.postRotate(readExifRotation(source));
+            RectF outBounds = new RectF(0, 0, decoded.getWidth(), decoded.getHeight());
+            matrix.mapRect(outBounds);
+            matrix.postTranslate(-outBounds.left, -outBounds.top);
+
+            // 4. Draw onto an opaque white canvas to drop any alpha channel.
+            output = Bitmap.createBitmap(Math.round(outBounds.width()), Math.round(outBounds.height()), Bitmap.Config.ARGB_8888);
+            output.eraseColor(Color.WHITE);
+            new Canvas(output).drawBitmap(decoded, matrix, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+            // 5. Write to a temp file, then rename over dest (replaces dest in one step).
+            try (OutputStream out = new FileOutputStream(temp)) {
+                if (!output.compress(Bitmap.CompressFormat.JPEG, quality, out)) return false;
+            }
+            return temp.renameTo(dest);
+        } catch (IOException | RuntimeException | OutOfMemoryError e) {
+            // OutOfMemoryError is caught on purpose: an oversized image should fail this one
+            // conversion, not crash the app.
+            Log.e(TAG, "saveAsJpeg failed for " + dest.getName(), e);
+            return false;
+        } finally {
+            if (decoded != null) decoded.recycle();
+            if (output != null) output.recycle();
+            if (temp.exists()) temp.delete(); // only left behind if something failed
+        }
+    }
+
+    /**
+     * Returns the clockwise rotation (0, 90, 180 or 270) stored in the image's EXIF orientation tag.
+     * Images without EXIF (most PNG/WEBP) or with unreadable metadata return 0.
+     */
+    private static int readExifRotation(StreamSource source) {
+        try (InputStream in = source.open()) {
+            int orientation = new ExifInterface(in).getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90: return 90;
+                case ExifInterface.ORIENTATION_ROTATE_180: return 180;
+                case ExifInterface.ORIENTATION_ROTATE_270: return 270;
+                default: return 0;
+            }
+        } catch (IOException | RuntimeException e) {
+            // No EXIF block (typical for PNG/WEBP) or unsupported format: treat as upright.
+            return 0;
+        }
+    }
     /**
      * Rotate an image if required.
      *
