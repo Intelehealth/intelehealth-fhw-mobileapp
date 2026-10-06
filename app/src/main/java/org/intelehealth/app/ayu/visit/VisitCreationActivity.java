@@ -1660,80 +1660,59 @@ public class VisitCreationActivity extends BaseActivity implements
         }
     });
 
+    // Gallery picker used by galleryStart() (ACTION_PICK_IMAGES on Android 13+, ACTION_PICK below).
     ActivityResultLauncher<Intent> mStartForGalleryResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-            Uri selectedImage = result.getData().getData();
-            String[] filePath = {MediaStore.Images.Media.DATA};
-            Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-            c.moveToFirst(); String picturePath = c.getString(c.getColumnIndex(filePath[0])); c.close();
-            mLastSelectedImageName = UUID.randomUUID().toString();
-            String currentPhotoPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
-            File file = new File(currentPhotoPath);
-            if (file.length() / 1024 / 1024 > 2) { String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName + "_compressed.jpg"; compressImage(currentPhotoPath, compressedPath); currentPhotoPath = compressedPath; }
-            BitmapUtils.copyFile(picturePath, currentPhotoPath);
-            Bundle bundle = new Bundle(); bundle.putString("image", currentPhotoPath);
-            imageUtilsListener.onImageReady(bundle);
+        if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null && result.getData().getData() != null) {
+            saveGalleryImage(result.getData().getData());
         } else { Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show(); }
     });
 
+    // Photo-picker launcher. Currently unused (its launch in galleryStart() is commented out), but it goes
+    // through the same conversion so re-enabling it cannot bring back the upload failure.
     private ActivityResultLauncher<PickVisualMediaRequest> galleryIntentLauncher =
             registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
-
                 if (uri != null) {
-                    handleSelectedImage(uri);  // process the image URI (next step)
+                    saveGalleryImage(uri);
                 } else {
                     Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
                 }
-
             });
-    private void handleSelectedImage(Uri uri) {
 
-        try {
-            // Generate unique name
-            mLastSelectedImageName = UUID.randomUUID().toString() + ".jpg";
-            String destPath = AppConstants.IMAGE_PATH + mLastSelectedImageName;
-
-            // Copy URI → File
-            InputStream input = getContentResolver().openInputStream(uri);
-            OutputStream output = new FileOutputStream(destPath);
-
-            byte[] buffer = new byte[4096];
-            int length;
-            while ((length = input.read(buffer)) > 0) {
-                output.write(buffer, 0, length);
-            }
-
-            input.close();
-            output.close();
-
-            // compress if needed
-            File file = new File(destPath);
-            long fileSizeInKB = file.length() / 1024;
-            long fileSizeInMB = fileSizeInKB / 1024;
-
-            if (fileSizeInMB > 2) {
-                String compressedPath = AppConstants.IMAGE_PATH + mLastSelectedImageName.replace(".jpg", "_compressed.jpg");
-                compressImage(destPath, compressedPath);
-                destPath = compressedPath;
-            }
-
-            // send back to your listener
-            Bundle bundle = new Bundle();
-            bundle.putString("image", destPath);
-            imageUtilsListener.onImageReady(bundle);
-
-            Log.i("ImagePath", destPath);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to copy image", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-    private void compressImage(String inputPath, String outputPath) {
-        Bitmap bitmap = BitmapFactory.decodeFile(inputPath, new BitmapFactory.Options());
-        try { FileOutputStream out = new FileOutputStream(outputPath); bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out); out.flush(); out.close(); } catch (Exception e) { e.printStackTrace(); }
+    /**
+     * Saves an image picked from the gallery for the current physical exam question.
+     * <p>
+     * The picked file is converted, not copied, into {@code IMAGE_PATH/<uuid>.jpg}. That file is
+     * later uploaded to OpenMRS as a complex obs (the file name without ".jpg" becomes the obs uuid),
+     * and the server rejects:
+     * <ul>
+     *   <li>non-JPEG data, e.g. PNG screenshots with transparency: HTTP 500 from OpenMRS</li>
+     *   <li>large files, e.g. multi-MB phone photos: HTTP 413 from nginx</li>
+     * </ul>
+     * Do not replace this with a byte-for-byte file copy: that is what left gallery images stuck
+     * unsynced and missing on the web app. {@link BitmapUtils#saveAsJpeg} applies the upload policy.
+     * <p>
+     * The image is read through its content URI rather than the MediaStore DATA file path, which
+     * works with the Android 13+ photo picker and scoped storage. Conversion runs on a background
+     * thread; the result is delivered to {@code imageUtilsListener} on the UI thread.
+     */
+    private void saveGalleryImage(Uri uri) {
+        mLastSelectedImageName = UUID.randomUUID().toString();
+        String imagePath = AppConstants.IMAGE_PATH + mLastSelectedImageName + ".jpg";
+        new Thread(() -> {
+            boolean saved = BitmapUtils.saveAsJpeg(() -> getContentResolver().openInputStream(uri), new File(imagePath),
+                    BitmapUtils.UPLOAD_IMAGE_MAX_SIDE_PX, BitmapUtils.UPLOAD_IMAGE_JPEG_QUALITY);
+            runOnUiThread(() -> {
+                // The user may have left the screen while the image was converting.
+                if (isFinishing() || isDestroyed()) return;
+                if (saved) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("image", imagePath);
+                    imageUtilsListener.onImageReady(bundle);
+                } else {
+                    Toast.makeText(VisitCreationActivity.this, getResources().getString(R.string.unable_to_pick_data), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
     }
 
 

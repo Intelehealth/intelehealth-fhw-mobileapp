@@ -664,7 +664,9 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(initialFollowUpPatients -> {
                                     Log.d("TAG", "fetchAndSegregateData: "+new Gson().toJson(initialFollowUpPatients));
-                                    if (initialFollowUpPatients.isEmpty()) {
+                                    // Today/Tomorrow are queried separately, so an empty Others list must not skip them
+                                    boolean loadTodayAndTomorrow = filterType == FollowupFilterTypeEnum.NONE && dataLoadingType == DataLoadingType.INITIAL;
+                                    if (initialFollowUpPatients.isEmpty() && !loadTodayAndTomorrow) {
                                         if (dataLoadingType == DataLoadingType.INITIAL) {
                                             commonLoadingDialog.dismiss();
                                         }
