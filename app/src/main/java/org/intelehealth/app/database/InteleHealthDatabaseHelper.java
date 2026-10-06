@@ -389,8 +389,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_number TEXT DEFAULT ''");
                 db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_address TEXT DEFAULT ''");
             case 5:
-                // upgrade logic from 5 to 6 - add patient queue table
-                db.execSQL(CREATE_QUEUE);
+                // upgrade logic from 5 to 6
                 break;
             default:
                 throw new IllegalStateException(

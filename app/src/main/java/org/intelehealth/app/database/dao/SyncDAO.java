@@ -126,7 +126,9 @@ public class SyncDAO {
             // inserted into tbl_queue here, so the data is refreshed on every pull-sync.
             // Switch back to the line below once pulldata starts returning the queue list.
              queueDAO.insertQueue(responseDTO.getData().getQueuelist());
-             Logger.logD(TAG, "insertQueue = " + responseDTO.getData().getQueuelist().size());
+             // queueData can be absent on later pages - don't NPE the whole page on it
+             Logger.logD(TAG, "insertQueue = " + (responseDTO.getData().getQueuelist() != null
+                     ? responseDTO.getData().getQueuelist().size() : 0));
 
 //            String encoded = "Bearer " + sessionManager.getEncoded();
 //            Logger.logD(TAG, "queue list token " + encoded);
@@ -693,6 +695,26 @@ public class SyncDAO {
                     } else {
                         sessionManager.setTriggerNoti("yes");
                     }
+                } else {
+                    // Without this a failed page silently stops the chain and the
+                    // initial sync progress stays stuck at the last percentage.
+                    String errorBody = "";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorBody = response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorBody = e.getMessage();
+                    }
+                    Logger.logD(PULL_ISSUE, "pull page " + pageNo + " failed: code "
+                            + response.code() + " body " + errorBody);
+                    IntelehealthApplication.getAppContext()
+                            .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                                    .setPackage(IntelehealthApplication.getAppContext()
+                                            .getPackageName())
+                                    .putExtra(AppConstants.SYNC_INTENT_DATA_KEY,
+                                            AppConstants.SYNC_FAILED));
+                    return;
                 }
 
                 Logger.logD("End Pull request", "Ended");

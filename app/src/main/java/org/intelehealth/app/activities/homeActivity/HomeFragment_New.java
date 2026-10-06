@@ -129,10 +129,10 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private void addQueueLayout() {
-        // Prefer the latest queue payload persisted from a "Next In Queue" FCM
-        // notification so the card reflects real queue state; fall back to mock
-        // data when no notification has been received yet.
+        // The latest queue payload persisted from a "Next In Queue" FCM
+        // notification so the card reflects real queue state
         PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
+        //Show dummy data to check UI for testing
         if (currentPatient == null) {
             ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
             currentPatient = new PatientData(
