@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.utilities.ThreadingUtils.executeInBackground;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
+import static org.intelehealth.app.utilities.UuidDictionary.REFERRED_SPECIALIST;
 
 import android.app.Activity;
 import android.content.Context;
@@ -66,6 +67,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -108,6 +110,30 @@ public class VisitPendingFragment extends Fragment {
 
     public VisitPendingFragment(PrescriptionLoadingListeners prescriptionLoadingListeners) {
         this.prescriptionLoadingListeners = prescriptionLoadingListeners;
+    }
+
+    /**
+     * Required by the Fragment framework: after process death (e.g. the OS
+     * reclaims memory while the user is away in a share-sheet/WhatsApp for
+     * Share Prescription), FragmentManager restores this fragment by calling
+     * this constructor via reflection — a fragment with only a parameterized
+     * constructor crashes with "could not find Fragment constructor" the
+     * moment restoration is attempted. prescriptionLoadingListeners is
+     * re-resolved from the host Activity in onAttach() below for this path;
+     * VisitPagerAdapter's normal (non-restoration) creation still explicitly
+     * passes it via the constructor above, unchanged.
+     */
+    public VisitPendingFragment() {
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (prescriptionLoadingListeners == null && context instanceof PrescriptionLoadingListeners) {
+            // Only reached when this fragment was recreated via the no-arg
+            // constructor above (state restoration) instead of VisitPagerAdapter.
+            prescriptionLoadingListeners = (PrescriptionLoadingListeners) context;
+        }
     }
 
     @Nullable
@@ -550,7 +576,18 @@ public class VisitPendingFragment extends Fragment {
                         "WHERE e2.visituuid = v.uuid " +
                         "AND e2.encounter_type_uuid = ?" +
                         ") THEN 1 ELSE 0 " +
-                        "END AS has_visit_complete "+
+                        "END AS has_visit_complete, "+
+                        "CASE " +
+                        "WHEN EXISTS (" +
+                        "SELECT 1 FROM tbl_encounter e3, tbl_obs o3 " +
+                        "WHERE e3.visituuid = v.uuid " +
+                        "AND e3.encounter_type_uuid = ? " +
+                        "AND e3.uuid = o3.encounteruuid " +
+                        "AND o3.conceptuuid = ? " +
+                        "AND o3.voided = 0 AND o3.value IS NOT NULL AND trim(o3.value) <> ''" +
+                        // PHC: normal flow for now.
+                        ") AND NOT " + EncounterDAO.phcReferralSql("v.uuid") + " THEN 1 ELSE 0 " +
+                        "END AS has_referral "+
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         //" v.enddate is null and" +
@@ -558,10 +595,11 @@ public class VisitPendingFragment extends Fragment {
                         " v.startdate > DATETIME('now', '-4 day') " +
                         "AND has_exit_survey = 0 "+
                         "AND has_visit_complete = 0 "+
+                        "AND has_referral = 0 "+
                         searchQ +
                         " group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE,String.valueOf(limit), String.valueOf(offset)});
+                new String[]{ENCOUNTER_VISIT_COMPLETE, ENCOUNTER_VISIT_NOTE, REFERRED_SPECIALIST, String.valueOf(limit), String.valueOf(offset)});
 
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -611,7 +649,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     boolean isExist = false;
                     for (PrescriptionModel item : recentList) {
-                        if (item.getOpenmrs_id().equals(model.getOpenmrs_id())) {
+                        if (Objects.equals(item.getOpenmrs_id(), model.getOpenmrs_id())) { // openmrs_id is null until server assigns it
                             isExist = true;
                             break;
                         }
@@ -721,7 +759,7 @@ public class VisitPendingFragment extends Fragment {
                     model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                     boolean isExist = false;
                     for (PrescriptionModel item : recentList) {
-                        if (item.getOpenmrs_id().equals(model.getOpenmrs_id())) {
+                        if (Objects.equals(item.getOpenmrs_id(), model.getOpenmrs_id())) { // openmrs_id is null until server assigns it
                             isExist = true;
                             break;
                         }
@@ -867,17 +905,29 @@ public class VisitPendingFragment extends Fragment {
                         "WHERE e2.visituuid = v.uuid " +
                         "AND e2.encounter_type_uuid = ?" +
                         ") THEN 1 ELSE 0 " +
-                        "END AS has_visit_complete "+
+                        "END AS has_visit_complete, "+
+                        "CASE " +
+                        "WHEN EXISTS (" +
+                        "SELECT 1 FROM tbl_encounter e3, tbl_obs o3 " +
+                        "WHERE e3.visituuid = v.uuid " +
+                        "AND e3.encounter_type_uuid = ? " +
+                        "AND e3.uuid = o3.encounteruuid " +
+                        "AND o3.conceptuuid = ? " +
+                        "AND o3.voided = 0 AND o3.value IS NOT NULL AND trim(o3.value) <> ''" +
+                        // PHC: normal flow for now.
+                        ") AND NOT " + EncounterDAO.phcReferralSql("v.uuid") + " THEN 1 ELSE 0 " +
+                        "END AS has_referral "+
                         "from tbl_patient p, tbl_visit v, tbl_encounter e, tbl_obs o where" +
                         " p.uuid = v.patientuuid and v.uuid = e.visituuid and euid = o.encounteruuid and" +
                         " (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0 and" +
                         " v.startdate <= DATETIME('now', '-4 day') " +
                         "AND has_exit_survey = 0 "+
                         "AND has_visit_complete = 0 "+
+                        "AND has_referral = 0 "+
                         searchQ +
                         "group by p.openmrs_id ORDER BY v.startdate DESC limit ? offset ?",
 
-                new String[]{ENCOUNTER_VISIT_COMPLETE, String.valueOf(limit), String.valueOf(offset)});
+                new String[]{ENCOUNTER_VISIT_COMPLETE, ENCOUNTER_VISIT_NOTE, REFERRED_SPECIALIST, String.valueOf(limit), String.valueOf(offset)});
 
         if (cursor != null && cursor.moveToFirst()) {// Move cursor to first row
             do {
@@ -1112,6 +1162,12 @@ public class VisitPendingFragment extends Fragment {
         recentEnd = recentStart + recentLimit;
         olderStart = 0;
         olderEnd = olderStart + olderLimit;
+    }
+
+    /** Re-queries from the top (e.g. after a sync completes) - reuses the same
+     *  reset-and-reload logic already wired to the search-close button. */
+    public void reloadData() {
+        resetData();
     }
 
     private void resetData() {

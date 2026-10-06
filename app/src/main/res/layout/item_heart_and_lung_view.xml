@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_6"
+            android:orientation="horizontal"
+            android:padding="@dimen/margin_10">
+
+            <ImageView
+                android:layout_width="@dimen/margin_50"
+                android:layout_height="@dimen/margin_50"
+                android:layout_margin="@dimen/margin_4"
+                android:layout_gravity="center"
+                android:src="@drawable/flow_chart_icon" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/margin_6"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txtSaveTitile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Aortic"
+                    android:layout_margin="@dimen/margin_4"
+                    android:textColor="#1B163A"
+                    android:textSize="@dimen/space_14dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/txtSaveTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="09:42"
+                    android:layout_margin="@dimen/margin_4"
+                    android:textColor="#7F7B92"
+                    android:textSize="@dimen/space_12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_save_paly"
+                    android:layout_width="@dimen/margin_30"
+                    android:layout_height="@dimen/margin_30"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_8"
+                    android:src="@drawable/play_heart_lung_icon" />
+
+                <ImageView
+                    android:id="@+id/img_save_delete"
+                    android:layout_width="@dimen/margin_20"
+                    android:layout_height="@dimen/margin_20"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_8"
+                    android:src="@drawable/delete_icon" />
+
+                <ImageView
+                    android:id="@+id/img_save_repat"
+                    android:layout_width="@dimen/margin_20"
+                    android:layout_height="@dimen/margin_20"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_8"
+                    android:src="@drawable/reapet_icon" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

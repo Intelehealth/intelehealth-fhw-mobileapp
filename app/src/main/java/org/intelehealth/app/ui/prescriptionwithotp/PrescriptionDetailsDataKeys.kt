@@ -22,6 +22,8 @@ object PrescriptionDetailsDataKeys {
         const val URIC_ACID = "Uric Acid"
         const val TOTAL_CHOLESTEROL = "Total Cholesterol"
         const val HAEMOGLOBIN = "Haemoglobin"
+        // Same label View/Print (PrintViewPrescription.formatDiagnostics) uses
+        const val DIABETES_HBA1C = "Diabetes HBA1C"
     }
 
     // Complaints
@@ -57,6 +59,9 @@ object PrescriptionDetailsDataKeys {
     object Referral {
         const val REFERRAL = "Referred Specialist"
     }
+    object NotesPrecautions {
+        const val NOTES = "Notes & Precautions"
+    }
     fun getLabelForKey(key: String): String {
         return when (key) {
             Vitals.HEIGHT -> Vitals.HEIGHT
@@ -72,6 +77,7 @@ object PrescriptionDetailsDataKeys {
             Diagnostics.URIC_ACID -> Diagnostics.URIC_ACID
             Diagnostics.TOTAL_CHOLESTEROL -> Diagnostics.TOTAL_CHOLESTEROL
             Diagnostics.HAEMOGLOBIN -> Diagnostics.HAEMOGLOBIN
+            Diagnostics.DIABETES_HBA1C -> Diagnostics.DIABETES_HBA1C
             Complaints.PRESENTING_COMPLAINTS -> Complaints.PRESENTING_COMPLAINTS
             Diagnosis.PRIMARY -> Diagnosis.PRIMARY
             MedicationPlan.MEDICINE_DETAILS -> MedicationPlan.MEDICINE_DETAILS

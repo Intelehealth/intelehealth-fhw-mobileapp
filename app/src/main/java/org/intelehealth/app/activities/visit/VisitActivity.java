@@ -29,6 +29,7 @@ import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -123,6 +124,9 @@ public class VisitActivity extends BaseActivity implements
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
         });
+        // Not wired anywhere else (no android:onClick in the layout either) -
+        // without this, tapping the icon did nothing at all.
+        refresh.setOnClickListener(this::syncNow);
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
@@ -237,11 +241,14 @@ public class VisitActivity extends BaseActivity implements
 
             new TabLayoutMediator(tabLayout, viewPager,
                     (tab, position) -> tab.setText(getResources().getString(
-                                    position == 0 ? R.string.received : R.string.pending))
-                            .setIcon(R.drawable.presc_tablayout_icon)
+                            position == 0 ? R.string.received
+                                    : position == 1 ? R.string.pending
+                                    : R.string.referrals))
             ).attach();
 
-            viewPager.setOffscreenPageLimit(1); // Optimize memory usage
+            // 2 keeps all 3 tabs (Received/Pending/Referrals) created up front, so each
+            // tab's count loads immediately instead of only once the user opens it.
+            viewPager.setOffscreenPageLimit(2);
         }
           /*String language = sessionManager.getAppLanguage();
       if (!language.equalsIgnoreCase("")) {
@@ -256,6 +263,29 @@ public class VisitActivity extends BaseActivity implements
         refreshCount++;
 
 
+    }
+
+    /**
+     * configureTabLayout() only ever creates the ViewPager's adapter/fragments
+     * once - once they exist, a sync completing never reaches them again, so the
+     * Received/Pending/Referrals lists stayed stale until the whole screen was
+     * recreated. Reuses each fragment's own existing reload method instead of a
+     * new/duplicate query path.
+     */
+    private void reloadVisitTabs() {
+        if (viewPager == null || viewPager.getAdapter() == null) return;
+        Fragment received = getSupportFragmentManager().findFragmentByTag("f0");
+        if (received instanceof VisitReceivedFragment) {
+            ((VisitReceivedFragment) received).reloadData();
+        }
+        Fragment pending = getSupportFragmentManager().findFragmentByTag("f1");
+        if (pending instanceof VisitPendingFragment) {
+            ((VisitPendingFragment) pending).reloadData();
+        }
+        Fragment referral = getSupportFragmentManager().findFragmentByTag("f2");
+        if (referral instanceof VisitReferralFragment) {
+            ((VisitReferralFragment) referral).reloadData();
+        }
     }
 
    /* private void updateCounts(boolean isForReceivedPrescription) {
@@ -287,6 +317,45 @@ public class VisitActivity extends BaseActivity implements
         super.onStart();
         //register receiver for internet check
       //  networkUtils.callBroadcastReceiver();
+
+        // Without this, nothing ever stops the sync spinner/dialog or reloads the
+        // tab counts once syncNow()'s background sync finishes.
+        mBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.hasExtra("JOB")) {
+                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
+                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
+                        if (!isFinishing()) {
+                            refresh.clearAnimation();
+                            if (syncAnimator != null) syncAnimator.cancel();
+                        }
+                        hideProgressbar();
+                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+                            configureTabLayout();
+                            reloadVisitTabs();
+                        }, 300);
+                    }
+                }
+                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
+                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
+                    if (flagType == AppConstants.SYNC_FAILED) {
+                        refresh.clearAnimation();
+                        if (syncAnimator != null) syncAnimator.cancel();
+                        hideProgressbar();
+                    }
+                }
+            }
+        };
+        IntentFilter filterSend = new IntentFilter();
+        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        ContextCompat.registerReceiver(
+                this,
+                mBroadcastReceiver,
+                filterSend,
+                ContextCompat.RECEIVER_NOT_EXPORTED
+        );
     }
 
     private void hideProgressbar() {
@@ -299,6 +368,11 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void onStop() {
         super.onStop();
+        try {
+            unregisterReceiver(mBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         /*try {
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
@@ -402,6 +476,16 @@ public class VisitActivity extends BaseActivity implements
            });
        }).start();
    }
+
+    /** Called by {@link VisitReferralFragment} once its list is loaded — mirrors
+     *  the Received/Pending tab count pattern in {@link #updateCounts(boolean)}. */
+    public void updateReferralCount(int count) {
+        if (tabLayout == null) return;
+        com.google.android.material.tabs.TabLayout.Tab tab = tabLayout.getTabAt(2);
+        if (tab != null) {
+            tab.setText(getResources().getString(R.string.referrals) + "\t(" + count + ")");
+        }
+    }
 
     @Override
     public void isReceivedRecentLoaded(boolean status) {

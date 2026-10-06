@@ -254,6 +254,78 @@ public class PhysicalExam extends Node {
 
     }
 
+    /**
+     * Builds the full "-" separated trace from the top-level exam section down to
+     * the currently selected node, e.g.
+     * "Head Examination - Head - Injury - Inspect the head from all sides and look for injuries".
+     * Uses raw node text (not locale display) to match the NAS-specific behaviour of
+     * {@link #getExamParentNodeName_NAS(int)}.
+     */
+    private static final String TRACE_SKIP_CAMERA_NODE_TEXT = "Take a picture";
+    private static final String TRACE_SKIP_CAMERA_NODE_CLINICAL_LANGUAGE = "[picture taken]";
+
+    public String getExamNodeTrace(int index) {
+        String title = getTitle(index);
+        String[] split = title.split(" : ");
+        String levelOne = split[0];
+        String levelTwo = split[1];
+
+        for (Node selectedNode : selectedNodes) {
+            if (selectedNode.getText().equals(levelOne)) {
+                for (Node examNode : selectedNode.getOptionsList()) {
+                    if (examNode.getText().equals(levelTwo)) {
+                        String nodeTrace = buildSelectedNodeTrace(examNode);
+                        return nodeTrace.isEmpty() ? levelOne : levelOne + " - " + nodeTrace;
+                    }
+                }
+            }
+        }
+        return levelOne + " - " + levelTwo;
+    }
+
+    /**
+     * Uses {@link Node#getLanguage()} in preference to {@link Node#getText()} (the former
+     * already falls back to the latter when the mind-map node has no "language" attribute),
+     * skipping a node's own value when it's the "%" placeholder (meaning "show only the
+     * selected sub-answer") or the "Take a picture" camera-action node text.
+     */
+    private String buildSelectedNodeTrace(Node node) {
+        String value = node.getLanguage();
+        boolean skipValue = value == null || value.equals("%") || value.equalsIgnoreCase(TRACE_SKIP_CAMERA_NODE_TEXT) || value.equalsIgnoreCase(TRACE_SKIP_CAMERA_NODE_CLINICAL_LANGUAGE);
+        String trace = skipValue ? "" : value;
+
+        if (node.getOptionsList() != null) {
+            for (Node child : node.getOptionsList()) {
+                // A question-level node (e.g. "Is there any rash?*") may not itself be marked
+                // selected even though the chosen answer further down is - descend whenever
+                // this child or any of its own descendants is selected, however deep, so the
+                // chosen answer isn't dropped from the trace.
+                if (hasSelectedDescendant(child)) {
+                    String childTrace = buildSelectedNodeTrace(child);
+                    if (!childTrace.isEmpty()) {
+                        trace = trace.isEmpty() ? childTrace : trace + " - " + childTrace;
+                    }
+                }
+            }
+        }
+        return trace;
+    }
+
+    private boolean hasSelectedDescendant(Node node) {
+        if (node.isSelected()) {
+            return true;
+        }
+        if (node.getOptionsList() == null) {
+            return false;
+        }
+        for (Node child : node.getOptionsList()) {
+            if (hasSelectedDescendant(child)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Check to see if all required exams have been answered before moving on.
     public boolean areRequiredAnswered() {
 

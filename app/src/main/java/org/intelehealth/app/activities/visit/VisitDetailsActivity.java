@@ -121,6 +121,11 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private String patientName, patientUuid, gender, age, dob, openmrsID,
             visitID, visit_startDate, visit_speciality, followupDate, followUpDate_format, patient_photo_path, chief_complaint_value;
     private boolean isEmergency, hasPrescription;
+    /** True only for a Referral-tab visit whose Prescription row is showing "Interim
+     *  Prescription" — see {@link #bindReferralInfo}. While true, End Visit is disabled
+     *  so the health worker can't accidentally close the visit before the NAMCO/specialist
+     *  referral is resolved (NAS-1731 visit-closure prevention). */
+    private boolean interimPrescriptionActive;
     private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time,
             visit_startDate_txt, visit_startTime, visit_speciality_txt, followupDate_txt, followup_info, chief_complaint_txt, followup_accept_text;
     private ImageView profile_image, icon_presc_details;
@@ -129,6 +134,8 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
     private RelativeLayout prescription_block, endvisit_relative_block, presc_remind_block,
             followup_relative_block, followup_start_card, yes_no_followup_relative,
             vs_card, presc_relative;
+    private androidx.cardview.widget.CardView referralInfoCard;
+    private TextView referralInfoTitle, referralInfoInstruction, referralInfoStatus;
     private ImageButton presc_arrowRight, vs_arrowRight, backArrow, refresh,
             pat_call_btn, pat_whatsapp_btn;
     private ImageView dr_call_btn, dr_whatsapp_btn;
@@ -400,6 +407,30 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             }
             // presc block - end
 
+            // Referred to NAMCO/specialist banner - start
+            // Referral-tab-only: VisitReferralFragment passes the visit's Referred
+            // Specialist obs value via the "referralValue" extra when it opens this
+            // screen (see VisitReferralFragment#onReferralClicked). Received/Pending
+            // rows (VisitAdapter) don't set this extra, so the banner and the
+            // Prescription row's "Interim Prescription" relabel never appear there,
+            // even for a visit that also happens to have a referral obs.
+            referralInfoCard = findViewById(R.id.referral_info_card);
+            referralInfoTitle = findViewById(R.id.referral_info_title);
+            referralInfoInstruction = findViewById(R.id.referral_info_instruction);
+            referralInfoStatus = findViewById(R.id.referral_info_status);
+            // The Referral tab passes the obs value directly via the "referralValue"
+            // extra (see VisitReferralFragment#onReferralClicked). Received/Pending
+            // (VisitAdapter) don't set it, so fall back to looking the visit's own
+            // Referred Specialist obs up directly — this is how a NAMCO-referred visit
+            // that has since moved to the Received tab (final prescription received)
+            // is still recognized here, without adding a new intent extra everywhere.
+            String referralValueExtra = intent != null ? intent.getStringExtra("referralValue") : null;
+            String referralValue = (referralValueExtra != null && !referralValueExtra.trim().isEmpty())
+                    ? referralValueExtra
+                    : fetchReferralValueIfAny(visitID);
+            bindReferralInfo(referralValue);
+            // Referred to NAMCO/specialist banner - end
+
             patName_txt = findViewById(R.id.patname_txt);
             patName_txt.setText(patientName);
 
@@ -561,6 +592,10 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
             visit_speciality_txt = findViewById(R.id.visit_speciality);
             visit_speciality = fetchSpecialityValue(visitID);
             visit_speciality_txt.setText(visit_speciality);
+            // bindReferralInfo() above already ran and would have set this to the
+            // NAMCO specialist's speciality, but this fixed pre-visit attribute
+            // value overwrites it unconditionally - reapply after, not before.
+            updateSpecialityForResolvedReferral(referralValue);
 
        /* if (visit_speciality != null)
             visit_speciality_txt.setText(visit_speciality);
@@ -625,27 +660,21 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                 new Handler(Looper.getMainLooper()).post(() -> {
                     if (visitNotEnded) {
                         endvisit_relative_block.setVisibility(View.VISIBLE);
-                        btn_end_visit.setOnClickListener(v -> {
-                            if (!hasPrescription) {
-                                if (mFeatureActiveStatus.getRestrictEndVisit()) {
-                                    if (dialogUtils == null) {
-                                        dialogUtils = new DialogUtils(); // Ensure a single instance
-                                    }
-                                    dialogUtils.showCommonDialog(context,
-                                            R.drawable.dialog_close_visit_icon,
-                                            context.getString(R.string.alert_label_txt),
-                                            context.getString(R.string.prescription_notprovided_msg),
-                                            true,
-                                            context.getString(R.string.ok),
-                                            context.getString(R.string.cancel),
-                                            action -> {});
-                                } else {
-                                    checkIfAppointmentExistsForVisit(visitID);
-                                }
-                            } else {
-                                triggerEndVisit();
-                            }
-                        });
+                        // End Visit stays disabled until a prescription exists for this visit -
+                        // regardless of the restrictEndVisit remote flag, which only used to
+                        // gate a click-time warning dialog, not the button's enabled state.
+                        if (interimPrescriptionActive || !hasPrescription) {
+                            // Referral-tab visit still on the doctor's interim prescription —
+                            // block End Visit so the health worker can't accidentally close it
+                            // before the NAMCO/specialist referral is resolved (NAS-1731).
+                            btn_end_visit.setEnabled(false);
+                            btn_end_visit.setAlpha(0.5f);
+                            btn_end_visit.setOnClickListener(null);
+                        } else {
+                            btn_end_visit.setEnabled(true);
+                            btn_end_visit.setAlpha(1f);
+                            btn_end_visit.setOnClickListener(v -> triggerEndVisit());
+                        }
                     } else {
                         endvisit_relative_block.setVisibility(View.GONE);
                     }
@@ -915,6 +944,191 @@ public class VisitDetailsActivity extends BaseActivity implements NetworkUtils.I
                     });
                     mPastVisitsRecyclerView.setAdapter(pastVisitListingAdapter);
                 }
+            }
+        }
+
+        /**
+         * Looks up this visit's own Referred Specialist obs directly, for the case
+         * where VisitDetailsActivity wasn't opened from the Referral tab (so the
+         * "referralValue" intent extra is absent) but the visit was referred anyway
+         * — e.g. a NAMCO-referred visit whose final prescription has since arrived,
+         * which now surfaces on the Received tab instead (see VisitReceivedFragment).
+         */
+        private String fetchReferralValueIfAny(String visitUuid) {
+            try {
+                return new EncounterDAO().fetchReferredSpecialistValue(visitUuid);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                return null;
+            }
+        }
+
+        /** PHC: normal flow for now. */
+        private boolean isPhcReferral(String visitUuid) {
+            try {
+                return new EncounterDAO().isPhcReferral(visitUuid);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+                return false;
+            }
+        }
+
+        /**
+         * Shows/hides the "Referred to NAMCO/specialist" card and adjusts the
+         * Prescription row's subtitle for a referred visit, in either of two states:
+         * <ul>
+         *   <li>Waiting — the NAMCO/specialist doctor hasn't completed the visit yet
+         *   ({@link EncounterDAO#isPrescriptionReceived} is false): the doctor's own
+         *   prescription stands in as "Interim Prescription", the instruction line
+         *   tells the health worker where to send the patient next, and End Visit is
+         *   disabled (see {@link #interimPrescriptionActive}) so it can't be closed
+         *   before the referral is resolved.</li>
+         *   <li>Final — the NAMCO/specialist doctor has shared the final prescription
+         *   and closed the visit (isPrescriptionReceived is true): the Prescription
+         *   row instead shows "Final Prescription received", the instruction line is
+         *   hidden (there's nothing left to tell the health worker to do), and End
+         *   Visit is enabled like any other completed visit.</li>
+         * </ul>
+         * Tapping the Prescription row is unchanged either way — it always opens
+         * {@link PrescriptionActivity} for the doctor's own prescription.
+         */
+        private void bindReferralInfo(String referralValue) {
+            if (isPhcReferral(visitID)) { // PHC: normal flow for now
+                interimPrescriptionActive = false;
+                if (referralInfoCard != null) referralInfoCard.setVisibility(View.GONE);
+                return;
+            }
+            boolean referredBySpecialistObs = referralValue != null && !referralValue.trim().isEmpty();
+            boolean declined = false;
+            boolean visitComplete = false;
+            try {
+                // Some declined referrals never get a REFERRED_SPECIALIST obs (declined
+                // before a specialist/hospital was chosen) - the consent obs alone still
+                // proves a referral was proposed, so check it regardless of referredBySpecialistObs.
+                declined = new EncounterDAO().isReferralDeclined(visitID);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            boolean referred = referredBySpecialistObs || declined;
+            if (referred) {
+                try {
+                    visitComplete = new EncounterDAO().isPrescriptionReceived(visitID);
+                } catch (DAOException e) {
+                    FirebaseCrashlytics.getInstance().recordException(e);
+                }
+            }
+            // Declined referral never reaches the specialist - can't be resolved.
+            boolean referralResolved = referred && !declined && visitComplete;
+            // Set before the End Visit button is wired up further down in onCreate
+            // (inside its own background task) — see the "end visit" block, which
+            // reads this to keep the button disabled for the lifetime of the screen.
+            interimPrescriptionActive = referred && !declined && !visitComplete;
+
+            if (referralInfoCard == null) return;
+            if (!referred) {
+                referralInfoCard.setVisibility(View.GONE);
+                return;
+            }
+            referralInfoCard.setVisibility(View.VISIBLE);
+
+            if (declined) {
+                referralInfoCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.referralDeclinedCardBg));
+                referralInfoTitle.setText(R.string.referral_declined_by_patient);
+                referralInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                if (referralInfoInstruction != null) {
+                    referralInfoInstruction.setVisibility(View.VISIBLE);
+                    referralInfoInstruction.setText(R.string.referral_declined_description);
+                    referralInfoInstruction.setTextColor(ContextCompat.getColor(this, R.color.textColorGray));
+                }
+                if (referralInfoStatus != null) referralInfoStatus.setVisibility(View.GONE);
+                return;
+            }
+
+            referralInfoCard.setCardBackgroundColor(ContextCompat.getColor(this, R.color.cardTintLightOrange));
+            referralInfoTitle.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            String destination = StringUtils.localizeReferralHospital(
+                    EncounterDAO.parseReferralDestination(referralValue), sessionManager.getAppLanguage(), "रुग्णालय");
+            referralInfoTitle.setText(getResources().getString(R.string.referred_to_destination, destination));
+            if (referralInfoInstruction != null) {
+                // "Please visit <destination> for further evaluation" only makes sense
+                // while still waiting on the specialist — hide it once resolved.
+                referralInfoInstruction.setVisibility(referralResolved ? View.GONE : View.VISIBLE);
+                if (!referralResolved) {
+                    referralInfoInstruction.setText(getResources().getString(R.string.referral_evaluation_instruction, destination));
+                }
+            }
+            if (referralInfoStatus != null) {
+                referralInfoStatus.setVisibility(View.VISIBLE);
+                referralInfoStatus.setText(referralResolved
+                        ? R.string.specialist_prescription_completed
+                        : R.string.waiting_for_specialist_consultation);
+            }
+
+            // Declined referral - leave the normal "Received <date>" text as-is.
+            if (presc_time != null && !declined) {
+                if (referralResolved) {
+                    presc_time.setText(R.string.final_prescription_received);
+                    presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+                } else {
+                    // Interim state (referred, not yet complete) - independent of the entry point's hasPrescription extra.
+                    presc_time.setText(R.string.interim_prescription);
+                    presc_time.setTextColor(ContextCompat.getColor(this, R.color.referralBadgeText));
+                    if (presc_arrowRight != null) presc_arrowRight.setVisibility(View.VISIBLE);
+                    if (presc_relative != null) {
+                        presc_relative.setClickable(true);
+                        // Re-attach the click listener - the one in the hasPrescription branch above doesn't run for this case.
+                        presc_relative.setOnClickListener(v -> {
+                            Intent in = new Intent(this, PrescriptionActivity.class);
+                            in.putExtra("patientname", patientName);
+                            in.putExtra("patientUuid", patientUuid);
+                            in.putExtra("patient_photo", patient_photo_path);
+                            in.putExtra("visit_ID", visitID);
+                            in.putExtra("visit_startDate", visit_startDate);
+                            in.putExtra("gender", gender);
+                            in.putExtra("encounterUuidVitals", vitalsUUID);
+                            in.putExtra("encounterUuidAdultIntial", adultInitialUUID);
+                            in.putExtra("age", age);
+                            in.putExtra("tag", "VisitDetailsActivity");
+                            in.putExtra("followupDate", followUpDate_format);
+                            in.putExtra("openmrsID", openmrsID);
+                            startActivity(in);
+                        });
+                    }
+                }
+            }
+        }
+
+        /**
+         * visit_speciality_txt is set from fetchSpecialityValue() above - a fixed
+         * pre-visit routing attribute that never changes after the visit is
+         * created. Once a NAMCO referral is resolved, the speciality should
+         * reflect the specialist who actually completed it - fetchDrDetailsFromLocalDb
+         * doesn't help here since it keeps the referring GP's own provider_uuid even
+         * after referral, so use the specialist's own encounter/profile instead.
+         * Some referred visits never get a distinct specialist encounter at all
+         * (the GP recorded the referral and also closed the visit themselves) -
+         * for those, fall back to the specialty named in the referral obs itself,
+         * the same raw value View/Print's "Referred Specialist" section shows.
+         */
+        private void updateSpecialityForResolvedReferral(String referralValue) {
+            if (visit_speciality_txt == null) return;
+            boolean referred = referralValue != null && !referralValue.trim().isEmpty();
+            if (!referred) return;
+            try {
+                if (new EncounterDAO().isPhcReferral(visitID)) return; // PHC: normal flow for now
+                if (new EncounterDAO().isReferralDeclined(visitID)) return; // never handed off - keep the original doctor's speciality
+                if (!new EncounterDAO().isPrescriptionReceived(visitID)) return; // still pending, not resolved yet
+                ClsDoctorDetails details = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
+                if (details != null && details.getSpecialization() != null && !details.getSpecialization().trim().isEmpty()) {
+                    visit_speciality_txt.setText(details.getSpecialization());
+                    return;
+                }
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            String fallbackSpecialty = EncounterDAO.parseReferralSpecialty(referralValue);
+            if (!fallbackSpecialty.isEmpty()) {
+                visit_speciality_txt.setText(fallbackSpecialty);
             }
         }
 

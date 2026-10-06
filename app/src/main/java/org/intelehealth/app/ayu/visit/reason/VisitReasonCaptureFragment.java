@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import org.intelehealth.app.utilities.CustomLog;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,13 +40,11 @@ import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
-import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -195,6 +192,9 @@ public class VisitReasonCaptureFragment extends Fragment {
                     currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
                 }
 
+                if (currentFile == null) {
+                    continue;
+                }
                 Node mainNode = new Node(currentFile);
                 if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
                     mFinalEnabledMMList.add(mindMapName);

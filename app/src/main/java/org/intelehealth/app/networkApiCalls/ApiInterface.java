@@ -14,9 +14,11 @@ import org.intelehealth.app.models.Location;
 import org.intelehealth.app.models.OTPVerificationParamsModel_New;
 import org.intelehealth.app.models.ObsImageModel.ObsJsonResponse;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.app.models.PresignedResponse;
 import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
+import org.intelehealth.app.models.UploadResponse;
 import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
@@ -41,6 +43,7 @@ import org.json.JSONObject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -226,4 +229,35 @@ public interface ApiInterface {
 
     @GET("/api/mindmap/notifications")
     Single<NotificationResponse> fetchAllNotifications(@Header("Authorization") String authHeader, @Query("userId") String userId, @Query("page") String page, @Query("size") String size);
+
+    @POST("encounter")
+    Call<ResponseBody> createEncounter(@Body JsonObject body);
+
+    @POST("obs")
+    Call<ResponseBody> createObs(@Body JsonObject body);
+
+    @Multipart
+    @POST("st/stethoscope/upload")
+    Call<UploadResponse> uploadSound(
+            @Part MultipartBody.Part file,
+            @Part("visit_uuid") RequestBody visit_uuid,
+            @Part("creator_uuid") RequestBody creator_uuid,
+            @Part("sound_type") RequestBody sound_type,
+            @Part("position") RequestBody position);
+
+    @GET("st/stethoscope/presigned-url/{tracker}")
+    Call<PresignedResponse> getPresignedUrl(
+            @Path("tracker") String tracker
+    );
+
+    @Multipart
+    @POST("st/stethoscope/upload-output")
+    Call<ResponseBody> uploadOutput(
+            @Part("tracker_id") RequestBody trackerId,
+            @Part("audio_file") RequestBody base64File
+    );
+
 }
+
+
+

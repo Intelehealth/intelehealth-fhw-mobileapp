@@ -442,6 +442,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = urlString.concat(":3030/auth/login");
+        System.out.println("finalURL" + finalURL);
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
 
@@ -596,7 +597,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                             CustomLog.i(TAG, "onPostExecute: Parse init");
                                                             sessionManager.setIsLoggedIn(true);
                                                             Intent intent = new Intent(SetupActivityNew.this, InitialSyncActivity.class);
-                                                           // Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+                                                            // Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                             intent.putExtra("setup", true);
                                                             intent.putExtra("firstLogin", "firstLogin");
                                                             intent.putExtra("loggedInUser", etUsername.getText().toString());

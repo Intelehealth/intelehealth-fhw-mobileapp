@@ -4,6 +4,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.VisitAttributeListDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
 
 /**
  * The ABHA identifiers as they appear on a printed or shared prescription.
@@ -13,7 +16,7 @@ import org.intelehealth.app.R;
  *
  * The number is held on the patient record; the address is a visit attribute, because a patient may
  * carry several ABHA addresses and the prescription should name the one the visit was conducted under.
- * Callers therefore supply them from different sources and this class only decides presentation.
+ * Visits without that attribute fall back to the patient record, see [addressForVisit].
  */
 public final class AbhaPrescriptionFields {
 
@@ -27,6 +30,19 @@ public final class AbhaPrescriptionFields {
      */
     public static boolean isPresent(String value) {
         return !TextUtils.isEmpty(value) && !value.trim().equalsIgnoreCase("NA");
+    }
+
+    /** The visit's ABHA address, else the patient's current one (position 0 of tbl_patient.abha_address). */
+    public static String addressForVisit(String visitUuid) {
+        if (visitUuid == null) return "";
+        String visitAddress = new VisitAttributeListDAO()
+                .getVisitAttributesList_specificVisit(visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS);
+        if (isPresent(visitAddress)) return visitAddress;
+
+        String patientUuid = new VisitsDAO().patientUuidByViistUuid(visitUuid);
+        String patientAddress = new PatientsDAO().getPatientAbhaAddressByUuid(patientUuid);
+        if (patientAddress == null) return "";
+        return patientAddress.split(",")[0].trim();
     }
 
     /**

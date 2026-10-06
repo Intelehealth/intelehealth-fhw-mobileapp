@@ -581,7 +581,6 @@
                             android:layout_marginBottom="@dimen/fu_margin_start"
                             android:orientation="vertical"
                             android:shrinkColumns="1">
-
                             <LinearLayout
                                 android:id="@+id/ll_diabetes_hba1c_container"
                                 android:layout_width="match_parent"

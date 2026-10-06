@@ -157,6 +157,7 @@
                                 android:src="@drawable/prescription_icon_blue" />
 
                             <TextView
+                                android:id="@+id/search_presc_received_text"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
@@ -238,6 +239,44 @@
                                 android:layout_gravity="center"
                                 android:paddingRight="5dp"
                                 android:text="@string/presc_pending"
+                                android:textColor="#1B163A"
+                                android:textSize="11sp" />
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/presc_referral_waiting_CV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/search_date_relative"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:visibility="gone"
+                        tools:visibility="gone"
+                        android:layout_marginHorizontal="2dp"
+                        app:cardCornerRadius="3dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@color/cardTintLightOrange"
+                            android:orientation="horizontal"
+                            android:paddingHorizontal="3dp">
+
+                            <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:src="@drawable/prescription_icon_blue" />
+
+                            <TextView
+                                android:id="@+id/search_referral_waiting_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:paddingRight="5dp"
+                                tools:text="@string/waiting_for_specialist"
                                 android:textColor="#1B163A"
                                 android:textSize="11sp" />
 

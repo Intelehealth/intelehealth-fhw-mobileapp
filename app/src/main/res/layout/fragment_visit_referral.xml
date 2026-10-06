@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--Search-->
+    <RelativeLayout
+        android:id="@+id/search_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_5"
+        android:layout_marginVertical="@dimen/margin_5">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchview_referral"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/ui2_common_input_bg"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColorHint="@color/textColorLightGary"
+            android:textSize="@dimen/txtsize_patdetail_14sp"
+            app:iconifiedByDefault="false"
+            app:queryHint="@string/search_patient" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nscReferral"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/search_relative"
+        android:fillViewport="true"
+        android:scrollIndicators="none"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!--Waiting-for-specialist banner-->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/referral_banner_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginTop="@dimen/margin_16dp"
+                android:layout_marginEnd="@dimen/margin_5"
+                app:cardBackgroundColor="@color/cardTintLightOrange"
+                app:cardCornerRadius="@dimen/corner_radius_8dp"
+                app:cardElevation="0dp">
+
+                <TextView
+                    android:id="@+id/referral_banner_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/fu_margin_start"
+                    android:textAppearance="@style/label"
+                    android:textColor="@color/referralBadgeText"
+                    android:textSize="@dimen/fu_male_textsize"
+                    tools:text="1 Patient is waiting for specialist" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_active_referrals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/referral_banner_card"
+                android:layout_marginTop="@dimen/margin_24"
+                android:text="@string/active_referrals"
+                android:textAppearance="@style/you_can_add"
+                android:textSize="@dimen/fu_male_textsize"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/referral_nodata"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_active_referrals"
+                android:gravity="center"
+                android:padding="@dimen/card_padding"
+                android:text="@string/no_referrals_found"
+                android:textAppearance="@style/caption"
+                android:textColor="@null"
+                android:textSize="@dimen/fu_male_textsize"
+                android:visibility="gone" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_referrals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_active_referrals"
+                android:layout_marginTop="@dimen/text_margin"
+                android:nestedScrollingEnabled="false"
+                android:padding="@dimen/card_padding"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:itemCount="1"
+                tools:listitem="@layout/referral_list_item" />
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</RelativeLayout>

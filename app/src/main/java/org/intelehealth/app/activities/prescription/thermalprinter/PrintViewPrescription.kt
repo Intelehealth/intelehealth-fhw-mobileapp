@@ -12,11 +12,10 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
-import org.intelehealth.app.database.dao.VisitAttributeListDAO
 import org.intelehealth.app.models.Patient
 import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.utilities.DateAndTimeUtils
-import org.intelehealth.app.utilities.UuidDictionary
+import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -185,9 +184,7 @@ class PrintViewPrescription(
             AbhaPrescriptionFields.line(
                 context,
                 R.string.label_abha_address,
-                VisitAttributeListDAO().getVisitAttributesList_specificVisit(
-                    dataModel.visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
-                )
+                AbhaPrescriptionFields.addressForVisit(dataModel.visitUuid)
             ),
         ).filter { it.isNotEmpty() }
             .joinToString("") { "<span style=\"font-size:11pt; margin: 0px; padding: 0px;\">$it</span><br>" }
@@ -264,6 +261,7 @@ class PrintViewPrescription(
             .append(formatReferredSpecialist())
             .append(formatAdviceFromDoctor())
             .append(formatFollowUpDate())
+            .append(formatSpecialtyNotes())
             .toString()
 
         Log.d(TAG, "Generated Prescription HTML: $prescriptionHtml")
@@ -291,78 +289,13 @@ class PrintViewPrescription(
     private fun followUpWeb(): String {
         val followUpDate = dataModel.followUpDate
         Log.d(TAG, "kzfollowUpWeb: followUpDate : $followUpDate")
-
-        if (followUpDate.isNullOrBlank()) {
-            return stringToWebSms("NA")
-        }
-
-        var followUpDateStr = ""
-
-        if (followUpDate.contains(",")) {
-            val splitFollowDate = followUpDate.split(",")
-            val rawDate = splitFollowDate.getOrNull(0)?.trim()
-            Log.d(TAG, "kzfollowUpWeb: splitFollowDate : $splitFollowDate")
-            Log.d(TAG, "kzfollowUpWeb: rawDate : $rawDate")
-
-            if (!rawDate.isNullOrEmpty()) {
-                val formattedDate = when {
-                    rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
-                        // Format: dd-MM-yyyy
-                        DateAndTimeUtils.date_formatter(
-                            rawDate,
-                            "dd-MM-yyyy",
-                            "dd MMM, yyyy"
-                        )
-                    }
-                    rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
-                        // Format: yyyy-MM-dd
-                        DateAndTimeUtils.date_formatter(
-                            rawDate,
-                            "yyyy-MM-dd",
-                            "dd MMM, yyyy"
-                        )
-                    }
-                    else -> null
-                } ?: "NA"
-
-                val remainingStr = splitFollowDate
-                    .drop(1)
-                    .mapNotNull { segment ->
-                        val trimmed = segment.trim()
-                        when {
-                            trimmed.isEmpty() || trimmed.equals("null", ignoreCase = true) -> null
-                            // A blank doctor remark syncs down as a literal "Remark: null" -
-                            // show "NA" here too, matching the Follow-up Visits screen, the
-                            // end-visit reminder, and the WhatsApp preview/PDF.
-                            trimmed.matches(Regex("(?i)Remark:\\s*(null)?\\s*")) -> "Remark: NA"
-                            else -> trimmed
-                        }
-                    }
-                    .joinToString(", ")
-                Log.d(TAG, "kzfollowUpWeb: remainingStr : $remainingStr")
-
-                followUpDateStr = if (remainingStr.isNotEmpty()) {
-                    "$formattedDate, $remainingStr"
-                } else {
-                    formattedDate
-                }
-            } else {
-                followUpDateStr = followUpDate
-            }
-        } else {
-            val rawDate = followUpDate.trim()
-            followUpDateStr = when {
-                rawDate.matches(Regex("\\d{2}-\\d{2}-\\d{4}")) -> {
-                    DateAndTimeUtils.date_formatter(rawDate, "dd-MM-yyyy", "dd MMM, yyyy") ?: "NA"
-                }
-                rawDate.matches(Regex("\\d{4}-\\d{2}-\\d{2}")) -> {
-                    DateAndTimeUtils.date_formatter(rawDate, "yyyy-MM-dd", "dd MMM, yyyy") ?: "NA"
-                }
-                else -> if (rawDate != "null") rawDate else "NA"
-            }
-        }
-
-        return stringToWebSms(followUpDateStr.ifBlank { "NA" })
+        // Shared with the native Follow Up card and the Share Prescription PDF -
+        // handles the plain-date, "No", and date+Time/Remark/Type obs value shapes
+        // consistently (e.g. "26 Sep, 2026 Time 9:00 AM"), "NA" when there's no
+        // valid follow-up date - shown here as "No", same as the shared PDF.
+        val followUpDisplay = DateAndTimeUtils.formatFollowUpDisplay(followUpDate)
+            .let { if (it.trim().equals("NA", ignoreCase = true)) "No" else it }
+        return stringToWebSms(followUpDisplay)
     }
 
     private fun stringToWebSms(input: String?): String {
@@ -374,6 +307,16 @@ class PrintViewPrescription(
         }
         return formatted
     }
+    private fun formatSpecialtyNotes(): String {
+        var htmlDocument = ""
+        val notes = SpecialtyNotesProvider.getNotesFor(context, clsDoctorDetails?.specialization)
+        if (!notes.isNullOrEmpty()) {
+            val notesWeb = stringToWebSms(notes.joinToString("\n"))
+            htmlDocument = "<b id=\"notes_precautions_heading\">* Notes & Precautions </b><br>$notesWeb<br>"
+        }
+        return htmlDocument
+    }
+
     private fun formatReferredSpecialist(): String {
         var htmlDocument = ""
         if (dataModel.referredSpecialist.isNotEmpty()) {

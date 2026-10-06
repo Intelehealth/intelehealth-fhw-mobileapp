@@ -1,6 +1,5 @@
 package org.intelehealth.app.ayu.visit.reason;
 
-import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_1_VITAL_SUMMARY;
 import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
@@ -166,6 +165,10 @@ public class VisitReasonSummaryFragment extends Fragment {
     }
 
     private void prepareSummaryV2() {
+        if (mSummaryStringJsonObject == null) {
+            CustomLog.e(TAG, "mSummaryStringJsonObject is null, cannot prepare summary");
+            return;
+        }
         try {
             String lCode = sessionManager.getAppLanguage();
             String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);

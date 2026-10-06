@@ -1790,6 +1790,20 @@ public final class StringUtils {
     }
 
 
+    /**
+     * Referral destination text (e.g. "NAMCO Hospital") comes from the referral obs
+     * itself, so it's always in English - in Marathi, localize just the generic
+     * "Hospital" word rather than the NAMCO name. {@code marathiHospital} is the form
+     * the surrounding sentence needs, e.g. "रुग्णालय" or possessive "रुग्णालयाच्या".
+     */
+    public static String localizeReferralHospital(String destination, String locale, String marathiHospital) {
+        if (destination == null || locale == null) return destination;
+        if (locale.equalsIgnoreCase("mr")) {
+            return destination.replaceAll("(?i)\\bhospital\\b", marathiHospital);
+        }
+        return destination;
+    }
+
     public static String getMessageTranslated(String message, String locale) { //English dob is replaced to Hindi text.
         if (message == null || message.isEmpty()) return "";
         if (locale.equalsIgnoreCase("hi")) {

@@ -11,6 +11,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.ObsImageModel.ObsPushDTO;
+import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.models.patientImageModelRequest.PatientProfile;
 import org.intelehealth.app.models.providerImageRequestModel.ProviderProfile;
 import org.intelehealth.app.utilities.Base64Utils;
@@ -384,7 +385,31 @@ public class ImagesDAO {
         }
         return uuidList;
     }
+public List<ObsDTO> getImageObs(String encounterUUid, String ConceptUuid) throws DAOException {
+        List<ObsDTO> obsList = new ArrayList<>();
 
+        SQLiteDatabase localdb = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        //localdb.beginTransaction();
+        try {
+            Cursor idCursor = localdb.rawQuery("SELECT * FROM tbl_obs where encounteruuid=? AND conceptuuid = ? AND voided=? COLLATE NOCASE", new String[]{encounterUUid, ConceptUuid, "0"});
+            if (idCursor.getCount() != 0) {
+                while (idCursor.moveToNext()) {
+                    ObsDTO obsDTO = new ObsDTO();
+                    obsDTO.setUuid(idCursor.getString(idCursor.getColumnIndexOrThrow("uuid")));
+                    obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
+                    obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
+                    obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
+                    obsList.add(obsDTO);
+                }
+            }
+            idCursor.close();
+        } catch (SQLiteException e) {
+            throw new DAOException(e);
+        } finally {
+            //localdb.endTransaction();
+        }
+        return obsList;
+    }
 
     public List<String> getImages(String encounterUUid, String ConceptUuid) throws DAOException {
         List<String> imagesList = new ArrayList<>();

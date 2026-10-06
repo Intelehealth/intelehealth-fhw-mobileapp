@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/backgroundWhite"
-        tools:context=".ayu.visit.diagnostics.DiagnosticsCollectionFragmentK">
+        tools:context=".ayu.visit.diagnostics.DiagnosticsCollectionFragment">
         <LinearLayout
             android:id="@+id/ll_footer"
             android:layout_width="match_parent"
@@ -87,6 +87,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/common_button_text_size" />-->
 
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv_vital_body"
             android:layout_width="match_parent"
@@ -106,6 +107,40 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
+                    <!-- inside ll_diabetes_hba1c_container, below etv_diabetes_hba1c -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:id="@+id/tv_hba1c_live_badge"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="● LIVE"
+                            android:textSize="11sp"
+                            android:textColor="#FF00C853"
+                            android:textStyle="bold"
+                            android:paddingStart="6dp"
+                            android:paddingEnd="6dp"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="2dp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tv_hba1c_last_updated"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:textSize="11sp"
+                            android:textColor="?android:attr/textColorSecondary"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ll_diabetes_hba1c_container"
@@ -139,7 +174,7 @@
                                 android:background="@drawable/input_edittext_border"
                                 android:hint="@string/uric_acid_eg"
                                 android:inputType="numberDecimal"
-                                android:maxLength="3"
+                                android:maxLength="5"
                                 android:padding="@dimen/padding_10"
                                 android:textColorHint="@color/edittext_hint_color"
                                 android:textSize="14sp" />
@@ -154,10 +189,91 @@
                                 android:text="@string/this_field_is_mandatory"
                                 android:textAppearance="@style/registr_error_msg"
                                 android:textColor="@color/red"
-                                android:textSize="@null"
-                                android:visibility="visible" />
+                                android:textSize="@null" />
+
+                            <Button
+                                android:id="@+id/btnScanDevice"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="8dp"
+                                android:background="@color/colorPrimary"
+                                android:text="@string/scan_hba1c_device" />
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recyclerDevices"
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:visibility="gone"/>
                         </LinearLayout>
                     </androidx.cardview.widget.CardView>
+
+                    <!-- ── DEBUG-ONLY VIEWS — hidden from the UI; logging still runs in code ─ -->
+                    <TextView
+                        android:id="@+id/tv_debug_log"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:background="#CC000000"
+                        android:textColor="#00FF00"
+                        android:fontFamily="monospace"
+                        android:textSize="10sp"
+                        android:padding="8dp"
+                        android:maxLines="15"
+                        android:scrollbars="vertical"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="4dp"
+                        android:visibility="gone"
+                        android:weightSum="2">
+
+                        <Button
+                            android:id="@+id/btn_copy_debug_log"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="4dp"
+                            android:text="Copy Debug Log"
+                            android:textAllCaps="false"
+                            android:visibility="gone" />
+
+                        <Button
+                            android:id="@+id/btn_email_debug_log"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="4dp"
+                            android:text="Email Debug Log"
+                            android:textAllCaps="false"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                    <!-- ── END DEBUG-ONLY VIEWS ──────────────────────────────────────────── -->
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="10dp">
+
+                        <View
+                            android:id="@+id/statusDot"
+                            android:layout_width="10dp"
+                            android:layout_height="10dp"
+                            android:background="@drawable/status_dot"
+                            android:layout_marginEnd="6dp" />
+
+                        <TextView
+                            android:id="@+id/tvConnectionStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Connecting..."
+                            android:textColor="#888888"
+                            android:textSize="13sp" />
+                    </LinearLayout>
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/ll_glucose_random_container"

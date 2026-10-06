@@ -72,6 +72,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -505,6 +506,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
+                applyNamcoReferralStatus(patientDTOList.get(i), visitDTO.getUuid());
 
                 // checking if visit is uploaded or not - start
                 patientDTOList.get(i).setVisitDTO(visitDTO);
@@ -519,6 +521,29 @@ public class SearchPatientActivity_New extends BaseActivity {
         }
 
         return patientDTOList;
+    }
+
+    /**
+     * Overrides the generic prescription-exists tag when the visit was referred
+     * to a NAMCO specialist: "Waiting for {destination}" if still pending, or flags
+     * "Specialist Prescription" if the specialist's prescription is already in.
+     */
+    private void applyNamcoReferralStatus(PatientDTO patientDTO, String visitUuid) {
+        try {
+            String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitUuid);
+            if (referralValue == null || referralValue.trim().isEmpty()) return;
+            if (new EncounterDAO().isPhcReferral(visitUuid)) return; // PHC: normal flow for now
+            if (new EncounterDAO().isReferralDeclined(visitUuid)) return; // never handed off - not a specialist prescription
+            if (new EncounterDAO().isPrescriptionReceived(visitUuid)) {
+                patientDTO.setSpecialistPrescription(true); // specialist already completed it
+                return;
+            }
+            String destination = StringUtils.localizeReferralHospital(
+                    EncounterDAO.parseReferralDestination(referralValue), sessionManager.getAppLanguage(), "रुग्णालयाच्या");
+            patientDTO.setReferralWaitingLabel(getString(R.string.waiting_for_specialist, destination));
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     private Observable<List<PatientDTO>> fetchDataForTagObs(List<PatientDTO> patientDTOList) {
@@ -559,6 +584,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                     } else {
                         patientDTOList.get(i).setPrescription_exists(false);
                     }
+                    applyNamcoReferralStatus(patientDTOList.get(i), visitDTO.getUuid());
 
                     // checking if visit is uploaded or not - start
                     patientDTOList.get(i).setVisitDTO(visitDTO);

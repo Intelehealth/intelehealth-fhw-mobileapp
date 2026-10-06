@@ -86,6 +86,13 @@ public class PatientDTO implements Serializable {
     private boolean emergency = false;
     private String visit_startdate;
     private boolean prescription_exists = false;
+    // Set only when referred to a NAMCO specialist and still awaiting their final
+    // prescription. When set, the UI shows this instead of the prescription_exists
+    // tag, even though prescription_exists is also true (GP's interim prescription).
+    private String referralWaitingLabel;
+    // True when the received prescription came from a completed specialist
+    // referral, not a plain GP prescription.
+    private boolean specialistPrescription = false;
 
     private String guardianName;
     private String guardianType;
@@ -496,6 +503,22 @@ public class PatientDTO implements Serializable {
 
     public void setPrescription_exists(boolean prescription_exists) {
         this.prescription_exists = prescription_exists;
+    }
+
+    public String getReferralWaitingLabel() {
+        return referralWaitingLabel;
+    }
+
+    public void setReferralWaitingLabel(String referralWaitingLabel) {
+        this.referralWaitingLabel = referralWaitingLabel;
+    }
+
+    public boolean isSpecialistPrescription() {
+        return specialistPrescription;
+    }
+
+    public void setSpecialistPrescription(boolean specialistPrescription) {
+        this.specialistPrescription = specialistPrescription;
     }
 
     public String getSon_dau_wife() {
