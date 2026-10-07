@@ -16,10 +16,12 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.intelehealth.app.models.FamilyMemberRes;
 import org.intelehealth.app.models.dto.VisitDTO;
@@ -45,6 +47,7 @@ public class PatientsDAO extends BaseDao {
     private long createdRecordsCount = 0;
     int limit = 10, offset = 0;
     private static final String TAG = "PatientsDAO";
+    private static final String TELEPHONE_ATTRIBUTE_TYPE_UUID = "14d4f066-15f5-102d-96e4-000c29c2a5d7";
     private String currentTableName;
 
     public boolean insertPatients(List<PatientDTO> patientDTO) throws DAOException {
@@ -1704,7 +1707,8 @@ public class PatientsDAO extends BaseDao {
      * opportunity to correct it. Leaving the columns out of the write means the hierarchy cannot be
      * clobbered by construction rather than by remembering to pass the right values.
      */
-    public boolean updatePatientAfterAbhaComparison(String uuid, String firstName, String lastName,
+    public boolean updatePatientAfterAbhaComparison(String uuid, String firstName, String middleName,
+                                                    String lastName,
                                                     String dateOfBirth, String gender,
                                                     String address1,
                                                     String pinCode, String phone,
@@ -1715,6 +1719,7 @@ public class PatientsDAO extends BaseDao {
         db.beginTransaction();
         try {
             values.put("first_name", firstName);
+            values.put("middle_name", middleName);
             values.put("last_name", lastName);
             values.put("date_of_birth", dateOfBirth);
             values.put("gender", gender);
@@ -1726,6 +1731,15 @@ public class PatientsDAO extends BaseDao {
             values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
             values.put("sync", false);
             db.update("tbl_patient", values, "uuid=?", new String[]{uuid});
+            // Profile and sync read the phone from the Telephone Number attribute, not phone_number.
+            if (phone != null && !phone.trim().isEmpty()) {
+                PatientAttributesDTO phoneAttribute = new PatientAttributesDTO();
+                phoneAttribute.setUuid(UUID.randomUUID().toString());
+                phoneAttribute.setPatientuuid(uuid);
+                phoneAttribute.setPersonAttributeTypeUuid(TELEPHONE_ATTRIBUTE_TYPE_UUID);
+                phoneAttribute.setValue(phone);
+                insertPatientAttributes(Collections.singletonList(phoneAttribute), db);
+            }
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isUpdated = false;

@@ -53,6 +53,7 @@ internal fun AbhaProfile.toComparisonRecord(uuid: String, openMrsId: String): Lo
         uuid = uuid,
         openMrsId = openMrsId,
         firstName = firstName,
+        middleName = middleName.orEmpty(),
         lastName = lastName,
         dateOfBirth = normalisedDateOfBirth(),
         gender = gender,
@@ -61,6 +62,7 @@ internal fun AbhaProfile.toComparisonRecord(uuid: String, openMrsId: String): Lo
         phoneNumber = mobile.withDiallingCode(),
         abhaNumber = abhaNumber,
         abhaAddress = preferredAbhaAddress,
+        profilePhoto = profilePhoto.orEmpty(),
     )
 
 /**
