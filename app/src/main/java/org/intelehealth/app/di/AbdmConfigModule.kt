@@ -1,8 +1,10 @@
 package org.intelehealth.app.di
 
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,9 +13,11 @@ import org.intelehealth.abdm.config.AbdmPatientLocalStore
 import org.intelehealth.abdm.config.AbdmSessionProvider
 import org.intelehealth.abdm.config.LocalPatientRecord
 import org.intelehealth.app.BuildConfig
+import org.intelehealth.app.database.dao.ImagesDAO
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.syncModule.SyncUtils
+import org.intelehealth.app.utilities.AbhaPhotoUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.bifurcateAbhaAddress
 import org.intelehealth.app.utilities.ensureTrailingSlash
@@ -46,7 +50,9 @@ object AbdmConfigModule {
 
     @Provides
     @Singleton
-    fun provideAbdmPatientLocalStore(): AbdmPatientLocalStore = object : AbdmPatientLocalStore {
+    fun provideAbdmPatientLocalStore(
+        @ApplicationContext context: Context,
+    ): AbdmPatientLocalStore = object : AbdmPatientLocalStore {
         override suspend fun isPatientLinkedWithAbhaAddress(
             openMrsId: String,
             abhaAddress: String,
@@ -135,6 +141,7 @@ object AbdmConfigModule {
                     PatientsDAO().updatePatientAfterAbhaComparison(
                         record.uuid,
                         record.firstName,
+                        record.middleName,
                         record.lastName,
                         record.dateOfBirth,
                         record.gender,
@@ -146,7 +153,16 @@ object AbdmConfigModule {
                     )
                 }.getOrDefault(false)
 
-                if (saved) runCatching { SyncUtils().syncBackground() }
+                if (saved) {
+                    // As in Create ABHA, the Aadhaar photo replaces the stored one.
+                    AbhaPhotoUtils.saveEncodedPhoto(context, record.profilePhoto, record.uuid)?.let { path ->
+                        runCatching {
+                            PatientsDAO().updatePatientPhoto(record.uuid, path)
+                            ImagesDAO().updatePatientProfileImages(path, record.uuid)
+                        }
+                    }
+                    runCatching { SyncUtils().syncBackground() }
+                }
                 saved
             }
     }
