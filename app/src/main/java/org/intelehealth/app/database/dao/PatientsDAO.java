@@ -663,7 +663,10 @@ public class PatientsDAO extends BaseDao {
         String whereclause = "uuid=?";
         String[] whereargs = {uuid};
         try {
-            values.put("openmrs_id", openmrsId);
+            // A rejected push replies without an ID; keep the one already stored.
+            if (openmrsId != null && !openmrsId.trim().isEmpty() && !openmrsId.equalsIgnoreCase("NA")) {
+                values.put("openmrs_id", openmrsId);
+            }
             values.put("sync", synced);
             values.put("uuid", uuid);
             int i = db.update("tbl_patient", values, whereclause, whereargs);
