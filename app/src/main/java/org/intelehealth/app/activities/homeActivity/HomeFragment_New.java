@@ -129,27 +129,38 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private void addQueueLayout() {
-        // The latest queue payload persisted from a "Next In Queue" FCM
-        // notification so the card reflects real queue state
-        PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
+        // The latest queue patient list persisted from a "Next In Queue" FCM
+        // notification; the card shows them as a slideshow.
+        List<PatientData> queuePatients = QueueCardUpdater.getPersisted(requireContext());
         //Show dummy data to check UI for testing
-        if (currentPatient == null) {
-            ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
-            currentPatient = new PatientData(
+        if (queuePatients.isEmpty()) {
+            queuePatients = new ArrayList<>();
+            queuePatients.add(new PatientData(
                     "Q-104",
                     "Anthony G",
                     "M",
                     50,
                     "ID-987654jK",
-                    symptomList,
+                    new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever")),
                     2,
                     8,
                     "https://unsplash.com"
-            );
+            ));
+            queuePatients.add(new PatientData(
+                    "Q-105",
+                    "Priya S",
+                    "F",
+                    34,
+                    "ID-123456aB",
+                    new ArrayList<>(Arrays.asList("Headache", "Cough")),
+                    3,
+                    15,
+                    "https://unsplash.com"
+            ));
         }
 
-        // 3. Map your custom data class parameters directly into the Android Bundle payload
-        Bundle initialProperties = QueueCardUpdater.toBundle(currentPatient);
+        // 3. Map the patient list into the Android Bundle payload
+        Bundle initialProperties = QueueCardUpdater.toBundle(queuePatients);
 
         // 4. Boot the pipeline layer inside your execution lifecycle hook
         ReactFragment reactFragment = new ReactFragment.Builder()

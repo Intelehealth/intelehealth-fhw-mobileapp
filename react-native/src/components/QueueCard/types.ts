@@ -29,3 +29,9 @@ export interface QueueCardProps {
   waitTimeMinutes?: number;
   avatarUrl?: string;
 }
+
+// Root props of the QueueCardModule slideshow: the patient list delivered by
+// QueueCardUpdater.toBundle(List) on the Android side.
+export interface QueueCardSlideshowProps {
+  patients?: QueueCardProps[];
+}

@@ -11,6 +11,11 @@ import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
@@ -23,15 +28,22 @@ import org.intelehealth.klivekit.data.PreferenceHelper;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Bridges an incoming "Next In Queue" FCM notification to the React Native
  * {@code QueueCardModule} shown on the home screen.
  *
+ * <p>A notification can carry several patients as a JSON array under
+ * {@link #KEY_PATIENTS}; each element uses the same keys as a single-patient
+ * payload. A payload without that key is treated as a single patient. The
+ * home screen shows the list as a slideshow of cards.
+ *
  * <p>Two things happen for every queue notification:
  * <ol>
- *   <li>The card payload is persisted to prefs so the home card reflects the
+ *   <li>The patient list is persisted to prefs so the home card reflects the
  *       latest queue state the next time it mounts (covers notifications that
  *       arrive while the app is backgrounded and the RN view isn't mounted).</li>
  *   <li>If the React context is already alive (app in foreground), a
@@ -49,39 +61,107 @@ public final class QueueCardUpdater {
     /** JS event name the {@code QueueCard} component subscribes to. */
     public static final String EVENT_QUEUE_CARD_UPDATE = "QueueCardUpdate";
 
+    /** FCM data key holding the JSON array of queue patients. */
+    public static final String KEY_PATIENTS = "patients";
+
+    /** Props / event key under which the patient list is passed to JS. */
+    private static final String PROP_PATIENTS = "patients";
+
     private QueueCardUpdater() {
     }
 
     /**
-     * Parse a "Next In Queue" FCM data payload, persist it, and push it to the
-     * live card if the RN context is running.
+     * Parse a "Next In Queue" FCM data payload into its patient list, persist
+     * it (replacing the previous list), and push it to the live card if the RN
+     * context is running.
      */
     public static void handleQueueNotification(Context context, Map<String, String> data) {
         if (context == null || data == null) {
             return;
         }
-        PatientData patient = parse(context, data);
-        persist(context, patient);
-        emit(patient);
+        ArrayList<PatientData> patients = new ArrayList<>();
+        for (Map<String, String> item : splitPatients(data)) {
+            patients.add(parse(context, item));
+        }
+        persist(context, patients);
+        emit(patients);
     }
 
     /**
-     * The most recently persisted queue card payload, or {@code null} if no
+     * The most recently persisted queue patient list, or an empty list if no
      * queue notification has been received yet. Used by the home fragment to
-     * seed the card on mount.
+     * seed the slideshow on mount.
      */
-    @Nullable
-    public static PatientData getPersisted(Context context) {
+    public static List<PatientData> getPersisted(Context context) {
         try {
             String json = new PreferenceHelper(context).getString(PreferenceHelper.QUEUE_CARD_DATA);
             if (TextUtils.isEmpty(json)) {
-                return null;
+                return new ArrayList<>();
             }
-            return new Gson().fromJson(json, PatientData.class);
+            Gson gson = new Gson();
+            // Builds before the slideshow persisted a single patient object.
+            if (json.trim().startsWith("{")) {
+                ArrayList<PatientData> legacy = new ArrayList<>();
+                legacy.add(gson.fromJson(json, PatientData.class));
+                return legacy;
+            }
+            List<PatientData> patients = gson.fromJson(json,
+                    new TypeToken<ArrayList<PatientData>>() {}.getType());
+            return patients != null ? patients : new ArrayList<>();
         } catch (Exception e) {
             Log.e(TAG, "getPersisted failed: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
+    }
+
+    /**
+     * Split the FCM payload into one string map per patient. When
+     * {@link #KEY_PATIENTS} holds a JSON array, each element becomes a map
+     * (arrays such as {@code symptoms} are joined with commas, matching the
+     * single-patient format); otherwise the whole payload is one patient.
+     */
+    private static List<Map<String, String>> splitPatients(Map<String, String> data) {
+        List<Map<String, String>> items = new ArrayList<>();
+        String raw = data.get(KEY_PATIENTS);
+        if (TextUtils.isEmpty(raw)) {
+            items.add(data);
+            return items;
+        }
+        try {
+            JsonArray array = JsonParser.parseString(raw).getAsJsonArray();
+            for (JsonElement element : array) {
+                if (element != null && element.isJsonObject()) {
+                    items.add(toStringMap(element.getAsJsonObject()));
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "patients parse failed: " + e.getMessage());
+        }
+        return items;
+    }
+
+    private static Map<String, String> toStringMap(JsonObject object) {
+        Map<String, String> map = new HashMap<>();
+        for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+            JsonElement value = entry.getValue();
+            if (value == null || value.isJsonNull()) {
+                continue;
+            }
+            if (value.isJsonPrimitive()) {
+                map.put(entry.getKey(), value.getAsString());
+            } else if (value.isJsonArray()) {
+                ArrayList<String> parts = new ArrayList<>();
+                for (JsonElement part : value.getAsJsonArray()) {
+                    if (part != null && part.isJsonPrimitive()) {
+                        parts.add(part.getAsString());
+                    }
+                }
+                map.put(entry.getKey(), TextUtils.join(",", parts));
+            } else {
+                map.put(entry.getKey(), value.toString());
+            }
+        }
+        return map;
     }
 
     /** Map the FCM string payload onto the card's typed fields. */
@@ -159,24 +239,30 @@ public final class QueueCardUpdater {
         );
     }
 
-    private static void persist(Context context, PatientData patient) {
+    private static void persist(Context context, List<PatientData> patients) {
         try {
             new PreferenceHelper(context)
-                    .save(PreferenceHelper.QUEUE_CARD_DATA, new Gson().toJson(patient));
+                    .save(PreferenceHelper.QUEUE_CARD_DATA, new Gson().toJson(patients));
         } catch (Exception e) {
             Log.e(TAG, "persist failed: " + e.getMessage());
         }
     }
 
     /**
-     * Emit the card update to JS. A no-op when RN isn't running (app in
+     * Emit the patient list to JS. A no-op when RN isn't running (app in
      * background); the persisted copy is picked up when the card next mounts.
      */
-    private static void emit(PatientData patient) {
-        RnEventEmitter.emit(EVENT_QUEUE_CARD_UPDATE, toWritableMap(patient));
+    private static void emit(List<PatientData> patients) {
+        WritableArray array = Arguments.createArray();
+        for (PatientData patient : patients) {
+            array.pushMap(toWritableMap(patient));
+        }
+        WritableMap map = Arguments.createMap();
+        map.putArray(PROP_PATIENTS, array);
+        RnEventEmitter.emit(EVENT_QUEUE_CARD_UPDATE, map);
     }
 
-    /** Build the JS props map that mirrors the QueueCardProps shape. */
+    /** Build the JS map for one card, mirroring the QueuePatientData shape. */
     private static WritableMap toWritableMap(PatientData patient) {
         WritableMap map = Arguments.createMap();
         map.putString("queueNumber", patient.getQueueNumber());
@@ -200,9 +286,20 @@ public final class QueueCardUpdater {
 
     /**
      * Build the initial-properties {@link Bundle} for the {@code ReactFragment}
-     * that hosts the card, mirroring {@link #toWritableMap(PatientData)}.
+     * that hosts the slideshow: the patient list under {@code patients}, each
+     * entry mirroring {@link #toWritableMap(PatientData)}.
      */
-    public static Bundle toBundle(PatientData patient) {
+    public static Bundle toBundle(List<PatientData> patients) {
+        ArrayList<Bundle> items = new ArrayList<>();
+        for (PatientData patient : patients) {
+            items.add(toBundle(patient));
+        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(PROP_PATIENTS, items);
+        return bundle;
+    }
+
+    private static Bundle toBundle(PatientData patient) {
         Bundle bundle = new Bundle();
         bundle.putString("queueNumber", patient.getQueueNumber());
         bundle.putString("patientName", patient.getPatientName());
