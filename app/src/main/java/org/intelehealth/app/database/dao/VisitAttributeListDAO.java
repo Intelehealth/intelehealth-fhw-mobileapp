@@ -28,8 +28,10 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,6 +52,8 @@ public class VisitAttributeListDAO extends BaseDao{
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
         boolean isInserted = true;
+        // Before inserting the pulled rows, confirm which local rows the server already has (prevents duplicate re-sends).
+        markDeliveredAttributesSynced(visitAttributeDTOS);
         List<HashMap<String, Object>> visitsList = new ArrayList<>();
         for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
@@ -223,6 +227,51 @@ public class VisitAttributeListDAO extends BaseDao{
         ContentValues visitSyncValues = new ContentValues();
         visitSyncValues.put("sync", "0");
         db.update("tbl_visit", visitSyncValues, "uuid=?", new String[]{visitUuid});
+    }
+
+    /**
+     * Marks local attribute rows as synced once the server has returned them in a pull.
+     * <p>
+     * The push response only flags the visit as synced, never its attribute rows, so they stay sync=0
+     * forever. Any later push of the same visit (End Visit sets tbl_visit.sync=0, and the re-queue in
+     * insertVisitAttributes does the same) then re-sends every one of them and the server stores a
+     * duplicate speciality / upload-time row. The server issues its own attribute uuids, so rows are
+     * matched on visit + type + value, not uuid. Delivery is confirmed by the pull rather than the push
+     * reply because the first push of a visit is answered with syncd=false even when it was stored.
+     * A row is only flipped when the server demonstrably holds it, so nothing undelivered is dropped.
+     */
+    private void markDeliveredAttributesSynced(List<VisitAttributeDTO> pulled) {
+        if (pulled == null || pulled.isEmpty()) return;
+        try {
+            // Every pulled type is used here (incl. consent, which insertProvidersAttributeList does not store).
+            Set<String> pulledKeys = new HashSet<>();
+            for (VisitAttributeDTO dto : pulled)
+                pulledKeys.add(dto.getVisit_uuid() + "|" + dto.getVisit_attribute_type_uuid() + "|" + dto.getValue());
+
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            List<String> delivered = new ArrayList<>();
+            try (Cursor cursor = db.rawQuery("SELECT uuid, visit_uuid, visit_attribute_type_uuid, value FROM tbl_visit_attribute " +
+                    "WHERE (sync = ? OR sync = ?) AND voided = 0", new String[]{"0", "false"})) {
+                while (cursor.moveToNext()) {
+                    if (pulledKeys.contains(cursor.getString(1) + "|" + cursor.getString(2) + "|" + cursor.getString(3)))
+                        delivered.add(cursor.getString(0));
+                }
+            }
+            if (delivered.isEmpty()) return;
+
+            ContentValues synced = new ContentValues();
+            synced.put("sync", "1");
+            db.beginTransaction();
+            try {
+                for (String uuid : delivered) db.update("tbl_visit_attribute", synced, "uuid=?", new String[]{uuid});
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } catch (Exception e) {
+            // Best effort: on failure the rows stay unsynced (old behaviour); it must never break the pull itself.
+            CustomLog.e(TAG, "markDeliveredAttributesSynced: " + e.getMessage());
+        }
     }
 
     /**
