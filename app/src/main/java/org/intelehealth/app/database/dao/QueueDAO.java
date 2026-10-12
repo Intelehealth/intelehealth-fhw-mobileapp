@@ -3,11 +3,10 @@ package org.intelehealth.app.database.dao;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 
 import androidx.annotation.Nullable;
 
-import org.intelehealth.app.database.QueueReadDatabase;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.QueueDTO;
 import org.intelehealth.app.models.queue.QueueItem;
 import org.intelehealth.app.utilities.CustomLog;
@@ -173,9 +172,7 @@ public class QueueDAO extends BaseDao{
         if (mapper == null) {
             return new ArrayList<>();
         }
-        // Own read-only connection (see QueueReadDatabase) so the queue doesn't
-        // wait behind other screens' queries on the shared app connection.
-        return readWithRetry(db -> queryQueueWithPatient(db, limit, offset, mapper), new ArrayList<>());
+        return read(db -> queryQueueWithPatient(db, limit, offset, mapper), new ArrayList<>());
     }
 
     private <T> ArrayList<T> queryQueueWithPatient(SQLiteDatabase db, int limit, int offset,
@@ -203,8 +200,6 @@ public class QueueDAO extends BaseDao{
                     rows.add(mapper.map(cursor));
                 } while (cursor.moveToNext());
             }
-        } catch (SQLiteDatabaseLockedException e) {
-            throw e; // let readWithRetry() retry it
         } catch (Exception e) {
             CustomLog.d(TAG, "getQueueWithPatient: e " + e.getLocalizedMessage());
         } finally {
@@ -225,7 +220,7 @@ public class QueueDAO extends BaseDao{
         if (mapper == null || visitUuid == null || visitUuid.isEmpty()) {
             return null;
         }
-        return readWithRetry(db -> queryQueueWithPatientByVisit(db, visitUuid, mapper), null);
+        return read(db -> queryQueueWithPatientByVisit(db, visitUuid, mapper), null);
     }
 
     private <T> T queryQueueWithPatientByVisit(SQLiteDatabase db, String visitUuid,
@@ -238,8 +233,6 @@ public class QueueDAO extends BaseDao{
             if (cursor != null && cursor.moveToFirst()) {
                 return mapper.map(cursor);
             }
-        } catch (SQLiteDatabaseLockedException e) {
-            throw e; // let readWithRetry() retry it
         } catch (Exception e) {
             CustomLog.d(TAG, "getQueueWithPatientByVisit: e " + e.getLocalizedMessage());
         } finally {
@@ -251,17 +244,16 @@ public class QueueDAO extends BaseDao{
     }
 
     /**
-     * Raw chief-complaint obs value for {@code visitUuid}, read on the queue's
-     * own connection. Same query and "en" JSON handling as
-     * {@link EncounterDAO#getChiefComplaint(String)}, which uses the shared
-     * connection (and a transaction) and so waited behind other screens' reads.
+     * Raw chief-complaint obs value for {@code visitUuid}. Same query and "en"
+     * JSON handling as {@link EncounterDAO#getChiefComplaint(String)}, but
+     * without its transaction.
      * Returns "" when absent or on error. Call off the main thread.
      */
     public String getChiefComplaint(String visitUuid) {
         if (visitUuid == null || visitUuid.isEmpty()) {
             return "";
         }
-        String value = readWithRetry(db -> queryChiefComplaint(db, visitUuid), "");
+        String value = read(db -> queryChiefComplaint(db, visitUuid), "");
         if (value.startsWith("{") && value.endsWith("}")) {
             try {
                 value = new JSONObject(value).getString("en");
@@ -286,8 +278,6 @@ public class QueueDAO extends BaseDao{
                 String v = cursor.getString(0);
                 value = v != null ? v : "";
             }
-        } catch (SQLiteDatabaseLockedException e) {
-            throw e; // let readWithRetry() retry it
         } catch (Exception e) {
             CustomLog.d(TAG, "getChiefComplaint: e " + e.getLocalizedMessage());
         } finally {
@@ -298,25 +288,21 @@ public class QueueDAO extends BaseDao{
         return value;
     }
 
-    /** One read against the queue's read-only connection. */
+    /** One read against the shared app connection. */
     private interface QueueRead<R> {
         R run(SQLiteDatabase db);
     }
 
     /**
-     * Runs {@code read} on {@link QueueReadDatabase}, retrying once if the DB is
-     * briefly locked by a sync committing a write (the connection already waits
-     * out Android's busy timeout before throwing). Returns {@code fallback} if it
-     * still fails or the connection can't be opened, so callers never throw.
+     * Runs {@code read} on the shared app connection. Queue reads must stay on
+     * this single connection: the DB isn't in WAL mode, so a read on a second
+     * connection blocks the sync's write transactions and fails them with
+     * SQLITE_BUSY ("database is locked"). Returns {@code fallback} on any error
+     * so callers never throw.
      */
-    private <R> R readWithRetry(QueueRead<R> read, R fallback) {
+    private <R> R read(QueueRead<R> read, R fallback) {
         try {
-            try {
-                return read.run(QueueReadDatabase.get());
-            } catch (SQLiteDatabaseLockedException e) {
-                CustomLog.d(TAG, "queue read locked, retrying once: " + e.getLocalizedMessage());
-                return read.run(QueueReadDatabase.get());
-            }
+            return read.run(IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb());
         } catch (Exception e) {
             CustomLog.d(TAG, "queue read failed: " + e.getLocalizedMessage());
             return fallback;

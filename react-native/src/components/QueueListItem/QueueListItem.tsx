@@ -184,7 +184,9 @@ export default function QueueListItem(props: QueueListItemProps) {
               {gender} {age}
             </Text>
           </Text>
-          <Text style={styles.profileId}>{patientId}</Text>
+          <Text style={styles.profileId}>
+            {patientId && !patientId.startsWith('ID-') ? `ID-${patientId}` : patientId}
+          </Text>
         </View>
         <View style={[styles.badge, config.badge, styles.profileBadge]}>
           <Text style={[styles.badgeText, config.badgeText]}>{config.label}</Text>
