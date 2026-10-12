@@ -1393,7 +1393,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * clears the edit cache while the user is already on this screen, the next edit click reflects it.
      */
     private boolean computeIsEditAllowed() {
-        // Editing an in-progress visit can be turned off entirely via server config, regardless of
+        // A visit still being created (not yet sent, so no speciality row) is always editable; the
+        // config and doctor-started checks below only apply to visits that have been sent.
+        if (!speciality_row_exist_check(visitUUID)) {
+            return true;
+        }
+        // Editing an already-sent visit can be turned off entirely via server config, regardless of
         // any local edit cache or whether the doctor has started the visit note.
         boolean isEditVisitConfigured = new PreferenceHelper(this)
                 .get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, true);
@@ -3805,6 +3810,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }, 4000);
             } else {
                 add_additional_doc.setVisibility(View.GONE);
+                // Offline send: the creation-time documents are committed with the visit and will
+                // upload with it on the next sync. Clear the session set so fetchingIntent() (which
+                // now enables docs edit mode) doesn't treat them as pending drafts and discard them
+                // in onPause().
+                sessionAddedDocUuids.clear();
                 fetchingIntent();
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
             }

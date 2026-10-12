@@ -58,6 +58,10 @@ const STATUS_CONFIG: Record<QueueStatus, StatusConfig> = {
   },
 };
 
+// Used when native sends a status outside the union (it maps unhandled DB
+// statuses such as SUBMITTED to ""): neutral card, no badge.
+const FALLBACK_CONFIG: StatusConfig = { ...STATUS_CONFIG.waiting, label: '' };
+
 // Milliseconds -> "MM:SS", or "HH:MM:SS" once it reaches an hour (so long
 // waits read as 05:18:28 rather than 318:28). Clamped at zero.
 function formatMmSs(ms: number): string {
@@ -132,7 +136,7 @@ export default function QueueListItem(props: QueueListItemProps) {
     style,
   } = props;
 
-  const config = STATUS_CONFIG[status];
+  const config = STATUS_CONFIG[status] ?? FALLBACK_CONFIG;
 
   // Live time value. onCall counts UP from connectedAt (elapsed), everyone else
   // counts DOWN to etaAt (remaining). Recomputed from the absolute instant on
@@ -188,9 +192,11 @@ export default function QueueListItem(props: QueueListItemProps) {
             {patientId && !patientId.startsWith('ID-') ? `ID-${patientId}` : patientId}
           </Text>
         </View>
-        <View style={[styles.badge, config.badge, styles.profileBadge]}>
-          <Text style={[styles.badgeText, config.badgeText]}>{config.label}</Text>
-        </View>
+        {config.label !== '' && (
+          <View style={[styles.badge, config.badge, styles.profileBadge]}>
+            <Text style={[styles.badgeText, config.badgeText]}>{config.label}</Text>
+          </View>
+        )}
       </View>
 
       {/* Symptom tags */}
