@@ -81,7 +81,7 @@ public class PatientsDAO extends BaseDao {
     public HashMap<String, Object> createPatientMap(PatientDTO patient) {
         HashMap<String, Object> values = new HashMap<>();
         values.put("uuid", patient.getUuid());
-        values.put("openmrs_id", patient.getOpenmrsId());
+        values.put("openmrs_id", pulledOpenmrsIdOrStored(patient));
         values.put("first_name", patient.getFirstname());
         values.put("middle_name", patient.getMiddlename());
         values.put("last_name", patient.getLastname());
@@ -112,6 +112,20 @@ public class PatientsDAO extends BaseDao {
         values.put("dead", patient.getDead());
         values.put("sync", patient.getSyncd().toString());
         return values;
+    }
+
+    // A pulled record without an OpenMRS ID keeps the one already stored.
+    private String pulledOpenmrsIdOrStored(PatientDTO patient) {
+        String pulled = patient.getOpenmrsId();
+        if (pulled != null && !pulled.trim().isEmpty() && !pulled.equalsIgnoreCase("NA")) {
+            return pulled;
+        }
+        try {
+            String stored = getOpenmrsId(patient.getUuid());
+            return stored != null && !stored.trim().isEmpty() ? stored : pulled;
+        } catch (DAOException e) {
+            return pulled;
+        }
     }
 
     public String getValueByUuid(Set<Attribute> patientAttributesDTO, String targetUuid) {
