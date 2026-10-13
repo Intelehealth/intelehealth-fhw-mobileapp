@@ -17,6 +17,7 @@ import org.intelehealth.abdm.R
 import org.intelehealth.abdm.config.AbdmConfig
 import org.intelehealth.abdm.config.AbdmPatientLocalStore
 import org.intelehealth.abdm.config.AbdmSessionProvider
+import org.intelehealth.abdm.config.LocalPatientRecord
 import org.intelehealth.abdm.data.remote.extensions.HttpException
 import org.intelehealth.abdm.data.remote.extensions.OtpVerificationFailedException
 import org.intelehealth.abdm.domain.model.AbhaCreateSession
@@ -199,15 +200,22 @@ internal class AbhaCreateViewModel @Inject constructor(
         }
         patientRepository.checkExistingUser(session.profile.abhaNumber)
             .onSuccess { data ->
+                val knownToServer = data.uuid != null && !data.uuid.equals(NA, ignoreCase = true)
+                // NAS-1817: server doesn't know this ABHA, so reuse the matching patient on this tablet.
+                val localMatch = if (knownToServer) null else findSamePatientLocally(session)
+                localMatch?.let { local ->
+                    existingPatientUuid = local.uuid
+                    existingPatientOpenMrsId = local.openMrsId
+                }
                 _uiState.update { it.copy(operation = UiState.Idle) }
-                if (data.uuid == null) {
+                if (data.uuid == null && localMatch == null) {
                     _events.send(
                         AbhaCreateEvent.CompleteWithResult(
                             session.toAbdmResult(AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT_FOR_CREATION),
                         ),
                     )
                 } else {
-                    if (!data.uuid.equals(NA, ignoreCase = true)) {
+                    if (knownToServer) {
                         existingPatientUuid = data.uuid
                         existingPatientOpenMrsId = data.openMrsId
                     }
@@ -221,6 +229,24 @@ internal class AbhaCreateViewModel @Inject constructor(
             }
             .onFailure { handleFailure(it) }
     }
+
+    // NAS-1817: a phone + DOB match is trusted only if first name, gender and any linked ABHA also agree.
+    private suspend fun findSamePatientLocally(session: AbhaCreateSession): LocalPatientRecord? {
+        val profile = session.profile
+        val local = patientLocalStore.findPatientForComparison(
+            abhaNumber = profile.abhaNumber,
+            phoneNumber = profile.mobile,
+            dateOfBirth = profile.normalisedDateOfBirth(),
+            firstName = profile.firstName,
+        ) ?: return null
+        val localAbha = local.abhaNumber.filter { it.isDigit() }
+        if (localAbha.isNotEmpty()) return local.takeIf { localAbha == profile.abhaNumber.filter { it.isDigit() } }
+        val sameFirstName = local.firstName.normalisedName().equals(profile.firstName.normalisedName(), ignoreCase = true)
+        val sameGender = local.gender.trim().equals(profile.gender.trim(), ignoreCase = true)
+        return local.takeIf { sameFirstName && sameGender }
+    }
+
+    private fun String.normalisedName() = trim().replace(WHITESPACE, " ")
 
     /** Called when the user picks an existing ABHA address from the checklist. */
     fun onAbhaAddressSelected(abhaAddress: String) {
@@ -564,5 +590,6 @@ internal class AbhaCreateViewModel @Inject constructor(
         const val HTTP_TOO_MANY_REQUESTS = 429
         const val NA = "NA"
         const val IDENTIFIER_TYPE_UUID = "59077d8f-8bee-4a6f-a1a8-64365a297da6"
+        val WHITESPACE = Regex("\\s+")
     }
 }
