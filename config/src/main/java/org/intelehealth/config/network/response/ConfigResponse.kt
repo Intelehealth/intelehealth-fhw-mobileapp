@@ -55,9 +55,6 @@ data class ConfigResponse(
     @SerializedName("home_screen")
     val homeScreen: List<ActiveSection>,
 
-    @SerializedName("qms")
+    @SerializedName("qms_section")
     var activeQms: Boolean = false,
-
-    @SerializedName("edit_visit")
-    var activeEditVisit: Boolean = false,
 )

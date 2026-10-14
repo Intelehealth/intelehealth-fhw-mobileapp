@@ -72,9 +72,10 @@ data class FeatureActiveStatus(
     @SerializedName("patient_draft_survey")
     var activeStatusPatientDraftSurvey: Boolean = true
 
-    @SerializedName("qms")
+    @SerializedName("qms_section")
     var activeQms: Boolean = false
 
-    @SerializedName("edit_visit")
+    // patient_visit_summary.re_enable: whether a sent visit can still be edited until the doctor starts it.
+    @SerializedName("re_enable")
     var activeEditVisit: Boolean = false
 }
