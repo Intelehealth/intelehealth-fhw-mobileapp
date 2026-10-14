@@ -391,6 +391,15 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             case 5:
                 // upgrade logic from 5 to 6
                 db.execSQL(CREATE_QUEUE);
+            case 6:
+                // upgrade logic from 6 to 7
+                // issubmitted now gates the QMS addToQueue flag; visits already on the server must be
+                // marked submitted so a re-push doesn't queue them again. That includes visits whose
+                // own sync flag is currently reset by a pending note edit / end visit: any synced
+                // encounter means the visit's push already succeeded.
+                db.execSQL("UPDATE tbl_visit SET issubmitted = 1 WHERE sync IN ('true', 'TRUE', '1')"
+                        + " OR EXISTS (SELECT 1 FROM tbl_encounter e WHERE e.visituuid = tbl_visit.uuid"
+                        + " AND e.sync IN ('true', 'TRUE', '1'))");
                 break;
             default:
                 throw new IllegalStateException(

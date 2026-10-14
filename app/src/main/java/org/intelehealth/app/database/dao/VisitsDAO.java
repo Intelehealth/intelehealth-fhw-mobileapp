@@ -451,6 +451,33 @@ public class VisitsDAO extends BaseDao {
         return isUpdated;
     }
 
+    /**
+     * Whether the server already has this visit (issubmitted = 1): set once a push of it succeeds and
+     * for every visit pulled from the server. Used to send QMS "addToQueue" only on the initial
+     * submission, not on re-pushes (note edit, end visit).
+     */
+    public static boolean isVisitSubmitted(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT issubmitted FROM tbl_visit WHERE uuid = ?", new String[]{visitUuid});
+        try {
+            return cursor.moveToFirst() && cursor.getInt(cursor.getColumnIndexOrThrow("issubmitted")) == 1;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public static void markVisitSubmitted(String visitUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("issubmitted", 1);
+        try {
+            db.update("tbl_visit", values, "uuid = ?", new String[]{visitUuid});
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, e.getMessage());
+        }
+    }
+
     public String getDownloadedValue(String visituuid) throws DAOException {
         String isDownloaded = null;
 
@@ -1250,6 +1277,9 @@ public class VisitsDAO extends BaseDao {
         values.put("enddate", visitDTO.getEnddate());
         values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
         values.put("sync", visitDTO.getSyncd().toString());
+        // A visit coming from the server is already submitted (and queued, if QMS applies). The pull
+        // insert replaces the whole row, so set it explicitly rather than let it reset to 0.
+        values.put("issubmitted", 1);
         return values;
     }
 

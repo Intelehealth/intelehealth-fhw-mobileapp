@@ -5,6 +5,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.QueueDTO;
@@ -23,6 +25,25 @@ public class QueueDAO extends BaseDao{
 
     private static final String TAG = "QueueListDAO";
 
+    /**
+     * Ticks (with the write time) each time a queue insert has actually been written. The insert runs
+     * on its own background thread, so the pull-sync "done" broadcast can arrive before the rows
+     * land; screens observe this instead to reload once the data is really there.
+     */
+    private static final MutableLiveData<Long> QUEUE_CHANGED = new MutableLiveData<>();
+
+    public static LiveData<Long> getQueueChanged() {
+        return QUEUE_CHANGED;
+    }
+
+    /** Runs the bulk insert, then signals {@link #getQueueChanged()} observers. */
+    private void insertAndNotify(List<HashMap<String, Object>> rows) {
+        Runnable insert = bulkInsert(rows);
+        executeInBackground(() -> {
+            insert.run();
+            QUEUE_CHANGED.postValue(System.currentTimeMillis());
+        });
+    }
 
     public boolean insertQueue(List<QueueDTO> queueDTOS) throws DAOException {
         boolean isInserted = true;
@@ -31,7 +52,7 @@ public class QueueDAO extends BaseDao{
             for (QueueDTO queueDTO : queueDTOS) {
                 queueLists.add(createQueueMap(queueDTO));
             }
-            executeInBackground(bulkInsert(queueLists));
+            insertAndNotify(queueLists);
         }
         return isInserted;
     }
@@ -49,7 +70,7 @@ public class QueueDAO extends BaseDao{
         for (QueueItem queueItem : queueItems) {
             queueLists.add(createQueueMap(queueItem));
         }
-        executeInBackground(bulkInsert(queueLists));
+        insertAndNotify(queueLists);
         return isInserted;
     }
 

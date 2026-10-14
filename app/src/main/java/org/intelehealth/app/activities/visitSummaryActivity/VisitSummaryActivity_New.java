@@ -365,6 +365,33 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     // Only these are deletable/uploadable; documents already present when the visit was reopened
     // are treated as existing/uploaded and stay non-deletable. Cleared once uploaded.
     private final Set<String> sessionAddedDocUuids = new HashSet<>();
+    // True while an explicit Upload of the session drafts is in flight.
+    private boolean isUploadingAdditionalDocs = false;
+    // Sent visit in the editable state, so docs edit mode applies as soon as the server has the visit.
+    private boolean isAdditionalDocEditEligible = false;
+    private static final String STATE_SESSION_DOC_UUIDS = "session_added_doc_uuids";
+
+    // The visit push completes asynchronously (after Send Visit, or a background sync); once the
+    // server has the visit, switch the documents section into draft/Upload mode.
+    private final BroadcastReceiver pushDoneReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getIntExtra("JOB", -1) == AppConstants.SYNC_PUSH_DATA_DONE) {
+                enableAdditionalDocEditIfSubmitted();
+            }
+        }
+    };
+
+    private void enableAdditionalDocEditIfSubmitted() {
+        if (!isAdditionalDocEditEligible || isAdditionalDocEditEnabled || !VisitsDAO.isVisitSubmitted(visitUuid)) {
+            return;
+        }
+        // Documents attached before this point were added as ordinary attachments and are pushed
+        // with the visit, so they are not drafts.
+        sessionAddedDocUuids.clear();
+        isAdditionalDocEditEnabled = true;
+        applyAdditionalDocsEditMode();
+    }
 
     TextView respiratory;
     TextView respiratoryText;
@@ -523,7 +550,15 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         setupSpecialization();
 
         context = VisitSummaryActivity_New.this;
-        String te4st = "{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
+        // Recreated (e.g. rotation): keep knowing which documents are this session's drafts, so they
+        // stay deletable/uploadable and are still discarded on exit (they remain held from sync).
+        if (savedInstanceState != null) {
+            ArrayList<String> savedDocUuids = savedInstanceState.getStringArrayList(STATE_SESSION_DOC_UUIDS);
+            if (savedDocUuids != null) sessionAddedDocUuids.addAll(savedDocUuids);
+        }
+        ContextCompat.registerReceiver(this, pushDoneReceiver,
+                new IntentFilter(AppConstants.SYNC_NOTIFY_INTENT_ACTION), ContextCompat.RECEIVER_NOT_EXPORTED);
+        String te4st ="{\"as\":\"\",\"bn\":\"\",\"en\":\"\",\"gu\":\"\",\"hi\":\"\",\"kn\":\"\",\"mr\":\"\",\"or\":\"\",\"ru\":\"\"}";
         JSONObject test = new Gson().fromJson(te4st, JSONObject.class);
 
         // changing status bar color
@@ -1002,6 +1037,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 tilAdditionalNotesVS.setVisibility(View.GONE);
                 tvAddNotesValueVS.setVisibility(View.VISIBLE);
                 btn_note_save.setVisibility(View.GONE);
+                isAdditionalDocEditEligible = false;
                 isAdditionalDocEditEnabled = false;
                 addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
                 if (!addnotes_value.equalsIgnoreCase("")) {
@@ -1062,7 +1098,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 // starts. A visit created but never sent (reopened via Open visit) has no speciality,
                 // so it correctly keeps the plain create-then-"Send Visit" flow.
                 btn_note_save.setVisibility(isVisitSpecialityExists ? View.VISIBLE : View.GONE);
-                isAdditionalDocEditEnabled = isVisitSpecialityExists;
+                // Document draft/Upload mode additionally needs the visit to be on the server: images
+                // can only be uploaded for a submitted visit. After an offline Send Visit, documents
+                // added here stay ordinary attachments that go up with the visit sync instead of
+                // drafts that could neither upload nor survive leaving the screen.
+                isAdditionalDocEditEligible = isVisitSpecialityExists;
+                isAdditionalDocEditEnabled = isVisitSpecialityExists && VisitsDAO.isVisitSubmitted(visitUuid);
                 if (isVisitSpecialityExists) {
                     // Pre-fill the edit field with the note already stored for this visit.
                     addnotes_value = visitAttributeListDAO.getVisitAttributesList_specificVisit(visitUuid, ADDITIONAL_NOTES);
@@ -1410,19 +1451,32 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (isVisitEnded(visitUUID)) {
             return false;
         }
-        boolean hasEditCache =
-                !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid).isEmpty()
-                        || !sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid).isEmpty()
-                        || !sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()
-                        || !sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty()
-                        || !sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty();
         // The doctor has started the visit note if either the visit note encounter is already in the
         // local DB, or the visit_started push flagged it in-memory this session (the push arrives
-        // before the encounter syncs into the DB).
+        // before the encounter syncs into the DB). This is authoritative: the local edit cache only
+        // supplies the data for re-opening the complaint/history edit screens and never grants edit
+        // access on its own, since it outlives a missed visit_started push.
         boolean isVisitNoteStarted =
                 !EncounterDAO.getStartVisitNoteEncounterByVisitUUID(visitUUID).isEmpty()
                         || IntelehealthApplication.isVisitNoteStarted(visitUuid);
-        return hasEditCache || !isVisitNoteStarted;
+        return !isVisitNoteStarted;
+    }
+
+    /**
+     * The chief-complaint edit has no DB fallback: VisitCreationActivity rebuilds it only from the
+     * selected complaints and question nodes saved in the local edit cache during creation. The cache
+     * is missing for visits created before it existed, after a reinstall/logout, or once visit_started
+     * cleared it, in which case the edit screen would just close. Mirrors the check in
+     * VisitCreationActivity#makeReadyForEdit (STEP_3_VISIT_REASON).
+     */
+    private boolean isComplaintEditCacheAvailable() {
+        return hasEditCacheList(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid)
+                && hasEditCacheList(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+    }
+
+    private boolean hasEditCacheList(String key) {
+        String json = sessionManager.getVisitEditCache(key).trim();
+        return !json.isEmpty() && !json.equals("[]") && !json.equals("null");
     }
 
     /**
@@ -1518,11 +1572,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * Uploads the newly added (not-yet-synced) additional documents for this existing visit to the
      * server, then locks them so those specific documents become non-editable.
      * <p>
-     * The obs-image push only picks up images whose visit is already synced, which is the case for
-     * an existing visit, so this uploads exactly the freshly added documents and marks them synced.
+     * Only the session drafts are pushed, and only the ones the server accepts are locked. Failed
+     * ones stay in the session set (still deletable, retryable via Upload).
      */
     private void uploadAdditionalDocs() {
         if (blockEditIfNotAllowed()) return;
+        if (isUploadingAdditionalDocs) return;
 
         if (sessionAddedDocUuids.isEmpty()) {
             Toast.makeText(this, getString(R.string.no_new_documents_to_upload), Toast.LENGTH_SHORT).show();
@@ -1534,16 +1589,33 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
 
         Toast.makeText(this, getString(R.string.upload_started), Toast.LENGTH_SHORT).show();
-        new ImagesPushDAO().obsImagesPush();
+        // Move the drafts out of the session set while in flight so leaving the screen meanwhile
+        // doesn't discard (void) documents that may already be on the server.
+        Set<String> uploading = new HashSet<>(sessionAddedDocUuids);
+        sessionAddedDocUuids.removeAll(uploading);
+        setUploadingAdditionalDocs(true);
 
-        // Lock the just-uploaded documents: they leave the session set and become non-deletable /
-        // non-editable, joining the existing documents.
-        sessionAddedDocUuids.clear();
-        if (rowListItem != null) {
-            for (DocumentObject doc : rowListItem) doc.setDeletable(false);
-            if (recyclerViewAdapter != null) recyclerViewAdapter.notifyDataSetChanged();
-        }
-        Toast.makeText(this, getString(R.string.documents_uploaded_successfully), Toast.LENGTH_SHORT).show();
+        new ImagesPushDAO().obsImagesPush(uploading, (uploaded, failed) -> {
+            ImagesPushDAO.releaseDraftObsImages(uploaded);
+            if (isFinishing() || isDestroyed()) {
+                // The user asked for these to be uploaded; let the background sync retry them.
+                ImagesPushDAO.releaseDraftObsImages(failed);
+                return;
+            }
+            setUploadingAdditionalDocs(false);
+            sessionAddedDocUuids.addAll(failed);
+            markAdditionalDocsDeletability();
+            if (failed.isEmpty()) {
+                Toast.makeText(this, getString(R.string.documents_uploaded_successfully), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, getString(R.string.documents_upload_failed), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setUploadingAdditionalDocs(boolean uploading) {
+        isUploadingAdditionalDocs = uploading;
+        btn_docs_upload.setEnabled(!uploading);
     }
 
     /**
@@ -1567,6 +1639,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 CustomLog.e(TAG, e.getMessage());
             }
         }
+        ImagesPushDAO.releaseDraftObsImages(sessionAddedDocUuids);
         sessionAddedDocUuids.clear();
     }
 
@@ -1695,17 +1768,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             } else {
                 obj = new JSONObject(String.valueOf(FileUtils.encodeJSON(VisitSummaryActivity_New.this, mFileName)));
             }
+            boolean hasTemperature = temperature.getValue() != null && !temperature.getValue().trim().isEmpty()
+                    && !temperature.getValue().trim().equals("0");
             if (obj.getBoolean("mCelsius")) {
                 tempcel.setVisibility(View.VISIBLE);
                 tempfaren.setVisibility(View.GONE);
-                tempView.setText(temperature.getValue());
+                tempView.setText(hasTemperature ? temperature.getValue() : getResources().getString(R.string.no_information));
                 CustomLog.d("temp", "temp_C: " + temperature.getValue());
             } else if (obj.getBoolean("mFahrenheit")) {
                 tempfaren.setVisibility(View.VISIBLE);
                 tempcel.setVisibility(View.GONE);
-                if (temperature.getValue() != null && !temperature.getValue().isEmpty()) {
+                if (hasTemperature) {
                     CustomLog.d("temp", "temp_F: " + tempView.getText().toString());
                     tempView.setText(convertCtoF(TAG, temperature.getValue()));
+                } else {
+                    // Also clears a previously shown value once the vital is cleared in edit mode.
+                    tempView.setText(getResources().getString(R.string.no_information));
                 }
             }
 
@@ -1878,6 +1956,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             @Override
             public void onClick(View v) {
                 if (blockEditIfNotAllowed()) return;
+                // Must run before the Edit action below, which deletes the physical exam images.
+                if (!isComplaintEditCacheAvailable()) {
+                    Toast.makeText(VisitSummaryActivity_New.this, getString(R.string.complaint_edit_not_available), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 final MaterialAlertDialogBuilder complaintDialog = new MaterialAlertDialogBuilder(VisitSummaryActivity_New.this);
                 complaintDialog.setTitle(getString(R.string.visit_summary_complaint));
                 final LayoutInflater inflater = getLayoutInflater();
@@ -3737,6 +3820,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 //
             }
 
+            // The visit is now sent (speciality attribute written), so the documents attached during
+            // creation are committed with it and upload with the visit sync (now, or on the next sync
+            // if offline/failed). Clear the session set on every path - online success, sync failure
+            // and offline - so that once fetchingIntent() enables docs edit mode, onPause() doesn't
+            // treat them as pending drafts and discard them.
+            sessionAddedDocUuids.clear();
+
             if (NetworkConnection.isOnline(getApplication())) {
                 Toast.makeText(context, getResources().getString(R.string.upload_started), Toast.LENGTH_LONG).show();
 
@@ -3783,10 +3873,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                             }
                             // Visit just created/sent: make the type-of-consultation spinner non-editable.
                             mBinding.typeOfConsultationSpinner.setEnabled(!isVisitSpecialityExists);
-                            // Send Visit has just uploaded the documents attached during creation, so
-                            // they are now existing/uploaded and must become non-deletable - clear the
-                            // session set before fetchingIntent() re-applies the docs edit mode.
-                            sessionAddedDocUuids.clear();
                             fetchingIntent();
                             // Visit is now submitted - show the queue status banner.
                             updateQueueStatusBanner();
@@ -3810,11 +3896,6 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }, 4000);
             } else {
                 add_additional_doc.setVisibility(View.GONE);
-                // Offline send: the creation-time documents are committed with the visit and will
-                // upload with it on the next sync. Clear the session set so fetchingIntent() (which
-                // now enables docs edit mode) doesn't treat them as pending drafts and discard them
-                // in onPause().
-                sessionAddedDocUuids.clear();
                 fetchingIntent();
                 AppConstants.notificationUtils.DownloadDone(patientName + " " + getString(R.string.visit_data_failed), getString(R.string.visit_uploaded_failed), 3, VisitSummaryActivity_New.this);
             }
@@ -4026,6 +4107,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             // pending upload.
             String uuid = StringUtils.getFileNameWithoutExtensionString(documentList.get(position).getDocumentName());
             sessionAddedDocUuids.remove(uuid);
+            ImagesPushDAO.releaseDraftObsImages(Collections.singleton(uuid));
             documentList.remove(position);
         }
         add_docs_title.setText(getResources().getString(R.string.add_additional_documents) + " (" + recyclerViewAdapter.getItemCount() + ")");
@@ -4124,6 +4206,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * @param concept_id variable of type int.
      * @param value      variable of type String.
      */
+    private void resetVitalValues() {
+        height.setValue("");
+        weight.setValue("");
+        pulse.setValue("");
+        bpSys.setValue("");
+        bpDias.setValue("");
+        temperature.setValue("");
+        resp.setValue("");
+        spO2.setValue("");
+        mBloodGroupObsDTO.setValue("");
+    }
+
     private void parseData(String concept_id, String value) {
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
@@ -4453,6 +4547,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             patHistory.setValue(""); // if medical history does not exist
         }
 //vitals display code
+        // parseData() only sets the vitals that have a (non-voided) obs row, so reset them first:
+        // otherwise a vital cleared in edit mode (its obs voided) keeps showing its old value when
+        // this re-runs on return from the edit screen.
+        resetVitalValues();
         String visitSelection = "encounteruuid = ? AND voided!='1'";
         String[] visitArgs = {encounterVitals};
         if (encounterVitals != null) {
@@ -4619,6 +4717,22 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             handleMessage(intent);
         }
     };
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList(STATE_SESSION_DOC_UUIDS, new ArrayList<>(sessionAddedDocUuids));
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            unregisterReceiver(pushDoneReceiver);
+        } catch (IllegalArgumentException ignored) {
+            // not registered
+        }
+        super.onDestroy();
+    }
 
     @Override
     public void onPause() {
@@ -4878,6 +4992,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             // Remember this as a document added in the current edit session so it stays deletable
             // (and uploadable) until the user uploads it. Existing documents are never tracked here.
             sessionAddedDocUuids.add(imageUuid);
+            // Editing a sent visit: keep background syncs (note save, post-edit sync) from uploading
+            // this draft before the user taps Upload. In creation mode the doc goes with Send Visit.
+            if (isAdditionalDocEditEnabled) ImagesPushDAO.holdDraftObsImage(imageUuid);
         }
     }
 

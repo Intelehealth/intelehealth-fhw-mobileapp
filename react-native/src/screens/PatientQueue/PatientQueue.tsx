@@ -30,6 +30,12 @@ const ItemSeparator = () => <View style={styles.separator} />;
 // with StatusBannerUpdater.EVENT_STATUS_BANNER_UPDATE on the Android side.
 const STATUS_BANNER_UPDATE_EVENT = 'StatusBannerUpdate';
 
+// Native event emitted by PatientQueueFragment when it re-reads tbl_queue after
+// the screen is mounted (resume, or a pull sync finished writing the queue).
+// Payload: {queue: QueueListItemProps[]}. Keep in sync with
+// PatientQueueFragment.EVENT_PATIENT_QUEUE_UPDATE on the Android side.
+const PATIENT_QUEUE_UPDATE_EVENT = 'PatientQueueUpdate';
+
 // Shape of the status banner delivered from native — the persisted "queue_status"
 // FCM payload (initial prop) and each live update carry the same fields.
 interface StatusBannerData {
@@ -87,9 +93,24 @@ function PatientQueue({
     return () => subscription.remove();
   }, []);
 
-  // Rows come from the native host (tbl_queue, filled by the pull-data sync);
-  // an absent prop renders an empty list.
-  const source = queueProp ?? [];
+  // Rows come from the native host (tbl_queue, filled by the pull-data sync):
+  // seeded from the initial prop, then replaced by each live update so the list
+  // refreshes without a native remount. An absent prop renders an empty list.
+  const [source, setSource] = useState<QueueListItemProps[]>(queueProp ?? []);
+
+  useEffect(() => {
+    setSource(queueProp ?? []);
+  }, [queueProp]);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      PATIENT_QUEUE_UPDATE_EVENT,
+      (update: {queue?: QueueListItemProps[]}) => {
+        setSource(update?.queue ?? []);
+      },
+    );
+    return () => subscription.remove();
+  }, []);
   // Attach a stable list key per row (native rows have no `key`).
   const queue: (QueueListItemProps & {key: string})[] = source.map(
     (item, index) => ({...item, key: `${item.patientId ?? item.queueNumber}-${index}`}),

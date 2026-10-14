@@ -13,9 +13,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.react.ReactFragment;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.database.dao.QueueDAO;
 import org.intelehealth.app.ui.queue.factory.QueueViewModelFactory;
 import org.intelehealth.app.ui.queue.model.QueueRow;
 import org.intelehealth.app.ui.queue.viewmodel.QueueViewModel;
@@ -44,7 +48,13 @@ public class PatientQueueFragment extends Fragment {
 
     private static final String RN_COMPONENT_NAME = "PatientQueueModule";
 
+    /** JS event carrying refreshed rows to the mounted PatientQueue screen ({queue: [...]}). */
+    public static final String EVENT_PATIENT_QUEUE_UPDATE = "PatientQueueUpdate";
+
     private QueueViewModel queueViewModel;
+
+    // Set once the RN fragment transaction is committed (commits run asynchronously).
+    private boolean reactFragmentCommitted;
 
     @Nullable
     @Override
@@ -66,6 +76,11 @@ public class PatientQueueFragment extends Fragment {
                 bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setChecked(true);
             }
         }
+        // Re-read on every resume (first show, back to the tab, app foregrounded) so
+        // rows synced while the screen wasn't visible are picked up.
+        if (queueViewModel != null) {
+            queueViewModel.loadQueue();
+        }
     }
 
     @Override
@@ -73,12 +88,19 @@ public class PatientQueueFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         queueViewModel = QueueViewModelFactory.create(this);
-        // The ViewModel reads off the main thread and posts the rows here; the
-        // list survives config changes, so we observe always but load only once.
+        // The ViewModel reads off the main thread and posts the rows here. The
+        // initial load happens in onResume.
         queueViewModel.getQueue().observe(getViewLifecycleOwner(), this::onQueueLoaded);
-        if (savedInstanceState == null) {
-            queueViewModel.loadQueue();
-        }
+        // Reload while visible whenever a pull sync has finished writing tbl_queue.
+        // Observing the DAO's write signal (not the sync-done broadcast) avoids
+        // reading before the async insert has landed. LiveData re-delivers its last
+        // value to a new observer; skip that one, as onResume already loads.
+        final Long alreadySeen = QueueDAO.getQueueChanged().getValue();
+        QueueDAO.getQueueChanged().observe(getViewLifecycleOwner(), changedAt -> {
+            if (changedAt != null && !changedAt.equals(alreadySeen)) {
+                queueViewModel.loadQueue();
+            }
+        });
     }
 
     /**
@@ -99,7 +121,26 @@ public class PatientQueueFragment extends Fragment {
                 bundles.add(toRowBundle(appContext, row));
             }
         }
-        attachReactFragment(buildQueueProps(appContext, bundles));
+        if (isReactFragmentAttached()) {
+            // Launch options are only read on mount, so later reloads go to the
+            // mounted screen as an event.
+            WritableArray queue = Arguments.createArray();
+            for (Bundle bundle : bundles) {
+                queue.pushMap(Arguments.fromBundle(bundle));
+            }
+            WritableMap payload = Arguments.createMap();
+            payload.putArray("queue", queue);
+            RnEventEmitter.emit(EVENT_PATIENT_QUEUE_UPDATE, payload);
+        } else {
+            attachReactFragment(buildQueueProps(appContext, bundles));
+        }
+    }
+
+    private boolean isReactFragmentAttached() {
+        // The flag covers the window where the commit is still pending (findFragmentById
+        // can't see it yet); the lookup covers a child restored after recreation.
+        return reactFragmentCommitted
+                || (isAdded() && getChildFragmentManager().findFragmentById(R.id.patient_queue_container) != null);
     }
 
     /** Commit the RN fragment with the given initial properties. */
@@ -109,8 +150,8 @@ public class PatientQueueFragment extends Fragment {
         if (!isAdded() || isRemoving() || getActivity() == null || getActivity().isFinishing()) {
             return;
         }
-        if (getChildFragmentManager().findFragmentById(R.id.patient_queue_container) != null) {
-            return; // already attached
+        if (isReactFragmentAttached()) {
+            return; // already attached (or commit pending)
         }
 
         ReactFragment reactFragment = new ReactFragment.Builder()
@@ -122,6 +163,7 @@ public class PatientQueueFragment extends Fragment {
                 .beginTransaction()
                 .replace(R.id.patient_queue_container, reactFragment)
                 .commitAllowingStateLoss();
+        reactFragmentCommitted = true;
     }
 
     /**

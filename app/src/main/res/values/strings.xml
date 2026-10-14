@@ -875,6 +875,7 @@
     <string name="note_saved_successfully">Note saved successfully</string>
     <string name="no_new_documents_to_upload">No new documents to upload</string>
     <string name="documents_uploaded_successfully">Documents uploaded successfully</string>
+    <string name="documents_upload_failed">Some documents could not be uploaded. Please try again.</string>
     <string name="add_additional_document_2">Add additional documents (2)</string>
     <string name="add_additional_documents_like">Add additional documents like reports, prescriptions, etc.\u000D</string>
     <string name="doctor_speciality">Doctor\'s Speciality</string>
@@ -1753,6 +1754,7 @@
     <string name="sync_completed">Sync completed</string>
     <string name="feature_not_found">Feature not found</string>
     <string name="editing_not_allowed_visit_note_present">This visit is in progress and cannot be edited.</string>
+    <string name="complaint_edit_not_available">Complaint details for this visit are not available on this device and cannot be edited.</string>
 
     <!-- Home / queue status banner -->
     <string name="doctor_on_break">Doctor is on Break</string>

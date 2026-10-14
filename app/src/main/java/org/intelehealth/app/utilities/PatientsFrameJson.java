@@ -167,7 +167,11 @@ public class PatientsFrameJson {
                 visit.setVisitType(visitDTO.getVisitTypeUuid());
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
-                if (isQmsConfigured) {
+                // Queue only on the initial submission: not for an ended visit, and not for a re-push
+                // of a visit the server already has (note edit, end visit), which could re-enqueue it
+                // or reset its queue position.
+                if (isQmsConfigured && visitDTO.getEnddate() == null
+                        && !VisitsDAO.isVisitSubmitted(visitDTO.getUuid())) {
                     Logger.logD(TAG, "push request added to queue data - ");
                     visit.setAddToQueue(true);
                 }
