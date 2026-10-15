@@ -114,26 +114,29 @@ public class PatientQueueFragment extends Fragment {
         if (ctx == null) {
             return;
         }
-        Context appContext = ctx.getApplicationContext();
         ArrayList<Bundle> bundles = new ArrayList<>(rows != null ? rows.size() : 0);
         if (rows != null) {
             for (QueueRow row : rows) {
-                bundles.add(toRowBundle(appContext, row));
+                // Activity context so labels follow the app's selected language.
+                bundles.add(toRowBundle(ctx, row));
             }
         }
-        if (isReactFragmentAttached()) {
-            // Launch options are only read on mount, so later reloads go to the
-            // mounted screen as an event.
-            WritableArray queue = Arguments.createArray();
-            for (Bundle bundle : bundles) {
-                queue.pushMap(Arguments.fromBundle(bundle));
-            }
-            WritableMap payload = Arguments.createMap();
-            payload.putArray("queue", queue);
-            RnEventEmitter.emit(EVENT_PATIENT_QUEUE_UPDATE, payload);
-        } else {
-            attachReactFragment(buildQueueProps(appContext, bundles));
+        if (!isReactFragmentAttached()) {
+            // First rows: mount the RN screen once, with them as launch options. Until then the
+            // container's white background shows (no black screen, no loader/remount flicker).
+            // Activity context so the screen labels follow the app's selected language.
+            mountReactFragment(buildQueueProps(ctx, bundles));
+            return;
         }
+        // Later reloads go to the mounted screen as an event (launch options are only read on
+        // mount, and by now its listener is subscribed).
+        WritableArray queue = Arguments.createArray();
+        for (Bundle bundle : bundles) {
+            queue.pushMap(Arguments.fromBundle(bundle));
+        }
+        WritableMap payload = Arguments.createMap();
+        payload.putArray("queue", queue);
+        RnEventEmitter.emit(EVENT_PATIENT_QUEUE_UPDATE, payload);
     }
 
     private boolean isReactFragmentAttached() {
@@ -143,8 +146,8 @@ public class PatientQueueFragment extends Fragment {
                 || (isAdded() && getChildFragmentManager().findFragmentById(R.id.patient_queue_container) != null);
     }
 
-    /** Commit the RN fragment with the given initial properties. */
-    private void attachReactFragment(Bundle initialProperties) {
+    /** Commits the RN fragment with the given initial properties (once, on the first load). */
+    private void mountReactFragment(Bundle initialProperties) {
         // The callback runs asynchronously, so the host may be gone (user
         // navigated away) or its state already saved — guard both.
         if (!isAdded() || isRemoving() || getActivity() == null || getActivity().isFinishing()) {
@@ -181,6 +184,17 @@ public class PatientQueueFragment extends Fragment {
         if (banner != null) {
             initialProperties.putBundle("banner", StatusBannerUpdater.toBundle(banner));
         }
+
+        // Localized screen labels (tabs, count, search); the RN components fall back to
+        // English only when these are absent.
+        Bundle labels = new Bundle();
+        labels.putString("tabAll", ctx.getString(R.string.queue_tab_all));
+        labels.putString("tabNext", ctx.getString(R.string.queue_tab_next));
+        labels.putString("tabWaiting", ctx.getString(R.string.queue_tab_waiting));
+        labels.putString("tabOnCall", ctx.getString(R.string.queue_tab_on_call));
+        labels.putString("countLabel", ctx.getString(R.string.queue_count_label));
+        labels.putString("searchPlaceholder", ctx.getString(R.string.queue_search_placeholder));
+        initialProperties.putBundle("labels", labels);
         return initialProperties;
     }
 
@@ -212,6 +226,12 @@ public class PatientQueueFragment extends Fragment {
         bundle.putStringArrayList("symptoms", parseSymptoms(row.getChiefComplaint()));
         bundle.putInt("position", position);
         bundle.putString("status", status);
+        // Localized labels (string resources); the RN row falls back to English only when absent.
+        bundle.putString("statusLabel", QueueRowFormatter.statusLabel(ctx, status));
+        bundle.putString("timeLabel", QueueRowFormatter.timeLabel(ctx, status));
+        bundle.putString("overdueLabel", ctx.getString(R.string.queue_time_overdue));
+        // Template with %1$d for the "+N More" symptom chip (N is computed on the RN side).
+        bundle.putString("moreLabel", ctx.getString(R.string.queue_more_symptoms));
         // Pre-formatted snapshot used as a fallback (and initial paint) when the
         // row has no timestamp to tick from.
         bundle.putString("time", QueueRowFormatter.formatTime(status, row));

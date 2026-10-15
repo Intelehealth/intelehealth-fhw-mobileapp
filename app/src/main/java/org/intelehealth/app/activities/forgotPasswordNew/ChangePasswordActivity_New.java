@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.forgotPasswordNew;
 
+import org.intelehealth.app.reactnative.QueueDataCleaner;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
@@ -403,6 +404,7 @@ public class ChangePasswordActivity_New extends AppCompatActivity implements Net
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        QueueDataCleaner.clearOnLogout(this);
     }
 
     private void showSnackBarAndRemoveLater(String text, int iconResId) {

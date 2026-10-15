@@ -1,5 +1,6 @@
 package org.intelehealth.app.utilities;
 
+import org.intelehealth.app.reactnative.QueueDataCleaner;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +35,7 @@ public class NavigationUtils {
         SessionManager sessionManager = new SessionManager(context);
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        QueueDataCleaner.clearOnLogout(context);
 
         OfflineLogin.getOfflineLogin().setOfflineLoginStatus(false);
         SyncUtils syncUtils = new SyncUtils();

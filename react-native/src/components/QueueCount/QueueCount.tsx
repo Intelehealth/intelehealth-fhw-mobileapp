@@ -7,11 +7,15 @@ import { Colors, FontFamily, FontWeight } from '../../theme';
 /**
  * Shows the current queue size, e.g. "Patients in Queue : 7".
  */
-export default function QueueCount({ count, style }: QueueCountProps) {
+export default function QueueCount({
+  count,
+  label = 'Patients in Queue :',
+  style,
+}: QueueCountProps) {
   return (
     <View style={[styles.container, style]}>
       <Text style={styles.label}>
-        Patients in Queue : <Text style={styles.count}>{count}</Text>
+        {label} <Text style={styles.count}>{count}</Text>
       </Text>
     </View>
   );
