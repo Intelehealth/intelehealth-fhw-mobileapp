@@ -29,6 +29,7 @@ import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import org.intelehealth.app.BuildConfig
+import org.intelehealth.app.utilities.ConfigFlagsHelper
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.IntroActivity.IntroScreensActivity_New
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
@@ -79,6 +80,9 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 Timber.d { "Worker state $it" }
                 runOnUiThread { binding.pbConfigLoading.isVisible = false }
                 if (it == WorkInfo.State.SUCCEEDED.name) {
+                    // Saves the config flags and marks this app version as synced, so the home
+                    // screen doesn't fetch the same config again right after first launch.
+                    ConfigFlagsHelper.onConfigSynced(applicationContext)
                     checkPerm()
                     animateViews()
                 } else if (it == WorkInfo.State.FAILED.name) {

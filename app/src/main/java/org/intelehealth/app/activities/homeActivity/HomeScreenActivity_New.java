@@ -133,6 +133,10 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
+import org.intelehealth.config.worker.ConfigSyncWorker;
+import androidx.work.WorkInfo;
+import org.intelehealth.app.utilities.ConfigFlagsHelper;
+import java.lang.ref.WeakReference;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 
@@ -804,6 +808,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         updateQMSBottomNavigation();
+        refreshConfigAfterAppUpdate();
         //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
         setLocale(HomeScreenActivity_New.this);
@@ -815,6 +820,40 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
         bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
         bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
+        // QMS turned off by a config sync while the Queue tab is open: hiding the item alone
+        // would leave the queue screen showing with nothing selected, so go back to Home.
+        if (!isQmsConfigured && bottomNav.getSelectedItemId() == R.id.bottom_nav_queue) {
+            bottomNav.setSelectedItemId(R.id.bottom_nav_home_menu);
+        }
+    }
+
+    /**
+     * Re-fetches the server config once per app version. Config is otherwise only fetched on
+     * first launch and during pull syncs, so after an update the stored feature flags (parsed
+     * with the previous app's keys, e.g. QMS / edit visit) would stay in effect until the next
+     * pull. Once the fetch rewrites the config DB, onFeatureActiveStatusLoaded() saves the new
+     * flags. Retried on the next launch if it fails (e.g. offline).
+     */
+    private void refreshConfigAfterAppUpdate() {
+        if (!ConfigFlagsHelper.isRefreshPending(preferenceHelper)) return;
+        // The callback outlives this activity (it runs until the worker finishes), so it only
+        // holds the application context and a weak reference to the activity.
+        Context appContext = getApplicationContext();
+        WeakReference<HomeScreenActivity_New> activityRef = new WeakReference<>(this);
+        ConfigSyncWorker.Companion.startConfigSyncWorker(appContext, state -> {
+            if (WorkInfo.State.SUCCEEDED.name().equals(state)) {
+                ConfigFlagsHelper.onConfigSynced(appContext);
+                HomeScreenActivity_New activity = activityRef.get();
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+                        if (!activity.isFinishing() && activity.bottomNav != null) {
+                            activity.updateQMSBottomNavigation();
+                        }
+                    });
+                }
+            }
+            return Unit.INSTANCE;
+        });
     }
 
     /**
@@ -1136,8 +1175,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, activeStatus.getActiveQms());
-        preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, activeStatus.getActiveEditVisit());
+        // Right after an app update the stored row may still hold flags parsed with the old keys;
+        // keep the current flags until the refresh lands (ConfigFlagsHelper.onConfigSynced) instead
+        // of applying stale values and flipping them back moments later.
+        if (!ConfigFlagsHelper.isRefreshPending(preferenceHelper)) {
+            ConfigFlagsHelper.applyFlags(preferenceHelper, activeStatus);
+        }
         if(bottomNav != null)
             updateQMSBottomNavigation();
     }

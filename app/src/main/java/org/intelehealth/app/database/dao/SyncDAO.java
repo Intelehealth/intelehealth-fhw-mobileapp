@@ -27,7 +27,9 @@ import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
+import org.intelehealth.app.utilities.ConfigFlagsHelper;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
+import androidx.work.WorkInfo;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NotificationID;
@@ -1067,6 +1069,11 @@ public class SyncDAO {
     private void loadConfig() {
         ConfigSyncWorker.Companion.startConfigSyncWorker(IntelehealthApplication.getAppContext(), it -> {
             Timber.d("Worker state sync " + it);
+            if (WorkInfo.State.SUCCEEDED.name().equals(it)) {
+                // Saves the QMS/edit flags from the fresh config and marks this app version as
+                // synced, which also completes a pending post-update refresh.
+                ConfigFlagsHelper.onConfigSynced(IntelehealthApplication.getAppContext());
+            }
             return Unit.INSTANCE;
         });
         isTheConfigUpdated = true;

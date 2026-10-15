@@ -72,7 +72,7 @@ data class FeatureActiveStatus(
     @SerializedName("patient_draft_survey")
     var activeStatusPatientDraftSurvey: Boolean = true
 
-    @SerializedName("qms_section")
+    // Not in patient_visit_summary: set by ConfigRepository from the top-level qms_section key.
     var activeQms: Boolean = false
 
     // patient_visit_summary.re_enable: whether a sent visit can still be edited until the doctor starts it.

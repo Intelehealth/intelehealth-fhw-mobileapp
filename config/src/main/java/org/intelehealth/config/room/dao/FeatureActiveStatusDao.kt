@@ -30,4 +30,8 @@ interface FeatureActiveStatusDao : CoreDao<FeatureActiveStatus> {
     @Query("SELECT * FROM tbl_feature_active_status")
     fun getFeatureActiveStatusLiveRecord(): LiveData<FeatureActiveStatus>
 
+    /** Blocking read of the current row; call off the main thread (e.g. a worker callback). */
+    @Query("SELECT * FROM tbl_feature_active_status LIMIT 1")
+    fun getRecordNow(): FeatureActiveStatus?
+
 }
