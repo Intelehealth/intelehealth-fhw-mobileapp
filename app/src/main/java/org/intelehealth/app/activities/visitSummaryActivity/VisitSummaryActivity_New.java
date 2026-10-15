@@ -1037,14 +1037,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             // Edit btn visibility based on user coming from Visit Details screen - Start
             //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
             if (!isAllowForEdit) {
-                // Keep the edit icons visible even when editing is not allowed;
+                // Editing turned off by server config: hide the edit icons altogether. For the
+                // other reasons (doctor started the visit note, visit ended) keep them visible;
                 // an error message is shown on click instead (see edit listeners).
-                editVitals.setVisibility(View.VISIBLE);
-                editComplaint.setVisibility(View.VISIBLE);
-                editPhysical.setVisibility(View.VISIBLE);
-                editFamHist.setVisibility(View.VISIBLE);
-                editMedHist.setVisibility(View.VISIBLE);
-                editAddDocs.setVisibility(View.VISIBLE);
+                int editIconVisibility = isEditVisitDisabledByConfig() ? View.GONE : View.VISIBLE;
+                editVitals.setVisibility(editIconVisibility);
+                editComplaint.setVisibility(editIconVisibility);
+                editPhysical.setVisibility(editIconVisibility);
+                editFamHist.setVisibility(editIconVisibility);
+                editMedHist.setVisibility(editIconVisibility);
+                editAddDocs.setVisibility(editIconVisibility);
                 add_additional_doc.setVisibility(View.GONE);
 
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
@@ -1059,7 +1061,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 // mBinding.typeOfConsultationCard.setVisibility(View.GONE);
                 // mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
 
-                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
+                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(editIconVisibility);
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
 
@@ -1477,6 +1479,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * Recomputed on demand (not cached from onCreate) so that if the "start visit" notification
      * clears the edit cache while the user is already on this screen, the next edit click reflects it.
      */
+    /**
+     * True when editing a sent visit is turned off by server config (re_enable / edit visit).
+     * In that case the edit controls are hidden rather than shown with an error on click.
+     * Never applies to a visit still being created (not yet sent, so no speciality row).
+     */
+    private boolean isEditVisitDisabledByConfig() {
+        if (!speciality_row_exist_check(visitUUID)) {
+            return false;
+        }
+        return !new PreferenceHelper(this).get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, false);
+    }
+
     private boolean computeIsEditAllowed() {
         // A visit still being created (not yet sent, so no speciality row) is always editable; the
         // config and doctor-started checks below only apply to visits that have been sent.
@@ -1485,9 +1499,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         // Editing an already-sent visit can be turned off entirely via server config, regardless of
         // any local edit cache or whether the doctor has started the visit note.
-        boolean isEditVisitConfigured = new PreferenceHelper(this)
-                .get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, false);
-        if (!isEditVisitConfigured) {
+        if (isEditVisitDisabledByConfig()) {
             return false;
         }
         // A visit that has already ended (its enddate is set) can never be edited, regardless of any
@@ -1535,7 +1547,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private boolean blockEditIfNotAllowed() {
         isAllowForEdit = computeIsEditAllowed();
         if (!isAllowForEdit) {
-            Toast.makeText(this, getString(R.string.editing_not_allowed_visit_note_present), Toast.LENGTH_SHORT).show();
+            // Say why: an ended visit can never be edited; otherwise the doctor has started it.
+            int message = isVisitEnded(visitUUID)
+                    ? R.string.editing_not_allowed_visit_ended
+                    : R.string.editing_not_allowed_visit_note_present;
+            Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
