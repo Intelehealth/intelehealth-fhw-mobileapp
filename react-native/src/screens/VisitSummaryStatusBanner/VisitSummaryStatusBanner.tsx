@@ -1,15 +1,27 @@
 import React, {useEffect, useState} from 'react';
-import {AppState, Image, StyleSheet, View} from 'react-native';
+import {AppState, DeviceEventEmitter, Image, StyleSheet, View} from 'react-native';
 
 import StatusBanner from '../../components/StatusBanner';
 import type {StatusBannerVariant} from '../../components/StatusBanner';
 import type {QueueStatus} from '../../components/QueueListItem';
 import {Colors, FontFamily, FontWeight} from '../../theme';
 
-// Milliseconds -> "N Mins" (design format), clamped at zero. "1 Min" singular.
-function formatMins(ms: number): string {
+// Native event emitted by VisitSummaryActivity_New when this visit's queue row
+// changes while the screen is open. Payload: the same props as the launch
+// options. Keep in sync with EVENT_VISIT_SUMMARY_QUEUE_BANNER_UPDATE there.
+const VISIT_SUMMARY_QUEUE_BANNER_UPDATE_EVENT = 'VisitSummaryQueueBannerUpdate';
+
+// Localized minute unit from the native host (string resources); English only as
+// a standalone/dev fallback.
+interface MinuteLabels {
+  one: string;
+  other: string;
+}
+
+// Milliseconds -> "N Mins" (design format), clamped at zero. Singular unit for 1.
+function formatMins(ms: number, labels: MinuteLabels): string {
   const minutes = Math.max(0, Math.round(ms / 60000));
-  return `${minutes} ${minutes === 1 ? 'Min' : 'Mins'}`;
+  return `${minutes} ${minutes === 1 ? labels.one : labels.other}`;
 }
 
 /**
@@ -24,16 +36,22 @@ function computeBannerTime(
   connectedAt: string | undefined,
   now: number,
   fallback: string,
+  labels: MinuteLabels,
 ): string {
+  // Only waiting entries count down and on-call entries count up; assigned /
+  // connecting / awaiting prescription have no time (native sends "").
+  if (status !== 'onCall' && status !== 'nextInQueue' && status !== 'waiting') {
+    return fallback;
+  }
   const instant = status === 'onCall' ? connectedAt : etaAt;
-  if (!status || !instant) {
+  if (!instant) {
     return fallback;
   }
   const targetMs = Date.parse(instant);
   if (Number.isNaN(targetMs)) {
     return fallback;
   }
-  return formatMins(status === 'onCall' ? now - targetMs : targetMs - now);
+  return formatMins(status === 'onCall' ? now - targetMs : targetMs - now, labels);
 }
 
 // Props delivered from the native host (VisitSummaryActivity_New) as
@@ -51,6 +69,9 @@ interface VisitSummaryStatusBannerProps {
   status?: QueueStatus | '';
   etaAt?: string;
   connectedAt?: string;
+  // Localized minute unit for the live tick ("Min" / "Mins" in English).
+  minuteLabel?: string;
+  minutesLabel?: string;
 }
 
 /**
@@ -66,15 +87,37 @@ interface VisitSummaryStatusBannerProps {
  * as a pill instead of a "View Queue" action. When etaAt/connectedAt are given
  * the pill ticks every second, exactly like QueueListItem.
  */
-export default function VisitSummaryStatusBanner({
-  variant = 'warning',
-  title = 'Queue 104 · Position #2',
-  subtitle = 'Next in Queue',
-  time = '8 Mins',
-  status = '',
-  etaAt,
-  connectedAt,
-}: VisitSummaryStatusBannerProps): React.JSX.Element {
+export default function VisitSummaryStatusBanner(
+  initialProps: VisitSummaryStatusBannerProps,
+): React.JSX.Element {
+  // Seeded from the launch props, then replaced by each live update the native
+  // host emits when this visit's queue row changes (no remount needed).
+  const [props, setProps] = useState<VisitSummaryStatusBannerProps>(initialProps);
+
+  useEffect(() => {
+    setProps(initialProps);
+  }, [initialProps]);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      VISIT_SUMMARY_QUEUE_BANNER_UPDATE_EVENT,
+      (update: VisitSummaryStatusBannerProps) => setProps(update ?? {}),
+    );
+    return () => subscription.remove();
+  }, []);
+
+  const {
+    variant = 'warning',
+    title = 'Queue 104 · Position #2',
+    subtitle = 'Next in Queue',
+    time = '8 Mins',
+    status = '',
+    etaAt,
+    connectedAt,
+    minuteLabel = 'Min',
+    minutesLabel = 'Mins',
+  } = props;
+
   const [now, setNow] = useState(() => Date.now());
   const hasLiveTime = Boolean(etaAt || connectedAt);
 
@@ -110,7 +153,10 @@ export default function VisitSummaryStatusBanner({
     };
   }, [hasLiveTime]);
 
-  const displayTime = computeBannerTime(status, etaAt, connectedAt, now, time);
+  const displayTime = computeBannerTime(status, etaAt, connectedAt, now, time, {
+    one: minuteLabel,
+    other: minutesLabel,
+  });
 
   return (
     <View style={styles.wrapper}>

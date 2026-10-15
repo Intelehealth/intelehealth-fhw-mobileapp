@@ -6,6 +6,8 @@ import type { StyleProp, ViewStyle } from 'react-native';
 export interface QueueCountProps {
   // Number of patients currently in the queue.
   count: number;
+  // Localized label before the count; defaults to "Patients in Queue :".
+  label?: string;
   // Optional style override for the outer container.
   style?: StyleProp<ViewStyle>;
 }

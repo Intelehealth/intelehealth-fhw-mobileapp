@@ -1,11 +1,13 @@
 package org.intelehealth.app.reactnative;
 
+import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import org.intelehealth.app.R;
 import org.intelehealth.app.models.queue.QueueStatus;
 import org.intelehealth.app.ui.queue.model.QueueRow;
 
@@ -21,24 +23,31 @@ public final class QueueRowFormatter {
 
     private static final String TAG = "QueueRowFormatter";
 
+    // Statuses with their own tab (Next / Waiting / On Call).
     public static final String STATUS_ON_CALL = "onCall";
     public static final String STATUS_NEXT_IN_QUEUE = "nextInQueue";
     public static final String STATUS_WAITING = "waiting";
+    // Statuses shown only under "All" (no position, no wait/call time).
+    public static final String STATUS_DOCTOR_ASSIGNED = "doctorAssigned";
+    public static final String STATUS_CONNECTING = "connecting";
+    public static final String STATUS_AWAITING_PRESCRIPTION = "awaitingPrescription";
 
     private QueueRowFormatter() {
     }
 
     /**
-     * Maps the DB {@link QueueStatus} (+ position) to the RN status union used
-     * by the tabs ('onCall' | 'nextInQueue' | 'waiting'):
+     * Maps the DB {@link QueueStatus} (+ position) to the RN status union:
      * <ul>
-     *   <li>CONNECTED -> onCall</li>
-     *   <li>QUEUED at position 0 -> nextInQueue</li>
-     *   <li>QUEUED at any other position -> waiting</li>
-     *   <li>RE_QUEUED at position &gt; 0 -> waiting</li>
+     *   <li>QUEUED / ESCALATED / RE_QUEUED at position 1 -> nextInQueue</li>
+     *   <li>QUEUED / ESCALATED / RE_QUEUED at any other position -> waiting</li>
+     *   <li>CALL_CONNECTED -> onCall</li>
+     *   <li>ASSIGNED -> doctorAssigned</li>
+     *   <li>CALL_CONNECTING -> connecting</li>
+     *   <li>CALL_COMPLETED -> awaitingPrescription</li>
      * </ul>
-     * Any other status (or unknown) is left unmapped (empty), so the row matches
-     * no specific tab and appears only under "All".
+     * Positions start at 1; the last four statuses carry no position. Any other
+     * status (e.g. SUBMITTED, CANCELLED) or unknown value is left unmapped (empty)
+     * and appears only under "All", without a badge.
      */
     public static String mapStatus(@Nullable String dbStatus, int position) {
         QueueStatus status = QueueStatus.fromValue(dbStatus);
@@ -46,32 +55,73 @@ public final class QueueRowFormatter {
             return "";
         }
         switch (status) {
+            case QUEUED:
+            case ESCALATED:
+            case RE_QUEUED:
+                return position == 1 ? STATUS_NEXT_IN_QUEUE : STATUS_WAITING;
+            case CALL_CONNECTED:
             case CONNECTED:
                 return STATUS_ON_CALL;
-            case QUEUED:
-                return position == 0 ? STATUS_NEXT_IN_QUEUE : STATUS_WAITING;
-            case RE_QUEUED:
-                return position > 0 ? STATUS_WAITING : "";
+            case ASSIGNED:
+                return STATUS_DOCTOR_ASSIGNED;
+            case CALL_CONNECTING:
+            case CONNECTING:
+                return STATUS_CONNECTING;
+            case CALL_COMPLETED:
+            case COMPLETED:
+                return STATUS_AWAITING_PRESCRIPTION;
             default:
                 return "";
         }
     }
 
     /**
-     * Status badge label, matching the RN QueueListItem STATUS_CONFIG labels.
-     * Empty for an unmapped status.
+     * Localized status label (string resources), matching the RN QueueListItem
+     * STATUS_CONFIG labels. Empty for an unmapped status.
      */
-    public static String statusLabel(@Nullable String status) {
+    public static String statusLabel(@NonNull Context context, @Nullable String status) {
+        int resId;
         if (STATUS_ON_CALL.equals(status)) {
-            return "On Call";
+            resId = R.string.queue_status_on_call;
+        } else if (STATUS_NEXT_IN_QUEUE.equals(status)) {
+            resId = R.string.queue_status_next_in_queue;
+        } else if (STATUS_WAITING.equals(status)) {
+            resId = R.string.queue_status_waiting;
+        } else if (STATUS_DOCTOR_ASSIGNED.equals(status)) {
+            resId = R.string.queue_status_doctor_assigned;
+        } else if (STATUS_CONNECTING.equals(status)) {
+            resId = R.string.queue_status_connecting;
+        } else if (STATUS_AWAITING_PRESCRIPTION.equals(status)) {
+            resId = R.string.queue_status_awaiting_prescription;
+        } else {
+            return "";
         }
-        if (STATUS_NEXT_IN_QUEUE.equals(status)) {
-            return "Next in Queue";
+        return context.getString(resId);
+    }
+
+    /**
+     * Localized footer label for a row's time: "Duration" for an on-call entry, "Wait time" for
+     * next/waiting, empty for statuses that show no time.
+     */
+    public static String timeLabel(@NonNull Context context, @Nullable String status) {
+        if (STATUS_ON_CALL.equals(status)) {
+            return context.getString(R.string.queue_time_duration);
         }
-        if (STATUS_WAITING.equals(status)) {
-            return "Waiting";
+        if (STATUS_NEXT_IN_QUEUE.equals(status) || STATUS_WAITING.equals(status)) {
+            return context.getString(R.string.queue_time_wait);
         }
         return "";
+    }
+
+    /** Localized minute unit: singular for 1, plural otherwise ("1 Min", "8 Mins"). */
+    public static String minuteUnit(@NonNull Context context, long minutes) {
+        return context.getString(minutes == 1 ? R.string.queue_time_minute : R.string.queue_time_minutes);
+    }
+
+    /** Only waiting (count-down to ETA) and on-call (count-up) entries show a time. */
+    private static boolean hasQueueTime(@Nullable String status) {
+        return STATUS_ON_CALL.equals(status) || STATUS_NEXT_IN_QUEUE.equals(status)
+                || STATUS_WAITING.equals(status);
     }
 
     /**
@@ -84,6 +134,9 @@ public final class QueueRowFormatter {
      * </ul>
      */
     public static String formatTime(@Nullable String status, @NonNull QueueRow row) {
+        if (!hasQueueTime(status)) {
+            return "";
+        }
         if (STATUS_ON_CALL.equals(status)) {
             // Elapsed call duration = now - connectedAt.
             String duration = elapsedSince(row.getConnectedAt());
@@ -96,9 +149,13 @@ public final class QueueRowFormatter {
 
     /**
      * Same time as {@link #formatTime(String, QueueRow)} (same instants and
-     * fallbacks), but as "N Mins" for the Visit Summary banner design.
+     * fallbacks), but as "N Mins" (localized unit) for the Visit Summary banner design.
      */
-    public static String formatTimeInMinutes(@Nullable String status, @NonNull QueueRow row) {
+    public static String formatTimeInMinutes(@NonNull Context context, @Nullable String status,
+                                             @NonNull QueueRow row) {
+        if (!hasQueueTime(status)) {
+            return "";
+        }
         long millis;
         if (STATUS_ON_CALL.equals(status)) {
             Long elapsed = deltaMillis(row.getConnectedAt(), false);
@@ -108,7 +165,7 @@ public final class QueueRowFormatter {
             millis = remaining != null ? remaining : row.getEtaMinutes() * 60_000L;
         }
         long minutes = Math.max(0, Math.round(millis / 60_000d));
-        return minutes + (minutes == 1 ? " Min" : " Mins");
+        return minutes + " " + minuteUnit(context, minutes);
     }
 
     /** Gap between an ISO-8601 instant and now (see formatMmSs); null on error. */

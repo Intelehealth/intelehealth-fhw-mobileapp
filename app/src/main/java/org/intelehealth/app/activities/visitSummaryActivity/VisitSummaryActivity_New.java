@@ -120,6 +120,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.facebook.react.ReactFragment;
+import com.facebook.react.bridge.Arguments;
+import org.intelehealth.app.reactnative.RnEventEmitter;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -370,6 +372,10 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     // Sent visit in the editable state, so docs edit mode applies as soon as the server has the visit.
     private boolean isAdditionalDocEditEligible = false;
     private static final String STATE_SESSION_DOC_UUIDS = "session_added_doc_uuids";
+    // JS event carrying refreshed props to the mounted VisitSummaryStatusBanner.
+    private static final String EVENT_VISIT_SUMMARY_QUEUE_BANNER_UPDATE = "VisitSummaryQueueBannerUpdate";
+    // Set once the queue banner fragment transaction is committed (commits run asynchronously).
+    private boolean queueBannerCommitted = false;
 
     // The visit push completes asynchronously (after Send Visit, or a background sync); once the
     // server has the visit, switch the documents section into draft/Upload mode.
@@ -573,6 +579,14 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         fetchingIntent();
         // After fetchingIntent(): the banner needs the visit uuid from the intent.
         updateQueueStatusBanner();
+        // Refresh the banner while the screen is open whenever a pull sync writes tbl_queue.
+        // LiveData re-delivers its last value to a new observer; skip that one (just loaded above).
+        final Long queueAlreadySeen = QueueDAO.getQueueChanged().getValue();
+        QueueDAO.getQueueChanged().observe(this, changedAt -> {
+            if (changedAt != null && !changedAt.equals(queueAlreadySeen)) {
+                updateQueueStatusBanner();
+            }
+        });
         setViewsData();
         expandableCardVisibilityHandling();
         tipWindow = new TooltipWindow(VisitSummaryActivity_New.this);
@@ -610,10 +624,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         if (isQmsConfigured && isVisitSubmitted && !isVisitEnded(visitUuid)) {
             loadQueueStatusBanner(visitUuid);
         } else {
-            View container = findViewById(R.id.vs_queue_banner_container);
-            if (container != null) {
-                container.setVisibility(View.GONE);
-            }
+            hideQueueStatusBanner();
         }
     }
 
@@ -627,11 +638,23 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         Executors.newSingleThreadExecutor().execute(() -> {
             QueueRow row = queueRepository.getQueueRowForVisit(visitUuid);
             runOnUiThread(() -> {
-                if (row != null && !isFinishing() && !isDestroyed()) {
+                if (isFinishing() || isDestroyed()) return;
+                if (row != null) {
                     addQueueStatusBanner(row);
+                } else {
+                    // No longer in the queue (e.g. completed/removed on a refresh): hide the banner
+                    // rather than leave the last position on screen.
+                    hideQueueStatusBanner();
                 }
             });
         });
+    }
+
+    private void hideQueueStatusBanner() {
+        View container = findViewById(R.id.vs_queue_banner_container);
+        if (container != null) {
+            container.setVisibility(View.GONE);
+        }
     }
 
     /**
@@ -650,18 +673,32 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         int position = row.getPosition();
         String status = QueueRowFormatter.mapStatus(row.getStatus(), position);
-        // Queue id shown the same way as the list item's queueNumber (openmrs id).
-        String queueId = row.getOpenmrsId() != null ? row.getOpenmrsId() : "";
+        // Queue positions start at 1; 0 means the entry has no waiting position (e.g. on call),
+        // so show "In Queue" rather than "Position #0". The patient's id isn't repeated here -
+        // this is already that patient's visit.
+        String title = position > 0
+                ? getString(R.string.queue_banner_position, position)
+                : getString(R.string.queue_banner_in_queue);
 
         Bundle bannerProps = new Bundle();
         bannerProps.putString("variant", "warning");
-        bannerProps.putString("title", "Queue " + queueId + " · Position #" + position);
-        bannerProps.putString("subtitle", QueueRowFormatter.statusLabel(status));
+        bannerProps.putString("title", title);
+        bannerProps.putString("subtitle", QueueRowFormatter.statusLabel(this, status));
         bannerProps.putString("status", status);
         // Pre-formatted snapshot (initial paint / fallback when no instant).
-        bannerProps.putString("time", QueueRowFormatter.formatTimeInMinutes(status, row));
+        bannerProps.putString("time", QueueRowFormatter.formatTimeInMinutes(this, status, row));
+        // Localized minute unit for the banner's live (JS-side) tick, which re-formats the time.
+        bannerProps.putString("minuteLabel", QueueRowFormatter.minuteUnit(this, 1));
+        bannerProps.putString("minutesLabel", QueueRowFormatter.minuteUnit(this, 2));
         bannerProps.putString("etaAt", row.getEtaAt() != null ? row.getEtaAt() : "");
         bannerProps.putString("connectedAt", row.getConnectedAt() != null ? row.getConnectedAt() : "");
+
+        if (isQueueBannerAttached()) {
+            // Launch options are only read on mount, so later refreshes go to the mounted banner
+            // as an event (no remount/flicker).
+            RnEventEmitter.emit(EVENT_VISIT_SUMMARY_QUEUE_BANNER_UPDATE, Arguments.fromBundle(bannerProps));
+            return;
+        }
 
         ReactFragment bannerFragment = new ReactFragment.Builder()
                 .setComponentName("VisitSummaryStatusBannerModule")
@@ -672,6 +709,13 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 .beginTransaction()
                 .replace(R.id.vs_queue_banner_container, bannerFragment)
                 .commitAllowingStateLoss();
+        queueBannerCommitted = true;
+    }
+
+    private boolean isQueueBannerAttached() {
+        // The flag covers a commit that hasn't executed yet; the lookup covers a restored fragment.
+        return queueBannerCommitted
+                || getSupportFragmentManager().findFragmentById(R.id.vs_queue_banner_container) != null;
     }
 
     /**

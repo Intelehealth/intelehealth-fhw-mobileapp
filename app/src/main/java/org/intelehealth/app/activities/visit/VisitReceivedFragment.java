@@ -624,7 +624,9 @@ public class VisitReceivedFragment extends Fragment {
 
     private List<PrescriptionModel> recentVisits(int limit, int offset) {
         List<PrescriptionModel> recentList = new ArrayList<>();
-        db.beginTransaction();
+        // Read-only: no transaction. beginTransaction() is BEGIN EXCLUSIVE here and fails with
+        // SQLITE_BUSY whenever the other app DB connection (getWriteDb) holds a lock - e.g. a pull
+        // sync insert or a long Home query - for more than the busy timeout.
         String searchQ = "";
         String middleName = "CASE WHEN p.middle_name IS NOT NULL THEN ' ' || p.middle_name || ' ' ELSE ' ' END";
         if (!searchQuery.isEmpty()) {
@@ -717,8 +719,6 @@ public class VisitReceivedFragment extends Fragment {
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
         if (recentList.isEmpty()) {
             isRecentFullyLoaded = true;
         }
@@ -727,7 +727,9 @@ public class VisitReceivedFragment extends Fragment {
 
     private List<PrescriptionModel> recentVisits() {
         List<PrescriptionModel> recentList = new ArrayList<>();
-        db.beginTransaction();
+        // Read-only: no transaction. beginTransaction() is BEGIN EXCLUSIVE here and fails with
+        // SQLITE_BUSY whenever the other app DB connection (getWriteDb) holds a lock - e.g. a pull
+        // sync insert or a long Home query - for more than the busy timeout.
 
         // ie. visit is active and presc is given.
 
@@ -816,8 +818,6 @@ public class VisitReceivedFragment extends Fragment {
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         return recentList;
     }
@@ -828,7 +828,9 @@ public class VisitReceivedFragment extends Fragment {
         if (!db.isOpen()) {
             db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         }
-        db.beginTransaction();
+        // Read-only: no transaction. beginTransaction() is BEGIN EXCLUSIVE here and fails with
+        // SQLITE_BUSY whenever the other app DB connection (getWriteDb) holds a lock - e.g. a pull
+        // sync insert or a long Home query - for more than the busy timeout.
 
         // ie. visit is active and presc is given.
         /*Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
@@ -945,15 +947,15 @@ public class VisitReceivedFragment extends Fragment {
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         return olderList;
     }
 
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
-        db.beginTransaction();
+        // Read-only: no transaction. beginTransaction() is BEGIN EXCLUSIVE here and fails with
+        // SQLITE_BUSY whenever the other app DB connection (getWriteDb) holds a lock - e.g. a pull
+        // sync insert or a long Home query - for more than the busy timeout.
 
         // ie. visit is active and presc is given.
 
@@ -1038,8 +1040,6 @@ public class VisitReceivedFragment extends Fragment {
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         return olderList;
     }

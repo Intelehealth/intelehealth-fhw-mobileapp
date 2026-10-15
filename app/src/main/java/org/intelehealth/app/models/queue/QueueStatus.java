@@ -11,6 +11,10 @@ public enum QueueStatus {
     QUEUED,
     ESCALATED,
     ASSIGNED,
+    CALL_CONNECTING,
+    CALL_CONNECTED,
+    CALL_COMPLETED,
+    // Earlier names of the CALL_* statuses, still accepted.
     CONNECTING,
     CONNECTED,
     COMPLETED,
