@@ -49,6 +49,12 @@ android {
     }
 
     buildTypes {
+        // TODO(QMS-CONFIG): remove FORCE_QMS once the config PR (qms_section / re_enable) is merged.
+        // Debug-only: forces QMS on and shows a sample "Next In Queue" card for UI testing before
+        // the server config drives these. Must stay false for release.
+        debug {
+            buildConfigField "boolean", "FORCE_QMS", "true"
+        }
         release {
             lintOptions {
                 disable 'MissingTranslation'
@@ -59,6 +65,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             //signingConfig signingConfigs.debug
+            buildConfigField "boolean", "FORCE_QMS", "false"
         }
     }
 

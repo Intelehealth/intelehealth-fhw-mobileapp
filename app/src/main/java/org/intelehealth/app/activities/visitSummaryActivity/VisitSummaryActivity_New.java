@@ -1486,7 +1486,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         // Editing an already-sent visit can be turned off entirely via server config, regardless of
         // any local edit cache or whether the doctor has started the visit note.
         boolean isEditVisitConfigured = new PreferenceHelper(this)
-                .get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, true);
+                .get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, false);
         if (!isEditVisitConfigured) {
             return false;
         }

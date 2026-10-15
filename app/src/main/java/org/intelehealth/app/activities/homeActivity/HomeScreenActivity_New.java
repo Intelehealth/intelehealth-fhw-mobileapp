@@ -1137,7 +1137,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, true/*activeStatus.getActiveQms()*/);
+        // TODO(QMS-CONFIG): drop BuildConfig.FORCE_QMS once the config PR is merged. Debug builds
+        // force QMS on for UI testing; this is not UI-only - PatientsFrameJson reads the same flag
+        // and sends addToQueue on push, so debug builds really queue visits on the server they
+        // point at. Release builds always follow the server config.
+        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE,
+                BuildConfig.FORCE_QMS || activeStatus.getActiveQms());
         preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, activeStatus.getActiveEditVisit());
         if(bottomNav != null)
             updateQMSBottomNavigation();
