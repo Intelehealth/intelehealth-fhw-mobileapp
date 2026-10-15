@@ -17,6 +17,7 @@ import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
+import org.intelehealth.app.database.dao.QueueDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -157,6 +158,7 @@ public class PatientsFrameJson {
         // Only add the "addToQueue" flag to the push payload when QMS is configured.
         boolean isQmsConfigured = new PreferenceHelper(IntelehealthApplication.getAppContext())
                 .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        QueueDAO queueDAO = new QueueDAO();
         for (VisitDTO visitDTO : visitDTOList) {
             Visit visit = new Visit();
             if (!visitDTO.getAttributes().isEmpty() || visitDTO.getEnddate() != null) {
@@ -167,9 +169,21 @@ public class PatientsFrameJson {
                 visit.setVisitType(visitDTO.getVisitTypeUuid());
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
-                if (isQmsConfigured) {
-                    Logger.logD(TAG, "push request added to queue data - ");
-                    visit.setAddToQueue(true);
+                // Queue only on the initial submission: not for an ended visit, and not for a re-push
+                // of a visit the server already has (note edit, end visit), which could re-enqueue it
+                // or reset its queue position.
+                if (isQmsConfigured && visitDTO.getEnddate() == null
+                        && !VisitsDAO.isVisitSubmitted(visitDTO.getUuid())) {
+                    if (queueDAO.isVisitInQueue(visitDTO.getUuid())) {
+                        // Already in the pulled queue snapshot: an earlier push queued it but its
+                        // response was lost (timeout). Sending addToQueue again is rejected by the
+                        // server and would fail the push, so record it as submitted and skip it.
+                        Logger.logD(TAG, "visit already queued, skipping addToQueue - " + visitDTO.getUuid());
+                        VisitsDAO.markVisitSubmitted(visitDTO.getUuid());
+                    } else {
+                        Logger.logD(TAG, "push request added to queue data - ");
+                        visit.setAddToQueue(true);
+                    }
                 }
                 visitList.add(visit);
             }

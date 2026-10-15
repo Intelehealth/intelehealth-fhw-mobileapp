@@ -25,7 +25,6 @@ import org.intelehealth.app.models.dto.ResponseDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall;
 import org.intelehealth.app.models.pushResponseApiCall.PushResponseApiCall;
-import org.intelehealth.app.networkApiCalls.QueueListDownloader;
 import org.intelehealth.app.services.InitialSyncIntentService;
 import org.intelehealth.app.syncModule.SyncProgress;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
@@ -122,18 +121,11 @@ public class SyncDAO {
             providerDAO.insertProviders(responseDTO.getData().getProviderlist());
             Logger.logD(TAG, "insertProviders = " + responseDTO.getData().getProviderlist().size());
 
-            // For now the queue is fetched from the standalone /api/queue/list service and
-            // inserted into tbl_queue here, so the data is refreshed on every pull-sync.
-            // Switch back to the line below once pulldata starts returning the queue list.
-             queueDAO.insertQueue(responseDTO.getData().getQueuelist());
-             // queueData can be absent on later pages - don't NPE the whole page on it
-             Logger.logD(TAG, "insertQueue = " + (responseDTO.getData().getQueuelist() != null
-                     ? responseDTO.getData().getQueuelist().size() : 0));
-
-//            String encoded = "Bearer " + sessionManager.getEncoded();
-//            Logger.logD(TAG, "queue list token " + encoded);
-//            new QueueListDownloader().fetchAndInsert(
-//                    sessionManager.getLocationUuid(), encoded);
+            // queueData is the full current queue (sent on every pull), so it replaces tbl_queue,
+            // dropping entries the server no longer has. Absent (null) on a page = left untouched.
+            queueDAO.replaceQueue(responseDTO.getData().getQueuelist());
+            Logger.logD(TAG, "replaceQueue = " + (responseDTO.getData().getQueuelist() != null
+                    ? responseDTO.getData().getQueuelist().size() : "no queueData"));
 
             providerAttributeLIstDAO.insertProvidersAttributeList
                     (responseDTO.getData().getProviderAttributeList());
@@ -889,6 +881,11 @@ public class SyncDAO {
                                                             .getUuid(),
                                                     pushResponseApiCall.getData().getVisitlist().get(i)
                                                             .getSyncd().toString());
+                                            // The server now has this visit, so later re-pushes
+                                            // must not carry addToQueue again.
+                                            if (Boolean.TRUE.equals(pushResponseApiCall.getData().getVisitlist().get(i).getSyncd())) {
+                                                VisitsDAO.markVisitSubmitted(pushResponseApiCall.getData().getVisitlist().get(i).getUuid());
+                                            }
                                         } catch (DAOException e) {
                                             FirebaseCrashlytics.getInstance().recordException(e);
                                             CustomLog.e(TAG, e.getMessage());

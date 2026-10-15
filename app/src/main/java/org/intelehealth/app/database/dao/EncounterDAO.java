@@ -31,7 +31,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class EncounterDAO extends BaseDao {
@@ -47,6 +49,19 @@ public class EncounterDAO extends BaseDao {
             encountersList.add(createEncounterMap(encounterDTO));
         }
         executeInBackground(bulkInsert(encountersList));
+        // A pulled visit note encounter means the doctor has started the visit, so its local edit
+        // cache is no longer needed. Covers a missed visit_started push (FCM not delivered, user
+        // logged out, app backgrounded), which would otherwise leave the cache behind in prefs.
+        Set<String> startedVisits = new HashSet<>();
+        for (EncounterDTO encounterDTO : encounterDTOS) {
+            if (ENCOUNTER_VISIT_NOTE.equalsIgnoreCase(encounterDTO.getEncounterTypeUuid())
+                    && encounterDTO.getVisituuid() != null) {
+                startedVisits.add(encounterDTO.getVisituuid());
+            }
+        }
+        if (!startedVisits.isEmpty()) {
+            new SessionManager(IntelehealthApplication.getAppContext()).clearVisitEditCaches(startedVisits);
+        }
         /*boolean isInserted = true;
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
         db.beginTransaction();

@@ -23,8 +23,8 @@ class QueueRepository(private val queueDao: QueueDAO) {
         val rows = queueDao.getQueueWithPatient(limit, offset) { cursor -> mapRow(cursor) }
         // Resolve the chief complaint from each visit's obs AFTER the queue
         // cursor is closed (so we don't run a nested query mid-iteration).
-        // Still off the main thread — the ViewModel calls this on IO. Read on the
-        // queue's own connection (QueueDAO), same query as EncounterDAO's.
+        // Still off the main thread — the ViewModel calls this on IO. Same query
+        // as EncounterDAO's.
         return rows.map { row ->
             row.copy(
                 chiefComplaint = row.visitUuid

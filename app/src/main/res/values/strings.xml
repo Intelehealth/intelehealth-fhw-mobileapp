@@ -875,6 +875,7 @@
     <string name="note_saved_successfully">Note saved successfully</string>
     <string name="no_new_documents_to_upload">No new documents to upload</string>
     <string name="documents_uploaded_successfully">Documents uploaded successfully</string>
+    <string name="documents_upload_failed">Some documents could not be uploaded. Please try again.</string>
     <string name="add_additional_document_2">Add additional documents (2)</string>
     <string name="add_additional_documents_like">Add additional documents like reports, prescriptions, etc.\u000D</string>
     <string name="doctor_speciality">Doctor\'s Speciality</string>
@@ -1752,11 +1753,36 @@
     <string name="sync_progress_percentage">%1$d%%</string>
     <string name="sync_completed">Sync completed</string>
     <string name="feature_not_found">Feature not found</string>
-    <string name="editing_not_allowed_visit_note_present">This visit is progress and cannot be edited.</string>
+    <string name="editing_not_allowed_visit_note_present">This visit is in progress and cannot be edited.</string>
+    <string name="complaint_edit_not_available">Complaint details for this visit are not available on this device and cannot be edited.</string>
 
     <!-- Home / queue status banner -->
     <string name="doctor_on_break">Doctor is on Break</string>
     <string name="queue_paused">Queue Paused</string>
     <string name="view_queue">View Queue</string>
+    <string name="queue_banner_position">Position #%1$d</string>
+    <string name="queue_banner_in_queue">In Queue</string>
+    <!-- Queue status labels (Patient's Queue / Visit Summary banner) -->
+    <string name="queue_status_on_call">On Call</string>
+    <string name="queue_status_next_in_queue">Next in Queue</string>
+    <string name="queue_status_waiting">Waiting</string>
+    <string name="queue_status_doctor_assigned">Doctor Assigned</string>
+    <string name="queue_status_connecting">Connecting</string>
+    <string name="queue_status_awaiting_prescription">Awaiting Prescription</string>
+    <!-- Minute unit for the Visit Summary queue banner time ("1 Min", "8 Mins") -->
+    <string name="queue_time_minute">Min</string>
+    <string name="queue_time_minutes">Mins</string>
+    <!-- Patient's Queue list item footer / tags -->
+    <string name="queue_time_duration">Duration</string>
+    <string name="queue_time_wait">Wait time</string>
+    <string name="queue_time_overdue">Overdue</string>
+    <string name="queue_more_symptoms">+%1$d More</string>
+    <!-- Patient's Queue screen header: filter tabs, count, search -->
+    <string name="queue_tab_all">All</string>
+    <string name="queue_tab_next">Next</string>
+    <string name="queue_tab_waiting">Waiting</string>
+    <string name="queue_tab_on_call">On Call</string>
+    <string name="queue_count_label">Patients in Queue :</string>
+    <string name="queue_search_placeholder">Search patient</string>
 
 </resources>

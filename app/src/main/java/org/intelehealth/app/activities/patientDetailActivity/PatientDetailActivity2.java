@@ -108,6 +108,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -558,6 +559,10 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
     private BroadcastReceiver mBroadcastReceiver;
     private ObjectAnimator syncAnimator;
+    // Set when a sync finishes while this screen isn't in the foreground; the refresh is
+    // deferred to onResume() because recreate() on a backgrounded activity corrupts its
+    // window and crashes later in handleDestroyActivity ("DecorView not attached to window manager").
+    private boolean pendingRecreate = false;
 
 
     @Override
@@ -592,6 +597,11 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     @Override
     protected void onResume() {
         super.onResume();
+        if (pendingRecreate) {
+            pendingRecreate = false;
+            recreate();
+            return;
+        }
         setDisplay(patientDTO.getUuid());
         if (isPregnancyVisible()) {
             binding.rosterDetails.relativePregnancyHeader.setVisibility(View.VISIBLE);
@@ -2536,8 +2546,13 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                 CustomLog.v(TAG, "Sync Done!");
                 try {
                     refresh.clearAnimation();
-                    syncAnimator.cancel();
-                    recreate();
+                    if (syncAnimator != null) syncAnimator.cancel();
+                    if (isFinishing() || isDestroyed()) return;
+                    if (getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) {
+                        recreate();
+                    } else {
+                        pendingRecreate = true;
+                    }
                 } catch (Exception e) {
                     CustomLog.d(TAG, e.getMessage());
                 }

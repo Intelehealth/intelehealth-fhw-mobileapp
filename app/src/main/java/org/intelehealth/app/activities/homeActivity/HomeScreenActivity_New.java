@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import org.intelehealth.app.reactnative.QueueDataCleaner;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 
 import android.animation.ObjectAnimator;
@@ -1615,6 +1616,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        QueueDataCleaner.clearOnLogout(this);
         unregisterReceiver(syncBroadcastReceiver);
 
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);

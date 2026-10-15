@@ -60,11 +60,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 if (visitUuid.isNotEmpty()) {
                     Log.d(TAG, "onMessageReceived: $visitUuid - removing visit cache")
                     // remove the local edit cache once the doctor starts the visit note
-                    sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid)
-                    sessionManager.removeVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid)
-                    sessionManager.removeVisitEditCache(SessionManager.PHY_EXAM + visitUuid)
-                    sessionManager.removeVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid)
-                    sessionManager.removeVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid)
+                    sessionManager.clearVisitEditCache(visitUuid)
                     // mark visit note as started (in-memory, non-persistent) so editing is blocked
                     // immediately, even before the visit note encounter is pulled into the local DB.
                     IntelehealthApplication.markVisitNoteStarted(visitUuid)

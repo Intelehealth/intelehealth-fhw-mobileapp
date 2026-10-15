@@ -16,7 +16,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Handler;
+import android.os.OperationCanceledException;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
@@ -242,6 +244,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private static SQLiteDatabase db;
+    // Cancels the in-flight Prescription card queries when this view goes away.
+    private CancellationSignal homeQueriesSignal;
+
+    @Override
+    public void onDestroyView() {
+        if (homeQueriesSignal != null) {
+            homeQueriesSignal.cancel();
+        }
+        super.onDestroyView();
+    }
 
     private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
         int count = 0;
@@ -412,10 +424,21 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
 
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        // Fresh signal per load; cancelled in onDestroyView so these slow queries free the shared
+        // DB connection when the user leaves Home (e.g. for the Queue tab, whose read would
+        // otherwise wait behind them).
+        CancellationSignal querySignal = new CancellationSignal();
+        homeQueriesSignal = querySignal;
         Executors.newSingleThreadExecutor().execute(() -> {
             HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
-            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
-            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
+            int pendingCountTotalVisits;
+            int countReceivedPrescription;
+            try {
+                pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db, querySignal);
+                countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db, querySignal);
+            } catch (OperationCanceledException e) {
+                return; // Home was left; the card is gone, nothing to update.
+            }
             //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
             // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
             int total = pendingCountTotalVisits + countReceivedPrescription;

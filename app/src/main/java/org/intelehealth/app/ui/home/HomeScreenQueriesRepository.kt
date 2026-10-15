@@ -1,17 +1,21 @@
 package org.intelehealth.app.ui.home
 
 import android.database.sqlite.SQLiteDatabase
+import android.os.CancellationSignal
 import android.util.Log
 import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.models.PrescriptionModel
 
 class HomeScreenQueriesRepository {
 
-    fun getRecentNotEndedVisits(db: SQLiteDatabase): List<PrescriptionModel> {
+    @JvmOverloads
+    fun getRecentNotEndedVisits(db: SQLiteDatabase, signal: CancellationSignal? = null): List<PrescriptionModel> {
         val query = HomeScreenQueriesBuilder().getRecentNotEndedVisitsQuery()
-        db.rawQuery(query, null).use { cursor ->
+        db.rawQuery(query, null, signal).use { cursor ->
             val resultList = mutableListOf<PrescriptionModel>()
             while (cursor.moveToNext()) {
+                // Each row also runs a prescription lookup; stop those too once cancelled.
+                signal?.throwIfCanceled()
                 val model = PrescriptionModel().apply {
                     patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
                     patient_photo = cursor.getString(cursor.getColumnIndexOrThrow("patient_photo"))
@@ -37,12 +41,14 @@ class HomeScreenQueriesRepository {
         }
     }
 
-    fun getOlderNotEndedVisits(db: SQLiteDatabase): List<PrescriptionModel> {
+    @JvmOverloads
+    fun getOlderNotEndedVisits(db: SQLiteDatabase, signal: CancellationSignal? = null): List<PrescriptionModel> {
         val query = HomeScreenQueriesBuilder().getOlderNotEndedVisits()
-        db.rawQuery(query, null).use { cursor ->
+        db.rawQuery(query, null, signal).use { cursor ->
             val resultList = mutableListOf<PrescriptionModel>()
 
             while (cursor.moveToNext()) {
+                signal?.throwIfCanceled()
                 val model = PrescriptionModel().apply {
                     patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("uuid"))
                     patient_photo = cursor.getString(cursor.getColumnIndexOrThrow("patient_photo"))
@@ -69,16 +75,18 @@ class HomeScreenQueriesRepository {
         }
     }
 
-    fun getPendingPrescriptionVisitsCount(db: SQLiteDatabase): Int {
+    @JvmOverloads
+    fun getPendingPrescriptionVisitsCount(db: SQLiteDatabase, signal: CancellationSignal? = null): Int {
         val query = HomeScreenQueriesBuilder().getPendingPrescriptionVisitsCount()
-        db.rawQuery(query, null).use { cursor ->
+        db.rawQuery(query, null, signal).use { cursor ->
             return if (cursor.moveToFirst()) cursor.getInt(0) else 0
         }
     }
 
-    fun getReceivedPrescriptionVisitsCount(db: SQLiteDatabase): Int {
+    @JvmOverloads
+    fun getReceivedPrescriptionVisitsCount(db: SQLiteDatabase, signal: CancellationSignal? = null): Int {
         val query = HomeScreenQueriesBuilder().getReceivedPrescriptionVisitsCount()
-        db.rawQuery(query, null).use { cursor ->
+        db.rawQuery(query, null, signal).use { cursor ->
             return if (cursor.moveToFirst()) cursor.getInt(0) else 0
         }
     }

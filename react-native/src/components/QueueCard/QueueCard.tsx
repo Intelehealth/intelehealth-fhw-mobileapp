@@ -15,6 +15,8 @@ import { QueueNavigator } from '../../native/QueueNavigator';
 
 // Maximum number of symptom pills shown before the rest collapse into "+N More".
 const MAX_VISIBLE_TAGS = 2;
+// Queue number and position are hidden for now; flip to true to show them again.
+const SHOW_QUEUE_POSITION = false;
 
 /**
  * A single "Next In Queue" card. Rendered per patient by QueueCardSlideshow,
@@ -51,7 +53,9 @@ export default function QueueCard({
       </View>
 
       {/* Queue Number */}
-      <Text style={styles.queueNumber}>{queueNumber}</Text>
+      {SHOW_QUEUE_POSITION && (
+        <Text style={styles.queueNumber}>{queueNumber}</Text>
+      )}
 
       {/* Profile Section */}
       <View style={styles.profileContainer}>
@@ -84,9 +88,11 @@ export default function QueueCard({
       {/* Footer Row */}
       <View style={styles.footerRow}>
         <View style={styles.footerMetaGroup}>
-          <Text style={styles.footerMeta}>
-            Position <Text style={styles.boldText}>#{position}</Text>
-          </Text>
+          {SHOW_QUEUE_POSITION && (
+            <Text style={styles.footerMeta}>
+              Position <Text style={styles.boldText}>#{position}</Text>
+            </Text>
+          )}
           <Text style={styles.footerMeta}>
             Wait Time <Text style={styles.boldText}>{waitTimeMinutes} mins</Text>
           </Text>
@@ -204,7 +210,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: Colors.divider,
     paddingTop: 12,
   },

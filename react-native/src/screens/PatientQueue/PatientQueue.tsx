@@ -14,7 +14,7 @@ import SearchBar from '../../components/SearchBar';
 import QueueListItem from '../../components/QueueListItem';
 import type {QueueListItemProps} from '../../components/QueueListItem';
 import QueueTabs from '../../components/QueueTabs';
-import type {QueueFilter} from '../../components/QueueTabs';
+import type {QueueFilter, QueueTab} from '../../components/QueueTabs';
 import StatusBanner from '../../components/StatusBanner';
 import type {StatusBannerVariant} from '../../components/StatusBanner';
 // Disabled for now: queue details navigation is turned off.
@@ -29,6 +29,12 @@ const ItemSeparator = () => <View style={styles.separator} />;
 // (HomeStatusBanner) listens to, so both banners update together. Keep in sync
 // with StatusBannerUpdater.EVENT_STATUS_BANNER_UPDATE on the Android side.
 const STATUS_BANNER_UPDATE_EVENT = 'StatusBannerUpdate';
+
+// Native event emitted by PatientQueueFragment when it re-reads tbl_queue after
+// the screen is mounted (resume, or a pull sync finished writing the queue).
+// Payload: {queue: QueueListItemProps[]}. Keep in sync with
+// PatientQueueFragment.EVENT_PATIENT_QUEUE_UPDATE on the Android side.
+const PATIENT_QUEUE_UPDATE_EVENT = 'PatientQueueUpdate';
 
 // Shape of the status banner delivered from native — the persisted "queue_status"
 // FCM payload (initial prop) and each live update carry the same fields.
@@ -45,6 +51,18 @@ interface StatusBannerData {
 interface PatientQueueProps {
   queue?: QueueListItemProps[];
   banner?: StatusBannerData;
+  // Localized screen labels from the native host (string resources). Each one
+  // falls back to the component's English default when absent.
+  labels?: QueueScreenLabels;
+}
+
+interface QueueScreenLabels {
+  tabAll?: string;
+  tabNext?: string;
+  tabWaiting?: string;
+  tabOnCall?: string;
+  countLabel?: string;
+  searchPlaceholder?: string;
 }
 
 /**
@@ -57,8 +75,16 @@ interface PatientQueueProps {
 function PatientQueue({
   queue: queueProp,
   banner: bannerProp,
+  labels = {},
 }: PatientQueueProps): React.JSX.Element {
   const [search, setSearch] = useState('');
+  // Filter tabs with localized labels (English defaults when not provided).
+  const tabs: QueueTab[] = [
+    {key: 'all', label: labels.tabAll || 'All'},
+    {key: 'nextInQueue', label: labels.tabNext || 'Next'},
+    {key: 'waiting', label: labels.tabWaiting || 'Waiting'},
+    {key: 'onCall', label: labels.tabOnCall || 'On Call'},
+  ];
   const [filter, setFilter] = useState<QueueFilter>('all');
   // Banner content lives in state so a live FCM update can refresh it without a
   // native remount. Seeded from the initial prop delivered by the host fragment
@@ -87,9 +113,24 @@ function PatientQueue({
     return () => subscription.remove();
   }, []);
 
-  // Rows come from the native host (tbl_queue, filled by the pull-data sync);
-  // an absent prop renders an empty list.
-  const source = queueProp ?? [];
+  // Rows come from the native host (tbl_queue, filled by the pull-data sync):
+  // seeded from the initial prop, then replaced by each live update so the list
+  // refreshes without a native remount. An absent prop renders an empty list.
+  const [source, setSource] = useState<QueueListItemProps[]>(queueProp ?? []);
+
+  useEffect(() => {
+    setSource(queueProp ?? []);
+  }, [queueProp]);
+
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      PATIENT_QUEUE_UPDATE_EVENT,
+      (update: {queue?: QueueListItemProps[]}) => {
+        setSource(update?.queue ?? []);
+      },
+    );
+    return () => subscription.remove();
+  }, []);
   // Attach a stable list key per row (native rows have no `key`).
   const queue: (QueueListItemProps & {key: string})[] = source.map(
     (item, index) => ({...item, key: `${item.patientId ?? item.queueNumber}-${index}`}),
@@ -177,9 +218,18 @@ function PatientQueue({
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <QueueCount count={queue.length} style={styles.count} />
-        <SearchBar value={search} onChangeText={setSearch} />
-        <QueueTabs activeKey={filter} onChange={setFilter} style={styles.tabs} />
+        <QueueCount count={queue.length} label={labels.countLabel} style={styles.count} />
+        <SearchBar
+          value={search}
+          onChangeText={setSearch}
+          placeholder={labels.searchPlaceholder}
+        />
+        <QueueTabs
+          activeKey={filter}
+          onChange={setFilter}
+          tabs={tabs}
+          style={styles.tabs}
+        />
       </View>
       <FlatList
         data={visibleQueue}

@@ -470,6 +470,16 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         }
     }
 
+    /**
+     * Edit mode: an optional diagnostic the user cleared must not keep its previously saved value.
+     * Voids the existing obs (if any) so it stops showing and the next sync deletes it on the server.
+     */
+    private void voidClearedDiagnostic(ObsDAO obsDAO, Diagnostics diagnostics) {
+        if (diagnostics == null) return;
+        // All active copies: older edits could leave several for one diagnostic.
+        obsDAO.voidOtherObs(encounterVitals, diagnostics.getUuid(), null);
+    }
+
     public boolean isDataReadyForSaving() {
         try {
             if (results == null) {
@@ -493,12 +503,14 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
         ObsDAO obsDAO = new ObsDAO();
         ObsDTO obsDTO = new ObsDTO();
-        if (getActivity().getIntent().equals("edit")) {
-            ObsDAO.deleteExistingDiagnosticsDataIfExists(visitUuid);
+        if ("edit".equalsIgnoreCase(intentTag)) {
+            // Edit mode: update the existing obs in place (reusing their uuids so the edit is pushed as
+            // an update) and void the ones cleared. Do NOT delete the rows first, or getObsuuid() below
+            // can't find them and every edit re-inserts duplicates.
 
             try {
                 Diagnostics diagnostics = (Diagnostics) mBinding.llGlucoseRandomContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseRandom().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getBloodGlucoseRandom().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -508,11 +520,13 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedDiagnostic(obsDAO, diagnostics);
                 }
 
                 diagnostics = (Diagnostics) mBinding.llGlusoseFastingContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseFasting().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getBloodGlucoseFasting().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -522,11 +536,13 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedDiagnostic(obsDAO, diagnostics);
                 }
 
                 diagnostics = (Diagnostics) mBinding.llPostPrandialContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucosePostPrandial().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getBloodGlucosePostPrandial().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -536,11 +552,13 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedDiagnostic(obsDAO, diagnostics);
                 }
 
               /*  diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseNonFasting().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getBloodGlucoseNonFasting().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -553,7 +571,7 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                 }*/
 
                 diagnostics = (Diagnostics) mBinding.llUricAcidContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getUricAcid().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getUricAcid().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.URIC_ACID);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -563,11 +581,13 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedDiagnostic(obsDAO, diagnostics);
                 }
 
                 diagnostics = (Diagnostics) mBinding.llCholestrolContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getCholesterol().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getCholesterol().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -577,11 +597,13 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedDiagnostic(obsDAO, diagnostics);
                 }
 
                 diagnostics = (Diagnostics) mBinding.llHemoglobinContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getHemoglobin().isEmpty()) {
+                if (diagnostics != null && (diagnostics.isMandatory() || !results.getHemoglobin().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -591,7 +613,9 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedDiagnostic(obsDAO, diagnostics);
                 }
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();

@@ -1020,6 +1020,31 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         return bmiStatus;
     }
 
+    /**
+     * Edit mode: an optional vital the user cleared must not keep its previously saved value. Voids
+     * the existing obs (if any) so it stops showing and the next sync deletes it on the server.
+     */
+    /**
+     * °F -> °C for saving. convertFtoC() round-trips through a default-locale DecimalFormat, which
+     * can throw on comma-decimal locales; that exception would otherwise abort filling the remaining
+     * vitals (resp, SpO2, blood group, BMI) before they are saved. Falls back to a locale-safe
+     * conversion of the (already validated) input.
+     */
+    private String toCelsius(String fahrenheit) {
+        try {
+            return convertFtoC(TAG, fahrenheit);
+        } catch (NumberFormatException e) {
+            double celsius = (Double.parseDouble(fahrenheit.trim()) - 32) * 5 / 9;
+            return String.format(java.util.Locale.ENGLISH, "%.1f", celsius);
+        }
+    }
+
+    private void voidClearedVital(ObsDAO obsDAO, PatientVital patientVital) {
+        if (patientVital == null) return;
+        // All active copies: older edits could leave several for one vital.
+        obsDAO.voidOtherObs(encounterVitals, patientVital.getUuid(), null);
+    }
+
 
     public void calculateBMI() {
 
@@ -1463,7 +1488,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             results.setBpsys((mBpSysEditText.getText().toString()));
             if (!mTemperatureEditText.getText().toString().isEmpty()) {
                 if (configUtils.fahrenheit()) {
-                    results.setTemperature(convertFtoC(TAG, mTemperatureEditText.getText().toString()));
+                    results.setTemperature(toCelsius(mTemperatureEditText.getText().toString()));
                 } else {
                     results.setTemperature((mTemperatureEditText.getText().toString()));
                 }
@@ -1498,7 +1523,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             // otherwise getObsuuid() below can't find them to reuse.
             try {
                 PatientVital patientVital = (PatientVital) mHeightCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getHeight().isEmpty()) {
+                // An empty height is stored as "0" above, so treat "0" as cleared: an optional height
+                // the user emptied is voided instead of being saved (and pushed) as 0 cm.
+                if (patientVital != null && (patientVital.isMandatory()
+                        || (!results.getHeight().isEmpty() && !results.getHeight().equals("0")))) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.HEIGHT);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1512,11 +1540,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mWeightCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getWeight().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getWeight().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.WEIGHT);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1526,11 +1556,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mPulseCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getPulse().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getPulse().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.PULSE);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1540,11 +1572,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mSBPCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getBpsys().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getBpsys().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.SYSTOLIC_BP);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1554,11 +1588,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mDBPCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getBpdia().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getBpdia().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.DIASTOLIC_BP);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1568,11 +1604,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mTemperatureCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getTemperature().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getTemperature().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1582,11 +1620,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mRespiratoryCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getResp().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getResp().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1596,11 +1636,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mSpo2CardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getSpo2().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getSpo2().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.SPO2);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1610,11 +1652,13 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
 
                 patientVital = (PatientVital) mBloodGroupCardView.getTag();
-                if ((patientVital != null && patientVital.isMandatory()) || !results.getBloodGroup().isEmpty()) {
+                if (patientVital != null && (patientVital.isMandatory() || !results.getBloodGroup().isEmpty())) {
                     obsDTO = new ObsDTO();
                     obsDTO.setConceptuuid(UuidDictionary.BLOOD_GROUP);
                     obsDTO.setEncounteruuid(encounterVitals);
@@ -1624,7 +1668,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, patientVital.getUuid()));
                     obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
-                    obsDAO.updateObs(obsDTO);
+                    obsDAO.updateSingleObs(obsDTO);
+                } else {
+                    voidClearedVital(obsDAO, patientVital);
                 }
                 //making flag to false in the encounter table so it will sync again
                 EncounterDAO encounterDAO = new EncounterDAO();

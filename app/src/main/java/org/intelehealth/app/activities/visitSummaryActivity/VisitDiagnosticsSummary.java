@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -102,6 +103,9 @@ public class VisitDiagnosticsSummary {
                 FirebaseCrashlytics.getInstance().recordException(e);
             }
         }
+        // Render once after the query, including values with no (non-voided) obs, so a diagnostic
+        // cleared in edit mode shows "No information" instead of keeping its old text.
+        setDiagnosticDataToViews();
     }
 
     private void parseData(String concept_id, String value) {
@@ -142,27 +146,23 @@ public class VisitDiagnosticsSummary {
                 CustomLog.i(TAG, "parseData: " + value);
                 break;
         }
-        setDiagnosticDataToViews();
 
     }
 
-    private void setDiagnosticDataToViews() {
-        if (randomSugar.getValue() != null) {
-            if (randomSugar.getValue().trim().isEmpty() || randomSugar.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue.setText(randomSugar.getValue());
-            }
+    /** Shows the value, or "No information" when it is missing, blank or "0". */
+    private void showDiagnosticValue(TextView view, ObsDTO obs) {
+        String value = obs.getValue();
+        if (value == null || value.trim().isEmpty() || value.trim().equals("0")) {
+            view.setText(context.getResources().getString(R.string.no_information));
+        } else {
+            view.setText(value);
         }
-        CustomLog.d(TAG, "onCreate: " + randomSugar.getValue());
+    }
 
-        if (fastingGlucose.getValue() != null) {
-            if (fastingGlucose.getValue().trim().isEmpty() || fastingGlucose.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue.setText(fastingGlucose.getValue());
-            }
-        }
+    private void setDiagnosticDataToViews() {
+        showDiagnosticValue(mBinding.layoutVisitSummarySections.textViewGlucoseRandomValue, randomSugar);
+        CustomLog.d(TAG, "onCreate: " + randomSugar.getValue());
+        showDiagnosticValue(mBinding.layoutVisitSummarySections.textViewGlucoseFastingValue, fastingGlucose);
         /*if (nonFastingGlucose.getValue() != null) {
             if (nonFastingGlucose.getValue().trim().isEmpty() || nonFastingGlucose.getValue().trim().equals("0")) {
                 mBinding.layoutVisitSummarySections.textViewGlucoseNonFasting.setText(context.getResources().getString(R.string.no_information));
@@ -170,34 +170,10 @@ public class VisitDiagnosticsSummary {
                 mBinding.layoutVisitSummarySections.textViewGlucoseNonFasting.setText(nonFastingGlucose.getValue());
             }
         }*/
-        if (postPrandialGlucose.getValue() != null) {
-            if (postPrandialGlucose.getValue().trim().isEmpty() || postPrandialGlucose.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewPostPrandialValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewPostPrandialValue.setText(postPrandialGlucose.getValue());
-            }
-        }
-        if (hemoglobin.getValue() != null) {
-            if (hemoglobin.getValue().trim().isEmpty() || hemoglobin.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewHemoglobinValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewHemoglobinValue.setText(hemoglobin.getValue());
-            }
-        }
-        if (uricAcid.getValue() != null) {
-            if (uricAcid.getValue().trim().isEmpty() || uricAcid.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewUricAcidValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewUricAcidValue.setText(uricAcid.getValue());
-            }
-        }
-        if (totalCholestrol.getValue() != null) {
-            if (totalCholestrol.getValue().trim().isEmpty() || totalCholestrol.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewTotalCholestrolValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewTotalCholestrolValue.setText(totalCholestrol.getValue());
-            }
-        }
+        showDiagnosticValue(mBinding.layoutVisitSummarySections.textViewPostPrandialValue, postPrandialGlucose);
+        showDiagnosticValue(mBinding.layoutVisitSummarySections.textViewHemoglobinValue, hemoglobin);
+        showDiagnosticValue(mBinding.layoutVisitSummarySections.textViewUricAcidValue, uricAcid);
+        showDiagnosticValue(mBinding.layoutVisitSummarySections.textViewTotalCholestrolValue, totalCholestrol);
 
     }
 

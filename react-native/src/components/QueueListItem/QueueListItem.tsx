@@ -56,7 +56,50 @@ const STATUS_CONFIG: Record<QueueStatus, StatusConfig> = {
     label: 'Waiting',
     timeLabel: 'Wait time',
   },
+  // No position or time for the statuses below, so no footer metric.
+  doctorAssigned: {
+    card: {
+      backgroundColor: Colors.white,
+      borderColor: Colors.cardNeutralBorder,
+    },
+    badge: { backgroundColor: Colors.badgeNextBg },
+    badgeText: { color: Colors.badgeNextText },
+    label: 'Doctor Assigned',
+    timeLabel: '',
+  },
+  connecting: {
+    card: {
+      backgroundColor: Colors.cardGreen,
+      borderColor: Colors.cardGreenBorder,
+    },
+    badge: {
+      backgroundColor: Colors.white,
+      borderWidth: 1,
+      borderColor: Colors.badgeOnCallText,
+    },
+    badgeText: { color: Colors.badgeOnCallText },
+    label: 'Connecting',
+    timeLabel: '',
+  },
+  awaitingPrescription: {
+    card: {
+      backgroundColor: Colors.white,
+      borderColor: Colors.cardNeutralBorder,
+    },
+    badge: { backgroundColor: Colors.badgeOnCallBg },
+    badgeText: { color: Colors.badgeOnCallText },
+    label: 'Awaiting Prescription',
+    timeLabel: '',
+  },
 };
+
+// Statuses that show a live time in the footer (count-down to the ETA, or the
+// call duration). The others have no position or time.
+const TIMED_STATUSES: ReadonlyArray<QueueStatus> = ['onCall', 'nextInQueue', 'waiting'];
+
+// Used when native sends a status outside the union (it maps unhandled DB
+// statuses such as SUBMITTED to ""): neutral card, no badge.
+const FALLBACK_CONFIG: StatusConfig = { ...STATUS_CONFIG.waiting, label: '', timeLabel: '' };
 
 // Milliseconds -> "MM:SS", or "HH:MM:SS" once it reaches an hour (so long
 // waits read as 05:18:28 rather than 318:28). Clamped at zero.
@@ -87,6 +130,10 @@ function computeDisplayTime(
   now: number | undefined,
   fallback: string,
 ): { text: string; overdue: boolean } {
+  if (!TIMED_STATUSES.includes(status)) {
+    // Assigned / connecting / awaiting prescription (or unmapped): no time.
+    return { text: '', overdue: false };
+  }
   const nowMs = now ?? Date.now();
   const instant = status === 'onCall' ? connectedAt : etaAt;
   if (!instant) {
@@ -130,9 +177,16 @@ export default function QueueListItem(props: QueueListItemProps) {
     avatarUrl,
     onPress,
     style,
+    statusLabel,
+    timeLabel: timeLabelProp,
+    overdueLabel,
+    moreLabel,
   } = props;
 
-  const config = STATUS_CONFIG[status];
+  const config = STATUS_CONFIG[status] ?? FALLBACK_CONFIG;
+  // Localized badge text from native; STATUS_CONFIG's English label is only the
+  // fallback. An unmapped status keeps no badge either way.
+  const badgeLabel = config.label === '' ? '' : statusLabel || config.label;
 
   // Live time value. onCall counts UP from connectedAt (elapsed), everyone else
   // counts DOWN to etaAt (remaining). Recomputed from the absolute instant on
@@ -147,7 +201,9 @@ export default function QueueListItem(props: QueueListItemProps) {
     now,
     time,
   );
-  const timeLabel = overdue ? OVERDUE_LABEL : config.timeLabel;
+  const timeLabel = overdue
+    ? overdueLabel || OVERDUE_LABEL
+    : timeLabelProp ?? config.timeLabel;
 
   // Fall back to the native `avatar1` drawable when the patient has no synced
   // photo. On Android, RN's <Image> resolves a bare `{uri}` (no path/scheme) to
@@ -184,11 +240,15 @@ export default function QueueListItem(props: QueueListItemProps) {
               {gender} {age}
             </Text>
           </Text>
-          <Text style={styles.profileId}>{patientId}</Text>
+          <Text style={styles.profileId}>
+            {patientId && !patientId.startsWith('ID-') ? `ID-${patientId}` : patientId}
+          </Text>
         </View>
-        <View style={[styles.badge, config.badge, styles.profileBadge]}>
-          <Text style={[styles.badgeText, config.badgeText]}>{config.label}</Text>
-        </View>
+        {badgeLabel !== '' && (
+          <View style={[styles.badge, config.badge, styles.profileBadge]}>
+            <Text style={[styles.badgeText, config.badgeText]}>{badgeLabel}</Text>
+          </View>
+        )}
       </View>
 
       {/* Symptom tags */}
@@ -200,7 +260,11 @@ export default function QueueListItem(props: QueueListItemProps) {
         ))}
         {extraSymptomCount > 0 && (
           <View style={styles.tag}>
-            <Text style={styles.tagText}>+{extraSymptomCount} More</Text>
+            <Text style={styles.tagText}>
+              {moreLabel
+                ? moreLabel.replace('%1$d', String(extraSymptomCount))
+                : `+${extraSymptomCount} More`}
+            </Text>
           </View>
         )}
       </View>
@@ -211,13 +275,16 @@ export default function QueueListItem(props: QueueListItemProps) {
         {/* <Text style={styles.footerMeta}>
           Position <Text style={styles.boldText}>#{position}</Text>
         </Text> */}
-        {/* Clock icon + time metric, pinned to the right end. */}
-        <View style={styles.timeMetric}>
-          <Image source={{ uri: 'ic_queue_clock' }} style={styles.clockIcon} />
-          <Text style={styles.footerMeta}>
-            {timeLabel} <Text style={styles.boldText}>{displayTime}</Text>
-          </Text>
-        </View>
+        {/* Clock icon + time metric, pinned to the right end. Statuses without
+            a time (assigned / connecting / awaiting prescription) show none. */}
+        {displayTime !== '' && (
+          <View style={styles.timeMetric}>
+            <Image source={{ uri: 'ic_queue_clock' }} style={styles.clockIcon} />
+            <Text style={styles.footerMeta}>
+              {timeLabel} <Text style={styles.boldText}>{displayTime}</Text>
+            </Text>
+          </View>
+        )}
       </View>
     </TouchableOpacity>
   );

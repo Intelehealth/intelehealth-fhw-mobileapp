@@ -1,16 +1,18 @@
 package org.intelehealth.app.database.dao;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabaseLockedException;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import org.intelehealth.app.database.QueueReadDatabase;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.dto.QueueDTO;
-import org.intelehealth.app.models.queue.QueueItem;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,40 +21,114 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class QueueDAO extends BaseDao{
 
     private static final String TAG = "QueueListDAO";
 
+    /**
+     * Ticks (with the write time) each time a queue insert has actually been written. The insert runs
+     * on its own background thread, so the pull-sync "done" broadcast can arrive before the rows
+     * land; screens observe this instead to reload once the data is really there.
+     */
+    private static final MutableLiveData<Long> QUEUE_CHANGED = new MutableLiveData<>();
 
-    public boolean insertQueue(List<QueueDTO> queueDTOS) throws DAOException {
-        boolean isInserted = true;
-        if (queueDTOS != null && !queueDTOS.isEmpty()) {
-            List<HashMap<String, Object>> queueLists = new ArrayList<>();
-            for (QueueDTO queueDTO : queueDTOS) {
-                queueLists.add(createQueueMap(queueDTO));
-            }
-            executeInBackground(bulkInsert(queueLists));
-        }
-        return isInserted;
+    public static LiveData<Long> getQueueChanged() {
+        return QUEUE_CHANGED;
     }
-
 
     /**
-     * Same as {@link #insertQueue(List)} but for the {@link QueueItem} model
-     * returned by the standalone {@code /api/queue/list} microservice. Kept as a
-     * separate name because {@code insertQueue(List<QueueDTO>)} and
-     * {@code insertQueue(List<QueueItem>)} would erase to the same signature.
+     * Whether the visit has an entry in the last pulled queue snapshot, i.e. the server has already
+     * queued it. Synchronous; call off the main thread. False on any error.
      */
-    public boolean insertQueueItems(List<QueueItem> queueItems) throws DAOException {
-        boolean isInserted = true;
-        List<HashMap<String, Object>> queueLists = new ArrayList<>();
-        for (QueueItem queueItem : queueItems) {
-            queueLists.add(createQueueMap(queueItem));
+    public boolean isVisitInQueue(String visitUuid) {
+        if (visitUuid == null || visitUuid.isEmpty()) {
+            return false;
         }
-        executeInBackground(bulkInsert(queueLists));
-        return isInserted;
+        return read(db -> {
+            Cursor cursor = db.rawQuery("SELECT 1 FROM " + tableName()
+                    + " WHERE visitUuid = ? COLLATE NOCASE LIMIT 1", new String[]{visitUuid});
+            try {
+                return cursor.moveToFirst();
+            } finally {
+                cursor.close();
+            }
+        }, false);
     }
+
+    /** Removes every queue row (logout: the queue belongs to the signed-in health worker). */
+    public void deleteAll() {
+        read(db -> db.delete(tableName(), null, null), 0);
+        QUEUE_CHANGED.postValue(System.currentTimeMillis());
+    }
+
+    /**
+     * Replaces tbl_queue with the queue snapshot from a pull response. The pull's {@code queueData}
+     * is the full current queue (it is sent on every pull, even when nothing else changed), so
+     * entries the server dropped - completed, cancelled, removed - must disappear locally too;
+     * an upsert alone would keep them forever with their last position.
+     * <p>
+     * {@code null} (no queueData in this response) leaves the table untouched; an empty list means
+     * the queue is now empty and clears it. Delete + insert run in one transaction so the list
+     * never reads a half-written table. Runs in the background, then signals
+     * {@link #getQueueChanged()} observers.
+     */
+    public void replaceQueue(@Nullable List<QueueDTO> queueDTOS) {
+        if (queueDTOS == null) {
+            return;
+        }
+        List<ContentValues> rows = new ArrayList<>(queueDTOS.size());
+        for (QueueDTO queueDTO : queueDTOS) {
+            rows.add(toContentValues(createQueueMap(queueDTO)));
+        }
+        executeInBackground(() -> {
+            // Logout clears tbl_queue but also starts a background sync whose pull would refill
+            // it; checked at write time so a pull finishing after logout is dropped.
+            if (new SessionManager(IntelehealthApplication.getAppContext()).isLogout()) {
+                return;
+            }
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+            db.beginTransaction();
+            try {
+                db.delete(tableName(), null, null);
+                for (ContentValues row : rows) {
+                    db.insertWithOnConflict(tableName(), null, row, SQLiteDatabase.CONFLICT_REPLACE);
+                }
+                db.setTransactionSuccessful();
+            } catch (Exception e) {
+                CustomLog.d(TAG, "replaceQueue failed: " + e.getLocalizedMessage());
+                return;
+            } finally {
+                db.endTransaction();
+            }
+            QUEUE_CHANGED.postValue(System.currentTimeMillis());
+        });
+    }
+
+    private static ContentValues toContentValues(HashMap<String, Object> map) {
+        ContentValues values = new ContentValues();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            Object value = entry.getValue();
+            if (value == null) {
+                values.putNull(entry.getKey());
+            } else if (value instanceof Integer) {
+                values.put(entry.getKey(), (Integer) value);
+            } else if (value instanceof Long) {
+                values.put(entry.getKey(), (Long) value);
+            } else if (value instanceof Double) {
+                values.put(entry.getKey(), (Double) value);
+            } else if (value instanceof Float) {
+                values.put(entry.getKey(), (Float) value);
+            } else if (value instanceof Boolean) {
+                values.put(entry.getKey(), (Boolean) value);
+            } else {
+                values.put(entry.getKey(), value.toString());
+            }
+        }
+        return values;
+    }
+
 
 
     @Override
@@ -117,41 +193,6 @@ public class QueueDAO extends BaseDao{
         }
     }
 
-    public HashMap<String, Object> createQueueMap(QueueItem queueItem) {
-        HashMap<String, Object> values = new HashMap<>();
-
-        values.put("queueEntryId", queueItem.getQueueEntryId());
-        values.put("visitUuid", queueItem.getVisitUuid());
-        values.put("speciality", queueItem.getSpeciality());
-        values.put("status", queueItem.getStatus());
-        values.put("emergencyLevel", queueItem.getEmergencyLevel());
-        values.put("caseType", queueItem.getCaseType());
-        values.put("escalated", queueItem.isEscalated() ? 1 : 0);
-        values.put("position", queueItem.getPosition());
-        values.put("etaMinutes", queueItem.getEtaMinutes());
-        values.put("etaAt", queueItem.getEtaAt());
-        values.put("etaModelUsed", queueItem.getEtaModelUsed());
-        values.put("assignedDoctorUuid", queueItem.getAssignedDoctorUuid());
-        values.put("queuedAt", queueItem.getQueuedAt());
-        values.put("assignedAt", queueItem.getAssignedAt());
-        values.put("connectedAt", queueItem.getConnectedAt());
-        values.put("completedAt", queueItem.getCompletedAt());
-        values.put("requeueCount", queueItem.getRequeueCount());
-        values.put("heartbeatFlagged", queueItem.isHeartbeatFlagged() ? 1 : 0);
-        values.put("hwUserUuid", queueItem.getHwUserUuid());
-        values.put("patientUuid", queueItem.getPatientUuid());
-        values.put("locationUuid", queueItem.getLocationUuid());
-        values.put("flagged", queueItem.isFlagged() ? 1 : 0);
-        values.put("escalatedAt", queueItem.getEscalatedAt());
-        // chiefComplaint is not stored: it's resolved from the visit's obs
-        // (EncounterDAO.getChiefComplaint) when the queue list is read.
-        // TODO: proper vitals parsing handled later; store raw JSON string for now (null-safe)
-        values.put("vitals", queueItem.getVitals() != null ? queueItem.getVitals().toString() : null);
-        values.put("waitedMinutes", queueItem.getWaitedMinutes());
-        values.put("priorityScore", queueItem.getPriorityScore());
-        return values;
-    }
-
 
     /**
      * Single query that joins the locally-synced queue rows with the patient
@@ -173,9 +214,7 @@ public class QueueDAO extends BaseDao{
         if (mapper == null) {
             return new ArrayList<>();
         }
-        // Own read-only connection (see QueueReadDatabase) so the queue doesn't
-        // wait behind other screens' queries on the shared app connection.
-        return readWithRetry(db -> queryQueueWithPatient(db, limit, offset, mapper), new ArrayList<>());
+        return read(db -> queryQueueWithPatient(db, limit, offset, mapper), new ArrayList<>());
     }
 
     private <T> ArrayList<T> queryQueueWithPatient(SQLiteDatabase db, int limit, int offset,
@@ -203,8 +242,6 @@ public class QueueDAO extends BaseDao{
                     rows.add(mapper.map(cursor));
                 } while (cursor.moveToNext());
             }
-        } catch (SQLiteDatabaseLockedException e) {
-            throw e; // let readWithRetry() retry it
         } catch (Exception e) {
             CustomLog.d(TAG, "getQueueWithPatient: e " + e.getLocalizedMessage());
         } finally {
@@ -225,7 +262,7 @@ public class QueueDAO extends BaseDao{
         if (mapper == null || visitUuid == null || visitUuid.isEmpty()) {
             return null;
         }
-        return readWithRetry(db -> queryQueueWithPatientByVisit(db, visitUuid, mapper), null);
+        return read(db -> queryQueueWithPatientByVisit(db, visitUuid, mapper), null);
     }
 
     private <T> T queryQueueWithPatientByVisit(SQLiteDatabase db, String visitUuid,
@@ -238,8 +275,6 @@ public class QueueDAO extends BaseDao{
             if (cursor != null && cursor.moveToFirst()) {
                 return mapper.map(cursor);
             }
-        } catch (SQLiteDatabaseLockedException e) {
-            throw e; // let readWithRetry() retry it
         } catch (Exception e) {
             CustomLog.d(TAG, "getQueueWithPatientByVisit: e " + e.getLocalizedMessage());
         } finally {
@@ -251,17 +286,16 @@ public class QueueDAO extends BaseDao{
     }
 
     /**
-     * Raw chief-complaint obs value for {@code visitUuid}, read on the queue's
-     * own connection. Same query and "en" JSON handling as
-     * {@link EncounterDAO#getChiefComplaint(String)}, which uses the shared
-     * connection (and a transaction) and so waited behind other screens' reads.
+     * Raw chief-complaint obs value for {@code visitUuid}. Same query and "en"
+     * JSON handling as {@link EncounterDAO#getChiefComplaint(String)}, but
+     * without its transaction.
      * Returns "" when absent or on error. Call off the main thread.
      */
     public String getChiefComplaint(String visitUuid) {
         if (visitUuid == null || visitUuid.isEmpty()) {
             return "";
         }
-        String value = readWithRetry(db -> queryChiefComplaint(db, visitUuid), "");
+        String value = read(db -> queryChiefComplaint(db, visitUuid), "");
         if (value.startsWith("{") && value.endsWith("}")) {
             try {
                 value = new JSONObject(value).getString("en");
@@ -286,8 +320,6 @@ public class QueueDAO extends BaseDao{
                 String v = cursor.getString(0);
                 value = v != null ? v : "";
             }
-        } catch (SQLiteDatabaseLockedException e) {
-            throw e; // let readWithRetry() retry it
         } catch (Exception e) {
             CustomLog.d(TAG, "getChiefComplaint: e " + e.getLocalizedMessage());
         } finally {
@@ -298,25 +330,21 @@ public class QueueDAO extends BaseDao{
         return value;
     }
 
-    /** One read against the queue's read-only connection. */
+    /** One read against the shared app connection. */
     private interface QueueRead<R> {
         R run(SQLiteDatabase db);
     }
 
     /**
-     * Runs {@code read} on {@link QueueReadDatabase}, retrying once if the DB is
-     * briefly locked by a sync committing a write (the connection already waits
-     * out Android's busy timeout before throwing). Returns {@code fallback} if it
-     * still fails or the connection can't be opened, so callers never throw.
+     * Runs {@code read} on the shared app connection. Queue reads must stay on
+     * this single connection: the DB isn't in WAL mode, so a read on a second
+     * connection blocks the sync's write transactions and fails them with
+     * SQLITE_BUSY ("database is locked"). Returns {@code fallback} on any error
+     * so callers never throw.
      */
-    private <R> R readWithRetry(QueueRead<R> read, R fallback) {
+    private <R> R read(QueueRead<R> read, R fallback) {
         try {
-            try {
-                return read.run(QueueReadDatabase.get());
-            } catch (SQLiteDatabaseLockedException e) {
-                CustomLog.d(TAG, "queue read locked, retrying once: " + e.getLocalizedMessage());
-                return read.run(QueueReadDatabase.get());
-            }
+            return read.run(IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb());
         } catch (Exception e) {
             CustomLog.d(TAG, "queue read failed: " + e.getLocalizedMessage());
             return fallback;

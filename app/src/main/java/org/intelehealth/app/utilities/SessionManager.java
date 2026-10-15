@@ -566,6 +566,24 @@ public class SessionManager {
         editor.commit();
     }
 
+    // Drops every edit-cache entry for the visit; called once the doctor has started its visit note.
+    public void clearVisitEditCache(String visitUuid) {
+        clearVisitEditCaches(java.util.Collections.singleton(visitUuid));
+    }
+
+    // Same for several visits in one prefs write (e.g. all visit notes in a pull page).
+    public void clearVisitEditCaches(java.util.Collection<String> visitUuids) {
+        if (visitUuids.isEmpty()) return;
+        for (String visitUuid : visitUuids) {
+            editor.remove(CHIEF_COMPLAIN_LIST + visitUuid);
+            editor.remove(CHIEF_COMPLAIN_QUESTION_NODE + visitUuid);
+            editor.remove(PHY_EXAM + visitUuid);
+            editor.remove(PATIENT_HISTORY + visitUuid);
+            editor.remove(FAMILY_HISTORY + visitUuid);
+        }
+        editor.apply();
+    }
+
 
     public void saveVitalPreference(VitalPreference vitalPreference) {
         String json = new Gson().toJson(vitalPreference);

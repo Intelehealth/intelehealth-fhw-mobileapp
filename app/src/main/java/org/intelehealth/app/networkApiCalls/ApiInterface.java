@@ -18,7 +18,6 @@ import org.intelehealth.app.models.RequestOTPParamsModel_New;
 import org.intelehealth.app.models.ResetPasswordResModel_New;
 import org.intelehealth.app.models.Results;
 import org.intelehealth.app.models.dto.ResponseDTO;
-import org.intelehealth.app.models.queue.QueueListResponse;
 import org.intelehealth.app.models.hwprofile.Profile;
 import org.intelehealth.app.models.hwprofile.ProfileCreateAttribute;
 import org.intelehealth.app.models.hwprofile.ProfileUpdateAge;
@@ -82,21 +81,6 @@ public interface ApiInterface {
     Call<ResponseDTO> RESPONSE_DTO_CALL(@Url String url,
                                         @Header("Authorization") String authHeader);
 
-    //For test purpose
-    // Standalone queue microservice: /api/queue/list. Runs on a different host/port
-    // than BuildConfig.SERVER_URL, so the absolute URL is supplied via @Url.
-    @GET
-    Call<QueueListResponse> QUEUE_LIST_CALL(@Url String url,
-                                            @Query("locationUuid") String locationUuid,
-                                            @Query("status") String status,
-                                            @Query("sort") String sort,
-                                            @Query("includeEta") boolean includeEta,
-                                            @Query("includeScore") boolean includeScore,
-                                            @Query("limit") int limit,
-                                            @Query("offset") int offset,
-                                            @Header("Authorization") String authHeader,
-                                            @Header("x-qms-secret") String token);
-
     @GET
     Observable<LoginModel> LOGIN_MODEL_OBSERVABLE(@Url String url,
                                                   @Header("Authorization") String authHeader);
@@ -133,8 +117,9 @@ public interface ApiInterface {
                                                              @Part MultipartBody.Part image,
                                                              @Part("json") ObsPushDTO obsJsonRequest);
 
+    // Wrapped in Response so a 204 (null body) still reaches onSuccess and the status is inspectable.
     @DELETE
-    Observable<Void> DELETE_OBS_IMAGE(@Url String url, @Header("Authorization") String authHeader);
+    Single<Response<Void>> DELETE_OBS(@Url String url, @Header("Authorization") String authHeader);
 
 
     @GET("/api/mindmap/download")
