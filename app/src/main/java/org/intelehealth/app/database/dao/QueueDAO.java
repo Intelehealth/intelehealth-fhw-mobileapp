@@ -207,8 +207,8 @@ public class QueueDAO extends BaseDao{
      * was mapped so far (possibly empty) so the caller can still render.
      *
      * <p>Selected patient columns: {@code openmrs_id, first_name, middle_name,
-     * last_name, gender, date_of_birth}. LEFT JOIN keeps queue rows whose
-     * patient is missing locally (patient columns come back null).
+     * last_name, gender, date_of_birth}. Queue rows whose visit or patient is
+     * missing locally are excluded (see {@link #queueWithPatientSelect()}).
      */
     public <T> ArrayList<T> getQueueWithPatient(int limit, int offset, QueueRowMapper<T> mapper) {
         if (mapper == null) {
@@ -354,6 +354,11 @@ public class QueueDAO extends BaseDao{
     /**
      * Shared SELECT + JOIN (queue -> visit -> patient) used by the queue list
      * and the per-visit lookup, so both map the exact same columns.
+     * <p>
+     * Inner joins: a queue entry whose visit (or that visit's patient) isn't in
+     * the local DB yet - e.g. not pulled down - has no patient details to show
+     * and would render as an empty/"0" row, so it is left out until the visit
+     * syncs.
      */
     private String queueWithPatientSelect() {
         return "SELECT q.status AS status, q.position AS position, " +
@@ -365,8 +370,8 @@ public class QueueDAO extends BaseDao{
                 "p.gender AS gender, p.date_of_birth AS date_of_birth, " +
                 "p.patient_photo AS patient_photo " +
                 "FROM " + tableName() + " q " +
-                "LEFT JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
-                "LEFT JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE ";
+                "JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
+                "JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE ";
     }
 
     /**

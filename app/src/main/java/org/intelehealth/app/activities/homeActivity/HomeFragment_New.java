@@ -131,38 +131,34 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private void addQueueLayout() {
-        // The latest queue patient list persisted from a "Next In Queue" FCM
-        // notification; the card shows them as a slideshow.
-        List<PatientData> queuePatients = QueueCardUpdater.getPersisted(requireContext());
-        //Show dummy data to check UI for testing
-        if (queuePatients.isEmpty()) {
-            queuePatients = new ArrayList<>();
-            queuePatients.add(new PatientData(
+        // The latest queue payload persisted from a "Next In Queue" FCM
+        // notification so the card reflects real queue state
+        PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
+        if (currentPatient == null && !BuildConfig.FORCE_QMS) {
+            // No "Next In Queue" notification received yet: nothing real to show, so collapse the
+            // slot (same as when QMS is off). The card appears once a notification is persisted.
+            hideContainer(R.id.queue_card_container);
+            return;
+        }
+        // TODO(QMS-CONFIG): remove this sample card with BuildConfig.FORCE_QMS once the config PR
+        // is merged. Debug builds only: lets testers see the card before the first FCM arrives.
+        if (currentPatient == null) {
+            ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
+            currentPatient = new PatientData(
                     "Q-104",
                     "Anthony G",
                     "M",
                     50,
                     "ID-987654jK",
-                    new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever")),
+                    symptomList,
                     2,
                     8,
                     "https://unsplash.com"
-            ));
-            queuePatients.add(new PatientData(
-                    "Q-105",
-                    "Priya S",
-                    "F",
-                    34,
-                    "ID-123456aB",
-                    new ArrayList<>(Arrays.asList("Headache", "Cough")),
-                    3,
-                    15,
-                    "https://unsplash.com"
-            ));
+            );
         }
 
-        // 3. Map the patient list into the Android Bundle payload
-        Bundle initialProperties = QueueCardUpdater.toBundle(queuePatients);
+        // 3. Map your custom data class parameters directly into the Android Bundle payload
+        Bundle initialProperties = QueueCardUpdater.toBundle(currentPatient);
 
         // 4. Boot the pipeline layer inside your execution lifecycle hook
         ReactFragment reactFragment = new ReactFragment.Builder()

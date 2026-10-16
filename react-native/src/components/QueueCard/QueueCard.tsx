@@ -18,24 +18,48 @@ const MAX_VISIBLE_TAGS = 2;
 // Queue number and position are hidden for now; flip to true to show them again.
 const SHOW_QUEUE_POSITION = false;
 
-/**
- * A single "Next In Queue" card. Rendered per patient by QueueCardSlideshow,
- * which owns the patient list and the live FCM updates.
- */
-export default function QueueCard({
-  style,
-  ...data
-}: QueueCardProps & { style?: StyleProp<ViewStyle> }) {
-  // Fallback to default mock data if properties aren't completely ready.
-  const queueNumber = data.queueNumber || "Q-104";
-  const patientName = data.patientName || "Anthony G";
-  const gender = data.gender || "M";
-  const age = data.age || 50;
-  const patientId = data.patientId || "ID-987654jK";
-  const symptoms = data.symptoms || ["Abdominal Pain", "Nausea"];
-  const position = data.position ?? 2;
-  const waitTimeMinutes = data.waitTimeMinutes ?? 8;
-  const avatarUrl = data.avatarUrl || 'https://unsplash.com';
+// Native event emitted by QueueCardUpdater when a "Next In Queue" FCM
+// notification arrives while this card is mounted. Keep in sync with
+// QueueCardUpdater.EVENT_QUEUE_CARD_UPDATE on the Android side.
+const QUEUE_CARD_UPDATE_EVENT = 'QueueCardUpdate';
+
+export default function QueueCard(props: QueueCardProps) {
+  // Card content lives in state so a live FCM update can refresh it without a
+  // native remount. Seeded from the initial props delivered by the host
+  // fragment (which itself may be the last persisted queue payload).
+  const [data, setData] = useState<QueueCardProps>(props);
+
+  // Re-seed if the host remounts us with fresh initial props.
+  useEffect(() => {
+    setData(props);
+  }, [props]);
+
+  // Subscribe to live queue updates pushed from native on FCM receipt. Only
+  // the fields present in the payload override the current card; anything
+  // omitted keeps its existing value.
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      QUEUE_CARD_UPDATE_EVENT,
+      (update: QueueCardProps) => {
+        setData(prev => ({ ...prev, ...update }));
+      },
+    );
+    return () => subscription.remove();
+  }, []);
+
+  // Neutral fallbacks for fields missing from the payload. No mock patient here:
+  // a real notification with an empty field must never show fake data. (Debug
+  // builds get their sample card from the native host, behind FORCE_QMS.)
+  const queueNumber = data.queueNumber || '';
+  const patientName = data.patientName || '';
+  const gender = data.gender || '';
+  const age = data.age || 0;
+  const patientId = data.patientId || '';
+  const symptoms = data.symptoms || [];
+  const position = data.position ?? 0;
+  const waitTimeMinutes = data.waitTimeMinutes ?? 0;
+  // Same placeholder drawable as the queue list rows when there is no photo.
+  const avatarUrl = data.avatarUrl || 'avatar1';
 
   // Collapse overflow symptoms into a "+N More" chip, matching the Figma design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
