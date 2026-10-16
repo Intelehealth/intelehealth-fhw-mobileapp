@@ -30,7 +30,7 @@ public final class ConfigFlagsHelper {
     /** Saves the QMS / edit-visit flags from the stored config row. */
     public static void applyFlags(PreferenceHelper preferenceHelper, FeatureActiveStatus status) {
         preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, status.getActiveQms());
-        preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, true/*status.getActiveEditVisit()*/);
+        preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, status.getActiveEditVisit());
     }
 
     /**
