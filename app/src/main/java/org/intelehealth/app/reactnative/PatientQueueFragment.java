@@ -1,6 +1,9 @@
 package org.intelehealth.app.reactnative;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +13,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.facebook.react.ReactFragment;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableArray;
+import com.facebook.react.bridge.WritableMap;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.database.dao.VisitsDAO;
-import org.intelehealth.app.models.QueueModel;
+import org.intelehealth.app.database.dao.QueueDAO;
+import org.intelehealth.app.ui.queue.factory.QueueViewModelFactory;
+import org.intelehealth.app.ui.queue.model.QueueRow;
+import org.intelehealth.app.ui.queue.viewmodel.QueueViewModel;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -29,9 +36,11 @@ import java.util.List;
  * ReactHost initialized in IntelehealthApplication. Loaded into the bottom-nav
  * container of HomeScreenActivity_New when the Queue tab is selected.
  *
- * TEMPORARY: pulls visit rows from {@link VisitsDAO#queueVisits(int, int)} and
- * passes them as the RN {@code queue} prop so the list shows real data. Swap
- * for the proper queue feed later.
+ * The queue rows come from the local DB through {@link QueueViewModel} (backed
+ * by QueueRepository -> QueueDAO), which reads the queue joined with patient
+ * details in a single query. The fragment observes the ViewModel and attaches
+ * the RN view once the rows arrive, mapping each {@link QueueRow} into the RN
+ * {@code queue} prop.
  */
 public class PatientQueueFragment extends Fragment {
 
@@ -39,9 +48,13 @@ public class PatientQueueFragment extends Fragment {
 
     private static final String RN_COMPONENT_NAME = "PatientQueueModule";
 
-    // Temporary paging window for the duplicated older-visits query.
-    private static final int QUEUE_LIMIT = 50;
-    private static final int QUEUE_OFFSET = 0;
+    /** JS event carrying refreshed rows to the mounted PatientQueue screen ({queue: [...]}). */
+    public static final String EVENT_PATIENT_QUEUE_UPDATE = "PatientQueueUpdate";
+
+    private QueueViewModel queueViewModel;
+
+    // Set once the RN fragment transaction is committed (commits run asynchronously).
+    private boolean reactFragmentCommitted;
 
     @Nullable
     @Override
@@ -63,54 +76,206 @@ public class PatientQueueFragment extends Fragment {
                 bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setChecked(true);
             }
         }
+        // Re-read on every resume (first show, back to the tab, app foregrounded) so
+        // rows synced while the screen wasn't visible are picked up.
+        if (queueViewModel != null) {
+            queueViewModel.loadQueue();
+        }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Only attach once; on re-creation the child FragmentManager restores it.
-        if (savedInstanceState == null) {
-            ReactFragment reactFragment = new ReactFragment.Builder()
-                    .setComponentName(RN_COMPONENT_NAME)
-                    .setLaunchOptions(buildQueueProps())
-                    .build();
-
-            getChildFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.patient_queue_container, reactFragment)
-                    .commit();
-        }
+        queueViewModel = QueueViewModelFactory.create(this);
+        // The ViewModel reads off the main thread and posts the rows here. The
+        // initial load happens in onResume.
+        queueViewModel.getQueue().observe(getViewLifecycleOwner(), this::onQueueLoaded);
+        // Reload while visible whenever a pull sync has finished writing tbl_queue.
+        // Observing the DAO's write signal (not the sync-done broadcast) avoids
+        // reading before the async insert has landed. LiveData re-delivers its last
+        // value to a new observer; skip that one, as onResume already loads.
+        final Long alreadySeen = QueueDAO.getQueueChanged().getValue();
+        QueueDAO.getQueueChanged().observe(getViewLifecycleOwner(), changedAt -> {
+            if (changedAt != null && !changedAt.equals(alreadySeen)) {
+                queueViewModel.loadQueue();
+            }
+        });
     }
 
     /**
-     * Fetches the queue rows and maps each {@link QueueModel} into the prop shape
-     * the RN {@code QueueListItem} expects. The list is passed under the "queue"
-     * key as an array of objects (ArrayList of Bundles).
+     * Builds the RN rows from the loaded queue and attaches the RN view. On an
+     * empty list the view is still attached so the screen renders instead of
+     * staying blank. Runs on the main thread (LiveData callback), but does no
+     * DB/IO — just an in-memory map of already-joined rows into prop bundles.
      */
-    private Bundle buildQueueProps() {
-        List<QueueModel> queue = VisitsDAO.queueVisits(QUEUE_LIMIT, QUEUE_OFFSET);
+    private void onQueueLoaded(@Nullable List<QueueRow> rows) {
+        Context ctx = getContext();
+        if (ctx == null) {
+            return;
+        }
+        ArrayList<Bundle> bundles = new ArrayList<>(rows != null ? rows.size() : 0);
+        if (rows != null) {
+            for (QueueRow row : rows) {
+                // Activity context so labels follow the app's selected language.
+                bundles.add(toRowBundle(ctx, row));
+            }
+        }
+        if (!isReactFragmentAttached()) {
+            // First rows: mount the RN screen once, with them as launch options. Until then the
+            // container's white background shows (no black screen, no loader/remount flicker).
+            // Activity context so the screen labels follow the app's selected language.
+            mountReactFragment(buildQueueProps(ctx, bundles));
+            return;
+        }
+        // Later reloads go to the mounted screen as an event (launch options are only read on
+        // mount, and by now its listener is subscribed).
+        WritableArray queue = Arguments.createArray();
+        for (Bundle bundle : bundles) {
+            queue.pushMap(Arguments.fromBundle(bundle));
+        }
+        WritableMap payload = Arguments.createMap();
+        payload.putArray("queue", queue);
+        RnEventEmitter.emit(EVENT_PATIENT_QUEUE_UPDATE, payload);
+    }
 
-        ArrayList<Bundle> items = new ArrayList<>();
-        int position = 1;
-        for (QueueModel model : queue) {
-            Bundle item = new Bundle();
-            item.putString("queueNumber", model.getOpenmrsId());
-            item.putString("patientName", model.getFullName());
-            item.putString("gender", model.getGender());
-            item.putInt("age", DateAndTimeUtils.getAge(model.getDob(), requireContext()));
-            item.putString("patientId", model.getOpenmrsId());
-            item.putStringArrayList("symptoms",
-                    new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"))); // temp hardcoded
-            item.putInt("position", position++);
-            item.putString("status", "waiting"); // temp default until status is derived
-            item.putString("time", "2:39"); // temp hardcoded until wait time is computed
-            item.putString("avatarUrl", model.getPatientPhoto());
-            items.add(item);
+    private boolean isReactFragmentAttached() {
+        // The flag covers the window where the commit is still pending (findFragmentById
+        // can't see it yet); the lookup covers a child restored after recreation.
+        return reactFragmentCommitted
+                || (isAdded() && getChildFragmentManager().findFragmentById(R.id.patient_queue_container) != null);
+    }
+
+    /** Commits the RN fragment with the given initial properties (once, on the first load). */
+    private void mountReactFragment(Bundle initialProperties) {
+        // The callback runs asynchronously, so the host may be gone (user
+        // navigated away) or its state already saved — guard both.
+        if (!isAdded() || isRemoving() || getActivity() == null || getActivity().isFinishing()) {
+            return;
+        }
+        if (isReactFragmentAttached()) {
+            return; // already attached (or commit pending)
         }
 
+        ReactFragment reactFragment = new ReactFragment.Builder()
+                .setComponentName(RN_COMPONENT_NAME)
+                .setLaunchOptions(initialProperties)
+                .build();
+
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.patient_queue_container, reactFragment)
+                .commitAllowingStateLoss();
+        reactFragmentCommitted = true;
+    }
+
+    /**
+     * Wraps the built RN rows under the "queue" key and seeds the status banner.
+     */
+    private Bundle buildQueueProps(@NonNull Context ctx, @NonNull ArrayList<Bundle> rows) {
         Bundle initialProperties = new Bundle();
-        initialProperties.putParcelableArrayList("queue", items);
+        initialProperties.putParcelableArrayList("queue", rows);
+
+        // Seed the status banner from the same persisted "queue_status" FCM
+        // payload that drives the home banner (StatusBannerUpdater), so both
+        // screens show identical queue status. Absent until a notification has
+        // been received; the RN side falls back to the default banner then.
+        StatusBannerData banner = StatusBannerUpdater.getPersisted(ctx);
+        if (banner != null) {
+            initialProperties.putBundle("banner", StatusBannerUpdater.toBundle(banner));
+        }
+
+        // Localized screen labels (tabs, count, search); the RN components fall back to
+        // English only when these are absent.
+        Bundle labels = new Bundle();
+        labels.putString("tabAll", ctx.getString(R.string.queue_tab_all));
+        labels.putString("tabNext", ctx.getString(R.string.queue_tab_next));
+        labels.putString("tabWaiting", ctx.getString(R.string.queue_tab_waiting));
+        labels.putString("tabOnCall", ctx.getString(R.string.queue_tab_on_call));
+        labels.putString("countLabel", ctx.getString(R.string.queue_count_label));
+        labels.putString("searchPlaceholder", ctx.getString(R.string.queue_search_placeholder));
+        initialProperties.putBundle("labels", labels);
         return initialProperties;
+    }
+
+    /**
+     * One {@link QueueRow} -> one RN QueueListItem prop bundle. Patient display
+     * fields (openmrs id, name, gender, date_of_birth) already come joined on
+     * the row, so there is no separate lookup here.
+     */
+    private Bundle toRowBundle(@NonNull Context ctx, @NonNull QueueRow row) {
+        String openmrsId = orEmpty(row.getOpenmrsId());
+        String patientName = orEmpty(row.getPatientName());
+        String gender = orEmpty(row.getGender());
+        int age = 0;
+        try {
+            age = DateAndTimeUtils.getAge(row.getDateOfBirth(), ctx);
+        } catch (Exception e) {
+            Log.e(TAG, "age calc failed: " + e.getMessage());
+        }
+
+        int position = row.getPosition();
+        String status = QueueRowFormatter.mapStatus(row.getStatus(), position);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("queueNumber", openmrsId);
+        bundle.putString("patientName", patientName);
+        bundle.putString("gender", gender);
+        bundle.putInt("age", age);
+        bundle.putString("patientId", openmrsId);
+        bundle.putStringArrayList("symptoms", parseSymptoms(row.getChiefComplaint()));
+        bundle.putInt("position", position);
+        bundle.putString("status", status);
+        // Localized labels (string resources); the RN row falls back to English only when absent.
+        bundle.putString("statusLabel", QueueRowFormatter.statusLabel(ctx, status));
+        bundle.putString("timeLabel", QueueRowFormatter.timeLabel(ctx, status));
+        bundle.putString("overdueLabel", ctx.getString(R.string.queue_time_overdue));
+        // Template with %1$d for the "+N More" symptom chip (N is computed on the RN side).
+        bundle.putString("moreLabel", ctx.getString(R.string.queue_more_symptoms));
+        // Pre-formatted snapshot used as a fallback (and initial paint) when the
+        // row has no timestamp to tick from.
+        bundle.putString("time", QueueRowFormatter.formatTime(status, row));
+        // Raw instants so the RN screen can tick the wait time / duration every
+        // second on the JS side (no DB re-read, no bridge push). Empty when absent.
+        bundle.putString("etaAt", orEmpty(row.getEtaAt()));
+        bundle.putString("connectedAt", orEmpty(row.getConnectedAt()));
+        // Patient profile pic. patient_photo holds an absolute local file path
+        // (AppConstants.IMAGE_PATH + uuid + ".jpg"); RN's <Image> needs a URI
+        // scheme, so wrap a bare path in file://. Empty when absent, so the RN
+        // row falls back to its placeholder avatar.
+        bundle.putString("avatarUrl", toAvatarUri(row.getPatientPhoto()));
+        return bundle;
+    }
+
+    /**
+     * Turns the stored patient photo value into a URI React Native's {@code Image}
+     * can load. Local filesystem paths get a {@code file://} prefix; values that
+     * already carry a scheme ({@code http}, {@code https}, {@code file},
+     * {@code content}) are used as-is. Returns "" when there is no photo.
+     */
+    private String toAvatarUri(@Nullable String photo) {
+        if (TextUtils.isEmpty(photo)) {
+            return "";
+        }
+        String trimmed = photo.trim();
+        if (trimmed.startsWith("http://") || trimmed.startsWith("https://")
+                || trimmed.startsWith("file://") || trimmed.startsWith("content://")) {
+            return trimmed;
+        }
+        return "file://" + trimmed;
+    }
+
+    /**
+     * Chief-complaint string -> symptom tags. Uses the same parsing as the home
+     * queue card and the visit summary screen ({@link QueueCardUpdater#extractComplaintNames(String)}),
+     * so the list shows the complaint header names (e.g. "Fever", "Cough") rather
+     * than a naive comma split of the raw blob.
+     */
+    private ArrayList<String> parseSymptoms(@Nullable String chiefComplaint) {
+        return QueueCardUpdater.extractComplaintNames(chiefComplaint);
+    }
+
+    private String orEmpty(@Nullable String value) {
+        return value == null ? "" : value;
     }
 }

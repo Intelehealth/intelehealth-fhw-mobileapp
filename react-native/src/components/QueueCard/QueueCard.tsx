@@ -1,5 +1,12 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  DeviceEventEmitter,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 
 import { QueueCardProps } from './types';
 import { Colors, FontFamily, FontWeight } from '../../theme';
@@ -7,18 +14,51 @@ import { QueueNavigator } from '../../native/QueueNavigator';
 
 // Maximum number of symptom pills shown before the rest collapse into "+N More".
 const MAX_VISIBLE_TAGS = 2;
+// Queue number and position are hidden for now; flip to true to show them again.
+const SHOW_QUEUE_POSITION = false;
+
+// Native event emitted by QueueCardUpdater when a "Next In Queue" FCM
+// notification arrives while this card is mounted. Keep in sync with
+// QueueCardUpdater.EVENT_QUEUE_CARD_UPDATE on the Android side.
+const QUEUE_CARD_UPDATE_EVENT = 'QueueCardUpdate';
 
 export default function QueueCard(props: QueueCardProps) {
-  // Fallback to default mock data if properties aren't completely ready.
-  const queueNumber = props.queueNumber || "Q-104";
-  const patientName = props.patientName || "Anthony G";
-  const gender = props.gender || "M";
-  const age = props.age || 50;
-  const patientId = props.patientId || "ID-987654jK";
-  const symptoms = props.symptoms || ["Abdominal Pain", "Nausea"];
-  const position = props.position ?? 2;
-  const waitTimeMinutes = props.waitTimeMinutes ?? 8;
-  const avatarUrl = props.avatarUrl || 'https://unsplash.com';
+  // Card content lives in state so a live FCM update can refresh it without a
+  // native remount. Seeded from the initial props delivered by the host
+  // fragment (which itself may be the last persisted queue payload).
+  const [data, setData] = useState<QueueCardProps>(props);
+
+  // Re-seed if the host remounts us with fresh initial props.
+  useEffect(() => {
+    setData(props);
+  }, [props]);
+
+  // Subscribe to live queue updates pushed from native on FCM receipt. Only
+  // the fields present in the payload override the current card; anything
+  // omitted keeps its existing value.
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      QUEUE_CARD_UPDATE_EVENT,
+      (update: QueueCardProps) => {
+        setData(prev => ({ ...prev, ...update }));
+      },
+    );
+    return () => subscription.remove();
+  }, []);
+
+  // Neutral fallbacks for fields missing from the payload. No mock patient here:
+  // a real notification with an empty field must never show fake data. (Debug
+  // builds get their sample card from the native host, behind FORCE_QMS.)
+  const queueNumber = data.queueNumber || '';
+  const patientName = data.patientName || '';
+  const gender = data.gender || '';
+  const age = data.age || 0;
+  const patientId = data.patientId || '';
+  const symptoms = data.symptoms || [];
+  const position = data.position ?? 0;
+  const waitTimeMinutes = data.waitTimeMinutes ?? 0;
+  // Same placeholder drawable as the queue list rows when there is no photo.
+  const avatarUrl = data.avatarUrl || 'avatar1';
 
   // Collapse overflow symptoms into a "+N More" chip, matching the Figma design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
@@ -36,7 +76,9 @@ export default function QueueCard(props: QueueCardProps) {
       </View>
 
       {/* Queue Number */}
-      <Text style={styles.queueNumber}>{queueNumber}</Text>
+      {SHOW_QUEUE_POSITION && (
+        <Text style={styles.queueNumber}>{queueNumber}</Text>
+      )}
 
       {/* Profile Section */}
       <View style={styles.profileContainer}>
@@ -69,9 +111,11 @@ export default function QueueCard(props: QueueCardProps) {
       {/* Footer Row */}
       <View style={styles.footerRow}>
         <View style={styles.footerMetaGroup}>
-          <Text style={styles.footerMeta}>
-            Position <Text style={styles.boldText}>#{position}</Text>
-          </Text>
+          {SHOW_QUEUE_POSITION && (
+            <Text style={styles.footerMeta}>
+              Position <Text style={styles.boldText}>#{position}</Text>
+            </Text>
+          )}
           <Text style={styles.footerMeta}>
             Wait Time <Text style={styles.boldText}>{waitTimeMinutes} mins</Text>
           </Text>
@@ -189,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: Colors.divider,
     paddingTop: 12,
   },

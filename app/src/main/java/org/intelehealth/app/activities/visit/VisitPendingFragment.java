@@ -528,7 +528,8 @@ public class VisitPendingFragment extends Fragment {
             searchQ = "and (patient_name_new LIKE " + "'%" + searchQuery + "%') ";
         }
 
-        db.beginTransaction();
+        // Read-only: no transaction (BEGIN EXCLUSIVE fails with SQLITE_BUSY while the other
+        // app DB connection holds a lock); see VisitReceivedFragment.
 
         Cursor cursor = db.rawQuery("select p.patient_photo," +
                         " p.first_name, p.middle_name, p.last_name, " +
@@ -563,8 +564,6 @@ public class VisitPendingFragment extends Fragment {
 
                 new String[]{ENCOUNTER_VISIT_COMPLETE,String.valueOf(limit), String.valueOf(offset)});
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         if (cursor != null && cursor.moveToFirst()) {
             do {
@@ -639,7 +638,8 @@ public class VisitPendingFragment extends Fragment {
             searchQ = "and (p.first_name LIKE " + "'%" + searchQuery + "%') ";
         }
 
-        db.beginTransaction();
+        // Read-only: no transaction (BEGIN EXCLUSIVE fails with SQLITE_BUSY while the other
+        // app DB connection holds a lock); see VisitReceivedFragment.
 
         Cursor cursor = db.rawQuery("select p.patient_photo, " +
                 "p.first_name, p.middle_name, p.last_name, " +
@@ -672,8 +672,6 @@ public class VisitPendingFragment extends Fragment {
                 searchQ +
                 "ORDER BY v.startdate DESC", new String[]{});
 
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         if (cursor != null && cursor.moveToFirst()) {
               // Move cursor to first row
@@ -748,7 +746,8 @@ public class VisitPendingFragment extends Fragment {
             searchQ = "and (patient_name_new LIKE " + "'%" + searchQuery + "%') ";
         }
 
-        db.beginTransaction();
+        // Read-only: no transaction (BEGIN EXCLUSIVE fails with SQLITE_BUSY while the other
+        // app DB connection holds a lock); see VisitReceivedFragment.
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name," +
                         " p.openmrs_id, p.date_of_birth, p.phone_number," +
@@ -831,15 +830,14 @@ public class VisitPendingFragment extends Fragment {
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         return olderList;
     }
 
     private List<PrescriptionModel> olderVisits() {
         List<PrescriptionModel> olderList = new ArrayList<>();
-        db.beginTransaction();
+        // Read-only: no transaction (BEGIN EXCLUSIVE fails with SQLITE_BUSY while the other
+        // app DB connection holds a lock); see VisitReceivedFragment.
 
         Cursor cursor = db.rawQuery("select p.patient_photo, p.first_name, p.middle_name, p.last_name, p.openmrs_id, p.date_of_birth, p.phone_number, p.gender, v.startdate, v.patientuuid, e.visituuid, e.uuid as euid," +
                         " o.uuid as ouid, o.obsservermodifieddate, o.sync as osync, " +
@@ -919,8 +917,6 @@ public class VisitPendingFragment extends Fragment {
             while (cursor.moveToNext());
         }
         cursor.close();
-        db.setTransactionSuccessful();
-        db.endTransaction();
 
         return olderList;
     }

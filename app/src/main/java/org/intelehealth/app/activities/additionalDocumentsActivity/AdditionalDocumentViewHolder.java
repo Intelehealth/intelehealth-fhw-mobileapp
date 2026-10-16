@@ -46,7 +46,7 @@ public class AdditionalDocumentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void hideCancel(boolean flag) {
-        int visibility = flag ? View.GONE : View.VISIBLE;
+        int visibility = flag ? View.INVISIBLE : View.VISIBLE;
         deleteDocumentImageView.setVisibility(visibility);
     }
 

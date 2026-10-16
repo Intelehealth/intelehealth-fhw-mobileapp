@@ -31,6 +31,10 @@ public class Visit {
     @SerializedName("attributes")
     @Expose
     private List<VisitAttribute_Speciality> attributes = null;
+    // Only sent when true. Left null (and hence omitted by Gson) otherwise.
+    @SerializedName("addToQueue")
+    @Expose
+    private Boolean addToQueue;
 //    @SerializedName("attributes")
 //    @Expose
 //    private List<Attribute> attributes = null;
@@ -89,6 +93,16 @@ public class Visit {
 
     public void setAttributes(List<VisitAttribute_Speciality> attributes) {
         this.attributes = attributes;
+    }
+
+    public Boolean getAddToQueue() {
+        return addToQueue;
+    }
+
+    public void setAddToQueue(Boolean addToQueue) {
+        // Keep the field null unless it is explicitly true, so Gson skips
+        // "addToQueue" in the push payload when it should not be sent.
+        this.addToQueue = (addToQueue != null && addToQueue) ? Boolean.TRUE : null;
     }
 
 //    public List<Attribute> getAttributes() {

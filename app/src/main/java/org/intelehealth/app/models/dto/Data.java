@@ -50,12 +50,20 @@ public class Data {
     @Expose
     private List<VisitAttributeDTO> visitAttributeList = null;
 
+    @SerializedName("queueData")
+    @Expose
+    private QueueDataDTO queueData = null;
+
     @SerializedName("pageNo")
     @Expose
     private int pageNo;
     @SerializedName("totalCount")
     @Expose
     private int totalCount;
+
+    public List<QueueDTO> getQueuelist() {
+        return queueData != null ? queueData.getItems() : null;
+    }
 
     @SerializedName("propertyContents")
     private ConfigResponse configResponse;

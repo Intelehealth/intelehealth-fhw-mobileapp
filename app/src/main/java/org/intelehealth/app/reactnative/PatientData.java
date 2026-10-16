@@ -1,16 +1,40 @@
 package org.intelehealth.app.reactnative;
 
+import androidx.annotation.Keep;
+
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 
+/**
+ * "Next In Queue" card payload shared between the native host and the React
+ * Native {@code QueueCardModule}, and persisted as JSON (see
+ * {@link QueueCardUpdater}).
+ *
+ * <p>{@link Keep} and the explicit {@link SerializedName} names pin the JSON
+ * keys so the persisted format survives R8 field renaming in release builds and
+ * stays stable across app updates — otherwise a payload written by one build
+ * could fail to map when read back by the next.
+ */
+@Keep
 public class PatientData {
+    @SerializedName("queueNumber")
     private String queueNumber;
+    @SerializedName("patientName")
     private String patientName;
+    @SerializedName("gender")
     private String gender;
+    @SerializedName("age")
     private int age;
+    @SerializedName("patientId")
     private String patientId;
+    @SerializedName("symptoms")
     private ArrayList<String> symptoms;
+    @SerializedName("position")
     private int position;
+    @SerializedName("waitTimeMinutes")
     private int waitTimeMinutes;
+    @SerializedName("avatarUrl")
     private String avatarUrl;
 
     // Constructor

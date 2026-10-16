@@ -58,6 +58,39 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     //newly added prev_slot_day, prev_slot_date,prev_slot_time
 
     /**
+     * This will keep the patient queue listing pulled from the server.
+     * queueEntryId is the natural key from the server and is used as the
+     * PRIMARY KEY so that INSERT OR REPLACE de-duplicates rows across syncs.
+     */
+    public static final String CREATE_QUEUE = "CREATE TABLE IF NOT EXISTS tbl_queue (" +
+            "queueEntryId INTEGER PRIMARY KEY," +
+            "visitUuid TEXT," +
+            "speciality TEXT," +
+            "status TEXT," +
+            "emergencyLevel TEXT," +
+            "caseType TEXT," +
+            "escalated INTEGER," +
+            "position INTEGER," +
+            "etaMinutes INTEGER," +
+            "etaAt TEXT," +
+            "etaModelUsed TEXT," +
+            "assignedDoctorUuid TEXT," +
+            "queuedAt TEXT," +
+            "assignedAt TEXT," +
+            "connectedAt TEXT," +
+            "completedAt TEXT," +
+            "requeueCount INTEGER," +
+            "heartbeatFlagged INTEGER," +
+            "hwUserUuid TEXT," +
+            "patientUuid TEXT," +
+            "locationUuid TEXT," +
+            "flagged INTEGER," +
+            "escalatedAt TEXT," +
+            "vitals TEXT," +
+            "waitedMinutes INTEGER," +
+            "priorityScore REAL)";
+
+    /**
      * This will maintain all the types of notifications and its data.
      */
     public static final String CREATE_NOTIFICATIONS = "CREATE TABLE IF NOT EXISTS tbl_notifications (" +
@@ -337,6 +370,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
+        db.execSQL(CREATE_QUEUE);
         uuidInsert(db);
         database = db;
 
@@ -356,6 +390,16 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_address TEXT DEFAULT ''");
             case 5:
                 // upgrade logic from 5 to 6
+                db.execSQL(CREATE_QUEUE);
+            case 6:
+                // upgrade logic from 6 to 7
+                // issubmitted now gates the QMS addToQueue flag; visits already on the server must be
+                // marked submitted so a re-push doesn't queue them again. That includes visits whose
+                // own sync flag is currently reset by a pending note edit / end visit: any synced
+                // encounter means the visit's push already succeeded.
+                db.execSQL("UPDATE tbl_visit SET issubmitted = 1 WHERE sync IN ('true', 'TRUE', '1')"
+                        + " OR EXISTS (SELECT 1 FROM tbl_encounter e WHERE e.visituuid = tbl_visit.uuid"
+                        + " AND e.sync IN ('true', 'TRUE', '1'))");
                 break;
             default:
                 throw new IllegalStateException(

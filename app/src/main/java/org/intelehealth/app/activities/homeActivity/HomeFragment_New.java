@@ -16,13 +16,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CancellationSignal;
 import android.os.Handler;
+import android.os.OperationCanceledException;
 import android.os.LocaleList;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.reactnative.PatientData;
+import org.intelehealth.app.reactnative.QueueCardUpdater;
+import org.intelehealth.app.reactnative.StatusBannerData;
+import org.intelehealth.app.reactnative.StatusBannerUpdater;
 import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -126,31 +131,34 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private void addQueueLayout() {
-        ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
-
-        PatientData currentPatient = new PatientData(
-                "Q-104",
-                "Anthony G",
-                "M",
-                50,
-                "ID-987654jK",
-                symptomList,
-                2,
-                8,
-                "https://unsplash.com"
-        );
+        // The latest queue payload persisted from a "Next In Queue" FCM
+        // notification so the card reflects real queue state
+        PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
+        if (currentPatient == null && !BuildConfig.FORCE_QMS) {
+            // No "Next In Queue" notification received yet: nothing real to show, so collapse the
+            // slot (same as when QMS is off). The card appears once a notification is persisted.
+            hideContainer(R.id.queue_card_container);
+            return;
+        }
+        // TODO(QMS-CONFIG): remove this sample card with BuildConfig.FORCE_QMS once the config PR
+        // is merged. Debug builds only: lets testers see the card before the first FCM arrives.
+        if (currentPatient == null) {
+            ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
+            currentPatient = new PatientData(
+                    "Q-104",
+                    "Anthony G",
+                    "M",
+                    50,
+                    "ID-987654jK",
+                    symptomList,
+                    2,
+                    8,
+                    "https://unsplash.com"
+            );
+        }
 
         // 3. Map your custom data class parameters directly into the Android Bundle payload
-        Bundle initialProperties = new Bundle();
-        initialProperties.putString("queueNumber", currentPatient.getQueueNumber());
-        initialProperties.putString("patientName", currentPatient.getPatientName());
-        initialProperties.putString("gender", currentPatient.getGender());
-        initialProperties.putInt("age", currentPatient.getAge());
-        initialProperties.putString("patientId", currentPatient.getPatientId());
-        initialProperties.putStringArrayList("symptoms", currentPatient.getSymptoms()); // Maps perfectly to a JavaScript Array
-        initialProperties.putInt("position", currentPatient.getPosition());
-        initialProperties.putInt("waitTimeMinutes", currentPatient.getWaitTimeMinutes());
-        initialProperties.putString("avatarUrl", currentPatient.getAvatarUrl());
+        Bundle initialProperties = QueueCardUpdater.toBundle(currentPatient);
 
         // 4. Boot the pipeline layer inside your execution lifecycle hook
         ReactFragment reactFragment = new ReactFragment.Builder()
@@ -170,11 +178,20 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
      * passed as launch options so it can later be driven by real queue status.
      */
     private void addStatusBannerLayout() {
-        Bundle bannerProps = new Bundle();
-        bannerProps.putString("variant", "alert");
-        bannerProps.putString("title", getString(R.string.doctor_on_break));
-        bannerProps.putString("subtitle", getString(R.string.queue_paused));
-        bannerProps.putString("actionLabel", getString(R.string.view_queue));
+        // Prefer the latest banner payload persisted from a "queue_status" FCM
+        // notification so the banner reflects real queue status; fall back to the
+        // default "Doctor is on Break" banner when none has been received yet.
+        StatusBannerData banner = StatusBannerUpdater.getPersisted(requireContext());
+        Bundle bannerProps;
+        if (banner != null) {
+            bannerProps = StatusBannerUpdater.toBundle(banner);
+        } else {
+            bannerProps = new Bundle();
+            bannerProps.putString("variant", "alert");
+            bannerProps.putString("title", getString(R.string.doctor_on_break));
+            bannerProps.putString("subtitle", getString(R.string.queue_paused));
+            bannerProps.putString("actionLabel", getString(R.string.view_queue));
+        }
 
         ReactFragment bannerFragment = new ReactFragment.Builder()
                 .setComponentName("StatusBannerModule")
@@ -223,6 +240,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
     }
 
     private static SQLiteDatabase db;
+    // Cancels the in-flight Prescription card queries when this view goes away.
+    private CancellationSignal homeQueriesSignal;
+
+    @Override
+    public void onDestroyView() {
+        if (homeQueriesSignal != null) {
+            homeQueriesSignal.cancel();
+        }
+        super.onDestroyView();
+    }
 
     private int getCurrentMonthsVisits(boolean isForReceivedPrescription) {
         int count = 0;
@@ -393,10 +420,21 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
 
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
+        // Fresh signal per load; cancelled in onDestroyView so these slow queries free the shared
+        // DB connection when the user leaves Home (e.g. for the Queue tab, whose read would
+        // otherwise wait behind them).
+        CancellationSignal querySignal = new CancellationSignal();
+        homeQueriesSignal = querySignal;
         Executors.newSingleThreadExecutor().execute(() -> {
             HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
-            int pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db);
-            int countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db);
+            int pendingCountTotalVisits;
+            int countReceivedPrescription;
+            try {
+                pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db, querySignal);
+                countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db, querySignal);
+            } catch (OperationCanceledException e) {
+                return; // Home was left; the card is gone, nothing to update.
+            }
             //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);
             // int countReceivedPrescription = new VisitsDAO().getVisitCountsByStatus(true);
             int total = pendingCountTotalVisits + countReceivedPrescription;

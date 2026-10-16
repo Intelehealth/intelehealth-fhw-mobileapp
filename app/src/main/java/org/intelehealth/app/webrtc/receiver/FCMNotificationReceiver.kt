@@ -16,8 +16,11 @@ import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
+import org.intelehealth.app.reactnative.QueueCardUpdater
+import org.intelehealth.app.reactnative.StatusBannerUpdater
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -48,10 +51,21 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         data: HashMap<String, String>
     ) {
         Timber.tag(TAG).d("onMessageReceived: $data")
+        Log.d(TAG, "onMessageReceived: data received in notification : $data")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
-            if (data.containsKey("type") && data["type"].equals("video_call")) {
+            if (data.containsKey("type") && data["type"].equals("visit_started")) {
+                val visitUuid = data["visitUuid"] ?: ""
+                if (visitUuid.isNotEmpty()) {
+                    Log.d(TAG, "onMessageReceived: $visitUuid - removing visit cache")
+                    // remove the local edit cache once the doctor starts the visit note
+                    sessionManager.clearVisitEditCache(visitUuid)
+                    // mark visit note as started (in-memory, non-persistent) so editing is blocked
+                    // immediately, even before the visit note encounter is pulled into the local DB.
+                    IntelehealthApplication.markVisitNoteStarted(visitUuid)
+                }
+            } else if (data.containsKey("type") && data["type"].equals("video_call")) {
                 checkVideoActiveStatus(context) {
                     Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                         nurseName = sessionManager.chwname
@@ -73,10 +87,22 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         }
                     }
                 }
+            } else if (data["type"] == "Queue Banner") {
+                // Refresh the home status banner only: persist the latest payload
+                // and push it to the live banner if mounted. No status-bar
+                // notification is shown for queue status updates.
+                StatusBannerUpdater.handleBannerNotification(context, data)
+            } else if(data["type"] == "Queue update"){
+                // Refresh the home screen "Next In Queue" card only: persist
+                // the latest payload and push it to the live card if mounted.
+                // No status-bar notification is shown for queue updates.
+                QueueCardUpdater.handleQueueNotification(context, data)
+                return@let
             } else {
                 if(data.isNotEmpty() && notification == null){
+                    val title = (data["title"] ?: "").lowercase()
                     sendNotificationFromBody(data,context)
-                    if((data["title"]?:"").lowercase().contains("prescription")){
+                    if(title.contains("prescription")){
                         NotificationSchedulerUtils.scheduleFollowUpNotification(
                                 FollowUpNotificationData(
                                         value = data["followupDatetime"] ?: "",

@@ -30,7 +30,9 @@ import org.intelehealth.app.utilities.exception.DAOException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class ObsDAO extends BaseDao{
@@ -43,8 +45,12 @@ public class ObsDAO extends BaseDao{
     public boolean insertObsTemp(List<ObsDTO> obsDTOS) throws DAOException {
         boolean isInserted = true;
         List<HashMap<String, Object>> obsList = new ArrayList<>();
+        // Vitals/diagnostics voided locally whose server delete is still pending: a pulled active copy
+        // must not replace them (that would undo the clear and drop them from the delete pass).
+        Set<String> pendingDeletes = new HashSet<>(getVoidedUnsyncedVitalAndDiagnosticsObs());
         for (ObsDTO obsDTO : obsDTOS) {
             if (new SessionManager(IntelehealthApplication.getAppContext()).isFirstTimeSyncExcuted() && obsDTO.getVoided() == 1) continue;
+            if (!Integer.valueOf(1).equals(obsDTO.getVoided()) && pendingDeletes.contains(obsDTO.getUuid())) continue;
             obsList.add(createObsMap(obsDTO));
         }
         executeInBackground(bulkInsert(obsList));
@@ -118,6 +124,10 @@ public class ObsDAO extends BaseDao{
             values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
+            // Re-flag the parent encounter as unsynced so this obs is pushed again,
+            // even if the encounter was already synced to the server previously.
+            markEncounterUnsynced(db, obsDTO.getEncounteruuid());
+
             db.setTransactionSuccessful();
             Logger.logD("updated", "updatedrecords count" + insertedCount);
         } catch (SQLException e) {
@@ -134,6 +144,16 @@ public class ObsDAO extends BaseDao{
 
 
     public boolean updateObs(ObsDTO obsDTO) {
+        // No existing obs to update (e.g. an optional value first entered while editing): insert it.
+        // db.update() with a null where-arg throws IllegalArgumentException, not SQLiteException.
+        if (obsDTO.getUuid() == null || obsDTO.getUuid().isEmpty()) {
+            try {
+                insertObs(obsDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            return true;
+        }
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         db.beginTransaction();
         int updatedCount = 0;
@@ -150,6 +170,10 @@ public class ObsDAO extends BaseDao{
             values.put("sync", "false");
             values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
             updatedCount = db.update("tbl_obs", values, selection, new String[]{obsDTO.getUuid()});
+
+            // Re-flag the parent encounter as unsynced so this edited obs is pushed again,
+            // even if the encounter was already synced to the server previously.
+            markEncounterUnsynced(db, obsDTO.getEncounteruuid());
 
             db.setTransactionSuccessful();
         } catch (SQLiteException e) {
@@ -170,6 +194,22 @@ public class ObsDAO extends BaseDao{
 
 
         return true;
+    }
+
+    /**
+     * Marks the given encounter as unsynced (sync = "false") so that any obs added/edited under it
+     * are re-pushed to the server even if the encounter was already synced.
+     * Runs on the caller's open transaction/connection. No-op for a null/empty encounter uuid.
+     */
+    private void markEncounterUnsynced(SQLiteDatabase db, String encounterUuid) {
+        if (encounterUuid == null || encounterUuid.isEmpty()) return;
+        try {
+            ContentValues encValues = new ContentValues();
+            encValues.put("sync", "false");
+            db.update("tbl_encounter", encValues, "uuid = ?", new String[]{encounterUuid});
+        } catch (SQLiteException e) {
+            Logger.logE(TAG, "markEncounterUnsynced failed", e);
+        }
     }
 
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
@@ -490,6 +530,77 @@ public class ObsDAO extends BaseDao{
 
         return dbValue;
         // fetch dr details from local db - end
+    }
+
+    /**
+     * Edit save for a single-valued obs (a vital or diagnostic): updates the obs found for it and
+     * voids any other active copy of the same concept in the encounter, so the edited value is the
+     * only one shown and synced (older edits left duplicates). Inserts when none exists yet.
+     */
+    public void updateSingleObs(ObsDTO obsDTO) {
+        if (obsDTO.getUuid() != null && !obsDTO.getUuid().isEmpty()) {
+            voidOtherObs(obsDTO.getEncounteruuid(), obsDTO.getConceptuuid(), obsDTO.getUuid());
+        }
+        updateObs(obsDTO);
+    }
+
+    /**
+     * Voids every active obs of {@code conceptUuid} in the encounter except {@code keepUuid} (all of
+     * them when it is null), e.g. an optional vital/diagnostic cleared in edit mode. Left unsynced so
+     * {@link #getVoidedUnsyncedVitalAndDiagnosticsObs()} picks them up and the sync deletes them on
+     * the server. Older edits re-inserted vitals/diagnostics with new uuids, leaving several
+     * active copies of one concept (also pulled back from the server); voiding the extras leaves the
+     * edited value as the only one shown and pushed, and the sync deletes the copies on the server.
+     */
+    public void voidOtherObs(String encounterUuid, String conceptUuid, String keepUuid) {
+        if (encounterUuid == null || conceptUuid == null) return;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("voided", "1");
+        values.put("sync", "false");
+        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        String where = "encounteruuid = ? AND conceptuuid = ? AND voided = '0'";
+        String[] args = {encounterUuid, conceptUuid};
+        if (keepUuid != null && !keepUuid.isEmpty()) {
+            where += " AND uuid != ?";
+            args = new String[]{encounterUuid, conceptUuid, keepUuid};
+        }
+        try {
+            db.update("tbl_obs", values, where, args);
+        } catch (SQLiteException e) {
+            Logger.logE(TAG, "voidOtherObs failed", e);
+        }
+    }
+
+    /**
+     * Uuids of vital and diagnostics obs voided locally whose deletion has not yet been confirmed by
+     * the server.
+     */
+    public static List<String> getVoidedUnsyncedVitalAndDiagnosticsObs() {
+        List<String> uuids = new ArrayList<>();
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("SELECT uuid FROM tbl_obs WHERE conceptsetuuid IN (?, ?) AND voided = '1' AND sync = 'false'",
+                new String[]{UuidDictionary.OBS_TYPE_VITAL_SET, UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET});
+        try {
+            while (cursor.moveToNext()) {
+                uuids.add(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
+            }
+        } finally {
+            cursor.close();
+        }
+        return uuids;
+    }
+
+    /** Marks a voided obs as synced once its server-side deletion is confirmed. */
+    public static void markObsSynced(String obsUuid) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("sync", "true");
+        try {
+            db.update("tbl_obs", values, "uuid = ?", new String[]{obsUuid});
+        } catch (SQLiteException e) {
+            Logger.logE("ObsDAO", "markObsSynced failed", e);
+        }
     }
 
     public static void deleteExistingVitalsDataIfExists(String visitUuid) {

@@ -68,6 +68,8 @@ class ConfigRepository(
                 activeStatusRosterQuestionnaireSection = config.rosterQuestionnaireSection
                 activeStatusDiagnosticsSection = config.patientDiagnosticsSection
                 activeStatusPatientDraftSurvey = config.patientDraftSurvey
+                activeQms = config.activeQms
+                activeEditVisit = config.activeEditVisit
             }.also { configDb.featureActiveStatusDao().add(it) }
             onCompleted.invoke()
         }

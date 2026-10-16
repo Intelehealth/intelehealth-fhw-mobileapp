@@ -1,5 +1,6 @@
 package org.intelehealth.app.activities.homeActivity;
 
+import org.intelehealth.app.reactnative.QueueDataCleaner;
 import static org.intelehealth.app.utilities.DialogUtils.patientRegistrationDialog;
 
 import android.animation.ObjectAnimator;
@@ -803,15 +804,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setOnItemSelectedListener(navigationItemSelectedListener);
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        // QMS on → Queue tab; QMS off → Help tab (they share a slot).
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE, true);
-        boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
-        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
+        updateQMSBottomNavigation();
         //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
         setLocale(HomeScreenActivity_New.this);
 
+    }
+
+    private void updateQMSBottomNavigation() {
+        // QMS on → Queue tab; QMS off → Help tab (they share a slot).
+        boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
+        bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
     }
 
     /**
@@ -1133,6 +1137,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
+        // TODO(QMS-CONFIG): drop BuildConfig.FORCE_QMS once the config PR is merged. Debug builds
+        // force QMS on for UI testing; this is not UI-only - PatientsFrameJson reads the same flag
+        // and sends addToQueue on push, so debug builds really queue visits on the server they
+        // point at. Release builds always follow the server config.
+        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE,
+                BuildConfig.FORCE_QMS || activeStatus.getActiveQms());
+        preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, activeStatus.getActiveEditVisit());
+        if(bottomNav != null)
+            updateQMSBottomNavigation();
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -1608,6 +1621,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         syncUtils.syncBackground();
         sessionManager.setReturningUser(false);
         sessionManager.setLogout(true);
+        QueueDataCleaner.clearOnLogout(this);
         unregisterReceiver(syncBroadcastReceiver);
 
         Intent intent = new Intent(HomeScreenActivity_New.this, LoginActivityNew.class);
@@ -1846,7 +1860,15 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
         tvAppLastSync.setText(lastSyncText);
-        llAutoUpdate.setVisibility(View.GONE);
+        // "Auto updating" (llAutoUpdate) belongs to the Queue toolbar. This method
+        // runs on every sync broadcast, so only hide it when we're NOT on the
+        // Queue tab (the Home toolbar shows the last-sync label instead); otherwise
+        // a sync while the Queue screen is open would wrongly hide "Auto updating".
+        boolean isQueueTab = bottomNav != null
+                && bottomNav.getSelectedItemId() == R.id.bottom_nav_queue;
+        if (!isQueueTab) {
+            llAutoUpdate.setVisibility(View.GONE);
+        }
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
         // }).start();

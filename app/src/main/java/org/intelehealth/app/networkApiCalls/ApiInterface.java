@@ -117,8 +117,9 @@ public interface ApiInterface {
                                                              @Part MultipartBody.Part image,
                                                              @Part("json") ObsPushDTO obsJsonRequest);
 
+    // Wrapped in Response so a 204 (null body) still reaches onSuccess and the status is inspectable.
     @DELETE
-    Observable<Void> DELETE_OBS_IMAGE(@Url String url, @Header("Authorization") String authHeader);
+    Single<Response<Void>> DELETE_OBS(@Url String url, @Header("Authorization") String authHeader);
 
 
     @GET("/api/mindmap/download")

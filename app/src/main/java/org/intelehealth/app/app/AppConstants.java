@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 public class AppConstants {
     //Constants
     public static final String DATABASE_NAME = BuildConfig.FLAVOR_client + "-localrecords.db";
-    public static final int DATABASE_VERSION = 5;
+    public static final int DATABASE_VERSION = 7;
     public static final String JSON_FOLDER = "Engines";
     public static final String JSON_FOLDER_Update = "Engines_Update";
     public static final String IMAGE_APP_ID = "app2";
@@ -37,7 +37,8 @@ public class AppConstants {
     public static final String MESSAGE_PROGRESS = "message_progress";
     public static final String MCC_USER_TYPE = "mcc";
 
-    public static final int PAGE_LIMIT = 1000;
+    //PAGE_LIMIT has been updated from server's end from 1000 to 200
+    public static final int PAGE_LIMIT = 200;
 
     public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
     public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;

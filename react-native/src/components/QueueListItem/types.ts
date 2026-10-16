@@ -8,8 +8,16 @@ import type { StyleProp, ViewStyle } from 'react-native';
  * "Duration" (a patient already On Call) and "Wait time" (everyone else).
  */
 
-// Drives the whole visual variant of the card.
-export type QueueStatus = 'onCall' | 'nextInQueue' | 'waiting';
+// Drives the whole visual variant of the card. The first three have their own
+// tab; the rest (no position, no time) appear only under "All". Keep in sync with
+// QueueRowFormatter on the Android side.
+export type QueueStatus =
+  | 'onCall'
+  | 'nextInQueue'
+  | 'waiting'
+  | 'doctorAssigned'
+  | 'connecting'
+  | 'awaitingPrescription';
 
 export interface QueueListItemProps {
   // Queue token, e.g. "Q-104".
@@ -28,9 +36,29 @@ export interface QueueListItemProps {
   position: number;
   // Visual + semantic state of the row.
   status: QueueStatus;
-  // Pre-formatted time string, e.g. "04:32". Rendered as the elapsed call
-  // "Duration" for onCall, otherwise as the queue "Wait time".
+  // Pre-formatted time string, e.g. "04:32". Used as the initial paint and as
+  // the fallback when no live timestamp is present. When `etaAt`/`connectedAt`
+  // are supplied, the row ticks its own value from those instead.
   time: string;
+  // ISO-8601 instant the patient is expected to be seen; drives the live
+  // "Wait time" countdown for nextInQueue/waiting rows.
+  etaAt?: string;
+  // ISO-8601 instant the call connected; drives the live "Duration" count-up
+  // for onCall rows.
+  connectedAt?: string;
+  // Current time (ms since epoch) supplied by the screen's shared 1s ticker.
+  // When present, the row recomputes its time string from etaAt/connectedAt.
+  now?: number;
+  // Localized labels from the native host (string resources). When absent (e.g.
+  // standalone/dev), the English defaults in STATUS_CONFIG are used.
+  // Status badge text, e.g. "Next in Queue".
+  statusLabel?: string;
+  // Footer time label, e.g. "Wait time" / "Duration" ("" when no time).
+  timeLabel?: string;
+  // Footer label once the ETA has passed, e.g. "Overdue".
+  overdueLabel?: string;
+  // "+N More" chip template with "%1$d" for N, e.g. "+%1$d More".
+  moreLabel?: string;
   // Optional avatar image URL.
   avatarUrl?: string;
   // Fired when the row is tapped.
