@@ -134,7 +134,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         // The latest queue payload persisted from a "Next In Queue" FCM
         // notification so the card reflects real queue state
         PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
-        //Show dummy data to check UI for testing
+        if (currentPatient == null && !BuildConfig.FORCE_QMS) {
+            // No "Next In Queue" notification received yet: nothing real to show, so collapse the
+            // slot (same as when QMS is off). The card appears once a notification is persisted.
+            hideContainer(R.id.queue_card_container);
+            return;
+        }
+        // TODO(QMS-CONFIG): remove this sample card with BuildConfig.FORCE_QMS once the config PR
+        // is merged. Debug builds only: lets testers see the card before the first FCM arrives.
         if (currentPatient == null) {
             ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
             currentPatient = new PatientData(

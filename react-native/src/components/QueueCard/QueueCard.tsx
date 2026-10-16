@@ -46,16 +46,19 @@ export default function QueueCard(props: QueueCardProps) {
     return () => subscription.remove();
   }, []);
 
-  // Fallback to default mock data if properties aren't completely ready.
-  const queueNumber = data.queueNumber || "Q-104";
-  const patientName = data.patientName || "Anthony G";
-  const gender = data.gender || "M";
-  const age = data.age || 50;
-  const patientId = data.patientId || "ID-987654jK";
-  const symptoms = data.symptoms || ["Abdominal Pain", "Nausea"];
-  const position = data.position ?? 2;
-  const waitTimeMinutes = data.waitTimeMinutes ?? 8;
-  const avatarUrl = data.avatarUrl || 'https://unsplash.com';
+  // Neutral fallbacks for fields missing from the payload. No mock patient here:
+  // a real notification with an empty field must never show fake data. (Debug
+  // builds get their sample card from the native host, behind FORCE_QMS.)
+  const queueNumber = data.queueNumber || '';
+  const patientName = data.patientName || '';
+  const gender = data.gender || '';
+  const age = data.age || 0;
+  const patientId = data.patientId || '';
+  const symptoms = data.symptoms || [];
+  const position = data.position ?? 0;
+  const waitTimeMinutes = data.waitTimeMinutes ?? 0;
+  // Same placeholder drawable as the queue list rows when there is no photo.
+  const avatarUrl = data.avatarUrl || 'avatar1';
 
   // Collapse overflow symptoms into a "+N More" chip, matching the Figma design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
