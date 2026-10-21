@@ -13,6 +13,7 @@ export interface QueuePatientData {
   position: number;
   waitTimeMinutes: number;
   avatarUrl?: string;
+  speciality?: string;
 }
 
 // Props received when mounted from Android. When passed via a ReactFragment's
@@ -28,6 +29,7 @@ export interface QueueCardProps {
   position?: number;
   waitTimeMinutes?: number;
   avatarUrl?: string;
+  speciality?: string;
 }
 
 // Root props of the QueueCardModule slideshow: the patient list delivered by

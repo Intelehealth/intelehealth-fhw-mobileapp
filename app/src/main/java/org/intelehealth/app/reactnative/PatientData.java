@@ -36,11 +36,24 @@ public class PatientData {
     private int waitTimeMinutes;
     @SerializedName("avatarUrl")
     private String avatarUrl;
+    // Queue the patient is waiting in; one card is kept per speciality.
+    @SerializedName("speciality")
+    private String speciality;
+    @SerializedName("visitUuid")
+    private String visitUuid;
 
     // Constructor
     public PatientData(String queueNumber, String patientName, String gender, int age,
                        String patientId, ArrayList<String> symptoms, int position,
                        int waitTimeMinutes, String avatarUrl) {
+        this(queueNumber, patientName, gender, age, patientId, symptoms, position,
+                waitTimeMinutes, avatarUrl, null, null);
+    }
+
+    public PatientData(String queueNumber, String patientName, String gender, int age,
+                       String patientId, ArrayList<String> symptoms, int position,
+                       int waitTimeMinutes, String avatarUrl, String speciality,
+                       String visitUuid) {
         this.queueNumber = queueNumber;
         this.patientName = patientName;
         this.gender = gender;
@@ -50,6 +63,8 @@ public class PatientData {
         this.position = position;
         this.waitTimeMinutes = waitTimeMinutes;
         this.avatarUrl = avatarUrl;
+        this.speciality = speciality;
+        this.visitUuid = visitUuid;
     }
 
     // Getters
@@ -62,4 +77,6 @@ public class PatientData {
     public int getPosition() { return position; }
     public int getWaitTimeMinutes() { return waitTimeMinutes; }
     public String getAvatarUrl() { return avatarUrl; }
+    public String getSpeciality() { return speciality; }
+    public String getVisitUuid() { return visitUuid; }
 }

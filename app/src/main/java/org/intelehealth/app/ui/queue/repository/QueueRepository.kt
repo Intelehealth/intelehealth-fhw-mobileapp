@@ -19,8 +19,17 @@ class QueueRepository(private val queueDao: QueueDAO) {
      * [limit]/[offset] (same convention as VisitsDAO's listing queries). Runs a
      * synchronous query, so call it off the main thread (the ViewModel does).
      */
-    fun getQueueList(limit: Int, offset: Int): List<QueueRow> {
-        val rows = queueDao.getQueueWithPatient(limit, offset) { cursor -> mapRow(cursor) }
+    fun getQueueList(limit: Int, offset: Int): List<QueueRow> =
+        withChiefComplaint(queueDao.getQueueWithPatient(limit, offset) { cursor -> mapRow(cursor) })
+
+    /**
+     * The "Next in Queue" rows (position 1 of each speciality queue), used to
+     * seed the home "Next In Queue" card. Synchronous — call it off the main thread.
+     */
+    fun getNextInQueue(): List<QueueRow> =
+        withChiefComplaint(queueDao.getNextInQueueWithPatient { cursor -> mapRow(cursor) })
+
+    private fun withChiefComplaint(rows: List<QueueRow>): List<QueueRow> {
         // Resolve the chief complaint from each visit's obs AFTER the queue
         // cursor is closed (so we don't run a nested query mid-iteration).
         // Still off the main thread — the ViewModel calls this on IO. Same query
@@ -60,7 +69,9 @@ class QueueRepository(private val queueDao: QueueDAO) {
             etaMinutes = c.int("etaMinutes"),
             etaAt = c.str("etaAt"),
             connectedAt = c.str("connectedAt"),
-            patientPhoto = c.str("patient_photo")
+            patientPhoto = c.str("patient_photo"),
+            speciality = c.str("speciality"),
+            queueEntryId = c.str("queueEntryId")
         )
     }
 

@@ -28,5 +28,7 @@ data class QueueRow(
     // ISO-8601 instant the call was connected (server "connectedAt"); used to
     // show the elapsed call duration for onCall rows.
     val connectedAt: String?,
-    val patientPhoto: String?
+    val patientPhoto: String?,
+    val speciality: String? = null,
+    val queueEntryId: String? = null
 )

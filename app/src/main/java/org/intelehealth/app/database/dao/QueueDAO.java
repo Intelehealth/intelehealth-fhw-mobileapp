@@ -286,6 +286,43 @@ public class QueueDAO extends BaseDao{
     }
 
     /**
+     * The "Next in Queue" entries - QUEUED / ESCALATED / RE_QUEUED at position 1
+     * (see {@code QueueRowFormatter#mapStatus}) - joined with their patient, one
+     * per speciality queue. Seeds the home "Next In Queue" card until the first
+     * queue notification arrives. Synchronous - call off the main thread. Empty
+     * on any error.
+     */
+    public <T> ArrayList<T> getNextInQueueWithPatient(QueueRowMapper<T> mapper) {
+        if (mapper == null) {
+            return new ArrayList<>();
+        }
+        return read(db -> queryNextInQueueWithPatient(db, mapper), new ArrayList<>());
+    }
+
+    private <T> ArrayList<T> queryNextInQueueWithPatient(SQLiteDatabase db, QueueRowMapper<T> mapper) {
+        ArrayList<T> rows = new ArrayList<>();
+        String sql = queueWithPatientSelect() +
+                "WHERE UPPER(TRIM(q.status)) IN ('QUEUED', 'ESCALATED', 'RE_QUEUED') " +
+                "AND q.position = 1 ORDER BY q.speciality ASC";
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    rows.add(mapper.map(cursor));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            CustomLog.d(TAG, "getNextInQueueWithPatient: e " + e.getLocalizedMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return rows;
+    }
+
+    /**
      * Raw chief-complaint obs value for {@code visitUuid}. Same query and "en"
      * JSON handling as {@link EncounterDAO#getChiefComplaint(String)}, but
      * without its transaction.
@@ -362,7 +399,8 @@ public class QueueDAO extends BaseDao{
      */
     private String queueWithPatientSelect() {
         return "SELECT q.status AS status, q.position AS position, " +
-                "q.visitUuid AS visitUuid, " +
+                "q.visitUuid AS visitUuid, q.speciality AS speciality, " +
+                "q.queueEntryId AS queueEntryId, " +
                 "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
                 "q.etaAt AS etaAt, q.connectedAt AS connectedAt, " +
                 "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +

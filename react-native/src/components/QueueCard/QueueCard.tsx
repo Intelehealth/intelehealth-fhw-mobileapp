@@ -18,35 +18,14 @@ const MAX_VISIBLE_TAGS = 2;
 // Queue number and position are hidden for now; flip to true to show them again.
 const SHOW_QUEUE_POSITION = false;
 
-// Native event emitted by QueueCardUpdater when a "Next In Queue" FCM
-// notification arrives while this card is mounted. Keep in sync with
-// QueueCardUpdater.EVENT_QUEUE_CARD_UPDATE on the Android side.
-const QUEUE_CARD_UPDATE_EVENT = 'QueueCardUpdate';
-
-export default function QueueCard(props: QueueCardProps) {
-  // Card content lives in state so a live FCM update can refresh it without a
-  // native remount. Seeded from the initial props delivered by the host
-  // fragment (which itself may be the last persisted queue payload).
-  const [data, setData] = useState<QueueCardProps>(props);
-
-  // Re-seed if the host remounts us with fresh initial props.
-  useEffect(() => {
-    setData(props);
-  }, [props]);
-
-  // Subscribe to live queue updates pushed from native on FCM receipt. Only
-  // the fields present in the payload override the current card; anything
-  // omitted keeps its existing value.
-  useEffect(() => {
-    const subscription = DeviceEventEmitter.addListener(
-      QUEUE_CARD_UPDATE_EVENT,
-      (update: QueueCardProps) => {
-        setData(prev => ({ ...prev, ...update }));
-      },
-    );
-    return () => subscription.remove();
-  }, []);
-
+/**
+ * A single "Next In Queue" card. Rendered per patient by QueueCardSlideshow,
+ * which owns the patient list and the live FCM updates.
+ */
+export default function QueueCard({
+  style,
+  ...data
+}: QueueCardProps & { style?: StyleProp<ViewStyle> }) {
   // Neutral fallbacks for fields missing from the payload. No mock patient here:
   // a real notification with an empty field must never show fake data. (Debug
   // builds get their sample card from the native host, behind FORCE_QMS.)

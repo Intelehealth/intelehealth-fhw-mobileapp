@@ -21,6 +21,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.QueueDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.ui.queue.model.QueueRow;
+import org.intelehealth.app.ui.queue.repository.QueueRepository;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.klivekit.data.PreferenceHelper;
@@ -71,26 +75,106 @@ public final class QueueCardUpdater {
     }
 
     /**
-     * Parse a "Next In Queue" FCM data payload into its patient list, persist
-     * it (replacing the previous list), and push it to the live card if the RN
-     * context is running.
+     * Parse a "Next In Queue" FCM data payload and merge it into the persisted
+     * patient list: an entry for the same speciality is replaced, otherwise the
+     * patient is added as a new slide. The merged list is persisted and pushed
+     * to the live card if the RN context is running.
      */
     public static void handleQueueNotification(Context context, Map<String, String> data) {
         if (context == null || data == null) {
             return;
         }
-        ArrayList<PatientData> patients = new ArrayList<>();
+        // The first notification after login starts from the tbl_queue seed the
+        // card was showing; from then on the notification list is the source.
+        List<PatientData> patients = new ArrayList<>(getCards(context));
         for (Map<String, String> item : splitPatients(data)) {
-            patients.add(parse(context, item));
+            upsert(patients, parse(context, item));
         }
         persist(context, patients);
         emit(patients);
     }
 
     /**
+     * Replace the entry queued for the same speciality (or, when the payload has
+     * no speciality, the same visit), otherwise append the patient.
+     */
+    private static void upsert(List<PatientData> patients, PatientData patient) {
+        for (int i = 0; i < patients.size(); i++) {
+            if (isSameQueueEntry(patients.get(i), patient)) {
+                patients.set(i, patient);
+                return;
+            }
+        }
+        patients.add(patient);
+    }
+
+    private static boolean isSameQueueEntry(PatientData existing, PatientData incoming) {
+        if (!TextUtils.isEmpty(incoming.getSpeciality())) {
+            return incoming.getSpeciality().equalsIgnoreCase(existing.getSpeciality());
+        }
+        return !TextUtils.isEmpty(incoming.getVisitUuid())
+                && incoming.getVisitUuid().equalsIgnoreCase(existing.getVisitUuid());
+    }
+
+    /**
+     * The patients for the home slideshow: the list built from queue
+     * notifications once one has been received since login, otherwise the
+     * "Next in Queue" rows of the synced {@code tbl_queue}. Reads the DB, so
+     * call it off the main thread.
+     */
+    public static List<PatientData> getCards(Context context) {
+        if (hasNotificationData(context)) {
+            return getPersisted(context);
+        }
+        return fromQueueTable(context);
+    }
+
+    /**
+     * Whether a queue notification has been persisted since login. Cleared on
+     * logout ({@link QueueDataCleaner}), so a fresh login starts from tbl_queue.
+     */
+    public static boolean hasNotificationData(Context context) {
+        try {
+            return !TextUtils.isEmpty(
+                    new PreferenceHelper(context).getString(PreferenceHelper.QUEUE_CARD_DATA));
+        } catch (Exception e) {
+            Log.e(TAG, "hasNotificationData failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** The "Next in Queue" rows of tbl_queue, mapped onto the card fields. */
+    private static List<PatientData> fromQueueTable(Context context) {
+        List<PatientData> patients = new ArrayList<>();
+        try {
+            for (QueueRow row : new QueueRepository(new QueueDAO()).getNextInQueue()) {
+                int waitTimeMinutes = !TextUtils.isEmpty(row.getEtaAt())
+                        ? minutesUntil(row.getEtaAt())
+                        : row.getEtaMinutes();
+                patients.add(new PatientData(
+                        emptyToNull(row.getQueueEntryId()),
+                        emptyToNull(row.getPatientName()),
+                        emptyToNull(row.getGender()),
+                        TextUtils.isEmpty(row.getDateOfBirth())
+                                ? 0 : DateAndTimeUtils.getAge(row.getDateOfBirth(), context),
+                        emptyToNull(row.getOpenmrsId()),
+                        extractComplaintNames(row.getChiefComplaint()),
+                        row.getPosition(),
+                        waitTimeMinutes,
+                        emptyToNull(QueueRowFormatter.toAvatarUri(row.getPatientPhoto())),
+                        emptyToNull(row.getSpeciality()),
+                        emptyToNull(row.getVisitUuid())
+                ));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "fromQueueTable failed: " + e.getMessage());
+        }
+        return patients;
+    }
+
+    /**
      * The most recently persisted queue patient list, or an empty list if no
-     * queue notification has been received yet. Used by the home fragment to
-     * seed the slideshow on mount.
+     * queue notification has been received yet.
      */
     public static List<PatientData> getPersisted(Context context) {
         try {
@@ -178,7 +262,17 @@ public final class QueueCardUpdater {
         // A "Queue update" notification identifies the patient only by UUID, so
         // look the display fields (name, id, gender, age) up from the local DB
         // for any the payload didn't already carry.
+        // The "queue:*" event payload carries only the visitUuid; resolve the
+        // patient from the locally synced visit.
+        String visitUuid = data.get("visitUuid");
         String patientUuid = data.get("patientUuid");
+        if (TextUtils.isEmpty(patientUuid) && !TextUtils.isEmpty(visitUuid)) {
+            try {
+                patientUuid = new VisitsDAO().patientUuidByViistUuid(visitUuid);
+            } catch (Exception e) {
+                Log.e(TAG, "visit lookup failed: " + e.getMessage());
+            }
+        }
         if (!TextUtils.isEmpty(patientUuid) && (TextUtils.isEmpty(patientName)
                 || TextUtils.isEmpty(patientId) || TextUtils.isEmpty(gender) || age == 0)) {
             try {
@@ -202,11 +296,17 @@ public final class QueueCardUpdater {
             }
         }
 
-        // The "Queue update" payload carries an ISO-8601 ETA (etaTime) instead
-        // of a plain minute count; fall back to it when waitTimeMinutes is absent.
-        int waitTimeMinutes = data.containsKey("waitTimeMinutes")
-                ? parseInt(data.get("waitTimeMinutes"))
-                : minutesUntil(data.get("etaTime"));
+        // Queue payloads carry the wait as etaMinutes and/or an ISO-8601 ETA
+        // (etaAt, or etaTime in older payloads); fall back through them when
+        // waitTimeMinutes is absent.
+        int waitTimeMinutes;
+        if (data.containsKey("waitTimeMinutes")) {
+            waitTimeMinutes = parseInt(data.get("waitTimeMinutes"));
+        } else if (data.containsKey("etaMinutes")) {
+            waitTimeMinutes = parseInt(data.get("etaMinutes"));
+        } else {
+            waitTimeMinutes = minutesUntil(firstNonEmpty(data.get("etaAt"), data.get("etaTime")));
+        }
 
         ArrayList<String> symptoms = new ArrayList<>();
         String symptomsRaw = data.get("symptoms");
@@ -223,11 +323,11 @@ public final class QueueCardUpdater {
         // visitUuid. The symptoms shown on the card are that visit's chief
         // complaint, stored as an OBS; pull and parse them from the local DB.
         if (symptoms.isEmpty()) {
-            symptoms = fetchSymptoms(data.get("visitUuid"));
+            symptoms = fetchSymptoms(visitUuid);
         }
 
         return new PatientData(
-                emptyToNull(data.get("queueNumber")),
+                emptyToNull(firstNonEmpty(data.get("queueNumber"), data.get("queueEntryId"))),
                 emptyToNull(patientName),
                 emptyToNull(gender),
                 age,
@@ -235,7 +335,9 @@ public final class QueueCardUpdater {
                 symptoms,
                 parseInt(data.get("position")),
                 waitTimeMinutes,
-                emptyToNull(data.get("avatarUrl"))
+                emptyToNull(data.get("avatarUrl")),
+                emptyToNull(data.get("speciality")),
+                emptyToNull(visitUuid)
         );
     }
 
@@ -273,6 +375,7 @@ public final class QueueCardUpdater {
         map.putInt("position", patient.getPosition());
         map.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         map.putString("avatarUrl", patient.getAvatarUrl());
+        map.putString("speciality", patient.getSpeciality());
 
         WritableArray symptoms = Arguments.createArray();
         if (patient.getSymptoms() != null) {
@@ -310,6 +413,7 @@ public final class QueueCardUpdater {
         bundle.putInt("position", patient.getPosition());
         bundle.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         bundle.putString("avatarUrl", patient.getAvatarUrl());
+        bundle.putString("speciality", patient.getSpeciality());
         return bundle;
     }
 

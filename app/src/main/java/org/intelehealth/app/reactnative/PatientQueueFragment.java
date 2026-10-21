@@ -243,26 +243,8 @@ public class PatientQueueFragment extends Fragment {
         // (AppConstants.IMAGE_PATH + uuid + ".jpg"); RN's <Image> needs a URI
         // scheme, so wrap a bare path in file://. Empty when absent, so the RN
         // row falls back to its placeholder avatar.
-        bundle.putString("avatarUrl", toAvatarUri(row.getPatientPhoto()));
+        bundle.putString("avatarUrl", QueueRowFormatter.toAvatarUri(row.getPatientPhoto()));
         return bundle;
-    }
-
-    /**
-     * Turns the stored patient photo value into a URI React Native's {@code Image}
-     * can load. Local filesystem paths get a {@code file://} prefix; values that
-     * already carry a scheme ({@code http}, {@code https}, {@code file},
-     * {@code content}) are used as-is. Returns "" when there is no photo.
-     */
-    private String toAvatarUri(@Nullable String photo) {
-        if (TextUtils.isEmpty(photo)) {
-            return "";
-        }
-        String trimmed = photo.trim();
-        if (trimmed.startsWith("http://") || trimmed.startsWith("https://")
-                || trimmed.startsWith("file://") || trimmed.startsWith("content://")) {
-            return trimmed;
-        }
-        return "file://" + trimmed;
     }
 
     /**

@@ -63,6 +63,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.QueueDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.FollowUpModel;
@@ -130,21 +131,35 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         return context;
     }
 
+    /**
+     * Loads the "Next In Queue" patients off the main thread (the tbl_queue seed reads the DB)
+     * and attaches the slideshow: the queue notification list once one has arrived since login,
+     * otherwise the "Next in Queue" rows of tbl_queue.
+     */
     private void addQueueLayout() {
-        // The latest queue payload persisted from a "Next In Queue" FCM
-        // notification so the card reflects real queue state
-        PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
-        if (currentPatient == null && !BuildConfig.FORCE_QMS) {
-            // No "Next In Queue" notification received yet: nothing real to show, so collapse the
-            // slot (same as when QMS is off). The card appears once a notification is persisted.
+        Context appContext = requireContext().getApplicationContext();
+        initUIExecutor.execute(() -> {
+            List<PatientData> patients = QueueCardUpdater.getCards(appContext);
+            if (getActivity() == null) return;
+            getActivity().runOnUiThread(() -> showQueueLayout(patients));
+        });
+    }
+
+    private void showQueueLayout(List<PatientData> patients) {
+        if (!isAdded() || view == null || isStateSaved()) return;
+        if (patients.isEmpty() && !BuildConfig.FORCE_QMS) {
+            // Nothing queued yet: collapse the slot (same as when QMS is off). The card
+            // appears once tbl_queue syncs a "Next in Queue" entry or a notification arrives.
             hideContainer(R.id.queue_card_container);
             return;
         }
+        showContainer(R.id.queue_card_container);
         // TODO(QMS-CONFIG): remove this sample card with BuildConfig.FORCE_QMS once the config PR
         // is merged. Debug builds only: lets testers see the card before the first FCM arrives.
-        if (currentPatient == null) {
+        if (patients.isEmpty()) {
             ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
-            currentPatient = new PatientData(
+            patients = new ArrayList<>();
+            patients.add(new PatientData(
                     "Q-104",
                     "Anthony G",
                     "M",
@@ -154,11 +169,11 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                     2,
                     8,
                     "https://unsplash.com"
-            );
+            ));
         }
 
         // 3. Map your custom data class parameters directly into the Android Bundle payload
-        Bundle initialProperties = QueueCardUpdater.toBundle(currentPatient);
+        Bundle initialProperties = QueueCardUpdater.toBundle(patients);
 
         // 4. Boot the pipeline layer inside your execution lifecycle hook
         ReactFragment reactFragment = new ReactFragment.Builder()
@@ -534,6 +549,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         if (isQmsConfigured) {
             addStatusBannerLayout();
             addQueueLayout();
+            // On a first login tbl_queue is filled by the pull sync after the home screen
+            // mounts; reload the card when it lands, until a queue notification takes over.
+            // LiveData re-delivers its last value to a new observer; skip that one.
+            final Long alreadySeen = QueueDAO.getQueueChanged().getValue();
+            QueueDAO.getQueueChanged().observe(getViewLifecycleOwner(), changedAt -> {
+                if (changedAt != null && !changedAt.equals(alreadySeen)
+                        && !QueueCardUpdater.hasNotificationData(requireContext())) {
+                    addQueueLayout();
+                }
+            });
         } else {
             hideContainer(R.id.status_banner_container);
             hideContainer(R.id.queue_card_container);
@@ -585,6 +610,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         View target = view.findViewById(viewId);
         if (target != null) {
             target.setVisibility(View.GONE);
+        }
+    }
+
+    private void showContainer(int viewId) {
+        if (view == null) return;
+        View target = view.findViewById(viewId);
+        if (target != null) {
+            target.setVisibility(View.VISIBLE);
         }
     }
 
