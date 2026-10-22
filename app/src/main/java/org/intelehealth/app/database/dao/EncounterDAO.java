@@ -753,6 +753,22 @@ public class EncounterDAO extends BaseDao {
     }
 
     /**
+     * SQL condition: the visit is waiting on a specialist referral - the doctor's visit note has a
+     * non-empty Referred Specialist obs and it is not a PHC referral. These visits belong to the
+     * Referrals tab, not Pending, until the final prescription arrives. Same rule as the
+     * has_referral column in VisitPendingFragment's list queries; never NULL, safe under NOT.
+     */
+    public static String specialistReferralSql(String visitUuidColumn) {
+        return "(EXISTS (SELECT 1 FROM tbl_encounter re, tbl_obs ro " +
+                "WHERE re.visituuid = " + visitUuidColumn + " " +
+                "AND re.encounter_type_uuid = '" + UuidDictionary.ENCOUNTER_VISIT_NOTE + "' " +
+                "AND re.uuid = ro.encounteruuid " +
+                "AND ro.conceptuuid = '" + UuidDictionary.REFERRED_SPECIALIST + "' " +
+                "AND ro.voided = 0 AND ro.value IS NOT NULL AND trim(ro.value) <> '') " +
+                "AND NOT " + phcReferralSql(visitUuidColumn) + ")";
+    }
+
+    /**
      * Encounter whose obs should be read as "the prescription" for a visit —
      * prefers the NAMCO/specialist doctor's own ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE
      * encounter when the visit was completed via referral (that's where their

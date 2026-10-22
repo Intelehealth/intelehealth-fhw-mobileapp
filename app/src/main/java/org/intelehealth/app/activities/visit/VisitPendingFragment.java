@@ -423,7 +423,8 @@ public class VisitPendingFragment extends Fragment {
             @Override
             public void run() {
                 /*int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();*/
-                int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
+                // Same count as the Pending tab label - referred visits are under Referrals.
+                int total =  new HomeScreenQueriesRepository().getPendingTabVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
                     activity.runOnUiThread(new Runnable() {
