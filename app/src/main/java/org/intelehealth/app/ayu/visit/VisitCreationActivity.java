@@ -256,6 +256,47 @@ public class VisitCreationActivity extends BaseActivity implements
     private static final String PREF_LAST_TIME       = "hba1c_last_reading_time";
     private static final String PREF_LAST_VISIT      = "hba1c_last_reading_visit";
 
+    // PROD-221: Bundle keys for the ids of the visit this screen started (see onSaveInstanceState).
+    private static final String STATE_VISIT_UUID = "state_visit_uuid";
+    private static final String STATE_ENCOUNTER_VITALS = "state_encounter_vitals";
+    private static final String STATE_ENCOUNTER_ADULT_INITIAL = "state_encounter_adult_initial";
+    private static final String STATE_ENCOUNTER_ADULT_INITIAL_LATEST = "state_encounter_adult_initial_latest";
+
+    /**
+     * PROD-221: saves the ids of the visit this screen is working on, so a rebuilt screen can continue it.
+     * <p>
+     * Android destroys and recreates this activity on a screen rotation, on other configuration changes,
+     * and when it restores the app after killing it in the background. onCreate then runs again with the
+     * same launch intent (tag "new"). Without these ids it would call startVisit() again and create a
+     * second visit for the same patient. Each of those extra visits was uploaded empty and listed
+     * separately in Open Visits, which is the duplicate-visit bug reported in PROD-221.
+     */
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(STATE_VISIT_UUID, visitUuid);
+        outState.putString(STATE_ENCOUNTER_VITALS, encounterVitals);
+        outState.putString(STATE_ENCOUNTER_ADULT_INITIAL, encounterAdultIntials);
+        outState.putString(STATE_ENCOUNTER_ADULT_INITIAL_LATEST, EncounterAdultInitial_LatestVisit);
+    }
+
+    /**
+     * PROD-221: puts back the ids saved in {@link #onSaveInstanceState}. They are set on both the fields
+     * and mCommonVisitData, because the step fragments read the visit and encounter ids from
+     * mCommonVisitData when they save their answers. Only ids are restored; nothing is written to the
+     * database here, so restoring cannot create or change any record.
+     */
+    private void restoreVisitIds(Bundle savedInstanceState) {
+        visitUuid = savedInstanceState.getString(STATE_VISIT_UUID);
+        encounterVitals = savedInstanceState.getString(STATE_ENCOUNTER_VITALS);
+        encounterAdultIntials = savedInstanceState.getString(STATE_ENCOUNTER_ADULT_INITIAL, "");
+        EncounterAdultInitial_LatestVisit = savedInstanceState.getString(STATE_ENCOUNTER_ADULT_INITIAL_LATEST, "");
+        mCommonVisitData.setVisitUuid(visitUuid);
+        mCommonVisitData.setEncounterUuidVitals(encounterVitals);
+        mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
+        mCommonVisitData.setEncounterAdultInitialLatestVisit(EncounterAdultInitial_LatestVisit);
+    }
+
     private void startVisit() {
         SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ", Locale.ENGLISH);
         Date todayDate = new Date();
@@ -366,6 +407,11 @@ public class VisitCreationActivity extends BaseActivity implements
         mStep4ProgressBar = findViewById(R.id.prog_bar_step4);
         mStep5ProgressBar = findViewById(R.id.prog_bar_step5);
 
+        // PROD-221: true only when Android is rebuilding this screen (rotation, process restore) and a
+        // visit was saved before. A normal launch from the consent or Visit Summary screen has no saved
+        // state, so it takes exactly the same path as before this fix.
+        boolean isRecreated = savedInstanceState != null && savedInstanceState.getString(STATE_VISIT_UUID) != null;
+
         Intent intent = this.getIntent();
         if (intent != null) {
             mCommonVisitData = intent.getExtras().getParcelable("CommonVisitData");
@@ -374,7 +420,9 @@ public class VisitCreationActivity extends BaseActivity implements
             intentTag = mCommonVisitData.getIntentTag();
             if (intentTag.equalsIgnoreCase("new")) {
                 privacy_value_selected = mCommonVisitData.getPrivacyNote();
-                startVisit();
+                // Create the visit only on the first launch. A rebuilt screen keeps the visit it already
+                // created (ids restored just below) instead of starting a duplicate one.
+                if (!isRecreated) startVisit();
             } else {
                 visitUuid = mCommonVisitData.getVisitUuid();
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
@@ -382,6 +430,8 @@ public class VisitCreationActivity extends BaseActivity implements
                 EncounterAdultInitial_LatestVisit = mCommonVisitData.getEncounterAdultInitialLatestVisit();
                 mEditFor = mCommonVisitData.getEditFor();
             }
+            // Same visit and encounter ids as before the rebuild, for both the "new" and "edit" flows.
+            if (isRecreated) restoreVisitIds(savedInstanceState);
             patientName = patientDTO.getFirstname() + " " + patientDTO.getLastname();
             mCommonVisitData.setPatientName(patientName);
             patientGender = patientDTO.getGender();
@@ -403,19 +453,24 @@ public class VisitCreationActivity extends BaseActivity implements
             mCommonVisitData.setEncounterUuidAdultIntial(encounterAdultIntials);
         }
 
-        EncounterDAO encounterDAO = new EncounterDAO();
-        EncounterDTO encounterDTO = new EncounterDTO();
-        encounterDTO.setUuid(encounterAdultIntials);
-        encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
-        encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
-        encounterDTO.setVisituuid(visitUuid);
-        encounterDTO.setSyncd(false);
-        encounterDTO.setProvideruuid(sessionManager.getProviderID());
-        encounterDTO.setVoided(0);
-        try {
-            encounterDAO.createEncountersToDB(encounterDTO);
-        } catch (DAOException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
+        // PROD-221: the ADULTINITIAL encounter was already written on the first launch, so a rebuilt
+        // screen skips it. createEncountersToDB uses CONFLICT_REPLACE: writing the same uuid again would
+        // reset the encounter time and mark it unsynced, and a new uuid would add a second encounter.
+        if (!isRecreated) {
+            EncounterDAO encounterDAO = new EncounterDAO();
+            EncounterDTO encounterDTO = new EncounterDTO();
+            encounterDTO.setUuid(encounterAdultIntials);
+            encounterDTO.setEncounterTypeUuid(encounterDAO.getEncounterTypeUuid("ENCOUNTER_ADULTINITIAL"));
+            encounterDTO.setEncounterTime(AppConstants.dateAndTimeUtils.currentDateTime());
+            encounterDTO.setVisituuid(visitUuid);
+            encounterDTO.setSyncd(false);
+            encounterDTO.setProvideruuid(sessionManager.getProviderID());
+            encounterDTO.setVoided(0);
+            try {
+                encounterDAO.createEncountersToDB(encounterDTO);
+            } catch (DAOException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
         }
 
         handleDeviceBackPress();
