@@ -286,6 +286,12 @@ public class VisitActivity extends BaseActivity implements
         if (referral instanceof VisitReferralFragment) {
             ((VisitReferralFragment) referral).reloadData();
         }
+        // The Received/Pending reloads above only refresh their lists; their tab labels are set
+        // here. Re-query them so a sync that moves a visit between tabs (e.g. Pending -> Referrals
+        // on the initial prescription, Referrals -> Received on the final one) updates the counts
+        // without reopening the screen.
+        updateCounts(true);
+        updateCounts(false);
     }
 
    /* private void updateCounts(boolean isForReceivedPrescription) {
@@ -463,7 +469,8 @@ public class VisitActivity extends BaseActivity implements
                count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
            } else {
                //count = new VisitsDAO().getVisitCountsByStatus(false);
-               count = new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
+               // Referred visits are listed (and counted) under Referrals, not Pending.
+               count = new HomeScreenQueriesRepository().getPendingTabVisitsCount(db);
            }
            int finalCount = count;
            runOnUiThread(() -> {

@@ -498,7 +498,9 @@ public class SyncDAO {
                                 triggerVisitNotification(listPatientUUID);
                             }
                         }
-                    } else {
+                    } else if (response.body().getData() != null
+                               && response.body().getData().getPageNo() == -1) {
+                        // Keep visit notifications off for every initial-sync page, not just page 0
                         sessionManager.setTriggerNoti("yes");
                     }
                 }
