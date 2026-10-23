@@ -391,7 +391,14 @@ public class VisitCreationActivity extends BaseActivity implements
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        // PROD-221: null stops Android from restoring the old step fragments when this screen is rebuilt
+        // (process restore, dark mode switch, split screen). Most step fragments receive their data through
+        // fields set in newInstance(), not arguments, so restored copies have null data and crash
+        // (e.g. VisitReasonQuestionsFragment, PhysicalExamSummaryFragment). Safe because
+        // onFeatureActiveStatusLoaded adds the first step (or the step being edited) fresh on every create,
+        // and the visit ids are still restored below from the original savedInstanceState, so the same
+        // visit continues with its saved answers.
+        super.onCreate(null);
         setContentView(R.layout.activity_visit_creation);
         SessionManager.getInstance(this).clearVitalPreference();
         getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
