@@ -138,8 +138,10 @@
             android:screenOrientation="portrait"
             android:exported="false"
             android:theme="@style/AppTheme.NoActionBar" />
+        <!-- uiMode handled so a power-saving / dark mode switch doesn't rebuild the roster and reset its answers -->
         <activity
             android:name=".ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
@@ -362,8 +364,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- uiMode handled so a power-saving / dark mode switch doesn't rebuild registration mid-entry -->
         <activity
             android:name=".ui.patient.activity.PatientRegistrationActivity"
+            android:configChanges="uiMode"
             android:screenOrientation="portrait"
             android:exported="true"
             android:theme="@style/AppThemeMaterialNew"
