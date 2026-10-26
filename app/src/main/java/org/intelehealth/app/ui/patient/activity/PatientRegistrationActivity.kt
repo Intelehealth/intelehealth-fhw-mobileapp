@@ -15,6 +15,7 @@ import android.view.animation.LinearInterpolator
 import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.core.os.BundleCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -98,9 +99,16 @@ class PatientRegistrationActivity : BaseActivity() {
             insets
         }
 //        manageTitleVisibilityOnScrolling()
-        extractAndBindUI()
+        extractAndBindUI(savedInstanceState)
         setupActionBar()
         observeCurrentPatientStage()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        // Lets restoreInProgressPatient keep the entered details if Android closes the app in the background
+        patientViewModel.patientData.value?.let { outState.putSerializable(STATE_PATIENT, it) }
+        outState.putBoolean(STATE_EDIT_MODE, patientViewModel.isEditMode)
     }
 
     private fun observeCurrentPatientStage() {
@@ -148,18 +156,20 @@ class PatientRegistrationActivity : BaseActivity() {
         }
     }
 
-    private fun extractAndBindUI() {
+    private fun extractAndBindUI(savedInstanceState: Bundle?) {
         intent?.let {
             patientViewModel.isAbhaFullFlow = it.hasExtra(AbdmResult.EXTRA_ABDM_RESULT)
 
-            val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
-            else null
+            if (!restoreInProgressPatient(savedInstanceState)) {
+                val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
+                else null
 
-            patientId?.let { id ->
-                patientViewModel.isEditMode = true
-                binding.isEditMode = patientViewModel.isEditMode
-                fetchPatientDetails(id)
-            } ?: generatePatientId()
+                patientId?.let { id ->
+                    patientViewModel.isEditMode = true
+                    binding.isEditMode = patientViewModel.isEditMode
+                    fetchPatientDetails(id)
+                } ?: generatePatientId()
+            }
 
             val stage = if (it.hasExtra(PATIENT_CURRENT_STAGE)) {
                 IntentCompat.getSerializableExtra(
@@ -169,6 +179,24 @@ class PatientRegistrationActivity : BaseActivity() {
 
             stage?.let { it1 -> navigateToStage(it1) }
         }
+    }
+
+    /**
+     * Keeps the patient being entered when Android rebuilds this screen (power saving, dark mode,
+     * process restore). Starting a new record here saved a patient with no name, gender or birth date.
+     */
+    private fun restoreInProgressPatient(savedInstanceState: Bundle?): Boolean {
+        savedInstanceState ?: return false
+        // After a config change the view model still holds it; after a process restore only the bundle does
+        if (patientViewModel.patientData.value == null) {
+            val saved = BundleCompat.getSerializable(savedInstanceState, STATE_PATIENT, PatientDTO::class.java)
+                ?: return false
+            patientViewModel.updatedPatient(saved)
+        }
+        // Saved rather than re-read from the intent: an ABHA server-only patient switches to insert mode
+        patientViewModel.isEditMode = savedInstanceState.getBoolean(STATE_EDIT_MODE, patientViewModel.isEditMode)
+        binding.isEditMode = patientViewModel.isEditMode
+        return true
     }
 
     private fun navigateToStage(stage: PatientRegStage) {
@@ -472,6 +500,9 @@ class PatientRegistrationActivity : BaseActivity() {
     companion object {
         /** India only — matches development_master. Revisit if ABDM is ever deployed elsewhere. */
         private const val COUNTRY_CODE_IN = "91"
+
+        private const val STATE_PATIENT = "state_in_progress_patient"
+        private const val STATE_EDIT_MODE = "state_edit_mode"
 
         @JvmOverloads
         @JvmStatic

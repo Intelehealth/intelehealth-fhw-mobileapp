@@ -6,24 +6,28 @@
     <application>
         <activity
             android:name=".presentation.abha_create.AbhaCreateActivity"
+            android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:exported="false"
             android:theme="@style/Theme.Abdm.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.abha_suggestions.AbhaSuggestionsActivity"
+            android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:exported="false"
             android:theme="@style/Theme.Abdm.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.abha_verify.AbhaVerifyActivity"
+            android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:exported="false"
             android:theme="@style/Theme.Abdm.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".presentation.abha_verify.AbhaCompareActivity"
+            android:screenOrientation="portrait"
             android:configChanges="uiMode"
             android:exported="false"
             android:theme="@style/Theme.Abdm.NoActionBar"
