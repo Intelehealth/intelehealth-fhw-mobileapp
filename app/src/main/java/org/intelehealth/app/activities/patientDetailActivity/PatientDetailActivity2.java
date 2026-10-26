@@ -461,7 +461,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private boolean isPregnancyVisible() {
-        return mGender.equalsIgnoreCase(FEMALE) && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
+        // Null-safe: a patient saved without gender or birth date must still open this screen
+        return FEMALE.equalsIgnoreCase(mGender) && patientDTO.getDateofbirth() != null
+                && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
     }
 
     // Family Member
