@@ -26,11 +26,13 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.prescription.thermalprinter.BaseEnum;
 import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.webrtc.activity.IDACallLogActivity;
 import org.intelehealth.app.webrtc.activity.IDAChatActivity;
 import org.intelehealth.app.webrtc.activity.IDAVideoActivity;
 import org.intelehealth.config.Config;
+import org.intelehealth.jatayu.audiorecording.VisitVoiceRecorder;
 import org.intelehealth.klivekit.RtcEngine;
 import org.intelehealth.klivekit.socket.SocketManager;
 import org.intelehealth.klivekit.utils.DateTimeResource;
@@ -98,6 +100,11 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         configureCrashReporting();
         //POC AYUSYNCK initialize
         AyuDevice.init(getApplicationContext());
+        // Jatayu VoiceDoc POC (NAS only): started at app launch so recordings left over from an
+        // earlier run resume uploading and background summaries aren't missed.
+        if (FlavorKeys.NAS.equals(BuildConfig.FLAVOR_client)) {
+            VisitVoiceRecorder.init(this, R.mipmap.ic_launcher);
+        }
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             FirebaseCrashlytics.getInstance().recordException(throwable);

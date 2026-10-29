@@ -377,7 +377,8 @@ public class VisitCreationActivity extends BaseActivity implements
                 privacy_value_selected = mCommonVisitData.getPrivacyNote();
                 startVisit();
                 // Jatayu VoiceDoc: record the consultation for this new visit (starts once permissions resolve).
-                mVoiceDocPermissionLauncher.launch(VisitVoiceRecorder.requiredPermissions());
+                if (VisitVoiceRecorder.isEnabled())
+                    mVoiceDocPermissionLauncher.launch(VisitVoiceRecorder.requiredPermissions());
             } else {
                 visitUuid = mCommonVisitData.getVisitUuid();
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
@@ -1809,7 +1810,7 @@ public class VisitCreationActivity extends BaseActivity implements
     // Starts regardless of the outcome: without RECORD_AUDIO the recorder skips and the visit carries on.
     private final ActivityResultLauncher<String[]> mVoiceDocPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result ->
-                    VisitVoiceRecorder.startForVisit(this, visitUuid, sessionManager.getAppLanguage(), R.mipmap.ic_launcher));
+                    VisitVoiceRecorder.startForVisit(this, visitUuid, sessionManager.getAppLanguage()));
 
     public FeatureActiveStatus getFeatureActiveStatus() { return featureActiveStatus; }
 
