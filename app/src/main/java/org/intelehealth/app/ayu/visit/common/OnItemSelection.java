@@ -14,5 +14,5 @@ public interface OnItemSelection {
     void onImageRemoved(int nodeIndex,int imageIndex, String image);
     void onTerminalNodeAnsweredForParentUpdate(String parentNodeId);
 
-
+    void onAyuDeviceRequest(Node node);
 }

@@ -21,6 +21,7 @@ import org.intelehealth.app.database.dao.ProviderDAO
 import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.models.pushRequestApiCall.PushRequestApiCall
+import org.intelehealth.app.utilities.BitmapUtils
 import org.intelehealth.app.utilities.CustomLog
 import org.intelehealth.app.utilities.NavigationUtils
 import org.intelehealth.app.utilities.NotificationUtils
@@ -29,6 +30,7 @@ import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UrlModifiers
 import retrofit2.Response
 import java.io.File
+import java.io.FileInputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -380,6 +382,10 @@ class OptimizedSyncDao {
      * ignoreElements().blockingAwait() preserves exactly that: it returns on completion and throws on
      * error. blockingFirst() would not — it raises NoSuchElementException when a stream completes
      * without emitting.
+     *
+     * Before each upload, an image that is not upload-ready (see [BitmapUtils.isUploadReadyJpeg]) is
+     * re-encoded in place with [BitmapUtils.saveAsJpeg]. This repairs files saved by older builds that
+     * the server rejects on every attempt, so they finally sync instead of retrying forever.
      */
     private fun obsImagesPushSync(): Boolean {
         val sessionManager = SessionManager(appContext)
@@ -395,6 +401,17 @@ class OptimizedSyncDao {
         obsImages.forEach { obs ->
             runCatching {
                 val file = File(AppConstants.IMAGE_PATH + obs.uuid + ".jpg")
+                // Older builds saved gallery picks byte-for-byte, so this ".jpg" may really be a PNG
+                // (OpenMRS -> HTTP 500) or a multi-MB photo (nginx -> HTTP 413). Convert such files in
+                // place before uploading. Upload-ready files (camera images, new gallery picks) are
+                // skipped, so this is a no-op for normal images. If conversion fails the original is
+                // kept and the upload is still attempted, as before.
+                if (file.exists() && !BitmapUtils.isUploadReadyJpeg(file)) {
+                    BitmapUtils.saveAsJpeg(
+                        { FileInputStream(file) }, file,
+                        BitmapUtils.UPLOAD_IMAGE_MAX_SIDE_PX, BitmapUtils.UPLOAD_IMAGE_JPEG_QUALITY
+                    )
+                }
                 val requestFile = RequestBody.create("application/json".toMediaTypeOrNull(), file)
                 val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
 

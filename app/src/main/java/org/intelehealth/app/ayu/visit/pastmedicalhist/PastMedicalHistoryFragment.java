@@ -201,6 +201,33 @@ public class PastMedicalHistoryFragment extends Fragment {
             public void onTerminalNodeAnsweredForParentUpdate(String parentNodeId) {
 
             }
+
+            @Override
+            public void onAyuDeviceRequest(Node node) {
+               /* String examRequirements = node.getPhysicalExams();
+                String examType = "heart"; // default
+                if (examRequirements != null) {
+                    if (examRequirements.contains("heart_sound")) {
+                        examType = "heart";
+                    } else if (examRequirements.contains("lung_sound")) {
+                        examType = "lung";
+                    }
+                } else if (node.getText() != null) {
+                    if (node.getText().toLowerCase().contains("lung")) {
+                        examType = "lung";
+                    }
+                }
+                VisitCreationActivity activity = (VisitCreationActivity) requireActivity();
+                String patientUuid = activity.patientUuid;
+                String visitUuid = activity.visitUuid;
+
+                org.intelehealth.app.database.InteleHealthDatabaseHelper db = new org.intelehealth.app.database.InteleHealthDatabaseHelper(requireContext());
+                String encounterUuid = db.getEncounter(visitUuid);
+
+                org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment dialog =
+                        org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment.newInstance(examType, patientUuid, visitUuid, encounterUuid);
+                dialog.show(getChildFragmentManager(), "stethoscope_popup");*/
+            }
         });
 
         recyclerView.setAdapter(mQuestionsListingAdapter);

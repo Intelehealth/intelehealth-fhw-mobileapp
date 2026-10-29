@@ -1,6 +1,5 @@
 package org.intelehealth.app.ayu.visit.physicalexam;
 
-import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY;
 import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION;
 
 import android.app.Activity;
@@ -13,7 +12,6 @@ import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.utilities.CustomLog;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

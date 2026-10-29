@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteDatabase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import org.intelehealth.app.utilities.DateAndTimeUtils
 
 class SharePrescriptionViewModel (private val db: SQLiteDatabase) : ViewModel() {
     private  val TAG = "SharePrescriptionViewMo"
@@ -20,6 +21,14 @@ class SharePrescriptionViewModel (private val db: SQLiteDatabase) : ViewModel() 
         val diagnostics = vitalEncounter?.let { repository.getDiagnostics(it) }
         val adultInitial = adultInitialEncounter?.let { repository.getAdultInitialData(it) }
         val visitCompleteEncData = visitCompleteEncounter?.let { repository.getVisitCompleteEncounterData(it) }
+        // Override with the single correctly-resolved follow-up value (specialist
+        // encounter takes priority, latest row wins, consistent "26 Sep, 2026 Time
+        // 9:00 AM" formatting) - the per-row accumulator above can't tell a stale
+        // "No" row from a later real date on the same encounter.
+        visitCompleteEncData?.let {
+            val followUpValue = repository.getFullFollowupValue(visitUuid)
+            it[PrescriptionDetailsDataKeys.FollowUp.DATE] = DateAndTimeUtils.formatFollowUpDisplay(followUpValue)
+        }
         return PrescriptionData(patient = patient, vitals = vitals, diagnostics = diagnostics, adultInitials = adultInitial, visitCompleteEncData = visitCompleteEncData)
     }
 

@@ -354,11 +354,19 @@
 
 
                 <!--Vitals and Other cards - start-->
+                <!--Vitals and Other cards - end-->
+
+                <!--Vitals and Other cards - end-->
+
+                <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/vitalsRelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cardview_head">
+                    android:layout_below="@+id/cardview_head"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="0dp">
 
                     <Button
                         android:id="@+id/openall_btn"
@@ -380,17 +388,13 @@
                         layout="@layout/visit_summary_itemscard" />
 
                 </RelativeLayout>
-                <!--Vitals and Other cards - end-->
 
-                <!--Vitals and Other cards - end-->
-
-                <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/add_notes_relative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/vitalsRelativeLayout"
-                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
+                    android:layout_marginTop="@dimen/fu_card_margin_sides">
 
                     <!--Visit Summary-->
 
@@ -557,8 +561,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/add_notes_relative"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="@dimen/margin_20"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="@dimen/fu_card_margin_sides"
                     android:visibility="visible">
 
                     <TextView
@@ -619,7 +623,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/add_doc_relative"
-                    android:layout_marginBottom="@dimen/fu_card_margin_sides">
+                    android:layout_marginTop="@dimen/margin_16">
 
                     <!--Diagnosis -->
                     <FrameLayout
@@ -632,6 +636,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/toolbar_margin_left"
+                            android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
                             android:layout_marginBottom="@dimen/margin_10"
                             android:elevation="16dp"
@@ -703,7 +708,8 @@
                                         android:layout_below="@+id/divider_diagnosis"
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
-                                        android:layout_marginBottom="@dimen/margin_16dp" />
+                                        android:layout_marginBottom="@dimen/margin_16dp"
+                                        />
 
                                 </RelativeLayout>
 
@@ -744,15 +750,17 @@
                                     android:layout_below="@id/diagnosis_title"
                                     android:layout_marginTop="@dimen/fu_margin_start"
                                     android:layout_marginBottom="@dimen/margin_16dp"
-                                    app:hintEnabled="false">
+                                    app:hintEnabled="false"
+                                  >
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:id="@+id/diagnosis_text_input"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
                                         android:background="@drawable/input_edittext_border"
+                                        android:layout_width="match_parent"
+                                        android:padding="@dimen/fu_margin_start"
+                                        android:layout_height="wrap_content"
                                         android:hint="@string/enter_diagnosis"
-                                        android:padding="@dimen/fu_margin_start" />
+                                        />
 
                                 </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
                             </RelativeLayout>
@@ -771,6 +779,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/toolbar_margin_left"
+                            android:layout_marginTop="@dimen/margin_5"
                             android:layout_marginEnd="@dimen/toolbar_margin_left"
                             android:layout_marginBottom="@dimen/margin_10"
                             android:elevation="16dp"
@@ -842,7 +851,8 @@
                                         android:layout_below="@+id/divider_consultation_type"
                                         android:layout_marginStart="@dimen/fu_margin_start"
                                         android:layout_marginEnd="@dimen/fu_margin_start"
-                                        android:layout_marginBottom="@dimen/margin_16dp" />
+                                        android:layout_marginBottom="@dimen/margin_16dp"
+                                        />
 
                                 </RelativeLayout>
 
@@ -887,7 +897,8 @@
                                     android:gravity="center_vertical"
                                     android:hint="@string/select_consultation_type"
                                     android:paddingTop="@dimen/margin_10"
-                                    android:paddingBottom="@dimen/margin_10" />
+                                    android:paddingBottom="@dimen/margin_10"
+                                    />
                             </RelativeLayout>
                         </androidx.cardview.widget.CardView>
                     </FrameLayout>
@@ -1402,8 +1413,9 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/relative_speciality_block"
                     android:layout_marginStart="@dimen/toolbar_margin_left"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="@dimen/toolbar_margin_left"
-                    android:layout_marginBottom="60dp"
+                    android:layout_marginBottom="65dp"
                     android:elevation="16dp"
                     app:cardCornerRadius="@dimen/margin_5"
                     app:cardElevation="@dimen/margin_5">
@@ -1455,8 +1467,8 @@
             android:id="@+id/bottom_btn_relative"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:orientation="vertical"
+            android:layout_alignParentBottom="true"
             android:paddingTop="@dimen/fu_margin_start"
             android:paddingBottom="@dimen/fu_card_margin_sides">
 
@@ -1567,17 +1579,16 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
             <Button
                 android:id="@+id/btnGenerateBill"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/fu_btn_size"
                 android:layout_marginStart="@dimen/margin_24"
-                android:layout_marginTop="@dimen/margin_5"
                 android:layout_marginEnd="@dimen/margin_24"
                 android:background="@drawable/ui2_common_primary_bg"
                 android:padding="@dimen/margin_12"
                 android:text="@string/generate_bill"
+                android:layout_marginTop="@dimen/margin_5"
                 android:textColor="@color/white"
                 android:textSize="@dimen/common_button_text_size"
                 android:textStyle="bold"

@@ -19,13 +19,13 @@ class ManageSummaryScreenTitles {
         @JvmStatic
         fun setScreenTitle(
             context: Context,
-            featureActiveStatus: FeatureActiveStatus,
+            featureActiveStatus: FeatureActiveStatus?,
             screenId: Int
         ): String {
             var currentScreenIndex = 1
             var title = ""
-            val isVitalEnabled = featureActiveStatus.vitalSection
-            val isDiagnosticsEnabled = featureActiveStatus.activeStatusDiagnosticsSection
+            val isVitalEnabled = featureActiveStatus?.vitalSection ?: true
+            val isDiagnosticsEnabled = featureActiveStatus?.activeStatusDiagnosticsSection ?: true
 
             val vitalScreenIndex = if (isVitalEnabled) 1 else 0
             val diagnosticsScreenIndex =

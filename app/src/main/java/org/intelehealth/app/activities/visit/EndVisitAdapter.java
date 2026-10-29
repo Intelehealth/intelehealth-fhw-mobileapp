@@ -183,6 +183,11 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
             //    holder.fu_date_txtview.setText(model.getVisit_start_date());
 
+            // Grey out End Visit until a prescription exists - same rule showConfirmDialog
+            // already enforced via a dialog, now reflected in the button itself.
+            holder.end_visit_btn.setEnabled(model.isHasPrescription());
+            holder.end_visit_btn.setAlpha(model.isHasPrescription() ? 1f : 0.5f);
+
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);
             });

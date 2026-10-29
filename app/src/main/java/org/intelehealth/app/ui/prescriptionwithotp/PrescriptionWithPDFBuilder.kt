@@ -30,12 +30,15 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.databinding.LayoutPrescriptionPdfBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import java.io.File
 import java.io.FileOutputStream
+import java.net.URL
 import android.graphics.BitmapFactory
 import android.util.Base64
 
@@ -186,8 +189,22 @@ class PrescriptionWithPDFBuilder(
         return "${baseName}.pdf"
     }
 
-    private fun checkValueAndReturnNA(value: String?): String {
-        return if (value.isNullOrBlank()) "NA" else value
+    companion object {
+        private val NULL_TOKEN_REGEX = Regex("(?i)\\bnull\\b")
+
+        /**
+         * Every value printed on the shared PDF goes through here. A missing, blank,
+         * bullet-only ("• ") or literal "null" value shows as "NA", and so does a
+         * standalone "null" part inside an otherwise valid value (e.g. a medicine
+         * synced without a remark - "Paracetamol:500mg:5 days:null" - or a vital
+         * with no value - "Temperature=null"). Valid values are returned unchanged.
+         */
+        fun checkValueAndReturnNA(value: String?): String {
+            if (value == null) return "NA"
+            val content = value.replace("•", "").trim()
+            if (content.isEmpty() || content.equals("null", ignoreCase = true)) return "NA"
+            return value.replace(NULL_TOKEN_REGEX, "NA")
+        }
     }
 
     fun setPatientDataSections(data: Map<String, Map<String, String?>>) {
@@ -198,7 +215,7 @@ class PrescriptionWithPDFBuilder(
         binding.tvPatientDetails.text = patientData
     }
 
-    fun createSignatureBitmap(drDetails: ClsDoctorDetails) {
+    suspend fun createSignatureBitmap(drDetails: ClsDoctorDetails) {
       /*  val drSignTextView = binding.drSignTextview
        val font =  getFontFamily(fontFamily)
         val typeface = try {
@@ -222,13 +239,17 @@ class PrescriptionWithPDFBuilder(
         )
         drSignTextView.layout(0, 0, drSignTextView.measuredWidth, drSignTextView.measuredHeight)
         */
-        decodeBase64ToBitmap(drDetails.signature)?.let { bitmap ->
+        // A completed visit's doctor details are parsed straight from the synced JSON,
+        // so any field the doctor portal left out is null here - a null signature
+        // would crash decodeSignatureBitmap and the text fields would print "null".
+        val bitmap = decodeSignatureBitmap(drDetails.signature.orEmpty())
+        if (bitmap != null) {
             binding.imageviewDrSign.setImageBitmap(bitmap)
-        } ?: run {
+        } else {
             binding.imageviewDrSign.setImageDrawable(null)
         }
 
-        val drDetailsVal = "${drDetails.name}\n${drDetails.qualification}, ${drDetails.specialization}\n${drDetails.registrationNumber}"
+        val drDetailsVal = "${checkValueAndReturnNA(drDetails.name)}\n${checkValueAndReturnNA(drDetails.qualification)}, ${checkValueAndReturnNA(drDetails.specialization)}\n${checkValueAndReturnNA(drDetails.registrationNumber)}"
         binding.drDetailsTextview.text = drDetailsVal
     }
     private fun getFontFamily(fontFamily: String): String{
@@ -242,6 +263,44 @@ class PrescriptionWithPDFBuilder(
         return fontFamilyFile
 
     }
+
+    /**
+     * The doctor's signature is stored two different ways depending on how/when
+     * it was captured on the doctor portal - confirmed against real synced data:
+     * either a plain image URL (https://...sign.png, the common case) or a
+     * data:image/...;base64,<data> URI. decodeBase64ToBitmap below only ever
+     * handled the second - a plain URL doesn't contain "base64," so the whole
+     * URL string was being fed straight into Base64.decode, which can't produce
+     * a real image from it. Fetches the URL case over the network (IO dispatcher
+     * - this is called from a coroutine, never the main thread) instead of
+     * treating it as inline data. A very small number of records observed on
+     * device carry a data:text/html;base64,... value instead of an image -
+     * that's a doctor-portal signature-capture bug with nothing recoverable on
+     * the mobile side, so it's deliberately left showing no signature rather
+     * than attempting to decode HTML markup as a bitmap.
+     */
+    private suspend fun decodeSignatureBitmap(signatureValue: String): Bitmap? {
+        if (signatureValue.isBlank()) return null
+        return withContext(Dispatchers.IO) {
+            try {
+                when {
+                    signatureValue.startsWith("http://", ignoreCase = true) ||
+                            signatureValue.startsWith("https://", ignoreCase = true) -> {
+                        URL(signatureValue).openStream().use { BitmapFactory.decodeStream(it) }
+                    }
+                    signatureValue.contains("base64,") &&
+                            signatureValue.substringBefore("base64,").contains("image", ignoreCase = true) -> {
+                        decodeBase64ToBitmap(signatureValue)
+                    }
+                    else -> null
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                null
+            }
+        }
+    }
+
     fun decodeBase64ToBitmap(base64String: String): Bitmap? {
         return try {
             val base64Cleaned = if (base64String.contains("base64,")) {

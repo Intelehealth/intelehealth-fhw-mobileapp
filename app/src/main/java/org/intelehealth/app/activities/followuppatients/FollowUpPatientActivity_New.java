@@ -618,7 +618,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         datePickerDialog.show();
 
         Button posBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_POSITIVE);
-        posBt.setText(ContextCompat.getString(this, R.string.ok));
+        posBt.setText(ContextCompat.getString(this,R.string.ok));
         posBt.setTextColor(
                 ContextCompat.getColor(
                         this,
@@ -627,7 +627,7 @@ public class FollowUpPatientActivity_New extends BaseActivity {
         ); // Change to your desired color
 
         Button negBt = datePickerDialog.getButton(DatePickerDialog.BUTTON_NEGATIVE);
-        negBt.setText(ContextCompat.getString(this, R.string.cancel));
+        negBt.setText(ContextCompat.getString(this,R.string.cancel));
         negBt.setTextColor(
                 ContextCompat.getColor(
                         this,
@@ -663,75 +663,82 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(initialFollowUpPatients -> {
-                                    /*if (initialFollowUpPatients.isEmpty()) {
+                                    Log.d("TAG", "fetchAndSegregateData: "+new Gson().toJson(initialFollowUpPatients));
+                                    // Today/Tomorrow are queried separately, so an empty Others list must not skip them
+                                    boolean loadTodayAndTomorrow = filterType == FollowupFilterTypeEnum.NONE && dataLoadingType == DataLoadingType.INITIAL;
+                                    if (initialFollowUpPatients.isEmpty() && !loadTodayAndTomorrow) {
                                         if (dataLoadingType == DataLoadingType.INITIAL) {
                                             commonLoadingDialog.dismiss();
                                         }
                                         shouldShowNoDataTextViewForAllRecyclerViews(true);
-                                    } else {*/
-                                    if (filterType != FollowupFilterTypeEnum.NONE) {
-                                        finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
-                                        shouldShowNoDataTextViewForAllRecyclerViews(false);
-
-                                        mTodayRelativeLayout.setVisibility(View.GONE);
-                                        mWeekRelativeLayout.setVisibility(View.GONE);
-                                        othersTitle.setVisibility(View.GONE);
-
-                                        completedRecyclerViews.incrementAndGet();
-                                        completedRecyclerViews.incrementAndGet();
-
-                                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
-                                        if (commonLoadingDialog.isShowing()) {
-                                            commonLoadingDialog.dismiss();
-                                        }
-                                        isPageLoading = false;
                                     } else {
-                                        finalMonthsFollowUpDates.clear();
-                                        finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
-                                        mTodayRelativeLayout.setVisibility(View.VISIBLE);
-                                        mWeekRelativeLayout.setVisibility(View.VISIBLE);
-                                        othersTitle.setVisibility(View.VISIBLE);
-                                        shouldShowNoDataTextViewForAllRecyclerViews(false);
+                                        if (filterType != FollowupFilterTypeEnum.NONE) {
+                                            finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
+                                            shouldShowNoDataTextViewForAllRecyclerViews(false);
+
+                                            mTodayRelativeLayout.setVisibility(View.GONE);
+                                            mWeekRelativeLayout.setVisibility(View.GONE);
+                                            othersTitle.setVisibility(View.GONE);
+
+                                            completedRecyclerViews.incrementAndGet();
+                                            completedRecyclerViews.incrementAndGet();
+
+                                            setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                                            if (commonLoadingDialog.isShowing()) {
+                                                commonLoadingDialog.dismiss();
+                                            }
+                                            isPageLoading = false;
+                                        } else {
+                                            finalMonthsFollowUpDates.clear();
+                                            finalMonthsFollowUpDates.addAll(initialFollowUpPatients);
+                                            mTodayRelativeLayout.setVisibility(View.VISIBLE);
+                                            mWeekRelativeLayout.setVisibility(View.VISIBLE);
+                                            othersTitle.setVisibility(View.VISIBLE);
+                                            shouldShowNoDataTextViewForAllRecyclerViews(false);
 
 
-                                        compositeDisposable.add(Single.zip(
-                                                        Single.fromCallable(this::getAllPatientsFromDBToday).subscribeOn(Schedulers.io()),
-                                                        Single.fromCallable(this::getAllPatientsFromDBTomorrow).subscribeOn(Schedulers.io()),
-                                                        Pair::new // Returning both lists as a Pair
-                                                ).observeOn(AndroidSchedulers.mainThread())
-                                                .subscribe(result -> {
-                                                    if (dataLoadingType == DataLoadingType.INITIAL) {
-                                                        todaysFollowUpDates.clear();
-                                                        tomorrowssFollowUpDates.clear();
-                                                        todaysFollowUpDates.addAll(result.first);
-                                                        tomorrowssFollowUpDates.addAll(result.second);
-                                                        setTodaysDatesInRecyclerView(todaysFollowUpDates);
-                                                        setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
-                                                    } else {
-                                                        completedRecyclerViews.incrementAndGet();
-                                                        completedRecyclerViews.incrementAndGet();
-                                                    }
+                                            compositeDisposable.add(Single.zip(
+                                                            Single.fromCallable(this::getAllPatientsFromDBToday).subscribeOn(Schedulers.io()),
+                                                            Single.fromCallable(this::getAllPatientsFromDBTomorrow).subscribeOn(Schedulers.io()),
+                                                            Pair::new // Returning both lists as a Pair
+                                                    ).observeOn(AndroidSchedulers.mainThread())
+                                                    .subscribe(result -> {
+                                                        if (dataLoadingType == DataLoadingType.INITIAL) {
+                                                            todaysFollowUpDates.clear();
+                                                            tomorrowssFollowUpDates.clear();
+                                                            todaysFollowUpDates.addAll(result.first);
+                                                            tomorrowssFollowUpDates.addAll(result.second);
+                                                            setTodaysDatesInRecyclerView(todaysFollowUpDates);
+                                                            setTomorrowsDatesInRecyclerView(tomorrowssFollowUpDates);
+                                                        } else {
+                                                            completedRecyclerViews.incrementAndGet();
+                                                            completedRecyclerViews.incrementAndGet();
+                                                        }
 
-                                                    setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                                                      /*  if(!isDataPresentInTodayOrTomorrow(finalMonthsFollowUpDates)){
+                                                            setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+                                                        }*/
 
-                                                    if (commonLoadingDialog.isShowing()) {
-                                                        commonLoadingDialog.dismiss();
-                                                    }
-                                                    isPageLoading = false;
-                                                }, throwable -> {
-                                                    if (commonLoadingDialog.isShowing()) {
-                                                        commonLoadingDialog.dismiss();
-                                                    }
-                                                    Toast.makeText(FollowUpPatientActivity_New.this, "Failed to load todays and tomorrows data" + throwable, Toast.LENGTH_SHORT).show();
-                                                }));
+                                                        setMonthsDatesInRecyclerView(finalMonthsFollowUpDates);
+
+                                                        if (commonLoadingDialog.isShowing()) {
+                                                            commonLoadingDialog.dismiss();
+                                                        }
+                                                        isPageLoading = false;
+                                                    }, throwable -> {
+                                                        if (commonLoadingDialog.isShowing()) {
+                                                            commonLoadingDialog.dismiss();
+                                                        }
+                                                        Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load todays and tomorrows data"+throwable,Toast.LENGTH_SHORT).show();
+                                                    }));
+                                        }
                                     }
-                                    //  }
                                 },
                                 err -> {
                                     if (commonLoadingDialog.isShowing()) {
                                         commonLoadingDialog.dismiss();
                                     }
-                                    Toast.makeText(FollowUpPatientActivity_New.this, "Failed to load others data", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(FollowUpPatientActivity_New.this,"Failed to load others data",Toast.LENGTH_SHORT).show();
                                 })
         );
 
@@ -976,7 +983,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "(o.obsservermodifieddate) AS obsservermodifieddate " +
                 "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
                 "WHERE a.uuid = c.visit_uuid " +
-                "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not showing the follow-up item
                 "AND a.patientuuid = b.uuid " +
                 "AND a.uuid = d.visituuid " +
                 "AND d.uuid = o.encounteruuid " +
@@ -1111,7 +1117,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                 "tbl_visit_attribute c " +
                 "WHERE " +
                 "a.uuid = c.visit_uuid " +
-                "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not showing the follow-up item
                 "AND a.patientuuid = b.uuid " +
                 "AND a.uuid = d.visituuid " +
                 "AND d.uuid = o.encounteruuid " +
@@ -1263,7 +1268,6 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                     "MAX(o.obsservermodifieddate) AS obsservermodifieddate " +
                     "FROM tbl_visit a, tbl_patient b, tbl_encounter d, tbl_obs o, tbl_visit_attribute c " +
                     "WHERE a.uuid = c.visit_uuid " +
-                    "AND (select uuid from tbl_visit where patientuuid = b.uuid and (sync = '1' OR sync='true') order by startdate desc limit 1) = a.uuid " + // checking is there new visits or not, if yes, not showing the follow-up item
                     "AND a.patientuuid = b.uuid " +
                     "AND a.uuid = d.visituuid " +
                     "AND d.uuid = o.encounteruuid " +
@@ -1291,59 +1295,57 @@ public class FollowUpPatientActivity_New extends BaseActivity {
                         // Fetch encounters who have emergency set and udpate modelist.
                         String visitUuid = cursor.getString(cursor.getColumnIndexOrThrow("visituuid"));
                         String value_text = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                        boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
-                        if (isCompletedExitedSurvey) {
-                            String emergencyUuid = "";
-                            encounterDAO = new EncounterDAO();
-                            try {
-                                emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
-                            } catch (DAOException e) {
-                                FirebaseCrashlytics.getInstance().recordException(e);
-                                emergencyUuid = "";
-                            }
+                        //boolean isCompletedExitedSurvey = new EncounterDAO().isCompletedExitedSurvey(visitUuid);
+                        //if (isCompletedExitedSurvey) {
+                        String emergencyUuid = "";
+                        encounterDAO = new EncounterDAO();
+                        try {
+                            emergencyUuid = encounterDAO.getEmergencyEncounters(visitUuid, encounterDAO.getEncounterTypeUuid("EMERGENCY"));
+                        } catch (DAOException e) {
+                            FirebaseCrashlytics.getInstance().recordException(e);
+                            emergencyUuid = "";
+                        }
 
-                            if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
-                                modelList.add(new FollowUpModel(visitUuid,
-                                        cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                        StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                        true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
-                                        ))); // ie. visit is emergency visit.
-                            } else {
-                                modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
-                                        cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
-                                        StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("gender")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("sync")),
-                                        false,
-                                        cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
-                                        cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
-                            }
+                        if (!emergencyUuid.isEmpty() || !emergencyUuid.equalsIgnoreCase("")) { // ie. visit is emergency visit.
+                            modelList.add(new FollowUpModel(visitUuid,
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    true, cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")
+                                    ))); // ie. visit is emergency visit.
+                        } else {
+                            modelList.add(new FollowUpModel( // ie. visit is NOT emergency visit.
+                                    cursor.getString(cursor.getColumnIndexOrThrow("visituuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patientuuid")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("middle_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")),
+                                    StringUtils.mobileNumberEmpty(phoneNumber(cursor.getString(cursor.getColumnIndexOrThrow("uuid")))),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("gender")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("startdate")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("speciality")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("follow_up_info")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("sync")),
+                                    false,
+                                    cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")),
+                                    cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")))); // ie. visit is NOT emergency visit.
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
 //                    Toast.makeText(this, "error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-
                 } while (cursor.moveToNext());
             }
             cursor.close();

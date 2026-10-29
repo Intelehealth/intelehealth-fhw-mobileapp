@@ -14,6 +14,7 @@ data class LocalPatientRecord(
     val uuid: String,
     val openMrsId: String = "",
     val firstName: String = "",
+    val middleName: String = "",
     val lastName: String = "",
     val dateOfBirth: String = "",
     val gender: String = "",
@@ -22,4 +23,5 @@ data class LocalPatientRecord(
     val phoneNumber: String = "",
     val abhaNumber: String = "",
     val abhaAddress: String = "",
+    val profilePhoto: String = "",
 ) : Parcelable

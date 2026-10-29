@@ -18,6 +18,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.observers.DisposableObserver
@@ -30,13 +31,12 @@ import kotlinx.coroutines.withContext
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
-import org.intelehealth.app.database.dao.VisitAttributeListDAO
+import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.database.dao.VisitsDAO
 import org.intelehealth.app.databinding.DialogShareprescBinding
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
-import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.AbhaPrescriptionFields
 import org.intelehealth.app.models.hwprofile.Profile
 import org.intelehealth.app.utilities.CustomLog
@@ -45,7 +45,9 @@ import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
 import org.intelehealth.app.utilities.Logger
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import org.intelehealth.app.utilities.UrlModifiers
+import org.intelehealth.app.utilities.exception.DAOException
 import timber.log.Timber
 import java.io.File
 import java.text.ParseException
@@ -204,7 +206,7 @@ class ShowPrescriptionDataPdfShareDialog(
         job.cancel()
     }
 
-    private fun buildAndSavePrescription(
+    private suspend fun buildAndSavePrescription(
         fileName: File,
     ): PrescriptionWithPDFBuilder {
         val drDetails= getDrDetails()
@@ -212,7 +214,13 @@ class ShowPrescriptionDataPdfShareDialog(
         val diagnosis = prescriptionData.visitCompleteEncData?.get("Primary Diagnosis").orEmpty()
         val vital= formatVitalsAndDiagnostics(prescriptionData.vitals)
         val diagnostic= formatVitalsAndDiagnostics(prescriptionData.diagnostics)
-        val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").toString())
+        val formatedAdvice = formatGeneralAdvice(prescriptionData.visitCompleteEncData?.get("Advice").orEmpty())
+        // Follow-up is the one PDF field that reads "No" rather than "NA" when the doctor
+        // set no date. formatFollowUpDisplay() (shared with View/Print) returns "NA" for
+        // that case, and a visit with no prescription encounter has no value at all.
+        val followUp = PrescriptionWithPDFBuilder.checkValueAndReturnNA(prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
+            .let { if (it.trim().equals("NA", ignoreCase = true)) "No" else it }
+        val specialtyNotes = SpecialtyNotesProvider.getNotesFor(activity, drDetails?.specialization)
 
         val patientDataSections: Map<String, Map<String, String?>> = mapOf(
             "Vitals" to mapOf(PrescriptionDetailsDataKeys.Vitals.toString() to vital),
@@ -223,8 +231,12 @@ class ShowPrescriptionDataPdfShareDialog(
             "General Advice" to mapOf(PrescriptionDetailsDataKeys.GeneralAdvice.toString() to formatedAdvice),
             "Tests" to mapOf(PrescriptionDetailsDataKeys.Tests.toString() to prescriptionData.visitCompleteEncData?.get("Tests")),
             "Referred Specialist" to mapOf(PrescriptionDetailsDataKeys.Referral.toString() to prescriptionData.visitCompleteEncData?.get("Referred Specialist")),
-            "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to prescriptionData.visitCompleteEncData?.get("Follow-up Date"))
-        )
+            "Follow Up Date" to mapOf(PrescriptionDetailsDataKeys.FollowUp.toString() to followUp)
+        ) + if (!specialtyNotes.isNullOrEmpty()) {
+            mapOf("Notes & Precautions" to mapOf(PrescriptionDetailsDataKeys.NotesPrecautions.toString() to specialtyNotes.joinToString("\n") { "• $it" }))
+        } else {
+            emptyMap()
+        }
 
         val patientData = createPatientData(prescriptionData.patient)
 
@@ -266,9 +278,9 @@ class ShowPrescriptionDataPdfShareDialog(
 
     private fun createPatientData(patient: Patient): String {
         val fullName = listOfNotNull(patient.first_name, patient.middle_name.takeIf { !it.isNullOrBlank() }, patient.last_name).joinToString(" ")
-        val ageGender = "${activity.getString(R.string.label_age)} ${getPatientAge(patient.date_of_birth)} | ${activity.getString(R.string.label_gender)} ${patient.gender}"
+        val ageGender = "${activity.getString(R.string.label_age)} ${getPatientAge(patient.date_of_birth)} | ${activity.getString(R.string.label_gender)} ${PrescriptionWithPDFBuilder.checkValueAndReturnNA(patient.gender)}"
 
-        val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${patient.openmrs_id}"
+        val patientIdLine = "${activity.getString(R.string.label_patient_id)} ${PrescriptionWithPDFBuilder.checkValueAndReturnNA(patient.openmrs_id)}"
         val visitDateLine = "${activity.getString(R.string.label_visit_date)} $visitStartDate"
 
         val abhaNumberLine =
@@ -276,9 +288,7 @@ class ShowPrescriptionDataPdfShareDialog(
         val abhaAddressLine = AbhaPrescriptionFields.line(
             activity,
             R.string.label_abha_address,
-            VisitAttributeListDAO().getVisitAttributesList_specificVisit(
-                visitUuid, UuidDictionary.VISIT_ABHA_ADDRESS
-            ),
+            AbhaPrescriptionFields.addressForVisit(visitUuid),
         )
 
         // Combine all data into one string
@@ -330,7 +340,7 @@ class ShowPrescriptionDataPdfShareDialog(
     }
 
     private fun formatVitalsAndDiagnostics(data: HashMap<String, String>?): String {
-        return data?.entries?.joinToString(" | ") { "${it.key}=${it.value}" } ?: ""
+        return data?.entries?.joinToString(" | ") { "${it.key}=${PrescriptionWithPDFBuilder.checkValueAndReturnNA(it.value)}" } ?: ""
     }
     private fun formatGeneralAdvice(input: String): String {
         val htmlTagWithContentRegex = Regex("<[^>]+>.*?</[^>]+>", setOf(RegexOption.IGNORE_CASE, RegexOption.DOT_MATCHES_ALL))
@@ -344,10 +354,25 @@ class ShowPrescriptionDataPdfShareDialog(
 
     private fun getDrDetails(): ClsDoctorDetails? {
         var doctorDetailsModel: ClsDoctorDetails? = null
-        val drDetails: String = ObsDAO.fetchDrDetailsFromLocalDb(visitUuid)
+        // Was declared as non-null String here, which made Kotlin throw immediately
+        // (crashing Share Prescription) whenever fetchDrDetailsFromLocalDb legitimately
+        // returned null - which it does for any visit not completed yet (e.g. an
+        // interim/referred prescription), since that doctor-details snapshot is only
+        // ever written at completion time. Declaring it nullable lets the null-handling
+        // below (which was already written to expect this) actually run.
+        val drDetails: String? = ObsDAO.fetchDrDetailsFromLocalDb(visitUuid)
 
         if (drDetails.isNullOrEmpty() || drDetails.equals("null", ignoreCase = true)) {
-            Toast.makeText(activity, activity.getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show()
+            // Fall back to the GP's own identity (from their ENCOUNTER_VISIT_NOTE
+            // encounter) instead of failing outright; only warn if that's unavailable too.
+            try {
+                doctorDetailsModel = EncounterDAO().fetchInterimDoctorDetails(visitUuid)
+            } catch (e: DAOException) {
+                FirebaseCrashlytics.getInstance().recordException(e)
+            }
+            if (doctorDetailsModel == null) {
+                Toast.makeText(activity, activity.getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show()
+            }
         } else {
             val gson = Gson()
             doctorDetailsModel = gson.fromJson(drDetails, ClsDoctorDetails::class.java)

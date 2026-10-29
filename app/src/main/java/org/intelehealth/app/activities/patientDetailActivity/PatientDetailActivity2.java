@@ -486,7 +486,9 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private boolean isPregnancyVisible() {
-        return mGender.equalsIgnoreCase(FEMALE) && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
+        // Null-safe: a patient saved without gender or birth date must still open this screen
+        return FEMALE.equalsIgnoreCase(mGender) && patientDTO.getDateofbirth() != null
+                && DateAndTimeUtils.isDateGreaterThan15Years(patientDTO.getDateofbirth());
     }
 
     // Family Member
@@ -2469,9 +2471,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private String getDistrictTranslated(String state, String district, String language) {
-        StateDistMaster mStateDistMaster = new Gson().fromJson(FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json").toString(), StateDistMaster.class);
-        List<DistData> distDataList = new ArrayList<>();
         String desiredVal = district;
+        JSONObject jsonObject = FileUtils.encodeJSON(PatientDetailActivity2.this, "state_district_tehsil.json");
+        if (jsonObject == null) return desiredVal;
+
+        StateDistMaster mStateDistMaster = new Gson().fromJson(jsonObject.toString(), StateDistMaster.class);
+        List<DistData> distDataList = new ArrayList<>();
 
         for (int i = 0; i < mStateDistMaster.getStateDataList().size(); i++) {
             String sName = mStateDistMaster.getStateDataList().get(i).getState();

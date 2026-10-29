@@ -33,6 +33,9 @@ public class VisitPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new VisitPendingFragment(prescriptionLoadingListeners);
 
+            case 2:
+                return new VisitReferralFragment();
+
             default:
                 return null;
 
@@ -42,6 +45,6 @@ public class VisitPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return 2;
+        return 3;
     }
 }

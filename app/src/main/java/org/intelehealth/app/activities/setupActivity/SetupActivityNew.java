@@ -434,6 +434,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = urlString.concat(":3030/auth/login");
+        System.out.println("finalURL" + finalURL);
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
         CustomLog.d(TAG, "getJWTToken: finalURL : " + finalURL);

@@ -91,7 +91,7 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-       FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
         /* int index = status.getVitalSection() ? 2 : 1;
         int total = status.getVitalSection() ? 5 : 4;*/
         String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_2_DIAGNOSTICS_SUMMARY);

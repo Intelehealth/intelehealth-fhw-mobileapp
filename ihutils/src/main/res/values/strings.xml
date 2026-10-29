@@ -18,4 +18,5 @@
     <string name="util_cancel">Cancel</string>
     <string name="util_take_image">Take image</string>
     <string name="util_photo">PHOTO</string>
+    <string name="util_camera_start_failed">Unable to start the camera. Please try again.</string>
 </resources>

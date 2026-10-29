@@ -319,6 +319,12 @@ public class Node implements Serializable {
             }
 
             this.inputType = jsonNode.optString("input-type");
+            if (this.inputType == null || this.inputType.isEmpty()) {
+                this.inputType = jsonNode.optString("input_type");
+            }
+            if (this.inputType == null || this.inputType.isEmpty()) {
+                this.inputType = jsonNode.optString("inputType");
+            }
 
             this.physicalExams = jsonNode.optString("perform-physical-exam");
             this.hasPhysicalExams = !(this.physicalExams == null);
@@ -2002,6 +2008,7 @@ public class Node implements Serializable {
     }
 
     public Node getOption(int i) {
+        if (optionsList == null || i >= optionsList.size()) return null;
         return optionsList.get(i);
     }
 

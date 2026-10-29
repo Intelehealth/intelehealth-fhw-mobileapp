@@ -2,7 +2,9 @@ package org.intelehealth.app.ayu.visit.reason;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.InputFilter;
+
+import org.intelehealth.app.utilities.CustomLog;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +40,6 @@ import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.knowledgeEngine.Node;
-import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
@@ -184,19 +184,15 @@ public class VisitReasonCaptureFragment extends Fragment {
 
             for (ReasonData data : mindmapReasonDataList) {
                 String mindMapName = data.getReasonName();
-                CustomLog.e("VisitReasonCaptureFragment", "MindMap name=>%s", mindMapName);
                 JSONObject currentFile = null;
                 if (!sessionManager.getLicenseKey().isEmpty()) {
                     currentFile = FileUtils.encodeJSONFromFile(requireActivity(), mindMapName + ".json");
                 } else {
                     String fileLocation = "engines/" + mindMapName + ".json";
-                    CustomLog.e("VisitReasonCaptureFragment", "File location=>%s", fileLocation);
                     currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
                 }
 
-                // check the currentFile null
                 if (currentFile == null) {
-                    CustomLog.e("VisitReasonCaptureFragment", "MindMap file is null for %s", mindMapName);
                     continue;
                 }
                 Node mainNode = new Node(currentFile);
@@ -223,8 +219,6 @@ public class VisitReasonCaptureFragment extends Fragment {
             mVisitReasonAutoCompleteTextView.setThreshold(2);
             mVisitReasonAutoCompleteTextView.setAdapter(adapter);
             mVisitReasonAutoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_menu_background);
-            mVisitReasonAutoCompleteTextView.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
-
 
             mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
@@ -405,7 +399,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
             for (String s : temp) {
                 String fileName = s.split(".json")[0];
-                CustomLog.e("VisitReasonCaptureFragment", "MindMap name=>%s", fileName);
+                //Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();
                 reasonData.setReasonName(fileName);
                 reasonData.setReasonNameLocalized(NodeAdapterUtils.getTheChiefComplainNameWRTLocale(getActivity(), fileName));

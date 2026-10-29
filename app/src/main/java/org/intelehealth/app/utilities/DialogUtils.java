@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +26,8 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.adapter.ImagePickerListAdapter;
@@ -50,6 +54,12 @@ public class DialogUtils {
         public static final int CANCELLED = 2;
 
         public void onActionDone(int action);
+    }
+
+    public interface DocumentTypeImagePickerListener {
+        void onTakePhoto(String documentType);
+
+        void onChooseGallery(String documentType);
     }
 
     public void showOkDialog(Context context, String title, String message, String ok) {
@@ -288,6 +298,62 @@ public class DialogUtils {
         recyclerView.setAdapter(dialogListAdapter);
         AlertDialog alertDialog = alertDialogBuilder.show();
         alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
+        return alertDialog;
+    }
+
+    /**
+     * Shows a single dialog to pick the additional document's type (Previous Prescription,
+     * Old Test Reports, Old Medicine, or a custom "Other" type entered inline) and then
+     * take a photo or choose an image from the gallery, all without leaving the dialog.
+     */
+    public static AlertDialog showDocumentTypeAndImagePickerDialog(Context context, DocumentTypeImagePickerListener documentTypeImagePickerListener) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        View convertView = View.inflate(context, R.layout.dialog_document_type_and_image_picker, null);
+        alertDialogBuilder.setView(convertView);
+
+        RadioGroup radioGroup = convertView.findViewById(R.id.rgDocumentType);
+        TextInputLayout tilOtherDocType = convertView.findViewById(R.id.tilOtherDocType);
+        TextInputEditText etOtherDocType = convertView.findViewById(R.id.etOtherDocType);
+        View btnTakePhoto = convertView.findViewById(R.id.btnTakePhotoDocType);
+        View btnChooseGallery = convertView.findViewById(R.id.btnChooseGalleryDocType);
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            tilOtherDocType.setVisibility(checkedId == R.id.rbOther ? View.VISIBLE : View.GONE);
+            tilOtherDocType.setError(null);
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
+
+        View.OnClickListener actionClickListener = clickedView -> {
+            int checkedId = radioGroup.getCheckedRadioButtonId();
+            if (checkedId == -1) {
+                Toast.makeText(context, R.string.doc_type_selection_required, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String documentType;
+            if (checkedId == R.id.rbOther) {
+                documentType = etOtherDocType.getText() == null ? "" : etOtherDocType.getText().toString().trim();
+                if (documentType.isEmpty()) {
+                    tilOtherDocType.setError(context.getString(R.string.doc_type_other_input_error));
+                    return;
+                }
+            } else {
+                documentType = ((RadioButton) convertView.findViewById(checkedId)).getText().toString();
+            }
+
+            alertDialog.dismiss();
+            if (clickedView.getId() == R.id.btnTakePhotoDocType) {
+                documentTypeImagePickerListener.onTakePhoto(documentType);
+            } else {
+                documentTypeImagePickerListener.onChooseGallery(documentType);
+            }
+        };
+
+        btnTakePhoto.setOnClickListener(actionClickListener);
+        btnChooseGallery.setOnClickListener(actionClickListener);
+
         return alertDialog;
     }
 

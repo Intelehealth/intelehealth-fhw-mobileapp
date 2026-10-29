@@ -101,7 +101,6 @@ public class AppConstants {
     public static final String MAXIMUM_RESPIRATORY = "80";
     public static final String MINIMUM_RESPIRATORY = "10";
 
-
     //functions constants
 
     /**

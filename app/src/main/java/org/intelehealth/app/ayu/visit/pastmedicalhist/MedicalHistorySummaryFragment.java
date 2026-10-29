@@ -1,6 +1,5 @@
 package org.intelehealth.app.ayu.visit.pastmedicalhist;
 
-import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION;
 import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_6_HISTORY_SUMMARY;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;

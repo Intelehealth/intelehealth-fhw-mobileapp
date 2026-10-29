@@ -109,9 +109,9 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
         mBinding.btnSubmit.setOnClickListener(this)
         mBinding.btnSubmit.isClickable = true
 
-     /*   if (mIsEditMode && results == null) {
-            viewModel.loadSavedData(encounterVitals)
-        }*/
+        /*   if (mIsEditMode && results == null) {
+               viewModel.loadSavedData(encounterVitals)
+           }*/
 
         if (!mIsEditMode) {
             results = DiagnosticsModel() // Initialize a new instance for fresh data collection
@@ -212,13 +212,13 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                         it
                     )
                 }
-              /*  results.bloodGlucoseNonFasting?.let {
-                    processDiagnostic(
-                        mBinding.llNonFastingContainer.tag as? Diagnostics,
-                        UuidDictionary.BLOOD_GLUCOSE,
-                        it
-                    )
-                }*/
+                /*  results.bloodGlucoseNonFasting?.let {
+                      processDiagnostic(
+                          mBinding.llNonFastingContainer.tag as? Diagnostics,
+                          UuidDictionary.BLOOD_GLUCOSE,
+                          it
+                      )
+                  }*/
                 results.uricAcid?.let {
                     processDiagnostic(
                         mBinding.llUricAcidContainer.tag as? Diagnostics,
@@ -274,13 +274,13 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                         it
                     )
                 }
-               /* results.bloodGlucoseNonFasting?.let {
-                    processDiagnostic(
-                        mBinding.llNonFastingContainer.tag as? Diagnostics,
-                        UuidDictionary.BLOOD_GLUCOSE,
-                        it
-                    )
-                }*/
+                /* results.bloodGlucoseNonFasting?.let {
+                     processDiagnostic(
+                         mBinding.llNonFastingContainer.tag as? Diagnostics,
+                         UuidDictionary.BLOOD_GLUCOSE,
+                         it
+                     )
+                 }*/
                 results.bloodGlucosePostPrandial?.let {
                     processDiagnostic(
                         mBinding.llPostPrandialContainer.tag as? Diagnostics,
@@ -429,27 +429,27 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
             }
         }
 
-       /* val nonFastingGlucose = mBinding.etvNonFastingGlucose.text.toString().trim()
-        if (nonFastingGlucose.isNotEmpty()) {
-            val nonFastingValue = nonFastingGlucose.toDoubleOrNull()
-            if (nonFastingValue != null && (nonFastingValue > AppConstants.MAXIMUM_GLUCOSE_NON_FASTING.toDouble() ||
-                        nonFastingValue < AppConstants.MINIMUM_GLUCOSE_NON_FASTING.toDouble())
-            ) {
-                mBinding.tvNonFastingGlucoseError.text = getString(
-                    R.string.glucose_non_fasting_error,
-                    AppConstants.MINIMUM_GLUCOSE_NON_FASTING,
-                    AppConstants.MAXIMUM_GLUCOSE_NON_FASTING
-                )
-                mBinding.tvNonFastingGlucoseError.visibility = View.VISIBLE
-                mBinding.etvNonFastingGlucose.requestFocus()
-                mBinding.etvNonFastingGlucose.setBackgroundResource(R.drawable.input_field_error_bg_ui2)
-                isValid = false
-            } else {
-                mBinding.tvNonFastingGlucoseError.visibility = View.GONE
-                mBinding.etvNonFastingGlucose.setBackgroundResource(R.drawable.bg_input_fieldnew)
-            }
-        }
-*/
+        /* val nonFastingGlucose = mBinding.etvNonFastingGlucose.text.toString().trim()
+         if (nonFastingGlucose.isNotEmpty()) {
+             val nonFastingValue = nonFastingGlucose.toDoubleOrNull()
+             if (nonFastingValue != null && (nonFastingValue > AppConstants.MAXIMUM_GLUCOSE_NON_FASTING.toDouble() ||
+                         nonFastingValue < AppConstants.MINIMUM_GLUCOSE_NON_FASTING.toDouble())
+             ) {
+                 mBinding.tvNonFastingGlucoseError.text = getString(
+                     R.string.glucose_non_fasting_error,
+                     AppConstants.MINIMUM_GLUCOSE_NON_FASTING,
+                     AppConstants.MAXIMUM_GLUCOSE_NON_FASTING
+                 )
+                 mBinding.tvNonFastingGlucoseError.visibility = View.VISIBLE
+                 mBinding.etvNonFastingGlucose.requestFocus()
+                 mBinding.etvNonFastingGlucose.setBackgroundResource(R.drawable.input_field_error_bg_ui2)
+                 isValid = false
+             } else {
+                 mBinding.tvNonFastingGlucoseError.visibility = View.GONE
+                 mBinding.etvNonFastingGlucose.setBackgroundResource(R.drawable.bg_input_fieldnew)
+             }
+         }
+ */
         val postPrandial = mBinding.etvPostPrandial.text.toString().trim()
         if (postPrandial.isNotEmpty()) {
             val postPrandialValue = postPrandial.toDoubleOrNull()
@@ -550,6 +550,7 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
 
         val diabetes_hba1c = mBinding.etvDiabetesHba1c.text.toString().trim()
         if (diabetes_hba1c.isNotEmpty()) {
+
             val diabetesValue = diabetes_hba1c.toDoubleOrNull()
             if (diabetesValue != null && (diabetesValue > AppConstants.MAXIMUM_TOTAL_DIABETES_HBA1C.toDouble() ||
                         diabetesValue < AppConstants.MINIMUM_TOTAL_DIABETES_HBA1C.toDouble())
@@ -564,8 +565,8 @@ class DiagnosticsCollectionFragmentK : Fragment(), View.OnClickListener {
                 mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.input_field_error_bg_ui2)
                 isValid = false
             } else {
-                mBinding.tvHemoglobinError.visibility = View.GONE
-                mBinding.etvHemoglobin.setBackgroundResource(R.drawable.bg_input_fieldnew)
+                mBinding.tvDiabetesHba1cError.visibility = View.GONE
+                mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.bg_input_fieldnew)
             }
         }
         return isValid

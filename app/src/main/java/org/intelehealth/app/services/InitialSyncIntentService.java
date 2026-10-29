@@ -83,6 +83,7 @@ public class InitialSyncIntentService extends IntentService {
                 SyncDAO.setProgress(percentage);
                 syncDAO.pullDataBackgroundService(IntelehealthApplication.getAppContext(), fromActivity, nextPageNo);
                 CustomLog.e("TAG", "onHandleIntent: isFirstPageCalled : "+isFirstPageCalled);
+                CustomLog.e("TAG", "onHandleIntent: isFirstPageCalled : "+percentage);
 
             }else {
                 percentage = 100;

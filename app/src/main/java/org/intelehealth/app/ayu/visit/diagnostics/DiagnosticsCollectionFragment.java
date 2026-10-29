@@ -1,35 +1,43 @@
 package org.intelehealth.app.ayu.visit.diagnostics;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.Manifest;
+import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LifecycleOwnerKt;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-import com.google.gson.Gson;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.hba1c.BleScanActivity;
+import org.intelehealth.app.ayu.visit.hba1c.HbA1cLiveViewModel;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
 import org.intelehealth.app.database.dao.EncounterDAO;
@@ -39,7 +47,6 @@ import org.intelehealth.app.models.DiagnosticsModel;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
-import org.intelehealth.app.utilities.DecimalDigitsInputFilter;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
@@ -48,81 +55,83 @@ import org.intelehealth.config.presenter.fields.factory.DiagnosticsViewModelFact
 import org.intelehealth.config.presenter.fields.viewmodel.DiagnosticsViewModel;
 import org.intelehealth.config.room.ConfigDatabase;
 import org.intelehealth.config.room.entity.Diagnostics;
-import org.intelehealth.config.room.entity.PatientVital;
 import org.intelehealth.config.utility.PatientDiagnosticsConfigKeys;
 
 import java.util.List;
 
 public class DiagnosticsCollectionFragment extends Fragment implements View.OnClickListener {
-    private static final String TAG = DiagnosticsCollectionFragment.class.getSimpleName();
+
+    private static final String TAG     = DiagnosticsCollectionFragment.class.getSimpleName();
+    private static final int    REQ_BLE = 100;
+
+    // ── Instance fields ───────────────────────────────────────────────────────
     private VisitCreationActionListener mActionListener;
-    private String patientName = "";
-    private String patientGender = "";
-    private String intentTag;
-    private String state;
-    private String patientUuid;
-    private String visitUuid;
-    private String encounterVitals;
-    private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
-    private SessionManager sessionManager;
-    private ConfigUtils configUtils;
-    private DiagnosticsModel results = new DiagnosticsModel();
-    private boolean mIsEditMode = false;
+    private String patientName       = "";
+    private String patientGender     = "";
+    private String intentTag, state, patientUuid, visitUuid, encounterVitals;
+    private String encounterAdultIntials             = "";
+    private String EncounterAdultInitial_LatestVisit = "";
+    private SessionManager    sessionManager;
+    private DiagnosticsModel  results     = new DiagnosticsModel();
+    private boolean           mIsEditMode = false;
     private List<Diagnostics> mPatientDiagnosticsList;
+
+    private StringBuilder mDebugLog = new StringBuilder();
     private FragmentDiagnosticsCollectionBinding mBinding;
 
-    public DiagnosticsCollectionFragment() {
+
+    private HbA1cLiveViewModel mHba1cVm;
+    private CommonVisitData mCommonVisitData;
+
+    // ── Constructor / factory ─────────────────────────────────────────────────
+
+    public DiagnosticsCollectionFragment() {}
+
+    public static DiagnosticsCollectionFragment newInstance(
+            CommonVisitData d, boolean isEditMode, DiagnosticsModel model) {
+        DiagnosticsCollectionFragment f = new DiagnosticsCollectionFragment();
+        f.mIsEditMode = isEditMode;
+        f.results     = model;
+        f.patientUuid                       = d.getPatientUuid();
+        f.visitUuid                         = d.getVisitUuid();
+        f.encounterVitals                   = d.getEncounterUuidVitals();
+        f.encounterAdultIntials             = d.getEncounterUuidAdultIntial();
+        f.EncounterAdultInitial_LatestVisit = d.getEncounterAdultInitialLatestVisit();
+        f.state                             = d.getState();
+        f.patientName                       = d.getPatientName();
+        f.patientGender                     = d.getPatientGender();
+        f.intentTag                         = d.getIntentTag();
+        f.mCommonVisitData                  = d;
+        return f;
     }
 
-
-    public static DiagnosticsCollectionFragment newInstance(CommonVisitData commonVisitData, boolean isEditMode, DiagnosticsModel diagnosticsModel) {
-        DiagnosticsCollectionFragment fragment = new DiagnosticsCollectionFragment();
-
-
-        fragment.mIsEditMode = isEditMode;
-        fragment.results = diagnosticsModel;
-
-        fragment.patientUuid = commonVisitData.getPatientUuid();//intent.getStringExtra("patientUuid");
-        fragment.visitUuid = commonVisitData.getVisitUuid(); // intent.getStringExtra("visitUuid");
-        fragment.encounterVitals = commonVisitData.getEncounterUuidVitals();//intent.getStringExtra("encounterUuidVitals");
-        fragment.encounterAdultIntials = commonVisitData.getEncounterUuidAdultIntial();//intent.getStringExtra("encounterUuidAdultIntial");
-        fragment.EncounterAdultInitial_LatestVisit = commonVisitData.getEncounterAdultInitialLatestVisit();//intent.getStringExtra("EncounterAdultInitial_LatestVisit");
-        fragment.state = commonVisitData.getState();//intent.getStringExtra("state");
-        fragment.patientName = commonVisitData.getPatientName();//intent.getStringExtra("name");
-        fragment.patientGender = commonVisitData.getPatientGender();//intent.getStringExtra("gender");
-        fragment.intentTag = commonVisitData.getIntentTag();//intent.getStringExtra("tag");
-        return fragment;
-    }
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
-        sessionManager = new SessionManager(context);
-        configUtils = new ConfigUtils(context);
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        sessionManager  = new SessionManager(context);
+        new ConfigUtils(context);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_diagnostics_collection, container, false);
-        // mBinding.etvPostPrandial.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(3, 0)});
+        mBinding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_diagnostics_collection, container, false);
 
         mBinding.tvGlucoseRandomError.setVisibility(View.GONE);
         mBinding.tvGlucoseFastingError.setVisibility(View.GONE);
-        //mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
         mBinding.etvPostPrandialError.setVisibility(View.GONE);
         mBinding.etvUricAcidError.setVisibility(View.GONE);
         mBinding.etvCholestrolError.setVisibility(View.GONE);
         mBinding.tvHemoglobinError.setVisibility(View.GONE);
         mBinding.tvDiabetesHba1cError.setVisibility(View.GONE);
+
+        // Live-update views — hidden until BLE connects
+        mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
+        mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
 
         //mBinding.etvNonFastingGlucose.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvNonFastingGlucose));
         mBinding.etvGlucoseRandom.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvGlucoseRandom));
@@ -134,49 +143,249 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.etvDiabetesHba1c.addTextChangedListener(new DiagnosticsCollectionFragment.MyTextWatcher(mBinding.etvDiabetesHba1c));
 
         mBinding.btnSubmit.setOnClickListener(this);
-        mBinding.btnSubmit.setClickable(true);
         mBinding.btnCancel.setOnClickListener(this);
-        mBinding.btnCancel.setClickable(true);
 
-        if (mIsEditMode && results == null) {
-            loadSavedDateForEditFromDB();
-        }
+        if (mIsEditMode && results == null) loadSavedDateForEditFromDB();
 
         return mBinding.getRoot();
     }
 
-
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        manageBackButtonVisibility();
 
-        //config viewmodel initialization
-        DiagnosticsRepository repository = new DiagnosticsRepository(ConfigDatabase.getInstance(requireActivity()).patientDiagnosticsDao());
-        DiagnosticsViewModelFactory factory = new DiagnosticsViewModelFactory(repository);
-        DiagnosticsViewModel diagnosticsViewModel = new ViewModelProvider(this, factory).get(DiagnosticsViewModel.class);
-        //requireActivity();
-       /* diagnosticsViewModel.getAllEnabledLiveFields()
-                .observe(requireActivity(), it -> {
-                            mPatientDiagnosticsList = it;
-                            updateUI();
-                        }
-                );*/
+        // ── Get Activity-scoped ViewModel ─────────────────────────────────
+        // requireActivity() ensures we get the SAME instance as the Activity
+        // and every other fragment — BLE connection is shared, not per-fragment.
+        mHba1cVm = new ViewModelProvider(requireActivity())
+                .get(HbA1cLiveViewModel.class);
+
+        // ── Observe HbA1c reading — auto-updates field whenever value arrives ─
+        // This fires immediately with the last known value if BLE was already
+        // running before this fragment was created (user navigated back, etc.)
+        mHba1cVm.hba1cReading().observe(getViewLifecycleOwner(), reading -> {
+            if (reading == null || mBinding == null) return;
+
+            // Populate the field
+            mBinding.etvDiabetesHba1c.setText(reading);
+            mBinding.etvDiabetesHba1c.setSelection(reading.length());
+
+            // Auto-save into model — Submit will always have the latest value
+            if (results == null) results = new DiagnosticsModel();
+            results.setDiabetesbba1c(reading);
+
+            // Keep the shared CommonVisitData in sync too — same object the
+            // Activity holds, so this reaches final submission automatically.
+            if (mCommonVisitData != null) {
+                mCommonVisitData.setDiabetesbba1c(reading);
+            }
+
+            // Green flash to signal live update
+            flashField(mBinding.etvDiabetesHba1c);
+
+            isValidForm();
+            Log.d(TAG, "hba1cReading observer: updated to " + reading);
+        });
+
+        // ── Observe timestamp ─────────────────────────────────────────────
+        mHba1cVm.lastUpdatedAt().observe(getViewLifecycleOwner(), ts -> {
+            if (ts == null || mBinding == null) return;
+            mBinding.tvHba1cLastUpdated.setVisibility(View.VISIBLE);
+            mBinding.tvHba1cLastUpdated.setText("Last updated " + ts);
+        });
+
+        // ── Observe connection status ─────────────────────────────────────
+        mHba1cVm.connected().observe(getViewLifecycleOwner(), connected -> {
+            if (mBinding == null) return;
+            boolean ready = mHba1cVm.readyToReceive().getValue() != null
+                    && mHba1cVm.readyToReceive().getValue();
+            updateConnectionStatus(connected != null && connected, ready);
+        });
+
+        // ── Observe "awaiting 2nd button press" — fires after go() on the
+        // Activity. The device sends frame 1 on the 1st press but does NOT
+        // call setHbA1cReading() until the 2nd press. Surface that to the
+        // user so they don't think the device is stuck.
+        mHba1cVm.readyToReceive().observe(getViewLifecycleOwner(), ready -> {
+            if (mBinding == null) return;
+            boolean isConnected = mHba1cVm.connected().getValue() != null
+                    && mHba1cVm.connected().getValue();
+            updateConnectionStatus(isConnected, ready != null && ready);
+        });
+
+        // ── Diagnostics config ────────────────────────────────────────────
+        DiagnosticsRepository repository = new DiagnosticsRepository(
+                ConfigDatabase.getInstance(requireActivity()).patientDiagnosticsDao());
+        DiagnosticsViewModel vm = new ViewModelProvider(this,
+                new DiagnosticsViewModelFactory(repository))
+                .get(DiagnosticsViewModel.class);
+
         CoroutineProvider.usePatientDiagnosticsScope(
-                LifecycleOwnerKt.getLifecycleScope(this),
-                diagnosticsViewModel,
-                data -> {
-                    mPatientDiagnosticsList = (List<Diagnostics>) data;
-                    updateUI();
-                }
-        );
+                LifecycleOwnerKt.getLifecycleScope(this), vm,
+                data -> { mPatientDiagnosticsList = (List<Diagnostics>) data; updateUI(); });
+
+        // ── Scan button — only needed if no device saved yet ──────────────
+        mBinding.btnScanDevice.setOnClickListener(v ->
+                startActivityForResult(
+                        new Intent(getActivity(), BleScanActivity.class), REQ_BLE));
+        if (BuildConfig.DEBUG) {
+            // Debug log panel and Copy/Email buttons are kept hidden from the UI;
+            // logging below still runs so mDebugLog stays available internally.
+            /*mBinding.tvDebugLog.setVisibility(View.VISIBLE);
+            mBinding.btnCopyDebugLog.setVisibility(View.VISIBLE);
+            mBinding.btnEmailDebugLog.setVisibility(View.VISIBLE);*/
+
+            appendDebugLog("=== HbA1c Debug Session Started ===");
+            appendDebugLog("Device model: " + android.os.Build.MODEL);
+            appendDebugLog("Android version: " + android.os.Build.VERSION.RELEASE);
+            appendDebugLog("App version: " + BuildConfig.VERSION_NAME);
+
+            mHba1cVm.connected().observe(getViewLifecycleOwner(), c ->
+                    appendDebugLog("connected = " + c));
+
+            mHba1cVm.hba1cReading().observe(getViewLifecycleOwner(), r ->
+                    appendDebugLog("hba1cReading = " + r));
+
+            mHba1cVm.lastUpdatedAt().observe(getViewLifecycleOwner(), ts ->
+                    appendDebugLog("lastUpdatedAt = " + ts));
+
+            mHba1cVm.readyToReceive().observe(getViewLifecycleOwner(), r ->
+                    appendDebugLog("readyToReceive = " + r));
+
+            mBinding.btnCopyDebugLog.setOnClickListener(v -> {
+                android.content.ClipboardManager clipboard =
+                        (android.content.ClipboardManager) requireActivity()
+                                .getSystemService(Context.CLIPBOARD_SERVICE);
+                clipboard.setPrimaryClip(
+                        android.content.ClipData.newPlainText("debug_log", mDebugLog.toString()));
+                Toast.makeText(getContext(), "Log copied to clipboard", Toast.LENGTH_SHORT).show();
+            });
+
+            mBinding.btnEmailDebugLog.setOnClickListener(v -> emailDebugLogFile());
+        }
+        manageBackButtonVisibility();
     }
 
+    @Override public void onResume() { super.onResume(); initData(); }
+
+    @Override
+    public void onDestroyView() {
+        // Do NOT stop the BLE connection here — it lives in the Activity
+        // (ControlCentre) and must keep running across fragment transactions
+        // so the value is ready on the summary screen. The Activity calls
+        // mControlCentre.stopReceiver() in its own onDestroy().
+        stopLivePulse();
+        mBinding = null;
+        super.onDestroyView();
+    }
+    private void appendDebugLog(String line) {
+        String ts = new java.text.SimpleDateFormat("HH:mm:ss.SSS", java.util.Locale.getDefault())
+                .format(new java.util.Date());
+        mDebugLog.append("[").append(ts).append("] ").append(line).append("\n");
+        if (mBinding != null && mBinding.tvDebugLog != null) {
+            mBinding.tvDebugLog.setText(mDebugLog.toString());
+        }
+    }
+    // ── Activity result (manual scan fallback) ────────────────────────────────
+
+    @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode != REQ_BLE || resultCode != RESULT_OK || data == null) return;
+
+        String address = data.getStringExtra("device_address");
+        if (address == null || address.isEmpty()) {
+            android.widget.Toast.makeText(
+                    getContext(), "No device selected", android.widget.Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Hand off to Activity which saves the address and starts ControlCentre
+        // — not a new local thread/connection.
+        ((VisitCreationActivity) requireActivity()).saveAndStartBleDevice(address);
+    }
+
+    // ── Connection-status UI ──────────────────────────────────────────────────
+
+    private void updateConnectionStatus(boolean isConnected, boolean readyToReceive) {
+        if (mBinding == null) return;
+
+        boolean hasReading = mHba1cVm != null
+                && mHba1cVm.hba1cReading().getValue() != null
+                && !mHba1cVm.hba1cReading().getValue().isEmpty();
+
+        if (isConnected && readyToReceive && !hasReading) {
+            mBinding.tvConnectionStatus.setText("Ready — you may start the test now");
+            mBinding.tvConnectionStatus.setTextColor(0xFF2E7D32);
+            mBinding.statusDot.setBackgroundResource(R.color.btn_background);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
+            startLivePulse();
+            mBinding.btnScanDevice.setEnabled(false);
+            mBinding.btnScanDevice.setAlpha(0.5f);
+            mBinding.etvDiabetesHba1c.setFocusable(true);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
+        } else if (isConnected && !readyToReceive) {
+            mBinding.tvConnectionStatus.setText("Connecting — please wait before starting the test");
+            mBinding.tvConnectionStatus.setTextColor(0xFFFF9800);
+            mBinding.statusDot.setBackgroundResource(R.color.btn_background);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
+            startLivePulse();
+            mBinding.btnScanDevice.setEnabled(false);
+            mBinding.btnScanDevice.setAlpha(0.5f);
+            mBinding.etvDiabetesHba1c.setFocusable(true);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
+        } else if (isConnected) {
+            mBinding.tvConnectionStatus.setText("Connected");
+            mBinding.tvConnectionStatus.setTextColor(0xFF000000);
+            mBinding.statusDot.setBackgroundResource(R.color.btn_background);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.VISIBLE);
+            startLivePulse();
+            mBinding.btnScanDevice.setEnabled(false);
+            mBinding.btnScanDevice.setAlpha(0.5f);
+        } else {
+            mBinding.tvConnectionStatus.setText("Disconnected");
+            mBinding.tvConnectionStatus.setTextColor(0xFFD32F2F);
+            mBinding.statusDot.setBackgroundResource(R.color.red);
+            mBinding.tvHba1cLiveBadge.setVisibility(View.GONE);
+            stopLivePulse();
+            mBinding.btnScanDevice.setEnabled(true);
+            mBinding.btnScanDevice.setAlpha(1.0f);
+            mBinding.etvDiabetesHba1c.setFocusable(true);
+            mBinding.etvDiabetesHba1c.setFocusableInTouchMode(true);
+            mBinding.tvHba1cLastUpdated.setVisibility(View.GONE);
+        }
+
+        Log.d(TAG, "updateConnectionStatus → connected=" + isConnected
+                + " ready=" + readyToReceive + " hasReading=" + hasReading);
+    }
+
+    private void startLivePulse() {
+        if (mBinding == null) return;
+        AlphaAnimation pulse = new AlphaAnimation(1.0f, 0.2f);
+        pulse.setDuration(800);
+        pulse.setRepeatMode(Animation.REVERSE);
+        pulse.setRepeatCount(Animation.INFINITE);
+        mBinding.tvHba1cLiveBadge.startAnimation(pulse);
+    }
+
+    private void stopLivePulse() {
+        if (mBinding == null) return;
+        mBinding.tvHba1cLiveBadge.clearAnimation();
+    }
+
+    private void flashField(View v) {
+        ObjectAnimator.ofArgb(v, "backgroundColor", 0x4400C853, 0x00000000)
+                .setDuration(600)
+                .start();
+    }
+
+    // ── UI helpers ────────────────────────────────────────────────────────────
+
     private void updateUI() {
-        //resetAllFields();
         mBinding.llGlucoseRandomContainer.setVisibility(View.GONE);
         mBinding.llGlusoseFastingContainer.setVisibility(View.GONE);
-        //mBinding.tvNonFastingGlucoseError.setVisibility(View.GONE);
         mBinding.llPostPrandialContainer.setVisibility(View.GONE);
         mBinding.llHemoglobinContainer.setVisibility(View.GONE);
         mBinding.llUricAcidContainer.setVisibility(View.GONE);
@@ -189,73 +398,56 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
             if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.RANDOM_BLOOD_SUGAR)) {
                 mBinding.llGlucoseRandomContainer.setVisibility(View.VISIBLE);
                 mBinding.llGlucoseRandomContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvGlucoseRandomLbl);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvGlucoseRandomLbl);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.FASTING_BLOOD_SUGAR)) {
                 mBinding.llGlusoseFastingContainer.setVisibility(View.VISIBLE);
                 mBinding.llGlusoseFastingContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvGlusoseFastingLbl);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvGlusoseFastingLbl);
             }/* else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.BLOOD_GLUCOSE)) {
                 mBinding.llNonFastingContainer.setVisibility(View.VISIBLE);
                 mBinding.llNonFastingContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvNonFastingLbl);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvNonFastingLbl);
             }*/ else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.POST_PRANDIAL_BLOOD_SUGAR)) {
                 mBinding.llPostPrandialContainer.setVisibility(View.VISIBLE);
                 mBinding.llPostPrandialContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvPostPrandialLbl);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvPostPrandialLbl);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.HEAMOGLOBIN)) {
                 mBinding.llHemoglobinContainer.setVisibility(View.VISIBLE);
                 mBinding.llHemoglobinContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvHemoglobinLbl);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvHemoglobinLbl);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.URIC_ACID)) {
                 mBinding.llUricAcidContainer.setVisibility(View.VISIBLE);
                 mBinding.llUricAcidContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvUricAcidLbl);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvUricAcidLbl);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mBinding.llCholestrolContainer.setVisibility(View.VISIBLE);
                 mBinding.llCholestrolContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvCholestrolLbl);
-            }else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvCholestrolLbl);
+            } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
                 mBinding.llDiabetesHba1cContainer.setVisibility(View.VISIBLE);
                 mBinding.llDiabetesHba1cContainer.setTag(diagnostics);
-                appendMandatorySing(diagnostics.isMandatory(), mBinding.tvDiabetesHba1cLabel);
+                appendMandatory(diagnostics.isMandatory(), mBinding.tvDiabetesHba1cLabel);
             }
         }
     }
 
-    private void appendMandatorySing(boolean isMandatory, TextView textView) {
-        if (isMandatory) {
-            textView.append("*");
-        }
+    private void appendMandatory(boolean mandatory, TextView tv) {
+        if (mandatory) tv.append("*");
     }
 
+    private void initData() {
+        if (results == null) return;
+        setIfNotEmpty(mBinding.etvGlucoseRandom,   results.getBloodGlucoseRandom());
+        setIfNotEmpty(mBinding.etvGlucoseFasting,  results.getBloodGlucoseFasting());
+        setIfNotEmpty(mBinding.etvPostPrandial,    results.getBloodGlucosePostPrandial());
+        setIfNotEmpty(mBinding.etvHemoglobin,      results.getHemoglobin());
+        setIfNotEmpty(mBinding.etvUricAcid,        results.getUricAcid());
+        setIfNotEmpty(mBinding.etvCholesterol,     results.getCholesterol());
+        setIfNotEmpty(mBinding.etvDiabetesHba1c,   results.getDiabetesbba1c());
+    }
 
-    class MyTextWatcher implements TextWatcher {
-        EditText editText;
-
-        MyTextWatcher(EditText editText) {
-            this.editText = editText;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            String val = editable.toString().trim();
-            if (val.equals(".")) {
-                editText.setText("");
-                return;
-            }
-            boolean isValid = isValidForm();
-            setDisabledSubmit(!isValid);
-        }
+    private void setIfNotEmpty(EditText et, String val) {
+        if (val != null && !val.isEmpty()) et.setText(val);
     }
 
     private boolean isValidForm() {
@@ -369,89 +561,75 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         return true;
     }
 
-    private void setDisabledSubmit(boolean disableNow) {
-        if (disableNow) {
-            mBinding.btnSubmit.setClickable(false);
-            mBinding.btnSubmit.setEnabled(false);
-//            mSubmitButton.setBackgroundResource(R.drawable.ui2_common_primary_bg_disabled_1);
+    private void manageBackButtonVisibility() {
+        boolean vitals =
+                ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getVitalSection();
+        mBinding.btnCancel.setVisibility(vitals ? View.VISIBLE : View.GONE);
+        LinearLayout.LayoutParams p =
+                (LinearLayout.LayoutParams) mBinding.btnSubmit.getLayoutParams();
+        if (mBinding.btnCancel.getVisibility() == View.GONE) {
+            p.width = LinearLayout.LayoutParams.MATCH_PARENT; p.weight = 0f;
+            p.setMargins(0, p.topMargin, p.rightMargin, p.bottomMargin);
         } else {
-            mBinding.btnSubmit.setClickable(true);
-            mBinding.btnSubmit.setEnabled(true);
-//            mSubmitButton.setBackgroundResource(R.drawable.ui2_common_primary_bg);
+            p.width = 0; p.weight = 1f;
+            p.setMargins(16, p.topMargin, p.rightMargin, p.bottomMargin);
         }
+        mBinding.btnSubmit.setLayoutParams(p);
     }
+
+    // ── Click handler ─────────────────────────────────────────────────────────
 
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.btn_submit) {
             mBinding.btnSubmit.setClickable(false);
-            boolean isValid = isValidForm();
-            Log.d(TAG, "onClick: btn_submit clicked- " + isValid);//validate
-
-            if (isValid) {
+            boolean valid = isValidForm();
+            if (valid) {
                 isDataReadyForSaving();
                 mActionListener.onProgress(100);
-                mActionListener.onFormSubmitted(VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, mIsEditMode, results);
+                mActionListener.onFormSubmitted(
+                        VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY, mIsEditMode, results);
             }
-            setDisabledSubmit(!isValid);
+            setDisabledSubmit(!valid);
         }
         if (view.getId() == R.id.btn_cancel) {
-            mActionListener.onFormSubmitted(VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
+            mActionListener.onFormSubmitted(
+                    VisitCreationActivity.STEP_1_VITAL_SUMMARY, false, null);
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        initData();
+    private void setDisabledSubmit(boolean disable) {
+        mBinding.btnSubmit.setClickable(!disable);
+        mBinding.btnSubmit.setEnabled(!disable);
     }
 
-    private void initData() {
-        // set existing data
-        if (results != null) {
-            if (results.getBloodGlucoseRandom() != null && !results.getBloodGlucoseRandom().isEmpty())
-                mBinding.etvGlucoseRandom.setText(results.getBloodGlucoseRandom());
+    // ── TextWatcher ───────────────────────────────────────────────────────────
 
-            if (results.getBloodGlucoseFasting() != null && !results.getBloodGlucoseFasting().isEmpty())
-                mBinding.etvGlucoseFasting.setText(results.getBloodGlucoseFasting());
-
-//            if (results.getBloodGlucoseNonFasting() != null && !results.getBloodGlucoseNonFasting().isEmpty())
-//                mBinding.etvNonFastingGlucose.setText(results.getBloodGlucoseNonFasting());
-
-            if (results.getBloodGlucosePostPrandial() != null && !results.getBloodGlucosePostPrandial().isEmpty())
-                mBinding.etvPostPrandial.setText(results.getBloodGlucosePostPrandial());
-
-            if (results.getHemoglobin() != null && !results.getHemoglobin().isEmpty())
-                mBinding.etvHemoglobin.setText(results.getHemoglobin());
-
-            if (results.getUricAcid() != null && !results.getUricAcid().isEmpty())
-                mBinding.etvUricAcid.setText(results.getUricAcid());
-
-            if (results.getCholesterol() != null && !results.getCholesterol().isEmpty())
-                mBinding.etvCholesterol.setText(results.getCholesterol());
-
-            if (results.getDiabetesbba1c() != null && !results.getDiabetesbba1c().isEmpty())
-                mBinding.etvDiabetesHba1c.setText(results.getDiabetesbba1c());
-
-
+    class MyTextWatcher implements android.text.TextWatcher {
+        private final EditText et;
+        MyTextWatcher(EditText et) { this.et = et; }
+        @Override public void beforeTextChanged(CharSequence s, int i, int c, int a) {}
+        @Override public void onTextChanged(CharSequence s, int i, int b, int c) {}
+        @Override public void afterTextChanged(android.text.Editable e) {
+            String v = e.toString().trim();
+            if (v.equals(".")) { et.setText(""); return; }
+            setDisabledSubmit(!isValidForm());
         }
     }
+
+    // ── DB helpers ────────────────────────────────────────────────────────────
 
     public void loadSavedDateForEditFromDB() {
-
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] columns = {"value", " conceptuuid"};
-        String visitSelection = "encounteruuid = ? and voided!='1'";
-        String[] visitArgs = {encounterVitals};
-        Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
-        if (visitCursor.moveToFirst()) {
-            do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
-            } while (visitCursor.moveToNext());
-        }
-        visitCursor.close();
+        SQLiteDatabase db =
+                IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor c = db.query("tbl_obs", new String[]{"value", "conceptuuid"},
+                "encounteruuid=? and voided!='1'", new String[]{encounterVitals},
+                null, null, null);
+        if (c.moveToFirst()) do {
+            parseData(c.getString(c.getColumnIndex("conceptuuid")),
+                    c.getString(c.getColumnIndex("value")));
+        } while (c.moveToNext());
+        c.close();
     }
 
     private void parseData(String concept_id, String value) {
@@ -494,349 +672,246 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         }
     }
 
+    // ── Save / persist ────────────────────────────────────────────────────────
+
     public boolean isDataReadyForSaving() {
         try {
-            if (results == null) {
-                results = new DiagnosticsModel();
+            if (results == null) results = new DiagnosticsModel();
+            results.setBloodGlucoseRandom(mBinding.etvGlucoseRandom.getText().toString());
+            results.setBloodGlucoseFasting(mBinding.etvGlucoseFasting.getText().toString());
+            results.setBloodGlucosePostPrandial(mBinding.etvPostPrandial.getText().toString());
+            results.setHemoglobin(mBinding.etvHemoglobin.getText().toString());
+            results.setUricAcid(mBinding.etvUricAcid.getText().toString());
+            results.setCholesterol(mBinding.etvCholesterol.getText().toString());
+            // ── HbA1c value resolution — 3-tier fallback ─────────────────────────
+            String vmReading   = mHba1cVm != null ? mHba1cVm.hba1cReading().getValue() : null;
+            String fieldVal    = mBinding.etvDiabetesHba1c.getText().toString().trim();
+            String modelVal    = results != null ? results.getDiabetesbba1c() : null;
+
+// Priority: ViewModel > field text > what observer already stored in model
+            String hba1cFinal  = null;
+
+            if (vmReading != null && !vmReading.isEmpty()) {
+                hba1cFinal = vmReading;
+                Log.d(TAG, "HbA1c source: ViewModel → " + hba1cFinal);
+            } else if (fieldVal != null && !fieldVal.isEmpty()) {
+                hba1cFinal = fieldVal;
+                Log.d(TAG, "HbA1c source: field text → " + hba1cFinal);
+            } else if (modelVal != null && !modelVal.isEmpty()) {
+                // Observer already stored it in results — DO NOT overwrite with empty
+                hba1cFinal = modelVal;
+                Log.d(TAG, "HbA1c source: model (from observer) → " + hba1cFinal);
+            } else {
+                // Last resort — SharedPreferences (survives process death)
+                android.content.SharedPreferences prefs =
+                        requireActivity().getSharedPreferences("hba1c_prefs", Context.MODE_PRIVATE);
+                String savedReading = prefs.getString("hba1c_last_reading", null);
+                String savedVisit   = prefs.getString("hba1c_last_reading_visit", null);
+                if (savedReading != null && !savedReading.isEmpty()
+                        && visitUuid != null && visitUuid.equals(savedVisit)) {
+                    hba1cFinal = savedReading;
+                    Log.d(TAG, "HbA1c source: SharedPreferences → " + hba1cFinal);
+                }
             }
 
-            results.setBloodGlucoseRandom((mBinding.etvGlucoseRandom.getText().toString()));
-            results.setBloodGlucoseFasting((mBinding.etvGlucoseFasting.getText().toString()));
-            //results.setBloodGlucoseNonFasting((mBinding.etvNonFastingGlucose.getText().toString()));
-            results.setBloodGlucosePostPrandial((mBinding.etvPostPrandial.getText().toString()));
-            results.setHemoglobin((mBinding.etvHemoglobin.getText().toString()));
-            results.setUricAcid((mBinding.etvUricAcid.getText().toString()));
-            results.setCholesterol((mBinding.etvCholesterol.getText().toString()));
-            results.setDiabetesbba1c((mBinding.etvDiabetesHba1c.getText().toString()));
+// Only update results if we actually found a value — never overwrite with null/empty
+            if (hba1cFinal != null && !hba1cFinal.isEmpty()) {
+                results.setDiabetesbba1c(hba1cFinal);
+                if (mCommonVisitData != null) {
+                    mCommonVisitData.setDiabetesbba1c(hba1cFinal);
+                }
+            }
 
+            Log.d(TAG, "isDataReadyForSaving: hba1cFinal = " + hba1cFinal
+                    + " | vmReading=" + vmReading
+                    + " | fieldVal=" + fieldVal
+                    + " | modelVal=" + modelVal);
         } catch (NumberFormatException e) {
-            //Snackbar.make(findViewById(R.id.cl_table), R.string.error_non_decimal_no_added, Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            Log.d(TAG, "isDataReadyForSaving NFE: " + e.getMessage());
         }
 
-//
-
-
         ObsDAO obsDAO = new ObsDAO();
-        ObsDTO obsDTO = new ObsDTO();
-        if (getActivity().getIntent().equals("edit")) {
+
+        if (mIsEditMode) {
             ObsDAO.deleteExistingDiagnosticsDataIfExists(visitUuid);
-
             try {
-                Diagnostics diagnostics = (Diagnostics) mBinding.llGlucoseRandomContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseRandom().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_RANDOM);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucoseRandom());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.SPO2));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
+                updateIfNeeded(obsDAO, mBinding.llGlucoseRandomContainer,
+                        UuidDictionary.BLOOD_GLUCOSE_RANDOM,        results.getBloodGlucoseRandom());
+                updateIfNeeded(obsDAO, mBinding.llGlusoseFastingContainer,
+                        UuidDictionary.BLOOD_GLUCOSE_FASTING,       results.getBloodGlucoseFasting());
+                updateIfNeeded(obsDAO, mBinding.llPostPrandialContainer,
+                        UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL, results.getBloodGlucosePostPrandial());
+                updateIfNeeded(obsDAO, mBinding.llUricAcidContainer,
+                        UuidDictionary.URIC_ACID,                   results.getUricAcid());
+                updateIfNeeded(obsDAO, mBinding.llCholestrolContainer,
+                        UuidDictionary.TOTAL_CHOLESTEROL,           results.getCholesterol());
+                updateIfNeeded(obsDAO, mBinding.llHemoglobinContainer,
+                        UuidDictionary.HEMOGLOBIN,                  results.getHemoglobin());
+                String hba1cVal = results.getDiabetesbba1c();
+                if (hba1cVal != null && !hba1cVal.isEmpty()) {
+                    ObsDTO hba1cDto = new ObsDTO();
+                    hba1cDto.setConceptuuid(UuidDictionary.DIABETES_HBA1C);
+                    hba1cDto.setEncounteruuid(encounterVitals);
+                    hba1cDto.setCreator(sessionManager.getCreatorID());
+                    hba1cDto.setValue(hba1cVal);
+                    hba1cDto.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+                    String existingUuid = obsDAO.getObsuuid(encounterVitals, UuidDictionary.DIABETES_HBA1C);
+                    if (existingUuid != null) {
+                        hba1cDto.setUuid(existingUuid);
+                        obsDAO.updateObs(hba1cDto);
+                    } else {
+                     //   hba1cDto.setUuid(java.util.UUID.randomUUID().toString());
+                        obsDAO.insertObs(hba1cDto);                    }
+                    Log.d(TAG, "HbA1c saved (edit): " + hba1cVal);
                 }
 
-                diagnostics = (Diagnostics) mBinding.llGlusoseFastingContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseFasting().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_FASTING);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucoseFasting());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.PULSE));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
-                }
-
-                diagnostics = (Diagnostics) mBinding.llPostPrandialContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucosePostPrandial().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE_POST_PRANDIAL);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucosePostPrandial());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.TEMPERATURE));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
-                }
-
-              /*  diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getBloodGlucoseNonFasting().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.BLOOD_GLUCOSE);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucoseNonFasting());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    
-                    obsDAO.updateObs(obsDTO);
-                }*/
-
-                diagnostics = (Diagnostics) mBinding.llUricAcidContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getUricAcid().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.URIC_ACID);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getUricAcid());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
-                }
-
-                diagnostics = (Diagnostics) mBinding.llCholestrolContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getCholesterol().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.TOTAL_CHOLESTEROL);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getCholesterol());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
-                }
-
-                diagnostics = (Diagnostics) mBinding.llHemoglobinContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getHemoglobin().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.HEMOGLOBIN);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getHemoglobin());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
-                }
-
-                diagnostics = (Diagnostics) mBinding.llDiabetesHba1cContainer.getTag();
-                if ((diagnostics != null && diagnostics.isMandatory()) || !results.getDiabetesbba1c().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    obsDTO.setConceptuuid(UuidDictionary.DIABETES_HBA1C);
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getDiabetesbba1c());
-                    //obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, UuidDictionary.RESPIRATORY));
-                    obsDTO.setUuid(obsDAO.getObsuuid(encounterVitals, diagnostics.getUuid()));
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    obsDAO.updateObs(obsDTO);
-                }
                 //making flag to false in the encounter table so it will sync again
-                EncounterDAO encounterDAO = new EncounterDAO();
+                EncounterDAO enc = new EncounterDAO();
                 try {
-                    encounterDAO.updateEncounterSync("false", encounterVitals);
-                    encounterDAO.updateEncounterModifiedDate(encounterVitals);
+                    enc.updateEncounterSync("false", encounterVitals);
+                    enc.updateEncounterModifiedDate(encounterVitals);
                 } catch (DAOException e) {
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
-
             } catch (Exception e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
-                e.printStackTrace();
-                Log.d(TAG, "isDataReadyForSaving: diagnostics exec in: " + e.getLocalizedMessage());
+                Log.d(TAG, "isDataReadyForSaving(edit): " + e.getLocalizedMessage());
             }
         } else {
             try {
                 ObsDAO.deleteExistingDiagnosticsDataIfExists(visitUuid);
+                insertIfNeeded(obsDAO, mBinding.llGlucoseRandomContainer,   results.getBloodGlucoseRandom());
+                insertIfNeeded(obsDAO, mBinding.llGlusoseFastingContainer,  results.getBloodGlucoseFasting());
+                insertIfNeeded(obsDAO, mBinding.llPostPrandialContainer,    results.getBloodGlucosePostPrandial());
+                insertIfNeeded(obsDAO, mBinding.llHemoglobinContainer,      results.getHemoglobin());
+                insertIfNeeded(obsDAO, mBinding.llCholestrolContainer,      results.getCholesterol());
+                insertIfNeeded(obsDAO, mBinding.llUricAcidContainer,        results.getUricAcid());
 
-                Diagnostics diagnostics = (Diagnostics) mBinding.llGlucoseRandomContainer.getTag();
-                if (diagnostics != null && !results.getBloodGlucoseRandom().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.PULSE);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucoseRandom());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+                // ── HbA1c ─────────────────────────────────────────────────────
+                String hba1cVal = results.getDiabetesbba1c();
+                Log.d(TAG, "HbA1c insert path: hba1cVal=" + hba1cVal
+                        + " encounterVitals=" + encounterVitals);
 
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                }
+                if (hba1cVal != null && !hba1cVal.isEmpty()) {
+                    ObsDTO hba1cDto = new ObsDTO();
 
-                diagnostics = (Diagnostics) mBinding.llGlusoseFastingContainer.getTag();
+                    // FIX 1 — always set a UUID so the sync engine can send it
+                    hba1cDto.setUuid(java.util.UUID.randomUUID().toString());
 
-                if (diagnostics != null && !results.getBloodGlucoseFasting().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucoseFasting());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+                    hba1cDto.setConceptuuid(UuidDictionary.DIABETES_HBA1C);
+                    hba1cDto.setEncounteruuid(encounterVitals);
+                    hba1cDto.setCreator(sessionManager.getCreatorID());
+                    hba1cDto.setValue(hba1cVal);
+                    hba1cDto.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
 
                     try {
-                        obsDAO.insertObs(obsDTO);
+                        obsDAO.insertObs(hba1cDto);
+                        Log.d(TAG, "✅ HbA1c saved (insert): " + hba1cVal
+                                + " uuid=" + hba1cDto.getUuid()
+                                + " encounter=" + encounterVitals);
+
+                        // FIX 2 — mark encounter as dirty so sync picks it up
+                        EncounterDAO enc = new EncounterDAO();
+                        enc.updateEncounterSync("false", encounterVitals);
+                        enc.updateEncounterModifiedDate(encounterVitals);
+                        Log.d(TAG, "✅ Encounter marked unsynced: " + encounterVitals);
+
                     } catch (DAOException e) {
+                        // FIX 3 — report to Crashlytics so failures are visible
                         FirebaseCrashlytics.getInstance().recordException(e);
+                        Log.e(TAG, "❌ HbA1c insertObs failed: " + e.getLocalizedMessage());
                     }
-                }
-
-                /*diagnostics = (Diagnostics) mBinding.llNonFastingContainer.getTag();
-                Log.d(TAG, "isDataReadyForSaving: kz NonFasting : "+results.getBloodGlucoseNonFasting());
-                Log.d(TAG, "isDataReadyForSaving: diagnostics : "+diagnostics);
-
-                if (diagnostics != null && !results.getBloodGlucoseNonFasting().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.RESPIRATORY);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucoseNonFasting());
-                    
-                    Log.d(TAG, "isDataReadyForSaving: NonFasting : " + obsDTO);
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                }*/
-                diagnostics = (Diagnostics) mBinding.llPostPrandialContainer.getTag();
-
-                if (diagnostics != null && !results.getBloodGlucosePostPrandial().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.TEMPERATURE);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getBloodGlucosePostPrandial());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                }
-                diagnostics = (Diagnostics) mBinding.llHemoglobinContainer.getTag();
-
-                if (diagnostics != null && !results.getHemoglobin().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getHemoglobin());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                }
-                diagnostics = (Diagnostics) mBinding.llCholestrolContainer.getTag();
-                if (diagnostics != null && !results.getCholesterol().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getCholesterol());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                }
-                diagnostics = (Diagnostics) mBinding.llUricAcidContainer.getTag();
-                if (diagnostics != null && !results.getUricAcid().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getUricAcid());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
-                }
-
-                diagnostics = (Diagnostics) mBinding.llDiabetesHba1cContainer.getTag();
-                if (diagnostics != null && !results.getDiabetesbba1c().isEmpty()) {
-                    obsDTO = new ObsDTO();
-                    //obsDTO.setConceptuuid(UuidDictionary.SPO2);
-                    obsDTO.setConceptuuid(diagnostics.getUuid());
-                    obsDTO.setEncounteruuid(encounterVitals);
-                    obsDTO.setCreator(sessionManager.getCreatorID());
-                    obsDTO.setValue(results.getDiabetesbba1c());
-                    obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
-
-                    try {
-                        obsDAO.insertObs(obsDTO);
-                    } catch (DAOException e) {
-                        FirebaseCrashlytics.getInstance().recordException(e);
-                    }
+                } else {
+                    Log.w(TAG, "❌ HbA1c insert skipped — hba1cVal is empty");
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                FirebaseCrashlytics.getInstance().recordException(e);
+                Log.e(TAG, "isDataReadyForSaving(insert) outer: " + e.getLocalizedMessage());
             }
         }
         return true;
     }
 
-    private void manageBackButtonVisibility() {
-        boolean vitalsActiveStatus = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus().getVitalSection();
-        mBinding.btnCancel.setVisibility(vitalsActiveStatus ? View.VISIBLE : View.GONE);
-        if (mBinding.btnCancel.getVisibility() == View.GONE) {
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mBinding.btnSubmit.getLayoutParams();
-            params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-            params.weight = 0f;
-            params.setMargins(0, params.topMargin, params.rightMargin, params.bottomMargin);
-            mBinding.btnSubmit.setLayoutParams(params);
-        } else {
-            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mBinding.btnSubmit.getLayoutParams();
-            params.width = 0;
-            params.weight = 1f;
-            params.setMargins(16, params.topMargin, params.rightMargin, params.bottomMargin);
-            mBinding.btnSubmit.setLayoutParams(params);
-        }
+    private void updateIfNeeded(ObsDAO dao, View container, String conceptUuid, String value)
+            throws Exception {
+        Diagnostics d = (Diagnostics) container.getTag();
+        if (d == null) return;
+        if (!d.isMandatory() && (value == null || value.isEmpty())) return;
+        ObsDTO dto = new ObsDTO();
+        dto.setConceptuuid(conceptUuid);
+        dto.setEncounteruuid(encounterVitals);
+        dto.setCreator(sessionManager.getCreatorID());
+        dto.setValue(value != null ? value : "");
+        dto.setUuid(dao.getObsuuid(encounterVitals, d.getUuid()));
+        dto.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+        dao.updateObs(dto);
     }
-    private void resetAllFields() {
 
+    private void insertIfNeeded(ObsDAO dao, View container, String value) {
+        Diagnostics d = (Diagnostics) container.getTag();
+        if (d == null || value == null || value.isEmpty()) return;
+        ObsDTO dto = new ObsDTO();
+        dto.setConceptuuid(d.getUuid());
+        dto.setEncounteruuid(encounterVitals);
+        dto.setCreator(sessionManager.getCreatorID());
+        dto.setValue(value);
+        dto.setConceptsetuuid(UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET);
+        try { dao.insertObs(dto);
+        }
+        catch (DAOException e) { FirebaseCrashlytics.getInstance().recordException(e); }
+    }
 
-        mBinding.tvGlucoseRandomLbl.setText(getString(R.string.blood_glucose_random));
-        mBinding.tvGlusoseFastingLbl.setText(getString(R.string.blood_glucose_fasting));
-        mBinding.tvPostPrandialLbl.setText(getString(R.string.blood_glucose_post_prandial));
-        mBinding.tvHemoglobinLbl.setText(getString(R.string.haemoglobin));
-        mBinding.tvUricAcidLbl.setText(getString(R.string.uric_acid));
-        mBinding.tvCholestrolLbl.setText(getString(R.string.total_cholestrol));
-        mBinding.tvDiabetesHba1cLabel.setText(getString(R.string.diabetes_hba1c));
+    // ── Email debug log as file attachment (DEBUG builds only) ──────────────
+    private void emailDebugLogFile() {
+        try {
+            // 1. Write log to a file in cache/debug_logs/
+            java.io.File logDir = new java.io.File(requireContext().getCacheDir(), "debug_logs");
+            if (!logDir.exists()) logDir.mkdirs();
 
-        mBinding.etvGlucoseRandom.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        mBinding.etvGlucoseFasting.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        mBinding.etvPostPrandial.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        mBinding.etvHemoglobin.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        mBinding.etvUricAcid.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        mBinding.etvCholesterol.setBackgroundResource(R.drawable.bg_input_fieldnew);
-        mBinding.etvDiabetesHba1c.setBackgroundResource(R.drawable.bg_input_fieldnew);
+            String fileName = "hba1c_debug_" +
+                    new java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault())
+                            .format(new java.util.Date()) + ".txt";
+            java.io.File logFile = new java.io.File(logDir, fileName);
 
-        mBinding.tvGlucoseRandomError.setVisibility(View.GONE);
-        mBinding.tvGlucoseFastingError.setVisibility(View.GONE);
-        mBinding.etvPostPrandialError.setVisibility(View.GONE);
-        mBinding.tvHemoglobinError.setVisibility(View.GONE);
-        mBinding.etvCholestrolError.setVisibility(View.GONE);
-        mBinding.etvUricAcidError.setVisibility(View.GONE);
-        mBinding.tvDiabetesHba1cError.setVisibility(View.GONE);
+            java.io.FileWriter writer = new java.io.FileWriter(logFile);
+            writer.write(mDebugLog.toString());
+            writer.write("\n\n=== Saved Device Address ===\n");
+            android.content.SharedPreferences prefs =
+                    requireActivity().getSharedPreferences("hba1c_prefs", Context.MODE_PRIVATE);
+            writer.write("hba1c_ble_address = " + prefs.getString("hba1c_ble_address", "null") + "\n");
+            writer.close();
 
+            // 2. Get a content:// URI via FileProvider
+            android.net.Uri logUri = androidx.core.content.FileProvider.getUriForFile(
+                    requireContext(),
+                    requireContext().getPackageName() + ".fileprovider",
+                    logFile);
+
+            // 3. Build email intent with attachment
+            Intent emailIntent = new Intent(Intent.ACTION_SEND);
+            emailIntent.setType("text/plain");
+            emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"nagarjuna@intelehealth.org"}); // ← your email
+            emailIntent.putExtra(Intent.EXTRA_SUBJECT, "HbA1c Debug Log — " + fileName);
+            emailIntent.putExtra(Intent.EXTRA_TEXT,
+                    "Attached: HbA1c BLE debug log.\n\nDevice: " + android.os.Build.MODEL +
+                            "\nTested by: [QA name]\n\nSteps performed:\n");
+            emailIntent.putExtra(Intent.EXTRA_STREAM, logUri);
+            emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+            // 4. Force Gmail if installed, else show chooser
+            emailIntent.setPackage("com.google.android.gm");
+            if (emailIntent.resolveActivity(requireContext().getPackageManager()) != null) {
+                startActivity(emailIntent);
+            } else {
+                // Fallback: show chooser if Gmail not installed
+                emailIntent.setPackage(null);
+                startActivity(Intent.createChooser(emailIntent, "Send debug log via"));
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Failed to prepare log: " + e.getMessage(),
+                    Toast.LENGTH_LONG).show();
+            Log.e(TAG, "emailDebugLogFile error", e);
+        }
     }
 }
