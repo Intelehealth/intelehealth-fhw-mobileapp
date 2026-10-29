@@ -1,0 +1,84 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'org.intelehealth.jatayu.audiorecording'
+    compileSdk 36
+
+    defaultConfig {
+        minSdk 26
+        targetSdk 36
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField 'String', 'VOICEDOC_AUTH_URL', '"https://intelehealth-auth-tyohwkctkq-el.a.run.app"'
+        buildConfigField 'String', 'VOICEDOC_CORE_URL', '"https://core-tyohwkctkq-el.a.run.app"'
+
+        // VoiceDoc account issued by Jatayu. Kept in the git-ignored local.properties:
+        //   jatayu.voicedoc.email=...
+        //   jatayu.voicedoc.password=...
+        // access token - 1hr
+        // refresh token - 3 days
+        def localProps = new Properties()
+        def localPropsFile = rootProject.file('local.properties')
+        if (localPropsFile.exists()) localPropsFile.withInputStream { localProps.load(it) }
+        buildConfigField 'String', 'VOICEDOC_EMAIL', "\"${localProps.getProperty('jatayu.voicedoc.email', '')}\""
+        buildConfigField 'String', 'VOICEDOC_PASSWORD', "\"${localProps.getProperty('jatayu.voicedoc.password', '')}\""
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = '17'
+        // VoiceDoc SDK 0.2.0 is built with Kotlin 2.1; this project's compiler (1.9.24)
+        // reads metadata only up to 2.0. Drop this once the project moves to Kotlin 2.1+
+        // or Jatayu ships a build compiled with languageVersion/apiVersion 1.9.
+        freeCompilerArgs += ['-Xskip-metadata-version-check']
+    }
+
+    buildFeatures {
+        buildConfig = true
+    }
+}
+
+dependencies {
+    // ---- Jatayu VoiceDoc SDK (local AARs) ----
+    // voicedoc-sdk needs voicedoc-store. Local AARs don't bring their POM dependencies,
+    // so the runtime deps from voicedoc-sdk-0.2.0.pom are declared below.
+    //implementation("com.jatayu.voicedoc:voicedoc-sdk:0.2.0")
+
+//    implementation files('libs/original/voicedoc-sdk-0.2.0.aar')
+//    implementation files('libs/original/voicedoc-store-0.2.0.aar')
+//
+//    implementation files('libs/voicedoc-sdk-0.2.0-relocated.aar')
+//    implementation files('libs/voicedoc-store-0.2.0-relocated.aar')
+
+    implementation files('libs/voicedoc-sdk-0.3.0.aar')
+    implementation files('libs/voicedoc-store-0.3.0.aar')
+
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
+
+    // ---- Base AndroidX ----
+    implementation 'androidx.core:core-ktx:1.13.1'
+
+    // ---- Coroutines (match klivekit) ----
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'
+
+    // ---- Logging ----
+    implementation 'com.github.ajalt:timberkt:1.5.1'
+
+    // ---- Test ----
+    testImplementation 'junit:junit:4.13.2'
+}

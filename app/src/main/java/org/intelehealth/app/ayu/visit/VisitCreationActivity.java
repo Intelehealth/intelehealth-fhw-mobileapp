@@ -129,6 +129,7 @@ import timber.log.Timber;
 import biosense.sreyasvpariyath.com.biosenselib.helper.ControlCentre;
 import biosense.sreyasvpariyath.com.biosenselib.helper.Constants;
 import biosense.sreyasvpariyath.com.biosenselib.helper.Communicator;
+import org.intelehealth.jatayu.audiorecording.VisitVoiceRecorder;
 
 public class VisitCreationActivity extends BaseActivity implements
         VisitCreationActionListener,
@@ -375,6 +376,8 @@ public class VisitCreationActivity extends BaseActivity implements
             if (intentTag.equalsIgnoreCase("new")) {
                 privacy_value_selected = mCommonVisitData.getPrivacyNote();
                 startVisit();
+                // Jatayu VoiceDoc: record the consultation for this new visit (starts once permissions resolve).
+                mVoiceDocPermissionLauncher.launch(VisitVoiceRecorder.requiredPermissions());
             } else {
                 visitUuid = mCommonVisitData.getVisitUuid();
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
@@ -950,6 +953,8 @@ public class VisitCreationActivity extends BaseActivity implements
             case STEP_7_VISIT_SUMMARY_FINAL:
                 storeAbhaAddressForVisit();
                 insertLocalEnFormatQAValues();
+                // Visit is created: stop the VoiceDoc recording and request its transcript/summary.
+                VisitVoiceRecorder.stopForVisit(visitUuid);
                 Intent intent1 = new Intent(VisitCreationActivity.this, VisitSummaryActivity_New.class); // earlier visitsummary
 //                intent1.putExtra("patientUuid", patientUuid);
 //                intent1.putExtra("visitUuid", visitUuid);
@@ -1801,6 +1806,11 @@ public class VisitCreationActivity extends BaseActivity implements
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {});
 
+    // Starts regardless of the outcome: without RECORD_AUDIO the recorder skips and the visit carries on.
+    private final ActivityResultLauncher<String[]> mVoiceDocPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result ->
+                    VisitVoiceRecorder.startForVisit(this, visitUuid, sessionManager.getAppLanguage(), R.mipmap.ic_launcher));
+
     public FeatureActiveStatus getFeatureActiveStatus() { return featureActiveStatus; }
 
     public void setTitle(int screenId) {
@@ -1835,7 +1845,7 @@ public class VisitCreationActivity extends BaseActivity implements
     private void showConfirmationDialog(String content) {
         new DialogUtils().showCommonDialog(this, R.drawable.fingerprint_dialog_error, getResources().getString(R.string.confirm_discard_changes_title), content, false,
                 getResources().getString(R.string.confirm_continue_changes_button_dialog), getResources().getString(R.string.confirm_discard_changes_button_dialog), action -> {
-                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) { new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid); finish(); }
+                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) { VisitVoiceRecorder.cancelForVisit(visitUuid); new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid); finish(); }
                 });
     }
 

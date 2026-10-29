@@ -103,6 +103,7 @@ configurations.all {
 dependencies {
     implementation project(':features:ondemand:klivekit')
     implementation project(':features:ondemand:abdm')
+    implementation project(':features:ondemand:jatayuAudioRecording')
     api project(':fcm')
     api project(':config')
     implementation 'androidx.activity:activity-ktx:1.7.2'
