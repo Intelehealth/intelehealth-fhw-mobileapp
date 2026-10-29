@@ -79,6 +79,7 @@
             android:layout_below="@+id/divider">
 
             <TextView
+                android:id="@+id/tvDetails"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
@@ -305,6 +306,7 @@
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvEconomicCategory"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"

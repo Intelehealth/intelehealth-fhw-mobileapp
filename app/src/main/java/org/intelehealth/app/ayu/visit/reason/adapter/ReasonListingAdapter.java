@@ -60,6 +60,9 @@ public class ReasonListingAdapter extends RecyclerView.Adapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        //added to support automation testing
+        holder.itemView.setContentDescription("alphabet_list_item_"+position);
+
         if (holder instanceof GenericViewHolder) {
             GenericViewHolder genericViewHolder = (GenericViewHolder) holder;
             genericViewHolder.reasonGroupData = mItemList.get(position);

@@ -73,7 +73,7 @@ public class IntroScreensActivity_New extends AppCompatActivity {
 
         viewPager = findViewById(R.id.pager_intro_screens);
         dotsLayout = findViewById(R.id.layoutDots_intro);
-        btnSkip = findViewById(R.id.btn_skip_intro);
+        btnSkip = findViewById(R.id.btn_skip);
         sessionManager = new SessionManager(IntroScreensActivity_New.this);
         ImageView ivBack = findViewById(R.id.iv_back_arrow);
         /*ivBack.setOnClickListener(new View.OnClickListener() {

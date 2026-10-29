@@ -54,6 +54,16 @@ public class LocationArrayAdapter extends ArrayAdapter<String> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View view = super.getView(position, convertView, parent);
         if (view != null) {
+            //added to support automation testing
+            String description = "location_dropdown_item_" + position;
+            view.setContentDescription(description);
+            view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            TextView textView = view.findViewById(R.id.text1);
+            if (textView != null) {
+                textView.setContentDescription(description);
+                textView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+            }
+
 //            if(getItem(position).equalsIgnoreCase("Telemedicine Clinic 1") /*|| getItem(position).equalsIgnoreCase("Telemedicine Clinic 2")*/)
             if(position==0)
             {

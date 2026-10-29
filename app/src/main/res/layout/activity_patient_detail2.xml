@@ -135,6 +135,7 @@
                     app:cardElevation="@dimen/margin_5">
 
                     <RelativeLayout
+                        android:id="@+id/rlPatientProfile"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/fu_margin_start">

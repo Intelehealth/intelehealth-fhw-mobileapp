@@ -89,6 +89,7 @@
                     android:src="@drawable/ui2_ic_no_internet" />
 
                 <TextView
+                    android:id="@+id/tv_reset_app_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"

@@ -191,7 +191,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             setLocale(appLanguage);
         }
 
-        Button btnNextToIntro = findViewById(R.id.btn_next_to_intro);
+        Button btnNextToIntro = findViewById(R.id.btn_next);
         btnNextToIntro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

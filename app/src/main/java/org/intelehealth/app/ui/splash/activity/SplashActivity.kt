@@ -119,7 +119,7 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
     }
 
     private fun handleButtonClickListener() {
-        binding.btnNextToIntro.setOnClickListener {
+        binding.btnNext.setOnClickListener {
             adapter.getList().find { it.selected }?.let {
                 sessionManager.appLanguage = it.code
                 setupLanguage()

@@ -23,6 +23,7 @@
             android:src="@drawable/ui2_ic_arrow_back_new" />
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/title_margin_start"
@@ -54,6 +55,7 @@
         android:weightSum="2">
 
         <Button
+            android:id="@+id/btn_decline_consent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/decline_button_margin_start"

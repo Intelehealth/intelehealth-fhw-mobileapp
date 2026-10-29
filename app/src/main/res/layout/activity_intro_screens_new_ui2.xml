@@ -26,13 +26,13 @@
         android:id="@+id/layoutDots_intro"
         android:layout_width="match_parent"
         android:layout_height="@dimen/layout_dots_height"
-        android:layout_above="@+id/btn_skip_intro"
+        android:layout_above="@+id/btn_skip"
         android:layout_marginTop="@dimen/layout_dots_margin_top"
         android:gravity="center"
         android:orientation="horizontal" />
 
     <Button
-        android:id="@+id/btn_skip_intro"
+        android:id="@+id/btn_skip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

@@ -72,6 +72,7 @@
             android:layout_below="@+id/divider">
 
             <TextView
+                android:id="@+id/tvDetailsHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:lineSpacingExtra="-3sp"
@@ -130,6 +131,7 @@
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvName"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -164,6 +166,7 @@
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvGender"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -198,6 +201,7 @@
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvDob"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -232,6 +236,7 @@
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvAge"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
@@ -332,6 +337,7 @@
                     android:layout_weight="2">
 
                     <TextView
+                        android:id="@+id/tvPhoneNumber"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="2dp"
