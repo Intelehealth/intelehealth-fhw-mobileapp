@@ -4008,20 +4008,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
           /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
             alertDialog.dismiss();
-            // When this success dialog closes, focus returns to the activity and would land back in
-            // the additional-notes field (it held focus while entering the note during creation),
-            // popping the cursor/keyboard. Clear it after the window regains focus. The user can
-            // still tap the note to edit it.
-            if (etAdditionalNotesVS != null) {
-                etAdditionalNotesVS.post(() -> {
-                    etAdditionalNotesVS.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    if (imm != null) imm.hideSoftInputFromWindow(etAdditionalNotesVS.getWindowToken(), 0);
-                });
-            }
+            clearAdditionalNotesFocus();
         });
 
         alertDialog.show();
+    }
+
+    /**
+     * When a success dialog closes, focus returns to the activity and would land back in
+     * the additional-notes field (it held focus while entering the note during creation),
+     * popping the cursor/keyboard. Clear it after the window regains focus. The user can
+     * still tap the note to edit it.
+     */
+    private void clearAdditionalNotesFocus() {
+        if (etAdditionalNotesVS != null) {
+            etAdditionalNotesVS.post(() -> {
+                etAdditionalNotesVS.clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null) imm.hideSoftInputFromWindow(etAdditionalNotesVS.getWindowToken(), 0);
+            });
+        }
     }
 
     /**
@@ -4039,6 +4045,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         TextView waitTimeValue = convertView.findViewById(R.id.tv_wait_time_value);
         Button viewQueueBtn = convertView.findViewById(R.id.btn_view_queue);
         Button backToHomeBtn = convertView.findViewById(R.id.btn_back_to_home);
+        ImageView closeIv = convertView.findViewById(R.id.iv_close);
 
         // Placeholder wait time until real queue data is wired (mirrors the banner).
         waitTimeValue.setText(getString(R.string.wait_time_default_value));
@@ -4049,6 +4056,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         alertDialog.setCancelable(false);
+
+        // Same as the OK button of visitSentSuccessDialog: close and stay on Visit Summary.
+        closeIv.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            clearAdditionalNotesFocus();
+        });
 
         viewQueueBtn.setOnClickListener(v -> {
             alertDialog.dismiss();

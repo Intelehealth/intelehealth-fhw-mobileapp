@@ -207,8 +207,8 @@ public class QueueDAO extends BaseDao{
      * was mapped so far (possibly empty) so the caller can still render.
      *
      * <p>Selected patient columns: {@code openmrs_id, first_name, middle_name,
-     * last_name, gender, date_of_birth}. LEFT JOIN keeps queue rows whose
-     * patient is missing locally (patient columns come back null).
+     * last_name, gender, date_of_birth}. Queue rows whose visit or patient is
+     * not available locally are left out.
      */
     public <T> ArrayList<T> getQueueWithPatient(int limit, int offset, QueueRowMapper<T> mapper) {
         if (mapper == null) {
@@ -232,7 +232,11 @@ public class QueueDAO extends BaseDao{
         // chiefComplaint is NOT read from tbl_queue (the queue service doesn't
         // send it); the visitUuid is carried through so the complaint can be
         // resolved from the visit's obs, exactly like the visit summary screen.
+        // Only rows whose patient is synced locally: without it the list row has
+        // no name / id / gender / age to show. Filtered in SQL so limit/offset
+        // still page over the rows that are actually shown.
         String sql = queueWithPatientSelect() +
+                "WHERE p.uuid IS NOT NULL " +
                 "ORDER BY q.position ASC limit ? offset ?";
         Cursor cursor = null;
         try {
