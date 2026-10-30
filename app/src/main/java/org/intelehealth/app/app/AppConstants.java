@@ -38,7 +38,7 @@ public class AppConstants {
     public static final String MCC_USER_TYPE = "mcc";
 
     //PAGE_LIMIT has been updated from server's end from 1000 to 200
-    public static final int PAGE_LIMIT = 200;
+    public static final int PAGE_LIMIT = 1000;
 
     public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
     public static final long FOLLOW_UP_SCHEDULE_TWO_DURATION = 24;

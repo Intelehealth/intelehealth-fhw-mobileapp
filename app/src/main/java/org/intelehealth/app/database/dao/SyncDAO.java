@@ -46,8 +46,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableObserver;
@@ -69,6 +74,30 @@ public class SyncDAO {
     String appLanguage;
 
     private static final SyncProgress liveDataSync = new SyncProgress();
+    // Static because every sync creates a new SyncDAO; prevents a second page chain
+    // from starting at page 0 while an earlier one is still running.
+    private static final AtomicBoolean isBackgroundPullRunning = new AtomicBoolean(false);
+    // Counted down when the running page chain ends, so PullSyncWorker can stay alive
+    // until then (otherwise the app is frozen mid-chain once the screen locks).
+    private static volatile CountDownLatch backgroundPullDone = new CountDownLatch(0);
+    private static volatile boolean lastBackgroundPullSucceeded = true;
+
+    // After page 0, the remaining pages (known from totalCount) are downloaded this many at a
+    // time. Inserts still run one page at a time on pullInsertScheduler, so SQLite writes never
+    // overlap.
+    private static final int PARALLEL_PAGE_REQUESTS = 3;
+    private static final Scheduler pullInsertScheduler =
+            Schedulers.from(Executors.newSingleThreadExecutor());
+    private static final Object parallelPullLock = new Object();
+    // Bumped when a chain starts or fails, so responses from an abandoned chain are ignored.
+    private static int pullGeneration = 0;
+    private static int parallelFirstPage = -1;
+    private static int parallelLastPage = -1;
+    private static int parallelNextPage = -1;
+    private static int parallelPagesPending = 0;
+    // Set if the last planned page says more pages follow (totalCount was low); those
+    // extra pages are then fetched one by one.
+    private static int parallelOverflowPage = -1;
     boolean isTheConfigUpdated = false;
 
 
@@ -265,8 +294,28 @@ public class SyncDAO {
     }
 
     public boolean pullData_Background(final Context context, int pageNo) {
+        // Only the first page starts a chain; later pages are continuations of the running one.
+        int generation;
+        synchronized (parallelPullLock) {
+            if (pageNo == 0) {
+                if (!isBackgroundPullRunning.compareAndSet(false, true)) {
+                    Logger.logD(PULL_ISSUE,
+                            "pullData_Background: pull already in progress, skipping");
+                    return false;
+                }
+                backgroundPullDone = new CountDownLatch(1);
+                pullGeneration++;
+                parallelLastPage = -1;
+            }
+            generation = pullGeneration;
+        }
+        requestPage(context, pageNo, generation);
+        sessionManager.setPullSyncFinished(true);
+        return true;
+    }
 
-        mDbHelper = new InteleHealthDatabaseHelper(context);
+    private void requestPage(final Context context, int pageNo, int generation) {
+        mDbHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         db = mDbHelper.getWriteDb();
 
         sessionManager = new SessionManager(context);
@@ -289,10 +338,15 @@ public class SyncDAO {
             public void onResponse(Call<ResponseDTO> call, Response<ResponseDTO> response) {
                 // AppConstants.notificationUtils.showNotifications("Sync background", "Sync in
                 // progress..", 1, IntelehealthApplication.getAppContext());
-                if (response.body() != null && response.body().getData() != null) {
+                if (!isCurrentPull(generation)) return;
+                // Keep page 0's server time as the next "pulled since" date: it is the earliest
+                // of the chain, so nothing changed during a long sync is skipped next time.
+                if (pageNo == 0 && response.body() != null
+                        && response.body().getData() != null) {
                     sessionManager.setPulled(response.body().getData().getPullexecutedtime());
                 }
-                if (response.isSuccessful()) {
+                if (response.isSuccessful() && response.body() != null
+                        && response.body().getData() != null) {
                     // SyncDAO syncDAO = new SyncDAO();
 
                     //handling response data from background thread
@@ -301,9 +355,9 @@ public class SyncDAO {
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe();*/
-                    Single.fromCallable(() -> populatePullSuccessBackground(response, context))
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(Schedulers.io())
+                    Single.fromCallable(() -> populatePullSuccessBackground(
+                                    response, context, pageNo, generation))
+                            .subscribeOn(pullInsertScheduler)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(result -> {
                                 // Handle success here, `result` is the output of
@@ -313,9 +367,23 @@ public class SyncDAO {
                                 CustomLog.e("RxJavaError",
                                         "Error occurred in populatePullSuccessBackground",
                                         throwable);
-                                // You can also take additional action like showing a
-                                // user-friendly error message or retrying the operation
+                                onBackgroundPullFailed(generation);
                             });
+                } else {
+                    // Without this a failed page silently stops the chain, no SYNC_FAILED is
+                    // sent and the pull date never moves forward.
+                    String errorBody = "";
+                    try {
+                        if (response.errorBody() != null) {
+                            errorBody = response.errorBody().string();
+                        }
+                    } catch (Exception e) {
+                        errorBody = e.getMessage();
+                    }
+                    Logger.logD(PULL_ISSUE, "pullData_Background: page " + pageNo
+                            + " failed: code " + response.code() + " body " + errorBody);
+                    onBackgroundPullFailed(generation);
+                    return;
                 }
 
                 Logger.logD("End Pull request", "Ended");
@@ -338,58 +406,167 @@ public class SyncDAO {
             @Override
             public void onFailure(Call<ResponseDTO> call, Throwable t) {
                 Logger.logD("pull data", "exception" + t.getMessage());
-                IntelehealthApplication.getAppContext()
-                        .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                                .setPackage(
-                                        IntelehealthApplication.getAppContext().getPackageName())
-                                .putExtra(AppConstants.SYNC_INTENT_DATA_KEY,
-                                        AppConstants.SYNC_FAILED));
+                onBackgroundPullFailed(generation);
             }
         });
-        sessionManager.setPullSyncFinished(true);
-        return true;
     }
 
-    Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context) {
+    private static boolean isCurrentPull(int generation) {
+        synchronized (parallelPullLock) {
+            return generation == pullGeneration && isBackgroundPullRunning.get();
+        }
+    }
+
+    /**
+     * Called after page 0 is inserted: requests firstPage..lastPage (lastPage from
+     * totalCount), keeping PARALLEL_PAGE_REQUESTS of them in flight.
+     */
+    private void startParallelPages(Context context, int firstPage, int totalCount,
+                                    int generation) {
+        int lastPage = (totalCount + AppConstants.PAGE_LIMIT - 1) / AppConstants.PAGE_LIMIT - 1;
+        if (lastPage < firstPage) {
+            // totalCount disagrees with the server's next page; fall back to one by one.
+            requestPage(context, firstPage, generation);
+            return;
+        }
+        synchronized (parallelPullLock) {
+            if (generation != pullGeneration) return;
+            parallelFirstPage = firstPage;
+            parallelLastPage = lastPage;
+            parallelNextPage = firstPage;
+            parallelPagesPending = lastPage - firstPage + 1;
+            parallelOverflowPage = -1;
+        }
+        Logger.logD(PULL_ISSUE, "pullData_Background: fetching pages " + firstPage + ".."
+                + lastPage + ", " + PARALLEL_PAGE_REQUESTS + " at a time");
+        for (int i = 0; i < PARALLEL_PAGE_REQUESTS; i++) {
+            requestNextParallelPage(context, generation);
+        }
+    }
+
+    private void requestNextParallelPage(Context context, int generation) {
+        int page;
+        synchronized (parallelPullLock) {
+            if (generation != pullGeneration || parallelNextPage > parallelLastPage) return;
+            page = parallelNextPage++;
+        }
+        requestPage(context, page, generation);
+    }
+
+    private static boolean isParallelPage(int pageNo) {
+        synchronized (parallelPullLock) {
+            return parallelLastPage != -1
+                    && pageNo >= parallelFirstPage && pageNo <= parallelLastPage;
+        }
+    }
+
+    private void onParallelPageInserted(Context context, int pageNo, int nextPageNo,
+                                        int generation) {
+        boolean allDone;
+        int overflowPage;
+        int pending;
+        synchronized (parallelPullLock) {
+            if (generation != pullGeneration) return;
+            if (pageNo == parallelLastPage && nextPageNo != -1) {
+                parallelOverflowPage = nextPageNo;
+            }
+            pending = --parallelPagesPending;
+            allDone = pending == 0;
+            overflowPage = parallelOverflowPage;
+        }
+        Logger.logD(PULL_ISSUE, "pullData_Background: page " + pageNo + " done, "
+                + pending + " pages left");
+        if (!allDone) {
+            requestNextParallelPage(context, generation);
+        } else if (overflowPage != -1) {
+            requestPage(context, overflowPage, generation);
+        } else {
+            completeBackgroundPull(context);
+        }
+    }
+
+    private void completeBackgroundPull(Context context) {
+        //we are not handling
+        //if(!from.equals("pres")){
+        sessionManager.setPullExcutedTime(sessionManager.isPulled());
+        Intent broadcast = new Intent();
+        broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
+        broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
+        broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
+        context.sendBroadcast(broadcast);
+        //}
+
+        CustomLog.d(TAG, "onResponse: sync : true");
+        sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(
+                sessionManager.getAppLanguage()));
+        finishBackgroundPull(true);
+    }
+
+    private static void finishBackgroundPull(boolean success) {
+        lastBackgroundPullSucceeded = success;
+        isBackgroundPullRunning.set(false);
+        backgroundPullDone.countDown();
+    }
+
+    /**
+     * Blocks until the running background pull chain ends.
+     *
+     * @return true if it ended within the timeout, false if it is still running
+     */
+    public static boolean awaitBackgroundPull(long timeout, TimeUnit unit)
+            throws InterruptedException {
+        return backgroundPullDone.await(timeout, unit);
+    }
+
+    public static boolean isLastBackgroundPullSucceeded() {
+        return lastBackgroundPullSucceeded;
+    }
+
+    private void onBackgroundPullFailed(int generation) {
+        synchronized (parallelPullLock) {
+            // Only the first failure of the current chain counts; later ones are in-flight
+            // pages of a chain that has already been abandoned.
+            if (generation != pullGeneration || !isBackgroundPullRunning.get()) return;
+            pullGeneration++;
+        }
+        finishBackgroundPull(false);
+        IntelehealthApplication.getAppContext()
+                .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
+                        .setPackage(IntelehealthApplication.getAppContext().getPackageName())
+                        .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+    }
+
+    Object populatePullSuccessBackground(Response<ResponseDTO> response, Context context,
+                                         int pageNo, int generation) {
+        if (!isCurrentPull(generation)) return "";
         boolean sync = false;
 
         try {
-            //if (!isTheConfigUpdated)
-            loadConfig();
+            // Config doesn't change between pages, so fetch it once per pull chain.
+            if (pageNo == 0) loadConfig();
             sync = SyncData(response.body(), true);
             CustomLog.d(TAG, "onResponse: response body : " + response.body().toString());
 
         } catch (DAOException e) {
             FirebaseCrashlytics.getInstance().recordException(e);
             CustomLog.e(TAG, e.getMessage());
+            Logger.logD(PULL_ISSUE, "pullData_Background: page " + pageNo
+                    + " insert failed: " + e.getMessage());
         }
         if (sync) {
             int nextPageNo = response.body().getData().getPageNo();
             int totalCount = response.body().getData().getTotalCount();
-            if (nextPageNo != -1) {
-                pullData_Background(context, nextPageNo);
-                //  return null;
-                return "";  // avoid null return
+            if (pageNo == 0 && nextPageNo != -1) {
+                startParallelPages(context, nextPageNo, totalCount, generation);
+            } else if (isParallelPage(pageNo)) {
+                onParallelPageInserted(context, pageNo, nextPageNo, generation);
+            } else if (nextPageNo != -1) {
+                requestPage(context, nextPageNo, generation);
             } else {
-                //we are not handling
-                //if(!from.equals("pres")){
-                sessionManager.setPullExcutedTime(sessionManager.isPulled());
-                Intent broadcast = new Intent();
-                broadcast.putExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                broadcast.setAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-                broadcast.setPackage(IntelehealthApplication.getAppContext().getPackageName());
-                context.sendBroadcast(broadcast);
-                //}
-
-                CustomLog.d(TAG, "onResponse: sync : " + sync);
-                sessionManager.setLastSyncDateTime(AppConstants.dateAndTimeUtils.getcurrentDateTime(
-                        sessionManager.getAppLanguage()));
+                completeBackgroundPull(context);
             }
         } else {
-            IntelehealthApplication.getAppContext()
-                    .sendBroadcast(new Intent(AppConstants.SYNC_INTENT_ACTION)
-                            .setPackage(IntelehealthApplication.getAppContext().getPackageName())
-                            .putExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED));
+            onBackgroundPullFailed(generation);
         }
 
         if (sessionManager.getTriggerNoti().equals("yes")) {
@@ -429,7 +606,7 @@ public class SyncDAO {
 
     public boolean pullData(final Context context, String fromActivity, int pageNo) {
 
-        mDbHelper = new InteleHealthDatabaseHelper(context);
+        mDbHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         if (db == null) {
             db = mDbHelper.getWriteDb();
         }
@@ -615,7 +792,7 @@ public class SyncDAO {
     public boolean pullDataBackgroundService(final Context context, String fromActivity,
                                              int pageNo) {
 
-        mDbHelper = new InteleHealthDatabaseHelper(context);
+        mDbHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         if (db == null) {
             db = mDbHelper.getWriteDb();
         }

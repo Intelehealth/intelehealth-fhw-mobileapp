@@ -70,8 +70,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
@@ -109,6 +111,7 @@ import org.intelehealth.app.reactnative.PatientQueueFragment;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.syncModule.PullSyncWorker;
 import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
 import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
@@ -176,6 +179,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     TextView progressTvStart, progressTvEnd;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ObjectAnimator syncAnimator;
+    // Sync icon rotates while either of these is queued or running.
+    private boolean isHomeSyncActive, isPullSyncActive;
     SyncUtils syncUtils = new SyncUtils();
     int i = 5;
     Context context;
@@ -773,6 +778,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+        observeSyncWork();
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1384,13 +1390,48 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 }
             }
             updateLastSyncTime();
-
-            // Stop animation if running
-            if (syncAnimator != null && syncAnimator.isRunning()) {
-                syncAnimator.cancel();
-            }
+            // The sync icon is stopped by observeSyncWork(), not here: these broadcasts also
+            // come at the start and middle of a sync (push sent, each pull page saved).
         }
     };
+
+    /**
+     * Drives the sync icon from WorkManager state instead of broadcasts, so it also covers
+     * syncs started by the periodic job, and is right again after the screen was paused.
+     */
+    private void observeSyncWork() {
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.getWorkInfosForUniqueWorkLiveData(SyncWorkerForHomeScreen.UNIQUE_WORK_NAME)
+                .observe(this, workInfos -> {
+                    isHomeSyncActive = isAnyWorkActive(workInfos);
+                    updateSyncIcon();
+                });
+        workManager.getWorkInfosForUniqueWorkLiveData(PullSyncWorker.UNIQUE_WORK_NAME)
+                .observe(this, workInfos -> {
+                    isPullSyncActive = isAnyWorkActive(workInfos);
+                    updateSyncIcon();
+                });
+    }
+
+    private static boolean isAnyWorkActive(List<WorkInfo> workInfos) {
+        if (workInfos == null) return false;
+        for (WorkInfo workInfo : workInfos) {
+            if (!workInfo.getState().isFinished()) return true;
+        }
+        return false;
+    }
+
+    private void updateSyncIcon() {
+        if (syncAnimator == null) return;
+        boolean isSyncing = isHomeSyncActive || isPullSyncActive;
+        if (isSyncing && !syncAnimator.isStarted()) {
+            syncAnimator.start();
+        } else if (!isSyncing && syncAnimator.isStarted()) {
+            syncAnimator.cancel();
+            imageViewIsInternet.setRotation(0f);
+            updateLastSyncTime();
+        }
+    }
 
     /*private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
@@ -1888,8 +1929,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 )
                 .build();
 
+        // KEEP: tapping again while a sync is running doesn't queue a second one.
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .enqueue(syncWorkRequest);
+                .enqueueUniqueWork(SyncWorkerForHomeScreen.UNIQUE_WORK_NAME,
+                        ExistingWorkPolicy.KEEP, syncWorkRequest);
     }
 
 }
