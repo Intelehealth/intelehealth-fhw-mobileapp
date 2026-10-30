@@ -72,19 +72,20 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
-        if (nodeGender == null || nodeGender.isEmpty()) {
-            return true;
-        }
-        float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
-        float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
+        // Age limits apply even when the node has no gender restriction - e.g. options inside a
+        // female-only protocol usually carry only age_min/age_max.
+        float minAgeF = parseAge(minAge);
+        float maxAgeF = parseAge(maxAge);
         boolean isValidByGender = true;
-        if (patientGender.equalsIgnoreCase("M") &&
-                nodeGender.equalsIgnoreCase("0")) {
+        if (patientGender != null && nodeGender != null) {
+            if (patientGender.equalsIgnoreCase("M") &&
+                    nodeGender.equalsIgnoreCase("0")) {
 
-            isValidByGender = false;
-        } else if (patientGender.equalsIgnoreCase("F") &&
-                nodeGender.equalsIgnoreCase("1")) {
-            isValidByGender = false;
+                isValidByGender = false;
+            } else if (patientGender.equalsIgnoreCase("F") &&
+                    nodeGender.equalsIgnoreCase("1")) {
+                isValidByGender = false;
+            }
         }
 
         if (isValidByGender) {
@@ -97,6 +98,28 @@ AB NEGATIVE = 1231*/
             }
         }
         return isValidByGender;
+    }
+
+    private static float parseAge(String age) {
+        if (age == null || age.trim().isEmpty()) return 0f;
+        try {
+            return Float.parseFloat(age.trim());
+        } catch (NumberFormatException e) {
+            CustomLog.e("VisitUtils", "Invalid age limit in protocol: " + age);
+            return 0f;
+        }
+    }
+
+    /**
+     * Removes options that are not valid for the patient's gender/age at every nesting level of
+     * the given node, not just the first one or two.
+     */
+    public static void removeInvalidOptionsByGenderAndAge(Node node, String patientGender, float floatAgeYearMonth) {
+        if (node == null || node.getOptionsList() == null) return;
+        node.getOptionsList().removeIf(option -> !checkNodeValidByGenderAndAge(patientGender, floatAgeYearMonth, option.getGender(), option.getMin_age(), option.getMax_age()));
+        for (Node option : node.getOptionsList()) {
+            removeInvalidOptionsByGenderAndAge(option, patientGender, floatAgeYearMonth);
+        }
     }
 
 

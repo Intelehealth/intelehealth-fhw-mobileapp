@@ -26,6 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
@@ -39,6 +40,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -169,13 +171,15 @@ public class VisitReasonSummaryFragment extends Fragment {
             String[] spt = answerInLocale.split("►");
             List<String> list = new ArrayList<>();
             String associatedSymptomsString = "";
+            String patientDeniesMarker = getPatientDeniesMarker(lCode);
+            String associateSymptomsTitle = getAssociateSymptomsTitle(lCode);
             for (String s : spt) {
                 if (s.isEmpty()) continue;
                 //String s1 =  new String(s.getBytes(), "UTF-8");
                 System.out.println("Chunk - " + s);
                 //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
                 //if (s.trim().contains("Patient denies -•")) {
-                if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
+                if (isAssociateSymptomsChunk(s, patientDeniesMarker, associateSymptomsTitle, lCode)) {
                     associatedSymptomsString = s;
                     System.out.println("associatedSymptomsString - " + associatedSymptomsString);
                 } else {
@@ -278,7 +282,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             mAssociateSymptomsLinearLayout.removeAllViews();
 
             if (!associatedSymptomsString.trim().isEmpty()) {
-                String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
+                String[] sections = associatedSymptomsString.split(Pattern.quote(patientDeniesMarker));
 
                 CustomLog.v(TAG, associatedSymptomsString);
                 String[] spt1 = associatedSymptomsString.trim().split("•");
@@ -323,6 +327,43 @@ public class VisitReasonSummaryFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * "Patient denies -" exactly as it appears in the locale summary string. The string is
+     * localized by VisitUtils.replaceEnglishCommonString, so apply the same function here
+     * instead of keeping a separate (hi/or only) translation.
+     */
+    private String getPatientDeniesMarker(String lCode) {
+        String marker = VisitUtils.replaceEnglishCommonString("Patient denies -", lCode);
+        if (marker == null || marker.trim().isEmpty()) return getTranslatedPatientDenies(lCode);
+        return marker.trim();
+    }
+
+    /**
+     * Title of the Associated symptoms block as written in the summary string (before "::").
+     */
+    private String getAssociateSymptomsTitle(String lCode) {
+        if (!(getActivity() instanceof VisitCreationActivity)) return "";
+        String title = ((VisitCreationActivity) getActivity()).getAssociateSymptomsDisplayTitle();
+        if (title == null || title.trim().isEmpty()) return "";
+        title = VisitUtils.replaceEnglishCommonString(title, lCode);
+        return title.replaceAll("<.*?>", "").trim();
+    }
+
+    /**
+     * The Associated symptoms chunk has no "Patient denies -" marker when every symptom is
+     * answered Yes, so also match it by its title instead of relying on the protocol using the
+     * exact "Do you have the following symptom(s)?" wording.
+     */
+    private boolean isAssociateSymptomsChunk(String chunk, String patientDeniesMarker, String associateSymptomsTitle, String lCode) {
+        String value = chunk.trim();
+        if (value.contains(patientDeniesMarker) || value.contains(getTranslatedAssociatedSymptomQString(lCode))) {
+            return true;
+        }
+        int titleEnd = value.indexOf("::");
+        return !associateSymptomsTitle.isEmpty() && titleEnd > 0
+                && value.substring(0, titleEnd).trim().equalsIgnoreCase(associateSymptomsTitle);
     }
 
     /* */

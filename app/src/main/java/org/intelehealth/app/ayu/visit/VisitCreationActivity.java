@@ -917,7 +917,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         }
 
         Node mainNode = new Node(currentFile);
-        mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+        VisitUtils.removeInvalidOptionsByGenderAndAge(mainNode, patientGender, float_ageYear_Month);
         return mainNode;
     }
 
@@ -959,8 +959,7 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
                 } else {
                     if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
-                        if (mainNode.getOptionsList().get(j).getOptionsList() != null)
-                            mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+                        VisitUtils.removeInvalidOptionsByGenderAndAge(mainNode.getOptionsList().get(j), patientGender, float_ageYear_Month);
                         optionList.add(mainNode.getOptionsList().get(j));
                     }
                 }
@@ -978,13 +977,27 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
         if (mCommonAssociateSymptoms != null) {
 
             mCommonAssociateSymptoms.setOptionsList(getNodeWithoutDuplicates(mCommonAssociateSymptoms.getOptionsList()));
-            mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+            VisitUtils.removeInvalidOptionsByGenderAndAge(mCommonAssociateSymptoms, patientGender, float_ageYear_Month);
 
             //optionList.add(associateSymptoms);
             mChiefComplainRootNodeList.add(mCommonAssociateSymptoms);
         }
 
 
+    }
+
+    /**
+     * Display title of the Associated symptoms block, as it appears in the visit reason summary
+     * string. Read from the root node list so it also works in edit mode (restored from cache).
+     */
+    public String getAssociateSymptomsDisplayTitle() {
+        if (mChiefComplainRootNodeList == null) return "";
+        for (Node node : mChiefComplainRootNodeList) {
+            if (node != null && node.getText() != null && node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
+                return node.findDisplay();
+            }
+        }
+        return "";
     }
 
     private static List<Node> getNodeWithoutDuplicates(final List<Node> nodes) {
