@@ -48,10 +48,14 @@ public class ObsDAO extends BaseDao{
         // Vitals/diagnostics voided locally whose server delete is still pending: a pulled active copy
         // must not replace them (that would undo the clear and drop them from the delete pass).
         Set<String> pendingDeletes = new HashSet<>(getVoidedUnsyncedVitalAndDiagnosticsObs());
+        // Read once per batch: creating a SessionManager and a date formatter for every row was
+        // most of this method's time on large pull pages.
+        boolean isFirstTimeSync = new SessionManager(IntelehealthApplication.getAppContext()).isFirstTimeSyncExcuted();
+        String modifiedDate = AppConstants.dateAndTimeUtils.currentDateTime();
         for (ObsDTO obsDTO : obsDTOS) {
-            if (new SessionManager(IntelehealthApplication.getAppContext()).isFirstTimeSyncExcuted() && obsDTO.getVoided() == 1) continue;
+            if (isFirstTimeSync && Integer.valueOf(1).equals(obsDTO.getVoided())) continue;
             if (!Integer.valueOf(1).equals(obsDTO.getVoided()) && pendingDeletes.contains(obsDTO.getUuid())) continue;
-            obsList.add(createObsMap(obsDTO));
+            obsList.add(createObsMap(obsDTO, modifiedDate));
         }
         executeInBackground(bulkInsert(obsList));
        /* sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
@@ -646,7 +650,7 @@ public class ObsDAO extends BaseDao{
             db.delete("tbl_obs", deleteClause, new String[]{encounterUuid, OBS_TYPE_DIAGNOSTICS_SET});
         }
     }
-    public HashMap<String, Object> createObsMap(ObsDTO obsDTOS) {
+    public HashMap<String, Object> createObsMap(ObsDTO obsDTOS, String modifiedDate) {
         HashMap<String, Object> values = new HashMap<>();
         values.put("uuid", obsDTOS.getUuid());
         values.put("encounteruuid", obsDTOS.getEncounteruuid());
@@ -654,7 +658,7 @@ public class ObsDAO extends BaseDao{
         values.put("conceptuuid", obsDTOS.getConceptuuid());
         values.put("value", obsDTOS.getValue());
         values.put("obsservermodifieddate", obsDTOS.getObsServerModifiedDate());
-        values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+        values.put("modified_date", modifiedDate);
         values.put("voided", obsDTOS.getVoided());
         values.put("sync", "TRUE");
         values.put("conceptsetuuid", obsDTOS.getConceptsetuuid());

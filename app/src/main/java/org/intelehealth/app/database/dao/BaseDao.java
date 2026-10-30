@@ -2,6 +2,7 @@ package org.intelehealth.app.database.dao;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.os.Looper;
 import android.util.Log;
 import android.util.LruCache;
 
@@ -21,13 +22,22 @@ import java.util.concurrent.Executors;
  **/
 abstract class BaseDao {
     private static final String TAG = "BaseDao";
+    // One shared writer thread for calls made on the main thread. A new executor per call was
+    // never shut down, leaking a thread for every insert.
+    private static final ExecutorService WRITE_EXECUTOR = Executors.newSingleThreadExecutor();
     abstract String tableName();
 
+    /**
+     * Runs a write. Off the main thread (sync paths) it runs right here, so the rows are in the
+     * database when the caller continues (e.g. before the next pull page or the pull date is
+     * saved). On the main thread it goes to the shared writer thread to avoid blocking the UI.
+     */
     public void executeInBackground(Runnable task) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        executorService.execute(task);
-        System.out.println("BaseDao.execute");
-//        new Thread(this::task).start();
+        if (Looper.myLooper() == Looper.getMainLooper()) {
+            WRITE_EXECUTOR.execute(task);
+        } else {
+            task.run();
+        }
     }
 
     public Runnable insert(HashMap<String, Object> row) {
@@ -49,7 +59,7 @@ abstract class BaseDao {
             } finally {
                 db.endTransaction();
             }
-            db.close();
+            // Don't close: this is the app-wide shared database.
         };
     }
 

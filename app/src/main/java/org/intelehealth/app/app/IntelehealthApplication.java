@@ -203,9 +203,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         );
         CustomLog.i(TAG, "onCreate: Parse init");
 
-        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        mDbHelper.onCreate(localdb);
+        // Use the shared helper: a second helper opens a second connection to the same file,
+        // and its transactions then fail each other with "database is locked" (SQLITE_BUSY).
+        SQLiteDatabase localdb = inteleHealthDatabaseHelper.getWritableDatabase();
+        inteleHealthDatabaseHelper.onCreate(localdb);
 //        }
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
