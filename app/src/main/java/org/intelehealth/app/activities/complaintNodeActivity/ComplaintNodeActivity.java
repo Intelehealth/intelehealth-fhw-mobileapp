@@ -50,6 +50,7 @@ import org.intelehealth.app.activities.questionNodeActivity.QuestionNodeActivity
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.utilities.FileUtils;
@@ -57,6 +58,7 @@ import org.intelehealth.app.utilities.SessionManager;
 
 import org.intelehealth.app.utilities.exception.DAOException;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.fetch_dob;
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 public class ComplaintNodeActivity extends BaseActivity {
@@ -203,24 +205,12 @@ public class ComplaintNodeActivity extends BaseActivity {
                 }
             }
 
+            AgeLimit patientAge = AgeLimit.forPatient(fetch_dob(patientUuid), float_ageYear_Month);
             for (int i = 0; i < complaints.size(); i++) {
-                if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                        !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
-
-                    if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
-                        complaints.get(i).remove(complaints, i);
-                        i--;
-                    }
-
-                    //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-                    else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
-                        complaints.get(i).remove(complaints, i);
-                        i--;
-                    }
-
+                if (complaints.get(i).isOutsideAgeRange(patientAge)) {
+                    complaints.get(i).remove(complaints, i);
+                    i--;
                 }
-
-
             }
 
         } else {
@@ -253,23 +243,12 @@ public class ComplaintNodeActivity extends BaseActivity {
                     }
                 }
 
+                AgeLimit patientAge = AgeLimit.forPatient(fetch_dob(patientUuid), float_ageYear_Month);
                 for (int i = 0; i < complaints.size(); i++) {
-                    if (!complaints.get(i).getMin_age().equalsIgnoreCase("") &&
-                            !complaints.get(i).getMax_age().equalsIgnoreCase("")) {
-
-                        if (float_ageYear_Month < Float.parseFloat(complaints.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
-                            complaints.get(i).remove(complaints, i);
-                            i--;
-                        }
-
-                        //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-                        else if (float_ageYear_Month > Float.parseFloat(complaints.get(i).getMax_age())) { //age = 15 , max_age = 10
-                            complaints.get(i).remove(complaints, i);
-                            i--;
-                        }
-
+                    if (complaints.get(i).isOutsideAgeRange(patientAge)) {
+                        complaints.get(i).remove(complaints, i);
+                        i--;
                     }
-
                 }
             }
         }

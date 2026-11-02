@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.common;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -99,6 +100,59 @@ AB NEGATIVE = 1231*/
         return isValidByGender;
     }
 
+
+    /**
+     * Same gender rules as {@link #checkNodeValidByGenderAndAge(String, float, String, String, String)}, with the
+     * age limits in either the old numeric or the new {year, month, days} format. Unlike the float version,
+     * the age limits are applied even when the node has no gender attribute.
+     */
+    public static boolean checkNodeValidByGenderAndAge(String patientGender, AgeLimit patientAge, String nodeGender, AgeLimit minAge, AgeLimit maxAge) {
+        boolean isValidByGender = nodeGender == null || nodeGender.isEmpty()
+                || checkNodeValidByGenderAndAge(patientGender, 0f, nodeGender, null, null);
+        return isValidByGender && AgeLimit.isWithinVisitRange(patientAge, minAge, maxAge);
+    }
+
+    /**
+     * Removes, at every level, the nodes that are not valid for the patient's gender and age.
+     */
+    public static void removeNodesInvalidByGenderAndAge(List<Node> nodes, String patientGender, AgeLimit patientAge) {
+        if (nodes == null) return;
+        nodes.removeIf(node -> !checkNodeValidByGenderAndAge(patientGender, patientAge, node.getGender(), node.getMinAgeLimit(), node.getMaxAgeLimit()));
+        for (Node node : nodes) {
+            removeNodesInvalidByGenderAndAge(node.getOptionsList(), patientGender, patientAge);
+        }
+    }
+
+    /**
+     * Merges the answers saved for a visit into a freshly built node tree: the rebuilt tree decides which
+     * nodes exist (so nodes that no longer apply are dropped and newly applicable ones appear), and wherever
+     * a node exists in both, the saved node (with its answers) is kept. Nodes are matched by id, then by text.
+     */
+    public static List<Node> mergeSavedAnswers(List<Node> rebuiltNodes, List<Node> savedNodes) {
+        if (rebuiltNodes == null || savedNodes == null || savedNodes.isEmpty()) return rebuiltNodes;
+
+        List<Node> mergedNodes = new ArrayList<>();
+        for (Node rebuiltNode : rebuiltNodes) {
+            Node savedNode = findMatchingNode(savedNodes, rebuiltNode);
+            if (savedNode == null) {
+                mergedNodes.add(rebuiltNode);
+            } else {
+                savedNode.setOptionsList(mergeSavedAnswers(rebuiltNode.getOptionsList(), savedNode.getOptionsList()));
+                mergedNodes.add(savedNode);
+            }
+        }
+        return mergedNodes;
+    }
+
+    private static Node findMatchingNode(List<Node> nodes, Node target) {
+        for (Node node : nodes) {
+            if (node != null && node.getId() != null && node.getId().equals(target.getId())) return node;
+        }
+        for (Node node : nodes) {
+            if (node != null && node.getText() != null && node.getText().equals(target.getText())) return node;
+        }
+        return null;
+    }
 
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
         CustomLog.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);

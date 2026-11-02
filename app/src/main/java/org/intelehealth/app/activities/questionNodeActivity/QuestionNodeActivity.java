@@ -63,11 +63,13 @@ import org.intelehealth.app.utilities.UuidDictionary;
 
 import org.intelehealth.app.activities.pastMedicalHistoryActivity.PastMedicalHistoryActivity;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.fetch_dob;
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 
@@ -562,7 +564,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
         }
 
         // flaoting value of age is passed to Node for comparison...
-        currentNode.fetchAge(float_ageYear_Month);
+        currentNode.fetchAge(AgeLimit.forPatient(fetch_dob(patientUuid), float_ageYear_Month));
 
 
         adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, false);
@@ -682,7 +684,7 @@ public class QuestionNodeActivity extends BaseActivity implements QuestionsAdapt
             }
 
             // flaoting value of age is passed to Node for comparison...
-            currentNode.fetchAge(float_ageYear_Month);
+            currentNode.fetchAge(AgeLimit.forPatient(fetch_dob(patientUuid), float_ageYear_Month));
 
             adapter = new QuestionsAdapter(this, currentNode, question_recyclerView, this.getClass().getSimpleName(), this, true);
             question_recyclerView.setAdapter(adapter);
