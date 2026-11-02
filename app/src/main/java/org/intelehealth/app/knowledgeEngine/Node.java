@@ -191,9 +191,9 @@ public class Node implements Serializable {
 
             this.gender = jsonNode.optString("gender");
 
-            this.min_age = jsonNode.optString("age_min");
+            this.min_age = readAgeLimit(jsonNode, "age_min", "age-min");
 
-            this.max_age = jsonNode.optString("age_max");
+            this.max_age = readAgeLimit(jsonNode, "age_max", "age-max");
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -2206,6 +2206,25 @@ public class Node implements Serializable {
             alertDialog.show();
             IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
         }
+    }
+
+    /**
+     * Reads an age limit as the legacy "years.months" string used by the age checks.
+     * Newer protocols send it as "age-min": {"year": 11, "month": 0, "days": 0} instead of
+     * "age_min": 11; without this the limit was ignored (e.g. Abortion/Delivery/Breast feeding
+     * in Irregular periods were shown to children).
+     */
+    private static String readAgeLimit(JSONObject jsonNode, String key, String altKey) {
+        Object value = jsonNode.has(key) ? jsonNode.opt(key) : jsonNode.opt(altKey);
+        if (value == null || value == JSONObject.NULL) return "";
+        if (value instanceof JSONObject) {
+            JSONObject age = (JSONObject) value;
+            if (!age.has("year") && !age.has("month") && !age.has("days")) return "";
+            int years = age.optInt("year", 0);
+            int months = age.optInt("month", 0);
+            return months > 0 ? years + "." + months : String.valueOf(years);
+        }
+        return value.toString().trim();
     }
 
     /**
