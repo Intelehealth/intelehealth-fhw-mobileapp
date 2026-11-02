@@ -37,8 +37,9 @@ export default function QueueCard({
   const symptoms = data.symptoms || [];
   const position = data.position ?? 0;
   const waitTimeMinutes = data.waitTimeMinutes ?? 0;
-  // Same placeholder drawable as the queue list rows when there is no photo.
-  const avatarUrl = data.avatarUrl || 'avatar1';
+  // Always the native `avatar1` drawable (a bare `{uri}` resolves to a drawable
+  // of that name on Android); the patient photo isn't shown on this card.
+  const avatarSource = { uri: 'avatar1' };
 
   // Collapse overflow symptoms into a "+N More" chip, matching the Figma design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
@@ -63,7 +64,7 @@ export default function QueueCard({
       {/* Profile Section */}
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: avatarUrl }}
+          source={avatarSource}
           style={styles.avatar}
         />
         <View style={styles.profileDetails}>
