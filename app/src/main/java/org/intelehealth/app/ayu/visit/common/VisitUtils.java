@@ -77,15 +77,14 @@ AB NEGATIVE = 1231*/
         float minAgeF = parseAge(minAge);
         float maxAgeF = parseAge(maxAge);
         boolean isValidByGender = true;
-        if (patientGender != null && nodeGender != null) {
-            if (patientGender.equalsIgnoreCase("M") &&
-                    nodeGender.equalsIgnoreCase("0")) {
-
-                isValidByGender = false;
-            } else if (patientGender.equalsIgnoreCase("F") &&
-                    nodeGender.equalsIgnoreCase("1")) {
-                isValidByGender = false;
-            }
+        // Patients may be stored as "M"/"F" or "Male"/"Female", and protocols mark female-only
+        // nodes as 0 (or "female") and male-only ones as 1 (or "male")
+        String patient = normalizeGender(patientGender);
+        String node = normalizeGender(nodeGender);
+        if (patient.equals("M") && node.equals("F")) {
+            isValidByGender = false;
+        } else if (patient.equals("F") && node.equals("M")) {
+            isValidByGender = false;
         }
 
         if (isValidByGender) {
@@ -98,6 +97,17 @@ AB NEGATIVE = 1231*/
             }
         }
         return isValidByGender;
+    }
+
+    /**
+     * @return "M", "F" or "" for a patient gender or a protocol node gender (0 = female, 1 = male)
+     */
+    private static String normalizeGender(String gender) {
+        if (gender == null) return "";
+        String value = gender.trim().toLowerCase();
+        if (value.equals("0") || value.equals("f") || value.equals("female")) return "F";
+        if (value.equals("1") || value.equals("m") || value.equals("male")) return "M";
+        return "";
     }
 
     private static float parseAge(String age) {

@@ -3279,7 +3279,8 @@ public class Node implements Serializable {
             new VisitUtils().updateParentNodesIfSelectedAndDataCaptured(node);
             if (node.isRequired()) {
                 if (node.optionsList != null && !node.optionsList.isEmpty()) {
-                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))) {
+                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))
+                            || hasUnansweredNestedOption(node)) {
                         switch (locale) {
                             case "en":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display);
@@ -3375,6 +3376,32 @@ public class Node implements Serializable {
 
         answerResult.requiredStrings = stringBuilder.toString();
         return answerResult;
+    }
+
+    /**
+     * Whether a selected option leads to a nested question or input that was left empty, e.g.
+     * "Others" selected without its "Describe" text, or "Yes" without the treatment details.
+     * In edit mode those options are already selected from the saved visit, so the per-question
+     * flow that normally forces the nested answer can be bypassed with Confirm.
+     * Options that take the value themselves (an input-type on the option) are not checked here.
+     */
+    public static boolean hasUnansweredNestedOption(Node node) {
+        if (node.optionsList == null) return false;
+        for (Node option : node.optionsList) {
+            if (!option.isSelected() || option.optionsList == null || option.optionsList.isEmpty()) continue;
+            boolean takesOwnValue = option.getInputType() != null && !option.getInputType().trim().isEmpty();
+            // the intermediate question node is not always marked selected, so look at any depth
+            if (!takesOwnValue && !anyDescendantSelected(option)) return true;
+        }
+        return false;
+    }
+
+    private static boolean anyDescendantSelected(Node node) {
+        if (node.optionsList == null) return false;
+        for (Node option : node.optionsList) {
+            if (option.isSelected() || anyDescendantSelected(option)) return true;
+        }
+        return false;
     }
 
     public boolean isNestedMandatoryOptionsAnswered(Node node) {
