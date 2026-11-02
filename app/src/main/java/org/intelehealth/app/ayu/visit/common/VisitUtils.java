@@ -73,18 +73,18 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
-        if (nodeGender == null || nodeGender.isEmpty()) {
-            return true;
-        }
-        float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
-        float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
+        // Age limits apply even when the node has no gender restriction - e.g. options inside a
+        // female-only protocol usually carry only age_min/age_max.
+        float minAgeF = parseAge(minAge);
+        float maxAgeF = parseAge(maxAge);
         boolean isValidByGender = true;
-        if (patientGender.equalsIgnoreCase("M") &&
-                nodeGender.equalsIgnoreCase("0")) {
-
+        // Patients may be stored as "M"/"F" or "Male"/"Female", and protocols mark female-only
+        // nodes as 0 (or "female") and male-only ones as 1 (or "male")
+        String patient = normalizeGender(patientGender);
+        String node = normalizeGender(nodeGender);
+        if (patient.equals("M") && node.equals("F")) {
             isValidByGender = false;
-        } else if (patientGender.equalsIgnoreCase("F") &&
-                nodeGender.equalsIgnoreCase("1")) {
+        } else if (patient.equals("F") && node.equals("M")) {
             isValidByGender = false;
         }
 
@@ -98,6 +98,39 @@ AB NEGATIVE = 1231*/
             }
         }
         return isValidByGender;
+    }
+
+    /**
+     * @return "M", "F" or "" for a patient gender or a protocol node gender (0 = female, 1 = male)
+     */
+    private static String normalizeGender(String gender) {
+        if (gender == null) return "";
+        String value = gender.trim().toLowerCase();
+        if (value.equals("0") || value.equals("f") || value.equals("female")) return "F";
+        if (value.equals("1") || value.equals("m") || value.equals("male")) return "M";
+        return "";
+    }
+
+    private static float parseAge(String age) {
+        if (age == null || age.trim().isEmpty()) return 0f;
+        try {
+            return Float.parseFloat(age.trim());
+        } catch (NumberFormatException e) {
+            CustomLog.e("VisitUtils", "Invalid age limit in protocol: " + age);
+            return 0f;
+        }
+    }
+
+    /**
+     * Removes options that are not valid for the patient's gender/age at every nesting level of
+     * the given node, not just the first one or two.
+     */
+    public static void removeInvalidOptionsByGenderAndAge(Node node, String patientGender, float floatAgeYearMonth) {
+        if (node == null || node.getOptionsList() == null) return;
+        node.getOptionsList().removeIf(option -> !checkNodeValidByGenderAndAge(patientGender, floatAgeYearMonth, option.getGender(), option.getMin_age(), option.getMax_age()));
+        for (Node option : node.getOptionsList()) {
+            removeInvalidOptionsByGenderAndAge(option, patientGender, floatAgeYearMonth);
+        }
     }
 
 
@@ -396,6 +429,35 @@ AB NEGATIVE = 1231*/
         } else {
             return "Do you have the following symptom(s)?";
         }
+    }
+
+    /**
+     * "Patient denies -" exactly as it appears in the locale summary string. The string is
+     * localized by replaceEnglishCommonString, so apply the same function here instead of relying
+     * on getTranslatedPatientDenies (hi/or only).
+     */
+    public static String getPatientDeniesMarker(String localeCode) {
+        String marker = replaceEnglishCommonString("Patient denies -", localeCode);
+        if (marker == null || marker.trim().isEmpty()) return getTranslatedPatientDenies(localeCode);
+        return marker.trim();
+    }
+
+    /**
+     * Whether a "►" chunk of the locale visit reason summary is the Associated symptoms block.
+     * When every symptom is answered Yes there is no "Patient denies -" marker, and protocols use
+     * their own question wording, so also check the shape: complaint blocks always start with a
+     * "●" question, while the Associated symptoms block lists the symptoms directly ("•...").
+     */
+    public static boolean isAssociatedSymptomsChunk(String chunk, String localeCode) {
+        if (chunk == null) return false;
+        String value = chunk.trim();
+        if (value.contains(getPatientDeniesMarker(localeCode))
+                || value.contains(getTranslatedPatientDenies(localeCode))
+                || value.contains(getTranslatedAssociatedSymptomQString(localeCode))) {
+            return true;
+        }
+        int titleEnd = value.indexOf("::");
+        return titleEnd > 0 && value.substring(titleEnd + 2).trim().startsWith(Node.bullet_hollow);
     }
 
 

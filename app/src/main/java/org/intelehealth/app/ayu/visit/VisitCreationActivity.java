@@ -533,12 +533,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mPastMedicalHistoryNode = rebuildNodeForCurrentAge(new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class), this::loadPastMedicalHistory);
             else
                 mPastMedicalHistoryNode = loadPastMedicalHistory();
+            if (mPastMedicalHistoryNode != null) VisitUtils.removeNodesInvalidByGenderAndAge(mPastMedicalHistoryNode.getOptionsList(), patientGender, getPatientAge());
 
         }
         if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
             mFamilyHistoryNode = rebuildNodeForCurrentAge(new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class), this::loadFamilyHistory);
         else
             mFamilyHistoryNode = loadFamilyHistory();
+        if (mFamilyHistoryNode != null) VisitUtils.removeNodesInvalidByGenderAndAge(mFamilyHistoryNode.getOptionsList(), patientGender, getPatientAge());
         int currentScreenIndex = 1;
         setTitle(mEditFor);
         switch (mEditFor) {

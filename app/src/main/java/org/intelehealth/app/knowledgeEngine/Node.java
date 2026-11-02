@@ -198,9 +198,9 @@ public class Node implements Serializable {
             String minAgeKey = jsonNode.has("age_min") ? "age_min" : "age-min";
             String maxAgeKey = jsonNode.has("age_max") ? "age_max" : "age-max";
 
-            this.min_age = jsonNode.optString(minAgeKey);
+            this.min_age = readAgeLimit(jsonNode, "age_min", "age-min");
 
-            this.max_age = jsonNode.optString(maxAgeKey);
+            this.max_age = readAgeLimit(jsonNode, "age_max", "age-max");
 
             this.minAgeLimit = AgeLimit.parse(jsonNode.opt(minAgeKey));
 
@@ -2222,6 +2222,25 @@ public class Node implements Serializable {
     }
 
     /**
+     * Reads an age limit as the legacy "years.months" string used by the age checks.
+     * Newer protocols send it as "age-min": {"year": 11, "month": 0, "days": 0} instead of
+     * "age_min": 11; without this the limit was ignored (e.g. Abortion/Delivery/Breast feeding
+     * in Irregular periods were shown to children).
+     */
+    private static String readAgeLimit(JSONObject jsonNode, String key, String altKey) {
+        Object value = jsonNode.has(key) ? jsonNode.opt(key) : jsonNode.opt(altKey);
+        if (value == null || value == JSONObject.NULL) return "";
+        if (value instanceof JSONObject) {
+            JSONObject age = (JSONObject) value;
+            if (!age.has("year") && !age.has("month") && !age.has("days")) return "";
+            int years = age.optInt("year", 0);
+            int months = age.optInt("month", 0);
+            return months > 0 ? years + "." + months : String.valueOf(years);
+        }
+        return value.toString().trim();
+    }
+
+    /**
      * Takes a JSON Array from a knowledgeEngine and creates the sub-nodes to store within it.
      * This is how we handle recursive construction.
      * Nodes are stores within each other. This method is maintains good organizational structure, but makes it difficult to loop back to higher level nodes.
@@ -2740,6 +2759,25 @@ public class Node implements Serializable {
 
     }
 
+    /**
+     * Whether the option's own value should be written to the summary instead of recursing into it.
+     * Protocols often send leaves as "options": [], which parses as non-terminal, so the typed
+     * duration/text was dropped and only the label ("Duration", "Describe") was shown. Same for a
+     * user-input option such as "Other" (input-type text) that also has a nested "Describe" which
+     * was not used - the typed value lives on the option itself.
+     */
+    private static boolean isSummaryAnswerLeaf(Node node) {
+        if (node.isTerminal()) return true;
+        List<Node> children = node.getOptionsList();
+        if (children == null || children.isEmpty()) return true;
+        String inputType = node.getInputType();
+        if (inputType == null || inputType.trim().isEmpty() || inputType.equals("camera")) return false;
+        for (Node child : children) {
+            if (child.isSelected()) return false;
+        }
+        return true;
+    }
+
     public String formQuestionAnswer(int level, boolean isAssociateSymptomsType) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -2750,6 +2788,7 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             //isSelected set from  thisNode.setUnselected(); method
             if (mOptions.get(i).isSelected()) {
+                boolean isAnswerLeaf = isSummaryAnswerLeaf(mOptions.get(i));
                 String question;
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
@@ -2764,7 +2803,7 @@ public class Node implements Serializable {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
 
-                        if (mOptions.get(i).isTerminal()) {
+                        if (isAnswerLeaf) {
                             question = bullet + " " + mOptions.get(i).findDisplay();
                         } else {
                             if (level >= 1) {
@@ -2790,7 +2829,7 @@ public class Node implements Serializable {
                     level = level - 1;
                 }
 
-                if (mOptions.get(i).isTerminal()) {
+                if (isAnswerLeaf) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {
@@ -3155,7 +3194,8 @@ public class Node implements Serializable {
             new VisitUtils().updateParentNodesIfSelectedAndDataCaptured(node);
             if (node.isRequired()) {
                 if (node.optionsList != null && !node.optionsList.isEmpty()) {
-                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))) {
+                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))
+                            || hasUnansweredNestedOption(node)) {
                         switch (locale) {
                             case "en":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display);
@@ -3251,6 +3291,32 @@ public class Node implements Serializable {
 
         answerResult.requiredStrings = stringBuilder.toString();
         return answerResult;
+    }
+
+    /**
+     * Whether a selected option leads to a nested question or input that was left empty, e.g.
+     * "Others" selected without its "Describe" text, or "Yes" without the treatment details.
+     * In edit mode those options are already selected from the saved visit, so the per-question
+     * flow that normally forces the nested answer can be bypassed with Confirm.
+     * Options that take the value themselves (an input-type on the option) are not checked here.
+     */
+    public static boolean hasUnansweredNestedOption(Node node) {
+        if (node.optionsList == null) return false;
+        for (Node option : node.optionsList) {
+            if (!option.isSelected() || option.optionsList == null || option.optionsList.isEmpty()) continue;
+            boolean takesOwnValue = option.getInputType() != null && !option.getInputType().trim().isEmpty();
+            // the intermediate question node is not always marked selected, so look at any depth
+            if (!takesOwnValue && !anyDescendantSelected(option)) return true;
+        }
+        return false;
+    }
+
+    private static boolean anyDescendantSelected(Node node) {
+        if (node.optionsList == null) return false;
+        for (Node option : node.optionsList) {
+            if (option.isSelected() || anyDescendantSelected(option)) return true;
+        }
+        return false;
     }
 
     public boolean isNestedMandatoryOptionsAnswered(Node node) {
