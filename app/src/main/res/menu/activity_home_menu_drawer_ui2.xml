@@ -46,6 +46,7 @@
             android:id="@+id/menu_logout"
             android:icon="@drawable/ui2_ic_icon_logout"
             android:title="@string/log_out"
+            android:contentDescription=""
             app:iconTint="?colorPrimary" />
     </group>
 

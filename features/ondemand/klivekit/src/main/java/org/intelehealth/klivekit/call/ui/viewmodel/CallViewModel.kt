@@ -32,7 +32,7 @@ import org.intelehealth.klivekit.utils.AudioType
 import org.intelehealth.klivekit.utils.AudioType.SPEAKER_PHONE
 import org.intelehealth.klivekit.utils.extensions.hide
 import kotlin.coroutines.coroutineContext
-
+import kotlinx.coroutines.delay
 open class CallViewModel(
     private val url: String,
     private val token: String,
@@ -102,7 +102,10 @@ open class CallViewModel(
     val cameraPosition = mutableCameraPosition.hide()
 
     var remoteParticipant: RemoteParticipant? = null
-
+    // True while LiveKit is recovering from a network drop. During that window it can
+    // report the remote participant as disconnected even though they are still in the call.
+    private var isRoomReconnecting = false
+    private var remoteLeftWhileReconnecting = false
     init {
         LiveKit.loggingLevel = LoggingLevel.DEBUG
         viewModelScope.launch {
@@ -231,19 +234,41 @@ open class CallViewModel(
         }
     }
 
-    private fun onParticipantReconnected(it: RoomEvent.Reconnected) {
+   /* private fun onParticipantReconnected(it: RoomEvent.Reconnected) {
         Timber.e { "onParticipantReconnected =>" + it.room.name }
         remoteParticipant?.let { remote ->
             getVideoTrack(remote)?.let { track ->
                 updateParticipantVideoTrack(track)
             }
         }
-    }
-
+    }*/
+   private fun onParticipantReconnected(it: RoomEvent.Reconnected) {
+       Timber.e { "onParticipantReconnected =>" + it.room.name }
+       isRoomReconnecting = false
+       remoteParticipant?.let { remote ->
+           getVideoTrack(remote)?.let { track ->
+               updateParticipantVideoTrack(track)
+           }
+       }
+       if (remoteLeftWhileReconnecting) {
+           remoteLeftWhileReconnecting = false
+           // Give the remote participant time to reappear; only report that they left
+           // if they are still missing after the grace period.
+           viewModelScope.launch {
+               delay(REMOTE_REJOIN_GRACE_MS)
+               if (room.remoteParticipants.isEmpty()) {
+                   mutableRemoteParticipantDisconnected.postValue(true)
+               }
+           }
+       }
+   }
+    /*private fun onParticipantReconnecting(it: RoomEvent.Reconnecting) {
+        Timber.e { "onParticipantReconnecting =>" + it.room.name }
+    }*/
     private fun onParticipantReconnecting(it: RoomEvent.Reconnecting) {
         Timber.e { "onParticipantReconnecting =>" + it.room.name }
+        isRoomReconnecting = true
     }
-
     private fun onConnectivityChanged(it: RoomEvent.ConnectionQualityChanged) {
         when (it.participant) {
             is LocalParticipant -> mutableLocalConnectionQuality.postValue(it.quality)
@@ -284,13 +309,25 @@ open class CallViewModel(
     private fun onParticipantDisconnected(participantDisconnected: RoomEvent.ParticipantDisconnected) {
         Timber.e { "onParticipantDisconnected => ${participantDisconnected.participant.sid}" }
         Timber.e { "onParticipantDisconnected => ${remoteParticipant?.sid ?: "null"}" }
-        remoteParticipant?.let {
+        /*remoteParticipant?.let {
             mutableRemoteParticipantDisconnected.postValue(participantDisconnected.participant.sid == it.sid)
+        }*/
+        remoteParticipant?.let {
+            val isRemoteParticipant = participantDisconnected.participant.sid == it.sid
+            if (isRemoteParticipant && isRoomReconnecting) {
+                // Transient while LiveKit is reconnecting - verified after Reconnected.
+                Timber.e { "Remote participant dropped during reconnect, waiting for recovery" }
+                remoteLeftWhileReconnecting = true
+            } else {
+                mutableRemoteParticipantDisconnected.postValue(isRemoteParticipant)
+            }
         }
     }
 
+
     private fun onDisconnected(event: RoomEvent.Disconnected) {
         Timber.e { "onDisconnected => ${event.reason.name}" }
+        isRoomReconnecting = false
         mutableCallDisconnectedReason.postValue(event.reason)
     }
 
@@ -646,5 +683,6 @@ open class CallViewModel(
     companion object {
         const val REMOTE_PARTICIPANT = "remote_participant"
         const val LOCAL_PARTICIPANT = "local_participant"
+        private const val REMOTE_REJOIN_GRACE_MS = 10_000L
     }
 }

@@ -4,6 +4,7 @@ import com.github.ajalt.timberkt.Timber
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.Gson
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.services.firebase_services.DeviceInfoUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.webrtc.receiver.FCMNotificationReceiver
@@ -25,7 +26,8 @@ class FCMMessageService : FBMessageService(FCMNotificationReceiver::class.java) 
             this,
             sessionManager.providerID,
             token,
-            sessionManager.appLanguage
+            sessionManager.appLanguage,
+            DeviceInfoUtils.getDeviceId()
         )
     }
 

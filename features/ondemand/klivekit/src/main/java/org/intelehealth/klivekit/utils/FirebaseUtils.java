@@ -17,7 +17,13 @@ import org.json.JSONObject;
 public class FirebaseUtils {
     private static final String TAG = FirebaseUtils.class.getName();
 
-    public static void saveToken(Context context, String userUUID, String fcmToken, String lang) {
+    /**
+     * @param deviceId stable per-install device identifier (e.g. DeviceInfoUtils.getDeviceId()),
+     *                  sent alongside the token so the backend can eventually distinguish
+     *                  this account's multiple active devices instead of overwriting a
+     *                  single stored token per user_uuid.
+     */
+    public static void saveToken(Context context, String userUUID, String fcmToken, String lang, String deviceId) {
         Log.v(TAG, userUUID);
         Log.v(TAG, fcmToken);
         RequestQueue requestQueue = Volley.newRequestQueue(context);
@@ -30,7 +36,11 @@ public class FirebaseUtils {
             }
             JSONObject inputJsonObject = new JSONObject();
             inputJsonObject.put("user_uuid", userUUID);
-            inputJsonObject.put("data", new JSONObject().put("device_reg_token", fcmToken));
+            JSONObject dataObject = new JSONObject().put("device_reg_token", fcmToken);
+            if (deviceId != null && !deviceId.isEmpty()) {
+                dataObject.put("device_id", deviceId);
+            }
+            inputJsonObject.put("data", dataObject);
             inputJsonObject.put("locale", lang);
 
             String url = Constants.SAVE_FCM_TOKEN_URL;
