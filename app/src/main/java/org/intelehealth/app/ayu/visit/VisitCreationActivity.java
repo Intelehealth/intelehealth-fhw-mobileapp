@@ -479,6 +479,13 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
         mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
         }.getType());
+        // The cached nodes were filtered for the patient's gender/age when the visit was created;
+        // re-apply it so edit mode follows the current patient details (e.g. gender changed later).
+        if (mChiefComplainRootNodeList != null) {
+            for (Node node : mChiefComplainRootNodeList) {
+                VisitUtils.removeInvalidOptionsByGenderAndAge(node, patientGender, float_ageYear_Month);
+            }
+        }
 
         if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()) {
             physicalExamMap = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid), PhysicalExam.class);
@@ -492,12 +499,14 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
                 mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
             else
                 mPastMedicalHistoryNode = loadPastMedicalHistory();
+            VisitUtils.removeInvalidOptionsByGenderAndAge(mPastMedicalHistoryNode, patientGender, float_ageYear_Month);
 
         }
         if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
             mFamilyHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class);
         else
             mFamilyHistoryNode = loadFamilyHistory();
+        VisitUtils.removeInvalidOptionsByGenderAndAge(mFamilyHistoryNode, patientGender, float_ageYear_Month);
         int currentScreenIndex = 1;
         setTitle(mEditFor);
         switch (mEditFor) {
@@ -891,14 +900,19 @@ public class VisitCreationActivity extends BaseActivity implements VisitCreation
 
     private Node loadPastMedicalHistory() {
         String fileLocation = "patHist.json";
-        return loadFileToNode(fileLocation, true);
+        Node node = loadFileToNode(fileLocation, true);
+        // e.g. "Pregnancy status" is female only
+        VisitUtils.removeInvalidOptionsByGenderAndAge(node, patientGender, float_ageYear_Month);
+        return node;
     }
 
     private Node mFamilyHistoryNode;
 
     private Node loadFamilyHistory() {
         String fileLocation = "famHist.json";
-        return loadFileToNode(fileLocation, true);
+        Node node = loadFileToNode(fileLocation, true);
+        VisitUtils.removeInvalidOptionsByGenderAndAge(node, patientGender, float_ageYear_Month);
+        return node;
     }
 
     private Node loadFileToNode(String fileName, boolean isForRootFile) {

@@ -2712,6 +2712,25 @@ public class Node implements Serializable {
 
     }
 
+    /**
+     * Whether the option's own value should be written to the summary instead of recursing into it.
+     * Protocols often send leaves as "options": [], which parses as non-terminal, so the typed
+     * duration/text was dropped and only the label ("Duration", "Describe") was shown. Same for a
+     * user-input option such as "Other" (input-type text) that also has a nested "Describe" which
+     * was not used - the typed value lives on the option itself.
+     */
+    private static boolean isSummaryAnswerLeaf(Node node) {
+        if (node.isTerminal()) return true;
+        List<Node> children = node.getOptionsList();
+        if (children == null || children.isEmpty()) return true;
+        String inputType = node.getInputType();
+        if (inputType == null || inputType.trim().isEmpty() || inputType.equals("camera")) return false;
+        for (Node child : children) {
+            if (child.isSelected()) return false;
+        }
+        return true;
+    }
+
     public String formQuestionAnswer(int level, boolean isAssociateSymptomsType) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -2722,6 +2741,7 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             //isSelected set from  thisNode.setUnselected(); method
             if (mOptions.get(i).isSelected()) {
+                boolean isAnswerLeaf = isSummaryAnswerLeaf(mOptions.get(i));
                 String question;
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
@@ -2736,7 +2756,7 @@ public class Node implements Serializable {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
 
-                        if (mOptions.get(i).isTerminal()) {
+                        if (isAnswerLeaf) {
                             question = bullet + " " + mOptions.get(i).findDisplay();
                         } else {
                             if (level >= 1) {
@@ -2762,7 +2782,7 @@ public class Node implements Serializable {
                     level = level - 1;
                 }
 
-                if (mOptions.get(i).isTerminal()) {
+                if (isAnswerLeaf) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {

@@ -171,7 +171,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             String[] spt = answerInLocale.split("►");
             List<String> list = new ArrayList<>();
             String associatedSymptomsString = "";
-            String patientDeniesMarker = getPatientDeniesMarker(lCode);
+            String patientDeniesMarker = VisitUtils.getPatientDeniesMarker(lCode);
             String associateSymptomsTitle = getAssociateSymptomsTitle(lCode);
             for (String s : spt) {
                 if (s.isEmpty()) continue;
@@ -330,17 +330,6 @@ public class VisitReasonSummaryFragment extends Fragment {
     }
 
     /**
-     * "Patient denies -" exactly as it appears in the locale summary string. The string is
-     * localized by VisitUtils.replaceEnglishCommonString, so apply the same function here
-     * instead of keeping a separate (hi/or only) translation.
-     */
-    private String getPatientDeniesMarker(String lCode) {
-        String marker = VisitUtils.replaceEnglishCommonString("Patient denies -", lCode);
-        if (marker == null || marker.trim().isEmpty()) return getTranslatedPatientDenies(lCode);
-        return marker.trim();
-    }
-
-    /**
      * Title of the Associated symptoms block as written in the summary string (before "::").
      */
     private String getAssociateSymptomsTitle(String lCode) {
@@ -358,7 +347,7 @@ public class VisitReasonSummaryFragment extends Fragment {
      */
     private boolean isAssociateSymptomsChunk(String chunk, String patientDeniesMarker, String associateSymptomsTitle, String lCode) {
         String value = chunk.trim();
-        if (value.contains(patientDeniesMarker) || value.contains(getTranslatedAssociatedSymptomQString(lCode))) {
+        if (value.contains(patientDeniesMarker) || VisitUtils.isAssociatedSymptomsChunk(value, lCode)) {
             return true;
         }
         int titleEnd = value.indexOf("::");

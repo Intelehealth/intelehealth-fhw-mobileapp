@@ -1309,7 +1309,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             for (String s : spt) {
                                 String complainName = "";
                                 if (s.isEmpty()) continue;
-                                if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
+                                if (VisitUtils.isAssociatedSymptomsChunk(s, appLanguage)) {
                                     continue;
                                 }
 
@@ -2865,7 +2865,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                 for (String s : spt) {
                                     String complainName = "";
                                     if (s.isEmpty()) continue;
-                                    if (s.trim().contains(getTranslatedPatientDenies(appLanguage)) || s.trim().contains(getTranslatedAssociatedSymptomQString(appLanguage))) {
+                                    if (VisitUtils.isAssociatedSymptomsChunk(s, appLanguage)) {
                                         continue;
                                     }
 

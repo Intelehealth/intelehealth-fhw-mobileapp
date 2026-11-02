@@ -367,6 +367,35 @@ AB NEGATIVE = 1231*/
         }
     }
 
+    /**
+     * "Patient denies -" exactly as it appears in the locale summary string. The string is
+     * localized by replaceEnglishCommonString, so apply the same function here instead of relying
+     * on getTranslatedPatientDenies (hi/or only).
+     */
+    public static String getPatientDeniesMarker(String localeCode) {
+        String marker = replaceEnglishCommonString("Patient denies -", localeCode);
+        if (marker == null || marker.trim().isEmpty()) return getTranslatedPatientDenies(localeCode);
+        return marker.trim();
+    }
+
+    /**
+     * Whether a "►" chunk of the locale visit reason summary is the Associated symptoms block.
+     * When every symptom is answered Yes there is no "Patient denies -" marker, and protocols use
+     * their own question wording, so also check the shape: complaint blocks always start with a
+     * "●" question, while the Associated symptoms block lists the symptoms directly ("•...").
+     */
+    public static boolean isAssociatedSymptomsChunk(String chunk, String localeCode) {
+        if (chunk == null) return false;
+        String value = chunk.trim();
+        if (value.contains(getPatientDeniesMarker(localeCode))
+                || value.contains(getTranslatedPatientDenies(localeCode))
+                || value.contains(getTranslatedAssociatedSymptomQString(localeCode))) {
+            return true;
+        }
+        int titleEnd = value.indexOf("::");
+        return titleEnd > 0 && value.substring(titleEnd + 2).trim().startsWith(Node.bullet_hollow);
+    }
+
 
     public static String getTranslatedGeneralExamString(String localeCode) {
         if (localeCode.equalsIgnoreCase("hi")) {
