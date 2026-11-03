@@ -1,7 +1,7 @@
 package org.intelehealth.app.utilities;
 
 import android.content.Context;
-import org.intelehealth.app.utilities.CustomLog;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
@@ -38,11 +38,12 @@ public class FileUtils {
                 s += readstring;
             }
             InputRead.close();
-            CustomLog.i("FILEREAD>", s);
+            CustomLog.i(TAG, "Read from file - "+FILENAME+" : "+s);
             return s;
 
         } catch (Exception e) {
             FirebaseCrashlytics.getInstance().recordException(e);
+            CustomLog.e(TAG, "Error reading file - "+FILENAME);
             return null;
         }
 
@@ -78,6 +79,7 @@ public class FileUtils {
     public static JSONObject encodeJSON(Context context, String fileName) {
         String raw_json = null;
         JSONObject encoded = null;
+        Log.i(TAG, "Encoding JSON from file: " + fileName);
         try {
             InputStream is = context.getAssets().open(fileName);
             int size = is.available();
@@ -91,6 +93,7 @@ public class FileUtils {
         try {
             encoded = new JSONObject(raw_json);
         } catch (JSONException | NullPointerException e) {
+            CustomLog.e(TAG, "Error encoding JSON from file - " + fileName);
             Toast.makeText(context, context.getString(R.string.config_file_missing), Toast.LENGTH_SHORT).show();
             FirebaseCrashlytics.getInstance().recordException(e);
         }
@@ -111,6 +114,7 @@ public class FileUtils {
             encoded = new JSONObject(FileUtils.readFile(fileName, context));
 
         } catch (JSONException e) {
+            CustomLog.e(TAG, "Error encoding JSON from file - " + fileName);
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 

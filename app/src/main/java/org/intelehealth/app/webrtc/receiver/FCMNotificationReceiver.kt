@@ -16,8 +16,10 @@ import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New
+import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.PatientsDAO
 import org.intelehealth.app.models.FollowUpNotificationData
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
 import org.intelehealth.app.utilities.NotificationSchedulerUtils
 import org.intelehealth.app.utilities.NotificationUtils
 import org.intelehealth.app.utilities.OfflineLogin
@@ -60,6 +62,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 val pendingResult = goAsync()
                 checkVideoActiveStatus(context, onComplete = { pendingResult.finish() }) {
                     Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
+                        //to get call type
+                        IntelehealthApplication.getInstance().setnotificationValue(data["callType"])
+                        //
                         nurseName = sessionManager.chwname
                         callType = CallType.VIDEO
                         url = BuildConfig.LIVE_KIT_URL
@@ -92,6 +97,10 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                                 visitUuid = data["visitUuid"] ?: "",
                             )
                         )
+                        // Pull the newly shared prescription down in the background so the
+                        // Home screen's prescription count reflects it without the user
+                        // having to tap the manual sync icon first.
+                        schedulePrescriptionSync(context)
                     }
 
                 }else{
@@ -102,11 +111,16 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         }
     }
 
-    private fun checkVideoActiveStatus(
-        context: Context,
-        onComplete: () -> Unit = {},
-        block: () -> Unit
-    ) {
+    /**
+     * Enqueues the same background sync worker the Home screen's manual sync icon
+     * uses, so a "new prescription" push pulls the data down on its own instead of
+     * only showing a system notification.
+     */
+    private fun schedulePrescriptionSync(context: Context) {
+        OptimizedSyncWorker.enqueueOneTimeWork(context)
+    }
+
+    private fun checkVideoActiveStatus(context: Context, block: () -> Unit) {
         val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         scope.launch {

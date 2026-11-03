@@ -16,8 +16,6 @@ import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.gson.Gson
-import org.intelehealth.abdm.constants.AbdmConstant
-import org.intelehealth.abdm.utils.AbdmManager
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
@@ -26,7 +24,6 @@ import org.intelehealth.app.databinding.FragmentPatientPersonalInfoOldDesignBind
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.dialog.CalendarDialog
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
-import org.intelehealth.app.utilities.AbhaCardDownloadUtil
 import org.intelehealth.app.utilities.AgeUtils
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
@@ -34,6 +31,7 @@ import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
 import org.intelehealth.app.utilities.PatientRegFieldsUtils
 import org.intelehealth.app.utilities.PatientRegStage
+import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.StringUtils.inputFilter_Others
 import org.intelehealth.app.utilities.extensions.hideDigitErrorOnTextChang
 import org.intelehealth.app.utilities.extensions.hideError
@@ -169,24 +167,15 @@ class PatientPersonalInfoFragment :
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-
-        if (patientViewModel.otpResponse != null) {
-            patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
-        }
-
-        if (patientViewModel.abhaResponse != null) {
-            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
-        }
-
+        fetchPersonalInfoConfig()
         if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
             patient.apply {
                 gender = gender ?: "F"
             }
         }
-
         binding.patient = patient
-        fetchPersonalInfoConfig()
         binding.isEditMode = patientViewModel.isEditMode
+        binding.isAbhaFullFlow = patientViewModel.isAbhaFullFlow
     }
 
     private fun fetchPersonalInfoConfig() {
@@ -200,8 +189,26 @@ class PatientPersonalInfoFragment :
             setGender()
             setClickListener()
             setInputTextChangListener()
+            lockAbhaFieldsIfLinked()
 //            binding.addOnRebindCallback(onRebindCallback)
         }
+    }
+
+    /**
+     * Locks the identity fields sourced from a verified ABHA profile. Called last in the config
+     * observer because setupDOB/setupAge/applyFilter attach the pickers and filters that would
+     * otherwise leave these fields interactive. The country-code picker is locked alongside the
+     * number so the code cannot be changed independently.
+     */
+    private fun lockAbhaFieldsIfLinked() {
+        if (!hasAbha()) return
+        binding.textInputETFName.isEnabled = false
+        binding.textInputETMName.isEnabled = false
+        binding.textInputETLName.isEnabled = false
+        binding.textInputETPhoneNumber.isEnabled = false
+        binding.countrycodeSpinner.setCcpClickable(false)
+        binding.textInputETDob.isEnabled = false
+        binding.textInputETAge.isEnabled = false
     }
 
 //    private val onRebindCallback =
@@ -221,6 +228,15 @@ class PatientPersonalInfoFragment :
         }
     }
 
+    /**
+     * The country-code picker composes its dialling code with the number field, so it returns "+91"
+     * even when nothing has been typed. Storing that gives a patient a phone value that is really just
+     * a country code — useless to read, and non-blank, so it survives the empty-attribute filter and
+     * still reaches the server. Keying off the number field keeps an unfilled phone genuinely absent.
+     */
+    private fun String?.orNullWhenNotEntered(enteredNumber: CharSequence?): String? =
+        this?.takeIf { enteredNumber.isNullOrBlank().not() }
+
     private fun savePatient() {
         patient.apply {
             bindGenderValue()
@@ -228,14 +244,15 @@ class PatientPersonalInfoFragment :
             middlename = binding.textInputETMName.text?.toString()
             lastname = binding.textInputETLName.text?.toString()
             phonenumber = binding.countrycodeSpinner.fullNumberWithPlus
+                .orNullWhenNotEntered(binding.textInputETPhoneNumber.text)
             guardianName = binding.textInputETGuardianName.text?.toString()
             emContactName = binding.textInputETECName.text?.toString()
             emContactNumber = binding.ccpEmContactPhone.fullNumberWithPlus
+                .orNullWhenNotEntered(binding.textInputETEMPhoneNumber.text)
 
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            if (patientViewModel.isEditMode && !patientViewModel.isAbhaFullFlow) {
                 saveAndNavigateToDetails()
-                downloadAbhaCard()
             } else {
                 if (patientViewModel.activeStatusAddressSection) {
                     PatientPersonalInfoFragmentDirections.navigationPersonalToAddress().apply {
@@ -255,50 +272,6 @@ class PatientPersonalInfoFragment :
             it ?: return@observe
             patientViewModel.handleResponse(it) { result -> if (result) navigateToDetails() }
         }
-    }
-
-    private fun downloadAbhaCard() {
-        if (patientViewModel.otpResponse != null || patientViewModel.abhaResponse != null) {
-            val util = AbhaCardDownloadUtil(patient, requireActivity())
-            val tokenHashMap: HashMap<String?, String?> = getTokenHashmap()
-            val token = tokenHashMap.get("token")
-            val scope = tokenHashMap.get("scope")
-
-            if (!util.isAbhaCardPresent() || AbdmManager.isCommunicationNumberUsed || AbdmManager.isPreferredAddressSet) {
-                util.downloadAbhaCard(
-                    scope,
-                    token,
-                    patientViewModel.accessToken ?: "",
-                    requireActivity()
-                )
-            }
-        }
-    }
-
-    private fun getTokenHashmap(): HashMap<String?, String?> {
-        val responseHashMap = HashMap<String?, String?>()
-        val token: String?
-        val scope: String?
-
-        val abhaResponse = patientViewModel.abhaResponse
-        val otpResponse = patientViewModel.otpResponse
-
-        if (otpResponse != null && otpResponse.tokens != null && otpResponse.tokens.token != null) {
-            val responseToken: String = otpResponse.tokens.token
-            token =
-                if (responseToken.startsWith("Bearer")) responseToken else "Bearer $responseToken"
-            scope = AbdmConstant.SCOPE_AADHAAR
-        } else if (abhaResponse != null && abhaResponse.token != null) {
-            token = abhaResponse.token
-            scope = AbdmConstant.SCOPE_MOBILE
-        } else {
-            token = patientViewModel.xToken
-            scope = AbdmManager.tempScope
-        }
-
-        responseHashMap.put("token", token)
-        responseHashMap.put("scope", scope)
-        return responseHashMap
     }
 
     private fun navigateToDetails() {
@@ -449,7 +422,7 @@ class PatientPersonalInfoFragment :
         Calendar.getInstance().apply {
             timeInMillis = selectedDate
         }.also {
-            DateTimeUtils.formatToLocalDate(it.time, DateTimeUtils.YYYY_MM_DD_HYPHEN).apply {
+            DateTimeUtils.formatToEnglishDate(it.time, DateTimeUtils.YYYY_MM_DD_HYPHEN).apply {
                 patient.dateofbirth = this
             }
         }
@@ -566,21 +539,17 @@ class PatientPersonalInfoFragment :
                 )
 
             } else true
-            val bEPhone =
-                if (it.emergencyContactNumber!!.isEnabled && binding.textInputETEMPhoneNumber.length() > 0 && binding.textInputETEMPhoneNumber.length() < 10) {
-                    binding.textInputLayEMPhoneNumber.validate(
-                        binding.textInputETEMPhoneNumber,
-                        error
-                    )
-                        .and(
-                            binding.textInputLayEMPhoneNumber.validateDigit(
-                                binding.textInputETEMPhoneNumber,
-                                R.string.enter_10_digits,
-                                10
-                            )
+            val bEPhone = if (it.emergencyContactNumber!!.isEnabled && binding.textInputETEMPhoneNumber.length()>0 && binding.textInputETEMPhoneNumber.length()<10) {
+                binding.textInputLayEMPhoneNumber.validate(binding.textInputETEMPhoneNumber, error)
+                    .and(
+                        binding.textInputLayEMPhoneNumber.validateDigit(
+                            binding.textInputETEMPhoneNumber,
+                            R.string.enter_10_digits,
+                            10
                         )
+                    )
 
-                } else true
+            } else true
 
 
             val bGuardianType =

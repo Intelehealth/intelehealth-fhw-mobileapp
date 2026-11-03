@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.util.Log;
 
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.utilities.CustomLog;
@@ -434,5 +435,29 @@ public class ProviderDAO extends BaseDao{
         values.put("sync", "false");
         return values;
     }
+    public String getLoggedInHWNumber(String providerUuid) throws DAOException {
+        Log.d(TAG, "getLoggedInHWNumber: providerUuid : "+providerUuid);
+        if (providerUuid == null) return "";
+        String telephoneNumber = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+        db.beginTransaction();
+        try {
+            String query = "select telephoneNumber from tbl_provider where " + ProviderDTO.Columns.PROVIDER_UUID.value + " = ?";
+            Cursor cursor = db.rawQuery(query, new String[]{providerUuid});
+            if (cursor.getCount() != 0) {
+                while (cursor.moveToNext()) {
+                    telephoneNumber = cursor.getString(cursor.getColumnIndexOrThrow("telephoneNumber"));
+                }
+            }
+            cursor.close();
+            db.setTransactionSuccessful();
+        } catch (SQLException s) {
+            FirebaseCrashlytics.getInstance().recordException(s);
+            throw new DAOException(s);
+        } finally {
+            db.endTransaction();
 
+        }
+      return telephoneNumber;
+    }
 }

@@ -1,12 +1,21 @@
 package org.intelehealth.app.ui.patient.fragment
 
 import android.os.Bundle
+import android.text.InputFilter.LengthFilter
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.OnRebindCallback
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDirections
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
+import com.github.ajalt.timberkt.Timber.tag
 import com.google.gson.Gson
+import kotlinx.coroutines.launch
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.identificationActivity.model.Block
@@ -17,6 +26,7 @@ import org.intelehealth.app.activities.identificationActivity.model.Village
 import org.intelehealth.app.databinding.FragmentPatientAddressInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
+import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.FlavorKeys
 import org.intelehealth.app.utilities.LanguageUtils
@@ -79,15 +89,6 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-
-        if (patientViewModel.otpResponse != null) {
-            patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
-        }
-
-        if (patientViewModel.abhaResponse != null) {
-            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
-        }
-
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
@@ -127,9 +128,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             if (binding.llBlock.isEnabled) {
-                if (binding.autoCompleteBlock.text.toString()
-                        .equals(getString(R.string.other_block_option), ignoreCase = true)
-                ) {
+                if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)) {
                     address3 = binding.textInputOtherBlock.text.toString()
                     cityvillage = binding.textInputCityVillage.text?.toString().toString()
                 }
@@ -139,7 +138,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
 
             patientViewModel.updatedPatient(this)
-            if (patientViewModel.isEditMode) {
+            if (patientViewModel.isEditMode && !patientViewModel.isAbhaFullFlow) {
                 saveAndNavigateToDetails()
             } else {
                 if (patientViewModel.activeStatusOtherSection.not()) {
@@ -171,13 +170,11 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
     private fun applyFilter() {
         binding.textInputCityVillage.addFilter(FirstLetterUpperCaseInputFilter())
-        //   binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputAddress1.filters =
-            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Alphabets_And_Numbers)
+     //   binding.textInputAddress1.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputAddress1.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Alphabets_And_Numbers)
         binding.textInputAddress2.addFilter(FirstLetterUpperCaseInputFilter())
-        // binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
-        binding.textInputOtherBlock.filters =
-            arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others)
+       // binding.textInputOtherBlock.addFilter(FirstLetterUpperCaseInputFilter())
+        binding.textInputOtherBlock.filters = arrayOf(FirstLetterUpperCaseInputFilter(), inputFilter_Others)
     }
 
     private fun setInputTextChangListener() {
@@ -431,8 +428,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             } else true
 
             val bVillageField = if (it.block?.isEnabled == true && it.block?.isMandatory == true) {
-                if (binding.autoCompleteBlock.text.toString()
-                        .equals(getString(R.string.other_block_option), ignoreCase = true)
+                if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
                 ) {
                     binding.textInputLayOtherBlock.validate(binding.textInputOtherBlock, error)
                     binding.textInputLayCityVillage.validate(binding.textInputCityVillage, error)
@@ -473,8 +469,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             if (patient.address3 != null && patient.address3.isNotEmpty()) {
                 val selected = LanguageUtils.getBlock(districtData, patient.address3)
                 if (selected == null) {
-                    val selected =
-                        LanguageUtils.getBlock(districtData, getString(R.string.other_block_option))
+                    val selected = LanguageUtils.getBlock(districtData, getString(R.string.other_block_option))
                     binding.autoCompleteBlock.setText(selected.toString(), false)
                     binding.textInputOtherBlock.setText(patient.address3)
                     enableOtherBlock()
@@ -498,7 +493,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
 
                 val blocksList: List<Block> = binding.textInputLayBlock.tag as List<Block>
                 val selectedBlock = blocksList[i]
-                if (i == 2) {
+                if (i ==2) {
                     binding.textInputLayOtherBlock.visibility = View.VISIBLE
                     enableOtherBlock()
                     binding.textInputCityVillage.setText("")
@@ -544,8 +539,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
                     binding.autoCompleteVillageDropdown.setOnItemClickListener { adapterView, _, i, _ ->
                         binding.textInputLayVillageDropdown.hideError()
                         val selectedVillage = villages[i]
-                        if (binding.autoCompleteBlock.text.toString()
-                                .equals(getString(R.string.other_block_option), ignoreCase = true)
+                        if (binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
                         ) binding.textInputCityVillage.setText("")
                         else patient.cityvillage = selectedVillage.name
                     }
@@ -575,6 +569,28 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
             if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
                 setupProvinceAndCities()
             }
+            lockAbhaFieldsIfLinked()
+        }
+    }
+
+    /**
+     * Locks the address fields a verified ABHA profile owns. Only address1 and the postal code
+     * qualify: a locked field can be updated solely by the refresh on relink, so the set locked here
+     * has to be exactly the set applyAbhaIdentity refreshes.
+     *
+     * Village, district and state are pointedly not locked. ABHA returns free text that need not
+     * match the Nashik masters, so those are the FHW's to correct and are left to the address config.
+     *
+     * Each field is locked only when it holds a value, since locking an empty one would leave the
+     * user unable to supply it at all.
+     */
+    private fun lockAbhaFieldsIfLinked() {
+        if (!hasAbha()) return
+        if (binding.textInputAddress1.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputAddress1, false)
+        }
+        if (binding.textInputPostalCode.text?.isNotBlank() == true) {
+            setFieldEnabledStatus(binding.textInputPostalCode, false)
         }
     }
 
@@ -653,8 +669,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
     }
 
     private fun isOtherBlockSelected() =
-        binding.autoCompleteBlock.text.toString()
-            .equals(getString(R.string.other_block_option), ignoreCase = true)
+        binding.autoCompleteBlock.text.toString().equals(getString(R.string.other_block_option), ignoreCase = true)
 
     private fun eraseAllBlockFields() {
         binding.autoCompleteBlock.setText("", false)

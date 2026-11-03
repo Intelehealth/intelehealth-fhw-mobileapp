@@ -13,6 +13,9 @@ import org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME
 import org.intelehealth.app.knowledgeEngine.Node
 import org.intelehealth.app.models.ClsDoctorDetails
 import org.intelehealth.app.models.Patient
+import org.intelehealth.app.utilities.AbhaPrescriptionFields
+import org.intelehealth.app.utilities.DateAndTimeUtils
+import org.intelehealth.app.utilities.SpecialtyNotesProvider
 import java.text.NumberFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -52,6 +55,8 @@ class PrintViewPrescription(
                 putExtra("doctorDetails", htmlDoctorDetails)
                 putExtra("font-family", clsDoctorDetails.fontOfSign)
                 putExtra("drSign-text", clsDoctorDetails.textOfSign)
+                putExtra("signature", clsDoctorDetails.signature)
+
             }
             context.startActivity(intentEsc)
         } else {
@@ -163,6 +168,10 @@ class PrintViewPrescription(
         return adviceWeb
     }
 
+    /**
+     * The slip header. The ABHA lines are appended only when present, so an ordinary patient's slip is
+     * unchanged rather than carrying an empty row — paper on a 58mm roll is worth more than a label.
+     */
     private fun formatPatientDetails(
         heading: String,
         heading2: String,
@@ -170,7 +179,17 @@ class PrintViewPrescription(
         age: Int,
         mGender: String,
     ): String {
-        return "<b id=\"heading_1\">$heading</b><br><b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">$heading2</b><br> ----------------------------------------------- <br><br><b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">$mPatientName</b><br><id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: $age | Gender: $mGender<br><br>"
+        val abhaLines = listOf(
+            AbhaPrescriptionFields.line(context, R.string.label_abha_number, patient.abhaNumber),
+            AbhaPrescriptionFields.line(
+                context,
+                R.string.label_abha_address,
+                AbhaPrescriptionFields.addressForVisit(dataModel.visitUuid)
+            ),
+        ).filter { it.isNotEmpty() }
+            .joinToString("") { "<span style=\"font-size:11pt; margin: 0px; padding: 0px;\">$it</span><br>" }
+
+        return "<b id=\"heading_1\">$heading</b><br><b id=\"heading_2\" style=\"font-size:5pt; margin: 0px; padding: 0px; text-align: center;\">$heading2</b><br> ----------------------------------------------- <br><br><b id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">$mPatientName</b><br><id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: $age | Gender: $mGender<br>" + abhaLines + "<br>"
     }
 
     private fun formatDiagnostics(): String {
@@ -179,7 +198,8 @@ class PrintViewPrescription(
                 " ${dataModel.bloodGlucoseRandom.value ?: ""} <br> -Glucose (Fasting): ${dataModel.bloodGlucoseFasting.value ?: ""} " +
                 "<br> -Glucose (Post-Prandial): " +
                 "${dataModel.bloodGlucosePostPrandial.value ?: ""} <br> -HGB: ${dataModel.hemoglobin.value ?: ""} <br> -Uric Acid:" +
-                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br><br>"
+                " ${dataModel.uricAcid.value ?: ""} <br> -Total Cholesterol: ${dataModel.cholesterol.value ?: ""} <br>"+
+                "-Diabetes HBA1C: ${dataModel.diabeteshba1c.value ?: ""} <br><br>"
     }
 
     private fun formatDiagnosis(): String {
@@ -204,10 +224,9 @@ class PrintViewPrescription(
 
     private fun formatPrescribedTests(): String {
         var htmlDocument = ""
-        Log.d(TAG, "formatPrescribedTests: tests  : ${replaceDot(dataModel.testsReturned)}")
         if (dataModel.testsReturned.isNotEmpty()) {
             htmlDocument =
-                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b><br>${replaceDot(dataModel.testsReturned)} <br>"
+                "<b id=\"tests_heading\" >* Recommended Investigation(s) </b>${replaceDot(dataModel.testsReturned).trim()}<br><br>"
         }
         return htmlDocument
     }
@@ -239,8 +258,10 @@ class PrintViewPrescription(
             .append(formatDiagnosis())
             .append(formatMedicationPlan())
             .append(formatPrescribedTests())
+            .append(formatReferredSpecialist())
             .append(formatAdviceFromDoctor())
             .append(formatFollowUpDate())
+            .append(formatSpecialtyNotes())
             .toString()
 
         Log.d(TAG, "Generated Prescription HTML: $prescriptionHtml")
@@ -266,30 +287,15 @@ class PrintViewPrescription(
     }
 
     private fun followUpWeb(): String {
-        var followUpWeb = ""
-        var followUpDateStr = ""
         val followUpDate = dataModel.followUpDate
-
-        if (!followUpDate.isNullOrEmpty() && followUpDate.contains(",")) {
-            val splitFollowDate = followUpDate.split(",")
-            if (splitFollowDate[0].contains("-")) {
-                var remainingStr = ""
-                for (i in 1 until splitFollowDate.size) {
-                    remainingStr = if (remainingStr.isNotEmpty()) {
-                        "$remainingStr, ${splitFollowDate[i]}"
-                    } else {
-                        splitFollowDate[i]
-                    }
-                }
-                followUpDateStr = "${parseDateToddMMyyyy(splitFollowDate[0])}, $remainingStr"
-            } else {
-                followUpDateStr = followUpDate
-            }
-        } else {
-            followUpDateStr = followUpDate ?: ""
-        }
-        followUpWeb = stringToWebSms(followUpDateStr)
-        return followUpWeb
+        Log.d(TAG, "kzfollowUpWeb: followUpDate : $followUpDate")
+        // Shared with the native Follow Up card and the Share Prescription PDF -
+        // handles the plain-date, "No", and date+Time/Remark/Type obs value shapes
+        // consistently (e.g. "26 Sep, 2026 Time 9:00 AM"), "NA" when there's no
+        // valid follow-up date - shown here as "No", same as the shared PDF.
+        val followUpDisplay = DateAndTimeUtils.formatFollowUpDisplay(followUpDate)
+            .let { if (it.trim().equals("NA", ignoreCase = true)) "No" else it }
+        return stringToWebSms(followUpDisplay)
     }
 
     private fun stringToWebSms(input: String?): String {
@@ -301,5 +307,22 @@ class PrintViewPrescription(
         }
         return formatted
     }
+    private fun formatSpecialtyNotes(): String {
+        var htmlDocument = ""
+        val notes = SpecialtyNotesProvider.getNotesFor(context, clsDoctorDetails?.specialization)
+        if (!notes.isNullOrEmpty()) {
+            val notesWeb = stringToWebSms(notes.joinToString("\n"))
+            htmlDocument = "<b id=\"notes_precautions_heading\">* Notes & Precautions </b><br>$notesWeb<br>"
+        }
+        return htmlDocument
+    }
 
+    private fun formatReferredSpecialist(): String {
+        var htmlDocument = ""
+        if (dataModel.referredSpecialist.isNotEmpty()) {
+            htmlDocument =
+                "<b id=\"referred_specialist_heading\" >* Referred Specialist </b>${replaceDot(dataModel.referredSpecialist)}<br><br>"
+        }
+        return htmlDocument
+    }
 }

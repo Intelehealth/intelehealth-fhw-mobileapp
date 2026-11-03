@@ -12,6 +12,7 @@ import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
+import com.google.gson.Gson;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
@@ -266,6 +267,7 @@ public class VisitsDAO extends BaseDao {
 
                 List<VisitAttribute_Speciality> list = new ArrayList<>();
                 list = fetchVisitAttrs(visitDTO.getUuid());
+                Log.d(TAG, "unsyncedVisits: fetchVisitAttrs : "+new Gson().toJson(list));
                 visitDTO.setAttributes(list);
 //                visitDTOList.add(visitDTO);
 
@@ -543,6 +545,7 @@ public class VisitsDAO extends BaseDao {
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 model.setObsservermodifieddate(modifiedDate);
+
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -627,6 +630,9 @@ public class VisitsDAO extends BaseDao {
             do {
                 PrescriptionModel model = new PrescriptionModel();
                 //
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
+
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
                 model.setVisitUuid(cursor.getString(cursor.getColumnIndexOrThrow("visitUUID")));
@@ -639,6 +645,7 @@ public class VisitsDAO extends BaseDao {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setObsservermodifieddate(modifiedDate);
 
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
@@ -680,6 +687,8 @@ public class VisitsDAO extends BaseDao {
         if (cursor.getCount() > 0 && cursor.moveToFirst()) {
             do {
                 PrescriptionModel model = new PrescriptionModel();
+                String visitID = cursor.getString(cursor.getColumnIndexOrThrow("visitUUID"));
+                String modifiedDate = fetchVisitModifiedDateForPrescPending(visitID);
 
                 model.setPatientUuid(cursor.getString(cursor.getColumnIndexOrThrow("uuid")));
                 model.setPatient_photo(cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
@@ -693,6 +702,8 @@ public class VisitsDAO extends BaseDao {
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
+                model.setObsservermodifieddate(modifiedDate);
+
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -743,6 +754,7 @@ public class VisitsDAO extends BaseDao {
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setOpenmrs_id(cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
                 model.setObsservermodifieddate(modifiedDate);
+
                 try {
                     model.setHasPrescription(new EncounterDAO().isPrescriptionReceived(model.getVisitUuid()));
                 } catch (DAOException e) {
@@ -876,6 +888,7 @@ public class VisitsDAO extends BaseDao {
     }
 
 
+/*
     public static String fetchVisitModifiedDateForPrescPending(String visitUUID) {
         String modifiedDate = "";
 
@@ -937,6 +950,7 @@ public class VisitsDAO extends BaseDao {
 
         return modifiedDate;
     }
+*/
 
 
     public static int getTotalActiveVisitsCount() {
@@ -1271,7 +1285,10 @@ public class VisitsDAO extends BaseDao {
         List<VisitAttribute_Speciality> list = new ArrayList<>();
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? AND (sync = ? OR sync=?) COLLATE NOCASE",
-                new String[]{visit_uuid, "0", "false"});
+                new String[]{visit_uuid ,"0", "false"});
+        //for checking the close visit issue
+        /*Cursor cursor = db.rawQuery("SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ?  COLLATE NOCASE",
+                new String[]{visit_uuid});*/
         if (cursor.getCount() != 0) {
             while (cursor.moveToNext()) {
                 VisitAttribute_Speciality attribute = new VisitAttribute_Speciality();
@@ -1284,6 +1301,105 @@ public class VisitsDAO extends BaseDao {
         cursor.close();
         return list;
     }
+    public void deleteAllDataForOngoingIncompleteVisit(String visitId) {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            // Delete observations related to the visit's encounters
+            db.execSQL(
+                    "DELETE FROM tbl_obs " +
+                            "WHERE encounteruuid IN (" +
+                            " SELECT uuid FROM tbl_encounter WHERE visituuid = ?" +
+                            ")",
+                    new Object[]{visitId}
+            );
 
+            //  Delete encounters for the visit
+            db.execSQL(
+                    "DELETE FROM tbl_encounter WHERE visituuid = ?",
+                    new Object[]{visitId}
+            );
 
+            //  Delete the visit itself
+            db.execSQL(
+                    "DELETE FROM tbl_visit WHERE uuid = ?",
+                    new Object[]{visitId}
+            );
+
+            db.setTransactionSuccessful();
+        }catch(Exception e){
+            Log.d(TAG, "deleteAllDataForOngoingIncompleteVisit: e : "+e.getLocalizedMessage());
+           e.printStackTrace();
+        }  finally{
+            db.endTransaction();
+        }
+    }
+    public String getVisitStartDate(String visitUuid) {
+        String startdate = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT startdate FROM tbl_visit where uuid = ? ", new String[]{visitUuid});
+        if (cursor.getCount() != 0) {
+            while (cursor.moveToNext()) {
+                startdate = cursor.getString(cursor.getColumnIndexOrThrow("startdate"));
+            }
+        }
+        cursor.close();
+
+        return startdate;
+    }
+    public static String fetchVisitModifiedDateForPrescPending(String visitUUID) {
+        String modifiedDate = "";
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        if (visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " + "p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and o.voided = 0 and " + "v.uuid = ? and " + "e.encounter_type_uuid = ? group by p.openmrs_id", new String[]{visitUUID, ENCOUNTER_ADULTINITIAL});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                        CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + modifiedDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
+        }
+
+        return modifiedDate;
+    }
+
+    public static String fetchVisitModifiedDateForPrescByConcept(String visitUUID) {
+        String modifiedDate = "";
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+//        db.beginTransaction();
+
+        if (visitUUID != null) {
+            final Cursor cursor = db.rawQuery("select p.first_name, p.last_name, o.obsservermodifieddate from tbl_patient as p, tbl_visit as v, tbl_encounter as e, tbl_obs as o where " + "p.uuid = v.patientuuid and v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync = 'TRUE' OR o.sync = 'true' OR o.sync = 1) and o.voided = 0 and " + "v.uuid = ? and " + "o.conceptuuid = ? group by p.openmrs_id", new String[]{visitUUID, TELEMEDICINE_DIAGNOSIS});
+
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        modifiedDate = cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate"));
+                        CustomLog.v("obsservermodifieddate", "obsservermodifieddate: " + visitUUID +" - "+ modifiedDate);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        CustomLog.e(TAG, e.getMessage());
+                    }
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+//            db.setTransactionSuccessful();
+//            db.endTransaction();
+        }
+
+        return modifiedDate;
+    }
 }

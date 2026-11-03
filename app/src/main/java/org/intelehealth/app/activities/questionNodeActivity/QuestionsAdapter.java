@@ -1,12 +1,14 @@
 package org.intelehealth.app.activities.questionNodeActivity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,12 +29,15 @@ import com.google.common.collect.ImmutableList;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.physcialExamActivity.PhysicalExamActivity;
 import org.intelehealth.app.activities.questionNodeActivity.adapters.AssociatedSysAdapter;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment;
+import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 
@@ -50,6 +56,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     String _mCallingClass;
     boolean isAssociateSym;
     boolean showPopUp;
+    private HashSet<String> skippedStethoscopeNodes = new HashSet<>();
 
 
     public void updateNode(Node currentNode) {
@@ -65,15 +72,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
     @Override
     public void setVisibility(boolean data) {
-        showPopUp=data;
+        showPopUp = data;
     }
 
     public interface FabClickListener {
         void fabClickedAtEnd();
 
         void onChildListClickEvent(int groupPos, int childPos, int physExamPos);
-
-
     }
 
 
@@ -85,7 +90,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         this._mCallingClass = callingClass;
         this._mListener = _mListener;
         this.isAssociateSym = isAssociateSym;
-
     }
 
     PhysicalExam physicalExam;
@@ -98,7 +102,6 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         this._mCallingClass = callingClass;
         this._mListener = _mListener;
         this.isAssociateSym = isAssociateSym;
-
     }
 
     @Override
@@ -106,16 +109,19 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         if (layoutInflater == null) {
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.quesionnode_list_item, parent, false);
+        View row = layoutInflater.inflate(R.layout.quesionnode_list_item, parent, false);
         return new ChipsAdapterViewHolder(row);
     }
 
     @Override
     public void onBindViewHolder(QuestionsAdapter.ChipsAdapterViewHolder holder, int position) {
         Node _mNode;
+        Log.i("QuestionsAdapter " + position, "onBindViewHolder :" );
+
         if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
             _mNode = physicalExam.getExamNode(position).getOption(0);
+            Log.d("AyuDebug", "Node: " + _mNode);
+
             final String parent_name = physicalExam.getExamParentNodeName(position);
             String nodeText = parent_name + " : " + _mNode.findDisplay();
 
@@ -150,6 +156,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             holder.tvQuestion.setText(_mNode.findDisplay());
         } else {
             _mNode = currentNode;
+            Log.d("AyuDebug", "Node: " + _mNode);
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                 holder.tvQuestion.setText(_mNode.getOptionsList().get(0).findDisplay());
             } else {
@@ -164,25 +171,38 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         } else {
             holder.fab.setVisibility(View.INVISIBLE);
         }
-
-
-
-        holder.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (showPopUp){
-                    Toast.makeText(context,context.getString(R.string.select_all_answers),Toast.LENGTH_LONG).show();
-
-                }else {
-                    _mListener.fabClickedAtEnd();
-                }
-
+        holder.btnConnectDeviceItem.setOnClickListener(v -> {
+            if (context instanceof QuestionNodeActivity) {
+                ((QuestionNodeActivity) context).onAyuDeviceRequest(_mNode);
+            } else if (context instanceof PhysicalExamActivity) {
+                ((PhysicalExamActivity) context).onAyuDeviceRequest(_mNode);
             }
         });
 
-        if (isChildNeedRefresh) {
-            holder.rvChips.getAdapter().notifyDataSetChanged();
+        holder.tvSkipStethoscope.setOnClickListener(v -> {
+            if (_mNode != null) {
+                skippedStethoscopeNodes.add(_mNode.getId());
+                notifyItemChanged(position);
+            }
+        });
+        holder.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (showPopUp) {
+                    Toast.makeText(context, context.getString(R.string.select_all_answers), Toast.LENGTH_LONG).show();
 
+                } else {
+                    _mListener.fabClickedAtEnd();
+                }
+            }
+
+
+        });
+
+        if (isChildNeedRefresh) {
+            if (holder.rvChips.getAdapter() != null) {
+                holder.rvChips.getAdapter().notifyDataSetChanged();
+            }
         }
     }
 
@@ -197,18 +217,13 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             return physicalExam.getTotalNumberOfExams();
         } else {
             if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
-               /* List<Node> nodeList = currentNode.getOptionsList().get(0).getOptionsList();
-                if (nodeList.size() > 8) {
-                    List<List<Node>> spiltList = Lists.partition(currentNode.getOptionsList().get(0).getOptionsList(), 8);*/
                 return 1;
-               /* } else {
-                    return currentNode.getOptionsList().size();
-                }*/
             } else {
                 return currentNode.getOptionsList().size();
             }
         }
     }
+
     @Override
     public int getItemViewType(int position) {
         pos = position;
@@ -224,6 +239,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
         ComplaintNodeListAdapter chipsAdapter;
         AssociatedSysAdapter associatedSysAdapter;
 
+        LinearLayout llDigitalContainer;
+        TextView tvRecommendationReason, tvUpcomingCount, tvHeartPending, tvLungPending, tvSkipStethoscope;
+        Button btnConnectDeviceItem;
 
         public ChipsAdapterViewHolder(View itemView) {
             super(itemView);
@@ -232,10 +250,18 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             fab = itemView.findViewById(R.id.fab);
             physical_exam_text_view = itemView.findViewById(R.id.physical_exam_text_view);
             physical_exam_image_view = itemView.findViewById(R.id.physical_exam_image_view);
+
+            llDigitalContainer = itemView.findViewById(R.id.ll_digital_auscultation_container);
+            tvRecommendationReason = itemView.findViewById(R.id.tv_recommendation_reason);
+            tvUpcomingCount = itemView.findViewById(R.id.tv_upcoming_count);
+            tvHeartPending = itemView.findViewById(R.id.tv_heart_pending);
+            tvLungPending = itemView.findViewById(R.id.tv_lung_pending);
+            tvSkipStethoscope = itemView.findViewById(R.id.tv_skip_stethoscope);
+            btnConnectDeviceItem = itemView.findViewById(R.id.btn_connect_device_item);
+
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
             rvChips.setLayoutManager(linearLayoutManager);
             rvChips.setHasFixedSize(true);
-            //rvChips.setItemAnimator(new DefaultItemAnimator());
             rvChips.setNestedScrollingEnabled(true);
 
             Node groupNode;
@@ -249,7 +275,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
                 groupNode = currentNode;
                 if (isAssociateSym && currentNode.getOptionsList().size() == 1) {
                     chipList = currentNode.getOptionsList().get(0).getOptionsList();
-                }else{
+                } else {
                     Node node = currentNode.getOptionsList().get(pos);
                     for (int i = 0; i < node.getOptionsList().size(); i++) {
                         chipList.add(node.getOptionsList().get(i));
@@ -260,15 +286,26 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
             int groupPos = (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || (isAssociateSym && currentNode.getOptionsList().size() == 1)) ? 0 : pos;
 
-            if(groupNode.getOption(groupPos).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS) || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")) {
-                associatedSysAdapter=new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
+            if (groupNode.getOption(groupPos).getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS) || groupNode.getOption(groupPos).getText().equalsIgnoreCase("जुड़े लक्षण")) {
+                associatedSysAdapter = new AssociatedSysAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(associatedSysAdapter);
 
-            }   else {
+            } else {
                 chipsAdapter = new ComplaintNodeListAdapter(context, chipList, groupNode, groupPos, _mListener, _mCallingClass, pos);
                 rvChips.setAdapter(chipsAdapter);
             }
+           /* btnConnectDeviceItem.setOnClickListener(v -> {
+                if (context instanceof QuestionNodeActivity) {
+                    ((QuestionNodeActivity) context).onAyuDeviceRequest(currentNode);
+                }
+            });
 
+            tvSkipStethoscope.setOnClickListener(v -> {
+                if (currentNode != null) {
+                    skippedStethoscopeNodes.add(currentNode.getId());
+                }
+                llDigitalContainer.setVisibility(View.GONE);
+            });*/
         }
     }
 
@@ -320,135 +357,111 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
             } else {
                 itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
                 itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                //itemViewHolder.mChip.setChipBackgroundColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, android.R.color.transparent))));
-                //itemViewHolderiewHolder.mChip.setTextColor((ColorStateList.valueOf(ContextCompat.getColor(mContext, R.color.primary_text))));
             }
+
             itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (groupNode.getText() != null) {
-                        //null checking to avoid weird crashes.
                         if (groupNode.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS) || groupNode.getText().equalsIgnoreCase("जुड़े लक्षण")) {
-                            MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
-                            confirmDialog.setTitle(R.string.have_symptom);
-                            confirmDialog.setCancelable(false);
-                            LayoutInflater layoutInflater = LayoutInflater.from(context);
-                            View convertView = layoutInflater.inflate(R.layout.list_expandable_item_radio, null);
-                            confirmDialog.setView(convertView);
-                            RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
-                            RadioButton radio_no = convertView.findViewById(R.id.radio_no);
-                            confirmDialog.setPositiveButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            AlertDialog alertDialog = confirmDialog.create();
-                            radio_yes.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    thisNode.setNoSelected(false);
-                                    List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                                    int indexOfCheckedNode = childNode.indexOf(thisNode);
-                                    _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
-                                    notifyDataSetChanged();
-                                    if (alertDialog != null) {
-                                        alertDialog.dismiss();
-                                    }
-
-                                }
-                            });
-
-                            radio_no.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    thisNode.setNoSelected(true);
-                                    thisNode.setUnselected();
-                                    notifyDataSetChanged();
-                                    if (alertDialog != null) {
-                                        alertDialog.dismiss();
-                                    }
-                                }
-                            });
-
-                            switch (_mCallingClass) {
-
-                                case "ComplaintNodeActivity":
-                                    if (thisNode.isSelected()) {
-                                        radio_yes.setChecked(true);
-                                    } else {
-                                        radio_no.setChecked(true);
-                                    }
-                                    break;
-                                default:
-                                    if (thisNode.isSelected()) {
-                                        radio_yes.setChecked(true);
-                                    } else {
-                                        if (thisNode.isNoSelected()) {
-                                            radio_no.setChecked(true);
-                                        } else {
-                                            radio_no.setChecked(false);
-                                        }
-                                    }
-                                    break;
-                            }
-
-                            alertDialog.show();
-                            IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
-
+                            showAssociatedSymptomsDialog(thisNode);
                         } else {
-                            //thisNode.toggleSelected();
-                            int indexOfCheckedNode;
-                            if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                                indexOfCheckedNode = position;
+                            String category = groupNode.getText().toLowerCase();
+                            String item = thisNode.findDisplay().toLowerCase();
+                            String fullDisplay = category + ": " + item;
+                            String inputType = thisNode.getInputType();
+
+                            String examRequirements = thisNode.getPhysicalExams();
+                            boolean hasStethoscopeExam = examRequirements != null && (examRequirements.contains("heart_sound") || examRequirements.contains("lung_sound"));
+
+                            if ((_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName()) || hasStethoscopeExam) &&
+                                    (fullDisplay.contains("heart_sound") || fullDisplay.contains("lung_sound") || hasStethoscopeExam || (inputType != null && inputType.equalsIgnoreCase("ayu_device")))) {
+
+                                String patientUuid = "";
+                                String visitUuid = "";
+                                try {
+                                    if (mContext instanceof PhysicalExamActivity) {
+                                        PhysicalExamActivity activity = (PhysicalExamActivity) mContext;
+                                        patientUuid = PhysicalExamActivity.patientUuid;
+                                        visitUuid = PhysicalExamActivity.visitUuid;
+                                    } else if (mContext instanceof QuestionNodeActivity) {
+                                        QuestionNodeActivity activity = (QuestionNodeActivity) mContext;
+                                        patientUuid = activity.patientUuid;
+                                        visitUuid = activity.visitUuid;
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+/*
+                                InteleHealthDatabaseHelper db = new InteleHealthDatabaseHelper(mContext);
+                                String encounterUuid = db.getEncounter(visitUuid);
+                                String examType = thisNode.findDisplay();*/
+
+                             /*   if (hasStethoscopeExam) {
+                                    examType = examRequirements.contains("heart_sound") ? "heart" : "lung";
+                                } else if (inputType != null && inputType.equalsIgnoreCase("ayu_device")) {
+                                    examType = thisNode.getText().toLowerCase().contains("heart") ? "heart" : "lung";
+                                }
+
+                                DigitalStethoscopeDialogFragment dialog = DigitalStethoscopeDialogFragment.newInstance(examType, patientUuid, visitUuid, encounterUuid);
+                                dialog.show(((AppCompatActivity) mContext).getSupportFragmentManager(), "stethoscope_popup");*/
                             } else {
-                                List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                                indexOfCheckedNode = childNode.indexOf(thisNode);
+                                int indexOfCheckedNode;
+                                if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
+                                    indexOfCheckedNode = position;
+                                } else {
+                                    List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                                    indexOfCheckedNode = childNode.indexOf(thisNode);
+                                }
+                                _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
+                                notifyDataSetChanged();
                             }
-                            _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
-                            notifyDataSetChanged();
                         }
-                    }
-                    else {
+                    } else {
                         Toast.makeText(mContext, context.getString(R.string.some_issue_with_mindmap), Toast.LENGTH_SHORT).show();
                     }
-
                 }
             });
+        }
 
-        /*   itemViewHolder.mChip.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //thisNode.toggleSelected();
-                    if ((groupNode.getText().equalsIgnoreCase("Associated symptoms") && thisNode.isNoSelected())) {
-                        thisNode.setNoSelected(false);
+        private void showAssociatedSymptomsDialog(Node thisNode) {
+            MaterialAlertDialogBuilder confirmDialog = new MaterialAlertDialogBuilder(context);
+            confirmDialog.setTitle(R.string.have_symptom);
+            confirmDialog.setCancelable(false);
+            LayoutInflater layoutInflater = LayoutInflater.from(context);
+            View convertView = layoutInflater.inflate(R.layout.list_expandable_item_radio, null);
+            confirmDialog.setView(convertView);
+            RadioButton radio_yes = convertView.findViewById(R.id.radio_yes);
+            RadioButton radio_no = convertView.findViewById(R.id.radio_no);
+            confirmDialog.setPositiveButton(context.getString(R.string.ok), (dialog, int_which) -> dialog.dismiss());
+            AlertDialog alertDialog = confirmDialog.create();
 
-                        if(!thisNode.isSelected()) {
-                            thisNode.setSelected(true);
-                            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-                            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_blue));
-
-                        }else {
-                            itemViewHolder.mChipText.setTextColor(ContextCompat.getColor(mContext, R.color.colorPrimary));
-                            thisNode.setSelected(false);
-                            itemViewHolder.mChipText.setBackground(ContextCompat.getDrawable(mContext, R.drawable.rounded_rectangle_orange));
-                        }
-
-
-                      //  thisNode.toggleSelected();
-                    }
-                    int indexOfCheckedNode;
-                    if (_mCallingClass.equalsIgnoreCase(PhysicalExamActivity.class.getSimpleName())) {
-                        indexOfCheckedNode = position;
-                    } else {
-                        List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
-                        indexOfCheckedNode = childNode.indexOf(thisNode);
-                    }
-                    _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
-                    notifyDataSetChanged();
-                }
+            radio_yes.setOnClickListener(v -> {
+                thisNode.setNoSelected(false);
+                List<Node> childNode = mGroupNode.getOptionsList().get(mGroupPos).getOptionsList();
+                int indexOfCheckedNode = childNode.indexOf(thisNode);
+                _mListener.onChildListClickEvent(mGroupPos, indexOfCheckedNode, physExamNodePos);
+                notifyDataSetChanged();
+                alertDialog.dismiss();
             });
-        */
+
+            radio_no.setOnClickListener(v -> {
+                thisNode.setNoSelected(true);
+                thisNode.setUnselected();
+                notifyDataSetChanged();
+                alertDialog.dismiss();
+            });
+
+            if (_mCallingClass.equalsIgnoreCase("ComplaintNodeActivity")) {
+                if (thisNode.isSelected()) radio_yes.setChecked(true);
+                else radio_no.setChecked(true);
+            } else {
+                if (thisNode.isSelected()) radio_yes.setChecked(true);
+                else radio_no.setChecked(thisNode.isNoSelected());
+            }
+
+            alertDialog.show();
+            IntelehealthApplication.setAlertDialogCustomTheme(context, alertDialog);
         }
 
         @Override
@@ -474,6 +487,50 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
     }
 
 
+    private boolean hasRecursiveStethoscopeRequirement(Node node) {
+        if (node == null) return false;
+        String examRequirements = node.getPhysicalExams();
+        if (examRequirements != null && (examRequirements.toLowerCase().contains("heart_sound") || examRequirements.toLowerCase().contains("lung_sound"))) {
+            return true;
+        }
+        if (node.getOptionsList() != null) {
+            for (Node child : node.getOptionsList()) {
+                if (hasRecursiveStethoscopeRequirement(child)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void updateStethoscopeCounts(Node node, ChipsAdapterViewHolder holder) {
+        int heartCount = 0;
+        int lungCount = 0;
+        List<Node> allNodes = getAllNodesRecursive(node, new ArrayList<>());
+        for (Node n : allNodes) {
+            String exams = n.getPhysicalExams();
+            if (exams != null) {
+                if (exams.toLowerCase().contains("heart_sound")) heartCount++;
+                if (exams.toLowerCase().contains("lung_sound")) lungCount++;
+            }
+        }
+        int total = heartCount + lungCount;
+        holder.tvUpcomingCount.setText(total + " Upcoming");
+        holder.tvHeartPending.setText("0/" + heartCount + " PENDING");
+        holder.tvLungPending.setText("0/" + lungCount + " PENDING");
+    }
+
+    private List<Node> getAllNodesRecursive(Node node, List<Node> nodes) {
+        if (node == null) return nodes;
+        nodes.add(node);
+        if (node.getOptionsList() != null) {
+            for (Node child : node.getOptionsList()) {
+                getAllNodesRecursive(child, nodes);
+            }
+        }
+        return nodes;
+    }
+
     public static <T> List<List<T>> partitionList(List<T> list, int chunkSize) {
         if (chunkSize <= 0) {
             throw new IllegalArgumentException("Invalid  size to partition: " + chunkSize);
@@ -487,6 +544,3 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.Chip
 
 
 }
-
-
-

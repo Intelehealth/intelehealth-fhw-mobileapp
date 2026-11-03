@@ -182,5 +182,28 @@ public class ConfigUtils {
         }
         return val;
     }
+    public String getPersonalDataConsentTextForWebrtcRecording(String locale) {
+        String val = "";
 
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("personalDataConsentText_webrtc_recording_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
+    public String getTeleconsultationConsentTextForWebrtcRecording(String locale) {
+        String val = "";
+
+        JSONObject object = jsonreader();
+        try {
+            val = object.getString("teleconsultation_consent_webrtc_recording_" + locale);
+
+        } catch (JSONException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return val;
+    }
 }

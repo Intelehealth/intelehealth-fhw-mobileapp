@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvDocTypeDialogTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_16"
+        android:text="@string/additional_doc_image_picker_title"
+        android:textColor="@color/gray_6"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/gray_1" />
+
+    <TextView
+        android:id="@+id/tvDocTypeDialogSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_16"
+        android:paddingVertical="@dimen/margin_4"
+        android:text="@string/doc_type_picker_title"
+        android:textColor="@color/gray_4"
+        android:textSize="12sp"
+        android:textStyle="normal|italic" />
+
+    <RadioGroup
+        android:id="@+id/rgDocumentType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/margin_16"
+        android:paddingTop="@dimen/margin_8"
+        android:paddingEnd="@dimen/margin_16"
+        android:paddingBottom="@dimen/margin_8">
+
+        <RadioButton
+            android:id="@+id/rbPreviousPrescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_radio_button"
+            android:minHeight="42dp"
+            android:paddingStart="@dimen/margin_8"
+            android:text="@string/doc_type_previous_prescription"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rbOldTestReports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_radio_button"
+            android:minHeight="42dp"
+            android:paddingStart="@dimen/margin_8"
+            android:text="@string/doc_type_old_test_reports"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rbOldMedicine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_radio_button"
+            android:minHeight="42dp"
+            android:paddingStart="@dimen/margin_8"
+            android:text="@string/doc_type_old_medicine"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp" />
+
+        <RadioButton
+            android:id="@+id/rbOther"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:button="@drawable/selector_radio_button"
+            android:minHeight="42dp"
+            android:paddingStart="@dimen/margin_8"
+            android:text="@string/doc_type_other"
+            android:textColor="@color/textColorBlack"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilOtherDocType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_16"
+        android:layout_marginEnd="@dimen/margin_16"
+        android:layout_marginBottom="@dimen/margin_8"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etOtherDocType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/doc_type_other_input_title"
+            android:inputType="text"
+            android:padding="@dimen/margin_8"
+            android:textSize="14sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dip"
+        android:background="@color/gray_1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/btnTakePhotoDocType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_12">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_photo_camera_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                android:text="@string/take_photo"
+                android:textColor="@color/textColorBlack"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dip"
+            android:layout_height="match_parent"
+            android:background="@color/gray_1" />
+
+        <LinearLayout
+            android:id="@+id/btnChooseGalleryDocType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_12">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/baseline_photo_library_24" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_4"
+                android:text="@string/choose_from_gallery"
+                android:textColor="@color/textColorBlack"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

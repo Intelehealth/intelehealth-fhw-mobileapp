@@ -1,6 +1,5 @@
 package org.intelehealth.app.ayu.visit.reason;
 
-import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_1_VITAL_SUMMARY;
 import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
@@ -9,6 +8,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
+import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.utilities.CustomLog;
 import android.view.LayoutInflater;
@@ -59,6 +59,7 @@ public class VisitReasonSummaryFragment extends Fragment {
     SessionManager sessionManager;
     private boolean mIsEditMode = false;
     private TextView mAssociateSymptomsLabelTextView, mAssociateSymptChangeTextView;
+    private String visitUuid;
 
     public VisitReasonSummaryFragment() {
         // Required empty public constructor
@@ -66,7 +67,7 @@ public class VisitReasonSummaryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static VisitReasonSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode) {
+    public static VisitReasonSummaryFragment newInstance(CommonVisitData commonVisitData, String values, boolean isEditMode,String visitUuid) {
         VisitReasonSummaryFragment fragment = new VisitReasonSummaryFragment();
         fragment.mSummaryString = values;
         try {
@@ -76,6 +77,7 @@ public class VisitReasonSummaryFragment extends Fragment {
             e.printStackTrace();
         }
         fragment.mIsEditMode = isEditMode;
+        fragment.visitUuid = visitUuid;
         return fragment;
     }
 
@@ -148,9 +150,14 @@ public class VisitReasonSummaryFragment extends Fragment {
         view.findViewById(R.id.imb_btn_refresh).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (NetworkConnection.isOnline(getActivity())) {
-                    new SyncUtils().syncBackground();
+                if(mIsEditMode) {
+                    if (NetworkConnection.isOnline(getActivity())) {
+                        new SyncUtils().syncBackground();
 //                    Toast.makeText(getActivity(), getString(R.string.sync_strated), Toast.LENGTH_SHORT).show();
+                    }
+                }else{
+                    new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
+
                 }
             }
         });
@@ -160,6 +167,10 @@ public class VisitReasonSummaryFragment extends Fragment {
     }
 
     private void prepareSummaryV2() {
+        if (mSummaryStringJsonObject == null) {
+            CustomLog.e(TAG, "mSummaryStringJsonObject is null, cannot prepare summary");
+            return;
+        }
         try {
             String lCode = sessionManager.getAppLanguage();
             String answerInLocale = mSummaryStringJsonObject.getString("l-" + lCode);

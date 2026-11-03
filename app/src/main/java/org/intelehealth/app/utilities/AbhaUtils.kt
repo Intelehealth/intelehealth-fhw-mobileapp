@@ -1,3 +1,4 @@
+/*
 package org.intelehealth.app.utilities
 
 import android.content.Context
@@ -127,4 +128,4 @@ object AbhaUtils {
         patientDTO.cityvillage = parts[parts.size - 3]
         patientDTO.address1 = parts.dropLast(3).joinToString(", ")
     }
-}
+}*/

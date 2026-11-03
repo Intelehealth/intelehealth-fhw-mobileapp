@@ -8,6 +8,7 @@ import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEn
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy_new;
+import static org.intelehealth.app.utilities.StringUtils.en_hi_dob_updated;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.VisitUtils.endVisit;
 
@@ -48,6 +49,18 @@ import android.util.DisplayMetrics;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescription;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionTest;
 import org.intelehealth.app.activities.prescription.thermalprinter.PrintViewPrescriptionDataModel;
+import org.intelehealth.app.app.AppConstants;
+import org.intelehealth.app.models.hwprofile.PersonAttributes;
+import org.intelehealth.app.models.hwprofile.Profile;
+import org.intelehealth.app.profile.MyProfileActivity;
+import org.intelehealth.app.ui.prescriptionwithotp.PDFfilePoc;
+import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
+import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionDetailsDataKeys;
+import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionHtmlPdfGenerator;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionPdfShareDialog;
 import org.intelehealth.app.utilities.CustomLog;
 
 import android.util.Log;
@@ -73,6 +86,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -81,6 +95,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.github.ajalt.timberkt.Timber;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
@@ -96,6 +111,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
@@ -115,13 +131,16 @@ import org.intelehealth.app.utilities.AppointmentUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
+import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.NetworkConnection;
 import org.intelehealth.app.utilities.NetworkUtils;
 import org.intelehealth.app.utilities.PatientRegStage;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.SpecialtyNotesProvider;
 import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
+import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.config.presenter.section.data.ActiveSectionRepository;
@@ -141,9 +160,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
+import kotlin.Unit;
+import kotlin.jvm.functions.Function1;
 
 /**
  * Created by Prajwal Waingankar on 4/11/2022.
@@ -158,7 +188,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     private LinearLayout presc_profile_header;
     private RelativeLayout dr_details_header_relative, diagnosis_header_relative, medication_header_relative, advice_header_relative, test_header_relative, referred_header_relative, followup_header_relative;
     private RelativeLayout vs_header_expandview, vs_drdetails_header_expandview, vs_diagnosis_header_expandview, vs_medication_header_expandview, vs_adviceheader_expandview, vs_testheader_expandview, vs_speciality_header_expandview, vs_followup_header_expandview, followup_date_block;
-    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext;
+    private TextView patName_txt, gender_age_txt, openmrsID_txt, chiefComplaint_txt, visitID_txt, presc_time, mCHWname, drname, dr_age_gender, qualification, dr_speciality, reminder, incomplete_act, archieved_notifi, diagnosis_txt, test_txt, advice_txt, referred_speciality_txt, no_followup_txt, followup_date_txt, followup_subtext, notes_precautions_txt;
+    private View notesPrecautionsCard;
     private ImageView priorityTag, profile_image;
     private ActivityPrescription2Binding mBinding;
     private SessionManager sessionManager;
@@ -212,7 +243,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     ObsDTO hemoglobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO cholesterol = new ObsDTO();
-    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol;
+    ObsDTO diabeteshba1c = new ObsDTO();
+    String mBloodGlucoseRandom, mBloodGlucoseFasting, mBloodGlucosePostPrandial, mHemoglobin, mUricAcid, mCholesterol, mdiabeteshba1c;
+    String hwMobileNumber = "";
+    private SharePrescriptionViewModel viewModel;
+    Set<String> processedConcepts = new HashSet<>();
     private List<ActiveSection> mActiveSectionList;
 
     private void loadFeatureActiveStatus() {
@@ -360,6 +395,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         followup_date_txt = findViewById(R.id.followup_date_txt);
         followup_subtext = findViewById(R.id.followup_info);
         followup_date_block = findViewById(R.id.followup_date_block);
+        notesPrecautionsCard = findViewById(R.id.notesPrecautionsCard);
+        notes_precautions_txt = findViewById(R.id.notes_precautions_txt);
 
         no_btn = findViewById(R.id.no_btn);
         yes_btn = findViewById(R.id.yes_btn);
@@ -460,7 +497,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         }
         // end
 
-        patName_txt.setText(patientName);
+        try {
+            String patientNameFull = new PatientsDAO().getPatientNameByPatientUuid(patientUuid);
+            patName_txt.setText(patientNameFull);
+        } catch (DAOException e) {
+            throw new RuntimeException(e);
+        }
         gender_age_txt.setText(gender + " " + age);
         openmrsID_txt.setText(openmrsID);
         mCHWname.setText(sessionManager.getChwname()); //session manager provider
@@ -471,6 +513,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         // dr details - start
         String drDetails = fetchDrDetailsFromLocalDb(visitID);
+        if (drDetails == null || drDetails.isEmpty() || drDetails.equalsIgnoreCase("null")) {
+            // The doctor-details snapshot above is only ever written at visit
+            // completion, so an interim/referred prescription (visit not yet
+            // completed) legitimately has none yet — fall back to the GP's own
+            // identity instead of failing outright.
+            drDetails = fetchInterimDoctorDetailsJson(visitID);
+        }
         parseDoctorDetails(drDetails);
         // dr details - end
 
@@ -546,6 +595,9 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 prescriptionDataModel.setHemoglobin(hemoglobin);
                 prescriptionDataModel.setUricAcid(uricAcid);
                 prescriptionDataModel.setCholesterol(cholesterol);
+                prescriptionDataModel.setDiabeteshba1c(diabeteshba1c);
+                prescriptionDataModel.setReferredSpecialist(referredSpeciality);
+                Log.d(TAG, "setDataToView: referredSpeciality : "+referredSpeciality);
 
                 Log.d(TAG, "setDataToView: bloodGlucoseRandom  : " + new Gson().toJson(bloodGlucoseRandom));
                 Log.d(TAG, "setDataToView: bloodGlucoseFasting  : " + new Gson().toJson(bloodGlucoseFasting));
@@ -571,7 +623,24 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         });
 
         btn_vs_share.setOnClickListener(v -> {
-            sharePresc();
+            if (mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp()) {
+                // sharePrescriptionInPdf(); //NAS 5.0 share pdf with prescription data on whtsapp
+                SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+                SharePrescriptionViewModelFactory factory = new SharePrescriptionViewModelFactory(db);
+                SharePrescriptionViewModel viewModel = new ViewModelProvider(this, factory).get(SharePrescriptionViewModel.class);
+                viewModel.loadPrescriptionDataFromJava(patientUuid, visitID, data -> {
+                            ShowPrescriptionDataPdfShareDialog helper = new ShowPrescriptionDataPdfShareDialog(this, data, openmrsID, patientUuid, visitID, hasPrescription);
+                            helper.sharePrescriptionInPdf();
+                            return null;
+                        },
+                        throwable -> {
+                            Log.e("TAG", "Failed to load prescription", throwable);
+                            return null;
+                        }
+                );
+            } else {
+                sharePresc();//default IDA flow
+            }
         });
         // Bottom Buttons - end
 
@@ -589,6 +658,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         filter.setOnClickListener(v -> {
             // filter options
+            updateEndVisitMenuItemState();
             if (filter_framelayout.getVisibility() == View.VISIBLE)
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
@@ -619,6 +689,30 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 filter_framelayout.setVisibility(View.GONE);
             else filter_framelayout.setVisibility(View.VISIBLE);
         });
+    }
+
+    // Grey out "End Visit" while a NAMCO referral is still on the doctor's Interim
+    // Prescription - mirrors VisitDetailsActivity's interimPrescriptionActive gating.
+    // hasPrescription can't be used here: downloadPrescriptionDefault() also sets it
+    // for the interim prescription's obs.
+    private void updateEndVisitMenuItemState() {
+        if (incomplete_act == null) return;
+        boolean interimPrescriptionActive = isInterimPrescriptionActive();
+        incomplete_act.setEnabled(!interimPrescriptionActive);
+        incomplete_act.setAlpha(interimPrescriptionActive ? 0.5f : 1f);
+    }
+
+    private boolean isInterimPrescriptionActive() {
+        try {
+            EncounterDAO encounterDAO = new EncounterDAO();
+            String referralValue = encounterDAO.fetchReferredSpecialistValue(visitID);
+            if (referralValue == null || referralValue.trim().isEmpty()) return false;
+            if (encounterDAO.isPhcReferral(visitID)) return false; // PHC: normal flow for now
+            return !encounterDAO.isReferralDeclined(visitID) && !encounterDAO.isPrescriptionReceived(visitID);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return false;
+        }
     }
 
     private void showEndVisitConfirmationDialog() {
@@ -1027,6 +1121,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
         mHemoglobin = hemoglobin.getValue();
         mCholesterol = cholesterol.getValue();
+        mdiabeteshba1c = diabeteshba1c.getValue();
         mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;
@@ -1221,16 +1316,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     "<span style=\"font-size:12pt;color:#212121;padding: 0px;\">" + (!TextUtils.isEmpty(details.getEmailId()) ? getString(R.string.dr_email) + details.getEmailId() : "") + "</span><br>" + "</div>";
         }
 
+        String abhaBlock = AbhaPrescriptionFields.htmlBlockForFormatTemplate(this, patient.getAbhaNumber(), AbhaPrescriptionFields.addressForVisit(visitID));
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
                     /* doctorDetailStr +*/
-                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
+                    "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s  </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p>" + abhaBlock + "<br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | Respiratory Rate: %s |  %s </p><br>" + "<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" + "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" + "<p id=\"family_history\" style=\"font-size:11pt;margin: 0px; padding: 0px;\"> %s</p><br>" + "<b><p id=\"complaints_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Presenting complaint(s)</p></b>" + para_open + "%s" + para_close + "<br><br>" + "<u><b><p id=\"diagnosis_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Diagnosis</p></b></u>" + "%s<br>" + "<u><b><p id=\"rx_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Medication(s) plan</p></b></u>" + "%s<br>" + "<u><b><p id=\"tests_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Recommended Investigation(s)</p></b></u>" + "%s<br>" + "<u><b><p id=\"advice_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">General Advice</p></b></u>" + "%s<br>" + "<u><b><p id=\"follow_up_heading\" style=\"font-size:15pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Follow Up Date</p></b></u>" + "%s<br>" + "<div style=\"text-align:right;margin-right:50px;margin-top:0px;\">" +
                     //  "<span style=\"font-size:80pt;font-family: MyFont;padding: 0px;\">" + doctorSign + "</span>" +
                     "<img src=" + sign_url + " alt=\"Dr Signature\">" + // doctor signature...
                     doctorDetailStr + "<p style=\"font-size:12pt; margin-top:-0px; padding: 0px;\">" + doctrRegistartionNum + "</p>" + "</div>", heading, heading2, heading3, mPatientName, age, mGender, /*mSdw*/ address, mPatientOpenMRSID, mDate, (!TextUtils.isEmpty(mHeight)) ? mHeight : "", (!TextUtils.isEmpty(mWeight)) ? mWeight : "", (!TextUtils.isEmpty(mBMI)) ? mBMI : "", (!TextUtils.isEmpty(bp)) ? bp : "", (!TextUtils.isEmpty(mPulse)) ? mPulse : "", (!TextUtils.isEmpty(mTemp)) ? mTemp : "", (!TextUtils.isEmpty(mresp)) ? mresp : "", (!TextUtils.isEmpty(mSPO2)) ? mSPO2 : "", pat_hist, fam_hist, mComplaint, diagnosis_web, rx_web, tests_web, advice_web, followUp_web, doctor_web);
             webView.loadDataWithBaseURL(null, htmlDocument, "text/HTML", "UTF-8", null);
         } else {
-            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p><br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
+            String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" + "<p id=\"patient_name\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">%s</p></b>" + "<p id=\"patient_details\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Age: %s | Gender: %s </p>" + "<p id=\"address_and_contact\" style=\"font-size:12pt; margin: 0px; padding: 0px;\">Address and Contact: %s</p>" + "<p id=\"visit_details\" style=\"font-size:12pt; margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient Id: %s | Date of visit: %s </p>" + abhaBlock + "<br>" + "<b><p id=\"vitals_heading\" style=\"font-size:12pt;margin-top:5px; margin-bottom:0px;; padding: 0px;\">Vitals</p></b>" + "<p id=\"vitals\" style=\"font-size:12pt;margin:0px; padding: 0px;\">Height(cm): %s | Weight(kg): %s | BMI: %s | Blood Pressure: %s | Pulse(bpm): %s | %s | %s </p><br>" +
                                     /*"<b><p id=\"patient_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Patient History</p></b>" +
                                     "<p id=\"patient_history\" style=\"font-size:11pt;margin:0px; padding: 0px;\"> %s</p><br>" +
                                     "<b><p id=\"family_history_heading\" style=\"font-size:11pt;margin-top:5px; margin-bottom:0px; padding: 0px;\">Family History</p></b>" +
@@ -1350,6 +1446,23 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     // parse dr details - start
     ClsDoctorDetails details;
 
+    /**
+     * Serialized fallback used when the visit hasn't been completed yet (no
+     * ENCOUNTER_VISIT_COMPLETE doctor-details snapshot to read) — e.g. an
+     * interim/referred prescription. Returns JSON so callers can keep feeding it
+     * straight into {@link #parseDoctorDetails(String)} unchanged; null if even
+     * the fallback has nothing (no visit-note encounter/provider on file yet).
+     */
+    private String fetchInterimDoctorDetailsJson(String visitId) {
+        try {
+            ClsDoctorDetails fallback = new EncounterDAO().fetchInterimDoctorDetails(visitId);
+            return fallback != null ? new Gson().toJson(fallback) : null;
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
+    }
+
     private void parseDoctorDetails(String dbValue) {
         if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
             Toast.makeText(this, getString(R.string.unablet_get_the_doct_info_alert), Toast.LENGTH_SHORT).show();
@@ -1362,6 +1475,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details == null) {
             return;
         }
+        details = resolveActualPrescribingDoctor(details);
         CustomLog.e("TAG", "TEST VISIT: " + details.toString());
         drname.setText(details.getName());
         try {
@@ -1381,6 +1495,64 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         if (details.getQualification() != null && !details.getQualification().isEmpty())
             qualification.setText(details.getQualification());
         dr_speciality.setText(details.getSpecialization());
+        showSpecialtyNotesAndPrecautions(details.getSpecialization());
+    }
+
+    /**
+     * original is whichever doctor's own ENCOUNTER_VISIT_COMPLETE snapshot is on
+     * file for this visit - for a referred visit that can still be the GP, not
+     * the specialist (see EncounterDAO#fetchResolvedSpecialistDoctorDetails).
+     * Once the referral is resolved, replace the WHOLE doctor object (name,
+     * qualification, signature, speciality together) with the actual
+     * specialist's own profile, rather than patching individual fields - so
+     * name/qualification/signature/speciality on this screen, and in the
+     * exported PDF (PrescriptionBuilder, which reads this same `details`
+     * object), all consistently belong to the same doctor. Resolution order:
+     * 1) the specialist's own encounter on this visit if one was created;
+     * 2) NAMCO/specialist doctors are a fixed, shared set of accounts, so a
+     *    doctor whose own snapshot elsewhere carries this exact specialization
+     *    (matched by text, not by any hardcoded name) if no distinct encounter
+     *    was ever created for this visit;
+     * 3) otherwise keep the original doctor object unchanged.
+     */
+    private ClsDoctorDetails resolveActualPrescribingDoctor(ClsDoctorDetails original) {
+        try {
+            String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitID);
+            if (referralValue == null || referralValue.trim().isEmpty()) return original;
+            if (new EncounterDAO().isPhcReferral(visitID)) return original; // PHC: normal flow for now
+            if (new EncounterDAO().isReferralDeclined(visitID)) return original; // never handed off - keep the original doctor
+            if (!new EncounterDAO().isPrescriptionReceived(visitID)) return original; // still pending, not resolved yet
+
+            ClsDoctorDetails specialistDetails = new EncounterDAO().fetchResolvedSpecialistDoctorDetails(visitID);
+            if (specialistDetails != null && specialistDetails.getSpecialization() != null
+                    && !specialistDetails.getSpecialization().trim().isEmpty()) {
+                return specialistDetails;
+            }
+
+            String referredSpecialty = EncounterDAO.parseReferralSpecialty(referralValue);
+            ClsDoctorDetails bySpecialization = new EncounterDAO().fetchDoctorDetailsBySpecialization(referredSpecialty);
+            if (bySpecialization != null) {
+                return bySpecialization;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return original;
+    }
+
+    private void showSpecialtyNotesAndPrecautions(String specialization) {
+        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(this, specialization);
+        if (notes == null || notes.isEmpty()) {
+            notesPrecautionsCard.setVisibility(View.GONE);
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (String note : notes) {
+            builder.append("• ").append(note).append("\n");
+        }
+        if (builder.length() > 0) builder.setLength(builder.length() - 1);
+        notes_precautions_txt.setText(builder.toString());
+        notesPrecautionsCard.setVisibility(View.VISIBLE);
     }
 
     private String addBulletPoints(String inputString) {
@@ -1439,6 +1611,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
      * @param value      variable of type String.
      */
     private void parseData(String concept_id, String value) {
+        processedConcepts.add(concept_id);
         switch (concept_id) {
             case UuidDictionary.CURRENT_COMPLAINT: { //Current Complaint
                 complaint.setValue(value.replace("?<b>", Node.bullet_arrow));
@@ -1491,10 +1664,14 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             }
 
             case UuidDictionary.TELEMEDICINE_DIAGNOSIS: {
-                if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(value)) {
-                    diagnosisReturned = diagnosisReturned + "\n" + value;
+                // Strip a leading "<code>::" or "NA::" prefix (e.g. "115902018::Acute
+                // Gastroenteritis:Primary & Under Evaluation") - the diagnosis concept id
+                // isn't meant to be shown, only the diagnosis text that follows it.
+                String cleanedValue = value == null ? null : value.replaceFirst("(?i)^(?:na|\\d+)::\\s*", "");
+                if (!diagnosisReturned.isEmpty() && !diagnosisReturned.contains(cleanedValue)) {
+                    diagnosisReturned = diagnosisReturned + "\n" + cleanedValue;
                 } else {
-                    diagnosisReturned = value;
+                    diagnosisReturned = cleanedValue;
                 }
                 diagnosis_txt.setText(addBulletPoints(StringUtils.formatDiagnosis(diagnosisReturned)));
                 break;
@@ -1541,7 +1718,8 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 if (!medicalAdvice_HyperLink.isEmpty()) {
                     medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "\n");
                     advice_txt.setText(addBulletPoints1(medicalAdvice_string));
-                } else {
+                }else
+                {
                     medicalAdvice_string = adviceReturned.replaceAll(medicalAdvice_HyperLink, "");
                     advice_txt.setText(addBulletPoints1(medicalAdvice_string));
                 }
@@ -1606,13 +1784,16 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 break;
             }
             case UuidDictionary.FOLLOW_UP_VISIT: {
-                if (!followUpDate.isEmpty() && !followUpDate.contains(value)) {
-                    followUpDate = followUpDate + "," + value;
-                } else {
-                    followUpDate = value;
-                }
+                // Resolve the one correct follow-up value directly (specialist
+                // encounter takes priority, latest row wins) instead of blindly
+                // concatenating every FOLLOW_UP_VISIT obs row this cursor loop sees
+                // across encounters - that used to produce a garbled multi-value
+                // string that failed to parse and fell back to this screen's
+                // leftover placeholder hint ("15 May, 2022").
+                followUpDate = ObsDAO.getFullFollowupValueForVisitUUID(visitID);
+                String followUpDateToken = DateAndTimeUtils.extractFollowUpDateToken(followUpDate);
 
-                if (followUpDate == null || followUpDate.isEmpty() || followUpDate.equalsIgnoreCase("No")) {
+                if (followUpDateToken == null) {
 
                     no_followup_txt.setVisibility(View.VISIBLE);
                     followup_date_block.setVisibility(View.GONE);
@@ -1627,19 +1808,17 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
                 }
 
-                if (followup_date_block.getVisibility() != View.VISIBLE) {
-                    followup_date_block.setVisibility(View.VISIBLE);
-                }
-                if (no_followup_txt.getVisibility() == View.VISIBLE) {
-                    no_followup_txt.setVisibility(View.GONE);
-                }
-                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDate, "yyyy-MM-dd", "dd MMMM,yyyy");
+                String followUpDatePattern = DateAndTimeUtils.followUpDateTokenPattern(followUpDateToken);
+                String followUpDate_format = DateAndTimeUtils.date_formatter(followUpDateToken, followUpDatePattern, "dd MMMM,yyyy");
                 if (sessionManager.getAppLanguage().equalsIgnoreCase("hi"))
                     followUpDate_format = StringUtils.en__hi_dob(followUpDate_format);
-                followup_date_txt.setText(followUpDate_format);
+                String followUpTimeToken = DateAndTimeUtils.extractFollowUpTimeToken(followUpDate);
+                followup_date_txt.setText(followUpTimeToken != null
+                        ? followUpDate_format + "\n" + followUpTimeToken
+                        : followUpDate_format);
                 CustomLog.v("Prescriotion", "followUpDate - " + followUpDate);
 
-                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDate, "yyyy-MM-dd")) {
+                if (DateAndTimeUtils.isCurrentDateBeforeFollowUpDate(followUpDateToken, followUpDatePattern)) {
                     String followUpSubText = getResources().getString(R.string.doctor_suggested_follow_up_on, followUpDate_format);
                     if (sessionManager.getAppLanguage().equalsIgnoreCase("hi")) {
                         followUpSubText = StringUtils.en__hi_dob(followUpSubText);
@@ -1681,6 +1860,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
             case UuidDictionary.TOTAL_CHOLESTEROL: // Cholestrol
             {
                 cholesterol.setValue(value);
+                break;
+            }
+            case UuidDictionary.DIABETES_HBA1C: // diabeteshba1c
+            {
+                diabeteshba1c.setValue(value);
                 break;
             }
 
@@ -1781,19 +1965,18 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     // downlaod - start
     public void downloadPrescriptionDefault() {
         String visitnote = "";
-        EncounterDAO encounterDAO = new EncounterDAO();
-        String encounterIDSelection = "visituuid = ? AND voided = ?";
-        String[] encounterIDArgs = {visitID, "0"}; // so that the deleted values dont come in the presc.
-        Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-        if (encounterCursor != null && encounterCursor.moveToFirst()) {
-            do {
-                if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                    visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                }
-            } while (encounterCursor.moveToNext());
-
+        try {
+            // Prefers the NAMCO/specialist doctor's own encounter when this visit was
+            // completed via referral, so the medications/diagnosis/follow-up shown here
+            // are the specialist's final ones rather than the GP's earlier interim note
+            // — see EncounterDAO#fetchPrescriptionEncounterUuid.
+            String prescriptionEncounterUuid = new EncounterDAO().fetchPrescriptionEncounterUuid(visitID);
+            if (prescriptionEncounterUuid != null) {
+                visitnote = prescriptionEncounterUuid;
+            }
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
         }
-        encounterCursor.close();
 
         String[] columns = {"value", " conceptuuid"};
         String visitSelection = "encounteruuid = ? and voided = ? and sync = ?";
@@ -1806,6 +1989,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 hasPrescription = true; //if any kind of prescription data is present...
                 parseData(dbConceptID, dbValue);
             } while (visitCursor.moveToNext());
+            handleMissingData();
         }
         visitCursor.close();
 
@@ -1841,6 +2025,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                     parseData(dbConceptID, dbValue);
                 } while (visitCursor.moveToNext());
+                handleMissingData();
             }
             visitCursor.close();
 
@@ -2013,14 +2198,22 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String visitSelection = "encounteruuid = ? and voided!='1' ";
         String[] visitArgs = {visitnote};
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
+        String dbValue = null;
         if (visitCursor.moveToFirst()) {
             do {
-                String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
-                String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseDoctorDetails(dbValue);
+                dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
+        // the doctor-details JSON is stored as the last obs row for this encounter,
+        // matching the lookup in ObsDAO.fetchDrDetailsFromLocalDb - calling
+        // parseDoctorDetails() per-row instead overwrote dr_speciality/notes with
+        // unrelated obs values (e.g. after a refresh), intermittently blanking them.
+        if (dbValue == null || dbValue.isEmpty() || dbValue.equalsIgnoreCase("null")) {
+            // Same interim-visit fallback as the initial load above.
+            dbValue = fetchInterimDoctorDetailsJson(visitID);
+        }
+        parseDoctorDetails(dbValue);
     }
     // downlaod dr - end
 
@@ -2068,23 +2261,11 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         VisitsDAO visitsDAO = new VisitsDAO();
         try {
             if (visitsDAO.getDownloadedValue(visitID).equalsIgnoreCase("false") && uploaded) {
-                String visitnote = "";
-
-                EncounterDAO encounterDAO = new EncounterDAO();
-                String encounterIDSelection = "visituuid = ? AND voided = ?";
-                String[] encounterIDArgs = {visitID, "0"}; // voided = 0 so that the Deleted values dont come in the presc.
-                Cursor encounterCursor = db.query("tbl_encounter", null, encounterIDSelection, encounterIDArgs, null, null, null);
-                if (encounterCursor != null && encounterCursor.moveToFirst()) {
-                    do {
-                        if (encounterDAO.getEncounterTypeUuid("ENCOUNTER_VISIT_NOTE").equalsIgnoreCase(encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("encounter_type_uuid")))) {
-                            visitnote = encounterCursor.getString(encounterCursor.getColumnIndexOrThrow("uuid"));
-                        }
-                    } while (encounterCursor.moveToNext());
-
-                }
-                //   if (encounterCursor != null) {
-                encounterCursor.close();
-                //   }
+                // Prefers the NAMCO/specialist doctor's own encounter when this visit
+                // was completed via referral — see EncounterDAO#fetchPrescriptionEncounterUuid
+                // and downloadPrescriptionDefault() above.
+                String visitnote = new EncounterDAO().fetchPrescriptionEncounterUuid(visitID);
+                if (visitnote == null) visitnote = "";
 
                 if (!diagnosisReturned.isEmpty()) {
                     diagnosisReturned = "";
@@ -2402,6 +2583,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         mBloodGlucosePostPrandial = bloodGlucosePostPrandial.getValue();
         mHemoglobin = hemoglobin.getValue();
         mCholesterol = cholesterol.getValue();
+        mdiabeteshba1c = diabeteshba1c.getValue();
         mUricAcid = uricAcid.getValue();
         try {
             JSONObject obj = null;
@@ -2700,7 +2882,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
 
         PrescriptionBuilder prescriptionBuilder = new PrescriptionBuilder(this);
         VitalsObject vitalsData = getAllVitalsData();
-        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus);
+        String prescriptionString = prescriptionBuilder.builder(patient, vitalsData, diagnosisReturned, rxReturned, adviceReturned, testsReturned, referredSpeciality, followUpDate, details, mFeatureActiveStatus, AbhaPrescriptionFields.addressForVisit(visitID));
 
         if (isRespiratory) {
             String htmlDocument = String.format(font_face + "<b><p id=\"heading_1\" style=\"font-size:16pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_2\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<p id=\"heading_3\" style=\"font-size:12pt; margin: 0px; padding: 0px; text-align: center;\">%s</p>" + "<hr style=\"font-size:12pt;\">" + "<br/>" +
@@ -2875,12 +3057,13 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
         String[] patientArgs = {dataString};
 
         String table = "tbl_patient";
-        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo"};
+        String[] columnsToReturn = {"openmrs_id", "first_name", "middle_name", "last_name", "date_of_birth", "address1", "address2", "city_village", "state_province", "country", "postal_code", "phone_number", "gender", "sdw", "occupation", "patient_photo", "abha_number"};
         final Cursor idCursor = db.query(table, columnsToReturn, patientSelection, patientArgs, null, null, null);
 
         if (idCursor.moveToFirst()) {
             do {
                 patient.setOpenmrs_id(idCursor.getString(idCursor.getColumnIndex("openmrs_id")));
+                patient.setAbhaNumber(idCursor.getString(idCursor.getColumnIndex("abha_number")));
                 patient.setFirst_name(idCursor.getString(idCursor.getColumnIndex("first_name")));
                 patient.setMiddle_name(idCursor.getString(idCursor.getColumnIndex("middle_name")));
                 patient.setLast_name(idCursor.getString(idCursor.getColumnIndex("last_name")));
@@ -2991,6 +3174,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                         String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
                         parseData(dbConceptID, dbValue);
                     } while (visitCursor.moveToNext());
+                    handleMissingData();
                 }
                 if (visitCursor != null) {
                     visitCursor.close();
@@ -3011,6 +3195,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     String dbValue = encountercursor.getString(encountercursor.getColumnIndex("value"));
                     parseData(dbConceptID, dbValue);
                 } while (encountercursor.moveToNext());
+                handleMissingData();
             }
             if (encountercursor != null) {
                 encountercursor.close();
@@ -3131,17 +3316,115 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
     }
 
     private void setMedicationAdapter() {
-        // Initialize RecyclerView
         mBinding.rvPrescribedMedicine.setLayoutManager(new LinearLayoutManager(this));
+        List<PrescribedMedicineModel> medicineList;
+        if (BuildConfig.FLAVOR_client == FlavorKeys.NAS) {
+            medicineList = getMedicationDataStandardize();
+        } else {
+            medicineList = getMedicationData1();
+        }
+        if(medicineList!=null && !medicineList.isEmpty()){
+            PrescribedMedicineAdapter adapter = new PrescribedMedicineAdapter(medicineList);
+            mBinding.rvPrescribedMedicine.setAdapter(adapter);
+        }
+    }
+    private List<PrescribedMedicineModel> getMedicationDataStandardize() {
+        List<PrescribedMedicineModel> medicineModelList = new ArrayList<>();
+        if (rxReturned.isEmpty()) {
+            return medicineModelList;
+        } else {
+            mBinding.tvNoPrescription.setVisibility(View.GONE);
+            mBinding.dividerNoPrescription.setVisibility(View.GONE);
+        }
+        Log.d(TAG, "getMedicationData1: medicineModelList : " + new Gson().toJson(medicineModelList));
+        hideAdditionalInstruction();
 
-        // Initialize your data
-        List<PrescribedMedicineModel> medicineList = getMedicationData1();
-        // Add your prescribed medications to medicineList
+        String[] medicationDataArray = rxReturned.split("\n");
 
-        // Initialize adapter
-        PrescribedMedicineAdapter adapter = new PrescribedMedicineAdapter(medicineList);
+        for (String medicine : medicationDataArray) {
+            if (medicine.matches(".*[:;,].*")) { // checks if it contains any of the separators
+                String[] medicineDetailArray = medicine.split("[:;,]");
+                for (String detail : medicineDetailArray) {
+                    System.out.println(detail);
+                    Log.d(TAG, "getMedicationData1: detail : " + detail);
+                }
 
-        // Set adapter to RecyclerView
-        mBinding.rvPrescribedMedicine.setAdapter(adapter);
+                PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
+                for (int i = 0; i < medicineDetailArray.length; i++) {
+                    String value = getSafeValue(medicineDetailArray, i);
+                    switch (i) {
+                        case 0 -> medicineModel.setMedicineName(value);
+                        case 1 -> medicineModel.setStrength(value);
+                        case 2 -> medicineModel.setNoOfDays(value);
+                        case 3 -> medicineModel.setTiming(value);
+                        case 4 -> medicineModel.setRemark(value);
+                        case 5 -> medicineModel.setFrequency(value);
+                    }
+                }
+                medicineModelList.add(medicineModel);
+            } else {
+                if (!medicine.isEmpty()) {
+                    setAdditionalInstruction(medicine.trim());
+                }
+            }
+        }
+        return medicineModelList;
+    }
+
+    private String getSafeValue(String[] array, int index) {
+        if (index >= array.length) return "";
+        String value = array[index];
+        if (value == null || value.trim().equalsIgnoreCase("null")) return "";
+        return value.trim();
+    }
+
+    /*private List<PrescribedMedicineModel> getMedicationDataStandardize() {
+        List<PrescribedMedicineModel> medicineModelList = new ArrayList<>();
+        if (rxReturned.isEmpty()) {
+            return medicineModelList;
+        } else {
+            mBinding.tvNoPrescription.setVisibility(View.GONE);
+            mBinding.dividerNoPrescription.setVisibility(View.GONE);
+        }
+        Log.d(TAG, "getMedicationData1: medicineModelList : " + new Gson().toJson(medicineModelList));
+        hideAdditionalInstruction();
+
+        String[] medicationDataArray = rxReturned.split("\n");
+
+        for (String medicine : medicationDataArray) {
+            if (medicine.matches(".*[:;,].*")) { // checks if it contains any of the separators
+                String[] medicineDetailArray = medicine.split("[:;,]");
+                for (String detail : medicineDetailArray) {
+                    System.out.println(detail);
+                    Log.d(TAG, "getMedicationData1: detail : " + detail);
+                }
+
+                PrescribedMedicineModel medicineModel = new PrescribedMedicineModel();
+                for (int i = 0; i < medicineDetailArray.length; i++) {
+                    switch (i) {
+                        case 0 -> medicineModel.setMedicineName(medicineDetailArray[i].trim());
+                        case 1 -> medicineModel.setStrength(medicineDetailArray[i].trim());
+                        case 2 -> medicineModel.setNoOfDays(medicineDetailArray[i].trim());
+                        case 3 -> medicineModel.setTiming(medicineDetailArray[i].trim());
+                        case 4 -> medicineModel.setRemark(medicineDetailArray[i].trim());
+                        case 5 -> medicineModel.setFrequency(medicineDetailArray[i].trim());
+                    }
+                }
+                medicineModelList.add(medicineModel);
+            } else {
+                if (!medicine.isEmpty()) {
+                    setAdditionalInstruction(medicine.trim());
+                }
+            }
+        }
+        return medicineModelList;
+    }*/
+    private void handleMissingData() {
+        if (!processedConcepts.contains(UuidDictionary.FOLLOW_UP_VISIT)) {
+            // Show 'no follow-up' explicitly
+            no_followup_txt.setVisibility(View.VISIBLE);
+            followup_date_block.setVisibility(View.GONE);
+            followup_subtext.setVisibility(View.GONE);
+        }
     }
 }

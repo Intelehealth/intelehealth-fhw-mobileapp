@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ayu.visit.pocdevice.HeartAndLungRecordingsFragment">
+
+    <LinearLayout
+        android:id="@+id/ll_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="@dimen/button_skip_margin_start"
+        android:layout_marginBottom="@dimen/button_skip_margin_bottom"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_input_bg"
+            android:drawableTint="@color/iconTintWhite"
+            android:lineHeight="@dimen/button_skip_line_height"
+            android:paddingStart="@dimen/common_button_padding_left"
+            android:paddingTop="@dimen/common_button_padding_top"
+            android:paddingEnd="@dimen/common_button_padding_right"
+            android:paddingBottom="@dimen/common_button_padding_bottom"
+            android:text="@string/generic_back"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/common_button_text_size"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/margin_16"
+            android:layout_weight="1"
+            android:background="@drawable/ui2_common_primary_bg"
+            android:drawableEnd="@drawable/ui2_ic_baseline_arrow_forward_24"
+            android:drawableTint="@color/iconTintWhite"
+            android:lineHeight="@dimen/button_skip_line_height"
+            android:paddingStart="@dimen/common_button_padding_left"
+            android:paddingTop="@dimen/common_button_padding_top"
+            android:paddingEnd="@dimen/common_button_padding_right"
+            android:paddingBottom="@dimen/common_button_padding_bottom"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/common_button_text_size" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_6"
+            android:padding="@dimen/padding_8">
+
+            <!-- Heart Title -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvHeartTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Heart Sounds"
+                    android:textColor="#7F7B92"
+                    android:textSize="@dimen/space_14dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvHeartDone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:padding="@dimen/padding_5"
+                    android:text="DONE"
+                    android:backgroundTint="#0FD197"
+                    android:fontFamily="@font/dm_sans"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/std_12dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+            <!-- Heart RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvHeart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_margin="@dimen/margin_4"
+                android:overScrollMode="never" />
+
+            <!-- Lung Title -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tvLungTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="Lung Sounds"
+                    android:textColor="#7F7B92"
+                    android:fontFamily="@font/dm_sans"
+                    android:textSize="@dimen/space_14dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvLungDone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/ui2_common_primary_bg"
+                    android:padding="@dimen/padding_5"
+                    android:text="DONE"
+                    android:backgroundTint="#0FD197"
+                    android:fontFamily="@font/dm_sans"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/std_12dp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
+            <!-- Lung RecyclerView -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvLung"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false"
+                android:layout_margin="@dimen/margin_4"
+                android:overScrollMode="never" />
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
+
