@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -27,6 +28,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +43,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -118,6 +125,7 @@ public class ChatActivity extends AppCompatActivity {
     private String openMrsId;
 
     protected LinearLayout mEmptyLinearLayout, mLoadingLinearLayout;
+    protected RelativeLayout toolbarRelative;
     protected EditText mMessageEditText;
     protected TextView mEmptyTextView;
 
@@ -131,6 +139,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     protected void initiateView() {
+
         mEmptyTextView = findViewById(R.id.empty_tv);
         mMessageEditText = findViewById(R.id.text_etv);
         mLoadingLinearLayout = findViewById(R.id.loading_layout);
@@ -280,6 +289,18 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentResourceId());
+        toolbarRelative = findViewById(R.id.header_ll);
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
+       /* ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.layout_parent), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+            toolbarRelative.setPadding(systemBars.left,systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });*/
+
         preferenceHelper = new PreferenceHelper(ChatActivity.this);
         mImagePathRoot = getExternalFilesDir(Environment.DIRECTORY_PICTURES) + File.separator;
         if (getIntent().hasExtra("patientUuid")) {

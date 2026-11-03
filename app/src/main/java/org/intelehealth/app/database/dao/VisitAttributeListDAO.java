@@ -5,12 +5,15 @@ import static org.intelehealth.app.utilities.UuidDictionary.CONSULTATION_TYPE;
 import static org.intelehealth.app.utilities.UuidDictionary.DIAGNOSIS;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 import static org.intelehealth.app.utilities.UuidDictionary.SPECIALITY;
+import static org.intelehealth.app.utilities.UuidDictionary.VISIT_ABHA_ADDRESS;
 import static org.intelehealth.app.utilities.UuidDictionary.VISIT_UPLOAD_TIME;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -25,10 +28,14 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
 /**
  * Created by Prajwal Waingankar
@@ -40,10 +47,13 @@ import java.util.concurrent.Executors;
 public class VisitAttributeListDAO extends BaseDao{
     private long createdRecordsCount = 0;
     private static final String TAG = "VisitAttributeListDAO";
-
+    List<VisitAttributeDTO> visitAttributeDTOListForUpdate = new ArrayList<>();
+    List<HashMap<String, Object>> visitAttributeDTOListForAdd = new ArrayList<>();
     public boolean insertProvidersAttributeList(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
         boolean isInserted = true;
+        // Before inserting the pulled rows, confirm which local rows the server already has (prevents duplicate re-sends).
+        markDeliveredAttributesSynced(visitAttributeDTOS);
         List<HashMap<String, Object>> visitsList = new ArrayList<>();
         for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
@@ -51,7 +61,8 @@ public class VisitAttributeListDAO extends BaseDao{
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(PRESCRIPTION_LINK) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(DIAGNOSIS) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(CONSULTATION_TYPE) ||
-                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME)) {
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_UPLOAD_TIME) ||
+                    visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(VISIT_ABHA_ADDRESS)) {
                 visitsList.add(createVisitAttributeMap(visitDTO));
             }
         }
@@ -182,6 +193,10 @@ public class VisitAttributeListDAO extends BaseDao{
             if (count != -1)
                 isInserted = true;
 
+            if (isInserted) {
+                reQueueParentVisitForSync(db, visitUuid);
+            }
+
             db.setTransactionSuccessful();
         } catch (SQLException e) {
             isInserted = false;
@@ -193,6 +208,118 @@ public class VisitAttributeListDAO extends BaseDao{
 
         CustomLog.d("isInserted", "isInserted: " + isInserted);
         return isInserted;
+    }
+
+    /**
+     * Marks the parent visit as unsynced again after a new/changed attribute is written for it.
+     * <p>
+     * unsyncedVisits() only looks at tbl_visit.sync to decide which visits to push, and never
+     * revisits a visit once that flag is true - it does not separately check whether the visit has
+     * unsynced tbl_visit_attribute rows. If a visit's initial "start visit" push already synced it
+     * (e.g. a periodic background sync ran mid-consult) before a later attribute - speciality,
+     * diagnosis, consultation type, etc. - was added, that attribute would otherwise sit with
+     * sync=0 forever and never be picked up by any future push. Resetting the parent's flag here
+     * puts the visit back in front of unsyncedVisits() on the next sync cycle so fetchVisitAttrs()
+     * picks up the new row along with it, without changing how already-synced, unchanged visits are
+     * treated.
+     */
+    private void reQueueParentVisitForSync(SQLiteDatabase db, String visitUuid) {
+        ContentValues visitSyncValues = new ContentValues();
+        visitSyncValues.put("sync", "0");
+        db.update("tbl_visit", visitSyncValues, "uuid=?", new String[]{visitUuid});
+    }
+
+    /**
+     * Marks local attribute rows as synced once the server has returned them in a pull.
+     * <p>
+     * The push response only flags the visit as synced, never its attribute rows, so they stay sync=0
+     * forever. Any later push of the same visit (End Visit sets tbl_visit.sync=0, and the re-queue in
+     * insertVisitAttributes does the same) then re-sends every one of them and the server stores a
+     * duplicate speciality / upload-time row. The server issues its own attribute uuids, so rows are
+     * matched on visit + type + value, not uuid. Delivery is confirmed by the pull rather than the push
+     * reply because the first push of a visit is answered with syncd=false even when it was stored.
+     * A row is only flipped when the server demonstrably holds it, so nothing undelivered is dropped.
+     */
+    private void markDeliveredAttributesSynced(List<VisitAttributeDTO> pulled) {
+        if (pulled == null || pulled.isEmpty()) return;
+        try {
+            // Every pulled type is used here (incl. consent, which insertProvidersAttributeList does not store).
+            Set<String> pulledKeys = new HashSet<>();
+            for (VisitAttributeDTO dto : pulled)
+                pulledKeys.add(dto.getVisit_uuid() + "|" + dto.getVisit_attribute_type_uuid() + "|" + dto.getValue());
+
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            List<String> delivered = new ArrayList<>();
+            try (Cursor cursor = db.rawQuery("SELECT uuid, visit_uuid, visit_attribute_type_uuid, value FROM tbl_visit_attribute " +
+                    "WHERE (sync = ? OR sync = ?) AND voided = 0", new String[]{"0", "false"})) {
+                while (cursor.moveToNext()) {
+                    if (pulledKeys.contains(cursor.getString(1) + "|" + cursor.getString(2) + "|" + cursor.getString(3)))
+                        delivered.add(cursor.getString(0));
+                }
+            }
+            if (delivered.isEmpty()) return;
+
+            ContentValues synced = new ContentValues();
+            synced.put("sync", "1");
+            db.beginTransaction();
+            try {
+                for (String uuid : delivered) db.update("tbl_visit_attribute", synced, "uuid=?", new String[]{uuid});
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+        } catch (Exception e) {
+            // Best effort: on failure the rows stay unsynced (old behaviour); it must never break the pull itself.
+            CustomLog.e(TAG, "markDeliveredAttributesSynced: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Whether this visit already carries the given attribute type. insertVisitAttributes generates a
+     * fresh row uuid, so its CONFLICT_REPLACE cannot dedupe by visit and type — callers that must not
+     * duplicate have to check first and update instead.
+     */
+    public boolean isAttributeExistForVisit(String visitUuid, String attributeTypeUUID) {
+        boolean exists = false;
+        if (visitUuid == null) return false;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT uuid FROM tbl_visit_attribute WHERE visit_uuid = ? AND " +
+                        "visit_attribute_type_uuid = ? AND voided = 0 LIMIT 1",
+                new String[]{visitUuid, attributeTypeUUID})) {
+            exists = cursor.moveToFirst();
+        } catch (SQLException e) {
+            CustomLog.e(TAG, e.getMessage());
+        }
+        return exists;
+    }
+
+    /**
+     * Updates an existing attribute value for a visit and marks the row unsynced so the next push
+     * carries it.
+     */
+    public boolean updateVisitAttributes(String visitUuid, String value, String attributeTypeUUID)
+            throws DAOException {
+        boolean isUpdated = true;
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        db.beginTransaction();
+        try {
+            values.put("value", value);
+            values.put("sync", "0");
+            db.update("tbl_visit_attribute", values,
+                    "visit_uuid = ? AND visit_attribute_type_uuid = ?",
+                    new String[]{visitUuid, attributeTypeUUID});
+            reQueueParentVisitForSync(db, visitUuid);
+            db.setTransactionSuccessful();
+        } catch (SQLException e) {
+            isUpdated = false;
+            CustomLog.e(TAG, e.getMessage());
+            throw new DAOException(e.getMessage(), e);
+        } finally {
+            db.endTransaction();
+        }
+        return isUpdated;
     }
 
     /**
@@ -237,8 +364,10 @@ public class VisitAttributeListDAO extends BaseDao{
     }
     public boolean insertProvidersAttributeListAfterSetup(List<VisitAttributeDTO> visitAttributeDTOS)
             throws DAOException {
+        Log.d(TAG, "insertProvidersAttributeListAfterSetup: visitAttributeDTOS : "+new Gson().toJson(visitAttributeDTOS));
         boolean isInserted = true;
         List<HashMap<String, Object>> visitsList = new ArrayList<>();
+        List<VisitAttributeDTO> visitsListForUpdate = new ArrayList<>();
         for (VisitAttributeDTO visitDTO : visitAttributeDTOS) {
             if (visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(SPECIALITY) ||
                     visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(ADDITIONAL_NOTES) ||
@@ -252,15 +381,16 @@ public class VisitAttributeListDAO extends BaseDao{
                 boolean isRecordExist =checkWhetherRecordExistOrNot(visitDTO);
                 if(isRecordExist){
                     // cant update uuid because its primary key
-                    updateRecord(visitDTO);
+                    visitsListForUpdate.add(visitDTO);
                 }else{
                     visitsList.add(createVisitAttributeMap(visitDTO));
                 }
             }
         }
-        executeInBackground(bulkInsert(visitsList));
+        updateRecord(visitsListForUpdate,visitsList);
         return isInserted;
     }
+/*
     public boolean checkWhetherRecordExistOrNot(VisitAttributeDTO visitDTO) {
         SQLiteDatabase db = null;
         Cursor cursor = null;
@@ -273,14 +403,18 @@ public class VisitAttributeListDAO extends BaseDao{
             if(visitDTO.getVisit_attribute_type_uuid().equalsIgnoreCase(UuidDictionary.SPECIALITY)){
                 query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
                         "AND visit_attribute_type_uuid = ? " + " AND value = ? " +
-                        "AND voided = 0 ";/*+
-                        "AND (sync = ? OR sync = ?) COLLATE NOCASE";*/
+                        "AND voided = 0 ";*/
+/*+
+                        "AND (sync = ? OR sync = ?) COLLATE NOCASE";*//*
+
                 cursor = db.rawQuery(query, new String[]{visitDTO.getVisit_uuid(), visitDTO.getVisit_attribute_type_uuid(),visitDTO.getValue()});
             }else{
                 query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
                         "AND visit_attribute_type_uuid = ? " +
-                        "AND voided = 0 ";/*+
-                        "AND (sync = ? OR sync = ?) COLLATE NOCASE";*/
+                        "AND voided = 0 ";*/
+/*+
+                        "AND (sync = ? OR sync = ?) COLLATE NOCASE";*//*
+
                 cursor = db.rawQuery(query, new String[]{visitDTO.getVisit_uuid(), visitDTO.getVisit_attribute_type_uuid()});
             }
 
@@ -299,15 +433,32 @@ public class VisitAttributeListDAO extends BaseDao{
         }
         return isRecordExist;
     }
-    private void updateRecord(VisitAttributeDTO visitAttributeDTO) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+*/
+    private void updateRecord(List<VisitAttributeDTO> visitAttributeDTOList, List<HashMap<String, Object>> visitsList) {
+        Log.d(TAG, "updateRecord: visitAttributeDTOList : " + new Gson().toJson(visitAttributeDTOList));
 
-        executorService.execute(() -> {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+      /*  ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        executorService.execute(() -> {*/
+        if(db.inTransaction()){
+            db.endTransaction();
+        }
             db.beginTransaction();
             try {
-                String updateQuery = "UPDATE tbl_visit_attribute SET sync = ? WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0";
-                db.execSQL(updateQuery, new Object[]{"1", visitAttributeDTO.getVisit_uuid(), visitAttributeDTO.getVisit_attribute_type_uuid()});
+                for (VisitAttributeDTO visitAttributeDTO : visitAttributeDTOList) {
+              /*      String updateQuery = "UPDATE tbl_visit_attribute SET sync = ? WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0";
+                    db.execSQL(updateQuery, new Object[]{"1", visitAttributeDTO.getVisit_uuid(), visitAttributeDTO.getVisit_attribute_type_uuid()});*/
+                    ContentValues values = new ContentValues();
+                    values.put("sync", "1");
+
+                    int updatedRows = db.update(
+                            "tbl_visit_attribute",
+                            values,
+                            "visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0",
+                            new String[]{visitAttributeDTO.getVisit_uuid(), visitAttributeDTO.getVisit_attribute_type_uuid()}
+                    );
+                }
                 db.setTransactionSuccessful();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -316,7 +467,286 @@ public class VisitAttributeListDAO extends BaseDao{
                     db.endTransaction();
                 }
             }
-        });
-        executorService.shutdown();
+        executeInBackground(bulkInsert(visitsList));
+
+      /*  });
+
+        executorService.shutdown();*/
     }
+    private void collectDataForInsertAndUpdate(List<VisitAttributeDTO> dtos, int index) {
+        Log.d(TAG, "20kaveri collectDataForInsertAndUpdate: original dtos : "+new Gson().toJson(dtos));
+        if (index >= dtos.size()){
+            updateExistingVisitAttribute(dtos, visitAttributeDTOListForAdd, visitAttributeDTOListForUpdate);
+            return;
+        }
+        VisitAttributeDTO visitDTO = dtos.get(index);
+        if (isRelevantAttribute(visitDTO)) {
+            boolean exists = checkWhetherRecordExistOrNot(visitDTO);
+            Log.d(TAG, "20kaveri collectDataForInsertAndUpdate: exists : "+exists);
+            if (exists) {
+                visitAttributeDTOListForUpdate.add(visitDTO);
+            } else {
+                visitAttributeDTOListForAdd.add(createVisitAttributeMap(visitDTO));
+            }
+        }
+        collectDataForInsertAndUpdate(dtos, index + 1);
+    }
+
+    private boolean isRelevantAttribute(VisitAttributeDTO dto) {
+        String uuid = dto.getVisit_attribute_type_uuid();
+        return uuid.equalsIgnoreCase(SPECIALITY)
+                || uuid.equalsIgnoreCase(ADDITIONAL_NOTES)
+                || uuid.equalsIgnoreCase(PRESCRIPTION_LINK)
+                || uuid.equalsIgnoreCase(DIAGNOSIS)
+                || uuid.equalsIgnoreCase(CONSULTATION_TYPE)
+                || uuid.equalsIgnoreCase(VISIT_UPLOAD_TIME);
+    }
+     public void  insertOrUpdateVisitAttributes(List<VisitAttributeDTO> dtos, int currentIndex){
+         visitAttributeDTOListForUpdate = new ArrayList<>();
+         visitAttributeDTOListForAdd = new ArrayList<>();
+
+         collectDataForInsertAndUpdate(dtos, currentIndex);
+        /*if(isDataCollected){
+            updateExistingVisitAttribute(dtos,visitAttributeDTOListForAdd,visitAttributeDTOListForUpdate);*/
+        }
+
+    public boolean checkWhetherRecordExistOrNot(VisitAttributeDTO visitDTO) {
+        boolean isRecordExist = false;
+
+        String query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
+                "AND visit_attribute_type_uuid = ? AND value = ? LIMIT 1";
+        Log.d(TAG, "kaveri checkWhetherRecordExistOrNot: query : "+query);
+
+        try (SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+             Cursor cursor = db.rawQuery(query, new String[]{
+                     visitDTO.getVisit_uuid(),
+                     visitDTO.getVisit_attribute_type_uuid(),
+                     visitDTO.getValue()
+             })) {
+
+            if (cursor != null && cursor.moveToFirst()) {
+                isRecordExist = true;
+
+                StringBuilder record = new StringBuilder("Matched Record => ");
+                for (int i = 0; i < cursor.getColumnCount(); i++) {
+                    record.append(cursor.getColumnName(i)).append(": ")
+                            .append(cursor.getString(i)).append(" | ");
+                }
+                Log.d("VisitAttrCheck", "kaveri  : "+ record.toString());
+            }
+
+        } catch (Exception e) {
+            Log.e("VisitAttrCheck", "Error checking record existence: ", e);
+        }
+
+        return isRecordExist;
+    }
+
+/*public boolean checkWhetherRecordExistOrNot(VisitAttributeDTO visitDTO) {
+    boolean isRecordExist = false;
+
+    String query = "SELECT * FROM tbl_visit_attribute WHERE visit_uuid = ? " +
+            "AND visit_attribute_type_uuid = ? AND value = ?" +
+            "AND (sync = ? OR sync = ?) LIMIT 1";
+
+    try (SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
+         Cursor cursor = db.rawQuery(query, new String[]{
+                 visitDTO.getVisit_uuid(),
+                 visitDTO.getVisit_attribute_type_uuid(),
+                 visitDTO.getValue(),
+                 "0", "false"
+         })) {
+
+        if (cursor != null && cursor.moveToFirst()) {
+            isRecordExist = true;
+        }
+
+    } catch (Exception e) {
+        Log.e("VisitAttrCheck", "Error checking record existence: ", e);
+    }
+
+    return isRecordExist;
+}*/
+
+    private void updateExistingVisitAttribute(
+            List<VisitAttributeDTO> visitAttributeDTOList,
+            List<HashMap<String, Object>> visitAttributeDTOListForAdd,
+            List<VisitAttributeDTO> visitAttributeDTOListForUpdate
+    ) {
+        Log.d(TAG, "20kaveri updateRecord: visitAttributeDTOList : " + new Gson().toJson(visitAttributeDTOList));
+        Log.d(TAG, "20kaveri updateRecord: visitAttributeDTOListForAdd : " + new Gson().toJson(visitAttributeDTOListForAdd));
+        Log.d(TAG, "20kaveri updateRecord: visitAttributeDTOListForUpdate : " + new Gson().toJson(visitAttributeDTOListForUpdate));
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(() -> {
+            SQLiteDatabase db = null;
+
+            try {
+                db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+                db.beginTransaction();
+
+                List<String> visitUuidsList= new ArrayList<>();
+                List<String> attrTypeList= new ArrayList<>();
+                List<String> valuesList= new ArrayList<>();
+
+                for (VisitAttributeDTO dto : visitAttributeDTOListForUpdate) {
+                    visitUuidsList.add(dto.getVisit_uuid());
+                    attrTypeList.add(dto.getVisit_attribute_type_uuid());
+                    valuesList.add(dto.getValue());
+                }
+
+                String visitUuids = joinWithQuotes(visitUuidsList);
+                String attrTypes  = joinWithQuotes(attrTypeList);
+                String values     = joinWithQuotes(valuesList);
+
+                String sql = "UPDATE tbl_visit_attribute " +
+                        "SET sync = '1' " +
+                        "WHERE voided = 0 " +
+                        "AND visit_uuid IN (" + visitUuids + ") " +
+                        "AND visit_attribute_type_uuid IN (" + attrTypes + ")"+
+                        "AND value IN (" + values + ") ";
+                Log.d(TAG, "20kaveri updateExistingVisitAttribute: sql : "+sql);
+                db.execSQL(sql);
+              /*  ContentValues updateValues = new ContentValues();
+                updateValues.put("sync", "1");
+
+                for (VisitAttributeDTO dto : visitAttributeDTOListForUpdate) {
+                    db.update(
+                            "tbl_visit_attribute",
+                            updateValues,
+                            "visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0",
+                            new String[]{dto.getVisit_uuid(), dto.getVisit_attribute_type_uuid()}
+                    );
+                }*/
+
+                if (!visitAttributeDTOListForAdd.isEmpty()) {
+                    try {
+                        Thread.sleep(1000); // Delay for 1 seconds
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt(); // Restore interrupted status
+                    }
+
+                    insertVisitAttributes(db, visitAttributeDTOListForAdd);
+                }
+                if (!visitAttributeDTOListForAdd.isEmpty()) {
+                    insertVisitAttributes(db, visitAttributeDTOListForAdd);
+                }
+
+                db.setTransactionSuccessful();
+
+            } catch (Exception e) {
+                Log.e(TAG, "Error in updateExistingVisitAttribute: ", e);
+            } finally {
+                if (db != null) {
+                    db.endTransaction();
+                }
+            }
+        });
+
+        executor.shutdown();
+    }
+    private void insertVisitAttributes(SQLiteDatabase db, List<HashMap<String, Object>> rows) {
+        if (rows.isEmpty()) return;
+
+        // Define column names (must match the columns in the table)
+        List<String> columns = Arrays.asList("uuid", "visit_uuid", "value", "visit_attribute_type_uuid", "voided", "sync");
+
+        // Prepare SQL query (INSERT query with placeholders for each column)
+        StringBuilder sql = new StringBuilder("INSERT INTO tbl_visit_attribute (");
+        sql.append(TextUtils.join(", ", columns));
+        sql.append(") VALUES (");
+        sql.append(new String(new char[columns.size()]).replace("\0", "?, ").replaceAll(", $", ""));
+        sql.append(")");
+
+        // Compile the SQL statement
+        SQLiteStatement statement = db.compileStatement(sql.toString());
+
+        // Loop through each row in the list
+        for (HashMap<String, Object> row : rows) {
+            statement.clearBindings();
+
+            // Iterate through each column and bind the corresponding value from the row map
+            int index = 1;
+            for (String column : columns) {
+                Object value = row.get(column);  // Get the value for this column
+
+                if (value instanceof String) {
+                    statement.bindString(index, (String) value);
+                } else if (value instanceof Integer) {
+                    statement.bindLong(index, (Integer) value);
+                } else if (value instanceof Long) {
+                    statement.bindLong(index, (Long) value);
+                } else if (value instanceof Double) {
+                    statement.bindDouble(index, (Double) value);
+                } else if (value instanceof byte[]) {
+                    statement.bindBlob(index, (byte[]) value);
+                } else {
+                    statement.bindNull(index); // Bind NULL if value is missing
+                }
+                index++;
+            }
+
+            // Execute the insert for this row
+            try {
+                statement.executeInsert();
+            } catch (Exception e) {
+                Log.e(TAG, "Insert failed for row: " + row, e);
+            }
+        }
+    }
+/*
+    private void updateExistingVisitAttribute(List<VisitAttributeDTO> visitAttributeDTOList, List<HashMap<String, Object>> visitAttributeDTOListForAdd,List<VisitAttributeDTO> visitAttributeDTOListForUpdate) {
+        Log.d(TAG, "updateRecord: visitAttributeDTOList : " + new Gson().toJson(visitAttributeDTOList));
+        Log.d(TAG, "updateRecord: visitAttributeDTOListForAdd : " + new Gson().toJson(visitAttributeDTOListForAdd));
+        Log.d(TAG, "updateRecord: visitAttributeDTOListForUpdate : " + new Gson().toJson(visitAttributeDTOListForUpdate));
+
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb();
+      */
+/*  ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+        executorService.execute(() -> {*//*
+
+        if(db.inTransaction()){
+            db.endTransaction();
+        }
+        db.beginTransaction();
+        try {
+            for (VisitAttributeDTO visitAttributeDTO : visitAttributeDTOList) {
+              */
+/*      String updateQuery = "UPDATE tbl_visit_attribute SET sync = ? WHERE visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0";
+                    db.execSQL(updateQuery, new Object[]{"1", visitAttributeDTO.getVisit_uuid(), visitAttributeDTO.getVisit_attribute_type_uuid()});*//*
+
+                ContentValues values = new ContentValues();
+                values.put("sync", "1");
+
+                int updatedRows = db.update(
+                        "tbl_visit_attribute",
+                        values,
+                        "visit_uuid = ? AND visit_attribute_type_uuid = ? AND voided = 0",
+                        new String[]{visitAttributeDTO.getVisit_uuid(), visitAttributeDTO.getVisit_attribute_type_uuid()}
+                );
+            }
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (db != null) {
+                db.endTransaction();
+            }
+        }
+        executeInBackground(bulkInsert(visitAttributeDTOListForAdd));
+
+      */
+/*  });
+
+        executorService.shutdown();*//*
+
+    }
+*/
+String joinWithQuotes(List<String> list) {
+    return list.stream()
+            .map(s -> "'" + s + "'")
+            .collect(Collectors.joining(","));
+}
 }

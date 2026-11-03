@@ -23,6 +23,8 @@ public class UuidDictionary {
     public static final String RHK_FAMILY_HISTORY_BLURB = "d63ae965-47fb-40e8-8f08-1f46a8a60b2b";
     public static final String FOLLOW_UP_VISIT = "e8caffd6-5d22-41c4-8d6a-bc31a44d0c86";
     public static final String REFERRED_SPECIALIST = "605b6f15-8f7a-4c45-b06d-14165f6974be";
+    // Patient's referral consent answer, e.g. "NAMCO:No".
+    public static final String REFERRAL_CONSENT = "11c16a5b-d4df-4274-abf1-d02e91d308f1";
     //m added
     public static final String EMERGENCY = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
 
@@ -33,9 +35,9 @@ public class UuidDictionary {
     public static final String REQUESTED_TESTS = "23601d71-50e6-483f-968d-aeef3031346d";
     public static final String ADDITIONAL_COMMENTS = "162169AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
-    public static final String COMPLEX_IMAGE_AD = "07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba";
+    public static final String COMPLEX_IMAGE_AD = "07a816ce-ffc0-49b9-ad92-a1bf9bf5e2ba"; //additional documents
 
-    public static final String COMPLEX_IMAGE_PE = "200b7a45-77bc-4986-b879-cc727f5f7d5b";
+    public static final String COMPLEX_IMAGE_PE = "200b7a45-77bc-4986-b879-cc727f5f7d5b"; //physical exam
 
     public static final String SON_WIFE_DAUGHTER = "35c3afdd-bb96-4b61-afb9-22a5fc2d088e";
     public static final String OCCUPATION = "5fe2ef6f-bbf7-45df-a6ea-a284aee82ddc";
@@ -46,6 +48,8 @@ public class UuidDictionary {
     public static final String ENCOUNTER_VISIT_COMPLETE = "bd1fbfaa-f5fb-4ebd-b75c-564506fc309e";
     public static final String ENCOUNTER_PATIENT_EXIT_SURVEY = "629a9d0b-48eb-405e-953d-a5964c88dc30";
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
+    public static final String ENCOUNTER_TYPE_REFERRAL = "95f4ae7f-6caa-4c66-950f-7f3d6072ce56";
+    public static final String ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE = "086f323a-b90b-49aa-a3ca-fb9ed8ab7426";
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
@@ -58,6 +62,7 @@ public class UuidDictionary {
     public static final String SPECIALITY = "3f296939-c6d3-4d2e-b8ca-d7f4bfd42c2d";
     public static final String ADDITIONAL_NOTES = "64aa50c8-e913-48c6-b8ad-dfa0bccb202b";
     public static final String PRESCRIPTION_LINK = "1e02db7e-e117-4b16-9a1e-6e583c3994da";
+    public static final String VISIT_ABHA_ADDRESS = "ca0ec991-0ac4-4572-8c7a-d1b8556429ee";
 
     public static final String SEVERITY = "6593f000-f1f8-4f35-a3b9-8d1909f5c945";
     public static final String FACILITY = "ea56e00a-fe4f-492e-b947-cb68c5e5ea7b";
@@ -78,6 +83,7 @@ public class UuidDictionary {
     public static final String BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID = "790cbe32-4a85-4953-a3a6-4f6b0e26336e";
     public static final String BILL_PRICE_HEMOGLOBIN_ID = "71f0aadf-2a15-420f-897a-145dfc87fcd1";
     public static final String BILL_PRICE_URIC_ACID_ID = "c6bb85b7-ada8-4382-b3ce-a1aa5027cecb";
+    public static final String BILL_PRICE_DIABETES_HBA1C_ID = "b81276a4-0b33-43ca-9f68-9d33d8cc8844";
     public static final String BILL_PRICE_TOTAL_CHOLESTEROL_ID = "9d2f0fcc-538f-11e6-9cfe-86f436325730";
     public static final String BILL_PRICE_BP_ID = "dd51ab03-12ef-43cb-9aef-2ec93a989816";
     public static final String BILL_NUM = "9fa03f61-8083-4cce-bbc0-d5f752a8ee7b";
@@ -90,8 +96,22 @@ public class UuidDictionary {
     public static final String HEMOGLOBIN = "8f1993c4-c460-4715-86f8-c4c582ef4b3d";
     public static final String URIC_ACID = "366e11ae-f6a2-4c27-8285-5bc496f9dfb4";
     public static final String TOTAL_CHOLESTEROL = "24914ddd-b97a-400e-a7e1-171ec8fb77d0";
+    public static final String DIABETES_HBA1C = "f0631271-e0b3-48ca-a4e5-70959a7b76d9";
     public static final String OBS_TYPE_DIAGNOSTICS_SET = "57ab8f1b-0a7f-41ba-88b4-3bbf8234cf90";
     public static final String OBS_TYPE_VITAL_SET = "521ef8a8-ea42-4930-bd24-216e17f8c936";
     public static final String VISIT_BILLING_DETAILS = "7030c68e-eecc-4656-bb0a-e465aea6195f";
+    public static final String AI_VISIT_SUMMARY_CONCEPT_UUID = "4fac8cc4-b2ed-4f1f-90fc-ea17eae1ba3d";
+    // concept uuid for the AI generated JSON format of the visit summary
+    public static final String AI_JSON_FORMAT_VISIT_SUMMARY_CONCEPT_UUID = "1f770363-262e-4d01-b1df-3eb164d575ef";
+
+    // Consent attributes - NAS-1752. Person attribute types unless noted otherwise. These UUIDs
+    // must be provisioned as attribute types on the OpenMRS server; this app only ever writes
+    // values tagged with them, it never defines them.
+    /** Person attribute type - "Patient_Consent". */
+    public static final String PATIENT_CONSENT = "11b990b9-2798-477a-9aad-073e5459f5d3";
+    /** Visit attribute type - "Teleconsultation_Consent". */
+    public static final String TELECONSULTATION_CONSENT = "ddabcccc-1554-4fb5-bfa2-de596b72a64c";
+    /** Person attribute type - "ABDM_Consent". */
+    public static final String ABDM_CONSENT = "9c8f0974-615e-4dd2-82ea-40cbec9e821b";
 
 }

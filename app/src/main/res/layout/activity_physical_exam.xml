@@ -77,8 +77,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_done_24dp"
-        />
+        app:srcCompat="@drawable/ic_done_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

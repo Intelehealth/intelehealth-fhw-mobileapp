@@ -64,6 +64,20 @@
                     android:background="@color/notifi_divider_color"
                     android:visibility="gone" />
 
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/diabetes_hba1c"
+                    style="@style/CustomCheckboxStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:enabled="false"
+                    android:text="@string/diabetes_hba1c" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/notifi_divider_color" />
                 <com.google.android.material.checkbox.MaterialCheckBox
                     android:id="@+id/glucose_f_CB"
                     style="@style/CustomCheckboxStyle"

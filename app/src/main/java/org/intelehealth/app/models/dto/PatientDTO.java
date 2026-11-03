@@ -4,11 +4,8 @@ package org.intelehealth.app.models.dto;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import org.intelehealth.abdm.utils.AbdmUtils;
-
 import java.io.Serializable;
 import java.util.List;
-import java.util.UUID;
 
 public class PatientDTO implements Serializable {
 
@@ -88,6 +85,13 @@ public class PatientDTO implements Serializable {
     private boolean emergency = false;
     private String visit_startdate;
     private boolean prescription_exists = false;
+    // Set only when referred to a NAMCO specialist and still awaiting their final
+    // prescription. When set, the UI shows this instead of the prescription_exists
+    // tag, even though prescription_exists is also true (GP's interim prescription).
+    private String referralWaitingLabel;
+    // True when the received prescription came from a completed specialist
+    // referral, not a plain GP prescription.
+    private boolean specialistPrescription = false;
 
     private String guardianName;
     private String guardianType;
@@ -114,15 +118,51 @@ public class PatientDTO implements Serializable {
     @SerializedName("address6")
     @Expose
     private String address6;
-
     @SerializedName("abha_number")
     @Expose
     private String abhaNumber;
-
     @SerializedName("abha_address")
     @Expose
     private String abhaAddress;
 
+    // NAS-1752 - pipe-separated consent values (see ConsentUtils), carried from
+    // PersonalConsentActivity into registration so PatientRepository can turn them into
+    // Patient_Consent / ABDM_Consent person attributes once the patient row is created. Local
+    // working values only, not part of any push/pull JSON contract, so no @SerializedName.
+    private String patientConsentValue;
+    private String abdmConsentValue;
+
+    public String getAbhaNumber() {
+        return abhaNumber;
+    }
+
+    public void setAbhaNumber(String abhaNumber) {
+        this.abhaNumber = abhaNumber;
+    }
+
+    public String getAbhaAddress() {
+        return abhaAddress;
+    }
+
+    public void setAbhaAddress(String abhaAddress) {
+        this.abhaAddress = abhaAddress;
+    }
+
+    public String getPatientConsentValue() {
+        return patientConsentValue;
+    }
+
+    public void setPatientConsentValue(String patientConsentValue) {
+        this.patientConsentValue = patientConsentValue;
+    }
+
+    public String getAbdmConsentValue() {
+        return abdmConsentValue;
+    }
+
+    public void setAbdmConsentValue(String abdmConsentValue) {
+        this.abdmConsentValue = abdmConsentValue;
+    }
     public String getRelativePhoneNumber() {
         return relativePhoneNumber;
     }
@@ -464,6 +504,22 @@ public class PatientDTO implements Serializable {
         this.prescription_exists = prescription_exists;
     }
 
+    public String getReferralWaitingLabel() {
+        return referralWaitingLabel;
+    }
+
+    public void setReferralWaitingLabel(String referralWaitingLabel) {
+        this.referralWaitingLabel = referralWaitingLabel;
+    }
+
+    public boolean isSpecialistPrescription() {
+        return specialistPrescription;
+    }
+
+    public void setSpecialistPrescription(boolean specialistPrescription) {
+        this.specialistPrescription = specialistPrescription;
+    }
+
     public String getSon_dau_wife() {
         return son_dau_wife;
     }
@@ -651,7 +707,6 @@ public class PatientDTO implements Serializable {
     public void setHouseholdLinkingUUIDlinking(String householdLinkingUUIDlinking) {
         this.householdLinkingUUIDlinking = householdLinkingUUIDlinking;
     }
-
     private String reportDateOfPatientCreated;
 
     public String getReportDateOfPatientCreated() {
@@ -661,7 +716,6 @@ public class PatientDTO implements Serializable {
     public void setReportDateOfPatientCreated(String reportDateOfPatientCreated) {
         this.reportDateOfPatientCreated = reportDateOfPatientCreated;
     }
-
     public String getAddress3() {
         return address3;
     }
@@ -669,28 +723,27 @@ public class PatientDTO implements Serializable {
     public void setAddress3(String address3) {
         this.address3 = address3;
     }
-
     @SerializedName("address3")
     @Expose
     private String address3;
 
-    public String getAbhaAddress() {
-        return abhaAddress;
-    }
-
-    public String getFormattedAbhaAddress() {
-        return AbdmUtils.formatAbhaAddress(abhaAddress);
-    }
-
-    public void setAbhaAddress(String abhaAddress) {
-        this.abhaAddress = abhaAddress;
-    }
-
-    public String getAbhaNumber() {
-        return abhaNumber;
-    }
-
-    public void setAbhaNumber(String abhaNumber) {
-        this.abhaNumber = abhaNumber;
-    }
+//    public String getAbhaAddress() {
+//        return abhaAddress;
+//    }
+//
+//    public String getFormattedAbhaAddress() {
+//        return AbdmUtils.formatAbhaAddress(abhaAddress);
+//    }
+//
+//    public void setAbhaAddress(String abhaAddress) {
+//        this.abhaAddress = abhaAddress;
+//    }
+//
+//    public String getAbhaNumber() {
+//        return abhaNumber;
+//    }
+//
+//    public void setAbhaNumber(String abhaNumber) {
+//        this.abhaNumber = abhaNumber;
+//    }
 }

@@ -15,6 +15,7 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 import androidx.multidex.MultiDexApplication;
 
+import com.ayudevices.cardiosynksdk.AyuDevice;
 import com.github.ajalt.timberkt.Timber;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.parse.Parse;
@@ -74,6 +75,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
     private static int currentCmdType = BaseEnum.CMD_PIN;
     private static RTPrinter rtPrinter;
 
+    private String notificationCallTypeValue = "";
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -93,6 +96,8 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         // keeping the base url in one singleton object for using in apprtc module
 
         configureCrashReporting();
+        //POC AYUSYNCK initialize
+        AyuDevice.init(getApplicationContext());
 
         RxJavaPlugins.setErrorHandler(throwable -> {
             FirebaseCrashlytics.getInstance().recordException(throwable);
@@ -219,6 +224,14 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
     public void setRtPrinter(RTPrinter rtPrinter) {
         this.rtPrinter = rtPrinter;
+    }
+
+    public String getnotificationValue() {
+        return notificationCallTypeValue;
+    }
+
+    public void setnotificationValue(String value) {
+        this.notificationCallTypeValue = value;
     }
 
 }

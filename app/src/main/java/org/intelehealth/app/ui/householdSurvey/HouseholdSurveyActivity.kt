@@ -3,12 +3,17 @@ package org.intelehealth.app.ui.householdSurvey
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import androidx.activity.enableEdgeToEdge
 import androidx.core.content.ContextCompat
 import androidx.core.content.IntentCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.fragment.NavHostFragment
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityHouseholdSurveyBinding
@@ -38,7 +43,32 @@ class HouseholdSurveyActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHouseholdSurveyBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
+
+        // changing status bar color
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+        window.statusBarColor = Color.WHITE
+        /*val controller =
+            WindowInsetsControllerCompat(window, window.decorView)
+        controller.isAppearanceLightStatusBars = false
+        controller.isAppearanceLightNavigationBars = true
+        // Applying safe padding to toolbar (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(
+            findViewById(R.id.layout_parent)
+        ) { view: View, insets: WindowInsetsCompat ->
+            val systemBars =
+                insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
+            findViewById<View>(R.id.appBarLayoutPatient).setPadding(
+                0,
+                systemBars.top,
+                0,
+                systemBars.top
+            )
+            WindowInsetsCompat.CONSUMED
+        }*/
+
         extractAndBindUI()
         setupActionBar()
     }

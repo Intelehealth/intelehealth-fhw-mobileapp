@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.abha_create.AbhaCreateActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/margin_20"
+        android:paddingVertical="@dimen/padding_10"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/abdm_content_desc_back"
+            android:padding="@dimen/margin_8"
+            android:src="@drawable/abdm_ic_arrow_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_24"
+            android:text="@string/abdm_title_otp_verification"
+            android:textAppearance="@style/TextAppearance.Abdm.Title" />
+
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toTopOf="@id/btn_send_otp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layout_toolbar">
+
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/margin_20"
+            android:paddingTop="@dimen/margin_20">
+
+            <TextView
+                android:id="@+id/tv_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/abdm_subtitle_verify_aadhaar"
+                android:textAppearance="@style/TextAppearance.Abdm.Subtitle" />
+
+            <ImageView
+                android:id="@+id/iv_illustration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_15"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_otp" />
+
+            <TextView
+                android:id="@+id/tv_otp_sent_to"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:gravity="center"
+                android:text="@string/abdm_label_otp_sent_to"
+                android:textAppearance="@style/TextAppearance.Abdm.Subtitle" />
+
+            <include
+                android:id="@+id/include_aadhaar_entry"
+                layout="@layout/layout_aadhaar_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15" />
+
+            <!-- OTP entry (shown during EnterAadhaarOtp / EnterMobileOtp) -->
+            <com.mukesh.OtpView
+                android:id="@+id/otp_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_20"
+                android:focusableInTouchMode="true"
+                android:inputType="number"
+                android:itemBackground="@color/otp_item_background"
+                android:textColor="@color/brand_primary_dark"
+                android:visibility="gone"
+                app:OtpItemCount="6"
+                app:OtpLineColor="@color/brand_primary_dark"
+                app:OtpViewType="line"
+                tools:text="123456"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_otp_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
+                android:visibility="gone"
+                tools:text="@string/abdm_error_otp_invalid"
+                tools:visibility="visible" />
+
+            <!-- Resend row -->
+            <LinearLayout
+                android:id="@+id/layout_resend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_no_otp_received"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/abdm_label_no_otp_received"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="@dimen/text_14" />
+
+                <TextView
+                    android:id="@+id/tv_resend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_5"
+                    android:text="@string/abdm_action_resend_otp"
+                    android:textColor="@color/brand_primary"
+                    android:textSize="@dimen/text_14"
+                    tools:text="Resend in 42 seconds" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_retries_left"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:textColor="@color/warning_red"
+                android:textSize="@dimen/text_14"
+                android:visibility="gone"
+                tools:text="Number of retries left: 2"
+                tools:visibility="visible" />
+
+            <!-- Mobile entry (shown only when a different mobile must be verified) -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:visibility="gone"
+                app:endIconMode="none"
+                app:hintEnabled="false"
+                tools:visibility="visible">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/et_mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_textbox_outline"
+                    android:hint="@string/abdm_hint_mobile_number"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="14dp"
+                    android:singleLine="true"
+                    android:textAppearance="@style/TextAppearance.Abdm.InputField"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/hint_color" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_mobile_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:text="@string/abdm_info_mobile_validation"
+                android:textAppearance="@style/TextAppearance.Abdm.Subtitle"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_mobile_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/margin_8"
+                android:textAppearance="@style/TextAppearance.Abdm.ErrorMessage"
+                android:visibility="gone"
+                tools:text="@string/abdm_error_mobile_invalid"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_send_otp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:layout_marginBottom="@dimen/margin_20"
+        android:enabled="false"
+        android:paddingVertical="@dimen/padding_10"
+        android:text="@string/abdm_action_send_otp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        app:backgroundTint="@color/brand_primary"
+        app:cornerRadius="@dimen/margin_8"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Blocking loading overlay (shown while a network call is in flight) -->
+    <FrameLayout
+        android:id="@+id/loading_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#80000000"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                app:indicatorColor="@color/white" />
+
+            <TextView
+                android:id="@+id/loading_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_12"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_14"
+                tools:text="Sending OTP…" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

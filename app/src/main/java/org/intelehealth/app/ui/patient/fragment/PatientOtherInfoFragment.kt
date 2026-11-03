@@ -1,21 +1,28 @@
 package org.intelehealth.app.ui.patient.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.IntentCompat
+import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
-import org.intelehealth.abdm.constants.AbdmConstant
-import org.intelehealth.abdm.utils.AbdmManager
+import org.intelehealth.abdm.presentation.AbdmCardDownloader
+import org.intelehealth.abdm.presentation.AbdmLauncher
+import org.intelehealth.abdm.presentation.abha_suggestions.AbhaSuggestionsActivity
+import org.intelehealth.abdm.result.AbdmOutcomes
+import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.filter.FirstLetterUpperCaseInputFilter
 import org.intelehealth.app.ui.rosterquestionnaire.ui.RosterQuestionnaireMainActivity.Companion.startRosterQuestionnaire
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.RosterQuestionnaireStage
-import org.intelehealth.app.utilities.AbhaCardDownloadUtil
 import org.intelehealth.app.utilities.ArrayAdapterUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.DialogUtils.CustomDialogListener
@@ -30,7 +37,6 @@ import org.intelehealth.app.utilities.extensions.validate
 import org.intelehealth.app.utilities.extensions.validateDigit
 import org.intelehealth.app.utilities.extensions.validateDropDowb
 
-
 /**
  * Created by Vaghela Mithun R. on 27-06-2024 - 13:42.
  * Email : mithun@intelehealth.org
@@ -38,6 +44,14 @@ import org.intelehealth.app.utilities.extensions.validateDropDowb
  **/
 class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_other_info) {
     private lateinit var binding: FragmentPatientOtherInfoBinding
+
+    private val abhaSuggestionsLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+            val chosen = result.data?.getStringExtra(AbhaSuggestionsActivity.EXTRA_CHOSEN_ADDRESS)
+            if (chosen.isNullOrBlank()) return@registerForActivityResult
+            applyNewAbhaAddress(chosen)
+        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding = FragmentPatientOtherInfoBinding.bind(view)
@@ -64,15 +78,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         super.onPatientDataLoaded(patient)
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
-
-        if (patientViewModel.otpResponse != null) {
-            patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
-        }
-
-        if (patientViewModel.abhaResponse != null) {
-            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
-        }
-
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode
         fetchPersonalInfoConfig()
@@ -88,19 +93,90 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             applyFilter()
             setInputTextChangListener()
             setClickListener()
+            setupCreateNewAbhaAddress()
         }
+    }
+
+    /**
+     * Offers a further ABHA address for an already-resolved ABHA. Three conditions, mirroring
+     * abdm_development_master: the create flow only, ABDM's cap of six phr addresses, and not the
+     * existing-patient path — that last one is its `firstRequestFulfilled` flag, which we get from
+     * the outcome instead of threading a separate boolean through every screen.
+     */
+    private fun setupCreateNewAbhaAddress() {
+        val abdmResult = abdmResultFromIntent()
+        val profile = abdmResult?.profile
+        val eligible = profile != null &&
+            abdmResult.cardScope == AbdmResult.CARD_SCOPE_CREATE &&
+            abdmResult.outcome !=
+            AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION &&
+            profile.phrAddresses.size < MAX_PHR_ADDRESSES
+
+        binding.tvCreateNewAbhaAddress.isVisible = eligible
+        if (!eligible) return
+
+        binding.tvCreateNewAbhaAddress.setOnClickListener {
+            if (profile!!.phrAddresses.size >= MAX_PHR_ADDRESSES) {
+                Toast.makeText(
+                    requireContext(),
+                    R.string.creating_more_than_six_abha_addresses_are_not_allowed,
+                    Toast.LENGTH_LONG,
+                ).show()
+                return@setOnClickListener
+            }
+            AbdmLauncher.startAbhaSuggestions(
+                requireActivity(),
+                abhaSuggestionsLauncher,
+                abdmResult.txnId.orEmpty(),
+                addressInUse(patient.abhaAddress),
+                patient.uuid.orEmpty(),
+            )
+        }
+    }
+
+    /**
+     * Stores the new address at the head of the comma-separated list, because position 0 is the
+     * address currently in use — that is what the visit attribute records. Any earlier occurrence is
+     * removed first so re-picking an existing address promotes it rather than duplicating it.
+     */
+    /**
+     * Prepends the newly registered address and drops any cached ABHA card, since the card carries the
+     * preferred address and a stale copy would otherwise be served indefinitely — the cache is keyed on
+     * the ABHA number, which does not change here. Only this path and a verified communication number
+     * invalidate it, so no repeat downloads are introduced on the edit screen.
+     */
+    private fun applyNewAbhaAddress(newAddress: String) {
+        val existing = patient.abhaAddress.orEmpty()
+            .split(",")
+            .map { it.trim() }
+            .filter { it.isNotEmpty() && !it.equals(newAddress, ignoreCase = true) }
+        patient.abhaAddress = (listOf(newAddress) + existing).joinToString(",")
+
+        AbdmCardDownloader.invalidate(requireContext(), patient.abhaNumber)
+
+        binding.patient = patient
+        binding.textInputAbhaAddress.setText(patient.abhaAddress)
+        patientViewModel.updatedPatient(patient)
+        setupCreateNewAbhaAddress()
+    }
+
+    /** The address currently in use is the head of the comma-separated list. */
+    private fun addressInUse(abhaAddress: String?): String =
+        abhaAddress.orEmpty().split(",").firstOrNull()?.trim().orEmpty()
+
+    private fun abdmResultFromIntent(): AbdmResult? {
+        val hostIntent = activity?.intent ?: return null
+        hostIntent.setExtrasClassLoader(AbdmResult::class.java.classLoader)
+        return IntentCompat.getParcelableExtra(
+            hostIntent, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
+        )
     }
 
     private fun setupEconomicCategory() {
         val marathiArray = resources.getStringArray(R.array.economic) // Get Marathi values
-        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en")
-            .getStringArray(R.array.economic)
+        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en").getStringArray(R.array.economic)
 
-        val adapter = ArrayAdapter(
-            requireContext(),
-            android.R.layout.simple_dropdown_item_1line,
-            marathiArray
-        )
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, marathiArray)
         binding.autoCompleteEconomicCategory.setAdapter(adapter)
 
         if (!patient.economic.isNullOrEmpty()) {
@@ -122,7 +198,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         binding.frag2BtnBack.setOnClickListener { findNavController().popBackStack() }
         binding.frag2BtnNext.setOnClickListener {
             validateForm { savePatient() }
-
         }
     }
 
@@ -135,8 +210,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             discipline = binding.textInputDiscipline.text?.toString()
             department = binding.textInputDepartment.text?.toString()
             relativePhoneNumber = binding.textInputRelativePhoneNumber.text?.toString()
-            abhaNumber = binding.textInputAbhaNumber.text?.toString()
-            abhaAddress = binding.textInputAbhaAddress.text?.toString()
 
             inn = binding.textInputInn.text?.toString()
             codeOfHealthFacility = binding.textInputCodeOfHealthyFacility.text?.toString()
@@ -148,7 +221,6 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 it ?: return@observe
                 patientViewModel.handleResponse(it) { result ->
                     if (result) {
-                        downloadAbhaCard()
                         navigateToDetails()
                     }
                 }
@@ -156,48 +228,9 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         }
     }
 
-    private fun downloadAbhaCard() {
-        if (patientViewModel.otpResponse != null || patientViewModel.abhaResponse != null) {
-            val util = AbhaCardDownloadUtil(patient, requireActivity())
-            val tokenHashMap: HashMap<String?, String?> = getTokenHashmap()
-            val token = tokenHashMap.get("token")
-            val scope = tokenHashMap.get("scope")
-
-            if (!util.isAbhaCardPresent() || AbdmManager.isCommunicationNumberUsed || AbdmManager.isPreferredAddressSet) {
-                util.downloadAbhaCard(
-                    scope,
-                    token,
-                    patientViewModel.accessToken ?: "",
-                    requireActivity()
-                )
-            }
-        }
-    }
-
-    private fun getTokenHashmap(): HashMap<String?, String?> {
-        val responseHashMap = HashMap<String?, String?>()
-        val token: String?
-        val scope: String?
-
-        val abhaResponse = patientViewModel.abhaResponse
-        val otpResponse = patientViewModel.otpResponse
-
-        if (otpResponse != null && otpResponse.tokens != null && otpResponse.tokens.token != null) {
-            val responseToken: String = otpResponse.tokens.token
-            token =
-                if (responseToken.startsWith("Bearer")) responseToken else "Bearer $responseToken"
-            scope = AbdmConstant.SCOPE_AADHAAR
-        } else if (abhaResponse != null && abhaResponse.token != null) {
-            token = abhaResponse.token
-            scope = AbdmConstant.SCOPE_MOBILE
-        } else {
-            token = patientViewModel.xToken
-            scope = AbdmManager.tempScope
-        }
-
-        responseHashMap.put("token", token)
-        responseHashMap.put("scope", scope)
-        return responseHashMap
+    private companion object {
+        /** ABDM caps an ABHA at six phr addresses. */
+        const val MAX_PHR_ADDRESSES = 6
     }
 
     private fun navigateToDetails() {
@@ -223,7 +256,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                     findNavController().navigate(it)
                     requireActivity().finish()
                 }
-            }
+           }
         }
 
     }
@@ -252,14 +285,13 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
     private fun setupEducations() {
         val marathiArray = resources.getStringArray(R.array.education)
-        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en")
-            .getStringArray(R.array.education)
+        val englishArray = LanguageUtils.getSpecificLocalResource(requireContext(), "en").getStringArray(R.array.education)
 
         val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.education)
         binding.autoCompleteEducation.setAdapter(adapter)
-        /* if (patient.education != null && patient.education.isNotEmpty()) {
-             binding.autoCompleteEducation.setText(patient.education, false)
-         }*/
+       /* if (patient.education != null && patient.education.isNotEmpty()) {
+            binding.autoCompleteEducation.setText(patient.education, false)
+        }*/
         if (!patient.education.isNullOrEmpty()) {
             val index = englishArray.indexOf(patient.education)
             if (index != -1) {
@@ -277,8 +309,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     }
 
     private fun setupHealthFacility() {
-        val adapter =
-            ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
+        val adapter = ArrayAdapterUtils.getArrayAdapter(requireContext(), R.array.health_facility_name)
         binding.autoCompleteHealthFacilityName.setAdapter(adapter)
         if (patient.healthFacilityName != null && patient.healthFacilityName.isNotEmpty()) {
             binding.autoCompleteHealthFacilityName.setText(patient.healthFacilityName, false)
@@ -295,15 +326,13 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
         Timber.d { "Final patient =>${Gson().toJson(patient)}" }
         val error = R.string.this_field_is_mandatory
         binding.otherInfoConfig?.let {
-            val bNationalId =
-                if (it.nationalId?.isEnabled == true && it.nationalId?.isMandatory == true) {
-                    binding.textInputLayNationalId.validate(binding.textInputNationalId, error)
-                } else true
+            val bNationalId = if (it.nationalId?.isEnabled == true && it.nationalId?.isMandatory == true) {
+                binding.textInputLayNationalId.validate(binding.textInputNationalId, error)
+            } else true
 
-            val bOccuptions =
-                if (it.occuptions?.isEnabled == true && it.occuptions?.isMandatory == true) {
-                    binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
-                } else true
+            val bOccuptions = if (it.occuptions?.isEnabled == true && it.occuptions?.isMandatory == true) {
+                binding.textInputLayOccupation.validate(binding.textInputOccupation, error)
+            } else true
 
             val bInn = if (it.inn?.isEnabled == true && it.inn?.isMandatory == true) {
                 binding.textInputLayInn.validate(binding.textInputInn, error)
@@ -311,84 +340,68 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
 
             val bCodeOfHealthyFacility =
                 if (it.codeOfHealthyFacility?.isEnabled == true && it.codeOfHealthyFacility?.isMandatory == true) {
-                    binding.textInputLayCodeOfHealthyFacility.validate(
-                        binding.textInputCodeOfHealthyFacility,
-                        error
-                    )
+                    binding.textInputLayCodeOfHealthyFacility.validate(binding.textInputCodeOfHealthyFacility, error)
                 } else true
 
-            val bCodeOfDepartment =
-                if (it.codeOfDepartment?.isEnabled == true && it.codeOfDepartment?.isMandatory == true) {
-                    binding.textInputLayCodeOfDepartment.validate(
-                        binding.textInputCodeOfDepartment,
-                        error
+            val bCodeOfDepartment = if (it.codeOfDepartment?.isEnabled == true && it.codeOfDepartment?.isMandatory == true) {
+                binding.textInputLayCodeOfDepartment.validate(binding.textInputCodeOfDepartment, error)
+            } else true
+
+            val bDepartment = if (it.department?.isEnabled == true && it.department?.isMandatory == true) {
+                binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
+            } else true
+
+            val bHealthFacilityName = if (it.healthFacilityName?.isEnabled == true && it.healthFacilityName?.isMandatory == true) {
+                binding.textInputLayHealthFacilityName.validateDropDowb(
+                    binding.autoCompleteHealthFacilityName, error
+                )
+            } else true
+
+
+            val bSocialCategory = if (it.socialCategory?.isEnabled == true && it.socialCategory?.isMandatory == true) {
+                binding.textInputLaySocialCategory.validateDropDowb(
+                    binding.autoCompleteSocialCategory, error
+                )
+            } else true
+
+            val bEducation = if (it.education?.isEnabled == true && it.education?.isMandatory == true) {
+                binding.textInputLayEducation.validateDropDowb(
+                    binding.autoCompleteEducation, error
+                )
+            } else true
+
+            val bEconomic = if (it.economicCategory?.isEnabled == true && it.economicCategory?.isMandatory == true) {
+                binding.textInputLayEconomicCategory.validateDropDowb(
+                    binding.autoCompleteEconomicCategory, error
+                )
+            } else true
+
+            val tmhCaseNumber = if (it.tmhCaseNumber?.isEnabled == true && it.tmhCaseNumber?.isMandatory == true) {
+                binding.textInputLayTmhCaseNumber.validate(
+                    binding.textInputTmhCaseNumber, error
+                )
+            } else true
+
+            val requestId = if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
+                binding.textInputLayRequestId.validate(
+                    binding.textInputRequestId, error
+                )
+            } else true
+
+            val discipline = if (it.discipline?.isEnabled == true && it.discipline?.isMandatory == true) {
+                binding.textInputLayDiscipline.validate(
+                    binding.textInputDiscipline, error
+                )
+            } else true
+
+            val relativePhoneNumber = if (it.relativePhoneNumber?.isEnabled == true && it.relativePhoneNumber?.isMandatory == true) {
+                binding.textInputLayRelativePhoneNumber.validate(
+                    binding.textInputRelativePhoneNumber, error
+                ).and(
+                    binding.textInputLayRelativePhoneNumber.validateDigit(
+                        binding.textInputRelativePhoneNumber, R.string.enter_10_digits, 10
                     )
-                } else true
-
-            val bDepartment =
-                if (it.department?.isEnabled == true && it.department?.isMandatory == true) {
-                    binding.textInputLayDepartment.validate(binding.textInputDepartment, error)
-                } else true
-
-            val bHealthFacilityName =
-                if (it.healthFacilityName?.isEnabled == true && it.healthFacilityName?.isMandatory == true) {
-                    binding.textInputLayHealthFacilityName.validateDropDowb(
-                        binding.autoCompleteHealthFacilityName, error
-                    )
-                } else true
-
-
-            val bSocialCategory =
-                if (it.socialCategory?.isEnabled == true && it.socialCategory?.isMandatory == true) {
-                    binding.textInputLaySocialCategory.validateDropDowb(
-                        binding.autoCompleteSocialCategory, error
-                    )
-                } else true
-
-            val bEducation =
-                if (it.education?.isEnabled == true && it.education?.isMandatory == true) {
-                    binding.textInputLayEducation.validateDropDowb(
-                        binding.autoCompleteEducation, error
-                    )
-                } else true
-
-            val bEconomic =
-                if (it.economicCategory?.isEnabled == true && it.economicCategory?.isMandatory == true) {
-                    binding.textInputLayEconomicCategory.validateDropDowb(
-                        binding.autoCompleteEconomicCategory, error
-                    )
-                } else true
-
-            val tmhCaseNumber =
-                if (it.tmhCaseNumber?.isEnabled == true && it.tmhCaseNumber?.isMandatory == true) {
-                    binding.textInputLayTmhCaseNumber.validate(
-                        binding.textInputTmhCaseNumber, error
-                    )
-                } else true
-
-            val requestId =
-                if (it.requestId?.isEnabled == true && it.requestId?.isMandatory == true) {
-                    binding.textInputLayRequestId.validate(
-                        binding.textInputRequestId, error
-                    )
-                } else true
-
-            val discipline =
-                if (it.discipline?.isEnabled == true && it.discipline?.isMandatory == true) {
-                    binding.textInputLayDiscipline.validate(
-                        binding.textInputDiscipline, error
-                    )
-                } else true
-
-            val relativePhoneNumber =
-                if (it.relativePhoneNumber?.isEnabled == true && it.relativePhoneNumber?.isMandatory == true) {
-                    binding.textInputLayRelativePhoneNumber.validate(
-                        binding.textInputRelativePhoneNumber, error
-                    ).and(
-                        binding.textInputLayRelativePhoneNumber.validateDigit(
-                            binding.textInputRelativePhoneNumber, R.string.enter_10_digits, 10
-                        )
-                    )
+                )
 
 
                 } else true

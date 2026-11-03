@@ -40,7 +40,7 @@ import java.util.Locale
         Diagnostics::class,
         ActiveSection::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

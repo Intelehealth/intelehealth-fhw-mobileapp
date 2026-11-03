@@ -4,9 +4,12 @@ import static org.intelehealth.app.database.dao.PatientsDAO.phoneNumber;
 import static org.intelehealth.app.utilities.StringUtils.setGenderAgeLocal;
 import static org.intelehealth.app.utilities.UuidDictionary.PRESCRIPTION_LINK;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,9 +34,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.intelehealth.app.R;
+import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.models.PrescriptionModel;
+import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
+import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
+import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.SessionManager;
@@ -51,16 +61,23 @@ import java.util.concurrent.Executors;
  * Email: prajwalwaingankar@gmail.com
  */
 public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
-    private Context context;
+    private Activity context;
     List<PrescriptionModel> list = new ArrayList<>();
     ImagesDAO imagesDAO = new ImagesDAO();
     String profileImage = "";
     String profileImage1 = "";
     SessionManager sessionManager;
-
-    public VisitAdapter(Context context, List<PrescriptionModel> list) {
+    private boolean isPdfPrescFlowEnabled = false;
+    private OnItemClickListener listener;
+    public VisitAdapter(Activity context, List<PrescriptionModel> list) {
         this.context = context;
         this.list.addAll(list);
+        sessionManager = new SessionManager(context);
+    }
+    public VisitAdapter(Activity context, List<PrescriptionModel> list, OnItemClickListener listener) {
+        this.context = context;
+        this.list.addAll(list);
+        this.listener = listener;
         sessionManager = new SessionManager(context);
     }
 
@@ -74,13 +91,11 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         notifyDataSetChanged();
     }
 
-
-
     @NonNull
     @Override
     public VisitAdapter.Myholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.followup_list_item, parent, false);
+        View row = inflater.inflate(R.layout.visit_prescription_list_item, parent, false);
         Myholder myholder = new VisitAdapter.Myholder(row);
         myholder.fu_cardview_item.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +133,24 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
                 holder.shareicon.setVisibility(View.GONE);
 
             // end
+
+            // "Specialist Prescription" only for a consented NAMCO referral;
+            // "Referral Declined" badge covers the declined case (see PrescriptionModel).
+            if (model.isHasPrescription()) {
+                holder.badgePrimary.setVisibility(View.VISIBLE);
+                holder.badgePrimary.setText(model.isSpecialistPrescription()
+                        ? context.getString(R.string.specialist_prescription)
+                        : context.getString(R.string.prescription));
+                holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_green);
+                holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeGreenText));
+            } else {
+                holder.badgePrimary.setVisibility(View.VISIBLE);
+                holder.badgePrimary.setText(context.getString(R.string.prescription_pending));
+                holder.badgePrimary.setBackgroundResource(R.drawable.bg_badge_orange);
+                holder.badgePrimary.setTextColor(ContextCompat.getColor(context, R.color.badgeOrangeText));
+            }
+            // Set explicitly both ways - view is recycled, must not keep a stale state.
+            holder.badgeSecondary.setVisibility(model.isReferralDeclined() ? View.VISIBLE : View.GONE);
 
             holder.name.setText(model.getFirst_name() + " " + model.getLast_name());
 
@@ -198,7 +231,13 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    sharePresc(model);
+                    if(isPdfPrescFlowEnabled){
+                        if (listener != null) {
+                            listener.onItemClicked(model);
+                        }
+                    }else{
+                        sharePresc(model);
+                    }
                 }
             });
         }
@@ -216,6 +255,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         LinearLayout fu_priority_tag;
         private LinearLayout shareicon;
         private FrameLayout fl_priority;
+        private TextView badgePrimary;
+        private TextView badgeSecondary;
 
         public Myholder(@NonNull View itemView) {
             super(itemView);
@@ -227,6 +268,8 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
             fl_priority = itemView.findViewById(R.id.fl_priority);
             fu_priority_tag = itemView.findViewById(R.id.llPriorityTagFollowUpListItem);
             shareicon = itemView.findViewById(R.id.shareiconLL);
+            badgePrimary = itemView.findViewById(R.id.fu_badge_primary);
+            badgeSecondary = itemView.findViewById(R.id.fu_badge_secondary);
         }
     }
 
@@ -284,4 +327,11 @@ public class VisitAdapter extends RecyclerView.Adapter<VisitAdapter.Myholder> {
         alertDialog.show();
     }
 
+    public void setFeatureActiveStatus(boolean flag) {
+        isPdfPrescFlowEnabled = flag;
+        notifyDataSetChanged();
+    }
+    public interface OnItemClickListener {
+        void onItemClicked(PrescriptionModel data);
+    }
 }

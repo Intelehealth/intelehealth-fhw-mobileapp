@@ -68,12 +68,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.work.Constraints;
-import androidx.work.Data;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.NetworkType;
-import androidx.work.OneTimeWorkRequest;
-import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
@@ -84,7 +78,6 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.abdm.utils.AbdmManager;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
@@ -104,11 +97,11 @@ import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.CheckAppUpdateRes;
 import org.intelehealth.app.models.dto.ProviderAttributeDTO;
 import org.intelehealth.app.models.dto.ProviderDTO;
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
 import org.intelehealth.app.profile.MyProfileActivity;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
 import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -332,7 +325,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                         // set text as per local language
                         String lng = sessionManager.getAppLanguage();
                         String title = activeSection.getLang().get(lng);
-                        if (title != null && !title.trim().isEmpty()) {
+                         if (title != null && !title.trim().isEmpty()) {
                             mMyAchievementsTitle = title;
 
                         } else {
@@ -354,6 +347,44 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         });
     }
 
+    void enableProperPadding(){
+        getWindow().setStatusBarColor(Color.TRANSPARENT);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+
+        // Setting dark icons for light background
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightStatusBars(true);
+        controller.setAppearanceLightNavigationBars(true);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
+
+        // Applying safe merging and padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationview), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
+            // Getting current layout params and cast to MarginLayoutParams
+            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+            // Apply insets as margins
+            lp.leftMargin = systemBars.left;
+            lp.rightMargin = systemBars.right;
+            lp.bottomMargin = systemBars.bottom;
+            lp.topMargin = systemBars.top;
+
+            // Reapplying the updated layout params
+            view.setLayoutParams(lp);
+
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -361,7 +392,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         setLocale(HomeScreenActivity_New.this);
         setContentView(R.layout.activity_home_screen_ui2);
 
-        setStatusBarChanges();
+        enableProperPadding();
 
         context = HomeScreenActivity_New.this;
         preferenceHelper = new PreferenceHelper(this);
@@ -372,6 +403,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             saveToken();
             return Unit.INSTANCE;
         });
+        sessionManager = new SessionManager(this);
+        toolbarHome = findViewById(R.id.toolbar_home);
+        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        updateLastSyncTime();
+
 //        catchFCMMessageData();
 
 
@@ -401,50 +437,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setMigration(true);
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
         loadFeatureActiveStatus();
-        initializeAbdmManager();
-    }
-
-    private void initializeAbdmManager() {
-        AbdmManager.setBaseUrl(BuildConfig.SERVER_URL);
-        AbdmManager.setEncoded(sessionManager.getEncoded());
-        AbdmManager.setLocationUuid(sessionManager.getLocationUuid());
-        AbdmManager.setHwFullName(sessionManager.getChwname());
-        AbdmManager.setDbClient(IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb());
-    }
-
-    private void setStatusBarChanges() {
-        getWindow().setStatusBarColor(Color.TRANSPARENT);
-        getWindow().setNavigationBarColor(Color.TRANSPARENT);
-
-        WindowInsetsControllerCompat controller =
-                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
-        controller.setAppearanceLightNavigationBars(true);
-        controller.setAppearanceLightStatusBars(false);
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            view.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return WindowInsetsCompat.CONSUMED;
-        });
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.navigationview), (view, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-
-            // Getting current layout params and cast to MarginLayoutParams
-            ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
-
-            // Apply insets as margins
-            lp.leftMargin = systemBars.left;
-            lp.rightMargin = systemBars.right;
-            lp.bottomMargin = systemBars.bottom;
-            lp.topMargin = systemBars.top;
-
-            // Reapplying the updated layout params
-            view.setLayoutParams(lp);
-
-            return WindowInsetsCompat.CONSUMED;
-        });
-
     }
 
     private void checkAlarmAndReminderPermission() {
@@ -710,9 +702,9 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvAppVersion = findViewById(R.id.tv_app_version);
         menuResetApp = findViewById(R.id.layout_reset_app);
         imageview_notifications_home = findViewById(R.id.imageview_notifications_home);
-        toolbarHome = findViewById(R.id.toolbar_home);
+        //toolbarHome = findViewById(R.id.toolbar_home);
         tvTitleHomeScreenCommon = toolbarHome.findViewById(R.id.tv_user_location_home);
-        tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
+        //tvAppLastSync = toolbarHome.findViewById(R.id.tv_app_sync_time);
         imageViewIsInternet = toolbarHome.findViewById(R.id.imageview_is_internet);
         imageViewIsNotification = toolbarHome.findViewById(R.id.imageview_notifications_home);
         ivNotificationIcon = toolbarHome.findViewById(R.id.ivNotificationIcon);
@@ -767,7 +759,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             Executors.newSingleThreadExecutor().execute(() -> syncUtils.initialSync("home", this));*/
         } else {
             // if initial setup done then we can directly set the periodic background sync job
-            WorkManager.getInstance(this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+            OptimizedSyncWorker.enqueuePeriodicWork(this);
             //saveToken();
 //            requestPermission();
         }
@@ -1032,6 +1024,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private String mLastTag = "";
+
+    /**
+     * If the Home fragment is the one currently shown, ask it to re-query and
+     * redisplay its prescription count. Safe to call even when Home isn't the
+     * visible fragment - it's just a no-op then.
+     */
+    private void refreshHomePrescriptionCount() {
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(TAG_HOME);
+        if (fragment instanceof HomeFragment_New && fragment.isAdded()) {
+            ((HomeFragment_New) fragment).refreshPrescriptionCount();
+        }
+    }
 
     private void loadFragment(Fragment fragment, String tag) {
 
@@ -1347,6 +1351,14 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
                     //hideSyncProgressBar(true);
                 }
+
+                if (flagType == AppConstants.SYNC_PULL_DATA_DONE) {
+                    // A pull just finished (manual sync tap, or a background sync
+                    // enqueued after a "new prescription" push notification) -
+                    // refresh the Home card's prescription count right away instead
+                    // of waiting for the fragment to go through onResume().
+                    refreshHomePrescriptionCount();
+                }
             }
             updateLastSyncTime();
 
@@ -1376,7 +1388,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     @Override
                     public void run() {
 
-                        WorkManager.getInstance(HomeScreenActivity_New.this).enqueueUniquePeriodicWork(AppConstants.UNIQUE_WORK_NAME, ExistingPeriodicWorkPolicy.KEEP, AppConstants.PERIODIC_WORK_REQUEST);
+                        OptimizedSyncWorker.enqueuePeriodicWork(HomeScreenActivity_New.this);
                     }
                 }, 10000);
             }
@@ -1738,7 +1750,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private final Observer<Integer> syncLiveData = new Observer<Integer>() {
         @Override
         public void onChanged(Integer progress) {
-            Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
+           // Logger.logD(SyncDAO.PULL_ISSUE, "onchanged of livedata again called up");
             if (mSyncAlertDialog != null) {
                 if (progress < 0) progress = 0;
                 syncProgressbar.setProgress(progress);
@@ -1746,11 +1758,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                     progressTvStart.setText((progress) + "%");
                     progressTvEnd.setText(progress + "/100");
                 }
-                Logger.logD(SyncDAO.PULL_ISSUE, "% -> " + String.valueOf(progress));
+                Logger.logD(SyncDAO.PULL_ISSUE, "% ->H " + String.valueOf(progress));
 
                 if (progress == 100) {
                     SyncDAO.getSyncProgress_LiveData().removeObserver(syncLiveData);
-                    Logger.logD(SyncDAO.PULL_ISSUE, "progress is 100 so close");
+                  //  Logger.logD(SyncDAO.PULL_ISSUE, "progress is 100 so close");
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -1784,12 +1796,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
         }
     }
-
     private void updateLastSyncTime() {
         // Run long operations in background
         //new Thread(() -> {
         String lastSync = sessionManager.getLastSyncDateTime();
         String lastSyncText = context.getString(R.string.last_sync) + ": " + lastSync;
+        CustomLog.e(TAG, "updateLastSyncTime: lastSyncText : " + lastSyncText);
         tvAppLastSync.setText(lastSyncText);
         // Update UI on main thread
         //new Handler(Looper.getMainLooper()).post(() -> tvAppLastSync.setText(lastSyncText));
@@ -1797,21 +1809,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     }
 
     private void syncDataFromHome() {
-        Data workData = new Data.Builder()
-                .putString("fromActivity", "home")
-                .build();
-
-        OneTimeWorkRequest syncWorkRequest = new OneTimeWorkRequest.Builder(SyncWorkerForHomeScreen.class)
-                .setInputData(workData)
-                .setConstraints(
-                        new Constraints.Builder()
-                                .setRequiredNetworkType(NetworkType.CONNECTED)
-                                .build()
-                )
-                .build();
-
-        WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .enqueue(syncWorkRequest);
+        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext());
     }
 
 }

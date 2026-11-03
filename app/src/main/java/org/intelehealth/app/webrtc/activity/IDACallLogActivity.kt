@@ -34,6 +34,42 @@ class IDACallLogActivity : CoreCallLogActivity(), BaseViewHolder.ViewHolderClick
         setContentView(binding.root)
         super.onCreate(savedInstanceState)
         setWindowDecor()
+        // LOGIC in NAS
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+//
+//        // Setting dark icons for light background
+//        val controller =
+//            WindowInsetsControllerCompat(window, window.decorView)
+//        controller.isAppearanceLightStatusBars = false
+//        controller.isAppearanceLightNavigationBars = true
+//
+//        // Applying safe padding to toolbar (so content doesn’t overlap system bars)
+//        ViewCompat.setOnApplyWindowInsetsListener(
+//            binding.callLogAppBar.toolbar
+//        ) { view: View?, insets: WindowInsetsCompat? ->
+//            val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+//            view!!.setPadding(
+//                systemBars.left,
+//                systemBars.top,
+//                systemBars.right,
+//                0
+//            )
+//            WindowInsetsCompat.CONSUMED
+//        }
+//
+//        // Applying safe padding to content (so content doesn’t overlap system bars)
+//        ViewCompat.setOnApplyWindowInsetsListener(
+//            binding.callLogContent.rootLay
+//        ) { view: View?, insets: WindowInsetsCompat? ->
+//            val systemBars = insets!!.getInsets(WindowInsetsCompat.Type.systemBars())
+//            view!!.setPadding(
+//                systemBars.left,
+//                0,
+//                systemBars.right,
+//                systemBars.bottom
+//            )
+//            WindowInsetsCompat.CONSUMED
+//        }
         adapter = CallLogAdapter(this, arrayListOf())
         adapter.clickListener = this
     }

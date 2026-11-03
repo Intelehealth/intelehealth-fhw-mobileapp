@@ -17,13 +17,10 @@
         android:paddingStart="@dimen/margin_10"
         android:paddingEnd="@dimen/margin_10"
         android:textSize="@dimen/text_14"
-        app:buttonIconTint="@color/iconTintWhite"
-        app:buttonTint="@color/colorPrimary"
+        app:buttonIconTint="@color/white"
+        app:buttonTint="@color/brand_primary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India (“UIDAI”), and my demographic information for the purpose of
-creating an Ayushman Bharat Health Account number (“ABHA number”) and Ayushman Bharat Health Account address (“ABHA Address”). I authorize NHA to use my Aadhaar
-number / Virtual ID for performing Aadhaar based authentication with UIDAI as per the provisions of the Aadhaar (Targeted Delivery of Financial and other Subsidies, Benefits
-and Services) Act, 2016 for the aforesaid purpose. I understand that UIDAI will share my e-KYC details, or response of “Yes” with NHA upon successful authentication. \n\n" />
+        tools:text="I am voluntarily sharing my Aadhaar Number / Virtual ID issued by the Unique Identification Authority of India." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

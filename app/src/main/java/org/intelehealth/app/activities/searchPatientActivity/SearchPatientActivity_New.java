@@ -43,6 +43,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -66,6 +70,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadFilesUtils;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.UrlModifiers;
 import org.intelehealth.app.utilities.exception.DAOException;
 
@@ -116,6 +121,20 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
+    void enableProperPadding(){
+        WindowInsetsControllerCompat controller =
+                new WindowInsetsControllerCompat(getWindow(), getWindow().getDecorView());
+        controller.setAppearanceLightNavigationBars(true);
+        controller.setAppearanceLightStatusBars(false);
+
+        // Applying safe padding (so content doesn’t overlap system bars)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.root_lay), (view, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(systemBars.left,0, systemBars.right, systemBars.bottom);
+            toolbarRelative.setPadding(systemBars.left,systemBars.top, systemBars.right, 0);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,6 +160,8 @@ public class SearchPatientActivity_New extends BaseActivity {
         iconClear = findViewById(R.id.icon_clear);
         toolbarRelative = findViewById(R.id.toolbar_relative);
 
+
+        //toolbarRelative = findViewById(R.id.toolbar_relative);
         mSearchHistoryRecyclerView = findViewById(R.id.rcv_selected_container);
         FlexboxLayoutManager layoutManager = new FlexboxLayoutManager(this);
         layoutManager.setFlexDirection(FlexDirection.ROW);
@@ -161,6 +182,7 @@ public class SearchPatientActivity_New extends BaseActivity {
 
         mSearchHistoryRecyclerView.setLayoutManager(layoutManager);
 
+        enableProperPadding();
         previous_SearchResults();
         queryAllPatients();
 
@@ -218,7 +240,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                         @Override
                         public void run() {
                             query = "";
-                            doQuery(query);
+                            doQuery(query,false);
                         }
                     }, 100);
 
@@ -256,11 +278,11 @@ public class SearchPatientActivity_New extends BaseActivity {
             mSearchEditText.setTextColor(ContextCompat.getColor(this, R.color.white));
             managePreviousSearchStorage(text);
             query = text;
-            doQuery(text);
+            doQuery(text, true);
         } else {
             allPatientsTV.setText(getString(R.string.all_patients_txt));
             query = "";
-            doQuery(query);
+            doQuery(query, true);
         }
     }
 
@@ -394,9 +416,11 @@ public class SearchPatientActivity_New extends BaseActivity {
 
     }
 
-    private void doQuery(String query) {
-        InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
+    private void doQuery(String query, boolean hideKeyBoard) {
+        if (hideKeyBoard) {
+            InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            in.hideSoftInputFromWindow(mSearchEditText.getWindowToken(), 0);
+        }
 
         recent.clear();
         if (query.equalsIgnoreCase("")) {
@@ -496,6 +520,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                 } else {
                     patientDTOList.get(i).setPrescription_exists(false);
                 }
+                applyNamcoReferralStatus(patientDTOList.get(i), visitDTO.getUuid());
 
                 // checking if visit is uploaded or not - start
                 patientDTOList.get(i).setVisitDTO(visitDTO);
@@ -510,6 +535,29 @@ public class SearchPatientActivity_New extends BaseActivity {
         }
 
         return patientDTOList;
+    }
+
+    /**
+     * Overrides the generic prescription-exists tag when the visit was referred
+     * to a NAMCO specialist: "Waiting for {destination}" if still pending, or flags
+     * "Specialist Prescription" if the specialist's prescription is already in.
+     */
+    private void applyNamcoReferralStatus(PatientDTO patientDTO, String visitUuid) {
+        try {
+            String referralValue = new EncounterDAO().fetchReferredSpecialistValue(visitUuid);
+            if (referralValue == null || referralValue.trim().isEmpty()) return;
+            if (new EncounterDAO().isPhcReferral(visitUuid)) return; // PHC: normal flow for now
+            if (new EncounterDAO().isReferralDeclined(visitUuid)) return; // never handed off - not a specialist prescription
+            if (new EncounterDAO().isPrescriptionReceived(visitUuid)) {
+                patientDTO.setSpecialistPrescription(true); // specialist already completed it
+                return;
+            }
+            String destination = StringUtils.localizeReferralHospital(
+                    EncounterDAO.parseReferralDestination(referralValue), sessionManager.getAppLanguage(), "रुग्णालयाच्या");
+            patientDTO.setReferralWaitingLabel(getString(R.string.waiting_for_specialist, destination));
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
     }
 
     private Observable<List<PatientDTO>> fetchDataForTagObs(List<PatientDTO> patientDTOList) {
@@ -550,6 +598,7 @@ public class SearchPatientActivity_New extends BaseActivity {
                     } else {
                         patientDTOList.get(i).setPrescription_exists(false);
                     }
+                    applyNamcoReferralStatus(patientDTOList.get(i), visitDTO.getUuid());
 
                     // checking if visit is uploaded or not - start
                     patientDTOList.get(i).setVisitDTO(visitDTO);

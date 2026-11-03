@@ -16,10 +16,13 @@ package org.intelehealth.app.utilities;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.text.InputFilter;
+import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +51,19 @@ import java.util.Locale;
 public final class StringUtils {
     private static final String NULL_AS_STRING = "null";
     private static final String SPACE_CHAR = " ";
+
+    /**
+     * Appends a mandatory-field asterisk to the label, colored red, when isMandatory is true.
+     */
+    public static CharSequence appendMandatoryAsterisk(String label, boolean isMandatory) {
+        if (!isMandatory || label == null) return label;
+        String labelWithAsterisk = label + " *";
+        SpannableString spannable = new SpannableString(labelWithAsterisk);
+        spannable.setSpan(new ForegroundColorSpan(Color.RED),
+                labelWithAsterisk.length() - 1, labelWithAsterisk.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return spannable;
+    }
 
     public static boolean notNull(String string) {
         return null != string && !NULL_AS_STRING.equals(string.trim());
@@ -1011,11 +1027,11 @@ public final class StringUtils {
     public static String switch_mr_economic_edit(String val) {
         if (val == null || val.isEmpty()) return "";
         switch (val) {
-            case "APL":
-                val = "दारिद्र्य रेषेच्या वर";
+            case "APL (White)":
+                val = "एपीएल (पांढरा)";
                 break;
-            case "BPL":
-                val = "दारिद्र्य रेषेखाली";
+            case "BPL (Orange)":
+                val = "बीपीएल (केशरी)";
                 break;
             default:
                 return val;
@@ -1776,6 +1792,20 @@ public final class StringUtils {
         return mdob_text;
     }
 
+
+    /**
+     * Referral destination text (e.g. "NAMCO Hospital") comes from the referral obs
+     * itself, so it's always in English - in Marathi, localize just the generic
+     * "Hospital" word rather than the NAMCO name. {@code marathiHospital} is the form
+     * the surrounding sentence needs, e.g. "रुग्णालय" or possessive "रुग्णालयाच्या".
+     */
+    public static String localizeReferralHospital(String destination, String locale, String marathiHospital) {
+        if (destination == null || locale == null) return destination;
+        if (locale.equalsIgnoreCase("mr")) {
+            return destination.replaceAll("(?i)\\bhospital\\b", marathiHospital);
+        }
+        return destination;
+    }
 
     public static String getMessageTranslated(String message, String locale) { //English dob is replaced to Hindi text.
         if (message == null || message.isEmpty()) return "";

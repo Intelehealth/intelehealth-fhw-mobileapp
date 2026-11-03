@@ -1,8 +1,7 @@
 package org.intelehealth.app.knowledgeEngine;
 
-import org.intelehealth.app.utilities.CustomLog;
-
 import org.apache.commons.lang3.StringUtils;
+import org.intelehealth.app.utilities.CustomLog;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -290,7 +289,7 @@ public class PhysicalExam extends Node {
         for (Node selectedNode : selectedNodes) {
             if (selectedNode.getText().equals(split[0])) {
                 parent_node = selectedNode.findDisplay();
-              //  parent_node = selectedNode.getText();
+                //  parent_node = selectedNode.getText();
             }
         }
         return parent_node;
@@ -312,6 +311,78 @@ public class PhysicalExam extends Node {
 
     }
 
+    /**
+     * Builds the full "-" separated trace from the top-level exam section down to
+     * the currently selected node, e.g.
+     * "Head Examination - Head - Injury - Inspect the head from all sides and look for injuries".
+     * Uses raw node text (not locale display) to match the NAS-specific behaviour of
+     * {@link #getExamParentNodeName_NAS(int)}.
+     */
+    private static final String TRACE_SKIP_CAMERA_NODE_TEXT = "Take a picture";
+    private static final String TRACE_SKIP_CAMERA_NODE_CLINICAL_LANGUAGE = "[picture taken]";
+
+    public String getExamNodeTrace(int index) {
+        String title = getTitle(index);
+        String[] split = title.split(" : ");
+        String levelOne = split[0];
+        String levelTwo = split[1];
+
+        for (Node selectedNode : selectedNodes) {
+            if (selectedNode.getText().equals(levelOne)) {
+                for (Node examNode : selectedNode.getOptionsList()) {
+                    if (examNode.getText().equals(levelTwo)) {
+                        String nodeTrace = buildSelectedNodeTrace(examNode);
+                        return nodeTrace.isEmpty() ? levelOne : levelOne + " - " + nodeTrace;
+                    }
+                }
+            }
+        }
+        return levelOne + " - " + levelTwo;
+    }
+
+    /**
+     * Uses {@link Node#getLanguage()} in preference to {@link Node#getText()} (the former
+     * already falls back to the latter when the mind-map node has no "language" attribute),
+     * skipping a node's own value when it's the "%" placeholder (meaning "show only the
+     * selected sub-answer") or the "Take a picture" camera-action node text.
+     */
+    private String buildSelectedNodeTrace(Node node) {
+        String value = node.getLanguage();
+        boolean skipValue = value == null || value.equals("%") || value.equalsIgnoreCase(TRACE_SKIP_CAMERA_NODE_TEXT) || value.equalsIgnoreCase(TRACE_SKIP_CAMERA_NODE_CLINICAL_LANGUAGE);
+        String trace = skipValue ? "" : value;
+
+        if (node.getOptionsList() != null) {
+            for (Node child : node.getOptionsList()) {
+                // A question-level node (e.g. "Is there any rash?*") may not itself be marked
+                // selected even though the chosen answer further down is - descend whenever
+                // this child or any of its own descendants is selected, however deep, so the
+                // chosen answer isn't dropped from the trace.
+                if (hasSelectedDescendant(child)) {
+                    String childTrace = buildSelectedNodeTrace(child);
+                    if (!childTrace.isEmpty()) {
+                        trace = trace.isEmpty() ? childTrace : trace + " - " + childTrace;
+                    }
+                }
+            }
+        }
+        return trace;
+    }
+
+    private boolean hasSelectedDescendant(Node node) {
+        if (node.isSelected()) {
+            return true;
+        }
+        if (node.getOptionsList() == null) {
+            return false;
+        }
+        for (Node child : node.getOptionsList()) {
+            if (hasSelectedDescendant(child)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     //Check to see if all required exams have been answered before moving on.
     public boolean areRequiredAnswered() {
 
@@ -329,17 +400,17 @@ public class PhysicalExam extends Node {
     }
 
     /**
-     *
      * @param node
      */
-    private void cleanUpTheImages(Node node){
-        if(!node.isDataCaptured()){
+    private void cleanUpTheImages(Node node) {
+        if (!node.isDataCaptured()) {
             for (int i = 0; i < node.getImagePathList().size(); i++) {
                 String image = node.getImagePathList().get(i);
                 getImagePathList().remove(image);
             }
         }
     }
+
     //TODO: Physical exam map needs to modified to make language generation easier.
     public String generateFindings() {
         String mLanguage = "";
@@ -412,7 +483,8 @@ public class PhysicalExam extends Node {
             Node node = getExamNode(i);
             CustomLog.v(TAG, "getExamNode - " + node.toString());
 
-            String title = getPageTitlesLocale().get(i);
+            //String title = getPageTitlesLocale().get(i);
+            String title = getPageTitlesByLocale(localeCode).get(i);
             CustomLog.v(TAG, "getPageTitlesLocale - " + node.toString());
             String[] split = title.split(" : ");
             String levelOne = split[0];
@@ -423,13 +495,13 @@ public class PhysicalExam extends Node {
                 CustomLog.i(TAG, "rootStrings: " + rootStrings);
                 if (checkSet)
                     //stringsList.add(bullet_arrow+"<b>"+levelOne + ": "+"</b>" + bullet + " " + node.getLanguage());
-                    stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay());
+                    stringsList.add(bullet_arrow + "<b>" + levelOne + ": " + "</b>" + bullet + " " + node.findDisplay(localeCode));
                     //else stringsList.add(bullet + " " + node.getLanguage());
-                else stringsList.add(bullet + " " + node.findDisplay());
+                else stringsList.add(bullet + " " + node.findDisplay(localeCode));
                 CustomLog.i(TAG, "stringsList: " + stringsList);
                 if (!node.isTerminal()) {
                     //String lang = node.formLanguage();
-                    String lang = node.formQuestionAnswer(0, false);
+                    String lang = node.formQuestionAnswer(0, false, localeCode);
                     CustomLog.i(TAG, "generateFindings: " + lang);
                     stringsList.add(lang);
                     CustomLog.i(TAG, "Not isTerminal - stringsList: " + stringsList);
@@ -488,9 +560,20 @@ public class PhysicalExam extends Node {
         return pageTitlesLocale;
     }
 
+    public List<String> getPageTitlesByLocale(String localeCode) {
+        if(localeCode == null || localeCode.trim().isEmpty()){
+            return pageTitlesLocale;
+        }
+        if (localeCode.equals("en"))
+            return pageTitles;
+        else
+            return pageTitlesLocale;
+    }
+
     public void setPageTitlesLocale(List<String> pageTitlesLocale) {
         this.pageTitlesLocale = pageTitlesLocale;
     }
+
     /*Node Engine - 3.0 support with new UI*/
     public String getEngineVersion() {
         return engineVersionRoot;

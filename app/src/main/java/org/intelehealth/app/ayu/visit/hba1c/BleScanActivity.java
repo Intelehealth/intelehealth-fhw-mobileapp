@@ -1,0 +1,123 @@
+package org.intelehealth.app.ayu.visit.hba1c;
+
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.le.BluetoothLeScanner;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanResult;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+import org.intelehealth.app.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class BleScanActivity extends AppCompatActivity {
+
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothLeScanner scanner;
+    private boolean isScanning = false;
+
+    private Handler handler = new Handler();
+    private static final long SCAN_PERIOD = 10000;
+
+    private List<BluetoothDevice> deviceList = new ArrayList<>();
+    private ArrayAdapter<String> adapter;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ble_scan);
+        applySystemBarInsets();
+
+        ListView listView = findViewById(R.id.listDevices);
+        Button btnScan = findViewById(R.id.btnScan);
+
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
+        listView.setAdapter(adapter);
+
+        BluetoothManager manager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        bluetoothAdapter = manager.getAdapter();
+
+        btnScan.setOnClickListener(v -> startScan());
+
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            BluetoothDevice device = deviceList.get(position);
+
+            Intent result = new Intent();
+            result.putExtra("device_address", device.getAddress());
+            String name = "Unknown";
+            if (androidx.core.app.ActivityCompat.checkSelfPermission(
+                    this, android.Manifest.permission.BLUETOOTH_CONNECT)
+                    == android.content.pm.PackageManager.PERMISSION_GRANTED
+                    || android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.S) {
+                if (device.getName() != null) name = device.getName();
+            }
+            result.putExtra("device_name", name);
+            setResult(RESULT_OK, result);
+            finish();
+        });
+    }
+
+    /**
+     * targetSdk 35+ enforces edge-to-edge, so the content is laid out behind the status,
+     * navigation and cutout areas. Add those insets on top of the layout's own padding so the
+     * scan button and device list stay below the system bars on every screen size.
+     */
+    private void applySystemBarInsets() {
+        View root = findViewById(R.id.root_lay);
+        int left = root.getPaddingLeft();
+        int top = root.getPaddingTop();
+        int right = root.getPaddingRight();
+        int bottom = root.getPaddingBottom();
+        ViewCompat.setOnApplyWindowInsetsListener(root, (view, insets) -> {
+            Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars()
+                    | WindowInsetsCompat.Type.displayCutout());
+            view.setPadding(left + bars.left, top + bars.top, right + bars.right, bottom + bars.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+    }
+
+    private void startScan() {
+        if (isScanning) return;
+
+        deviceList.clear();
+        adapter.clear();
+        scanner = bluetoothAdapter.getBluetoothLeScanner();
+        handler.postDelayed(() -> {
+            isScanning = false;
+            scanner.stopScan(callback);
+        }, SCAN_PERIOD);
+
+        isScanning = true;
+        scanner.startScan(callback);
+    }
+
+    private final ScanCallback callback = new ScanCallback() {
+        @Override
+        public void onScanResult(int callbackType, ScanResult result) {
+            runOnUiThread(() -> {
+                BluetoothDevice device = result.getDevice();
+                if (device.getName() == null) return;
+
+                if (!deviceList.contains(device)) {
+                    deviceList.add(device);
+                    adapter.add(device.getName() + "\n" + device.getAddress());
+                }
+            });
+        }
+    };
+}

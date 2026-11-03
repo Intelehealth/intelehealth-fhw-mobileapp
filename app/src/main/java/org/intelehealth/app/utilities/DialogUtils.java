@@ -1,5 +1,8 @@
 package org.intelehealth.app.utilities;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,6 +12,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +26,8 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.intelehealth.app.R;
 import org.intelehealth.app.adapter.ImagePickerListAdapter;
@@ -47,6 +54,12 @@ public class DialogUtils {
         public static final int CANCELLED = 2;
 
         public void onActionDone(int action);
+    }
+
+    public interface DocumentTypeImagePickerListener {
+        void onTakePhoto(String documentType);
+
+        void onChooseGallery(String documentType);
     }
 
     public void showOkDialog(Context context, String title, String message, String ok) {
@@ -144,9 +157,9 @@ public class DialogUtils {
         Button positive_btn = convertView.findViewById(R.id.positive_btn);
         Button negative_btn = convertView.findViewById(R.id.negative_btn);
 
-        if (iconResource == 0) icon.setVisibility(View.GONE);
+        if (iconResource == 0) icon.setVisibility(GONE);
         if (message == null || message.equalsIgnoreCase(""))
-            dialog_subtitle.setVisibility(View.GONE);
+            dialog_subtitle.setVisibility(GONE);
         icon.setImageResource(iconResource);
         dialog_title.setText(title);
         dialog_subtitle.setText(message);
@@ -154,7 +167,7 @@ public class DialogUtils {
         negative_btn.setText(negativeBtnText);
 
         if (isSingleButton) {
-            negative_btn.setVisibility(View.GONE);
+            negative_btn.setVisibility(GONE);
         }
 
         AlertDialog alertDialog = alertdialogBuilder.create();
@@ -195,7 +208,7 @@ public class DialogUtils {
         negative_btn.setText(negativeBtnText);
 
         if (isSingleButton) {
-            negative_btn.setVisibility(View.GONE);
+            negative_btn.setVisibility(GONE);
         }
 
         AlertDialog alertDialog = alertdialogBuilder.create();
@@ -288,6 +301,62 @@ public class DialogUtils {
         return alertDialog;
     }
 
+    /**
+     * Shows a single dialog to pick the additional document's type (Previous Prescription,
+     * Old Test Reports, Old Medicine, or a custom "Other" type entered inline) and then
+     * take a photo or choose an image from the gallery, all without leaving the dialog.
+     */
+    public static AlertDialog showDocumentTypeAndImagePickerDialog(Context context, DocumentTypeImagePickerListener documentTypeImagePickerListener) {
+        MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context);
+        View convertView = View.inflate(context, R.layout.dialog_document_type_and_image_picker, null);
+        alertDialogBuilder.setView(convertView);
+
+        RadioGroup radioGroup = convertView.findViewById(R.id.rgDocumentType);
+        TextInputLayout tilOtherDocType = convertView.findViewById(R.id.tilOtherDocType);
+        TextInputEditText etOtherDocType = convertView.findViewById(R.id.etOtherDocType);
+        View btnTakePhoto = convertView.findViewById(R.id.btnTakePhotoDocType);
+        View btnChooseGallery = convertView.findViewById(R.id.btnChooseGalleryDocType);
+
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            tilOtherDocType.setVisibility(checkedId == R.id.rbOther ? View.VISIBLE : View.GONE);
+            tilOtherDocType.setError(null);
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.show();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.popup_menu_background);
+
+        View.OnClickListener actionClickListener = clickedView -> {
+            int checkedId = radioGroup.getCheckedRadioButtonId();
+            if (checkedId == -1) {
+                Toast.makeText(context, R.string.doc_type_selection_required, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String documentType;
+            if (checkedId == R.id.rbOther) {
+                documentType = etOtherDocType.getText() == null ? "" : etOtherDocType.getText().toString().trim();
+                if (documentType.isEmpty()) {
+                    tilOtherDocType.setError(context.getString(R.string.doc_type_other_input_error));
+                    return;
+                }
+            } else {
+                documentType = ((RadioButton) convertView.findViewById(checkedId)).getText().toString();
+            }
+
+            alertDialog.dismiss();
+            if (clickedView.getId() == R.id.btnTakePhotoDocType) {
+                documentTypeImagePickerListener.onTakePhoto(documentType);
+            } else {
+                documentTypeImagePickerListener.onChooseGallery(documentType);
+            }
+        };
+
+        btnTakePhoto.setOnClickListener(actionClickListener);
+        btnChooseGallery.setOnClickListener(actionClickListener);
+
+        return alertDialog;
+    }
+
     public void triggerEndAppointmentConfirmationDialog(Context activityContext, CustomDialogListener customDialogListener) {
         showCommonDialog(
                 activityContext,
@@ -326,5 +395,55 @@ public class DialogUtils {
 
     public static void showToast(Context context, int messageResId) {
         Toast.makeText(context, context.getString(messageResId), Toast.LENGTH_SHORT).show();
+    }
+    public static void showPrescriptionPDFShareDialog(Context context, Drawable drawable, String title,
+                                                 String subTitle, String positiveBtnTxt, String negativeBtnTxt,boolean showNegativeButtonEnabled,
+                                                 CustomDialogListener customDialogListener) {
+
+        MaterialAlertDialogBuilder alertdialogBuilder = new MaterialAlertDialogBuilder(context);
+        final LayoutInflater inflater = LayoutInflater.from(context);
+        View convertView = inflater.inflate(R.layout.dialog_patient_registration, null);
+        alertdialogBuilder.setView(convertView);
+        ImageView icon = convertView.findViewById(R.id.dialog_icon);
+        TextView dialog_title = convertView.findViewById(R.id.dialog_title);
+        TextView dialog_subtitle = convertView.findViewById(R.id.dialog_subtitle);
+        Button positive_btn = convertView.findViewById(R.id.positive_btn);
+        Button negative_btn = convertView.findViewById(R.id.negative_btn);
+
+        icon.setImageDrawable(drawable);
+        if(showNegativeButtonEnabled){
+            negative_btn.setVisibility(VISIBLE);
+            negative_btn.setText(negativeBtnTxt);
+        }else{
+            negative_btn.setVisibility(GONE);
+            negative_btn.setText(negativeBtnTxt);
+        }
+       /* dialog_title.setText("Close patient registration?");
+        dialog_subtitle.setText("Are you sure you want to close the patient registration?");
+        positive_btn.setText("No");
+        negative_btn.setText("Yes");*/
+
+        dialog_title.setText(title);
+        dialog_subtitle.setText(subTitle);
+        positive_btn.setText(positiveBtnTxt);
+
+
+        AlertDialog alertDialog = alertdialogBuilder.create();
+        alertDialog.getWindow().setBackgroundDrawableResource(R.drawable.ui2_rounded_corners_dialog_bg); // show rounded corner for the dialog
+        alertDialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);   // dim backgroun
+        int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);    // set width to your dialog.
+        alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        negative_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.NEGATIVE_CLICK);
+        });
+
+        positive_btn.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            customDialogListener.onDialogActionDone(CustomDialogListener.POSITIVE_CLICK);
+        });
+
+        alertDialog.show();
     }
 }

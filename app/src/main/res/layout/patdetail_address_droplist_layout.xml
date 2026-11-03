@@ -366,6 +366,39 @@
                             android:textSize="@dimen/find_patient_hint_size" />
                     </TableRow>
 
+                    <TableRow
+                        android:id="@+id/block_tr"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/margin_4"
+                        android:layout_weight="2"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="2dp"
+                            android:layout_marginEnd="@dimen/margin_5"
+                            android:layout_weight="1"
+                            android:drawableStart="@drawable/bullet_gray"
+                            android:drawablePadding="5dp"
+                            android:text="@string/block"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/hint_text_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+
+                        <TextView
+                            android:id="@+id/block"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Malegaon"
+                            android:textAppearance="@style/caption"
+                            android:textColor="@color/textview_color"
+                            android:textSize="@dimen/find_patient_hint_size" />
+                    </TableRow>
+
                     <!--Phone number-->
                     <TableRow
                         android:id="@+id/village_city_tr"
@@ -373,7 +406,6 @@
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/margin_4"
                         android:layout_weight="2"
-                        android:visibility="gone"
                         tools:visibility="visible">
 
                         <TextView

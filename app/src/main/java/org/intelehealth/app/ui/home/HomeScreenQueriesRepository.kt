@@ -76,6 +76,14 @@ class HomeScreenQueriesRepository {
         }
     }
 
+    // Pending tab only - excludes specialist-referred visits (see HomeScreenQueriesBuilder).
+    fun getPendingTabVisitsCount(db: SQLiteDatabase): Int {
+        val query = HomeScreenQueriesBuilder().getPendingTabVisitsCount()
+        db.rawQuery(query, null).use { cursor ->
+            return if (cursor.moveToFirst()) cursor.getInt(0) else 0
+        }
+    }
+
     fun getReceivedPrescriptionVisitsCount(db: SQLiteDatabase): Int {
         val query = HomeScreenQueriesBuilder().getReceivedPrescriptionVisitsCount()
         db.rawQuery(query, null).use { cursor ->

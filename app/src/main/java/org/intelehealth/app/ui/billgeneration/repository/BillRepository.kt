@@ -10,14 +10,12 @@ import org.intelehealth.app.R
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.app.IntelehealthApplication
 import org.intelehealth.app.database.dao.EncounterDAO
-import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.ObsDAO
-import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.EncounterDTO
 import org.intelehealth.app.models.dto.ObsDTO
+import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
 import org.intelehealth.app.ui.billgeneration.models.BillDetails
 import org.intelehealth.app.ui.billgeneration.utils.BillRate
-import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.exception.DAOException
@@ -71,6 +69,7 @@ class BillRepository(private val sessionManager: SessionManager, private val con
                 if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_post_prandial))) add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_POST_PRANDIAL_ID, encounterUuid,  BillRate.GLUCOSE_POST_PRANDIAL.value.toString()))
                 if(billDetails.selectedTestsList.contains(context.getString(R.string.blood_glucose_random)))add(createObs(UuidDictionary.BILL_PRICE_BLOOD_GLUCOSE_RANDOM_ID, encounterUuid,  BillRate.GLUCOSE_RANDOM.value.toString()))
                 if(billDetails.selectedTestsList.contains(context.getString(R.string.uric_acid))) add(createObs(UuidDictionary.BILL_PRICE_URIC_ACID_ID, encounterUuid,  BillRate.URIC_ACID.value.toString()))
+                if(billDetails.selectedTestsList.contains(context.getString(R.string.diabetes_hba1c))) add(createObs(UuidDictionary.BILL_PRICE_DIABETES_HBA1C_ID, encounterUuid,  BillRate.DIABETESHBA1C.value.toString()))
                 if(billDetails.selectedTestsList.contains(context.getString(R.string.total_cholestrol)))add(createObs(UuidDictionary.BILL_PRICE_TOTAL_CHOLESTEROL_ID, encounterUuid,  BillRate.CHOLESTEROL.value.toString()))
                 if(billDetails.selectedTestsList.contains(context.getString(R.string.haemoglobin)))add(createObs(UuidDictionary.BILL_PRICE_HEMOGLOBIN_ID, encounterUuid,  BillRate.HEMOGLOBIN.value.toString()))
                 if(billDetails.selectedTestsList.contains(context.getString(R.string.visit_summary_bp)))add(createObs(UuidDictionary.BILL_PRICE_BP_ID, encounterUuid,  BillRate.BP.value.toString()))
@@ -136,12 +135,7 @@ class BillRepository(private val sessionManager: SessionManager, private val con
     }
     suspend fun syncOnServer() {
         withContext(Dispatchers.IO) {
-            if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
-                val syncDAO = SyncDAO()
-                val imagesPushDAO = ImagesPushDAO()
-                syncDAO.pushDataApi()
-                imagesPushDAO.patientProfileImagesPush()
-            }        }
-
+            OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext())
+        }
     }
 }

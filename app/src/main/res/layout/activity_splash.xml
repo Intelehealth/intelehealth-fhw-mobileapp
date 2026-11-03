@@ -59,7 +59,7 @@
             android:background="@drawable/top_rounded_whitebg"
             android:elevation="@dimen/std_8dp"
             android:orientation="vertical"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
