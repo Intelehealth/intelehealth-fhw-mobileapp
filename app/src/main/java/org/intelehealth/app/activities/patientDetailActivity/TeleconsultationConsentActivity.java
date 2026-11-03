@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.webkit.WebView;
@@ -21,8 +22,12 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.GenericWebViewClient;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
+import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
+import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
@@ -89,11 +94,20 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
 
     public void acceptConsent(View view) {
         //setResult(AppConstants.TELECONSULTATION_CONSENT_ACCEPT);
-        Intent intent = new Intent(TeleconsultationConsentActivity.this, VisitCreationActivity.class);
+        // Patients aged 30+ get the NCD screening consent before the visit
+        Class<?> next = isNcdConsentNeeded() ? NcdConsentActivity.class : VisitCreationActivity.class;
+        Intent intent = new Intent(TeleconsultationConsentActivity.this, next);
         mCommonVisitData.setIntentTag("new");
         intent.putExtra("CommonVisitData", mCommonVisitData);
         startActivity(intent);
         finish();
+    }
+
+    private boolean isNcdConsentNeeded() {
+        if (BuildConfig.FLAVOR_client != FlavorKeys.NAS) return false;
+        PatientDTO patient = PatientsDAO.getPatientDetailsByPatientUUID(mCommonVisitData.getPatientUuid());
+        if (patient == null || TextUtils.isEmpty(patient.getDateofbirth())) return false;
+        return NcdEligibilityRules.isScreeningAge(DateAndTimeUtils.getFloat_Age_Year_Month(patient.getDateofbirth()));
     }
 
     @Override
