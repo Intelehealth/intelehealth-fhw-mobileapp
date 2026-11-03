@@ -85,9 +85,18 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                     runOnUiThread { showConfigFailDialog() }
                 }
             }
-        } else {
+       /* } else {
             //as we are implementing force update now thus commenting this.
             Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
+        }*/
+            //Splash laguage issue.
+        } else {
+            // Returning user: hide the language picker (it is visible by default in the layout)
+            binding.clChooseLanguage.isVisible = false
+            //as we are implementing force update now thus commenting this.
+            Handler(Looper.getMainLooper()).postDelayed({
+                if (!isFinishing && !isDestroyed) nextActivity()
+            }, 3000)
         }
     }
 

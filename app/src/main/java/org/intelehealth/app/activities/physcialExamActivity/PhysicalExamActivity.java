@@ -66,6 +66,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.dto.ObsDTO;
@@ -77,6 +78,7 @@ import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.app.utilities.exception.DAOException;
 import org.intelehealth.app.utilities.pageindicator.ScrollingPagerIndicator;
 
+import static org.intelehealth.app.database.dao.PatientsDAO.fetch_dob;
 import static org.intelehealth.app.database.dao.PatientsDAO.fetch_gender;
 
 public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapter.FabClickListener {
@@ -275,7 +277,7 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
 
         // flaoting value of age is passed to Node for comparison...
-        physicalExamMap.fetchAge(float_ageYear_Month);
+        physicalExamMap.fetchAge(AgeLimit.forPatient(fetch_dob(patientUuid), float_ageYear_Month));
         physicalExamMap.refresh(selectedExamsList); //refreshing the physical exam nodes with updated json
 
         adapter = new QuestionsAdapter(this, physicalExamMap, physExam_recyclerView, this.getClass().getSimpleName(), this, false);

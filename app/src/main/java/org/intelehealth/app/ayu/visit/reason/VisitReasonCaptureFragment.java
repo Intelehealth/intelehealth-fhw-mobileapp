@@ -39,6 +39,8 @@ import org.intelehealth.app.ayu.visit.model.ReasonData;
 import org.intelehealth.app.ayu.visit.model.ReasonGroupData;
 import org.intelehealth.app.ayu.visit.reason.adapter.ReasonListingAdapter;
 import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
+import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
@@ -180,6 +182,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             // TODO: we are adding this below string array for keeping these two protocol enable for search also
             mFinalEnabledMMList.clear();
             List<ReasonData> mindmapReasonDataList = getVisitReasonFilesNamesOnly();
+            AgeLimit patientAge = AgeLimit.forPatient(PatientsDAO.fetch_dob(patientUuid), float_ageYear_Month);
 
 
             for (ReasonData data : mindmapReasonDataList) {
@@ -196,7 +199,7 @@ public class VisitReasonCaptureFragment extends Fragment {
                     continue;
                 }
                 Node mainNode = new Node(currentFile);
-                if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getGender(), mainNode.getMin_age(), mainNode.getMax_age())) {
+                if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, patientAge, mainNode.getGender(), mainNode.getMinAgeLimit(), mainNode.getMaxAgeLimit())) {
                     mFinalEnabledMMList.add(mindMapName);
                 }
             }

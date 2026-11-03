@@ -1,17 +1,19 @@
-package org.intelehealth.video.ui.activity
+package org.intelehealth.klivekit.call.ui.activity
 
 import android.Manifest
 import android.content.Intent
 import android.media.Ringtone
 import android.media.RingtoneManager
+import android.net.ConnectivityManager
+import android.net.Network
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.lifecycle.lifecycleScope
-import com.codeglo.coyamore.data.PreferenceHelper
-import com.codeglo.coyamore.data.PreferenceHelper.Companion.RTC_DATA
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import io.livekit.android.events.DisconnectReason
@@ -21,23 +23,25 @@ import io.livekit.android.room.track.CameraPosition
 import io.livekit.android.room.track.VideoTrack
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.intelehealth.common.socket.SocketManager
-import org.intelehealth.core.extensions.showToast
-import org.intelehealth.core.extensions.viewModelByFactory
-import org.intelehealth.core.registry.PermissionRegistry
-import org.intelehealth.core.registry.allGranted
-import org.intelehealth.core.utility.RTC_ARGS
+import org.intelehealth.app.registry.PermissionRegistry
+import org.intelehealth.app.registry.allGranted
+import org.intelehealth.klivekit.R
+import org.intelehealth.klivekit.RtcEngine
+import org.intelehealth.klivekit.call.notification.HeadsUpNotificationService
+import org.intelehealth.klivekit.call.ui.viewmodel.CallViewModel
+import org.intelehealth.klivekit.call.ui.viewmodel.VideoCallViewModel
+import org.intelehealth.klivekit.call.utils.CallAction
+import org.intelehealth.klivekit.call.utils.CallHandlerUtils
+import org.intelehealth.klivekit.call.utils.CallStatus
+import org.intelehealth.klivekit.data.PreferenceHelper
+import org.intelehealth.klivekit.data.PreferenceHelper.Companion.RTC_DATA
 import org.intelehealth.klivekit.model.RtcArgs
-import org.intelehealth.common.socket.SocketViewModel
-import org.intelehealth.video.R
-import org.intelehealth.video.RtcEngine
-import org.intelehealth.video.notification.HeadsUpNotificationService
-import org.intelehealth.video.ui.viewmodel.CallViewModel
-import org.intelehealth.video.ui.viewmodel.VideoCallViewModel
-import org.intelehealth.video.utils.AudioType
-import org.intelehealth.video.utils.CallAction
-import org.intelehealth.video.utils.CallHandlerUtils
-import org.intelehealth.video.utils.CallStatus
+import org.intelehealth.klivekit.socket.SocketManager
+import org.intelehealth.klivekit.socket.SocketViewModel
+import org.intelehealth.klivekit.utils.AudioType
+import org.intelehealth.klivekit.utils.RTC_ARGS
+import org.intelehealth.klivekit.utils.extensions.showToast
+import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
 import java.util.Calendar
 
 
@@ -52,14 +56,14 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     private var isDeclined: Boolean = false
     protected val videoCallViewModel: VideoCallViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: getDataFromSharedPref()
+            ?: getDataFromSharedPref()
 
         VideoCallViewModel(args.url ?: "", args.appToken ?: "", application)
     }
 
     private val socketViewModel: SocketViewModel by viewModelByFactory {
         args = IntentCompat.getParcelableExtra(intent, RTC_ARGS, RtcArgs::class.java)
-                ?: getDataFromSharedPref()
+            ?: getDataFromSharedPref()
 //        val url: String = Constants.BASE_URL + "?userId=" + args.nurseId + "&name=" + args.nurseId
         SocketViewModel(args)
     }
@@ -110,6 +114,37 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //        };
 //    }
 
+    private val connectivityManager: ConnectivityManager by lazy {
+        getSystemService(ConnectivityManager::class.java)
+    }
+
+    // Suppresses a duplicate finish() from our own room.disconnect() (inside
+    // videoCallViewModel.reconnect()) and coalesces repeated network callbacks
+    // for a single transition into a single reconnect attempt.
+    private var isReconnecting = false
+    private var hasCapturedInitialNetwork = false
+    private val reconnectResetHandler = Handler(Looper.getMainLooper())
+
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            // The first callback on registration just reports the network already
+            // in use when the call started - not an actual switch.
+            if (!hasCapturedInitialNetwork) {
+                hasCapturedInitialNetwork = true
+                return
+            }
+            if (isReconnecting || !isArgsInitiate() || !args.isCallOnGoing()) return
+            Timber.d { "Active network changed mid-call, attempting recovery" }
+            isReconnecting = true
+            videoCallViewModel.reconnect()
+            reconnectResetHandler.postDelayed(
+                { isReconnecting = false },
+                RECONNECT_SUPPRESS_WINDOW_MS
+            )
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -129,6 +164,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.room.initVideoRenderer(getRemoteVideoRender())
         extractRtcParams()
         initView()
+        connectivityManager.registerDefaultNetworkCallback(networkCallback)
 //        observeLiveData()
 //        observerSocketEvent()
     }
@@ -165,6 +201,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.remoteVideoTrack.observe(this) { it?.let { it1 -> attachRemoteVideo(it1) } }
         videoCallViewModel.isSpeakingStatus.observe(this) { updateMicrophoneSpeakingStatus(it) }
         videoCallViewModel.remoteConnectionQuality.observe(this) { onConnectivityChanged(it) }
+        videoCallViewModel.localConnectionQuality.observe(this) { onLocalConnectivityChanged(it) }
         videoCallViewModel.screenshareEnabled.observe(this) {}
         videoCallViewModel.localCameraMirrorStatus.observe(this) {}
         videoCallViewModel.remoteParticipantDisconnected.observe(this) {
@@ -307,7 +344,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         if (!intent.hasExtra(RTC_ARGS)) {
             intent.putExtra(
                 RTC_ARGS,
-                Gson().fromJson(preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""), RtcArgs::class.java)
+                Gson().fromJson(
+                    preferenceHelper.get(PreferenceHelper.MESSAGE_BODY, ""),
+                    RtcArgs::class.java
+                )
             )
         }
     }
@@ -427,6 +467,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         Timber.d { "Connectivity => ${it}" }
     }
 
+    open fun onLocalConnectivityChanged(it: ConnectionQuality?) {
+        Timber.d { "Local Connectivity => ${it}" }
+        videoCallViewModel.toggleCameraOnPoorConnection(it)
+    }
+
     open fun onRemoteParticipantMicChange(isMuted: Boolean) {
         val speakerStatus = if (isMuted) "Muted" else "Unmuted"
         Timber.d { "RemoteParticipant speaker is $speakerStatus" }
@@ -508,6 +553,24 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //            DisconnectReason.UNKNOWN_REASON -> showToast(getString(R.string.reason_unknown))
 //        }
 
+        if (isReconnecting) {
+            // This disconnect is a side effect of our own network-triggered
+            // reconnect() (which calls room.disconnect() before rejoining) -
+            // let the reconnect finish instead of ending the call here.
+            Timber.d { "Ignoring disconnect ($reason) while a reconnect is in progress" }
+            return
+        }
+
+        if (reason == DisconnectReason.DUPLICATE_IDENTITY) {
+            // Another active session for this same account already joined this
+            // call - LiveKit's own identity-uniqueness enforcement evicted this
+            // session. Clean up locally instead of leaving the ringtone/notification
+            // running.
+            stopRingtone()
+            stopService(Intent(this@CoreVideoCallActivity, HeadsUpNotificationService::class.java))
+            showToast(getString(R.string.reason_duplicated_identity))
+        }
+
         finish()
     }
 
@@ -516,5 +579,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         super.onDestroy()
         stopRingtone()
         videoCallViewModel.disconnect()
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+        reconnectResetHandler.removeCallbacksAndMessages(null)
+    }
+
+    companion object {
+        private const val RECONNECT_SUPPRESS_WINDOW_MS = 10_000L
     }
 }

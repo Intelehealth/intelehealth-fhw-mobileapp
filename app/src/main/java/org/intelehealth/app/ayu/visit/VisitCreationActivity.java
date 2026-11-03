@@ -72,6 +72,7 @@ import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.database.dao.VisitAttributeListDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.knowledgeEngine.PhysicalExam;
 import org.intelehealth.app.models.AnswerResult;
@@ -113,7 +114,9 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Collections;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
@@ -222,6 +225,7 @@ public class VisitCreationActivity extends BaseActivity implements
     public String encounterVitals;
     public final java.util.Set<String> completedSoundTypes = new java.util.HashSet<>();
     private float float_ageYear_Month;
+    private AgeLimit patientAge;
     private int mAgeInMonth;
     private String mAgeAndMonth;
     public String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
@@ -491,6 +495,9 @@ public class VisitCreationActivity extends BaseActivity implements
         Log.d("HBA1C_DEBUG", "initHba1cBle: savedAddress=" + savedAddress
                 + " visitUuid=" + visitUuid);
 
+            float_ageYear_Month = DateAndTimeUtils.getFloat_Age_Year_Month(patientDTO.getDateofbirth()); //intent.getFloatExtra("float_ageYear_Month", 0);
+            mCommonVisitData.setPatientAgeYearMonth(float_ageYear_Month);
+            patientAge = AgeLimit.forPatient(patientDTO.getDateofbirth(), float_ageYear_Month);
         // Start BLE connection first (this only resets connection flags — see fix below)
         if (savedAddress != null && !savedAddress.isEmpty()) {
             startHba1cControlCentre(savedAddress);
@@ -883,8 +890,51 @@ public class VisitCreationActivity extends BaseActivity implements
 
     public boolean isEditTriggerFromVisitSummary() { return mIsEditTriggerFromVisitSummary; }
 
+    /**
+     * The edit cache holds the visit reason questions as they were filtered for the patient's age when the
+     * visit was recorded. Rebuild them from the protocols for the patient's current age, keeping the saved answers.
+     */
+    private List<Node> rebuildChiefComplainNodesForCurrentAge(List<Node> savedNodes) {
+        if (savedNodes == null || mSelectedComplainList == null || mSelectedComplainList.isEmpty()) return savedNodes;
+
+        mChiefComplainRootNodeList = new ArrayList<>();
+        mCommonAssociateSymptoms = null;
+        try {
+            loadChiefComplainNodeForSelectedNames(mSelectedComplainList);
+            return VisitUtils.mergeSavedAnswers(mChiefComplainRootNodeList, savedNodes);
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return savedNodes;
+        } finally {
+            mCommonAssociateSymptoms = null;
+        }
+    }
+
+    /**
+     * Same as {@link #rebuildChiefComplainNodesForCurrentAge(List)} for a single cached root node.
+     */
+    private Node rebuildNodeForCurrentAge(Node savedNode, Callable<Node> loader) {
+        if (savedNode == null) return null;
+        try {
+            Node rebuiltNode = loader.call();
+            if (rebuiltNode == null || !Objects.equals(rebuiltNode.getId(), savedNode.getId())) return savedNode;
+            return VisitUtils.mergeSavedAnswers(Collections.singletonList(rebuiltNode), Collections.singletonList(savedNode)).get(0);
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return savedNode;
+        }
+    }
+
     private void makeReadyForEdit() {
         findViewById(R.id.ll_progress_steps).setVisibility(View.GONE);
+        // init all resources
+        mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {
+        }.getType());
+
+        List<Node> savedChiefComplainNodes = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {
+        }.getType());
+        mChiefComplainRootNodeList = rebuildChiefComplainNodesForCurrentAge(savedChiefComplainNodes);
+
         mSelectedComplainList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_LIST + visitUuid), new TypeToken<List<ReasonData>>() {}.getType());
         mChiefComplainRootNodeList = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.CHIEF_COMPLAIN_QUESTION_NODE + visitUuid), new TypeToken<List<Node>>() {}.getType());
         if (!sessionManager.getVisitEditCache(SessionManager.PHY_EXAM + visitUuid).isEmpty()) {
@@ -893,6 +943,18 @@ public class VisitCreationActivity extends BaseActivity implements
         } else loadPhysicalExam();
         if (BuildConfig.FLAVOR_client != FlavorKeys.UNFPA) {
             if (!sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid).isEmpty())
+                mPastMedicalHistoryNode = rebuildNodeForCurrentAge(new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class), this::loadPastMedicalHistory);
+            else
+                mPastMedicalHistoryNode = loadPastMedicalHistory();
+            if (mPastMedicalHistoryNode != null) VisitUtils.removeNodesInvalidByGenderAndAge(mPastMedicalHistoryNode.getOptionsList(), patientGender, getPatientAge());
+
+        }
+        if (!sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid).isEmpty())
+            mFamilyHistoryNode = rebuildNodeForCurrentAge(new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.FAMILY_HISTORY + visitUuid), Node.class), this::loadFamilyHistory);
+        else
+            mFamilyHistoryNode = loadFamilyHistory();
+        if (mFamilyHistoryNode != null) VisitUtils.removeNodesInvalidByGenderAndAge(mFamilyHistoryNode.getOptionsList(), patientGender, getPatientAge());
+        int currentScreenIndex = 1;
                 mPastMedicalHistoryNode = new Gson().fromJson(sessionManager.getVisitEditCache(SessionManager.PATIENT_HISTORY + visitUuid), Node.class);
             else mPastMedicalHistoryNode = loadPastMedicalHistory();
         }
@@ -1231,6 +1293,22 @@ public class VisitCreationActivity extends BaseActivity implements
     }
 
     private Node mPastMedicalHistoryNode;
+
+    private Node loadPastMedicalHistory() {
+        String fileLocation = "patHist.json";
+        Node node = loadFileToNode(fileLocation, true);
+        VisitUtils.removeNodesInvalidByGenderAndAge(node.getOptionsList(), patientGender, getPatientAge());
+        return node;
+    }
+
+    private Node mFamilyHistoryNode;
+
+    private Node loadFamilyHistory() {
+        String fileLocation = "famHist.json";
+        Node node = loadFileToNode(fileLocation, true);
+        VisitUtils.removeNodesInvalidByGenderAndAge(node.getOptionsList(), patientGender, getPatientAge());
+        return node;
+    }
     private Node loadPastMedicalHistory() { return loadFileToNode("patHist.json", true); }
     private Node mFamilyHistoryNode;
     private Node loadFamilyHistory() { return loadFileToNode("famHist.json", true); }
@@ -1242,7 +1320,7 @@ public class VisitCreationActivity extends BaseActivity implements
             else currentFile = FileUtils.encodeJSONFromFile(this, fileName);
         } else currentFile = FileUtils.encodeJSON(this, fileName);
         Node mainNode = new Node(currentFile);
-        mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
+        mainNode.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, getPatientAge(), node.getGender(), node.getMinAgeLimit(), node.getMaxAgeLimit()));
         return mainNode;
     }
 
@@ -1262,6 +1340,10 @@ public class VisitCreationActivity extends BaseActivity implements
                     if (mCommonAssociateSymptoms == null) mCommonAssociateSymptoms = mainNode.getOptionsList().get(j);
                     else mCommonAssociateSymptoms.getOptionsList().addAll(mainNode.getOptionsList().get(j).getOptionsList());
                 } else {
+                    Node question = mainNode.getOptionsList().get(j);
+                    if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, getPatientAge(), question.getGender(), question.getMinAgeLimit(), question.getMaxAgeLimit())) {
+                        VisitUtils.removeNodesInvalidByGenderAndAge(question.getOptionsList(), patientGender, getPatientAge());
+                        optionList.add(question);
                     if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, mainNode.getOptionsList().get(j).getGender(), mainNode.getOptionsList().get(j).getMin_age(), mainNode.getOptionsList().get(j).getMax_age())) {
                         if (mainNode.getOptionsList().get(j).getOptionsList() != null) mainNode.getOptionsList().get(j).getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
                         optionList.add(mainNode.getOptionsList().get(j));
@@ -1273,9 +1355,26 @@ public class VisitCreationActivity extends BaseActivity implements
         }
         if (mCommonAssociateSymptoms != null) {
             mCommonAssociateSymptoms.setOptionsList(getNodeWithoutDuplicates(mCommonAssociateSymptoms.getOptionsList()));
+            VisitUtils.removeNodesInvalidByGenderAndAge(mCommonAssociateSymptoms.getOptionsList(), patientGender, getPatientAge());
+
+            //optionList.add(associateSymptoms);
             mCommonAssociateSymptoms.getOptionsList().removeIf(node -> !VisitUtils.checkNodeValidByGenderAndAge(patientGender, float_ageYear_Month, node.getGender(), node.getMin_age(), node.getMax_age()));
             mChiefComplainRootNodeList.add(mCommonAssociateSymptoms);
         }
+    }
+
+    /**
+     * Display title of the Associated symptoms block, as it appears in the visit reason summary
+     * string. Read from the root node list so it also works in edit mode (restored from cache).
+     */
+    public String getAssociateSymptomsDisplayTitle() {
+        if (mChiefComplainRootNodeList == null) return "";
+        for (Node node : mChiefComplainRootNodeList) {
+            if (node != null && node.getText() != null && node.getText().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)) {
+                return node.findDisplay();
+            }
+        }
+        return "";
     }
 
     private static List<Node> getNodeWithoutDuplicates(final List<Node> nodes) {
@@ -1988,6 +2087,9 @@ public class VisitCreationActivity extends BaseActivity implements
                 familyHistoryLocaleEn = raw.substring(idxFH + MARKER_FH.length()).trim();
             }
 
+
+    private AgeLimit getPatientAge() {
+        return patientAge != null ? patientAge : AgeLimit.fromYearMonthFloat(float_ageYear_Month);
             CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars CC  => " + insertionLocaleEn);
             CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars PE  => " + physicalStringLocaleEn);
             CustomLog.i(TAG, "loadExistingAiSummaryIntoEnVars PMH => " + patientHistoryLocaleEn);

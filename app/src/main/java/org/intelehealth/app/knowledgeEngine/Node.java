@@ -125,6 +125,9 @@ public class Node implements Serializable {
     private String gender;
     private String min_age;
     private String max_age;
+    // age_min / age_max normalized from either the old numeric or the new {year, month, days} format
+    private AgeLimit minAgeLimit;
+    private AgeLimit maxAgeLimit;
     private boolean isMultiChoice = false;
     private boolean isExcludedFromMultiChoice = false; //exclude-from-multi-choice
     //for Associated Complaints and medical history only
@@ -196,9 +199,17 @@ public class Node implements Serializable {
 
             this.gender = jsonNode.optString("gender");
 
-            this.min_age = jsonNode.optString("age_min");
+            // newer protocols spell these keys with a hyphen ("age-min" / "age-max")
+            String minAgeKey = jsonNode.has("age_min") ? "age_min" : "age-min";
+            String maxAgeKey = jsonNode.has("age_max") ? "age_max" : "age-max";
 
-            this.max_age = jsonNode.optString("age_max");
+            this.min_age = readAgeLimit(jsonNode, "age_min", "age-min");
+
+            this.max_age = readAgeLimit(jsonNode, "age_max", "age-max");
+
+            this.minAgeLimit = AgeLimit.parse(jsonNode.opt(minAgeKey));
+
+            this.maxAgeLimit = AgeLimit.parse(jsonNode.opt(maxAgeKey));
 
             JSONArray optionsArray = jsonNode.optJSONArray("options");
             if (optionsArray == null) {
@@ -409,6 +420,8 @@ public class Node implements Serializable {
         this.gender = source.gender;
         this.min_age = source.min_age;
         this.max_age = source.max_age;
+        this.minAgeLimit = source.minAgeLimit;
+        this.maxAgeLimit = source.maxAgeLimit;
         this.inputType = source.inputType;
         this.physicalExams = source.physicalExams;
         this.complaint = source.complaint;
@@ -2391,6 +2404,25 @@ public class Node implements Serializable {
     }
 
     /**
+     * Reads an age limit as the legacy "years.months" string used by the age checks.
+     * Newer protocols send it as "age-min": {"year": 11, "month": 0, "days": 0} instead of
+     * "age_min": 11; without this the limit was ignored (e.g. Abortion/Delivery/Breast feeding
+     * in Irregular periods were shown to children).
+     */
+    private static String readAgeLimit(JSONObject jsonNode, String key, String altKey) {
+        Object value = jsonNode.has(key) ? jsonNode.opt(key) : jsonNode.opt(altKey);
+        if (value == null || value == JSONObject.NULL) return "";
+        if (value instanceof JSONObject) {
+            JSONObject age = (JSONObject) value;
+            if (!age.has("year") && !age.has("month") && !age.has("days")) return "";
+            int years = age.optInt("year", 0);
+            int months = age.optInt("month", 0);
+            return months > 0 ? years + "." + months : String.valueOf(years);
+        }
+        return value.toString().trim();
+    }
+
+    /**
      * Takes a JSON Array from a knowledgeEngine and creates the sub-nodes to store within it.
      * This is how we handle recursive construction.
      * Nodes are stores within each other. This method is maintains good organizational structure, but makes it difficult to loop back to higher level nodes.
@@ -2709,6 +2741,21 @@ public class Node implements Serializable {
         this.max_age = max_age;
     }
 
+    public AgeLimit getMinAgeLimit() {
+        return minAgeLimit;
+    }
+
+    public AgeLimit getMaxAgeLimit() {
+        return maxAgeLimit;
+    }
+
+    /**
+     * @return true if both age limits are defined and the given age falls outside them
+     */
+    public boolean isOutsideAgeRange(AgeLimit age) {
+        return AgeLimit.isOutsideRange(age, minAgeLimit, maxAgeLimit);
+    }
+
     public boolean isRequired() {
         return required;
     }
@@ -2894,6 +2941,25 @@ public class Node implements Serializable {
 
     }
 
+    /**
+     * Whether the option's own value should be written to the summary instead of recursing into it.
+     * Protocols often send leaves as "options": [], which parses as non-terminal, so the typed
+     * duration/text was dropped and only the label ("Duration", "Describe") was shown. Same for a
+     * user-input option such as "Other" (input-type text) that also has a nested "Describe" which
+     * was not used - the typed value lives on the option itself.
+     */
+    private static boolean isSummaryAnswerLeaf(Node node) {
+        if (node.isTerminal()) return true;
+        List<Node> children = node.getOptionsList();
+        if (children == null || children.isEmpty()) return true;
+        String inputType = node.getInputType();
+        if (inputType == null || inputType.trim().isEmpty() || inputType.equals("camera")) return false;
+        for (Node child : children) {
+            if (child.isSelected()) return false;
+        }
+        return true;
+    }
+
     public String formQuestionAnswer(int level, boolean isAssociateSymptomsType) {
         List<String> stringsList = new ArrayList<>();
         List<String> stringsListNoSelected = new ArrayList<>();
@@ -2904,6 +2970,7 @@ public class Node implements Serializable {
         for (int i = 0; i < mOptions.size(); i++) {
             //isSelected set from  thisNode.setUnselected(); method
             if (mOptions.get(i).isSelected()) {
+                boolean isAnswerLeaf = isSummaryAnswerLeaf(mOptions.get(i));
                 String question;
                 if (level == 0) {
                     question = big_bullet + " " + mOptions.get(i).findDisplay();
@@ -2918,7 +2985,7 @@ public class Node implements Serializable {
                         question = right_pointing + " " + mOptions.get(i).findDisplay();
                     } else {
 
-                        if (mOptions.get(i).isTerminal()) {
+                        if (isAnswerLeaf) {
                             question = bullet + " " + mOptions.get(i).findDisplay();
                         } else {
                             if (level >= 1) {
@@ -2944,7 +3011,7 @@ public class Node implements Serializable {
                     level = level - 1;
                 }
 
-                if (mOptions.get(i).isTerminal()) {
+                if (isAnswerLeaf) {
                     if (mOptions.get(i).getInputType() != null && !mOptions.get(i).getInputType().trim().isEmpty()) {
 
                         if (mOptions.get(i).getInputType().equals("camera")) {
@@ -3387,142 +3454,29 @@ public class Node implements Serializable {
     }
 
     public void fetchAge(float age) {
+        fetchAge(AgeLimit.fromYearMonthFloat(age));
+    }
 
-        //for 1st level
-        for (int i = 0; i < optionsList.size(); i++) {
-            if (!optionsList.get(i).getMin_age().equalsIgnoreCase("") &&
-                    !optionsList.get(i).getMax_age().equalsIgnoreCase("")) {
-                if (age < Float.parseFloat(optionsList.get(i).getMin_age().trim())) { //age = 1 , min_age = 5
-                    remove(optionsList, i);
-                    i--;
-                }
+    /**
+     * Removes the options (up to 5 levels deep) whose age_min / age_max range excludes the given age.
+     */
+    public void fetchAge(AgeLimit age) {
+        removeOptionsOutsideAgeRange(optionsList, age, 1);
+    }
 
-                //else if(!optionsList.get(i).getMax_age().equalsIgnoreCase(""))
-                else if (age > Float.parseFloat(optionsList.get(i).getMax_age())) { //age = 15 , max_age = 10
-                    remove(optionsList, i);
-                    i--;
-                }
+    private void removeOptionsOutsideAgeRange(List<Node> options, AgeLimit age, int level) {
+        if (options == null || level > 5) return;
+
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).isOutsideAgeRange(age)) {
+                remove(options, i);
+                i--;
             }
         }
 
-        //2nd level
-        for (int i = 0; i < optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList() != null) {
-                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) {
-                    if (!optionsList.get(i).getOptionsList()
-                            .get(j).getMin_age().equalsIgnoreCase("") &&
-                            !optionsList.get(i).getOptionsList()
-                                    .get(j).getMax_age().equalsIgnoreCase("")) {
-                        if (age < Float.parseFloat(optionsList.get(i).getOptionsList()
-                                .get(j).getMin_age())) {
-                            remove(optionsList.get(i).getOptionsList(), j);
-                            j--;
-                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList()
-                                .get(j).getMax_age())) {
-                            remove(optionsList.get(i).getOptionsList(), j);
-                            j--;
-                        }
-                    }
-                }
-            }
+        for (Node option : options) {
+            removeOptionsOutsideAgeRange(option.getOptionsList(), age, level + 1);
         }
-
-        //3rd level
-        for (int i = 0; i < optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList() != null) {
-                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
-                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age().equalsIgnoreCase("")) {
-                                if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMin_age())) {
-//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
-                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
-                                    k--;
-                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getMax_age())) {
-                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList(), k);
-                                    k--;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //4th level
-        for (int i = 0; i < optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList() != null) {
-                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
-                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-
-                                    if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
-                                            .getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
-                                            .getMax_age().equalsIgnoreCase("")) {
-
-                                        if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
-                                                .getMin_age())) {
-//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
-                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
-                                            l--;
-                                        } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().get(l)
-                                                .getMax_age())) {
-                                            remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), l);
-                                            l--;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        //5th level
-        for (int i = 0; i < optionsList.size(); i++) {
-            if (optionsList.get(i).getOptionsList() != null) {
-                for (int j = 0; j < optionsList.get(i).getOptionsList().size(); j++) { //2nd level
-                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList() != null) {
-                        for (int k = 0; k < optionsList.get(i).getOptionsList().get(j).getOptionsList().size(); k++) {
-                            if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList() != null) {
-                                for (int l = 0; l < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList().size(); l++) {
-                                    if (optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                            .get(l).getOptionsList() != null) {
-                                        for (int m = 0; m < optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                .get(l).getOptionsList().size(); m++) {
-
-                                            if (!optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                    .get(l).getOptionsList().get(m).getMin_age().equalsIgnoreCase("") && !optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                    .get(l).getOptionsList().get(m).getMax_age().equalsIgnoreCase("")) {
-                                                if (age < Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                        .get(l).getOptionsList().get(m).getMin_age())) {
-//                                remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList(), k);
-                                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                            .get(l).getOptionsList(), m);
-                                                    m--;
-                                                } else if (age > Float.parseFloat(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                        .get(l).getOptionsList().get(m).getMax_age())) {
-
-                                                    remove(optionsList.get(i).getOptionsList().get(j).getOptionsList().get(k).getOptionsList()
-                                                            .get(l).getOptionsList(), m);
-                                                    m--;
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
     }
 
     public void fetchItem(String s) {
@@ -3641,7 +3595,8 @@ public class Node implements Serializable {
             new VisitUtils().updateParentNodesIfSelectedAndDataCaptured(node);
             if (node.isRequired()) {
                 if (node.optionsList != null && !node.optionsList.isEmpty()) {
-                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))) {
+                    if (!node.isSelected() || !node.anySubSelected() || (node.isSelected() && !isNestedMandatoryOptionsAnswered(node))
+                            || hasUnansweredNestedOption(node)) {
                         switch (locale) {
                             case "en":
                                 stringBuilder.append("\n").append(bullet + " ").append(node.display);
@@ -3737,6 +3692,32 @@ public class Node implements Serializable {
 
         answerResult.requiredStrings = stringBuilder.toString();
         return answerResult;
+    }
+
+    /**
+     * Whether a selected option leads to a nested question or input that was left empty, e.g.
+     * "Others" selected without its "Describe" text, or "Yes" without the treatment details.
+     * In edit mode those options are already selected from the saved visit, so the per-question
+     * flow that normally forces the nested answer can be bypassed with Confirm.
+     * Options that take the value themselves (an input-type on the option) are not checked here.
+     */
+    public static boolean hasUnansweredNestedOption(Node node) {
+        if (node.optionsList == null) return false;
+        for (Node option : node.optionsList) {
+            if (!option.isSelected() || option.optionsList == null || option.optionsList.isEmpty()) continue;
+            boolean takesOwnValue = option.getInputType() != null && !option.getInputType().trim().isEmpty();
+            // the intermediate question node is not always marked selected, so look at any depth
+            if (!takesOwnValue && !anyDescendantSelected(option)) return true;
+        }
+        return false;
+    }
+
+    private static boolean anyDescendantSelected(Node node) {
+        if (node.optionsList == null) return false;
+        for (Node option : node.optionsList) {
+            if (option.isSelected() || anyDescendantSelected(option)) return true;
+        }
+        return false;
     }
 
     public boolean isNestedMandatoryOptionsAnswered(Node node) {

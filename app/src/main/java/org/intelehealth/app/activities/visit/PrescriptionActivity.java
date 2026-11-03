@@ -3,6 +3,7 @@ package org.intelehealth.app.activities.visit;
 import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedAssociatedSymptomQString;
 import static org.intelehealth.app.ayu.visit.common.VisitUtils.getTranslatedPatientDenies;
+import static org.intelehealth.app.ayu.visit.common.VisitUtils.isAssociatedSymptomsChunk;
 import static org.intelehealth.app.database.dao.EncounterDAO.getStartVisitNoteEncounterByVisitUUID;
 import static org.intelehealth.app.database.dao.ObsDAO.fetchDrDetailsFromLocalDb;
 import static org.intelehealth.app.utilities.DateAndTimeUtils.parse_DateToddMMyyyy;
@@ -2705,7 +2706,7 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                     System.out.println("Chunk - " + s);
                     //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
                     //if (s.trim().contains("Patient denies -•")) {
-                    if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
+                    if (isAssociatedSymptomsChunk(s, lCode)) {
                         associatedSymptomsString = s;
                         System.out.println("associatedSymptomsString - " + associatedSymptomsString);
                     } else {

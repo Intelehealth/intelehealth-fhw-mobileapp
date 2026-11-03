@@ -3055,7 +3055,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             tvQuestionCounter = itemView.findViewById(R.id.tv_question_counter);
 
             submitButton.setOnClickListener(view -> {
-                if (mItemList.get(index).isSelected()) {
+                // In edit mode the question stays selected from the saved visit even after all its
+                // options are unselected, so also require a selected option
+                Node question = mItemList.get(index);
+                boolean hasAnswer = question.getOptionsList() == null || question.getOptionsList().isEmpty() || question.anySubSelected();
+                if (question.isSelected() && hasAnswer) {
                     AdapterUtils.setToDisable(skipButton);
                     AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, () -> {
                         //if (mIsEditMode) {

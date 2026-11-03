@@ -103,26 +103,30 @@ public class PhysicalExam extends Node {
 
                             String[] split = current.split(":");
                             if (split.length > 1) {
-                                String location = split[0];
-                                String exam = split[1];
-                                if (location != null && !location.isEmpty() && exam != null && !exam.isEmpty()) {
-                                    Node locationNodeRef = null;
-
-                                    locationNodeRef = getOptionByName(location);
+                                // Protocols list exams as "; "-separated and sometimes as "Location: Exam",
+                                // so trim both parts before matching against the exam mind map
+                                String location = split[0].trim();
+                                String exam = current.substring(current.indexOf(':') + 1).trim();
+                                if (!location.isEmpty() && !exam.isEmpty()) {
+                                    Node locationNodeRef = findOptionByName(this, location);
 
                                     Node examNodeRef = null;
                                     if (locationNodeRef != null) {
                                         CustomLog.i(TAG, "matchSelections: [Location]" + location);
-                                        examNodeRef = locationNodeRef.getOptionByName(exam);
+                                        location = locationNodeRef.getText();
+                                        examNodeRef = findOptionByName(locationNodeRef, exam);
                                     }
-                                    if (examNodeRef != null) {
+                                    if (examNodeRef == null) {
+                                        CustomLog.i(TAG, "matchSelections: [Not Found]" + current);
+                                    } else {
 
 
                                         //The foundLocation list is to ensure that the same exam isn't display twice
                                         if (foundLocations.contains(location)) {
                                             int locationIndex = foundLocations.indexOf(location);
                                             Node foundLocationNode = newOptionsList.get(locationIndex);
-                                            foundLocationNode.addOptions(new Node(examNodeRef));
+                                            if (!hasOptionWithText(foundLocationNode, examNodeRef.getText()))
+                                                foundLocationNode.addOptions(new Node(examNodeRef));
                                         } else {
                                             //If it's a new exam, the location needs to be added to the list of things to check
                                             foundLocations.add(location);
@@ -140,6 +144,41 @@ public class PhysicalExam extends Node {
             }
         }
         return newOptionsList;
+    }
+
+    /**
+     * Finds an option of the exam mind map by the name used in a protocol's perform-physical-exam.
+     * Names are matched ignoring case and extra spaces, and a protocol may use the short form of
+     * an exam ("Hydration status" for "Hydration status (eyes, mouth & skin pinch)") - that is
+     * only accepted when exactly one option matches.
+     */
+    private static Node findOptionByName(Node parent, String name) {
+        if (parent == null || parent.getOptionsList() == null || name == null) return null;
+        String target = normalizeName(name);
+        if (target.isEmpty()) return null;
+        Node shortFormMatch = null;
+        int shortFormMatches = 0;
+        for (Node option : parent.getOptionsList()) {
+            String text = normalizeName(option.getText());
+            if (text.equals(target)) return option;
+            if (normalizeName(text.replaceAll("\\(.*?\\)", "")).equals(normalizeName(target.replaceAll("\\(.*?\\)", "")))) {
+                shortFormMatch = option;
+                shortFormMatches++;
+            }
+        }
+        return shortFormMatches == 1 ? shortFormMatch : null;
+    }
+
+    private static String normalizeName(String name) {
+        return name == null ? "" : name.trim().replaceAll("\\s+", " ").toLowerCase();
+    }
+
+    private static boolean hasOptionWithText(Node parent, String text) {
+        if (parent.getOptionsList() == null) return false;
+        for (Node option : parent.getOptionsList()) {
+            if (option.getText() != null && option.getText().equals(text)) return true;
+        }
+        return false;
     }
 
     public List<Node> getSelectedNodes() {

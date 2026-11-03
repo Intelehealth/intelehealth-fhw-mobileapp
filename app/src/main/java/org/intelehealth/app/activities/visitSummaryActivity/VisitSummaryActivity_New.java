@@ -237,6 +237,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -6523,7 +6524,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             CustomLog.v(TAG, "Chunk - " + s);
             //if (s.trim().startsWith(getTranslatedAssociatedSymptomQString(lCode))) {
             //if (s.trim().contains("Patient denies -•")) {
-            if (s.trim().contains(getTranslatedPatientDenies(lCode)) || s.trim().contains(getTranslatedAssociatedSymptomQString(lCode))) {
+            if (VisitUtils.isAssociatedSymptomsChunk(s, lCode)) {
                 associatedSymptomsString = s;
                 CustomLog.v(TAG, "associatedSymptomsString - " + associatedSymptomsString);
             } else {
@@ -6614,7 +6615,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
             associatedSymptomsString = tempAS[1];
         }
-        String[] sections = associatedSymptomsString.split(getTranslatedPatientDenies(lCode));
+        String[] sections = associatedSymptomsString.split(Pattern.quote(VisitUtils.getPatientDeniesMarker(lCode)));
 
 
         CustomLog.v(TAG, associatedSymptomsString);

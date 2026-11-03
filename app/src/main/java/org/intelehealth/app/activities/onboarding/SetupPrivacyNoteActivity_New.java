@@ -9,7 +9,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.LocaleList;
 import android.os.Looper;
+import android.text.Layout;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.DisplayMetrics;
@@ -29,6 +31,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
+import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.setupActivity.SetupActivityNew;
 import org.intelehealth.app.app.AppConstants;
@@ -82,7 +85,61 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
         });
 
     }
+    public void termsAndPrivacyPolicy() {
+        SpannableString SpanString = new SpannableString(getResources().getString(R.string.agree_to_terms));
+        ClickableSpan termsAndCondition = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                Intent mIntent = new Intent(context, TermsAndConditionsActivity_New.class);
+                mIntent.putExtra("isTermsAndCondition", true);
+                startActivity(mIntent);
+            }
+        };
+        ClickableSpan privacy = new ClickableSpan() {
+            @Override
+            public void onClick(View textView) {
+                Intent mIntent = new Intent(context, PrivacyPolicyActivity_New.class);
+                mIntent.putExtra("intentType", "doNotNavigateFurther");
+                mIntent.putExtra("isPrivacyPolicy", true);
+                startActivity(mIntent);
+            }
+        };
 
+        startingPositionTC = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.terms_and_conditions));
+        endingPositionTC = startingPositionTC + getResources().getString(R.string.terms_and_conditions).length();
+        startingPositionPP = getResources().getString(R.string.agree_to_terms).indexOf(getResources().getString(R.string.privacy_policy));
+        endingPositionPP = startingPositionPP + getResources().getString(R.string.privacy_policy).length();
+
+        SpanString.setSpan(termsAndCondition, startingPositionTC, endingPositionTC, 0);
+        SpanString.setSpan(privacy, startingPositionPP, endingPositionPP, 0);
+
+        tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
+
+        // Debug only: expose span tap points for UI automation, never in production
+        if (BuildConfig.DEBUG) {
+            tvTermsAndPrivacy.post(() -> {
+                Spanned s = (Spanned) tvTermsAndPrivacy.getText();
+                tvTermsAndPrivacy.setContentDescription(
+                        spanCenter(tvTermsAndPrivacy, s, termsAndCondition, "terms") + ";" +
+                                spanCenter(tvTermsAndPrivacy, s, privacy, "privacy"));
+            });
+        }
+    }
+
+    // Returns "key=x,y": centre of the span's first line, relative to the TextView
+    private String spanCenter(TextView tv, Spanned s, Object span, String key) {
+        Layout layout = tv.getLayout();
+        int start = s.getSpanStart(span), end = s.getSpanEnd(span);
+        if (layout == null || start < 0) return key + "=";
+        int line = layout.getLineForOffset(start);
+        float x1 = layout.getPrimaryHorizontal(start);
+        float x2 = (layout.getLineForOffset(end) == line)
+                ? layout.getPrimaryHorizontal(end) : layout.getLineRight(line);
+        int cx = (int) ((x1 + x2) / 2) + tv.getTotalPaddingLeft();
+        int cy = (layout.getLineTop(line) + layout.getLineBottom(line)) / 2 + tv.getTotalPaddingTop();
+        return key + "=" + cx + "," + cy;
+    }
+/*
     public void termsAndPrivacyPolicy() {
         SpannableString SpanString = new SpannableString(getResources().getString(R.string.agree_to_terms));
         ClickableSpan termsAndCondition = new ClickableSpan() {
@@ -113,6 +170,7 @@ public class SetupPrivacyNoteActivity_New extends AppCompatActivity {
 
         tvTermsAndPrivacy.setText(SpanString, TextView.BufferType.SPANNABLE);
     }
+*/
 
     ActivityResultLauncher<Intent> mStartForResultTCPP = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {

@@ -54,7 +54,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         if (sessionManager.isLogout) return
         context?.let {
             if (data.containsKey("type") && data["type"].equals("video_call")) {
-                checkVideoActiveStatus(context) {
+                // Keep this receiver's process alive until the async DB check below
+                // finishes — otherwise, when the app is fully killed, Android can
+                // reclaim the temporary FCM process as soon as onMessageReceived()
+                // returns, before operateIncomingCall() ever runs, silently dropping
+                // the incoming call.
+                val pendingResult = goAsync()
+                checkVideoActiveStatus(context, onComplete = { pendingResult.finish() }) {
                     Gson().fromJson<RtcArgs>(Gson().toJson(data)).apply {
                         //to get call type
                         IntelehealthApplication.getInstance().setnotificationValue(data["callType"])
@@ -83,13 +89,13 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                     sendNotificationFromBody(data,context)
                     if((data["title"]?:"").lowercase().contains("prescription")){
                         NotificationSchedulerUtils.scheduleFollowUpNotification(
-                                FollowUpNotificationData(
-                                        value = data["followupDatetime"] ?: "",
-                                        name = data["patientFirstName"] + " " + data["patientLastName"],
-                                        openMrsId = data["patientOpenMrsId"] ?: "",
-                                        patientUid = data["patientUuid"] ?: "",
-                                        visitUuid = data["visitUuid"] ?: "",
-                                )
+                            FollowUpNotificationData(
+                                value = data["followupDatetime"] ?: "",
+                                name = data["patientFirstName"] + " " + data["patientLastName"],
+                                openMrsId = data["patientOpenMrsId"] ?: "",
+                                patientUid = data["patientUuid"] ?: "",
+                                visitUuid = data["visitUuid"] ?: "",
+                            )
                         )
                         // Pull the newly shared prescription down in the background so the
                         // Home screen's prescription count reflects it without the user
@@ -105,6 +111,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         }
     }
 
+    private fun checkVideoActiveStatus(
+        context: Context,
+        onComplete: () -> Unit = {},
+        block: () -> Unit
+    ) {
     /**
      * Enqueues the same background sync worker the Home screen's manual sync icon
      * uses, so a "new prescription" push pulls the data down on its own instead of
@@ -118,8 +129,12 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val dao = ConfigDatabase.getInstance(context).featureActiveStatusDao()
         val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
         scope.launch {
-            FeatureActiveStatusRepository(dao).apply {
-                if (getRecord().videoSection) block.invoke()
+            try {
+                FeatureActiveStatusRepository(dao).apply {
+                    if (getRecord().videoSection) block.invoke()
+                }
+            } finally {
+                onComplete.invoke()
             }
         }
     }
@@ -212,19 +227,19 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
         val notificationIntent = Intent(context, HomeScreenActivity_New::class.java)
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                notificationIntent,
-                NotificationUtils.getPendingIntentFlag()
+            context,
+            0,
+            notificationIntent,
+            NotificationUtils.getPendingIntentFlag()
         )
 
         FcmNotification.Builder(context)
-                .channelName("IDA4")
-                .title(formattedTitle ?: context.getString(R.string.app_name))
-                .content(formatedBody ?: "")
-                .smallIcon(R.mipmap.ic_launcher)
-                .contentIntent(pendingIntent)
-                .build().startNotify() }
+            .channelName("IDA4")
+            .title(formattedTitle ?: context.getString(R.string.app_name))
+            .content(formatedBody ?: "")
+            .smallIcon(R.mipmap.ic_launcher)
+            .contentIntent(pendingIntent)
+            .build().startNotify() }
 
     companion object {
         const val TAG = "FCMNotificationReceiver"

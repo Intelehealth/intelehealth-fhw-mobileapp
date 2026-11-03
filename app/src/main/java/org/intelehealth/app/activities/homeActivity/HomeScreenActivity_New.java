@@ -33,6 +33,7 @@ import android.text.Html;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,7 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MenuItemCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
@@ -191,7 +193,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     private void saveToken() {
         Manager.getInstance().setBaseUrl(BuildConfig.SERVER_URL);
         // save fcm reg. token for chat (Video)
-        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+       // FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage());
+        FirebaseUtils.saveToken(this, sessionManager.getProviderID(), IntelehealthApplication.getInstance().refreshedFCMTokenID, sessionManager.getAppLanguage(), DeviceInfoUtils.getDeviceId());
     }
 
     @Override
@@ -729,7 +732,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         tvEditProfile = headerView.findViewById(R.id.tv_edit_profile);
 
         setupDrawerContent(mNavigationView);
-
+        setDrawerAutomationIds(mNavigationView);
         //code from old home activity
         syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
@@ -1094,7 +1097,26 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             return false;
         });
     }
-
+    // Debug only: fixed content descriptions so UI automation can find drawer items
+    // by accessibility id, whatever the language or server-driven title.
+    private void setDrawerAutomationIds(NavigationView navigationView) {
+        if (!BuildConfig.DEBUG) return;
+        Menu menu = navigationView.getMenu();
+        int[] ids = {
+                R.id.menu_my_achievements,
+                R.id.menu_change_language,
+                R.id.menu_view_call_log,
+                R.id.menu_about_us,
+                R.id.menu_draft_survey,
+                R.id.menu_logout
+        };
+        for (int id : ids) {
+            MenuItem item = menu.findItem(id);
+            if (item != null) {
+                MenuItemCompat.setContentDescription(item, getResources().getResourceEntryName(id));
+            }
+        }
+    }
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);

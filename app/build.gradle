@@ -123,6 +123,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     implementation 'androidx.activity:activity:1.7.2'
     testImplementation 'junit:junit:4.13.2'
+    // real org.json for local unit tests (android.jar only provides stubs)
+    testImplementation 'org.json:json:20180813'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.2.0'

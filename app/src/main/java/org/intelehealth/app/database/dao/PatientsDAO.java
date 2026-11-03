@@ -818,6 +818,20 @@ public class PatientsDAO extends BaseDao {
 
     }
 
+    public static String fetch_dob(String patientUuid) {
+        String dob = "";
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        Cursor cursor = db.query("tbl_patient", new String[]{"date_of_birth"}, "uuid=?",
+                new String[]{patientUuid}, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            dob = cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth"));
+        }
+        cursor.close();
+
+        return dob;
+    }
+
     public static String fetch_gender(String patientUuid) {
         String gender = "";
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();

@@ -39,6 +39,10 @@ import org.intelehealth.klivekit.utils.RTC_ARGS
 import org.intelehealth.klivekit.utils.extensions.showToast
 import org.intelehealth.klivekit.utils.extensions.viewModelByFactory
 import java.util.Calendar
+import android.net.ConnectivityManager
+import android.net.Network
+import android.os.Handler
+import android.os.Looper
 
 
 /**
@@ -109,7 +113,31 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
 //            isLooping = true
 //        };
 //    }
+private val connectivityManager: ConnectivityManager by lazy {
+    getSystemService(ConnectivityManager::class.java)
+}
 
+    // Stops our own reconnect() (which calls room.disconnect()) from triggering finish(),
+    // and coalesces repeated network callbacks into one reconnect attempt.
+    private var isReconnecting = false
+    private var hasCapturedInitialNetwork = false
+    private val reconnectResetHandler = Handler(Looper.getMainLooper())
+
+    private val networkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            super.onAvailable(network)
+            // first callback just reports the network already in use, not a switch
+            if (!hasCapturedInitialNetwork) {
+                hasCapturedInitialNetwork = true
+                return
+            }
+            if (isReconnecting || !isArgsInitiate() || !args.isCallOnGoing()) return
+            Timber.d { "Active network changed mid-call, attempting recovery" }
+            isReconnecting = true
+            videoCallViewModel.reconnect()
+            reconnectResetHandler.postDelayed({ isReconnecting = false }, RECONNECT_SUPPRESS_WINDOW_MS)
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
             setShowWhenLocked(true)
@@ -129,6 +157,7 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         videoCallViewModel.room.initVideoRenderer(getRemoteVideoRender())
         extractRtcParams()
         initView()
+       // connectivityManager.registerDefaultNetworkCallback(networkCallback)
 //        observeLiveData()
 //        observerSocketEvent()
     }
@@ -506,6 +535,10 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
     fun isArgsInitiate() = ::args.isInitialized
 
     private fun checkCallDisconnectReason(reason: DisconnectReason) {
+        if (isReconnecting) {
+            Timber.d { "Ignoring disconnect ($reason) while a reconnect is in progress" }
+            return
+        }
 //        when (reason) {
 //            DisconnectReason.CLIENT_INITIATED -> showToast(getString(R.string.reason_not_initiated))
 //            DisconnectReason.DUPLICATE_IDENTITY -> showToast(getString(R.string.reason_duplicated_identity))
@@ -525,5 +558,11 @@ abstract class CoreVideoCallActivity : AppCompatActivity() {
         super.onDestroy()
         stopRingtone()
         videoCallViewModel.disconnect()
+        runCatching { connectivityManager.unregisterNetworkCallback(networkCallback) }
+        reconnectResetHandler.removeCallbacksAndMessages(null)
+    }
+
+    companion object {
+        private const val RECONNECT_SUPPRESS_WINDOW_MS = 10_000L
     }
 }

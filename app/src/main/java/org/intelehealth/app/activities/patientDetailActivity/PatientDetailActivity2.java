@@ -1318,6 +1318,16 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                             List<String> list = new ArrayList<>();
                             String appLanguage = sessionManager.getAppLanguage();
 
+                            StringBuilder stringBuilder = new StringBuilder();
+                            for (String s : spt) {
+                                String complainName = "";
+                                if (s.isEmpty()) continue;
+                                if (VisitUtils.isAssociatedSymptomsChunk(s, appLanguage)) {
+                                    continue;
+                                }
+
+                                String[] spt1 = s.split("::●");
+                                complainName = spt1[0];
                                 StringBuilder stringBuilder = new StringBuilder();
                                 for (String s : spt) {
                                     String complainName = "";
@@ -2978,6 +2988,12 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
                                     String[] spt = visitValue.split("►");
                                     List<String> list = new ArrayList<>();
 
+                                for (String s : spt) {
+                                    String complainName = "";
+                                    if (s.isEmpty()) continue;
+                                    if (VisitUtils.isAssociatedSymptomsChunk(s, appLanguage)) {
+                                        continue;
+                                    }
                                     StringBuilder stringBuilder = new StringBuilder();
                                     for (String s : spt) {
                                         String complainName = "";

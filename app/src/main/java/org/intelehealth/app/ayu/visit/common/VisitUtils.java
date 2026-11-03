@@ -2,6 +2,7 @@ package org.intelehealth.app.ayu.visit.common;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.CustomLog;
 
@@ -72,18 +73,18 @@ AB NEGATIVE = 1231*/
 
     public static boolean checkNodeValidByGenderAndAge(String patientGender, float floatAgeYearMonth, String nodeGender, String minAge, String maxAge) {
 
-        if (nodeGender == null || nodeGender.isEmpty()) {
-            return true;
-        }
-        float minAgeF = minAge != null && !minAge.isEmpty() ? Float.parseFloat(minAge) : 0f;
-        float maxAgeF = maxAge != null && !maxAge.isEmpty() ? Float.parseFloat(maxAge) : 0f;
+        // Age limits apply even when the node has no gender restriction - e.g. options inside a
+        // female-only protocol usually carry only age_min/age_max.
+        float minAgeF = parseAge(minAge);
+        float maxAgeF = parseAge(maxAge);
         boolean isValidByGender = true;
-        if (patientGender.equalsIgnoreCase("M") &&
-                nodeGender.equalsIgnoreCase("0")) {
-
+        // Patients may be stored as "M"/"F" or "Male"/"Female", and protocols mark female-only
+        // nodes as 0 (or "female") and male-only ones as 1 (or "male")
+        String patient = normalizeGender(patientGender);
+        String node = normalizeGender(nodeGender);
+        if (patient.equals("M") && node.equals("F")) {
             isValidByGender = false;
-        } else if (patientGender.equalsIgnoreCase("F") &&
-                nodeGender.equalsIgnoreCase("1")) {
+        } else if (patient.equals("F") && node.equals("M")) {
             isValidByGender = false;
         }
 
@@ -99,6 +100,92 @@ AB NEGATIVE = 1231*/
         return isValidByGender;
     }
 
+    /**
+     * @return "M", "F" or "" for a patient gender or a protocol node gender (0 = female, 1 = male)
+     */
+    private static String normalizeGender(String gender) {
+        if (gender == null) return "";
+        String value = gender.trim().toLowerCase();
+        if (value.equals("0") || value.equals("f") || value.equals("female")) return "F";
+        if (value.equals("1") || value.equals("m") || value.equals("male")) return "M";
+        return "";
+    }
+
+    private static float parseAge(String age) {
+        if (age == null || age.trim().isEmpty()) return 0f;
+        try {
+            return Float.parseFloat(age.trim());
+        } catch (NumberFormatException e) {
+            CustomLog.e("VisitUtils", "Invalid age limit in protocol: " + age);
+            return 0f;
+        }
+    }
+
+    /**
+     * Removes options that are not valid for the patient's gender/age at every nesting level of
+     * the given node, not just the first one or two.
+     */
+    public static void removeInvalidOptionsByGenderAndAge(Node node, String patientGender, float floatAgeYearMonth) {
+        if (node == null || node.getOptionsList() == null) return;
+        node.getOptionsList().removeIf(option -> !checkNodeValidByGenderAndAge(patientGender, floatAgeYearMonth, option.getGender(), option.getMin_age(), option.getMax_age()));
+        for (Node option : node.getOptionsList()) {
+            removeInvalidOptionsByGenderAndAge(option, patientGender, floatAgeYearMonth);
+        }
+    }
+
+
+    /**
+     * Same gender rules as {@link #checkNodeValidByGenderAndAge(String, float, String, String, String)}, with the
+     * age limits in either the old numeric or the new {year, month, days} format. Unlike the float version,
+     * the age limits are applied even when the node has no gender attribute.
+     */
+    public static boolean checkNodeValidByGenderAndAge(String patientGender, AgeLimit patientAge, String nodeGender, AgeLimit minAge, AgeLimit maxAge) {
+        boolean isValidByGender = nodeGender == null || nodeGender.isEmpty()
+                || checkNodeValidByGenderAndAge(patientGender, 0f, nodeGender, null, null);
+        return isValidByGender && AgeLimit.isWithinVisitRange(patientAge, minAge, maxAge);
+    }
+
+    /**
+     * Removes, at every level, the nodes that are not valid for the patient's gender and age.
+     */
+    public static void removeNodesInvalidByGenderAndAge(List<Node> nodes, String patientGender, AgeLimit patientAge) {
+        if (nodes == null) return;
+        nodes.removeIf(node -> !checkNodeValidByGenderAndAge(patientGender, patientAge, node.getGender(), node.getMinAgeLimit(), node.getMaxAgeLimit()));
+        for (Node node : nodes) {
+            removeNodesInvalidByGenderAndAge(node.getOptionsList(), patientGender, patientAge);
+        }
+    }
+
+    /**
+     * Merges the answers saved for a visit into a freshly built node tree: the rebuilt tree decides which
+     * nodes exist (so nodes that no longer apply are dropped and newly applicable ones appear), and wherever
+     * a node exists in both, the saved node (with its answers) is kept. Nodes are matched by id, then by text.
+     */
+    public static List<Node> mergeSavedAnswers(List<Node> rebuiltNodes, List<Node> savedNodes) {
+        if (rebuiltNodes == null || savedNodes == null || savedNodes.isEmpty()) return rebuiltNodes;
+
+        List<Node> mergedNodes = new ArrayList<>();
+        for (Node rebuiltNode : rebuiltNodes) {
+            Node savedNode = findMatchingNode(savedNodes, rebuiltNode);
+            if (savedNode == null) {
+                mergedNodes.add(rebuiltNode);
+            } else {
+                savedNode.setOptionsList(mergeSavedAnswers(rebuiltNode.getOptionsList(), savedNode.getOptionsList()));
+                mergedNodes.add(savedNode);
+            }
+        }
+        return mergedNodes;
+    }
+
+    private static Node findMatchingNode(List<Node> nodes, Node target) {
+        for (Node node : nodes) {
+            if (node != null && node.getId() != null && node.getId().equals(target.getId())) return node;
+        }
+        for (Node node : nodes) {
+            if (node != null && node.getText() != null && node.getText().equals(target.getText())) return node;
+        }
+        return null;
+    }
 
     public static void scrollNow(RecyclerView recyclerView, long delayMills, int dx, int dy, boolean isEditMode, boolean isAlreadyLoaded) {
         CustomLog.v("VisitUtils", "scrollNow isEditMode - " + isEditMode + "\tisAlreadyLoaded - " + isAlreadyLoaded);
@@ -473,6 +560,35 @@ AB NEGATIVE = 1231*/
         } else {
             return "Do you have the following symptom(s)?";
         }
+    }
+
+    /**
+     * "Patient denies -" exactly as it appears in the locale summary string. The string is
+     * localized by replaceEnglishCommonString, so apply the same function here instead of relying
+     * on getTranslatedPatientDenies (hi/or only).
+     */
+    public static String getPatientDeniesMarker(String localeCode) {
+        String marker = replaceEnglishCommonString("Patient denies -", localeCode);
+        if (marker == null || marker.trim().isEmpty()) return getTranslatedPatientDenies(localeCode);
+        return marker.trim();
+    }
+
+    /**
+     * Whether a "►" chunk of the locale visit reason summary is the Associated symptoms block.
+     * When every symptom is answered Yes there is no "Patient denies -" marker, and protocols use
+     * their own question wording, so also check the shape: complaint blocks always start with a
+     * "●" question, while the Associated symptoms block lists the symptoms directly ("•...").
+     */
+    public static boolean isAssociatedSymptomsChunk(String chunk, String localeCode) {
+        if (chunk == null) return false;
+        String value = chunk.trim();
+        if (value.contains(getPatientDeniesMarker(localeCode))
+                || value.contains(getTranslatedPatientDenies(localeCode))
+                || value.contains(getTranslatedAssociatedSymptomQString(localeCode))) {
+            return true;
+        }
+        int titleEnd = value.indexOf("::");
+        return titleEnd > 0 && value.substring(titleEnd + 2).trim().startsWith(Node.bullet_hollow);
     }
 
 
