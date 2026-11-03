@@ -37,9 +37,12 @@ export default function QueueCard({
   const symptoms = data.symptoms || [];
   const position = data.position ?? 0;
   const waitTimeMinutes = data.waitTimeMinutes ?? 0;
-  // Always the native `avatar1` drawable (a bare `{uri}` resolves to a drawable
-  // of that name on Android); the patient photo isn't shown on this card.
-  const avatarSource = { uri: 'avatar1' };
+  // Patient photo, same as the queue list rows; falls back to the native
+  // `avatar1` drawable (a bare `{uri}` resolves to a drawable of that name on
+  // Android) when the patient has no synced photo.
+  const avatarSource = data.avatarUrl
+    ? { uri: data.avatarUrl }
+    : { uri: 'avatar1' };
 
   // Collapse overflow symptoms into a "+N More" chip, matching the Figma design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
@@ -65,13 +68,18 @@ export default function QueueCard({
       <View style={styles.profileContainer}>
         <Image
           source={avatarSource}
+          // Patient photos are full-size camera files; decode them at avatar
+          // size so remounting the card (every return to Home) stays quick.
+          resizeMethod="resize"
           style={styles.avatar}
         />
         <View style={styles.profileDetails}>
           <Text style={styles.profileName}>
             {patientName} <Text style={styles.profileMeta}>{gender} {age}</Text>
           </Text>
-          <Text style={styles.profileId}>{patientId}</Text>
+          <Text style={styles.profileId}>
+            {patientId && !patientId.startsWith('ID-') ? `ID-${patientId}` : patientId}
+          </Text>
         </View>
       </View>
 

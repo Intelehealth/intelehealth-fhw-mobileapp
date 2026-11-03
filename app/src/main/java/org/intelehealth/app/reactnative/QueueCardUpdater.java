@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
@@ -92,6 +94,18 @@ public final class QueueCardUpdater {
         }
         persist(context, patients);
         emit(patients);
+        cardsReceived.postValue(System.currentTimeMillis());
+    }
+
+    /**
+     * Posted with the receive time on every queue card notification, so a home
+     * screen whose card slot is collapsed (nothing queued when it opened) can
+     * mount the card; a mounted card already updates through the live event.
+     */
+    private static final MutableLiveData<Long> cardsReceived = new MutableLiveData<>();
+
+    public static LiveData<Long> getCardsReceived() {
+        return cardsReceived;
     }
 
     /**
@@ -258,10 +272,11 @@ public final class QueueCardUpdater {
         String patientId = firstNonEmpty(data.get("patientId"), data.get("patientOpenMrsId"));
         String gender = data.get("gender");
         int age = parseInt(data.get("age"));
+        String avatarUrl = data.get("avatarUrl");
 
         // A "Queue update" notification identifies the patient only by UUID, so
-        // look the display fields (name, id, gender, age) up from the local DB
-        // for any the payload didn't already carry.
+        // look the display fields (name, id, gender, age, photo) up from the
+        // local DB for any the payload didn't already carry.
         // The "queue:*" event payload carries only the visitUuid; resolve the
         // patient from the locally synced visit.
         String visitUuid = data.get("visitUuid");
@@ -274,7 +289,8 @@ public final class QueueCardUpdater {
             }
         }
         if (!TextUtils.isEmpty(patientUuid) && (TextUtils.isEmpty(patientName)
-                || TextUtils.isEmpty(patientId) || TextUtils.isEmpty(gender) || age == 0)) {
+                || TextUtils.isEmpty(patientId) || TextUtils.isEmpty(gender) || age == 0
+                || TextUtils.isEmpty(avatarUrl))) {
             try {
                 Map<String, String> details = new PatientsDAO().getQueueCardPatientDetails(patientUuid);
                 if (!details.isEmpty()) {
@@ -289,6 +305,10 @@ public final class QueueCardUpdater {
                     }
                     if (age == 0) {
                         age = DateAndTimeUtils.getAge(details.get("date_of_birth"), context);
+                    }
+                    if (TextUtils.isEmpty(avatarUrl)) {
+                        // Same local photo file the queue list rows show.
+                        avatarUrl = QueueRowFormatter.toAvatarUri(details.get("patient_photo"));
                     }
                 }
             } catch (Exception e) {
@@ -335,7 +355,7 @@ public final class QueueCardUpdater {
                 symptoms,
                 parseInt(data.get("position")),
                 waitTimeMinutes,
-                emptyToNull(data.get("avatarUrl")),
+                emptyToNull(avatarUrl),
                 emptyToNull(data.get("speciality")),
                 emptyToNull(visitUuid)
         );

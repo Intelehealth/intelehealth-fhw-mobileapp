@@ -87,16 +87,27 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         }
                     }
                 }
-            } else if (data["type"] == "Queue Banner") {
-                // Refresh the home status banner only: persist the latest payload
+            } else if (data["type"].equals("Queue Update", ignoreCase = true)
+                && data["event"].equals("doctor:status", ignoreCase = true)) {
+                // A doctor status change ("Queue Update" with event "doctor:status")
+                // refreshes the home status banner only: persist the latest payload
                 // and push it to the live banner if mounted. No status-bar
-                // notification is shown for queue status updates.
+                // notification is shown for queue status updates. Checked before
+                // the generic "Queue Update" branch below, which feeds the queue card.
                 StatusBannerUpdater.handleBannerNotification(context, data)
-            } else if(data["type"] == "Queue update"){
-                // Refresh the home screen "Next In Queue" card only: persist
-                // the latest payload and push it to the live card if mounted.
-                // No status-bar notification is shown for queue updates.
-                QueueCardUpdater.handleQueueNotification(context, data)
+            } else if (data["type"].equals("Queue Update", ignoreCase = true)) {
+                // Only a patient at the front of the queue (position 1) refreshes
+                // the home screen "Next In Queue" card, whether newly queued
+                // ("queue:queued") or moved up ("queue:position"): persist the
+                // latest payload and push it to the live card if mounted. Other
+                // queue updates are ignored here. No status-bar notification is
+                // shown for queue updates.
+                val event = data["event"]
+                if ((event.equals("queue:queued", ignoreCase = true)
+                            || event.equals("queue:position", ignoreCase = true))
+                    && data["position"]?.trim() == "1") {
+                    QueueCardUpdater.handleQueueNotification(context, data)
+                }
                 return@let
             } else {
                 if(data.isNotEmpty() && notification == null){

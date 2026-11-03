@@ -17,8 +17,7 @@ import QueueTabs from '../../components/QueueTabs';
 import type {QueueFilter, QueueTab} from '../../components/QueueTabs';
 import StatusBanner from '../../components/StatusBanner';
 import type {StatusBannerVariant} from '../../components/StatusBanner';
-// Disabled for now: queue details navigation is turned off.
-// import {QueueNavigator} from '../../native/QueueNavigator';
+import {QueueNavigator} from '../../native/QueueNavigator';
 
 // Fixed gap between queue rows. Defined outside the screen so React keeps a
 // stable component type across renders (avoids remounting the list).
@@ -29,6 +28,8 @@ const ItemSeparator = () => <View style={styles.separator} />;
 // (HomeStatusBanner) listens to, so both banners update together. Keep in sync
 // with StatusBannerUpdater.EVENT_STATUS_BANNER_UPDATE on the Android side.
 const STATUS_BANNER_UPDATE_EVENT = 'StatusBannerUpdate';
+// Keep in sync with StatusBannerUpdater.EVENT_STATUS_BANNER_DISMISS.
+const STATUS_BANNER_DISMISS_EVENT = 'StatusBannerDismiss';
 
 // Native event emitted by PatientQueueFragment when it re-reads tbl_queue after
 // the screen is mounted (resume, or a pull sync finished writing the queue).
@@ -90,14 +91,26 @@ function PatientQueue({
   // native remount. Seeded from the initial prop delivered by the host fragment
   // (the last persisted "queue_status" payload), mirroring HomeStatusBanner.
   const [banner, setBanner] = useState<StatusBannerData | undefined>(bannerProp);
-  // Whether the banner is shown; dismissing (×) hides it, a new FCM update
-  // re-shows it.
-  const [bannerVisible, setBannerVisible] = useState(true);
+  // Whether the banner is shown: only while a doctor-away banner is persisted.
+  // Dismissing (×) here or on the home screen hides it on both; the next "away"
+  // FCM update re-shows it.
+  const [bannerVisible, setBannerVisible] = useState(bannerProp !== undefined);
 
   // Re-seed if the host remounts us with fresh initial props.
   useEffect(() => {
     setBanner(bannerProp);
+    setBannerVisible(bannerProp !== undefined);
   }, [bannerProp]);
+
+  // Native fires this when the banner is closed on either screen or the doctor
+  // is no longer away.
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      STATUS_BANNER_DISMISS_EVENT,
+      () => setBannerVisible(false),
+    );
+    return () => subscription.remove();
+  }, []);
 
   // Subscribe to live banner updates pushed from native on FCM receipt. Each
   // event is a complete banner, so it replaces the current content and re-shows
@@ -199,17 +212,20 @@ function PatientQueue({
   // }, []);
 
   // The banner sits above the list (as the FlatList header) so it shares the
-  // list's horizontal insets and scrolls with the content. Its fields fall back
-  // to the "Doctor is on Break" defaults when a payload is absent (dev, or before
-  // any notification), matching the home banner. Dismissing hides it until the
-  // next FCM update. No action pill here — we are already on the queue screen.
-  const listHeader = bannerVisible ? (
+  // list's horizontal insets and scrolls with the content. Shown only while a
+  // doctor-away banner exists, matching the home banner. Dismissing hides it here
+  // and on the home screen until the next "away" FCM update. No action pill here
+  // — we are already on the queue screen.
+  const listHeader = bannerVisible && banner ? (
     <View>
       <StatusBanner
-        variant={banner?.variant ?? 'alert'}
-        title={banner?.title ?? 'Doctor is on Break'}
-        subtitle={banner?.subtitle ?? 'Queue Paused'}
-        onDismiss={() => setBannerVisible(false)}
+        variant={banner.variant ?? 'alert'}
+        title={banner.title ?? 'Doctor is on Break'}
+        subtitle={banner.subtitle ?? 'Queue Paused'}
+        onDismiss={() => {
+          setBannerVisible(false);
+          QueueNavigator.dismissStatusBanner();
+        }}
         style={styles.banner}
       />
     </View>

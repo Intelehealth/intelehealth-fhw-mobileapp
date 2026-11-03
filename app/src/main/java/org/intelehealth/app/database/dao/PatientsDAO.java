@@ -534,7 +534,7 @@ public class PatientsDAO extends BaseDao {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         try {
             Cursor cursor = db.rawQuery("SELECT openmrs_id, first_name, middle_name, last_name, " +
-                    "gender, date_of_birth FROM tbl_patient WHERE uuid = ? COLLATE NOCASE",
+                    "gender, date_of_birth, patient_photo FROM tbl_patient WHERE uuid = ? COLLATE NOCASE",
                     new String[]{patientuuid});
             if (cursor.moveToFirst()) {
                 details.put("openmrs_id", cursor.getString(cursor.getColumnIndexOrThrow("openmrs_id")));
@@ -543,6 +543,7 @@ public class PatientsDAO extends BaseDao {
                 details.put("last_name", cursor.getString(cursor.getColumnIndexOrThrow("last_name")));
                 details.put("gender", cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 details.put("date_of_birth", cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
+                details.put("patient_photo", cursor.getString(cursor.getColumnIndexOrThrow("patient_photo")));
             }
             cursor.close();
         } catch (SQLException s) {

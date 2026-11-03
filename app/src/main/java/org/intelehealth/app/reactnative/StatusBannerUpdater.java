@@ -6,24 +6,28 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
 
+import org.intelehealth.app.R;
 import org.intelehealth.klivekit.data.PreferenceHelper;
 
 import java.util.Map;
 
 /**
- * Bridges an incoming "queue_status" FCM notification to the React Native
- * {@code StatusBannerModule} shown on the home screen — the counterpart of
- * {@link QueueCardUpdater} for the status banner.
+ * Bridges an incoming doctor status FCM notification ("Queue Update" with event
+ * "doctor:status") to the React Native {@code StatusBannerModule} shown on the
+ * home screen — the counterpart of {@link QueueCardUpdater} for the status banner.
  *
- * <p>Each notification carries a complete banner (variant + title + subtitle +
- * action). The payload is persisted so the banner reflects the latest queue
- * status the next time the home screen mounts, and — when the app is in the
- * foreground — pushed live via a {@code StatusBannerUpdate} device event.
+ * <p>A {@code doctorStatus} of "away" shows the "Doctor is on Break" banner; any
+ * other status removes it. The banner is persisted so it survives the home
+ * screen remounting, pushed live via a {@code StatusBannerUpdate} device event
+ * when mounted, and announced through {@link #getBannerReceived()} so the home
+ * screen can mount or remove it.
  *
  * @see FCMNotificationReceiver
  * @see #EVENT_STATUS_BANNER_UPDATE
@@ -35,10 +39,29 @@ public final class StatusBannerUpdater {
     /** JS event name the {@code HomeStatusBanner} component subscribes to. */
     public static final String EVENT_STATUS_BANNER_UPDATE = "StatusBannerUpdate";
 
+    /** JS event telling every mounted status banner (home and queue screen) to hide. */
+    public static final String EVENT_STATUS_BANNER_DISMISS = "StatusBannerDismiss";
+
     /** Fallback variant when the payload omits one (keeps a valid banner style). */
     private static final String DEFAULT_VARIANT = "alert";
 
+    /** FCM data key holding the doctor's current status, e.g. "away" or "online". */
+    private static final String KEY_DOCTOR_STATUS = "doctorStatus";
+
+    /** The only doctor status that shows the "Doctor is on Break" banner. */
+    private static final String DOCTOR_STATUS_AWAY = "away";
+
+    /**
+     * Posted with the receive time on every banner notification, so a home screen
+     * that has no banner mounted yet (none received before it opened) can mount one.
+     */
+    private static final MutableLiveData<Long> bannerReceived = new MutableLiveData<>();
+
     private StatusBannerUpdater() {
+    }
+
+    public static LiveData<Long> getBannerReceived() {
+        return bannerReceived;
     }
 
     /**
@@ -49,9 +72,39 @@ public final class StatusBannerUpdater {
         if (context == null || data == null) {
             return;
         }
-        StatusBannerData banner = parse(data);
-        persist(context, banner);
-        RnEventEmitter.emit(EVENT_STATUS_BANNER_UPDATE, toWritableMap(banner));
+        if (DOCTOR_STATUS_AWAY.equalsIgnoreCase(data.get(KEY_DOCTOR_STATUS))) {
+            StatusBannerData banner = new StatusBannerData(
+                    DEFAULT_VARIANT,
+                    context.getString(R.string.doctor_on_break),
+                    context.getString(R.string.queue_paused),
+                    context.getString(R.string.view_queue));
+            persist(context, banner);
+            RnEventEmitter.emit(EVENT_STATUS_BANNER_UPDATE, toWritableMap(banner));
+            bannerReceived.postValue(System.currentTimeMillis());
+        } else {
+            // Any other doctor status (online, busy, ...) takes the banner down.
+            dismiss(context);
+        }
+    }
+
+    /**
+     * Take the banner down on every screen: clear the persisted copy so neither the
+     * home nor the queue screen shows it on its next mount, tell any mounted RN
+     * banner to hide, and let the home screen collapse its container. Used when the
+     * doctor is no longer away and when the user closes (×) the banner on either
+     * screen. The next "away" notification shows it again.
+     */
+    public static void dismiss(Context context) {
+        if (context == null) {
+            return;
+        }
+        try {
+            new PreferenceHelper(context).clear(PreferenceHelper.STATUS_BANNER_DATA);
+        } catch (Exception e) {
+            Log.e(TAG, "dismiss failed: " + e.getMessage());
+        }
+        RnEventEmitter.emit(EVENT_STATUS_BANNER_DISMISS, Arguments.createMap());
+        bannerReceived.postValue(System.currentTimeMillis());
     }
 
     /**
@@ -73,19 +126,6 @@ public final class StatusBannerUpdater {
         }
     }
 
-    /** Map the FCM string payload onto the banner's fields. */
-    private static StatusBannerData parse(Map<String, String> data) {
-        String variant = emptyToNull(data.get("variant"));
-        if (variant == null) {
-            variant = DEFAULT_VARIANT;
-        }
-        return new StatusBannerData(
-                variant,
-                emptyToNull(data.get("title")),
-                emptyToNull(data.get("subtitle")),
-                emptyToNull(data.get("actionLabel"))
-        );
-    }
 
     private static void persist(Context context, StatusBannerData banner) {
         try {
@@ -117,10 +157,5 @@ public final class StatusBannerUpdater {
         bundle.putString("subtitle", banner.getSubtitle());
         bundle.putString("actionLabel", banner.getActionLabel());
         return bundle;
-    }
-
-    @Nullable
-    private static String emptyToNull(@Nullable String value) {
-        return TextUtils.isEmpty(value) ? null : value;
     }
 }

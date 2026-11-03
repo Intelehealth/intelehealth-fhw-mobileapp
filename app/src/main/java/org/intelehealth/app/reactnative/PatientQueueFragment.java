@@ -178,8 +178,8 @@ public class PatientQueueFragment extends Fragment {
 
         // Seed the status banner from the same persisted "queue_status" FCM
         // payload that drives the home banner (StatusBannerUpdater), so both
-        // screens show identical queue status. Absent until a notification has
-        // been received; the RN side falls back to the default banner then.
+        // screens show identical queue status. Absent while no doctor is away or
+        // after the banner was closed on either screen; the RN side shows none then.
         StatusBannerData banner = StatusBannerUpdater.getPersisted(ctx);
         if (banner != null) {
             initialProperties.putBundle("banner", StatusBannerUpdater.toBundle(banner));
