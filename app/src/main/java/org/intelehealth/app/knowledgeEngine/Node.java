@@ -2666,13 +2666,14 @@ public class Node implements Serializable {
 
             if (mOptions.get(i).isSelected()) {
                 if (!mOptions.get(i).getLanguage().isEmpty()) {
-                    if (!mOptions.get(i).isTerminal()) {
-                        if (positiveAssociations.size() > 0) {
-                            String tempString = mOptions.get(i).getText() + bullet_arrow +
-                                    mOptions.get(i).formLanguage();
+                    // Protocols send symptoms without follow-up questions as "options": [], which
+                    // parses as non-terminal. Treat those as leaves (same as formQuestionAnswer), and
+                    // don't drop a reported symptom just because it is the first one in the list.
+                    if (!isSummaryAnswerLeaf(mOptions.get(i))) {
+                        String tempString = mOptions.get(i).getText() + bullet_arrow +
+                                mOptions.get(i).formLanguage();
 
-                            positiveAssociations.add(tempString);
-                        }
+                        positiveAssociations.add(tempString);
                     } else if (isForAssociatedSymptoms && mOptions.get(i).isUserInputsTypeNode()) {
                         positiveAssociations.add(mOptions.get(i).getText().replaceAll("\\[(.*?)\\]", "") + bullet_arrow + mOptions.get(i).getLanguage());
                     } else {
