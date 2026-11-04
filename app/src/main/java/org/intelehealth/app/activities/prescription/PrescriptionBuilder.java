@@ -4,13 +4,13 @@ import static org.intelehealth.app.app.AppConstants.CONFIG_FILE_NAME;
 import static org.intelehealth.app.utilities.StringUtils.convertCtoF;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.R;
-import org.intelehealth.app.utilities.AbhaPrescriptionFields;
 import org.intelehealth.app.models.ClsDoctorDetails;
 import org.intelehealth.app.models.Patient;
 import org.intelehealth.app.models.VitalsObject;
@@ -18,12 +18,11 @@ import org.intelehealth.app.utilities.Base64Utils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.SessionManager;
-import org.intelehealth.app.utilities.SpecialtyNotesProvider;
+import org.intelehealth.app.utilities.StringUtils;
 import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.List;
 import java.util.Objects;
 
 public class PrescriptionBuilder {
@@ -47,8 +46,7 @@ public class PrescriptionBuilder {
             String referredOutData,
             String followUpData,
             ClsDoctorDetails details,
-            FeatureActiveStatus featureActiveStatus,
-            String abhaAddress
+            FeatureActiveStatus featureActiveStatus
     ) {
         mFeatureActiveStatus = featureActiveStatus;
         String prescriptionHTML = "";
@@ -59,7 +57,7 @@ public class PrescriptionBuilder {
         prescriptionHTML = headingDocTypeTag
                 + headingHTMLLangTag
                 + buildHeadData()
-                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details, abhaAddress)
+                + buildBodyData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
                 + buildDisclaimerData()
                 + htmlClosingTag;
 
@@ -123,8 +121,7 @@ public class PrescriptionBuilder {
             String testData,
             String referredOutData,
             String followUpData,
-            ClsDoctorDetails details,
-            String abhaAddress
+            ClsDoctorDetails details
     ) {
         String finalBodyString = "";
         String startingBodyTag = "<body class=\"font-lato mat-typography\">";
@@ -140,7 +137,7 @@ public class PrescriptionBuilder {
                 + generatePrescriptionHeadingSection()
                 + divMainContentOpeningTag
                 + divContainerFluidOpeningTag
-                + generatePatientDetailsData(patient, abhaAddress)
+                + generatePatientDetailsData(patient)
                 + generateMainRowData(patient, vitalsData, diagnosisData, medicationData, adviceData, testData, referredOutData, followUpData, details)
                 + divContainerFluidClosingTag
                 + divMainContentClosingTag
@@ -159,7 +156,7 @@ public class PrescriptionBuilder {
                 + "</div>";
     }
 
-    private String generatePatientDetailsData(Patient patient, String abhaAddress) {
+    private String generatePatientDetailsData(Patient patient) {
         String patientProfilePhoto = "";
         if (patient.getPatient_photo() != null && !patient.getPatient_photo().isEmpty()) {
 
@@ -230,35 +227,7 @@ public class PrescriptionBuilder {
                 + "<p>\n <img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/phone-black.svg\" alt=\"\" />\n " + patientPhoneNumber + "\n"
                 + "</div>\n"
                 + "</div>\n"
-                + abhaSection(patient.getAbhaNumber(), abhaAddress)
                 + "</div>";
-    }
-
-    /**
-     * The ABHA column of the patient grid, or nothing at all when the patient has neither identifier.
-     *
-     * Each row is independent: a patient may hold a number without an address, or an address issued
-     * before the number was linked, and an absent value drops its row rather than printing a blank one.
-     */
-    private String abhaSection(String abhaNumber, String abhaAddress) {
-        boolean hasNumber = AbhaPrescriptionFields.isPresent(abhaNumber);
-        boolean hasAddress = AbhaPrescriptionFields.isPresent(abhaAddress);
-        if (!hasNumber && !hasAddress) return "";
-
-        String section = "<div class=\"col-md-3 patient-info-section p-3\">\n";
-        if (hasNumber) {
-            section += "<div class=\"patient-info-item mb-3\">\n"
-                    + "<h6>" + activityContext.getString(R.string.label_abha_number) + "</h6>\n"
-                    + "<p>" + abhaNumber.trim() + "</p>\n"
-                    + "</div>\n";
-        }
-        if (hasAddress) {
-            section += "<div class=\"patient-info-item\">\n"
-                    + "<h6>" + activityContext.getString(R.string.label_abha_address) + "</h6>\n"
-                    + "<p>" + abhaAddress.trim() + "</p>\n"
-                    + "</div>\n";
-        }
-        return section + "</div>\n";
     }
 
     /**
@@ -300,7 +269,6 @@ public class PrescriptionBuilder {
                 + generateTestData(testData)
                 + generateReferredOutData(referredOutData)
                 + generateFollowUpData(followUpData)
-                + generateSpecialtyNotesData(details)
                 + rowClosingTag
                 + generateDoctorSignatureData(details)
                 + rowClosingTag;
@@ -309,7 +277,7 @@ public class PrescriptionBuilder {
     }
 
     private String generateVitalsData(VitalsObject vitalsData) {
-        if (!mFeatureActiveStatus.getVitalSection())  return "";
+        if (!mFeatureActiveStatus.getVitalSection()) return "";
         String finalVitalsData = "";
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
         String openingDataSectionTag = "<div class=\"data-section\">\n";
@@ -437,6 +405,8 @@ public class PrescriptionBuilder {
     }
 
     private String generateDiagnosisData(String diagnosisData) {
+        diagnosisData = StringUtils.formatDiagnosis(diagnosisData);
+
         String finalDiagnosisString = "";
 
         String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">\n";
@@ -473,11 +443,19 @@ public class PrescriptionBuilder {
 
         for (String[] array : diagnosisDataArray) {
             tableDataStringBuilder.append(tableRowOpeningTag);
-
+            Log.d("ARRRR", "" + array);
+            int rowCount = 0;
             for (String data : array) {
                 tableDataStringBuilder.append(tableDataOpeningTag);
                 tableDataStringBuilder.append(data);
                 tableDataStringBuilder.append(tableDataClosingTag);
+                rowCount++;
+                if (rowCount == 3) {
+                    tableDataStringBuilder
+                            .append(tableBodyClosingTag)
+                            .append(tableBodyOpeningTag);
+                    rowCount = 0;
+                }
             }
             tableDataStringBuilder = tableDataStringBuilder.append(tableRowClosingTag);
         }
@@ -499,7 +477,7 @@ public class PrescriptionBuilder {
 
         // For multiple diagnosis
         if (diagnosisData.contains("\n")) {
-            diagnosisList = diagnosisData.split(",\n");
+            diagnosisList = diagnosisData.split("\n");
         } else {
             diagnosisList[0] = diagnosisData;
         }
@@ -509,7 +487,11 @@ public class PrescriptionBuilder {
         for (int i = 0; i < diagnosisList.length; i++) {
             String currentDiagnosis = diagnosisList[i].trim();
             if (currentDiagnosis.contains(":") && currentDiagnosis.contains("&")) {
-                finalDiagnosisList[i] = diagnosisList[i].split("\\s*[:&]\\s*");
+                finalDiagnosisList[i] = diagnosisList[i].split("\\s*[:&]\\s*", diagnosisList.length * 3);
+            } else if (currentDiagnosis.contains(":") && !currentDiagnosis.contains("&")) {
+                finalDiagnosisList[i] = diagnosisList[i].split(":", diagnosisList.length * 3);
+            } else if (!currentDiagnosis.contains(":") && currentDiagnosis.contains("&")) {
+                finalDiagnosisList[i] = diagnosisList[i].split("&", diagnosisList.length * 3);
             }
         }
 
@@ -1022,10 +1004,6 @@ public class PrescriptionBuilder {
                     }
 
                 }
-                remarks = remarks.trim();
-                if (remarks.isEmpty() || remarks.equalsIgnoreCase("null")) {
-                    remarks = "NA";
-                }
                 divSectionContentOpeningTag = divSectionContentOpeningTag
                         + "<li>"
                         + "<div class=\"list-item\">"
@@ -1052,47 +1030,6 @@ public class PrescriptionBuilder {
         return finalFollowUpString;
     }
 
-    private String generateSpecialtyNotesData(ClsDoctorDetails details) {
-        if (details == null) return "";
-
-        List<String> notes = SpecialtyNotesProvider.INSTANCE.getNotesFor(activityContext, details.getSpecialization());
-        if (notes == null || notes.isEmpty()) return "";
-
-        String closingDivTag = "</div>";
-        String openingDivTag = "<div class=\"col-md-12 px-3 mb-3\">";
-        String dataSectionTag = "<div class=\"data-section\">";
-        String dataSectionTitleTag = "<div class=\"data-section-title\">"
-                + "<img src=\"https://dev.intelehealth.org/intelehealth/assets/svgs/advice.svg\" alt=\"\" />"
-                + "<h6>Notes &amp; Precautions</h6>"
-                + "</div>";
-
-        String dataSectionContentOpeningTag = "<div class=\"data-section-content\">";
-        String unorderedListOpeningTag = "<ul class=\"items-list\">";
-        String unorderedListClosingTag = "</ul>";
-        String lineBreak = "<br>";
-
-        StringBuilder notesListBuilder = new StringBuilder();
-        for (String note : notes) {
-            notesListBuilder.append("<li>")
-                    .append("<div class=\"d-flex justify-content-between align-items-center\">")
-                    .append("<span>").append(note).append("</span>")
-                    .append("</div>")
-                    .append("</li>");
-        }
-
-        return openingDivTag
-                + dataSectionTag
-                + dataSectionTitleTag
-                + dataSectionContentOpeningTag
-                + unorderedListOpeningTag
-                + notesListBuilder
-                + unorderedListClosingTag
-                + closingDivTag
-                + closingDivTag
-                + closingDivTag
-                + lineBreak;
-    }
-
     private String generateDoctorSignatureData(ClsDoctorDetails details) {
         if (details == null) {
             return "";
@@ -1102,20 +1039,7 @@ public class PrescriptionBuilder {
         String closingDivTag = "</div>";
         String openingSignatureDivTag = "<div class=\"signature w-100\">";
         String floatRightDivOpeningTag = "<div class=\"float-right my-4\">";
-        // details.getSignature() is either a plain image URL or a
-        // data:image/...;base64,... URI - a WebView's <img src> renders both
-        // natively without needing the URL-fetch/base64-decode split required
-        // by the native Bitmap-based print flows (TextPrintESCActivity,
-        // PrescriptionWithPDFBuilder). What was missing here was a null/format
-        // guard: a null or blank signature produced a literal src="null" or
-        // src="" (a broken-image icon instead of no image), and a handful of
-        // doctor-portal records are known to carry a data:text/html;base64,...
-        // capture bug instead of a real image - render nothing for those too.
-        String signature = details.getSignature();
-        boolean hasRenderableSignature = signature != null && !signature.trim().isEmpty()
-                && !signature.equalsIgnoreCase("null")
-                && (signature.startsWith("http://") || signature.startsWith("https://") || isImageDataUri(signature));
-        String imageTag = hasRenderableSignature ? "<img class=\"signature\" alt=\"\" src=\"" + signature + "\"/>" : "";
+        String imageTag = "<img class=\"signature\" alt=\"\" src=\"" + details.getSignature() + "\"/>";
         String divClassTitleNameTag = "<div class=\"title-name\">" + details.getName() + closingDivTag;
         String divClassTitleSpecializationTag = "<div class=\"title\">" + details.getSpecialization() + closingDivTag;
         String divClassRegistrationTag = "<div class=\"sub-title\">" + "Registration No: " + details.getRegistrationNumber() + closingDivTag;
@@ -1130,10 +1054,5 @@ public class PrescriptionBuilder {
                 + closingDivTag;
 
         return finalDoctorSignatureString;
-    }
-
-    private boolean isImageDataUri(String value) {
-        int index = value.indexOf("base64,");
-        return index >= 0 && value.substring(0, index).toLowerCase(java.util.Locale.ROOT).contains("image");
     }
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layoutParent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="@dimen/margin_20"
+    android:layout_marginVertical="@dimen/margin_10"
+    android:background="@drawable/bg_textbox_outline"
+    android:paddingHorizontal="@dimen/margin_12"
+    android:paddingVertical="@dimen/margin_10">
+
+    <ImageView
+        android:id="@+id/ivCheckedIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_snackbar"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="@dimen/margin_14"
+        android:layout_toEndOf="@+id/ivCheckedIcon"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tvIndex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_16"
+            tools:text="Index: 1" />
+
+        <TextView
+            android:id="@+id/tvFullName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvIndex"
+            android:layout_marginTop="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_16"
+            tools:text="Name: Arpan Sircar" />
+
+        <TextView
+            android:id="@+id/tvAbhaNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvFullName"
+            android:layout_marginTop="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_16"
+            tools:text="ABHA Number: xx-xxxx-xxxx-1234" />
+
+        <TextView
+            android:id="@+id/tvGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvAbhaNumber"
+            android:layout_marginTop="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_16"
+            tools:text="Gender: M" />
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvGender"
+            android:layout_marginTop="@dimen/margin_5"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/text_16"
+            tools:text="Status: Not Registered with Intelehealth" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

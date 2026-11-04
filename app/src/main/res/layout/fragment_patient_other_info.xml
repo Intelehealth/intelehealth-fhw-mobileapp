@@ -8,7 +8,6 @@
         <import type="android.text.TextUtils" />
 
         <import type="android.view.View" />
-        <import type="org.intelehealth.app.utilities.StringUtils" />
 
         <variable
             name="patient"
@@ -59,7 +58,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/national_ID, otherInfoConfig.nationalId.mandatory)}"
+                        android:text="@{ otherInfoConfig.nationalId.mandatory ? @string/national_ID + ` *` : @string/national_ID}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/national_ID" />
@@ -101,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/occupation, otherInfoConfig.occuptions.mandatory)}"
+                        android:text="@{ otherInfoConfig.occuptions.mandatory ? @string/occupation + ` *` : @string/occupation}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/occupation" />
@@ -143,7 +142,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/social_category, otherInfoConfig.socialCategory.mandatory)}"
+                        android:text="@{ otherInfoConfig.socialCategory.mandatory ? @string/social_category + ` *` : @string/social_category}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/social_category" />
@@ -185,7 +184,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/education, otherInfoConfig.education.mandatory)}"
+                        android:text="@{ otherInfoConfig.education.mandatory ? @string/education + ` *` : @string/education}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/education" />
@@ -227,7 +226,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/economic_category, otherInfoConfig.economicCategory.mandatory)}"
+                        android:text="@{ otherInfoConfig.economicCategory.mandatory ? @string/economic_category + ` *` : @string/economic_category}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/economic_category" />
@@ -270,7 +269,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/tmh_case_number, otherInfoConfig.tmhCaseNumber.mandatory)}"
+                        android:text="@{otherInfoConfig.tmhCaseNumber.mandatory ? @string/tmh_case_number + ` *` : @string/tmh_case_number}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/tmh_case_number" />
@@ -314,7 +313,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/request_id, otherInfoConfig.requestId.mandatory)}"
+                        android:text="@{ otherInfoConfig.requestId.mandatory ? @string/request_id + ` *` : @string/request_id}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/request_id" />
@@ -358,7 +357,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/relative_phone_number, otherInfoConfig.relativePhoneNumber.mandatory)}"
+                        android:text="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/relative_phone_number + ` *` : @string/relative_phone_number}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/relative_phone_number" />
@@ -387,7 +386,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/std_12dp"
-                            android:hint="@{StringUtils.appendMandatoryAsterisk(@string/relative_phone_number, otherInfoConfig.relativePhoneNumber.mandatory)}"
+                            android:hint="@{ otherInfoConfig.relativePhoneNumber.mandatory ? @string/relative_phone_number + ` *` : @string/relative_phone_number}"
                             app:expandedHintEnabled="false"
                             app:hintEnabled="false"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -426,7 +425,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/discipline, otherInfoConfig.discipline.mandatory)}"
+                        android:text="@{ otherInfoConfig.discipline.mandatory ? @string/discipline + ` *` : @string/discipline}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/discipline" />
@@ -468,7 +467,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/inn, otherInfoConfig.inn.mandatory)}"
+                        android:text="@{ otherInfoConfig.inn.mandatory ? @string/inn + ` *` : @string/inn}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/inn" />
@@ -510,7 +509,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/code_of_the_health_facility, otherInfoConfig.codeOfHealthyFacility.mandatory)}"
+                        android:text="@{ otherInfoConfig.codeOfHealthyFacility.mandatory ? @string/code_of_the_health_facility + ` *` : @string/code_of_the_health_facility}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/code_of_the_health_facility" />
@@ -552,7 +551,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/health_facility_name, otherInfoConfig.healthFacilityName.mandatory)}"
+                        android:text="@{ otherInfoConfig.healthFacilityName.mandatory ? @string/health_facility_name + ` *` : @string/health_facility_name}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/health_facility_name" />
@@ -594,7 +593,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/code_of_the_department, otherInfoConfig.codeOfDepartment.mandatory)}"
+                        android:text="@{ otherInfoConfig.codeOfDepartment.mandatory ? @string/code_of_the_department + ` *` : @string/code_of_the_department}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/code_of_the_department" />
@@ -637,7 +636,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="3sp"
-                        android:text="@{StringUtils.appendMandatoryAsterisk(@string/department, otherInfoConfig.department.mandatory)}"
+                        android:text="@{ otherInfoConfig.department.mandatory ? @string/department + ` *` : @string/department}"
                         android:textAppearance="@style/blur_txtview"
                         android:textSize="@null"
                         tools:text="@string/department" />
@@ -661,21 +660,17 @@
                             android:inputType="text"
                             android:text="@{patient.department}" />
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
-                <!--
-                  ABHA identifiers. Always read-only: these come from a verified ABHA profile, are
-                  pushed to the server as patient identifiers, and must never diverge from it.
-                  Visibility is bound to the patient record rather than set from the fragment, so it
-                  works identically for a fresh ABHA registration and for editing a linked patient.
-                -->
+                <!--abha_number-->
                 <LinearLayout
-                    android:id="@+id/llAbhaNumber"
+                    android:id="@+id/llAbhaNo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{patient.abhaNumber != null &amp;&amp; !patient.abhaNumber.empty ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{!TextUtils.isEmpty(patient.abhaNumber) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/llDepartment"
@@ -695,32 +690,38 @@
                         android:id="@+id/textInputLayAbhaNumber"
                         style="@style/AppTheme.OutlineInputBox"
                         android:layout_width="match_parent"
+
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/margin_4"
                         app:hintEnabled="false">
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputAbhaNumber"
-                            style="@style/AppTheme.InputBox.Address"
+                            style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:hint="@string/abha_number"
-                            android:inputType="text"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:longClickable="false"
                             android:text="@{patient.abhaNumber}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
+
                 </LinearLayout>
 
+                <!--abha_address-->
                 <LinearLayout
                     android:id="@+id/llAbhaAddress"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/std_12dp"
                     android:orientation="vertical"
-                    android:visibility="@{patient.abhaAddress != null &amp;&amp; !patient.abhaAddress.empty ? View.VISIBLE : View.GONE}"
+                    android:visibility="@{!TextUtils.isEmpty(patient.abhaAddress) ? View.VISIBLE : View.GONE}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/llAbhaNumber"
+                    app:layout_constraintTop_toBottomOf="@id/llAbhaNo"
                     tools:visibility="visible">
 
                     <TextView
@@ -743,36 +744,21 @@
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/textInputAbhaAddress"
-                            style="@style/AppTheme.InputBox.Address"
+                            style="@style/AppTheme.InputBox.Department"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:enabled="false"
-                            android:hint="@string/abha_address"
-                            android:inputType="text"
-                            android:text="@{patient.abhaAddress}" />
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:inputType="none"
+                            android:longClickable="false"
+                            android:text="@{patient.formattedAbhaAddress}" />
+
                     </org.intelehealth.app.ui.custom.RightAlignErrorTextInputLayout>
 
-                    <!--
-                      Lets the user add a further ABHA address to an already-resolved ABHA. Gated in
-                      the fragment, not here: it depends on the originating flow and on how many phr
-                      addresses the profile already has, neither of which the patient record knows.
-                    -->
-                    <TextView
-                        android:id="@+id/tvCreateNewAbhaAddress"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:background="?attr/selectableItemBackground"
-                        android:clickable="true"
-                        android:focusable="true"
-                        android:paddingVertical="@dimen/margin_4"
-                        android:text="@string/create_new_abha_address"
-                        android:textAlignment="textEnd"
-                        android:textColor="@color/colorPrimary"
-                        android:textStyle="bold"
-                        android:visibility="gone"
-                        tools:visibility="visible" />
                 </LinearLayout>
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </ScrollView>

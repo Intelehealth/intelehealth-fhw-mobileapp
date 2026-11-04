@@ -80,8 +80,9 @@ import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.database.dao.ImagesDAO;
+import org.intelehealth.app.database.dao.ImagesPushDAO;
 import org.intelehealth.app.database.dao.ProviderDAO;
-import org.intelehealth.app.optimized_sync.OptimizedSyncWorker;
+import org.intelehealth.app.database.dao.SyncDAO;
 import org.intelehealth.app.models.MyProfilePOJO;
 import org.intelehealth.app.models.dto.ProviderDTO;
 import org.intelehealth.app.models.hwprofile.PersonAttributes;
@@ -109,9 +110,6 @@ import org.intelehealth.ihutils.ui.CameraActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -860,51 +858,6 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
         }
     }
 
-    //code changes for latest update support for every version
-    /*private void pickImage(Intent data){
-        if (data != null) {
-            try {
-                Uri selectedImage = data.getData();
-                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
-                if (inputStream == null) return;
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                // copy & rename the file
-                String finalImageName = UUID.randomUUID().toString();
-                final String finalFilePath = AppConstants.IMAGE_PATH + finalImageName + ".jpg";
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 20, stream);
-                ivProfileImage.invalidate();
-
-                Thread thread = new Thread() {
-                    @Override
-                    public void run() {
-                        //run on ui thread
-                        runOnUiThread(() -> bindProfilePictureToUI(finalFilePath));
-                    }
-                };
-                thread.start();
-
-                //this code instead of calling BitmapUtils.copyFile(picturePath, finalFilePath);
-                InputStream input = getContentResolver().openInputStream(selectedImage);
-                OutputStream output = new FileOutputStream(finalFilePath);
-
-                byte[] buffer = new byte[4096];
-                int length;
-                while ((length = input.read(buffer)) > 0) {
-                    output.write(buffer, 0, length);
-                }
-                input.close();
-                output.close();
-                compressImageAndSave(finalFilePath);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    }*/
-
     private void selectImage() {
         mImagePickerAlertDialog = DialogUtils.showCommonImagePickerDialog(this, getString(R.string.select_image_hdr), new DialogUtils.ImagePickerDialogListener() {
             @Override
@@ -950,7 +903,8 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                     boolean isUpdated = providerDAO.updateProfileDetails(inputDTO);
                     if (isUpdated)
                         snackbarUtils.showSnackLinearLayoutParentSuccess(this, layoutParent, getResources().getString(R.string.profile_details_updated_new), true);
-                    OptimizedSyncWorker.enqueueOneTimeWork(MyProfileActivity.this);
+                    SyncDAO syncDAO = new SyncDAO();
+                    syncDAO.pushDataApi();
 
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
@@ -1031,7 +985,11 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        OptimizedSyncWorker.enqueueOneTimeWork(MyProfileActivity.this);
+        if (NetworkConnection.isOnline(MyProfileActivity.this)) {
+            ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
+            imagesPushDAO.loggedInUserProfileImagesPush();
+        }
+
     }
 
     @Override
@@ -1240,7 +1198,6 @@ public class MyProfileActivity extends BaseActivity implements SendSelectedDateI
                                 etMobileNo.setText(personAttributes.get(i).getValue().toString());
                                 prevPhoneNum = personAttributes.get(i).getValue().toString();
                                 phoneAttributeUuid = personAttributes.get(i).getUuid();
-                                sessionManager.setHealthWorkerNumber(personAttributes.get(i).getValue().toString());
                             }
                             if (attributeName.equalsIgnoreCase("emailId") && !personAttributes.get(i).isVoided()) {
                                 etEmail.setText(personAttributes.get(i).getValue().toString());

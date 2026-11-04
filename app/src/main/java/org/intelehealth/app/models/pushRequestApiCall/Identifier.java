@@ -17,18 +17,10 @@ public class Identifier {
     @SerializedName("preferred")
     @Expose
     private Boolean preferred;
+
     @SerializedName("identifier")
     @Expose
     private String identifier;
-
-    public String getIdentifier() {
-        return identifier;
-    }
-
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
-    }
-
 
     public String getIdentifierType() {
         return identifierType;
@@ -54,6 +46,12 @@ public class Identifier {
         this.preferred = preferred;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
 
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 
 }

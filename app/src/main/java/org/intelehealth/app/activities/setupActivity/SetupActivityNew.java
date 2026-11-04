@@ -18,6 +18,9 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+
+import org.intelehealth.app.ui.initialsync.InitialSyncActivity;
+import org.intelehealth.app.utilities.CustomLog;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,9 +38,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
@@ -48,6 +55,10 @@ import com.parse.Parse;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ForgotPasswordOtpVerificationActivity_New;
+import org.intelehealth.app.activities.forgotPasswordNew.ResetPasswordActivity_New;
+import org.intelehealth.app.activities.homeActivity.HomeScreenActivity_New;
+import org.intelehealth.app.activities.loginActivity.LoginActivityNew;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.models.DownloadMindMapRes;
@@ -57,10 +68,8 @@ import org.intelehealth.app.models.loginModel.LoginModel;
 import org.intelehealth.app.models.loginProviderModel.LoginProviderModel;
 import org.intelehealth.app.networkApiCalls.ApiClient;
 import org.intelehealth.app.networkApiCalls.ApiInterface;
-import org.intelehealth.app.ui.initialsync.InitialSyncActivity;
 import org.intelehealth.app.utilities.AdminPassword;
 import org.intelehealth.app.utilities.Base64Utils;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.DownloadMindMaps;
 import org.intelehealth.app.utilities.Logger;
@@ -121,6 +130,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
     CustomProgressDialog cpd;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,7 +183,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SetupActivityNew.this, ForgotPasswordActivity_New.class);
-                intent.putExtra("action", AppConstants.FORGOT_USER_PASSWORD_ACTION);
+                intent.putExtra("action",AppConstants.FORGOT_USER_PASSWORD_ACTION);
                 startActivity(intent);
             }
         });
@@ -394,14 +404,13 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
             CustomLog.i(TAG, location.getDisplay());
             //TestSetup(BuildConfig.SERVER_URL, userName, password, admin_password, location);
             //getting jwt token here
-            getJWTToken(BuildConfig.SERVER_URL, userName, password, admin_password, location);
+            getJWTToken(BuildConfig.SERVER_URL, userName, password, admin_password,location);
             CustomLog.d(TAG, "attempting setup");
         }
     }
 
     /**
      * some deprecated code updated
-     *
      * @return
      */
     private boolean isNetworkConnected() {
@@ -423,7 +432,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
     /**
      * getting jwt token here
-     *
      * @param urlString
      * @param username
      * @param password
@@ -434,11 +442,9 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         cpd.show(getString(R.string.please_wait));
 
         String finalURL = urlString.concat(":3030/auth/login");
-        System.out.println("finalURL" + finalURL);
         AuthJWTBody authBody = new AuthJWTBody(username, password, true);
         Observable<AuthJWTResponse> authJWTResponseObservable = AppConstants.apiInterface.AUTH_LOGIN_JWT_API(finalURL, authBody);
-        CustomLog.d(TAG, "getJWTToken: finalURL : " + finalURL);
-        CustomLog.d(TAG, "getJWTToken: authBody : " + authBody);
+
         authJWTResponseObservable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -450,7 +456,6 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
 
                     @Override
                     public void onNext(AuthJWTResponse authJWTResponse) {
-                        CustomLog.d(TAG, "getJWTToken: authJWTResponse : " + authJWTResponse);
                         // in case of error password
                         if (!authJWTResponse.getStatus()) {
                             cpd.dismiss();
@@ -459,13 +464,12 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         }
 
                         sessionManager.setJwtAuthToken(authJWTResponse.getToken());
-                        new PreferenceHelper(SetupActivityNew.this).save(PreferenceHelper.AUTH_TOKEN, authJWTResponse.getToken());
-                        TestSetup(urlString, username, password, admin_password, location);
+                        new PreferenceHelper(SetupActivityNew.this).save(PreferenceHelper.AUTH_TOKEN,authJWTResponse.getToken());
+                        TestSetup(urlString, username, password, admin_password,location);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        CustomLog.e(TAG, "Error occurred while fetching JWT token", e);
                         cpd.dismiss();
                         showErrorDialog();
                     }
@@ -591,9 +595,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                                             }
                                                             CustomLog.i(TAG, "onPostExecute: Parse init");
                                                             sessionManager.setIsLoggedIn(true);
-                                                            sessionManager.setLogout(false);
                                                             Intent intent = new Intent(SetupActivityNew.this, InitialSyncActivity.class);
-                                                            // Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
+                                                           // Intent intent = new Intent(SetupActivityNew.this, HomeScreenActivity_New.class);
                                                             intent.putExtra("setup", true);
                                                             intent.putExtra("firstLogin", "firstLogin");
                                                             intent.putExtra("loggedInUser", etUsername.getText().toString());
@@ -636,7 +639,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                                             }
                                         });
                                 cpd.dismiss();
-                            } else {
+                            }
+                            else {
                                 CustomLog.d(TAG, "onNext: loginmodel is null");
                                 cpd.dismiss();
                                 showErrorDialog();
@@ -832,8 +836,8 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
                         Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
 
                         // Change the alert dialog buttons text and background color
-                        positiveButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
-                        negativeButton.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+                        positiveButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
+                        negativeButton.setTextColor(ContextCompat.getColor(this,R.color.colorPrimary));
 
                         positiveButton.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -933,7 +937,7 @@ public class SetupActivityNew extends AppCompatActivity implements NetworkUtils.
         String encoded1 = sessionManager.getJwtAuthToken();
         ApiInterface apiService = ApiClient.createService(ApiInterface.class);
         try {
-            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key, "Bearer " + encoded1);
+            Observable<DownloadMindMapRes> resultsObservable = apiService.DOWNLOAD_MIND_MAP_RES_OBSERVABLE(key,"Bearer "+encoded1);
             resultsObservable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

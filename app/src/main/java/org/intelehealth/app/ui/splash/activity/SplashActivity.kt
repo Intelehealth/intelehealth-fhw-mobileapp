@@ -258,7 +258,6 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
         }
         if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                /*listPermissionsNeeded.add(Manifest.permission.READ_MEDIA_IMAGES)*/
                 listPermissionsNeeded.add(Manifest.permission.MANAGE_EXTERNAL_STORAGE)
             } else {
                 listPermissionsNeeded.add(Manifest.permission.READ_EXTERNAL_STORAGE)

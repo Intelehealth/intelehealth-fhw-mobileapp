@@ -132,7 +132,7 @@
     <!-- Example settings for Notifications -->
 
 
-    <string name="title_activity_additional_documents">अतिरिक्त दस्तऐवज</string>
+    <string name="title_activity_additional_documents">अतिरिक्त कागदपत्रे</string>
     <string name="title_activity_video_library">व्हिडिओ लायब्ररी</string>
     <string name="visit_summary_patient_details">भेट द्या तपशील</string>
 
@@ -202,7 +202,6 @@
     <string name="weight_error">वजन %1$s किलोपेक्षा कमी असावे </string>
     <string name="height_error">उंची 0 ते %1$s सेमी दरम्यान असावी</string>
     <!--    <string name="spo_error">एसपीओ2 %1$s आणि %2$s दरम्यान असणे आवश्यक आहे</string>-->
-    <string name="spo2_error">ऑक्सिजन संतृप्तता %1$s आणि %2$s च्या दरम्यान असावी.</string>
     <string name="pulse_error">नाडी %1$s आणि %2$s दरम्यानची असावी</string>
     <string name="bpsys_error">सिस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
     <string name="bpdia_error">डायस्टोलिक दबाव %1$s आणि %2$s दरम्यान असावा</string>
@@ -354,14 +353,6 @@
     <string name="take_photo">फोटो काधा</string>
     <string name="choose_from_gallery">गॅलरीमधून निवडा</string>
     <string name="additional_doc_image_picker_title">अतिरिक्त दस्तऐवज जोडा!</string>
-    <string name="doc_type_picker_title">दस्तऐवज प्रकार निवडा</string>
-    <string name="doc_type_previous_prescription">प्रिस्क्रिप्शन</string>
-    <string name="doc_type_old_test_reports">चाचणी अहवाल</string>
-    <string name="doc_type_old_medicine">औषधे</string>
-    <string name="doc_type_other">इतर</string>
-    <string name="doc_type_other_input_title">दस्तऐवज प्रकार प्रविष्ट करा</string>
-    <string name="doc_type_selection_required">दस्तऐवज प्रकार निवडा</string>
-    <string name="doc_type_other_input_error">दस्तऐवज प्रकार प्रविष्ट करा</string>
 
     <string name="loading_more">अधिक लोड करत आहे...</string>
     <string name="warning_app_update">कृपया ॲप नवीनतम आवृत्तीवर अपडेट करा.</string>
@@ -455,7 +446,6 @@
     <string name="select_date_hint">तारीख निवडा</string>
     <string name="error_field_valid_village_required">कृपया वैध गावाचे नाव प्रविष्ट करा (किमान 3 अक्षर)</string>
     <string name="patinet_history">%1$d/%2$d वैद्यकीय इतिहास: रुग्णाचा इतिहास</string>
-    <string name="_medical_family_history">%1$d/%2$d. वैद्यकीय इतिहास: कौटुंबिक इतिहास</string>
     <string name="_1_4_vitals">%1$d/%2$d महत्वपूर्ण</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys नेहमी > BP Dia असावा]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia नेहमी < BP Sys असावा]]></string>
@@ -516,8 +506,8 @@
     <string name="contact_your_admin">तुमच्या प्रशासकाशी संपर्क साधा</string>
     <string name="sync">रिफ्रेश करा</string>
     <string name="sending_otp">ओटीपी पाठवत आहे...</string>
-    <string name="province">प्रांत</string>
-    <string name="select_province">प्रांत निवडा</string>
+    <string name="province">Province</string>
+    <string name="select_province">Select Province</string>
     <string name="city">शहर</string>
     <string name="select_city">शहर निवडा</string>
     <string name="registration_address_of_health_facility">आरोग्य सुविधेचा नोंदणी पत्ता</string>
@@ -841,7 +831,6 @@
     <string name="blood_glucose_post_prandial">रक्तातील ग्लुकोज (जेवल्यानंतर)</string>
     <string name="blood_glucose_random">रक्तातील ग्लुकोज (रँडम)</string>
     <string name="haemoglobin">हिमोग्लोबिन (mg/dL)</string>
-    <string name="diabetes_hba1c">मधुमेह HbA1c (%)</string>
     <string name="household_no_survey">घर क्रमांक*</string>
     <string name="result_of_visit">भेटीचा परिणाम*</string>
 
@@ -941,7 +930,6 @@
     <string name="post_prandial_error">रक्तातील ग्लुकोज (जेवल्यानंतर) दरम्यान असावी %1$s आणि %2$s</string>
     <string name="uric_acid_error">यूरिक ऍसिड दरम्यान असावे %1$s आणि %2$s</string>
     <string name="cholestrol_acid_error">एकूण कोलेस्ट्रॉल दरम्यान असावे %1$s आणि %2$s</string>
-    <string name="diabeteshba1c_error">मधुमेह HBA1C %1$s आणि %2$s च्या दरम्यान असावा.</string>
     <string name="_diagnostics_summary">%1$d/%2$d निदान सारांश</string>
     <string name="details">तपशील</string>
     <string name="change">संपादित करा</string>
@@ -1013,11 +1001,11 @@
     <string name="relative_phone_number">नातेवाईकाचा फोन नंबर</string>
     <string name="inn">INN</string>
     <string name="enter_inn">INN प्रविष्ट करा</string>
-    <string name="code_of_the_health_facility">आरोग्य सुविधेचा कोड</string>
-    <string name="enter_code">कोड प्रविष्ट करा</string>
-    <string name="enter_name">नाव प्रविष्ट करा</string>
-    <string name="health_facility_name">आरोग्य सुविधेचे नाव</string>
-    <string name="code_of_the_department">विभागाचा कोड</string>
+    <string name="code_of_the_health_facility">Code of the Health Facility</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="enter_name">Enter Name</string>
+    <string name="health_facility_name">Health facility name</string>
+    <string name="code_of_the_department">Code of the Department</string>
     <string name="annual_household_expenditure_on_food">अन्नावरील वार्षिक घरगुती खर्च</string>
     <string name="what_is_the_main_source_of_drinking_water_for_members_of_your_household">तुमच्या घरातील सदस्यांसाठी पिण्याच्या पाण्याचा मुख्य स्त्रोत कोणता आहे?</string>
     <string name="close_">रुग्ण नोंदणी बंद करायची?</string>
@@ -1042,9 +1030,6 @@
     <!--Strings from excel-->
     <string name="hba1c_range">HbA1c %1$s आणि %2$s मध्ये असले पाहिजे</string>
     <string name="hba1c">HbA1c</string>
-    <string name="hba1c_lost_connection_tap_scan">HbA1c उपकरणाशी असलेला संपर्क तुटला आहे. पुन्हा जोडणी करण्यासाठी कृपया \'स्कॅन\' (Scan) वर टॅप करा.</string>
-    <string name="scan_devices">उपकरणे स्कॅन करा</string>
-    <string name="scan_hba1c_device">HbA1c उपकरण स्कॅन करा</string>
     <string name="who_are_we">आम्ही कोण आहोत?</string>
     <string name="arogya_sampada_intro">आरोग्य संपदा हे एक अत्याधुनिक टेलिमेडिसिन प्लॅटफॉर्म आहे जे रुग्णांना आणि फ्रंटलाइन आरोग्यसेवा कर्मचाऱ्यांना व्हर्च्युअल डॉक्टरशी जोडते जेणेकरून उच्च दर्जाची वैद्यकीय सेवा मिळते, ज्यामुळे दुर्गम भागात आरोग्यसेवेच्या उपलब्धतेतील तफावत भरून निघते.</string>
     <string name="provide_prescriptions">प्रिस्क्रिप्शन प्रदान करा</string>
@@ -1131,10 +1116,6 @@
     <string name="self">स्वतः</string>
     <string name="family">कुटुंब</string>
     <string name="enter_postal_code">पोस्टल कोड प्रविष्ट करा</string>
-    <string name="enter_state">राज्य प्रविष्ट करा</string>
-    <string name="enter_district">जिल्हा प्रविष्ट करा</string>
-    <string name="national_ID">राष्ट्रीय ओळखपत्र (नागरिकत्व आयडी, आधार क्रमांक, इत्यादी)</string>
-    <string name="enter_national_ID">राष्ट्रीय ओळखपत्र प्रविष्ट करा</string>
     <string name="india">भारत</string>
     <string name="enter_village_town_city">गाव/शहर/शहर प्रविष्ट करा</string>
     <string name="enter_patient_address">रुग्णाचा पत्ता प्रविष्ट करा</string>
@@ -1225,7 +1206,7 @@
     <string name="chief_complaints">मुख्य तक्रारी</string>
     <string name="additional_notes">अतिरिक्त नोट्स</string>
     <string name="leave_a_note_for_doctor">डॉक्टरांसाठी एक नोट सोडा</string>
-    <string name="add_additional_documents_like">अतिरिक्त दस्तऐवज जसे की अहवाल, प्रिस्क्रिप्शन इ. जोडा.</string>
+    <string name="add_additional_documents_like">अतिरिक्त दस्तऐवज जसे की रिपोर्ट, प्रिस्क्रिप्शन इ. जोडा.</string>
     <string name="doctor_speciality">डॉक्टरांची तज्ञता</string>
     <string name="select_specialization">तज्ञता निवडा</string>
     <string name="appointment">अपॉइंटमेंट</string>
@@ -1275,7 +1256,6 @@
     <string name="most_searched">सर्वाधिक शोधलेले</string>
     <string name="frequently_asked_ques">वारंवार विचारले जाणारे प्रश्न</string>
     <string name="how_intelehealth_work">इंटेलहेल्थ (intelehealth) कसे काम करते?</string>
-    <string name="how_to_register">नवीन रुग्णाची नोंदणी कशी करावी?</string>
     <string name="why_intelehealth_exist_ans">इंटेलेहेल्थ टीमचे "सर्वांसाठी आरोग्य" हे एक स्वप्न आहे. त्यामुळे इंटेलेहेल्थ ही सार्वत्रिक आरोग्य कवच राखण्यासाठी अस्तित्वात आहे. प्रत्येक व्यक्तीला त्यांना लागणारी आरोग्य सेवा जेव्हा आणि जिथे लागते, तेव्हा आणि कुठेही, कोणत्याही आर्थिक अडचणीशिवाय मिळावी यासाठी हे प्रयत्नशील आहे.</string>
     <string name="how_intelehealth_help">इंटेलेहेल्थ रुग्णांना कशी मदत करते?</string>
     <string name="how_to_register_ans">रुग्णाची नोंदणी करण्यासाठी होम स्क्रीनवर "रुग्ण जोडा" टॅबवर क्लिक करा. रुग्णाला गोपनीयता धोरण वाचा. जर रुग्ण सहमत असेल तर सर्व माहिती पूर्ण करा आणि रुग्णाची नोंदणी करा.</string>
@@ -1357,8 +1337,6 @@
     <string name="age_mandatory">वय</string>
     <string name="enter_age">वय प्रविष्ट करा</string>
     <string name="corresponding_address_1">संबंधित पत्ता 1</string>
-    <string name="_corresponding_address_1">संबंधित पत्ता 1</string>
-    <string name="_corresponding_address_2">संबंधित पत्ता 2</string>
     <string name="this_field_is_mandatory">हे फील्ड अनिवार्य आहे</string>
     <string name="_vitals_summary">%1$d/%2$d महत्वपूर्ण सारांश</string>
     <string name="select_one_or_multiple_reasons">एक किंवा अधिक कारणे निवडा</string>
@@ -1401,7 +1379,6 @@
     <string name="reset_app_new">ॲप रीसेट करा</string>
     <string name="change_photo"><u>फोटो बदला</u></string>
     <string name="add_a_picture">चित्र जोडा</string>
-    <string name="my_profile">माझी प्रोफाइल</string>
     <string name="next_new">पुढे</string>
     <string name="select_language">भाषा निवडा</string>
     <string name="economic_category">आर्थिक श्रेणी</string>
@@ -1519,7 +1496,6 @@
     <string name="no_country_added">देश समाविष्ट केलेला नाही</string>
     <string name="no_state_added">राज्य समाविष्ट केलेले नाही</string>
     <string name="no_district_added">जिल्हा समाविष्ट केलेला नाही</string>
-    <string name="no_block_added">ब्लॉक समाविष्ट केलेले नाही</string>
     <string name="no_city_added">शहर समाविष्ट केलेले नाही</string>
     <string name="no_postal_code_added">पिनकोड समाविष्ट केलेला नाही</string>
     <string name="no_mobile_number_added">फोन नंबर समाविष्ट केलेला नाही</string>
@@ -1541,85 +1517,6 @@
     <string name="wait_while_protocols_changing">प्रोटोकॉल बदलले जात असताना कृपया वाट पहा.</string>
     <string name="protocols_successfully_changed">प्रोटोकॉल यशस्वीरित्या बदलले आहेत!</string>
     <string name="language_successfully_changed">भाषा यशस्वीरित्या बदलली!</string>
-    <string name="confirm_discard_changes_title">ही भेट अपूर्ण आहे!</string>
-    <string name="confirm_discard_changes_content">तुम्हाला खात्री आहे का की तुम्ही या भेटीचे सर्व तपशील रद्द करू इच्छिता?</string>
-    <string name="confirm_discard_changes_button_dialog">रद्द करा</string>
-    <string name="confirm_continue_changes_button_dialog">सुरू ठेवा</string>
-    <string name="confirm_discard_changes_content_on_sync">तुमची भेट तयार करण्याची प्रक्रिया अद्याप पूर्ण झालेली नाही. तुम्ही ती पूर्ण करू शकता किंवा ती रद्द करू शकता.</string>
-    <string name="please_enter_mobile_no_in_profile">सुरू ठेवा</string>
-    <string name="enter_mobile_number_in_profile">कृपया प्रोफाइल विभागात तुमचा मोबाइल क्रमांक अपडेट करा</string>
-    <string name="morbidly_obese">मध्यम लठ्ठपणा (वर्ग १)</string>
-    <string name="hw_mobile_number">स्वास्थ्य कार्यकर्ता संपर्क नंबर</string>
-    <string name="pdf_share_flow_msg">कृपया प्रिस्क्रिप्शन या मोबाईल नंबरवर पाठवा: %1$s</string>
-    <string name="pdf_share_flow_title">प्रिस्क्रिप्शन शेअर करा</string>
     <string name="feature_not_found">Feature not found</string>
-    <string name="poor_quality_msg">खराब दर्जाचे नेटवर्क आढळले. ऑडिओ कॉलची गणना सुरू आहे.</string>
-    <string name="if_symptoms_worsen_please_visit_the_nearest_doctor_or_government_health_facility">लक्षणे आणखी वाढल्यास, कृपया जवळच्या डॉक्टरांना किंवा सरकारी आरोग्य सुविधेला भेट द्या.</string>
 
-     <!--DIGITALSETHASCOPE-->
-
-    <string name="connectdevice">डिव्हाइस कनेक्ट करा</string>
-    <string name="clinicallyRecommended">वैद्यकीयदृष्ट्या शिफारस केलेले</string>
-    <string name="symptomBreathlessness">लक्षण: श्वास घेण्यास त्रास होणे</string>
-    <string name="integratedPOCDigitalstethoscoperecommendedforcomprehensiveevaluation">सर्वसमावेशक मूल्यांकनासाठी इंटिग्रेटेड पीओसी डिजिटल स्टेथोस्कोपची शिफारस केली जाते.</string>
-    <string name="heartSounds">हृदयाचा आवाज</string>
-    <string name="lungSounds">फुफ्फुसाचा आवाज</string>
-    <string name="skipfornow">आतासाठी वगळा</string>
-    <string name="startRecording">रेकॉर्डिंग सुरू करा</string>
-    <string name="keepsethoscopeSteday">सेथोस्कोप स्थिर ठेवा</string>
-    <string name="back">मागे</string>
-    <string name="pause">विराम द्या</string>
-    <string name="stopRecording">रेकॉर्डिंग थांबवा</string>
-    <string name="retry">पुन्हा प्रयत्न करा</string>
-    <string name="saveRecording">रेकॉर्डिंग जतन करा</string>
-    <string name="audioWaveForm">ऑडिओ वेव्हफॉर्म</string>
-    <string name="re_Record">पुन्हा रेकॉर्ड करा</string>
-    <string name="digitalAusucultation">डिजिटल ऑस्कल्टेशन</string>
-
-    <!--AYU CONNECT DIALOG (dialog_ayu_connect.xml)-->
-    <string name="ayu_connect_title">डिजिटल ऑस्कल्टेशन</string>
-    <string name="ayu_connect_subtitle">पर्यायी • लक्षणांनुसार आवश्यक नाही</string>
-    <string name="ayu_connect_description">रुग्णाच्या लक्षणांनुसार, ऑस्कल्टेशन आवश्यक नाही. तुम्ही हे वगळू शकता किंवा आवश्यक असल्यास रेकॉर्ड करणे निवडू शकता.</string>
-    <string name="ayu_connect_status_disconnected">डिव्हाइस डिस्कनेक्ट केलेले आहे</string>
-    <string name="ayu_connect_status_connected">डिव्हाइस कनेक्ट केलेले आहे</string>
-    <string name="ayu_connect_subtext_disconnected">AyuSynk डिव्हाइसशी कनेक्ट करण्यासाठी स्कॅन करा</string>
-    <string name="ayu_connect_subtext_connected">AyuSynk तयार आहे — खालील आवाजाचा प्रकार निवडा</string>
-    <string name="ayu_connect_scan">स्कॅन</string>
-    <string name="ayu_connect_scanning">स्कॅन करत आहे…</string>
-    <string name="ayu_connect_scan_failed">स्कॅन अयशस्वी — पुन्हा प्रयत्न करा</string>
-    <string name="ayu_connect_device_required">कृपया प्रथम AyuSynk डिव्हाइस कनेक्ट करा</string>
-    <string name="ayu_connect_location_disabled_title">स्थान सेवा अक्षम आहे</string>
-    <string name="ayu_connect_location_disabled_message">Android &lt; 12 वर BLE स्कॅनिंगसाठी स्थान सेवा आवश्यक आहे.</string>
-    <string name="ayu_connect_enable">सक्षम करा</string>
-    <string name="sound_recorded_count_format">%1$d / %2$d रेकॉर्ड केले</string>
-    <string name="sound_recorded_count_only_format">%1$d रेकॉर्ड केले</string>
-
-    <!--  ABDM / ABHA  -->
-    <string name="abha_number">आभा क्रमांक</string>
-    <string name="abha_address">आभा पत्ता</string>
-    <string name="view_abha_card">आभा कार्ड पाहा</string>
-    <string name="create_new_abha_address">नवीन आभा पत्ता तयार करा</string>
-    <string name="creating_more_than_six_abha_addresses_are_not_allowed">सहापेक्षा जास्त आभा पत्ते तयार करता येणार नाहीत.</string>
-    <string name="associated_abha_address">जोडलेला आभा पत्ता: %1$s</string>
-
-    <!--  NAMCO  -->
-    <string name="referrals">रेफरल्स</string>
-    <string name="active_referrals">सक्रिय रेफरल्स</string>
-    <string name="patient_waiting_for_specialist">%1$d रुग्ण तज्ज्ञ डॉक्टरांची वाट पाहत आहे</string>
-    <string name="patients_waiting_for_specialist">%1$d रुग्ण तज्ज्ञ डॉक्टरांची वाट पाहत आहेत</string>
-    <string name="waiting_for_specialist">%1$s तज्ञांची प्रतीक्षा</string>
-    <string name="no_referrals_found">कोणतेही रेफरल आढळले नाही</string>
-    <string name="specialist_prescription">तज्ज्ञ डॉक्टरांचे प्रिस्क्रिप्शन</string>
-    <string name="latest">नवीनतम</string>
-    <string name="prescription_pending">प्रिस्क्रिप्शन प्रलंबित आहे</string>
-    <string name="referral_declined">रेफरल नाकारले</string>
-    <string name="referral_declined_by_patient">रुग्णाने रेफरल नाकारले</string>
-    <string name="referral_declined_description">रेफरलची शिफारस करण्यात आली होती परंतु रुग्णाने ती नाकारली</string>
-    <string name="referred_to_destination">%1$s कडे रेफर केले</string>
-    <string name="resume">पुन्हा सुरू करा</string>
-    <string name="final_prescription_received">अंतिम प्रिस्क्रिप्शन प्राप्त झाले</string>
-    <string name="specialist_prescription_completed">तज्ज्ञांचे प्रिस्क्रिप्शन पूर्ण झाले</string>
-    <string name="interim_prescription">तात्पुरते प्रिस्क्रिप्शन</string>
-    <string name="waiting_for_specialist_consultation">तज्ञांच्या सल्ल्याची वाट पाहत आहे</string>
-    <string name="referral_evaluation_instruction">पुढील तपासणीसाठी कृपया NAMCO डॉक्टरांचा सल्ला घ्या</string>
 </resources>

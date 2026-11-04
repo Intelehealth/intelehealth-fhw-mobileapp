@@ -1,8 +1,6 @@
 package org.intelehealth.app.models;
 
-import java.io.Serializable;
-
-public class VitalsObject implements Serializable {
+public class VitalsObject {
 
     private String patientUuid;
     private String height;

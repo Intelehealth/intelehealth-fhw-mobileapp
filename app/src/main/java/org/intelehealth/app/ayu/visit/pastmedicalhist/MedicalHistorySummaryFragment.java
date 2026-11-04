@@ -1,5 +1,6 @@
 package org.intelehealth.app.ayu.visit.pastmedicalhist;
 
+import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_4_PHYSICAL_SUMMARY_EXAMINATION;
 import static org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_6_HISTORY_SUMMARY;
 import static org.intelehealth.app.knowledgeEngine.Node.bullet_arrow;
 import static org.intelehealth.app.syncModule.SyncUtils.syncNow;
@@ -9,7 +10,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
-import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 
 import org.intelehealth.app.BuildConfig;
@@ -62,7 +62,6 @@ public class MedicalHistorySummaryFragment extends Fragment {
     private LinearLayout mSummaryLinearLayout;
     private ObjectAnimator syncAnimator;
     private boolean mIsEditMode = false;
-    private String visitUuid;
 
     public MedicalHistorySummaryFragment() {
         // Required empty public constructor
@@ -70,12 +69,11 @@ public class MedicalHistorySummaryFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static MedicalHistorySummaryFragment newInstance(CommonVisitData commonVisitData, String patientHistory, String familyHistory, boolean isEditMode, String visitUuid) {
+    public static MedicalHistorySummaryFragment newInstance(CommonVisitData commonVisitData, String patientHistory, String familyHistory, boolean isEditMode) {
         MedicalHistorySummaryFragment fragment = new MedicalHistorySummaryFragment();
         fragment.mSummaryStringPastHistory = patientHistory;
         fragment.mSummaryStringFamilyHistory = familyHistory;
         fragment.mIsEditMode = isEditMode;
-        fragment.visitUuid = visitUuid;
         return fragment;
     }
 
@@ -143,12 +141,8 @@ public class MedicalHistorySummaryFragment extends Fragment {
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mIsEditMode) {
-                    if (NetworkConnection.isOnline(requireActivity())) {
-                        syncNow(requireActivity(), refresh, syncAnimator);
-                    }
-                }else{
-                    new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
+                if (NetworkConnection.isOnline(requireActivity())) {
+                    syncNow(requireActivity(), refresh, syncAnimator);
                 }
             }
         });

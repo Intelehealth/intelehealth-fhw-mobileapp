@@ -6,7 +6,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
-import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +25,7 @@ import org.intelehealth.core.network.helper.NetworkHelper
  * Mob   : +919727206702
  **/
 class ConfigSyncWorker(
-    private val ctx: Context, private val params: WorkerParameters,
+    private val ctx: Context, private val params: WorkerParameters
 ) : CoroutineWorker(ctx, params) {
 
     override suspend fun doWork(): Result {
@@ -60,9 +59,11 @@ class ConfigSyncWorker(
             val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
             scope.launch {
                 workManager.getWorkInfoByIdFlow(configWorkRequest.id).collect {
-                    Timber.tag("ConfigSyncWorker")
-                        .d("startConfigSyncWorker: ${Gson().toJson(it?.outputData)}")
-                    onResult(it?.state?.name.toString())
+                    Log.d(
+                        "ConfigSyncWorker",
+                        "startConfigSyncWorker: ${Gson().toJson(it.outputData)}"
+                    )
+                    onResult(it.state.name)
                 }
             }
         }

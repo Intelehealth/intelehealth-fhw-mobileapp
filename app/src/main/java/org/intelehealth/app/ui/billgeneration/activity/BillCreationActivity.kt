@@ -12,7 +12,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 import org.intelehealth.app.R
@@ -37,10 +36,6 @@ class BillCreationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityBillCreationBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val controller =
-            WindowInsetsControllerCompat(window, window.decorView)
-        controller.isAppearanceLightNavigationBars = true
-        controller.isAppearanceLightStatusBars = true
 
         sessionManager = SessionManager(this)
         setupUI()

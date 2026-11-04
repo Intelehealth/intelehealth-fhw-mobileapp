@@ -45,7 +45,6 @@ public class VisitDiagnosticsSummary {
     ObsDTO hemoglobin = new ObsDTO();
     ObsDTO uricAcid = new ObsDTO();
     ObsDTO totalCholestrol = new ObsDTO();
-    ObsDTO diabeteshbalc= new ObsDTO();
     CommonVisitData mCommonVisitData;
 
     public VisitDiagnosticsSummary(ActivityVisitSummaryNewBinding mBinding, Context context,
@@ -138,10 +137,6 @@ public class VisitDiagnosticsSummary {
                 totalCholestrol.setValue(value);
                 break;
             }
-            case UuidDictionary.DIABETES_HBA1C: {
-                diabeteshbalc.setValue(value);
-                break;
-            }
 
             default:
                 CustomLog.i(TAG, "parseData: " + value);
@@ -204,14 +199,6 @@ public class VisitDiagnosticsSummary {
             }
         }
 
-        if (diabeteshbalc.getValue() != null) {
-            if (diabeteshbalc.getValue().trim().isEmpty() || diabeteshbalc.getValue().trim().equals("0")) {
-                mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.setText(context.getResources().getString(R.string.no_information));
-            } else {
-                mBinding.layoutVisitSummarySections.textViewDiabetesHba1cValue.setText(diabeteshbalc.getValue());
-            }
-        }
-
     }
 
     private void updateUIOfDiagnostics() {
@@ -222,7 +209,6 @@ public class VisitDiagnosticsSummary {
         mBinding.layoutVisitSummarySections.llHemoglobinContainer.setVisibility(View.GONE);
         mBinding.layoutVisitSummarySections.llUricAcidContainer.setVisibility(View.GONE);
         mBinding.layoutVisitSummarySections.llTotalCholestrolContainer.setVisibility(View.GONE);
-        mBinding.layoutVisitSummarySections.llDiabetesHba1cContainer.setVisibility(View.GONE);
 
         for (Diagnostics diagnostics : diagnosticsList) {
             CustomLog.v(TAG, diagnostics.getName() + "\t" + diagnostics.getDiagnosticsKey());
@@ -242,9 +228,9 @@ public class VisitDiagnosticsSummary {
                 mBinding.layoutVisitSummarySections.llUricAcidContainer.setVisibility(View.VISIBLE);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mBinding.layoutVisitSummarySections.llTotalCholestrolContainer.setVisibility(View.VISIBLE);
-            }else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
-                mBinding.layoutVisitSummarySections.llDiabetesHba1cContainer.setVisibility(View.VISIBLE);
             }
         }
     }
+
+
 }

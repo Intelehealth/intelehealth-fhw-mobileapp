@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.onboarding.GenericWebViewClient;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
@@ -24,7 +23,6 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.DialogUtils;
-import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
 
@@ -45,13 +43,8 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
 
         mCommonVisitData = getIntent().getExtras().getParcelable("CommonVisitData");
 
-        String consentText = "";
-        if (BuildConfig.FLAVOR_client == FlavorKeys.NAS) {
-            consentText = new ConfigUtils(this).getTeleconsultationConsentTextForWebrtcRecording(sessionManager.getAppLanguage());
-        }else{
-            consentText = new ConfigUtils(this).getTeleconsultationConsentText(sessionManager.getAppLanguage());
-        }
-            WebView consentWebView = findViewById(R.id.content_tv);
+        String consentText = new ConfigUtils(this).getTeleconsultationConsentText(sessionManager.getAppLanguage());
+        WebView consentWebView = findViewById(R.id.content_tv);
 
         loadingDialog = new DialogUtils().showCommonLoadingDialog(
                 this,

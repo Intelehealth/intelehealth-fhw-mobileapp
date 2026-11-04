@@ -8,5 +8,4 @@ class DiagnosticsModel (
     var hemoglobin: String? = null,
     var uricAcid: String? = null,
     var cholesterol: String? = null,
-    var diabetesbba1c :String? = null
 )

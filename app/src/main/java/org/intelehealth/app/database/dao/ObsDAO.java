@@ -2,8 +2,8 @@ package org.intelehealth.app.database.dao;
 
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMPLETE;
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VITALS;
-import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 import static org.intelehealth.app.utilities.UuidDictionary.HW_FOLLOWUP_CONCEPT_ID;
+import static org.intelehealth.app.utilities.UuidDictionary.FOLLOW_UP_VISIT;
 import static org.intelehealth.app.utilities.UuidDictionary.OBS_TYPE_DIAGNOSTICS_SET;
 
 import android.content.ContentValues;
@@ -13,15 +13,16 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.util.Log;
 
+import org.intelehealth.app.models.dto.VisitDTO;
+import org.intelehealth.app.utilities.CustomLog;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.gson.Gson;
 
 import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
-import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.Logger;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.UuidDictionary;
@@ -30,7 +31,6 @@ import org.intelehealth.app.utilities.exception.DAOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 public class ObsDAO extends BaseDao{
@@ -334,53 +334,6 @@ public class ObsDAO extends BaseDao{
      * @param visitUUID
      * @return Followup date Eg. 30-11-2022
      */
-    /**
-     * Same specialist-encounter-priority/latest-row resolution as
-     * getFollowupDataForVisitUUID(), but returns the FULL raw obs value (date, plus
-     * any "Time:"/"Remark:"/"Type:" segments) instead of just the first 10 chars -
-     * for screens that also need to show the follow-up time, not just the date.
-     */
-    public static String getFullFollowupValueForVisitUUID(String visitUUID) {
-        String result = null;
-        if (visitUUID == null) return null;
-
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-
-        final Cursor specialistCursor = db.rawQuery("select o.value from " +
-                        "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
-                        "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
-                        "v.uuid = ? and o.conceptuuid = ? and e.encounter_type_uuid = ? " +
-                        "order by o.obsservermodifieddate desc",
-                new String[]{visitUUID, FOLLOW_UP_VISIT, UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE});
-        if (specialistCursor.moveToFirst()) {
-            try {
-                result = specialistCursor.getString(specialistCursor.getColumnIndexOrThrow("value"));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        specialistCursor.close();
-
-        if (result == null) {
-            final Cursor cursor = db.rawQuery("select o.value from " +
-                            "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
-                            "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
-                            "v.uuid = ? and o.conceptuuid = ? " +
-                            "order by o.obsservermodifieddate desc",
-                    new String[]{visitUUID, FOLLOW_UP_VISIT});
-            if (cursor.moveToFirst()) {
-                try {
-                    result = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            cursor.close();
-        }
-
-        return result;
-    }
-
     public static String getFollowupDataForVisitUUID(String visitUUID) {
         String result = null;
 
@@ -388,48 +341,19 @@ public class ObsDAO extends BaseDao{
         //db.beginTransaction();
 
         if (visitUUID != null) {
-            // A referred visit can carry the Follow up visit obs on more than one
-            // encounter for the same visit — the GP's own ENCOUNTER_VISIT_NOTE (e.g.
-            // "No", since the GP referred instead of scheduling a follow-up) and, once
-            // the NAMCO/specialist doctor completes the visit, their own
-            // ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE encounter, which carries the real
-            // follow-up date along with their diagnosis/prescription (confirmed against
-            // an actual pulled visit's local rows — ENCOUNTER_VISIT_COMPLETE itself only
-            // ever carries the completing doctor's signature block, never clinical obs).
-            // The specialist's encounter is the authoritative one when present; without
-            // this, the loop below could pick up the GP's earlier "No" instead. Falling
-            // back to any encounter for the visit keeps existing (non-referred, or
-            // referred-but-not-yet-completed) behavior unchanged.
-            final Cursor specialistCursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " +
-                            "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " +
-                            "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " +
-                            "v.uuid = ? and o.conceptuuid = ? and e.encounter_type_uuid = ? " +
-                            "order by o.obsservermodifieddate desc",
-                    new String[]{visitUUID, FOLLOW_UP_VISIT, UuidDictionary.ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE});
-            if (specialistCursor.moveToFirst()) {
-                try {
-                    result = specialistCursor.getString(specialistCursor.getColumnIndexOrThrow("value_text"));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            specialistCursor.close();
+            final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " + "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " + "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
 
-            if (result == null) {
-                final Cursor cursor = db.rawQuery("select o.value, SUBSTR(o.value,1,10) AS value_text from " + "tbl_visit v, tbl_encounter e, tbl_obs o where v.uuid = e.visituuid and e.uuid = o.encounteruuid and " + "(o.sync=1 or o.sync='TRUE' or o.sync='true') and o.voided = 0 and " + "v.uuid = ? and o.conceptuuid = ?", new String[]{visitUUID, FOLLOW_UP_VISIT});  // e8caffd6-5d22-41c4-8d6a-bc31a44d0c86
-
-                if (cursor.moveToFirst()) {
-                    do {
-                        try {
-                            result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
-                            CustomLog.v("value_text", "value_text: " + result);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } while (cursor.moveToNext());
-                }
-                cursor.close();
+            if (cursor.moveToFirst()) {
+                do {
+                    try {
+                        result = cursor.getString(cursor.getColumnIndexOrThrow("value_text"));
+                        CustomLog.v("value_text", "value_text: " + result);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } while (cursor.moveToNext());
             }
+            cursor.close();
 //            db.setTransactionSuccessful();
 //            db.endTransaction();
         }
@@ -629,65 +553,5 @@ public class ObsDAO extends BaseDao{
     @Override
     String tableName() {
        return "tbl_obs";
-    }
-
-
-    /**
-     * Fetches the value column for a given conceptUuid + encounterUuid.
-     * Returns null if no matching obs found.
-     */
-    public String getObsValue(String encounterUuid, String conceptUuid) throws DAOException {
-        String value = null;
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        Cursor cursor = db.rawQuery(
-                "SELECT value FROM tbl_obs WHERE conceptuuid = ? AND encounteruuid = ? AND voided = '0' ORDER BY created_date, obsservermodifieddate DESC LIMIT 1",
-                new String[]{conceptUuid, encounterUuid}
-        );
-        try {
-            if (cursor.moveToFirst()) {
-                value = cursor.getString(cursor.getColumnIndexOrThrow("value"));
-            }
-        } catch (SQLException e) {
-            FirebaseCrashlytics.getInstance().recordException(e);
-            throw new DAOException(e);
-        } finally {
-            cursor.close();
-        }
-        return value;
-    }
-
-    /**
-     * Fetches the vitals for a given encounterUuid and returns a VitalsObject containing the values.
-     *
-     * @param encounterUuid
-     * @return VitalsObject containing the vitals values for the encounter
-     * @throws DAOException
-     */
-    public VitalsObject getVitalsForEncounter(String encounterUuid) throws DAOException {
-        VitalsObject vitalsObject = new VitalsObject();
-        vitalsObject.setHeight(getObsValue(encounterUuid, UuidDictionary.HEIGHT));
-        vitalsObject.setWeight(getObsValue(encounterUuid, UuidDictionary.WEIGHT));
-        vitalsObject.setPulse(getObsValue(encounterUuid, UuidDictionary.PULSE));
-        vitalsObject.setBpsys(getObsValue(encounterUuid, UuidDictionary.SYSTOLIC_BP));
-        vitalsObject.setBpdia(getObsValue(encounterUuid, UuidDictionary.DIASTOLIC_BP));
-        vitalsObject.setTemperature(getObsValue(encounterUuid, UuidDictionary.TEMPERATURE));
-        vitalsObject.setResp(getObsValue(encounterUuid, UuidDictionary.RESPIRATORY));
-        vitalsObject.setSpo2(getObsValue(encounterUuid, UuidDictionary.SPO2));
-        // bmi calculation
-        if (vitalsObject.getHeight() != null && vitalsObject.getWeight() != null) {
-            try {
-                // already in height in cm, weight kg, BMI = weight (kg) / (height (m))^2
-                double numerator = Double.parseDouble(vitalsObject.getWeight()) * 10000;
-                double denominator = Double.parseDouble(vitalsObject.getHeight()) * Double.parseDouble(vitalsObject.getHeight());
-                double bmi_value = numerator / denominator;
-                vitalsObject.setBmi(String.format(Locale.ENGLISH, "%.2f", bmi_value));
-
-            } catch (NumberFormatException e) {
-                FirebaseCrashlytics.getInstance().recordException(e);
-                vitalsObject.setBmi(null); // Set BMI to null if parsing fails
-            }
-        }
-
-        return vitalsObject;
     }
 }

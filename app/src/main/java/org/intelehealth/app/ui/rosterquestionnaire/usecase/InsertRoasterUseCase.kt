@@ -1,9 +1,8 @@
 package org.intelehealth.app.ui.rosterquestionnaire.usecase
 
 import com.google.gson.Gson
+import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
-import org.intelehealth.app.app.IntelehealthApplication
-import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthIssues
 import org.intelehealth.app.ui.rosterquestionnaire.model.HealthServiceModel
 import org.intelehealth.app.ui.rosterquestionnaire.model.PregnancyOutComeModel
@@ -45,7 +44,8 @@ class InsertRoasterUseCase @Inject constructor(private val repository: RosterRep
         prepareHealthService(healthServiceModelList, uuid, patientAttributesDTOList)
 
         repository.insertRoaster(patientAttributesDTOList)
-        OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext())
+        val syncDAO = SyncDAO()
+        syncDAO.pushDataApi()
     }
 
     private fun prepareHealthService(

@@ -4,7 +4,6 @@ import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_COMP
 import static org.intelehealth.app.utilities.UuidDictionary.ENCOUNTER_VISIT_NOTE;
 
 import android.app.Activity;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,11 +11,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.Html;
 
-import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
-import org.intelehealth.app.ui.prescriptionwithotp.PrescriptionData;
-import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModel;
-import org.intelehealth.app.ui.prescriptionwithotp.SharePrescriptionViewModelFactory;
-import org.intelehealth.app.ui.prescriptionwithotp.ShowPrescriptionDataPdfShareDialog;
 import org.intelehealth.app.ui.home.HomeScreenQueriesRepository;
 import org.intelehealth.app.utilities.AddPatientUtils;
 import org.intelehealth.app.utilities.CustomLog;
@@ -40,7 +34,6 @@ import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,7 +49,6 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.VisitCountInterface;
 import org.intelehealth.app.utilities.exception.DAOException;
-import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +60,7 @@ import java.util.concurrent.Executors;
  * Github : @prajwalmw
  * Email: prajwalwaingankar@gmail.com
  */
-public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnItemClickListener {
+public class VisitReceivedFragment extends Fragment {
     public static final String TAG = "VisitReceivedFragment";
     private RecyclerView recycler_recent, recycler_older /*, recycler_month*/;
     private CardView visit_received_card_header;
@@ -99,24 +91,9 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     PrescriptionLoadingListeners prescriptionLoadingListeners;
     private String searchQuery = "";
     private AlertDialog commonLoadingDialog;
-    private FeatureActiveStatus mFeatureActiveStatus;
 
     public VisitReceivedFragment(PrescriptionLoadingListeners prescriptionLoadingListeners) {
         this.prescriptionLoadingListeners = prescriptionLoadingListeners;
-    }
-
-    /**
-     * Required by the Fragment framework: after process death (e.g. the OS
-     * reclaims memory while the user is away in a share-sheet/WhatsApp for
-     * Share Prescription), FragmentManager restores this fragment by calling
-     * this constructor via reflection — a fragment with only a parameterized
-     * constructor crashes with "could not find Fragment constructor" the
-     * moment restoration is attempted. prescriptionLoadingListeners is
-     * re-resolved from the host Activity in onAttach() below for this path;
-     * VisitPagerAdapter's normal (non-restoration) creation still explicitly
-     * passes it via the constructor above, unchanged.
-     */
-    public VisitReceivedFragment() {
     }
 
     @Nullable
@@ -134,12 +111,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        mFeatureActiveStatus =  ((VisitActivity) requireActivity()).getFeatureActiveStatus();
-        if (mFeatureActiveStatus != null && mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp()){
-            older_adapter.setFeatureActiveStatus(mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp());
-            Log.d(TAG, "onViewCreated: mFeatureActiveStatus : "+mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp());
-        }
-        //Log.d(TAG, "onViewCreated: mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp() : "+mFeatureActiveStatus.getActiveStatusPrescriptionWithOtp());
         defaultData();
         visitData();
     }
@@ -166,7 +137,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     private void initUI(View view) {
         progress = view.findViewById(R.id.progress);
         progress.setVisibility(View.VISIBLE);
-
         ((TextView) view.findViewById(R.id.search_pat_hint_txt)).setText(getString(R.string.empty_message_for_patinet_search_visit_screen));
         LinearLayout addPatientTV = view.findViewById(R.id.add_new_patientTV);
         addPatientTV.setOnClickListener(new View.OnClickListener() {
@@ -290,8 +260,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             new Handler(Looper.getMainLooper()).post(() -> {
 
                 recycler_older.setVisibility(View.VISIBLE); // Show RecyclerView
-                older_adapter = new VisitAdapter(getActivity(), mOlderList,this);
-                applyFeatureStatusToAdapters();
+                older_adapter = new VisitAdapter(getActivity(), mOlderList);
                 recycler_older.setNestedScrollingEnabled(false);
                 recycler_older.setAdapter(older_adapter);
 
@@ -315,9 +284,8 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             mRecentList = recentVisits(20, mRecentList.size());
             // pagination - start
             new Handler(Looper.getMainLooper()).post(() -> {    // UI Thread.
-                recent_adapter = new VisitAdapter(getActivity(), mRecentList, this);
+                recent_adapter = new VisitAdapter(getActivity(), mRecentList);
                 recycler_recent.setNestedScrollingEnabled(false);
-                applyFeatureStatusToAdapters();
                 recycler_recent.setAdapter(recent_adapter);
 
                 totalCounts_recent = mRecentList.size();
@@ -338,7 +306,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
         new Thread(new Runnable() {
             @Override
             public void run() {
-                /*int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();*/
+               // int total = new VisitsDAO().getVisitCountsByStatus(false);//getPendingPrescCount();
                 int total =  new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
                 Activity activity = getActivity();
                 if (activity != null && isAdded()) {
@@ -431,12 +399,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
     }
 
 
-    /** Re-queries from the top (e.g. after a sync completes) - reuses the same
-     *  reset-and-reload logic already wired to the search-close button. */
-    public void reloadData() {
-        resetData();
-    }
-
     private void resetData() {
         if (commonLoadingDialog == null) {
             commonLoadingDialog = new DialogUtils().showCommonLoadingDialog(getActivity(), getString(R.string.loading), "");
@@ -461,11 +423,11 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 recent_older_visibility(mRecentList, mOlderList);
                 CustomLog.d("TAG", "resetData: " + mRecentList.size() + ", " + mOlderList.size());
 
-                recent_adapter = new VisitAdapter(getActivity(), mRecentList,this);
+                recent_adapter = new VisitAdapter(getActivity(), mRecentList);
                 recycler_recent.setNestedScrollingEnabled(false);
                 recycler_recent.setAdapter(recent_adapter);
 
-                older_adapter = new VisitAdapter(getActivity(), mOlderList,this);
+                older_adapter = new VisitAdapter(getActivity(), mOlderList);
                 recycler_older.setNestedScrollingEnabled(false);
                 recycler_older.setAdapter(older_adapter);
 
@@ -565,7 +527,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             recent_nodata.setVisibility(View.VISIBLE);
         else
             recent_nodata.setVisibility(View.GONE);
-        recent_adapter = new VisitAdapter(getActivity(), prio_todays,this);
+        recent_adapter = new VisitAdapter(getActivity(), prio_todays);
         recycler_recent.setNestedScrollingEnabled(false);
         recycler_recent.setAdapter(recent_adapter);
         // todays - end
@@ -581,7 +543,7 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
             older_nodata.setVisibility(View.VISIBLE);
         else
             older_nodata.setVisibility(View.GONE);
-        older_adapter = new VisitAdapter(getActivity(), prio_weeks,this);
+        older_adapter = new VisitAdapter(getActivity(), prio_weeks);
         recycler_older.setNestedScrollingEnabled(false);
         recycler_older.setAdapter(older_adapter);
         // weeks - end
@@ -748,24 +710,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
-                try {
-                    // Referred visit whose ENCOUNTER_VISIT_COMPLETE already exists (this
-                    // query's has_visit_complete = 1) means a doctor shared the final
-                    // prescription. Only tag "Specialist Prescription" if consent was
-                    // given; declined referrals show "Referral Declined" instead.
-                    // A declined referral doesn't always get a REFERRED_SPECIALIST obs
-                    // (some are declined before the specialist/hospital is chosen) -
-                    // the consent obs alone is still proof a referral was proposed.
-                    // PHC: normal flow for now.
-                    if (!encounterDAO.isPhcReferral(visitID)) {
-                        boolean declined = encounterDAO.isReferralDeclined(visitID);
-                        boolean referred = declined || encounterDAO.fetchReferredSpecialistValue(visitID) != null;
-                        model.setSpecialistPrescription(referred && !declined);
-                        model.setReferralDeclined(declined);
-                    }
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
                 recentList.add(model);
 
                 //  }
@@ -995,18 +939,6 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
                 model.setDob(cursor.getString(cursor.getColumnIndexOrThrow("date_of_birth")));
                 model.setGender(cursor.getString(cursor.getColumnIndexOrThrow("gender")));
                 model.setObsservermodifieddate(cursor.getString(cursor.getColumnIndexOrThrow("obsservermodifieddate")));
-                try {
-                    // See recentVisits(int,int) above - same rule, declined referrals
-                    // show "Referral Declined" instead of "Specialist Prescription".
-                    if (!encounterDAO.isPhcReferral(visitID)) {
-                        boolean declined = encounterDAO.isReferralDeclined(visitID);
-                        boolean referred = declined || encounterDAO.fetchReferredSpecialistValue(visitID) != null;
-                        model.setSpecialistPrescription(referred && !declined);
-                        model.setReferralDeclined(declined);
-                    }
-                } catch (DAOException e) {
-                    FirebaseCrashlytics.getInstance().recordException(e);
-                }
                 olderList.add(model);
                 // }
             }
@@ -1111,56 +1043,5 @@ public class VisitReceivedFragment extends Fragment implements VisitAdapter.OnIt
 
         return olderList;
     }
-    private Boolean featureStatusWithOtp = null;
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (prescriptionLoadingListeners == null && context instanceof PrescriptionLoadingListeners) {
-            // Only reached when this fragment was recreated via the no-arg
-            // constructor above (state restoration) instead of VisitPagerAdapter.
-            prescriptionLoadingListeners = (PrescriptionLoadingListeners) context;
-        }
-        if (context instanceof VisitActivity) {
-            ((VisitActivity) context).setFeatureStatusListener(new VisitActivity.OnFeatureStatusReadyListener() {
-                @Override
-                public void onFeatureStatusReady(FeatureActiveStatus status) {
-                    if (status != null) {
-                        featureStatusWithOtp = status.getActiveStatusPrescriptionWithOtp();
-                        Log.d("VisitFragment", "Feature status received: " + featureStatusWithOtp);
-
-                        // Apply status if adapters already initialized
-                        applyFeatureStatusToAdapters();
-                    }
-                }
-            });
-        }
-    }
-
-    private void applyFeatureStatusToAdapters() {
-        if (recent_adapter != null && featureStatusWithOtp != null) {
-            recent_adapter.setFeatureActiveStatus(featureStatusWithOtp);
-        }
-        if (older_adapter != null && featureStatusWithOtp != null) {
-            older_adapter.setFeatureActiveStatus(featureStatusWithOtp);
-        }
-    }
-
-    @Override
-    public void onItemClicked(PrescriptionModel data) {
-        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getReadableDatabase();
-        SharePrescriptionViewModelFactory factory = new SharePrescriptionViewModelFactory(db);
-        SharePrescriptionViewModel viewModel = new ViewModelProvider(this, factory).get(SharePrescriptionViewModel.class);
-        viewModel.loadPrescriptionDataFromJava(data.getPatientUuid(), data.getVisitUuid(), dataPdf -> {
-                    ShowPrescriptionDataPdfShareDialog helper =
-                            new ShowPrescriptionDataPdfShareDialog(getActivity(), dataPdf, data.getOpenmrs_id(), data.getPatientUuid(), data.getVisitUuid(), data.isHasPrescription());
-                    helper.sharePrescriptionInPdf();
-                    return null;
-                },
-                throwable -> {
-                    return null;
-                }
-        );
-
-    }
 }

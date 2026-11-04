@@ -40,9 +40,7 @@ data class FeatureActiveStatus(
     @SerializedName("restrict_end_visit_till_prescription_download")
     val restrictEndVisit: Boolean,
     @SerializedName("print_using_thermal_printer")
-    val printUsingThermalPrinter: Boolean,
-    @SerializedName("prescription_with_otp")
-    var activeStatusPrescriptionWithOtp: Boolean = true
+    val printUsingThermalPrinter: Boolean
 ) {
     var videoSection: Boolean = true
     var chatSection: Boolean = true
@@ -73,5 +71,4 @@ data class FeatureActiveStatus(
 
     @SerializedName("patient_draft_survey")
     var activeStatusPatientDraftSurvey: Boolean = true
-
 }

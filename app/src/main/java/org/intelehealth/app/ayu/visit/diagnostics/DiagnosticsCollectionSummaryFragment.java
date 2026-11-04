@@ -27,12 +27,10 @@ import com.google.gson.Gson;
 import org.intelehealth.app.R;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
-import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
 import org.intelehealth.app.databinding.FragmentDiagnosticsCollectionBinding;
 import org.intelehealth.app.databinding.FragmentDiagnosticsCollectionSummaryBinding;
 import org.intelehealth.app.models.DiagnosticsModel;
-import org.intelehealth.app.syncModule.SyncUtils;
 import org.intelehealth.app.utilities.ConfigUtils;
 import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.NetworkConnection;
@@ -58,19 +56,16 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
     private boolean mIsEditMode = false;
     private List<Diagnostics> mDiagnosticsList;
     private FragmentDiagnosticsCollectionSummaryBinding mBinding;
-    private String visitUuid;
 
     public DiagnosticsCollectionSummaryFragment() {
         // Required empty public constructor
     }
 
 
-    public static DiagnosticsCollectionSummaryFragment newInstance(DiagnosticsModel result, boolean isEditMode, String visitUuid) {
+    public static DiagnosticsCollectionSummaryFragment newInstance(DiagnosticsModel result, boolean isEditMode) {
         DiagnosticsCollectionSummaryFragment fragment = new DiagnosticsCollectionSummaryFragment();
         fragment.diagnosticsModel = result;
         fragment.mIsEditMode = isEditMode;
-        fragment.visitUuid = visitUuid;
-        Log.d("TAG", "newInstance: "+new Gson().toJson(result));
         return fragment;
     }
 
@@ -91,7 +86,7 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
+       FeatureActiveStatus status = ((VisitCreationActivity) requireActivity()).getFeatureActiveStatus();
         /* int index = status.getVitalSection() ? 2 : 1;
         int total = status.getVitalSection() ? 5 : 4;*/
         String title = ManageSummaryScreenTitles.setScreenTitle(requireActivity(), status, STEP_2_DIAGNOSTICS_SUMMARY);
@@ -120,7 +115,6 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
         mBinding.llHemoglobinContainer.setVisibility(View.GONE);
         mBinding.llUricAcidContainer.setVisibility(View.GONE);
         mBinding.llCholesetrolContainer.setVisibility(View.GONE);
-        mBinding.llDiabetesHba1cContainer.setVisibility(View.GONE);
         Log.d(TAG, "updateUI: mDiagnosticsList : "+ new Gson().toJson(mDiagnosticsList));
 
         for (Diagnostics diagnostics : mDiagnosticsList) {
@@ -145,8 +139,6 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
                 mBinding.llUricAcidContainer.setVisibility(View.VISIBLE);
             } else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.TOTAL_CHOLESTEROL)) {
                 mBinding.llCholesetrolContainer.setVisibility(View.VISIBLE);
-            }else if (diagnostics.getDiagnosticsKey().equals(PatientDiagnosticsConfigKeys.DIABETES_HBA1C)) {
-                mBinding.llDiabetesHba1cContainer.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -190,11 +182,6 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
                 mBinding.tvCholesetrol.setText(diagnosticsModel.getCholesterol());
             else
                 mBinding.tvCholesetrol.setText(getString(R.string.ui2_no_information));
-
-            if (diagnosticsModel.getDiabetesbba1c() != null && !diagnosticsModel.getDiabetesbba1c().isEmpty())
-                mBinding.tvDiabetesHba1c.setText(diagnosticsModel.getDiabetesbba1c());
-            else
-                mBinding.tvDiabetesHba1c.setText(getString(R.string.ui2_no_information));
         }
         mBinding.btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,12 +215,8 @@ public class DiagnosticsCollectionSummaryFragment extends Fragment {
         mBinding.imbBtnRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mIsEditMode){
-                    if (NetworkConnection.isOnline(requireActivity())) {
-                        SyncUtils.syncNow(requireActivity(), view, syncAnimator);
-                    }
-                }else{
-                    new DiscardIncompleteVisitUtil().showConfirmationDialog(requireActivity(), getString(R.string.confirm_discard_changes_content_on_sync));
+                if (NetworkConnection.isOnline(requireActivity())) {
+                    syncNow(getActivity(), mBinding.imbBtnRefresh, syncAnimator);
                 }
             }
         });

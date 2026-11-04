@@ -19,7 +19,6 @@ public class CommonVisitData implements Parcelable {
     private boolean hasPrescription;
     private int editFor;
     private boolean isPastVisit;
-    private String diabetesbba1c;
 
 
     protected CommonVisitData(Parcel in) {
@@ -37,7 +36,6 @@ public class CommonVisitData implements Parcelable {
         hasPrescription = in.readByte() != 0;
         editFor = in.readInt();
         isPastVisit = in.readByte() != 0;
-        diabetesbba1c = in.readString();
     }
 
     @Override
@@ -56,7 +54,6 @@ public class CommonVisitData implements Parcelable {
         dest.writeByte((byte) (hasPrescription ? 1 : 0));
         dest.writeInt(editFor);
         dest.writeByte((byte) (isPastVisit ? 1 : 0));
-        dest.writeString(diabetesbba1c);
     }
 
     public static final Creator<CommonVisitData> CREATOR = new Creator<CommonVisitData>() {
@@ -193,13 +190,5 @@ public class CommonVisitData implements Parcelable {
 
     public void setPastVisit(boolean pastVisit) {
         isPastVisit = pastVisit;
-    }
-
-    public String getDiabetesbba1c() {
-        return diabetesbba1c;
-    }
-
-    public void setDiabetesbba1c(String diabetesbba1c) {
-        this.diabetesbba1c = diabetesbba1c;
     }
 }

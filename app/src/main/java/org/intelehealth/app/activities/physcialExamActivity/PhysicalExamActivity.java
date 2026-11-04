@@ -24,11 +24,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import org.intelehealth.app.ayu.visit.pocdevice.DigitalStethoscopeDialogFragment;
-import org.intelehealth.app.database.InteleHealthDatabaseHelper;
 import org.intelehealth.app.utilities.CustomLog;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,8 +84,8 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
 
     // private ViewPager mViewPager;
 
-    public static String patientUuid;
-    public static String visitUuid;
+    static String patientUuid;
+    static String visitUuid;
     String state;
     String patientName;
     String patientGender;
@@ -124,7 +121,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
     protected void onCreate(Bundle savedInstanceState) {
         sessionManager = new SessionManager(this);
         String language = sessionManager.getAppLanguage();
-        Log.i("PhysicalExamActivity " + language, "onCreate: " );
         //In case of crash still the org should hold the current lang fix.
         if (!language.equalsIgnoreCase("")) {
             Locale locale = new Locale(language);
@@ -620,21 +616,6 @@ public class PhysicalExamActivity extends BaseActivity implements QuestionsAdapt
             v.startAnimation(bottomUp);
         }
 
-    }
-    public void onAyuDeviceRequest(Node node) {
-       /* String examRequirements = node.getPhysicalExams();
-        String examType = "heart"; // default
-        if (examRequirements != null) {
-            if (examRequirements.contains("heart_sound")) {
-                examType = "heart";
-            } else if (examRequirements.contains("lung_sound")) {
-                examType = "lung";
-            }
-        }
-        InteleHealthDatabaseHelper db = new InteleHealthDatabaseHelper(this);
-        String encounterUuid = db.getEncounter(visitUuid);
-        DigitalStethoscopeDialogFragment dialog = DigitalStethoscopeDialogFragment.newInstance(examType, patientUuid, visitUuid, encounterUuid);
-        dialog.show(getSupportFragmentManager(), "stethoscope_popup");*/
     }
 
 }

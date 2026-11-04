@@ -1,10 +1,10 @@
 buildscript {
     repositories {
-        maven { url uri("ayudevicesdk") }
         google()
         gradlePluginPortal()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.10.1'
@@ -14,7 +14,8 @@ buildscript {
         // Add the following line:
         classpath 'com.google.gms:google-services:4.4.2'  // Google Services plugin
         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.24'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.10'
+        classpath "org.jetbrains.kotlin:kotlin-serialization:1.9.10"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.8.1"
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.57.2'
     }
@@ -26,19 +27,18 @@ plugins {
     id 'com.android.application' version '8.10.1' apply false
     id 'com.android.library' version '8.10.1' apply false
     id 'com.android.dynamic-feature' version '8.10.1' apply false
-    id 'com.google.devtools.ksp' version '2.0.0-1.0.21' apply false
+//    id 'com.google.devtools.ksp' version '1.8.10-1.0.9' apply false
 }
 
-/*allprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
         maven { url 'https://maven.google.com' }
-        maven { url uri("ayudevicesdk") }
 
     }
-}*/
+}
 
 tasks.register('clean', Delete) {
     delete rootProject.buildDir

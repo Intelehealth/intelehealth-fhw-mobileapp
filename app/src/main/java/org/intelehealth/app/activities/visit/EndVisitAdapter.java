@@ -84,15 +84,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
     String profileImage1 = "";
     SessionManager sessionManager;
     FeatureActiveStatus featureActiveStatus;
-    private OnItemClickListener listener;
 
-    public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, FeatureActiveStatus featureActiveStatus, OnItemClickListener listener) {
-        this.context = context;
-        this.arrayList.addAll(arrayList);
-        this.featureActiveStatus = featureActiveStatus;
-        this.listener = listener;
-        sessionManager = new SessionManager(context);
-    }
     public EndVisitAdapter(Context context, List<PrescriptionModel> arrayList, FeatureActiveStatus featureActiveStatus) {
         this.context = context;
         this.arrayList.addAll(arrayList);
@@ -183,11 +175,6 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
 
             //    holder.fu_date_txtview.setText(model.getVisit_start_date());
 
-            // Grey out End Visit until a prescription exists - same rule showConfirmDialog
-            // already enforced via a dialog, now reflected in the button itself.
-            holder.end_visit_btn.setEnabled(model.isHasPrescription());
-            holder.end_visit_btn.setAlpha(model.isHasPrescription() ? 1f : 0.5f);
-
             holder.end_visit_btn.setOnClickListener(v -> {
                 showConfirmDialog(model);
             });
@@ -213,13 +200,7 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
             holder.shareicon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(featureActiveStatus.getActiveStatusPrescriptionWithOtp()){
-                        if (listener != null) {
-                            listener.onItemClicked(model);
-                        }
-                    }else{
-                        sharePresc(model);
-                    }
+                    sharePresc(model);
                 }
             });
         }
@@ -443,7 +424,5 @@ public class EndVisitAdapter extends RecyclerView.Adapter<EndVisitAdapter.Myhold
                     }
                 });
     }
-    public interface OnItemClickListener {
-        void onItemClicked(PrescriptionModel data);
-    }
+
 }

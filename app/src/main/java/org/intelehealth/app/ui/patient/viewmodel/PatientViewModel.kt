@@ -1,17 +1,21 @@
 package org.intelehealth.app.ui.patient.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
+import org.intelehealth.abdm.model.AbhaProfileResponse
+import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.utils.AbdmUtils
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
+import org.intelehealth.app.utilities.AbhaUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
-import org.intelehealth.klivekit.utils.Constants
 
 /**
  * Created by Vaghela Mithun R. on 02-07-2024 - 13:49.
@@ -29,18 +33,12 @@ class PatientViewModel(
     var activeStatusAddressSection = true
     var activeStatusOtherSection = true
     var isEditMode: Boolean = false
-
-    /**
-     * Set when registration was opened from the ABDM flow. Such a run is an edit — the ABHA resolved to
-     * an existing patient, so the save must update rather than insert — but it still has to walk all
-     * three stages, unlike the per-section edits launched from Patient Details.
-     *
-     * So [isEditMode] keeps deciding update-versus-insert, while this decides navigation. Field locking
-     * stays on [isEditMode] alone: the admin config's non-editable fields must not become writable just
-     * because the flow entered from ABDM.
-     */
-    var isAbhaFullFlow: Boolean = false
     var activeStatusRosterSection = false
+
+    var otpResponse: OTPVerificationResponse? = null
+    var abhaResponse: AbhaProfileResponse? = null
+    var xToken: String? = null
+    var accessToken: String? = null
 
     fun loadPatientDetails(
         patientId: String,
@@ -72,6 +70,28 @@ class PatientViewModel(
 
     fun getPregnancyVisibility(): Boolean {
         val patient = patientData.value
-        return patient?.gender.equals(FEMALE,true) && DateAndTimeUtils.isDateGreaterThan15Years(patient?.dateofbirth)
+        return patient?.gender.equals(FEMALE, true) && DateAndTimeUtils.isDateGreaterThan15Years(
+            patient?.dateofbirth
+        )
+    }
+
+    fun getPatientDataFromOtpVerificationResponse(context: Context, patient: PatientDTO) {
+        patient.also { patient ->
+            otpResponse?.let { response ->
+                AbhaUtils.getPatientPersonalDetailsFromOtpResponse(context, patient, response)
+                AbhaUtils.getPatientAddressDetailsFromOtpResponse(patient, response)
+                AbhaUtils.getPatientAbhaDetailsFromOtpResponse(patient, response)
+            }
+        }
+    }
+
+    fun getPatientDataFromAbhaProfileResponse(context: Context, patient: PatientDTO) {
+        patient.also { patient ->
+            abhaResponse?.let { response ->
+                AbhaUtils.getPatientPersonalDetailsFromAbhaResponse(context, patient, response)
+                AbhaUtils.getPatientAddressDetailsFromAbhaResponse(patient, response)
+                AbhaUtils.getPatientAbhaDetailsFromAbhaResponse(patient, response)
+            }
+        }
     }
 }

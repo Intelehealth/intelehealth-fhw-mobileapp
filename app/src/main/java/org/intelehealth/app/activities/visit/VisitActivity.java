@@ -24,12 +24,10 @@ import org.intelehealth.app.utilities.CustomLog;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -49,7 +47,6 @@ import org.intelehealth.app.utilities.PrescriptionLoadingListeners;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.ThreadingUtils;
 import org.intelehealth.app.utilities.VisitCountInterface;
-import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 
 import java.util.Locale;
@@ -85,48 +82,22 @@ public class VisitActivity extends BaseActivity implements
     private boolean isPendingOldLoaded = false;
     AlertDialog commonLoadingDialog;
     // private NotificationReceiver notificationReceiver;
-    public FeatureActiveStatus mFeatureActiveStatus;
 
-    @Override
-    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
-        super.onFeatureActiveStatusLoaded(activeStatus);
-        Log.d(TAG, "onFeatureActiveStatusLoaded: activeStatus : "+activeStatus);
-        Log.d(TAG, "onFeatureActiveStatusLoaded: activeStatus : "+activeStatus.getActiveStatusPrescriptionWithOtp());
 
-        if (activeStatus != null) {
-            mFeatureActiveStatus = activeStatus;
-            // The feature-status LiveData can fire before VisitReceivedFragment has
-            // attached and called setFeatureStatusListener() - e.g. when the value is
-            // already cached and Room/LiveData delivers it synchronously on subscribe,
-            // which is timing-dependent (seen on some emulators, not on others). Safe
-            // to skip here: mFeatureActiveStatus is cached above, and
-            // setFeatureStatusListener() already delivers it as soon as a listener
-            // registers late.
-            if (featureStatusListener != null) {
-                featureStatusListener.onFeatureStatusReady(activeStatus);
-            }
-        }
-    }
-    public FeatureActiveStatus getFeatureActiveStatus() {
-        return mFeatureActiveStatus;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visit);
         sessionManager = new SessionManager(this);
-     //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+        //   networkUtils = new NetworkUtils(this, this);  // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
         ibBack = findViewById(R.id.vector);
         refresh = findViewById(R.id.refresh);
-      //  notificationReceiver =new  NotificationReceiver(); // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
-       // notificationReceiver.registerNotificationReceiver(this);
+        //  notificationReceiver =new  NotificationReceiver(); // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+        // notificationReceiver.registerNotificationReceiver(this);
         ibBack.setOnClickListener(v -> {
             Intent intent = new Intent(VisitActivity.this, HomeScreenActivity_New.class);
             startActivity(intent);
         });
-        // Not wired anywhere else (no android:onClick in the layout either) -
-        // without this, tapping the icon did nothing at all.
-        refresh.setOnClickListener(this::syncNow);
         // Status Bar color -> White
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         getWindow().setStatusBarColor(Color.WHITE);
@@ -225,8 +196,8 @@ public class VisitActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
-      //  unregisterReceiver(mBroadcastReceiver);
-      //  notificationReceiver.unregisterNotificationReceiver(this);
+        //  unregisterReceiver(mBroadcastReceiver);
+        //  notificationReceiver.unregisterNotificationReceiver(this);
     }
 
     public void configureTabLayout() {
@@ -236,19 +207,16 @@ public class VisitActivity extends BaseActivity implements
         if (viewPager == null) viewPager = findViewById(R.id.pager_appointments);
 
         if (viewPager.getAdapter() == null) {
-            VisitPagerAdapter adapter = new VisitPagerAdapter(this,this);
+            VisitPagerAdapter adapter = new VisitPagerAdapter(this, this);
             viewPager.setAdapter(adapter);
 
             new TabLayoutMediator(tabLayout, viewPager,
                     (tab, position) -> tab.setText(getResources().getString(
-                            position == 0 ? R.string.received
-                                    : position == 1 ? R.string.pending
-                                    : R.string.referrals))
+                                    position == 0 ? R.string.received : R.string.pending))
+                            .setIcon(R.drawable.presc_tablayout_icon)
             ).attach();
 
-            // 2 keeps all 3 tabs (Received/Pending/Referrals) created up front, so each
-            // tab's count loads immediately instead of only once the user opens it.
-            viewPager.setOffscreenPageLimit(2);
+            viewPager.setOffscreenPageLimit(1); // Optimize memory usage
         }
           /*String language = sessionManager.getAppLanguage();
       if (!language.equalsIgnoreCase("")) {
@@ -265,56 +233,27 @@ public class VisitActivity extends BaseActivity implements
 
     }
 
-    /**
-     * configureTabLayout() only ever creates the ViewPager's adapter/fragments
-     * once - once they exist, a sync completing never reaches them again, so the
-     * Received/Pending/Referrals lists stayed stale until the whole screen was
-     * recreated. Reuses each fragment's own existing reload method instead of a
-     * new/duplicate query path.
-     */
-    private void reloadVisitTabs() {
-        if (viewPager == null || viewPager.getAdapter() == null) return;
-        Fragment received = getSupportFragmentManager().findFragmentByTag("f0");
-        if (received instanceof VisitReceivedFragment) {
-            ((VisitReceivedFragment) received).reloadData();
-        }
-        Fragment pending = getSupportFragmentManager().findFragmentByTag("f1");
-        if (pending instanceof VisitPendingFragment) {
-            ((VisitPendingFragment) pending).reloadData();
-        }
-        Fragment referral = getSupportFragmentManager().findFragmentByTag("f2");
-        if (referral instanceof VisitReferralFragment) {
-            ((VisitReferralFragment) referral).reloadData();
-        }
-        // The Received/Pending reloads above only refresh their lists; their tab labels are set
-        // here. Re-query them so a sync that moves a visit between tabs (e.g. Pending -> Referrals
-        // on the initial prescription, Referrals -> Received on the final one) updates the counts
-        // without reopening the screen.
-        updateCounts(true);
-        updateCounts(false);
-    }
+    /* private void updateCounts(boolean isForReceivedPrescription) {
+         Executors.newSingleThreadExecutor().execute(() -> {
+             int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
+             runOnUiThread(() -> {
+                 if (isForReceivedPrescription)
+                     Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
+                 else
+                     Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
 
-   /* private void updateCounts(boolean isForReceivedPrescription) {
-        Executors.newSingleThreadExecutor().execute(() -> {
-            int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
-            runOnUiThread(() -> {
-                if (isForReceivedPrescription)
-                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(getResources().getString(R.string.received) + "\t(" + count + ")");
-                else
-                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(getResources().getString(R.string.pending) + "\t(" + count + ")");
+             });
 
-            });
-
-        });
-    }
-*/
+         });
+     }
+ */
     @Override
     public void updateUIForInternetAvailability(boolean isInternetAvailable) {
         CustomLog.d("TAG", "updateUIForInternetAvailability: ");
         if (isInternetAvailable) {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_internet_available));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_internet_available));
         } else {
-            refresh.setImageDrawable(ContextCompat.getDrawable(this,R.drawable.ui2_ic_no_internet));
+            refresh.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ui2_ic_no_internet));
         }
     }
 
@@ -322,50 +261,11 @@ public class VisitActivity extends BaseActivity implements
     public void onStart() {
         super.onStart();
         //register receiver for internet check
-      //  networkUtils.callBroadcastReceiver();
-
-        // Without this, nothing ever stops the sync spinner/dialog or reloads the
-        // tab counts once syncNow()'s background sync finishes.
-        mBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.hasExtra("JOB")) {
-                    int flagType = intent.getIntExtra("JOB", AppConstants.SYNC_PULL_DATA_DONE);
-                    if (flagType == AppConstants.SYNC_PULL_DATA_DONE ||
-                            flagType == AppConstants.SYNC_APPOINTMENT_PULL_DATA_DONE) {
-                        if (!isFinishing()) {
-                            refresh.clearAnimation();
-                            if (syncAnimator != null) syncAnimator.cancel();
-                        }
-                        hideProgressbar();
-                        new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                            configureTabLayout();
-                            reloadVisitTabs();
-                        }, 300);
-                    }
-                }
-                if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
-                    int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
-                    if (flagType == AppConstants.SYNC_FAILED) {
-                        refresh.clearAnimation();
-                        if (syncAnimator != null) syncAnimator.cancel();
-                        hideProgressbar();
-                    }
-                }
-            }
-        };
-        IntentFilter filterSend = new IntentFilter();
-        filterSend.addAction(AppConstants.SYNC_NOTIFY_INTENT_ACTION);
-        ContextCompat.registerReceiver(
-                this,
-                mBroadcastReceiver,
-                filterSend,
-                ContextCompat.RECEIVER_NOT_EXPORTED
-        );
+        //  networkUtils.callBroadcastReceiver();
     }
 
     private void hideProgressbar() {
-        if(syncClicked && !this.isFinishing()){
+        if (syncClicked && !this.isFinishing()) {
             loadingDialog.dismiss();
         }
     }
@@ -374,11 +274,6 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void onStop() {
         super.onStop();
-        try {
-            unregisterReceiver(mBroadcastReceiver);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        }
         /*try {
             //unregister receiver for internet check
             networkUtils.unregisterNetworkReceiver();
@@ -427,78 +322,53 @@ public class VisitActivity extends BaseActivity implements
         }
     }
 
-   /* public class NotificationReceiver extends BroadcastReceiver { // // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
+    /* public class NotificationReceiver extends BroadcastReceiver { // // TODO: Commented as it was taking heavy load on app and checking network here is not requried.
 
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(NotificationBroadCast.CUSTOM_ACTION)) {
-                // FCM A added action received
-                String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
-                syncNow(refresh);
+         @Override
+         public void onReceive(Context context, Intent intent) {
+             if (intent.getAction().equals(NotificationBroadCast.CUSTOM_ACTION)) {
+                 // FCM A added action received
+                 String moduleName = intent.getStringExtra(NotificationBroadCast.FCM_MODULE);
+                 syncNow(refresh);
+             }
+         }
+
+         public void registerNotificationReceiver(Context context) {
+             IntentFilter filter = new IntentFilter(NotificationBroadCast.CUSTOM_ACTION);
+             LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
+         }
+
+         public void unregisterNotificationReceiver(Context context) {
+             LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
+         }
+     }
+ */
+    private void updateCounts(boolean isForReceivedPrescription) {
+        new Thread(() -> {
+            int count;
+            SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+            if (isForReceivedPrescription) {
+                count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
+            } else {
+                //count = new VisitsDAO().getVisitCountsByStatus(false);
+                count = new HomeScreenQueriesRepository().getPendingPrescriptionVisitsCount(db);
             }
-        }
-
-        public void registerNotificationReceiver(Context context) {
-            IntentFilter filter = new IntentFilter(NotificationBroadCast.CUSTOM_ACTION);
-            LocalBroadcastManager.getInstance(context).registerReceiver(this, filter);
-        }
-
-        public void unregisterNotificationReceiver(Context context) {
-            LocalBroadcastManager.getInstance(context).unregisterReceiver(this);
-        }
-    }
-*/
-   private void updateCounts(boolean isForReceivedPrescription) {
-       /*new Thread(() -> {
-           int count = new VisitsDAO().getVisitCountsByStatus(isForReceivedPrescription);
-           runOnUiThread(() -> {
-               if (isForReceivedPrescription)
-                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
-                           getResources().getString(R.string.received) + "\t(" + count + ")");
-               else
-                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
-                           getResources().getString(R.string.pending) + "\t(" + count + ")");
-           });
-       }).start();*/
-
-       //changed for count is not updated correctly for pending and received from IDA development_master
-       new Thread(() -> {
-           int count;
-           SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-           if (isForReceivedPrescription) {
-               count = new HomeScreenQueriesRepository().getReceivedPrescriptionVisitsCount(db);
-           } else {
-               //count = new VisitsDAO().getVisitCountsByStatus(false);
-               // Referred visits are listed (and counted) under Referrals, not Pending.
-               count = new HomeScreenQueriesRepository().getPendingTabVisitsCount(db);
-           }
-           int finalCount = count;
-           runOnUiThread(() -> {
-               if (isForReceivedPrescription)
-                   Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
-                           getResources().getString(R.string.received) + "\t(" + finalCount + ")");
-               else
-                   Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
-                           getResources().getString(R.string.pending) + "\t(" + finalCount + ")");
-           });
-       }).start();
-   }
-
-    /** Called by {@link VisitReferralFragment} once its list is loaded — mirrors
-     *  the Received/Pending tab count pattern in {@link #updateCounts(boolean)}. */
-    public void updateReferralCount(int count) {
-        if (tabLayout == null) return;
-        com.google.android.material.tabs.TabLayout.Tab tab = tabLayout.getTabAt(2);
-        if (tab != null) {
-            tab.setText(getResources().getString(R.string.referrals) + "\t(" + count + ")");
-        }
+            int finalCount = count;
+            runOnUiThread(() -> {
+                if (isForReceivedPrescription)
+                    Objects.requireNonNull(tabLayout.getTabAt(0)).setText(
+                            getResources().getString(R.string.received) + "\t(" + finalCount + ")");
+                else
+                    Objects.requireNonNull(tabLayout.getTabAt(1)).setText(
+                            getResources().getString(R.string.pending) + "\t(" + finalCount + ")");
+            });
+        }).start();
     }
 
     @Override
     public void isReceivedRecentLoaded(boolean status) {
-        Log.d("CCC","isReceivedRecentLoaded");
         isReceivedRecentLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
@@ -509,7 +379,7 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void isReceivedOldLoaded(boolean status) {
         isReceivedOldLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
@@ -520,7 +390,7 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void isPendingRecentLoaded(boolean status) {
         isPendingRecentLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
@@ -531,22 +401,11 @@ public class VisitActivity extends BaseActivity implements
     @Override
     public void isPendingOldLoaded(boolean status) {
         isPendingOldLoaded = status;
-        if(isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded){
+        if (isReceivedRecentLoaded && isReceivedOldLoaded && isPendingRecentLoaded && isPendingOldLoaded) {
 
             if (commonLoadingDialog.isShowing()) {
                 commonLoadingDialog.dismiss();
             }
-        }
-    }
-    public interface OnFeatureStatusReadyListener {
-        void onFeatureStatusReady(FeatureActiveStatus status);
-    }
-    private OnFeatureStatusReadyListener featureStatusListener;
-
-    public void setFeatureStatusListener(OnFeatureStatusReadyListener listener) {
-        this.featureStatusListener = listener;
-        if (mFeatureActiveStatus != null) {
-            listener.onFeatureStatusReady(mFeatureActiveStatus);
         }
     }
 }

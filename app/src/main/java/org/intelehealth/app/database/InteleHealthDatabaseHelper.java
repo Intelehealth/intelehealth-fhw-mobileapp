@@ -1,11 +1,6 @@
 package org.intelehealth.app.database;
 
-
-import static org.intelehealth.app.database.AudioDbHelper.TABLE_NAME;
-
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -13,11 +8,7 @@ import androidx.annotation.Nullable;
 
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
-import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
 import org.intelehealth.app.utilities.SessionManager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
@@ -88,15 +79,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             "voided TEXT DEFAULT '0'," +
             "privacynotice_value TEXT" +
             ")";
-
-    //new changes for count update
-    public static final String CREATE_ENCOUNTER_INDEX =
-            "CREATE INDEX IF NOT EXISTS idx_encounter_visituuid_type " +
-                    "ON tbl_encounter(visituuid, encounter_type_uuid)";
-    //new changes for count update
-    public static final String CREATE_OBS_INDEX =
-            "CREATE INDEX IF NOT EXISTS idx_obs_encounteruuid_sync_voided " +
-                    "ON tbl_obs(encounteruuid, sync, voided)";
 
     public static final String CREATE_DR_SPECIALITY =
             "CREATE TABLE IF NOT EXISTS tbl_dr_speciality (" +
@@ -274,32 +256,17 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
                     "voided TEXT," +
                     "sync TEXT)";
 
-    public static final String FOLLOW_UP_NOTIFICATION_SCHEDULE =
-            "CREATE TABLE IF NOT EXISTS tbl_follow_up_notification_schedule (" +
-                    "id TEXT," +
-                    "date_time TEXT," +
-                    "duration TEXT," +
-                    "value TEXT," +
-                    "name TEXT," +
-                    "openmrs_id TEXT," +
-                    "patient_uuid TEXT," +
-                    "visit_uuid TEXT," +
-                    "request_code TEXT" +
-                    ")";
-
-
-    public static final String CREATE_HEART_LUNG_RECORDING =
-            "CREATE TABLE IF NOT EXISTS tbl_follow_up_heart_lung_recoding (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    "patient_uuid TEXT," +
-                    "visit_uuid TEXT," +
-                    "encounter_uuid TEXT," +
-                    "type TEXT," +
-                    "position TEXT," +
-                    "recordingStatus INTEGER," +
-                    "audio_path TEXT," +
-                    "result TEXT" +
-                    ")";
+    public static final String FOLLOW_UP_NOTIFICATION_SCHEDULE = "CREATE TABLE IF NOT EXISTS tbl_follow_up_notification_schedule (" +
+            "id TEXT," +
+            "date_time TEXT," +
+            "duration TEXT," +
+            "value TEXT," +
+            "name TEXT," +
+            "openmrs_id TEXT," +
+            "patient_uuid TEXT," +
+            "visit_uuid TEXT," +
+            "request_code TEXT" +
+            ")";
 
     public InteleHealthDatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -370,11 +337,6 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_NOTIFICATIONS);
         db.execSQL(CREATE_PROVIDER_ATTRIBUTES);
         db.execSQL(FOLLOW_UP_NOTIFICATION_SCHEDULE);
-        db.execSQL(CREATE_HEART_LUNG_RECORDING);
-//new changes for count update
-        db.execSQL(CREATE_ENCOUNTER_INDEX);
-        db.execSQL(CREATE_OBS_INDEX);
-
         uuidInsert(db);
         database = db;
 
@@ -382,7 +344,7 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-       /* switch (oldVersion) {
+        switch (oldVersion) {
             case 1:
                 //upgrade logic from version 1 to 2
             case 2:
@@ -398,26 +360,10 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             default:
                 throw new IllegalStateException(
                         "onUpgrade() with unknown oldVersion " + oldVersion);
-        }*/
-//new changes for count update
-        if (oldVersion < 5) {
-            // add indexes
-            db.execSQL(CREATE_ENCOUNTER_INDEX);
-            db.execSQL(CREATE_OBS_INDEX);
-        }
-        if (oldVersion < 6) {
-            // v5 -> v6: add ABHA identifier columns to tbl_patient (ABDM).
-            db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_number TEXT");
-            db.execSQL("ALTER TABLE tbl_patient ADD COLUMN abha_address TEXT");
         }
 
     }
-    //new changes for count update-> onconfigure() newly added
-    @Override
-    public void onConfigure(SQLiteDatabase db) {
-        super.onConfigure(db);
-        db.enableWriteAheadLogging();
-    }
+
 
     public SQLiteDatabase getWriteDb() {
         if (database != null && database.isOpen())
@@ -435,191 +381,5 @@ public class InteleHealthDatabaseHelper extends SQLiteOpenHelper {
             sInstance = new InteleHealthDatabaseHelper(context.getApplicationContext());
         }
         return sInstance;
-    }
-
-    public void saveEncounter(String visit, String encounter) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("encounter_uuid", encounter);
-        db.update("tbl_follow_up_heart_lung_recoding",
-                cv,
-                "visit_uuid=?",
-                new String[]{visit});
-    }
-
-    public String getEncounter(String visit) {
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.rawQuery(
-                "SELECT encounter_uuid FROM tbl_obs WHERE visit_uuid=?",
-                new String[]{visit}
-        );
-        if (c.moveToFirst()) {
-            return c.getString(0);
-        }
-        return null;
-    }
-
-    // ✅ INSERT
-    public void insertRecord(String patient, String visit, String encounter, String type,
-                             String position, int recordingStatus, String audio, String result) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("patient_uuid", patient);
-        values.put("visit_uuid", visit);
-        values.put("encounter_uuid", encounter);
-        values.put("type", type);
-        values.put("position", position);
-        values.put("recordingStatus", recordingStatus);
-        values.put("audio_path", audio);
-        values.put("result", result);
-        db.insert("tbl_follow_up_heart_lung_recoding", null, values);
-    }
-
-    /* public List<HeartLungRecordModel> getAllHeartLungRecords(String visitUuid) {
-         List<HeartLungRecordModel> list = new ArrayList<>();
-         SQLiteDatabase db = getReadableDatabase();
-
-         Cursor c = db.rawQuery(
-                 "SELECT * FROM tbl_follow_up_heart_lung_recoding",
-                 null
-         );
-
-         if (c.moveToFirst()) {
-             do {
-                 HeartLungRecordModel r = new HeartLungRecordModel();
-                 r.id = String.valueOf(c.getInt(c.getColumnIndexOrThrow("id")));
-                 r.patientUuid = c.getString(c.getColumnIndexOrThrow("patient_uuid"));
-                 r.visitUuid = c.getString(c.getColumnIndexOrThrow("visit_uuid"));
-                 r.encounterUuid = c.getString(c.getColumnIndexOrThrow("encounter_uuid"));
-                 r.type = c.getString(c.getColumnIndexOrThrow("type"));
-                 r.position = c.getString(c.getColumnIndexOrThrow("position"));
-                 r.recordingStatus = c.getString(c.getColumnIndexOrThrow("recordingStatus"));
-                 r.audioPath = c.getString(c.getColumnIndexOrThrow("audio_path"));
-                 r.result = c.getString(c.getColumnIndexOrThrow("result"));
-                 list.add(r);
-             } while (c.moveToNext());
-         }
-
-         c.close();
-         db.close();
-         return list;
-     }*/
-// ✅ CORRECT
-   /* public List<HeartLungRecordModel> getAllHeartLungRecords(String visitUuid) {
-        List<HeartLungRecordModel> list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                "tbl_follow_up_heart_lung_recoding",   // ✅ matches insertRecord()
-                null,
-                "visit_uuid = ?",
-                new String[]{visitUuid},
-                null, null, null
-        );
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                HeartLungRecordModel model = new HeartLungRecordModel();
-                model.type        = cursor.getString(cursor.getColumnIndexOrThrow("type"));
-                model.visitUuid   = cursor.getString(cursor.getColumnIndexOrThrow("visit_uuid"));
-                model.position    = cursor.getString(cursor.getColumnIndexOrThrow("position"));
-                model.patientUuid = cursor.getString(cursor.getColumnIndexOrThrow("patient_uuid"));
-                model.audioPath   = cursor.getString(cursor.getColumnIndexOrThrow("audio_path"));
-                model.result      = cursor.getString(cursor.getColumnIndexOrThrow("result"));
-                int status = cursor.getInt(cursor.getColumnIndexOrThrow("recordingStatus"));
-                model.recordingStatus = String.valueOf(status);
-                list.add(model);
-            }
-            cursor.close();
-        }
-        return list;
-    }*/
-    public List<HeartLungRecordModel> getAllHeartLungRecords(String visitUuid) {
-        List<HeartLungRecordModel> list = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                "tbl_follow_up_heart_lung_recoding",
-                null,
-                "visit_uuid = ?",
-                new String[]{visitUuid},
-                null, null, null
-        );
-
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                HeartLungRecordModel model = new HeartLungRecordModel();
-                model.type            = cursor.getString(cursor.getColumnIndexOrThrow("type"));
-                model.visitUuid       = cursor.getString(cursor.getColumnIndexOrThrow("visit_uuid"));
-                model.position        = cursor.getString(cursor.getColumnIndexOrThrow("position"));
-                model.patientUuid     = cursor.getString(cursor.getColumnIndexOrThrow("patient_uuid"));
-                model.audioPath       = cursor.getString(cursor.getColumnIndexOrThrow("audio_path"));
-                model.result          = cursor.getString(cursor.getColumnIndexOrThrow("result"));
-
-                // ✅ THIS LINE WAS MISSING — recordingStatus was never read!
-                int status = cursor.getInt(cursor.getColumnIndexOrThrow("recordingStatus"));
-                model.recordingStatus = String.valueOf(status);
-
-                list.add(model);
-            }
-            cursor.close();
-        }
-        return list;
-    }
-
-    // UPDATE result after webhook
-    public void updateResult(String visitUuid, String position, String result) {
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put("result", result);
-        db.update(
-                "tbl_follow_up_heart_lung_recoding",   // table name ONLY
-                cv,
-                "visit_uuid=? AND position=?",
-                new String[]{visitUuid, position}
-        );
-    }
-
-    public boolean isRecordExists(String visitUuid, String position) {
-
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.rawQuery(
-                "SELECT id FROM " + TABLE_NAME + " WHERE visit_uuid=? AND position=?",
-                new String[]{visitUuid, position}
-        );
-
-        boolean exists = (cursor != null && cursor.moveToFirst());
-
-        if (cursor != null) cursor.close();
-        db.close();
-
-        return exists;
-    }
-
-    // UPDATE
-    public void updateRecord(String visitUuid,
-                             String position,
-                             String audioPath,
-                             String result) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put("audio_path", audioPath);
-        values.put("result", result);
-
-        db.update(TABLE_NAME,
-                values,
-                "visit_uuid=? AND position=?",
-                new String[]{visitUuid, position});
-
-        db.close();
-    }
-
-
-    public void insert(String tblFollowUpHeartLungRecoding, Object o, ContentValues values1) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.insert(tblFollowUpHeartLungRecoding, null, values1);
     }
 }

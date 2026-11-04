@@ -3,8 +3,11 @@ package org.intelehealth.app.ayu.visit.reason;
 import android.content.Context;
 import android.os.Bundle;
 
+import org.intelehealth.app.ui.filter.EmojiExcludeFilter;
 import org.intelehealth.app.utilities.CustomLog;
 
+import android.text.InputFilter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +45,13 @@ import org.intelehealth.app.ayu.visit.reason.adapter.SelectedChipsGridAdapter;
 import org.intelehealth.app.database.dao.PatientsDAO;
 import org.intelehealth.app.knowledgeEngine.AgeLimit;
 import org.intelehealth.app.knowledgeEngine.Node;
+import org.intelehealth.app.utilities.CustomLog;
 import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WindowsUtils;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -195,9 +200,6 @@ public class VisitReasonCaptureFragment extends Fragment {
                     currentFile = FileUtils.encodeJSON(getActivity(), fileLocation);
                 }
 
-                if (currentFile == null) {
-                    continue;
-                }
                 Node mainNode = new Node(currentFile);
                 if (VisitUtils.checkNodeValidByGenderAndAge(patientGender, patientAge, mainNode.getGender(), mainNode.getMinAgeLimit(), mainNode.getMaxAgeLimit())) {
                     mFinalEnabledMMList.add(mindMapName);
@@ -222,6 +224,8 @@ public class VisitReasonCaptureFragment extends Fragment {
             mVisitReasonAutoCompleteTextView.setThreshold(2);
             mVisitReasonAutoCompleteTextView.setAdapter(adapter);
             mVisitReasonAutoCompleteTextView.setDropDownBackgroundResource(R.drawable.popup_menu_background);
+            mVisitReasonAutoCompleteTextView.setFilters(new InputFilter[]{new EmojiExcludeFilter()});
+
 
             mVisitReasonAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override

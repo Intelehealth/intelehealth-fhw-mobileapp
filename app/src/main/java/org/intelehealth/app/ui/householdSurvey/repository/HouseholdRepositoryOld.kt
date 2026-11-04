@@ -6,10 +6,12 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel
 import org.intelehealth.app.app.IntelehealthApplication
+import org.intelehealth.app.database.dao.ImagesPushDAO
 import org.intelehealth.app.database.dao.PatientsDAO
+import org.intelehealth.app.database.dao.SyncDAO
 import org.intelehealth.app.models.dto.PatientAttributesDTO
 import org.intelehealth.app.models.dto.PatientDTO
-import org.intelehealth.app.optimized_sync.OptimizedSyncWorker
+import org.intelehealth.app.utilities.NetworkConnection
 import org.intelehealth.app.utilities.exception.DAOException
 import java.util.UUID
 class HouseholdRepositoryOld (private val patientsDao: PatientsDAO,
@@ -120,7 +122,12 @@ class HouseholdRepositoryOld (private val patientsDao: PatientsDAO,
         }
 
         fun syncOnServer() {
-            OptimizedSyncWorker.enqueueOneTimeWork(IntelehealthApplication.getAppContext())
+            if (NetworkConnection.isOnline(IntelehealthApplication.getAppContext())) {
+                val syncDAO = SyncDAO()
+                val imagesPushDAO = ImagesPushDAO()
+                syncDAO.pushDataApi()
+                imagesPushDAO.patientProfileImagesPush()
+            }
         }
 
         private fun getAllRecords(patientUuid: String): org.intelehealth.app.ui.householdSurvey.models.HouseholdSurveyModel {
