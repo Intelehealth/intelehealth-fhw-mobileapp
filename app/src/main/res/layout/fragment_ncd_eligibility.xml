@@ -22,7 +22,8 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/ui2_common_input_bg"
+            android:background="@drawable/bg_ncd_back_button"
+            android:stateListAnimator="@null"
             android:lineHeight="@dimen/button_skip_line_height"
             android:paddingStart="@dimen/common_button_padding_left"
             android:paddingTop="@dimen/common_button_padding_top"
@@ -52,7 +53,8 @@
             android:text="@string/ncd_view_eligibility"
             android:textAllCaps="false"
             android:textColor="@color/white"
-            android:textSize="@dimen/common_button_text_size" />
+            android:textSize="@dimen/common_button_text_size"
+            app:fontFamily="@font/lato_bold" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

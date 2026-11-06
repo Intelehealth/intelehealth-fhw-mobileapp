@@ -407,7 +407,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(mItemList.get(position), genericViewHolder, position);
+                    addNumberView(mItemList.get(position), genericViewHolder, position, false);
+                    break;
+                case "decimal":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(mItemList.get(position), genericViewHolder, position, true);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
@@ -934,7 +938,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addNumberView(options.get(0), holder, index, false);
+                    break;
+                case "decimal":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(options.get(0), holder, index, true);
+                    break;
+                case "readonly":
+                    addReadOnlyView(options.get(0), holder, index);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
@@ -1526,7 +1537,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // askNumber(questionNode, context, adapter);
-                                addNumberView(node, holder, index);
+                                addNumberView(node, holder, index, false);
+                                break;
+                            case "decimal":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askNumber(questionNode, context, adapter);
+                                addNumberView(node, holder, index, true);
                                 break;
                             case "area":
                                 holder.submitButton.setVisibility(View.GONE);
@@ -1665,7 +1682,11 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                     break;
                 case "number":
                     // askNumber(questionNode, context, adapter);
-                    addNumberView(options.get(0), holder, index);
+                    addNumberView(options.get(0), holder, index, false);
+                    break;
+                case "decimal":
+                    // askNumber(questionNode, context, adapter);
+                    addNumberView(options.get(0), holder, index, true);
                     break;
                 case "area":
                     // askArea(questionNode, context, adapter);
@@ -2095,7 +2116,13 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
                                 holder.submitButton.setVisibility(View.GONE);
                                 holder.skipButton.setVisibility(View.GONE);
                                 // askNumber(questionNode, context, adapter);
-                                addNumberView(node, holder, index);
+                                addNumberView(node, holder, index, false);
+                                break;
+                            case "decimal":
+                                holder.submitButton.setVisibility(View.GONE);
+                                holder.skipButton.setVisibility(View.GONE);
+                                // askNumber(questionNode, context, adapter);
+                                addNumberView(node, holder, index, true);
                                 break;
                             case "area":
                                 // askArea(questionNode, context, adapter);
@@ -2508,7 +2535,7 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
     }
 
 
-    private void addNumberView(Node node, GenericViewHolder holder, int index) {
+    private void addNumberView(Node node, GenericViewHolder holder, int index, boolean isDecimalAllowed) {
         holder.singleComponentContainer.removeAllViews();
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
         View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
@@ -2630,8 +2657,12 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             }
         });
 
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        editText.setHint(mContext.getString(R.string.describe_hint_txt));
+        editText.setInputType(isDecimalAllowed
+                ? InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL
+                : InputType.TYPE_CLASS_NUMBER);
+        // Decimal fields use the option text as the hint, e.g. "Enter value"
+        String hint = isDecimalAllowed ? node.findDisplay() : null;
+        editText.setHint(hint == null || hint.isEmpty() ? mContext.getString(R.string.describe_hint_txt) : hint);
         /*if (node.isDataCaptured() && node.isDataCaptured()) {
             submitButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_baseline_check_24_white, 0, 0, 0);
         } else {
@@ -2640,6 +2671,33 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
         boolean isParentNodeIsMandatory = mItemList.get(index).isRequired();
         if (isParentNodeIsMandatory)
             skipButton.setVisibility(View.GONE);
+        holder.singleComponentContainer.addView(view);
+        holder.singleComponentContainer.setVisibility(View.VISIBLE);
+    }
+
+    // Pre-filled answer (the node's "language") that can't be edited, only confirmed
+    private void addReadOnlyView(Node node, GenericViewHolder holder, int index) {
+        holder.singleComponentContainer.removeAllViews();
+        View view = View.inflate(mContext, R.layout.visit_reason_input_text, null);
+        Button submitButton = view.findViewById(R.id.btn_submit);
+        submitButton.setText(mContext.getString(R.string.confirm));
+        submitButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, node.isDataCaptured() ? R.drawable.ic_baseline_check_18_white : 0, 0);
+        submitButton.setBackgroundResource(node.isDataCaptured() ? R.drawable.ui2_common_primary_bg : R.drawable.ui2_common_button_bg_submit);
+        view.findViewById(R.id.btn_skip).setVisibility(View.GONE);
+
+        EditText editText = view.findViewById(R.id.actv_reasons);
+        editText.setText(node.getLanguage());
+        editText.setEnabled(false);
+        // Grey like a placeholder, as in Figma
+        editText.setTextColor(ContextCompat.getColor(mContext, R.color.edittext_hint_color));
+
+        submitButton.setOnClickListener(v -> {
+            node.setSelected(true);
+            holder.node.setSelected(true);
+            node.setDataCaptured(true);
+            holder.node.setDataCaptured(true);
+            AdapterUtils.buttonProgressAnimation(mContext, submitButton, true, () -> mOnItemSelection.onSelect(node, index, false, null));
+        });
         holder.singleComponentContainer.addView(view);
         holder.singleComponentContainer.setVisibility(View.VISIBLE);
     }

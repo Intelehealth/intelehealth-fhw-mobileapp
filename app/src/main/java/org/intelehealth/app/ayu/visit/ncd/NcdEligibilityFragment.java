@@ -155,8 +155,12 @@ public class NcdEligibilityFragment extends Fragment {
         if (next < mQuestions.size()) {
             mAdapter.addItem(mQuestions.get(next), ENGINE_VERSION);
             VisitUtils.scrollNow(mRecyclerView, 300, 0, 500, false, false);
+            // Again once the card is filled in (the adapter fills it after a delay), as on Visit reason
+            VisitUtils.scrollNow(mRecyclerView, 1400, 0, 1400, false, false);
         } else {
             mFooter.setVisibility(View.VISIBLE);
+            // The footer shortens the list, so bring the last card back into view
+            VisitUtils.scrollNow(mRecyclerView, 300, 0, 500, false, false);
         }
     }
 
@@ -211,8 +215,8 @@ public class NcdEligibilityFragment extends Fragment {
             }
         }
         // Urgent beats Not eligible, which beats Eligible
-        state.setResult(NcdEligibilityRules.evaluate(Boolean.TRUE.equals(state.getPregnant()),
-                state.isMultimorbidity(), !state.getUrgentSymptomIds().isEmpty()));
+        state.setResult(NcdEligibilityRules.evaluate(Boolean.TRUE.equals(state.getPregnant()), state.isMultimorbidity(),
+                NcdEligibilityRules.KNOWN_CASE_BOTH.equals(state.getKnownCaseOptionId()), !state.getUrgentSymptomIds().isEmpty()));
         NcdEligibilityResultDialog.show(requireContext(), state, symptomNames, () -> handOver(state));
     }
 
