@@ -53,7 +53,10 @@ import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionSummaryFr
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
+import org.intelehealth.app.ayu.visit.ncd.CbacAssessmentFragment;
+import org.intelehealth.app.ayu.visit.ncd.CbacAssessmentState;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityFragment;
+import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityState;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
@@ -160,6 +163,10 @@ public class VisitCreationActivity extends BaseActivity implements
     public static final int STEP_0_NCD_ELIGIBILITY_DONE = 61;
     public static final String EXTRA_NCD_CONSENT_ACCEPTED = "ncdConsentAccepted";
     private static final String NCD_ELIGIBILITY_FRAGMENT = "NCD_ELIGIBILITY";
+    // CBAC follows an Eligible NCD result, still before the first regular step
+    public static final int STEP_0_CBAC_ASSESSMENT = 62;
+    public static final int STEP_0_CBAC_ASSESSMENT_DONE = 63;
+    private static final String CBAC_ASSESSMENT_FRAGMENT = "CBAC_ASSESSMENT";
 
     public static final int STEP_1_VITAL = 1;
     public static final int STEP_1_VITAL_SUMMARY = 1001;
@@ -236,12 +243,15 @@ public class VisitCreationActivity extends BaseActivity implements
 
     private FrameLayout mSummaryFrameLayout;
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar, mStep5ProgressBar;
-    private ProgressBar mNcdProgressBar;
+    private ProgressBar mNcdProgressBar, mCbacProgressBar;
 
     // NCD consent answer (null = not asked) and the in-memory eligibility answers
     private Boolean mNcdConsentAccepted;
     private NcdEligibilityState mNcdEligibilityState;
     private int mStepAfterNcdEligibility;
+    // Set once the NCD result sends the patient to CBAC; CBAC answers are in memory only
+    private boolean mCbacStepShown;
+    private CbacAssessmentState mCbacAssessmentState;
 
     private List<Node> mChiefComplainRootNodeList = new ArrayList<>();
     private List<Node> mAssociateSymptomsNodeList = new ArrayList<>();
@@ -427,6 +437,7 @@ public class VisitCreationActivity extends BaseActivity implements
         mStep4ProgressBar = findViewById(R.id.prog_bar_step4);
         mStep5ProgressBar = findViewById(R.id.prog_bar_step5);
         mNcdProgressBar = findViewById(R.id.prog_bar_step0);
+        mCbacProgressBar = findViewById(R.id.prog_bar_step0_cbac);
 
         // PROD-221: true only when Android is rebuilding this screen (rotation, process restore) and a
         // visit was saved before. A normal launch from the consent or Visit Summary screen has no saved
@@ -953,9 +964,25 @@ public class VisitCreationActivity extends BaseActivity implements
                 getSupportFragmentManager().beginTransaction().replace(R.id.fl_steps_body, NcdEligibilityFragment.newInstance(patientGender, float_ageYear_Month), NCD_ELIGIBILITY_FRAGMENT).commit();
                 break;
             case STEP_0_NCD_ELIGIBILITY_DONE:
-                // Every pop-up exit continues the regular visit (CBAC will plug in here later)
+                // Eligible goes to CBAC; every other exit continues the regular visit
                 mNcdEligibilityState = (NcdEligibilityState) object;
                 mNcdProgressBar.setProgress(100);
+                if (mNcdEligibilityState != null && NcdEligibilityRules.isCbacShown(mNcdEligibilityState.getResult())) {
+                    mCbacStepShown = true;
+                    mCbacProgressBar.setVisibility(View.VISIBLE);
+                    onFormSubmitted(STEP_0_CBAC_ASSESSMENT, false, null);
+                } else {
+                    onFormSubmitted(mStepAfterNcdEligibility, false, mCommonVisitData);
+                }
+                break;
+            case STEP_0_CBAC_ASSESSMENT:
+                mCbacProgressBar.setProgress(30); setTitle(nextAction);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_steps_body, CbacAssessmentFragment.newInstance(patientGender, float_ageYear_Month), CBAC_ASSESSMENT_FRAGMENT).commit();
+                break;
+            case STEP_0_CBAC_ASSESSMENT_DONE:
+                // Both result pop-ups continue the regular visit for now
+                mCbacAssessmentState = (CbacAssessmentState) object;
+                mCbacProgressBar.setProgress(100);
                 onFormSubmitted(mStepAfterNcdEligibility, false, mCommonVisitData);
                 break;
             case STEP_1_VITAL_SUMMARY:
@@ -1898,17 +1925,19 @@ public class VisitCreationActivity extends BaseActivity implements
         int currentScreenIndex = 1; String title = "";
         boolean isVitalEnabled = featureActiveStatus.getVitalSection();
         boolean isDiagnosticsEnabled = featureActiveStatus.getActiveStatusDiagnosticsSection();
-        int ncdScreenIndex = getNcdStepOffset(); // NCD comes first, the rest move up one
-        int vitalScreenIndex = isVitalEnabled ? ncdScreenIndex + 1 : ncdScreenIndex;
+        int ncdStepOffset = getNcdStepOffset(); // NCD (and CBAC) come first, the rest move up
+        int vitalScreenIndex = isVitalEnabled ? ncdStepOffset + 1 : ncdStepOffset;
         int diagnosticsScreenIndex = isDiagnosticsEnabled ? vitalScreenIndex + 1 : vitalScreenIndex;
         int visitReasonScreenIndex = Math.max(vitalScreenIndex, diagnosticsScreenIndex) + 1;
-        // 5 regular screens (Vitals, Diagnostics, Visit reason, Physical exam, History), plus NCD when shown
-        int adjustedTotalScreen = 5 + ncdScreenIndex;
+        // 5 regular screens (Vitals, Diagnostics, Visit reason, Physical exam, History), plus NCD and CBAC when shown
+        int adjustedTotalScreen = 5 + ncdStepOffset;
         if (!isVitalEnabled) adjustedTotalScreen--;
         if (!isDiagnosticsEnabled) adjustedTotalScreen--;
         switch (screenId) {
             // Always the first screen when shown, e.g. "1/6 NCD Eligibility"
-            case STEP_0_NCD_ELIGIBILITY: currentScreenIndex = ncdScreenIndex; title = getString(R.string.ncd_eligibility_step_title, currentScreenIndex, adjustedTotalScreen); break;
+            case STEP_0_NCD_ELIGIBILITY: currentScreenIndex = 1; title = getString(R.string.ncd_eligibility_step_title, currentScreenIndex, adjustedTotalScreen); break;
+            // Right after NCD, e.g. "2/7 CBAC"
+            case STEP_0_CBAC_ASSESSMENT: currentScreenIndex = 2; title = getString(R.string.cbac_step_title, currentScreenIndex, adjustedTotalScreen); break;
             case STEP_1_VITAL: if (isVitalEnabled) { currentScreenIndex = vitalScreenIndex; title = getString(R.string._1_4_vitals, currentScreenIndex, adjustedTotalScreen); } break;
             case STEP_2_DIAGNOSTICS: if (isDiagnosticsEnabled) { currentScreenIndex = diagnosticsScreenIndex; title = getString(R.string.diagnostics_section, currentScreenIndex, adjustedTotalScreen); } break;
             case STEP_3_VISIT_REASON: currentScreenIndex = visitReasonScreenIndex; title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen); if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) title = getString(R.string.visit_reason, currentScreenIndex, totalScreen); break;
@@ -1931,9 +1960,10 @@ public class VisitCreationActivity extends BaseActivity implements
         return BuildConfig.FLAVOR_client == FlavorKeys.NAS && Boolean.TRUE.equals(mNcdConsentAccepted);
     }
 
-    // 1 when the NCD step is shown, so every later step title moves up one
+    // Screens before Vitals: 1 for NCD, 2 once CBAC follows it, so later step titles move up
     public int getNcdStepOffset() {
-        return isNcdEligibilityStepShown() ? 1 : 0;
+        if (!isNcdEligibilityStepShown()) return 0;
+        return mCbacStepShown ? 2 : 1;
     }
 
     // NCD photos are not saved anywhere yet, so a discarded visit must not leave them behind

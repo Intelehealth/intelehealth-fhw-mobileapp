@@ -75,7 +75,9 @@ final class NcdEligibilityResultDialog {
         dialog.show();
     }
 
+    // A known case of both DM and HTN is shown first, whatever else was answered
     private static int reasonText(NcdEligibilityState state) {
+        if (NcdEligibilityRules.KNOWN_CASE_BOTH.equals(state.getKnownCaseOptionId())) return R.string.ncd_reason_known_both;
         boolean pregnant = Boolean.TRUE.equals(state.getPregnant());
         if (pregnant && state.isMultimorbidity()) return R.string.ncd_reason_pregnant_and_multimorbidity;
         return pregnant ? R.string.ncd_reason_pregnant : R.string.ncd_reason_multimorbidity;

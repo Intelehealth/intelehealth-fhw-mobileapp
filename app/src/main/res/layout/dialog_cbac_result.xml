@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_5"
+    app:cardCornerRadius="@dimen/margin_16dp"
+    app:cardElevation="@dimen/hamburger_margin_start">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:contentDescription="@string/cancel"
+            app:srcCompat="@drawable/cancel_btn_cross"
+            app:tint="@color/textColorBlack" />
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:importantForAccessibility="no"
+            app:srcCompat="@drawable/ic_cbac_high_risk" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_icon"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:fontFamily="@font/lato_bold"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:textColor="@color/textColorBlack"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:fontFamily="@font/lato_regular"
+                android:gravity="center"
+                android:lineSpacingExtra="3sp"
+                android:textColor="@color/textColorBlack"
+                android:textSize="14sp" />
+
+            <!-- Figma: two full-width buttons stacked, 12dp apart -->
+            <Button
+                android:id="@+id/btn_positive"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/primary_bg_rounded_corners"
+                app:fontFamily="@font/lato_bold"
+                android:letterSpacing="0"
+                android:stateListAnimator="@null"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:backgroundTint="@null" />
+
+            <Button
+                android:id="@+id/btn_negative"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/bg_ncd_outline_button"
+                app:fontFamily="@font/lato_bold"
+                android:letterSpacing="0"
+                android:stateListAnimator="@null"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                app:backgroundTint="@null" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

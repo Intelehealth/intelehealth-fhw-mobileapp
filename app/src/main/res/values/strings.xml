@@ -1881,9 +1881,21 @@
     <string name="ncd_reason_pregnant">Patient is pregnant.</string>
     <string name="ncd_reason_multimorbidity">Patient has a serious illness or multimorbidity.</string>
     <string name="ncd_reason_pregnant_and_multimorbidity">Patient is pregnant &amp; has a serious illness or multimorbidity.</string>
+    <string name="ncd_reason_known_both">Patient is already diagnosed with both Diabetes and Hypertension. NCD screening is not required.</string>
     <string name="ncd_urgent_title">Immediate medical attention needed</string>
     <string name="ncd_reported_symptom">Reported Symptom</string>
     <string name="ncd_urgent_instruction">Ask the patient to visit nearest health facility immediately. Do not continue NCD screening in this app.</string>
     <string name="ncd_acknowledge_and_exit">Acknowledge &amp; exit screening</string>
+    <string name="cbac_step_title">%1$d/%2$d CBAC</string>
+    <string name="cbac_age_years">%1$d Years</string>
+    <string name="cbac_enter_valid_waist">Please enter a valid waist measurement in cm</string>
+    <string name="cbac_score">CBAC Score</string>
+    <string name="cbac_view_result">View result</string>
+    <string name="cbac_high_risk_title">Continue NCD screening</string>
+    <string name="cbac_high_risk_message">Score above threshold. Proceed with diabetes and hypertension screening.</string>
+    <string name="cbac_proceed_to_screening">Proceed to Screening</string>
+    <string name="cbac_low_risk_title">Continue to Vitals</string>
+    <string name="cbac_low_risk_message">Score below threshold. Proceed to taking vitals.</string>
+    <string name="cbac_proceed_to_vitals">Proceed to Vitals</string>
 
 </resources>

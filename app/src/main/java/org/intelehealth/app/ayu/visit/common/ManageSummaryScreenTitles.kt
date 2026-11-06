@@ -28,14 +28,14 @@ class ManageSummaryScreenTitles {
             val isVitalEnabled = featureActiveStatus?.vitalSection ?: true
             val isDiagnosticsEnabled = featureActiveStatus?.activeStatusDiagnosticsSection ?: true
 
-            // The NCD Eligibility step (when shown) comes first
+            // The NCD Eligibility and CBAC steps (when shown) come first
             val ncdOffset = (context as? VisitCreationActivity)?.ncdStepOffset ?: 0
             val vitalScreenIndex = if (isVitalEnabled) ncdOffset + 1 else ncdOffset
             val diagnosticsScreenIndex =
                 if (isDiagnosticsEnabled) vitalScreenIndex + 1 else vitalScreenIndex
             val visitReasonScreenIndex = maxOf(vitalScreenIndex, diagnosticsScreenIndex) + 1
 
-            // 5 regular screens (Vitals, Diagnostics, Visit reason, Physical exam, History), plus NCD when shown
+            // 5 regular screens (Vitals, Diagnostics, Visit reason, Physical exam, History), plus NCD and CBAC when shown
             var adjustedTotalScreen = 5 + ncdOffset
             if (!isVitalEnabled) adjustedTotalScreen--
             if (!isDiagnosticsEnabled) adjustedTotalScreen--

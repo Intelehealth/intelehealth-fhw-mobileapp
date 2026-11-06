@@ -45,19 +45,32 @@ public class NcdEligibilityRulesTest {
 
     @Test
     public void noExclusionsIsEligible() {
-        assertEquals(Result.ELIGIBLE, NcdEligibilityRules.evaluate(false, false, false));
+        assertEquals(Result.ELIGIBLE, NcdEligibilityRules.evaluate(false, false, false, false));
     }
 
     @Test
     public void pregnancyOrMultimorbidityIsNotEligible() {
-        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(true, false, false));
-        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(false, true, false));
-        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(true, true, false));
+        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(true, false, false, false));
+        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(false, true, false, false));
+        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(true, true, false, false));
+    }
+
+    @Test
+    public void knownCaseOfBothIsNotEligible() {
+        assertEquals(Result.NOT_ELIGIBLE, NcdEligibilityRules.evaluate(false, false, true, false));
     }
 
     @Test
     public void urgentSymptomWinsOverExclusions() {
-        assertEquals(Result.URGENT, NcdEligibilityRules.evaluate(false, false, true));
-        assertEquals(Result.URGENT, NcdEligibilityRules.evaluate(true, true, true));
+        assertEquals(Result.URGENT, NcdEligibilityRules.evaluate(false, false, false, true));
+        assertEquals(Result.URGENT, NcdEligibilityRules.evaluate(true, true, true, true));
+    }
+
+    @Test
+    public void onlyEligibleGoesToCbac() {
+        assertTrue(NcdEligibilityRules.isCbacShown(Result.ELIGIBLE));
+        assertFalse(NcdEligibilityRules.isCbacShown(Result.NOT_ELIGIBLE));
+        assertFalse(NcdEligibilityRules.isCbacShown(Result.URGENT));
+        assertFalse(NcdEligibilityRules.isCbacShown(null));
     }
 }
