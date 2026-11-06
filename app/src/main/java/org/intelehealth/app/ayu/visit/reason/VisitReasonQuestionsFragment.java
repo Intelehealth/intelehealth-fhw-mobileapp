@@ -27,6 +27,7 @@ import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ComplainBasicInfo;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.models.AnswerResult;
+import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.SessionManager;
 
 import java.util.ArrayList;
@@ -64,6 +65,22 @@ public class VisitReasonQuestionsFragment extends Fragment {
         return fragment;
     }
 
+    /**
+     * Whether the Associated symptoms section has answers that were not confirmed with its Submit button.
+     * Its Submit marks the section as captured; selecting or changing any symptom answer clears that.
+     */
+    private boolean isAssociatedSymptomsSectionNotSubmitted() {
+        if (mChiefComplainRootNodeList == null) return false;
+        for (Node node : mChiefComplainRootNodeList) {
+            if (node != null && node.getText() != null && node.getText().trim().equalsIgnoreCase(Node.ASSOCIATE_SYMPTOMS)
+                    && node.getOptionsList() != null && !node.getOptionsList().isEmpty()
+                    && !node.isDataCaptured()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +112,15 @@ public class VisitReasonQuestionsFragment extends Fragment {
             view.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    // The Associated symptoms section has its own Submit. Changing any answer there clears its
+                    // "submitted" state, so don't let Confirm skip it: ask the user to submit the section first.
+                    if (isAssociatedSymptomsSectionNotSubmitted()) {
+                        new DialogUtils().showCommonDialog(requireActivity(), 0, getString(R.string.alert_label_txt),
+                                getString(R.string.submit_associated_symptoms_before_proceeding), true,
+                                getString(R.string.generic_ok), getString(R.string.cancel), action -> {
+                                });
+                        return;
+                    }
                     mActionListener.onFormSubmitted(VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY, mIsEditMode, null);
 
                 }
