@@ -3255,7 +3255,12 @@ public class Node implements Serializable {
         stringBuilder.append("\n");
         answerResult.result = true;
 
-        if (isRequired()) {
+        // Every associated symptom must be answered Yes or No. Most protocols mark the Associated
+        // symptoms block "isRequired": true, but some (e.g. Heavy Periods, Absence of menstruation)
+        // don't, which let Submit/Confirm pass with symptoms left unanswered - noticeable in edit mode,
+        // where all symptoms are shown at once. Treat that block as required regardless of the flag.
+        boolean isAssociatedSymptomsBlock = text != null && text.trim().equalsIgnoreCase(ASSOCIATE_SYMPTOMS);
+        if (isRequired() || isAssociatedSymptomsBlock) {
             if (optionsList != null && !optionsList.isEmpty()) {
                 if (!isAllAssociatedSymptomsOptionsAnswered()) {
                     switch (locale) {
