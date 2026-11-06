@@ -256,6 +256,14 @@ public class EncounterDAO extends BaseDao {
         String emergency_uuid = encounterDAO.getEncounterTypeUuid("EMERGENCY");
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
 
+        // Visit Summary calls this when Priority is ticked and again on "Send visit". Voiding and
+        // re-creating each time left a voided duplicate EMERGENCY encounter that was pushed to the
+        // server alongside the active one, so keep the visit's active emergency encounter instead.
+        if (emergencyChecked && !encounterDAO.getEmergencyEncounters(visitUuid, emergency_uuid).isEmpty()) {
+            Logger.logD("encounter", "setEmergency: active emergency encounter already exists for visit " + visitUuid);
+            return isExecuted;
+        }
+
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         //db.beginTransaction();
         ContentValues values = new ContentValues();
