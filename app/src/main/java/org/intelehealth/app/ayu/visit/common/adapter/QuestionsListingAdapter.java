@@ -389,6 +389,14 @@ public class QuestionsListingAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (type == null || type.isEmpty() && (genericViewHolder.node.getOptionsList() != null && !genericViewHolder.node.getOptionsList().isEmpty())) {
                 type = "options";
             }
+            // A question with two or more answers to choose from is answered by picking one, even when
+            // the protocol also gives the question an "input-type" (e.g. Absence of menstruation, Q2
+            // "Age at menarche": No / Yes with nested questions, but "input-type": "number"). Showing the
+            // input instead hid the answers and their nested questions, and the required check then
+            // failed on the final Submit. Questions with a single answer keep their input as before.
+            if (genericViewHolder.node.getOptionsList() != null && genericViewHolder.node.getOptionsList().size() > 1) {
+                type = "options";
+            }
             switch (type) {
                 case "text":
                     // askText(questionNode, context, adapter);
