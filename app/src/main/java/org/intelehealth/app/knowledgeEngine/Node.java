@@ -325,6 +325,15 @@ public class Node implements Serializable {
             }
 
             this.inputType = jsonNode.optString("input-type");
+            // Some protocols (e.g. Scanty periods, Joint pain, Slow healing wound) leave the "Describe"
+            // follow-up of an "Other" answer without "input-type". It then has nothing to answer, and
+            // selecting "Other" replaced the question's own options with a lone "Describe" chip.
+            // A leaf "Describe" is always free text, so default it to a text field.
+            JSONArray childOptions = jsonNode.optJSONArray("options");
+            if (this.inputType.trim().isEmpty() && this.text != null && this.text.trim().equalsIgnoreCase("Describe")
+                    && (childOptions == null || childOptions.length() == 0)) {
+                this.inputType = "text";
+            }
 
             this.physicalExams = jsonNode.optString("perform-physical-exam");
             this.hasPhysicalExams = !(this.physicalExams == null);
