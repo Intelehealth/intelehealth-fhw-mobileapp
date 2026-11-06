@@ -53,6 +53,8 @@ import org.intelehealth.app.ayu.visit.diagnostics.DiagnosticsCollectionSummaryFr
 import org.intelehealth.app.ayu.visit.familyhist.FamilyHistoryFragment;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.ayu.visit.model.ReasonData;
+import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityFragment;
+import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityState;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
@@ -153,6 +155,12 @@ public class VisitCreationActivity extends BaseActivity implements
     private static final String DIGITAL_SETHSCOPE_FRAGMENT = "DIGITAL_SETHA_SCOPE";
     private static final String DIGITAL_SUMMARY_FRAGMENT = "DIGITAL_SUMMARY";
 
+    // NCD eligibility runs before the first regular step
+    public static final int STEP_0_NCD_ELIGIBILITY = 60;
+    public static final int STEP_0_NCD_ELIGIBILITY_DONE = 61;
+    public static final String EXTRA_NCD_CONSENT_ACCEPTED = "ncdConsentAccepted";
+    private static final String NCD_ELIGIBILITY_FRAGMENT = "NCD_ELIGIBILITY";
+
     public static final int STEP_1_VITAL = 1;
     public static final int STEP_1_VITAL_SUMMARY = 1001;
     public static final int STEP_2_DIAGNOSTICS = 2;
@@ -228,6 +236,12 @@ public class VisitCreationActivity extends BaseActivity implements
 
     private FrameLayout mSummaryFrameLayout;
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar, mStep5ProgressBar;
+    private ProgressBar mNcdProgressBar;
+
+    // NCD consent answer (null = not asked) and the in-memory eligibility answers
+    private Boolean mNcdConsentAccepted;
+    private NcdEligibilityState mNcdEligibilityState;
+    private int mStepAfterNcdEligibility;
 
     private List<Node> mChiefComplainRootNodeList = new ArrayList<>();
     private List<Node> mAssociateSymptomsNodeList = new ArrayList<>();
@@ -383,6 +397,12 @@ public class VisitCreationActivity extends BaseActivity implements
                 if (isVitalsActive && !isDiagnosticsActive) { mStep1ProgressBar.setVisibility(View.VISIBLE); mStep2ProgressBar.setVisibility(View.GONE); mCurrentStep = STEP_1_VITAL; totalScreen = 4; }
                 if (!isVitalsActive && !isDiagnosticsActive) { mStep1ProgressBar.setVisibility(View.GONE); mStep2ProgressBar.setVisibility(View.GONE); mCurrentStep = STEP_3_VISIT_REASON; totalScreen = 3; }
             }
+            // New visits with NCD consent start at the NCD step; the usual first step opens after it
+            if (!mIsEditMode && isNcdEligibilityStepShown()) {
+                mStepAfterNcdEligibility = mCurrentStep;
+                mCurrentStep = STEP_0_NCD_ELIGIBILITY;
+                mNcdProgressBar.setVisibility(View.VISIBLE);
+            }
             if (!mIsEditMode) onFormSubmitted(mCurrentStep, mIsEditMode, mCommonVisitData);
             else makeReadyForEdit();
         }
@@ -406,6 +426,7 @@ public class VisitCreationActivity extends BaseActivity implements
         mStep3ProgressBar = findViewById(R.id.prog_bar_step3);
         mStep4ProgressBar = findViewById(R.id.prog_bar_step4);
         mStep5ProgressBar = findViewById(R.id.prog_bar_step5);
+        mNcdProgressBar = findViewById(R.id.prog_bar_step0);
 
         // PROD-221: true only when Android is rebuilding this screen (rotation, process restore) and a
         // visit was saved before. A normal launch from the consent or Visit Summary screen has no saved
@@ -420,6 +441,9 @@ public class VisitCreationActivity extends BaseActivity implements
             intentTag = mCommonVisitData.getIntentTag();
             if (intentTag.equalsIgnoreCase("new")) {
                 privacy_value_selected = mCommonVisitData.getPrivacyNote();
+                // Accept/Decline from NcdConsentActivity; stays null when consent wasn't asked
+                if (intent.hasExtra(EXTRA_NCD_CONSENT_ACCEPTED))
+                    mNcdConsentAccepted = intent.getBooleanExtra(EXTRA_NCD_CONSENT_ACCEPTED, false);
                 // Create the visit only on the first launch. A rebuilt screen keeps the visit it already
                 // created (ids restored just below) instead of starting a duplicate one.
                 if (!isRecreated) startVisit();
@@ -923,6 +947,17 @@ public class VisitCreationActivity extends BaseActivity implements
         mCurrentStep = nextAction;
         Timber.tag(TAG).d("first screen=>%s", nextAction);
         switch (nextAction) {
+            case STEP_0_NCD_ELIGIBILITY:
+                // NCD bar part-filled; Vitals bar emptied (its layout default is 80)
+                mNcdProgressBar.setProgress(30); mStep1ProgressBar.setProgress(0); mSummaryFrameLayout.setVisibility(View.GONE); setTitle(nextAction);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fl_steps_body, NcdEligibilityFragment.newInstance(patientGender, float_ageYear_Month), NCD_ELIGIBILITY_FRAGMENT).commit();
+                break;
+            case STEP_0_NCD_ELIGIBILITY_DONE:
+                // Every pop-up exit continues the regular visit (CBAC will plug in here later)
+                mNcdEligibilityState = (NcdEligibilityState) object;
+                mNcdProgressBar.setProgress(100);
+                onFormSubmitted(mStepAfterNcdEligibility, false, mCommonVisitData);
+                break;
             case STEP_1_VITAL_SUMMARY:
                 if (object != null) mVitalsObject = (VitalsObject) object;
                 if (mVitalsObject != null) {
@@ -1863,13 +1898,17 @@ public class VisitCreationActivity extends BaseActivity implements
         int currentScreenIndex = 1; String title = "";
         boolean isVitalEnabled = featureActiveStatus.getVitalSection();
         boolean isDiagnosticsEnabled = featureActiveStatus.getActiveStatusDiagnosticsSection();
-        int vitalScreenIndex = isVitalEnabled ? 1 : 0;
+        int ncdScreenIndex = getNcdStepOffset(); // NCD comes first, the rest move up one
+        int vitalScreenIndex = isVitalEnabled ? ncdScreenIndex + 1 : ncdScreenIndex;
         int diagnosticsScreenIndex = isDiagnosticsEnabled ? vitalScreenIndex + 1 : vitalScreenIndex;
         int visitReasonScreenIndex = Math.max(vitalScreenIndex, diagnosticsScreenIndex) + 1;
-        int adjustedTotalScreen = 5;
+        // 5 regular screens (Vitals, Diagnostics, Visit reason, Physical exam, History), plus NCD when shown
+        int adjustedTotalScreen = 5 + ncdScreenIndex;
         if (!isVitalEnabled) adjustedTotalScreen--;
         if (!isDiagnosticsEnabled) adjustedTotalScreen--;
         switch (screenId) {
+            // Always the first screen when shown, e.g. "1/6 NCD Eligibility"
+            case STEP_0_NCD_ELIGIBILITY: currentScreenIndex = ncdScreenIndex; title = getString(R.string.ncd_eligibility_step_title, currentScreenIndex, adjustedTotalScreen); break;
             case STEP_1_VITAL: if (isVitalEnabled) { currentScreenIndex = vitalScreenIndex; title = getString(R.string._1_4_vitals, currentScreenIndex, adjustedTotalScreen); } break;
             case STEP_2_DIAGNOSTICS: if (isDiagnosticsEnabled) { currentScreenIndex = diagnosticsScreenIndex; title = getString(R.string.diagnostics_section, currentScreenIndex, adjustedTotalScreen); } break;
             case STEP_3_VISIT_REASON: currentScreenIndex = visitReasonScreenIndex; title = getString(R.string.visit_reason, currentScreenIndex, adjustedTotalScreen); if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) title = getString(R.string.visit_reason, currentScreenIndex, totalScreen); break;
@@ -1887,10 +1926,26 @@ public class VisitCreationActivity extends BaseActivity implements
         ((TextView) findViewById(R.id.tv_sub_title)).setText(title);
     }
 
+    // Only after the patient accepted the NCD consent (NAS, age 30+, new visits)
+    private boolean isNcdEligibilityStepShown() {
+        return BuildConfig.FLAVOR_client == FlavorKeys.NAS && Boolean.TRUE.equals(mNcdConsentAccepted);
+    }
+
+    // 1 when the NCD step is shown, so every later step title moves up one
+    public int getNcdStepOffset() {
+        return isNcdEligibilityStepShown() ? 1 : 0;
+    }
+
+    // NCD photos are not saved anywhere yet, so a discarded visit must not leave them behind
+    private void deleteNcdPhotos() {
+        if (mNcdEligibilityState == null) return;
+        for (String photo : mNcdEligibilityState.getMedicinePhotoPaths()) new File(photo).delete();
+    }
+
     private void showConfirmationDialog(String content) {
         new DialogUtils().showCommonDialog(this, R.drawable.fingerprint_dialog_error, getResources().getString(R.string.confirm_discard_changes_title), content, false,
                 getResources().getString(R.string.confirm_continue_changes_button_dialog), getResources().getString(R.string.confirm_discard_changes_button_dialog), action -> {
-                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) { new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid); finish(); }
+                    if (action == DialogUtils.CustomDialogListener.NEGATIVE_CLICK) { new VisitsDAO().deleteAllDataForOngoingIncompleteVisit(visitUuid); deleteNcdPhotos(); finish(); }
                 });
     }
 

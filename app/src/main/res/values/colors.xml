@@ -182,4 +182,13 @@
     <color name="graph_grid">#FBEBEB</color>
     <color name="graph_centerline">#F9E2E2</color>
     <color name="record_color">#FF9A01</color>
+
+    <!-- NCD eligibility pop-ups (from Figma) -->
+    <color name="ncd_popup_outline">#E7E5F3</color>
+    <color name="ncd_popup_icon_circle">#F2F1F7</color>
+    <color name="ncd_red">#E95467</color>
+    <color name="ncd_red_light">#FBE9E9</color>
+    <color name="ncd_red_box">#FBECEC</color>
+    <color name="ncd_green">#62C99A</color>
+    <color name="ncd_green_light">#E9FEF3</color>
 </resources>

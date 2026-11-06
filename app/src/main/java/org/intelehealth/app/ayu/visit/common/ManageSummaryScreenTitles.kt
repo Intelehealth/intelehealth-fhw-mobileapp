@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.ayu.visit.VisitCreationActivity
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_1_VITAL_SUMMARY
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_2_DIAGNOSTICS_SUMMARY
 import org.intelehealth.app.ayu.visit.VisitCreationActivity.STEP_3_VISIT_REASON_QUESTION_SUMMARY
@@ -27,12 +28,15 @@ class ManageSummaryScreenTitles {
             val isVitalEnabled = featureActiveStatus?.vitalSection ?: true
             val isDiagnosticsEnabled = featureActiveStatus?.activeStatusDiagnosticsSection ?: true
 
-            val vitalScreenIndex = if (isVitalEnabled) 1 else 0
+            // The NCD Eligibility step (when shown) comes first
+            val ncdOffset = (context as? VisitCreationActivity)?.ncdStepOffset ?: 0
+            val vitalScreenIndex = if (isVitalEnabled) ncdOffset + 1 else ncdOffset
             val diagnosticsScreenIndex =
                 if (isDiagnosticsEnabled) vitalScreenIndex + 1 else vitalScreenIndex
             val visitReasonScreenIndex = maxOf(vitalScreenIndex, diagnosticsScreenIndex) + 1
 
-            var adjustedTotalScreen = 5
+            // 5 regular screens (Vitals, Diagnostics, Visit reason, Physical exam, History), plus NCD when shown
+            var adjustedTotalScreen = 5 + ncdOffset
             if (!isVitalEnabled) adjustedTotalScreen--
             if (!isDiagnosticsEnabled) adjustedTotalScreen--
 
