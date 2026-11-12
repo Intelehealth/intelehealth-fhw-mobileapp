@@ -45,6 +45,11 @@ public final class CbacAssessmentRules {
         return matcher.find() ? Integer.parseInt(matcher.group(1)) : null;
     }
 
+    // Option text without its points, e.g. "Daily (2)" → "Daily"
+    public static String withoutPoints(String optionText) {
+        return optionText == null ? null : POINTS.matcher(optionText).replaceFirst("").trim();
+    }
+
     public static boolean isHighRisk(int totalScore) {
         return totalScore > LOW_RISK_MAX_SCORE;
     }

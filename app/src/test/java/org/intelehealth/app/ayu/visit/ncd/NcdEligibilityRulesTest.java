@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules.Reason;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules.Result;
 import org.junit.Test;
 
@@ -72,5 +73,13 @@ public class NcdEligibilityRulesTest {
         assertFalse(NcdEligibilityRules.isCbacShown(Result.NOT_ELIGIBLE));
         assertFalse(NcdEligibilityRules.isCbacShown(Result.URGENT));
         assertFalse(NcdEligibilityRules.isCbacShown(null));
+    }
+
+    @Test
+    public void knownCaseOfBothIsTheFirstReason() {
+        assertEquals(Reason.KNOWN_CASE_BOTH, NcdEligibilityRules.notEligibleReason(true, true, true));
+        assertEquals(Reason.PREGNANT_AND_MULTIMORBIDITY, NcdEligibilityRules.notEligibleReason(true, true, false));
+        assertEquals(Reason.PREGNANT, NcdEligibilityRules.notEligibleReason(true, false, false));
+        assertEquals(Reason.MULTIMORBIDITY, NcdEligibilityRules.notEligibleReason(false, true, false));
     }
 }

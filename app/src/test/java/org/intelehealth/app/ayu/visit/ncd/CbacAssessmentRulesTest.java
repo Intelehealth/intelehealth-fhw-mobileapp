@@ -109,4 +109,13 @@ public class CbacAssessmentRulesTest {
         assertTrue(CbacAssessmentRules.isHighRisk(5));
         assertTrue(CbacAssessmentRules.isHighRisk(12));
     }
+
+    @Test
+    public void pointsAreRemovedFromOptionText() {
+        assertEquals("Daily", CbacAssessmentRules.withoutPoints("Daily (2)"));
+        assertEquals("90 cm or less", CbacAssessmentRules.withoutPoints("90 cm or less (0)"));
+        assertEquals("Past user / Sometimes now", CbacAssessmentRules.withoutPoints("Past user / Sometimes now (1)"));
+        assertEquals("Never", CbacAssessmentRules.withoutPoints("Never"));
+        assertNull(CbacAssessmentRules.withoutPoints(null));
+    }
 }

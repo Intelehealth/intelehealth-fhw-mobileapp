@@ -202,6 +202,7 @@ public class NcdEligibilityFragment extends Fragment {
                         return;
                     }
                     state.setKnownCaseOptionId(answerId);
+                    state.setKnownCaseText(selected.get(0).getText());
                     if (hasPhoto) state.getMedicinePhotoPaths().addAll(photos);
                     break;
                 case URGENT_SYMPTOMS:
@@ -209,6 +210,7 @@ public class NcdEligibilityFragment extends Fragment {
                         // "None" is not a symptom
                         if (URGENT_NONE.equals(option.getId())) continue;
                         state.getUrgentSymptomIds().add(option.getId());
+                        state.getUrgentSymptomTexts().add(option.getText());
                         symptomNames.add(option.findDisplay());
                     }
                     break;
@@ -216,7 +218,7 @@ public class NcdEligibilityFragment extends Fragment {
         }
         // Urgent beats Not eligible, which beats Eligible
         state.setResult(NcdEligibilityRules.evaluate(Boolean.TRUE.equals(state.getPregnant()), state.isMultimorbidity(),
-                NcdEligibilityRules.KNOWN_CASE_BOTH.equals(state.getKnownCaseOptionId()), !state.getUrgentSymptomIds().isEmpty()));
+                state.isKnownCaseBoth(), !state.getUrgentSymptomIds().isEmpty()));
         NcdEligibilityResultDialog.show(requireContext(), state, symptomNames, () -> handOver(state));
     }
 

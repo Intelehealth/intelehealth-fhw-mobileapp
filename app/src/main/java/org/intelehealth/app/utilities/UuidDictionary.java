@@ -50,6 +50,8 @@ public class UuidDictionary {
     public static final String EMERGENCY_OBS = "ca5f5dc3-4f0b-4097-9cae-5cf2eb44a09c";
     public static final String ENCOUNTER_TYPE_REFERRAL = "95f4ae7f-6caa-4c66-950f-7f3d6072ce56";
     public static final String ENCOUNTER_TYPE_SPECIALIST_VISIT_NOTE = "086f323a-b90b-49aa-a3ca-fb9ed8ab7426";
+    // NCD consent, eligibility and CBAC are kept apart from the main visit encounters
+    public static final String ENCOUNTER_NCD_SCREENING = "c59385db-3786-4028-a6a7-5a4cf49867d7";
 
     //Visit Types
     public static final String VISIT_TELEMEDICINE = "a86ac96e-2e07-47a7-8e72-8216a1a75bfd";
@@ -113,5 +115,11 @@ public class UuidDictionary {
     public static final String TELECONSULTATION_CONSENT = "ddabcccc-1554-4fb5-bfa2-de596b72a64c";
     /** Person attribute type - "ABDM_Consent". */
     public static final String ABDM_CONSENT = "9c8f0974-615e-4dd2-82ea-40cbec9e821b";
+
+    // NCD screening concepts, saved as obs of ENCOUNTER_NCD_SCREENING
+    public static final String NCD_CONSENT = "cff4c05f-6ec3-48b2-a6b7-e1b6137679f5";
+    public static final String NCD_ELIGIBILITY = "d4d9427f-2699-4c16-92c7-544822b6e014";
+    public static final String CBAC_QUESTIONNAIRE = "a710ee70-870f-49e0-8da1-27d4b7de5552";
+    public static final String CBAC_SCORE = "56e0692b-6c07-40d4-8c3e-44b426a5463b";
 
 }

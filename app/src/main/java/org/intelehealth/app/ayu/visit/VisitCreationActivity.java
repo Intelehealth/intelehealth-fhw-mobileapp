@@ -58,6 +58,7 @@ import org.intelehealth.app.ayu.visit.ncd.CbacAssessmentState;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityFragment;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityState;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningRepository;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
 import org.intelehealth.app.ayu.visit.physicalexam.PhysicalExamSummaryFragment;
@@ -245,11 +246,11 @@ public class VisitCreationActivity extends BaseActivity implements
     private ProgressBar mStep1ProgressBar, mStep2ProgressBar, mStep3ProgressBar, mStep4ProgressBar, mStep5ProgressBar;
     private ProgressBar mNcdProgressBar, mCbacProgressBar;
 
-    // NCD consent answer (null = not asked) and the in-memory eligibility answers
+    // NCD consent answer (null = not asked) and the eligibility answers, saved under the NCD Screening encounter
     private Boolean mNcdConsentAccepted;
     private NcdEligibilityState mNcdEligibilityState;
     private int mStepAfterNcdEligibility;
-    // Set once the NCD result sends the patient to CBAC; CBAC answers are in memory only
+    // Set once the NCD result sends the patient to CBAC; CBAC answers are saved like the eligibility ones
     private boolean mCbacStepShown;
     private CbacAssessmentState mCbacAssessmentState;
 
@@ -457,7 +458,11 @@ public class VisitCreationActivity extends BaseActivity implements
                     mNcdConsentAccepted = intent.getBooleanExtra(EXTRA_NCD_CONSENT_ACCEPTED, false);
                 // Create the visit only on the first launch. A rebuilt screen keeps the visit it already
                 // created (ids restored just below) instead of starting a duplicate one.
-                if (!isRecreated) startVisit();
+                if (!isRecreated) {
+                    startVisit();
+                    // Accepted or declined, the NCD consent is kept with the visit
+                    if (mNcdConsentAccepted != null) ncdScreeningRepository().saveConsent(visitUuid, mNcdConsentAccepted);
+                }
             } else {
                 visitUuid = mCommonVisitData.getVisitUuid();
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();
@@ -966,6 +971,7 @@ public class VisitCreationActivity extends BaseActivity implements
             case STEP_0_NCD_ELIGIBILITY_DONE:
                 // Eligible goes to CBAC; every other exit continues the regular visit
                 mNcdEligibilityState = (NcdEligibilityState) object;
+                if (mNcdEligibilityState != null) ncdScreeningRepository().saveEligibility(visitUuid, mNcdEligibilityState);
                 mNcdProgressBar.setProgress(100);
                 if (mNcdEligibilityState != null && NcdEligibilityRules.isCbacShown(mNcdEligibilityState.getResult())) {
                     mCbacStepShown = true;
@@ -982,6 +988,7 @@ public class VisitCreationActivity extends BaseActivity implements
             case STEP_0_CBAC_ASSESSMENT_DONE:
                 // Both result pop-ups continue the regular visit for now
                 mCbacAssessmentState = (CbacAssessmentState) object;
+                if (mCbacAssessmentState != null) ncdScreeningRepository().saveCbac(visitUuid, mCbacAssessmentState);
                 mCbacProgressBar.setProgress(100);
                 onFormSubmitted(mStepAfterNcdEligibility, false, mCommonVisitData);
                 break;
@@ -1966,7 +1973,11 @@ public class VisitCreationActivity extends BaseActivity implements
         return mCbacStepShown ? 2 : 1;
     }
 
-    // NCD photos are not saved anywhere yet, so a discarded visit must not leave them behind
+    private NcdScreeningRepository ncdScreeningRepository() {
+        return new NcdScreeningRepository(sessionManager.getProviderID(), sessionManager.getCreatorID());
+    }
+
+    // Discard deletes the photo obs with the visit; the files must go too
     private void deleteNcdPhotos() {
         if (mNcdEligibilityState == null) return;
         for (String photo : mNcdEligibilityState.getMedicinePhotoPaths()) new File(photo).delete();
