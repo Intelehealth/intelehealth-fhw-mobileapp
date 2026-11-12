@@ -8,6 +8,8 @@ public final class NcdEligibilityRules {
 
     public static final int MIN_SCREENING_AGE = 30;
     public static final int PREGNANCY_MAX_AGE = 49;
+    public static final String KNOWN_CASE_DM = "NCD_KNOWN_CASE_DM";
+    public static final String KNOWN_CASE_HTN = "NCD_KNOWN_CASE_HTN";
     public static final String KNOWN_CASE_BOTH = "NCD_KNOWN_CASE_BOTH";
     private static final String FEMALE = "F";
 
