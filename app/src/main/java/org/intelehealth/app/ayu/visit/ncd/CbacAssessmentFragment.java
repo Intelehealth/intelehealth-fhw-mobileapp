@@ -276,7 +276,9 @@ public class CbacAssessmentFragment extends Fragment {
         state.setAgeYears(ageYears());
         for (Node question : mQuestions) {
             if (AGE_QUESTION.equals(question.getId())) continue;
-            state.getAnswers().put(question.getId(), scoredOption(question).getId());
+            Node answer = scoredOption(question);
+            state.getAnswers().put(question.getId(), answer.getId());
+            state.getAnswerTexts().put(question.getId(), answer.getText());
             if (mWaistBands.containsKey(question.getId())) {
                 state.setWaistCm(CbacAssessmentRules.roundWaistToHalf(typedWaist(question)));
             }

@@ -13,6 +13,8 @@ public final class NcdEligibilityRules {
 
     public enum Result { ELIGIBLE, NOT_ELIGIBLE, URGENT }
 
+    public enum Reason { KNOWN_CASE_BOTH, PREGNANT_AND_MULTIMORBIDITY, PREGNANT, MULTIMORBIDITY }
+
     private NcdEligibilityRules() {
     }
 
@@ -34,6 +36,13 @@ public final class NcdEligibilityRules {
         if (hasUrgentSymptom) return Result.URGENT;
         if (pregnant || multimorbidity || knownCaseBoth) return Result.NOT_ELIGIBLE;
         return Result.ELIGIBLE;
+    }
+
+    // Why a patient is Not eligible; a known case of both DM and HTN is named first
+    public static Reason notEligibleReason(boolean pregnant, boolean multimorbidity, boolean knownCaseBoth) {
+        if (knownCaseBoth) return Reason.KNOWN_CASE_BOTH;
+        if (pregnant && multimorbidity) return Reason.PREGNANT_AND_MULTIMORBIDITY;
+        return pregnant ? Reason.PREGNANT : Reason.MULTIMORBIDITY;
     }
 
     // Only an Eligible result goes on to CBAC
