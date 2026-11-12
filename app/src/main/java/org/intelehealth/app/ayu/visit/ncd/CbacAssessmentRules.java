@@ -11,6 +11,9 @@ public final class CbacAssessmentRules {
 
     // Above this total the patient goes on to DM/HTN screening; 4 or less means counselling
     public static final int LOW_RISK_MAX_SCORE = 4;
+    // Waist limits from the PO, same for men and women
+    public static final double MIN_WAIST_CM = 40;
+    public static final double MAX_WAIST_CM = 200;
     private static final String MALE = "M";
     private static final String FEMALE = "F";
     // Question "gender" values in the CBAC file
@@ -54,12 +57,12 @@ public final class CbacAssessmentRules {
         return totalScore > LOW_RISK_MAX_SCORE;
     }
 
-    // Typed waist in cm; null unless a positive number (a comma counts as the decimal point)
+    // Typed waist in cm; null unless within 40-200 cm (a comma counts as the decimal point)
     public static Double parseWaistCm(String text) {
         if (text == null) return null;
         try {
             double value = Double.parseDouble(text.trim().replace(',', '.'));
-            return value > 0 && !Double.isInfinite(value) ? value : null;
+            return value >= MIN_WAIST_CM && value <= MAX_WAIST_CM ? value : null;
         } catch (NumberFormatException e) {
             return null;
         }

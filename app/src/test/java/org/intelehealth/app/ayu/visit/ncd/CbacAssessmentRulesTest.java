@@ -72,6 +72,14 @@ public class CbacAssessmentRulesTest {
     }
 
     @Test
+    public void waistMustBeWithin40To200() {
+        assertNull(CbacAssessmentRules.parseWaistCm("39.9"));
+        assertEquals(40.0, CbacAssessmentRules.parseWaistCm("40"), 0);
+        assertEquals(200.0, CbacAssessmentRules.parseWaistCm("200"), 0);
+        assertNull(CbacAssessmentRules.parseWaistCm("200.1"));
+    }
+
+    @Test
     public void waistRoundsToNearestHalf() {
         assertEquals(85.5, CbacAssessmentRules.roundWaistToHalf(85.7), 0);
         assertEquals(86.0, CbacAssessmentRules.roundWaistToHalf(85.9), 0);

@@ -58,6 +58,7 @@ import org.intelehealth.app.ayu.visit.ncd.CbacAssessmentState;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityFragment;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityState;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningPlan;
 import org.intelehealth.app.ayu.visit.ncd.NcdScreeningRepository;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.MedicalHistorySummaryFragment;
 import org.intelehealth.app.ayu.visit.pastmedicalhist.PastMedicalHistoryFragment;
@@ -1975,6 +1976,12 @@ public class VisitCreationActivity extends BaseActivity implements
 
     private NcdScreeningRepository ncdScreeningRepository() {
         return new NcdScreeningRepository(sessionManager.getProviderID(), sessionManager.getCreatorID());
+    }
+
+    // Read from the saved NCD answers, so editing the visit reason later follows the same rules; null without NCD
+    public NcdScreeningPlan getNcdScreeningPlan() {
+        if (BuildConfig.FLAVOR_client != FlavorKeys.NAS || visitUuid == null) return null;
+        return ncdScreeningRepository().loadPlan(this, visitUuid);
     }
 
     // Discard deletes the photo obs with the visit; the files must go too

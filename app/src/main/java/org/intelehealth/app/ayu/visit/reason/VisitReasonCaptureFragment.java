@@ -32,6 +32,7 @@ import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningPlan;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.NodeAdapterUtils;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
@@ -81,6 +82,8 @@ public class VisitReasonCaptureFragment extends Fragment {
     private String encounterAdultIntials = "", EncounterAdultInitial_LatestVisit = "";
     private List<String> mFinalEnabledMMList = new ArrayList<>();
     private List<ReasonData> mRawReasonDataList = new ArrayList<>();
+    // DM/HTN screenings the NCD result skips are left out of the list and the search; null without NCD
+    private NcdScreeningPlan mNcdScreeningPlan;
     private boolean mIsEditMode = false;
     private Button btnCancel, btnSubmit;
 
@@ -94,6 +97,7 @@ public class VisitReasonCaptureFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
+        if (context instanceof VisitCreationActivity) mNcdScreeningPlan = ((VisitCreationActivity) context).getNcdScreeningPlan();
         mRawReasonDataList = getVisitReasonFilesNamesOnly();
     }
 
@@ -399,6 +403,7 @@ public class VisitReasonCaptureFragment extends Fragment {
             }
             for (String s : temp) {
                 String fileName = s.split(".json")[0];
+                if (mNcdScreeningPlan != null && mNcdScreeningPlan.isHidden(fileName)) continue;
                 //Timber.tag("VisitReasonCaptureFragment").d("File name=>%s", fileName);
                 ReasonData reasonData = new ReasonData();
                 reasonData.setReasonName(fileName);

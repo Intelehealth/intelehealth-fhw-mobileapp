@@ -37,7 +37,7 @@ import java.util.List;
  */
 public class NcdEligibilityFragment extends Fragment {
 
-    private static final String NCD_ELIGIBILITY_FILE = "ncd_eligibility.json";
+    static final String NCD_ELIGIBILITY_FILE = "ncd_eligibility.json";
     // Question-card version the adapter uses by default
     private static final String ENGINE_VERSION = "3.0";
     // Options with this input type open the in-card photo box
@@ -47,7 +47,7 @@ public class NcdEligibilityFragment extends Fragment {
     private static final String PREGNANCY_YES = "NCD_PREGNANCY_YES";
     private static final String MULTIMORBIDITY = "NCD_MULTIMORBIDITY";
     private static final String MULTIMORBIDITY_YES = "NCD_MULTIMORBIDITY_YES";
-    private static final String KNOWN_CASE = "NCD_KNOWN_CASE";
+    static final String KNOWN_CASE = "NCD_KNOWN_CASE";
     private static final String URGENT_SYMPTOMS = "NCD_URGENT_SYMPTOMS";
     private static final String URGENT_NONE = "NCD_URGENT_NONE";
 

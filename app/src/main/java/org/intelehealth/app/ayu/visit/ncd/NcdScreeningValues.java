@@ -73,6 +73,41 @@ public final class NcdScreeningValues {
         return "NCD medicine photo: " + knownCaseText;
     }
 
+    // Saved eligibility JSON → its result, null if unreadable
+    public static NcdEligibilityRules.Result savedResult(String eligibilityJson) {
+        Object text = savedField(eligibilityJson, "result");
+        for (NcdEligibilityRules.Result result : NcdEligibilityRules.Result.values()) {
+            if (resultText(result).equals(text)) return result;
+        }
+        return null;
+    }
+
+    // Saved eligibility JSON → the known-case option text, null if unreadable
+    public static String savedKnownCaseText(String eligibilityJson) {
+        Object text = savedField(eligibilityJson, "knownCase");
+        return text instanceof String ? (String) text : null;
+    }
+
+    // Saved CBAC Score → its number; the server may send it back as "4.0"
+    public static Integer savedScore(String value) {
+        if (value == null) return null;
+        try {
+            return (int) Double.parseDouble(value.trim());
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
+    private static Object savedField(String json, String key) {
+        if (json == null) return null;
+        try {
+            Map<?, ?> map = GSON.fromJson(json, Map.class);
+            return map == null ? null : map.get(key);
+        } catch (RuntimeException e) {
+            return null;
+        }
+    }
+
     private static String resultText(NcdEligibilityRules.Result result) {
         if (result == null) return null;
         switch (result) {

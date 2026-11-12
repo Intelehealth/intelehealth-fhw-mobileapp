@@ -1,5 +1,7 @@
 package org.intelehealth.app.ayu.visit.ncd;
 
+import android.content.Context;
+
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import org.intelehealth.app.app.AppConstants;
@@ -8,8 +10,11 @@ import org.intelehealth.app.database.dao.ImagesDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.models.dto.EncounterDTO;
 import org.intelehealth.app.models.dto.ObsDTO;
+import org.intelehealth.app.utilities.FileUtils;
 import org.intelehealth.app.utilities.UuidDictionary;
 import org.intelehealth.app.utilities.exception.DAOException;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -28,6 +33,46 @@ public class NcdScreeningRepository {
     public NcdScreeningRepository(String providerUuid, String creatorUuid) {
         mProviderUuid = providerUuid;
         mCreatorUuid = creatorUuid;
+    }
+
+    // The visit's screening plan from what was saved, so new and edited visits follow the same rules;
+    // null when the visit had no NCD screening or its answers can't be read
+    public NcdScreeningPlan loadPlan(Context context, String visitUuid) {
+        try {
+            String encounterUuid = mEncounterDAO.getEmergencyEncounters(visitUuid, UuidDictionary.ENCOUNTER_NCD_SCREENING);
+            if (encounterUuid == null || encounterUuid.isEmpty()) return null;
+            String consent = mObsDAO.getObsValue(encounterUuid, UuidDictionary.NCD_CONSENT);
+            if (NcdScreeningValues.consent(false).equals(consent)) return NcdScreeningPlan.consentDeclined();
+            String eligibility = mObsDAO.getObsValue(encounterUuid, UuidDictionary.NCD_ELIGIBILITY);
+            NcdEligibilityRules.Result result = NcdScreeningValues.savedResult(eligibility);
+            if (result == null) return null;
+            String knownCaseId = knownCaseOptionId(context, NcdScreeningValues.savedKnownCaseText(eligibility));
+            Integer score = NcdScreeningValues.savedScore(mObsDAO.getObsValue(encounterUuid, UuidDictionary.CBAC_SCORE));
+            return NcdScreeningPlan.of(result, knownCaseId, score);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return null;
+        }
+    }
+
+    // The saved known-case text back to its option id, from the same question file
+    private static String knownCaseOptionId(Context context, String text) {
+        if (text == null) return null;
+        try {
+            JSONObject json = FileUtils.encodeJSON(context, NcdEligibilityFragment.NCD_ELIGIBILITY_FILE);
+            JSONArray questions = json == null ? null : json.optJSONArray("options");
+            for (int i = 0; questions != null && i < questions.length(); i++) {
+                JSONObject question = questions.getJSONObject(i);
+                if (!NcdEligibilityFragment.KNOWN_CASE.equals(question.optString("id"))) continue;
+                JSONArray options = question.optJSONArray("options");
+                for (int j = 0; options != null && j < options.length(); j++) {
+                    if (text.equals(options.getJSONObject(j).optString("text"))) return options.getJSONObject(j).optString("id");
+                }
+            }
+        } catch (Exception e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        return null;
     }
 
     public void saveConsent(String visitUuid, boolean accepted) {
