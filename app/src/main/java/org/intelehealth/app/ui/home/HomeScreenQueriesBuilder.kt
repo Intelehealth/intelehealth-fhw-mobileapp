@@ -29,25 +29,25 @@ class HomeScreenQueriesBuilder : QueryBuilder() {
     }
 
     fun getPendingPrescriptionVisitsCount(): String {
+        // Counts patients having a visit that (a) has at least one synced, non-voided obs and
+        // (b) has neither a 629a9d0b... encounter nor a visit-complete encounter.
+        // Both conditions are plain (non-correlated) sub-queries, so SQLite evaluates each one
+        // once for the whole statement instead of once per obs row; the earlier form joined
+        // tbl_obs and ran two EXISTS scans of tbl_encounter for every obs row.
+        // "visituuid IS NOT NULL" is required: a NULL in a NOT IN list would exclude every visit.
         return select("COUNT(DISTINCT p.openmrs_id) AS total_count")
             .from("tbl_patient p")
             .join("tbl_visit v ON p.uuid = v.patientuuid")
-            .join("tbl_encounter e ON v.uuid = e.visituuid")
-            .join("tbl_obs o ON e.uuid = o.encounteruuid")
-            //.where("(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') AND o.voided = 0")
             .where(
-                "(o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
-                        "AND o.voided = 0 " +
-                        "AND (CASE " +
-                        "WHEN EXISTS ( " +
-                        "SELECT 1 FROM tbl_encounter e1  " +
-                        "WHERE e1.visituuid = v.uuid  " +
-                        "AND e1.encounter_type_uuid = '629a9d0b-48eb-405e-953d-a5964c88dc30'  ) THEN 1 ELSE 0 END) = 0 " +
-                        "AND (CASE  " +
-                        "WHEN EXISTS ( " +
-                        "SELECT 1 FROM tbl_encounter e2  " +
-                        "WHERE e2.visituuid = v.uuid  " +
-                        "AND e2.encounter_type_uuid = '${ENCOUNTER_VISIT_COMPLETE}') THEN 1 ELSE 0 END) = 0"
+                "v.uuid IN ( " +
+                        "SELECT e.visituuid FROM tbl_obs o " +
+                        "JOIN tbl_encounter e ON e.uuid = o.encounteruuid " +
+                        "WHERE (o.sync = 1 OR o.sync = 'TRUE' OR o.sync = 'true') " +
+                        "AND o.voided = 0 ) " +
+                        "AND v.uuid NOT IN ( " +
+                        "SELECT e1.visituuid FROM tbl_encounter e1 " +
+                        "WHERE e1.visituuid IS NOT NULL " +
+                        "AND e1.encounter_type_uuid IN ('629a9d0b-48eb-405e-953d-a5964c88dc30', '${ENCOUNTER_VISIT_COMPLETE}') )"
             )
             .build()
     }

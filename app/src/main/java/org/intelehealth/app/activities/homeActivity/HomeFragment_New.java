@@ -20,6 +20,7 @@ import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.OperationCanceledException;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
 import org.intelehealth.app.BuildConfig;
@@ -144,18 +145,37 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         // card right away; the fragment is recreated on every return to Home, and the extra
         // thread hop left the slot empty for a moment each time.
         if (QueueCardUpdater.hasNotificationData(appContext)) {
-            showQueueLayout(QueueCardUpdater.getPersisted(appContext));
+            showQueueLayout(withPatientDetails(QueueCardUpdater.getPersisted(appContext)));
             onQueueCardLoaded();
             return;
         }
         initUIExecutor.execute(() -> {
-            List<PatientData> patients = QueueCardUpdater.getCards(appContext);
+            List<PatientData> patients = withPatientDetails(QueueCardUpdater.getCards(appContext));
             if (getActivity() == null) return;
             getActivity().runOnUiThread(() -> {
                 showQueueLayout(patients);
                 onQueueCardLoaded();
             });
         });
+    }
+
+    /**
+     * Keeps only the queue entries whose patient details are available: a patient
+     * that isn't synced locally (or a payload that couldn't be resolved) leaves
+     * the name/id blank, which would render an empty card. Dropping those entries
+     * keeps the slideshow to patients the card can actually show.
+     */
+    private List<PatientData> withPatientDetails(List<PatientData> patients) {
+        List<PatientData> filtered = new ArrayList<>();
+        if (patients == null) return filtered;
+        for (PatientData patient : patients) {
+            if (patient != null
+                    && !TextUtils.isEmpty(patient.getPatientName())
+                    && !TextUtils.isEmpty(patient.getPatientId())) {
+                filtered.add(patient);
+            }
+        }
+        return filtered;
     }
 
     // True while the queue card's data is loading; the other cards' counts wait meanwhile so
@@ -174,7 +194,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
 
     private void showQueueLayout(List<PatientData> patients) {
         if (!isAdded() || view == null || isStateSaved()) return;
-        if (patients.isEmpty() && !BuildConfig.FORCE_QMS) {
+        if (patients.isEmpty()) {
             // Nothing queued yet: collapse the slot (same as when QMS is off). The card
             // appears once tbl_queue syncs a "Next in Queue" entry or a notification arrives.
             hideContainer(R.id.queue_card_container);
@@ -257,8 +277,11 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             public void onFinished(int eventFlag) {
                 CustomLog.v(TAG, "onFinished");
                 Activity activity = getActivity();
+                Log.d("prescription", "HomeFragment onFinished (sync): isAdded=" + isAdded() + ", queueCardLoading=" + queueCardLoading);
                 if (isAdded() && activity != null) {
+                    long initStart = System.currentTimeMillis();
                     initUI();
+                    Log.d("prescription", "HomeFragment initUI took " + (System.currentTimeMillis() - initStart) + " ms on thread=" + Thread.currentThread().getName());
                 } else {
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -452,6 +475,7 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
+        Log.d("prescription", "initUI: queueCardLoading=" + queueCardLoading + " -> " + (queueCardLoading ? "card counts deferred" : "loading card counts now"));
         if (queueCardLoading) {
             // The queue card goes first; its load picks the counts up when done.
             cardCountsDeferred = true;
@@ -478,10 +502,16 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             HomeScreenQueriesRepository repository = new HomeScreenQueriesRepository();
             int pendingCountTotalVisits;
             int countReceivedPrescription;
+            long countsStart = System.currentTimeMillis();
+            Log.d("prescription", "loadCardCounts: prescription count queries started on thread=" + Thread.currentThread().getName());
             try {
                 pendingCountTotalVisits = repository.getPendingPrescriptionVisitsCount(db, querySignal);
+                long pendingDone = System.currentTimeMillis();
+                Log.d("prescription", "loadCardCounts: pending count=" + pendingCountTotalVisits + " took " + (pendingDone - countsStart) + " ms");
                 countReceivedPrescription = repository.getReceivedPrescriptionVisitsCount(db, querySignal);
+                Log.d("prescription", "loadCardCounts: received count=" + countReceivedPrescription + " took " + (System.currentTimeMillis() - pendingDone) + " ms");
             } catch (OperationCanceledException e) {
+                Log.d("prescription", "loadCardCounts: prescription count queries cancelled after " + (System.currentTimeMillis() - countsStart) + " ms");
                 return; // Home was left; the card is gone, nothing to update.
             }
             //int pendingCountTotalVisits = new VisitsDAO().getVisitCountsByStatus(false);

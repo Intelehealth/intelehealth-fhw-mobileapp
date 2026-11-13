@@ -960,7 +960,7 @@ public class SyncDAO {
                         ".middle_name, b.last_name, b.date_of_birth,b.openmrs_id  " +
                         "FROM tbl_visit a, tbl_patient b " +
                         "WHERE a.patientuuid = b.uuid " +
-                        "AND a.enddate is NULL OR a.enddate='' GROUP BY a.uuid ORDER BY a.startdate ASC";
+                        "AND (a.enddate is NULL OR a.enddate='') GROUP BY a.uuid ORDER BY a.startdate ASC";
         final Cursor cursor = db.rawQuery(query, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {

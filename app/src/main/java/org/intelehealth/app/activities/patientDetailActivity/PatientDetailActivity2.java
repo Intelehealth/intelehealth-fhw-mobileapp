@@ -2666,7 +2666,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
             FirebaseCrashlytics.getInstance().recordException(e);
         }
 
-        InteleHealthDatabaseHelper mDatabaseHelper = new InteleHealthDatabaseHelper(PatientDetailActivity2.this);
+        InteleHealthDatabaseHelper mDatabaseHelper = IntelehealthApplication.inteleHealthDatabaseHelper;
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
         String CREATOR_ID = sessionManager.getCreatorID();

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
+  AppState,
   DeviceEventEmitter,
   FlatList,
   LayoutChangeEvent,
@@ -60,6 +61,48 @@ export default function QueueCardSlideshow(props: QueueCardSlideshowProps) {
     return () => subscription.remove();
   }, []);
 
+  // Shared 1s clock that drives the live wait time on every card, so there is a
+  // single timer for the slideshow (not one per card). Each card recomputes its
+  // own MM:SS from this `now` against its absolute `etaAt`, matching the queue
+  // listing exactly.
+  const [now, setNow] = useState(() => Date.now());
+  // Only run the timer when at least one card actually has an ETA to count
+  // against (skips timeless cards and empty lists).
+  const hasLiveTime = patients.some(patient => !!patient.etaAt);
+
+  useEffect(() => {
+    if (!hasLiveTime) {
+      return;
+    }
+    let interval: ReturnType<typeof setInterval> | undefined;
+    const start = () => {
+      if (interval == null) {
+        setNow(Date.now());
+        interval = setInterval(() => setNow(Date.now()), 1000);
+      }
+    };
+    const stop = () => {
+      if (interval != null) {
+        clearInterval(interval);
+        interval = undefined;
+      }
+    };
+    // Pause the ticker in the background so it doesn't burn battery unseen; on
+    // return to foreground it restarts and recomputes from the absolute instant.
+    const sub = AppState.addEventListener('change', state => {
+      if (state === 'active') {
+        start();
+      } else {
+        stop();
+      }
+    });
+    start();
+    return () => {
+      stop();
+      sub.remove();
+    };
+  }, [hasLiveTime]);
+
   // A shorter list may leave the current page out of range; go back to the
   // first card.
   useEffect(() => {
@@ -93,7 +136,7 @@ export default function QueueCardSlideshow(props: QueueCardSlideshowProps) {
       {width === 0 ? (
         // Until the width is known, show the first card so the host's
         // wrap_content container gets a height straight away.
-        <QueueCard {...patients[0]} />
+        <QueueCard {...patients[0]} now={now} />
       ) : (
         <FlatList
           ref={listRef}
@@ -116,7 +159,7 @@ export default function QueueCardSlideshow(props: QueueCardSlideshowProps) {
                 styles.slide,
                 { width, marginRight: i < patients.length - 1 ? SLIDE_GAP : 0 },
               ]}>
-              <QueueCard {...item} style={styles.slideCard} />
+              <QueueCard {...item} now={now} style={styles.slideCard} />
             </View>
           )}
         />

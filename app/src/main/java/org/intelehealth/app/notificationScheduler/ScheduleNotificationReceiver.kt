@@ -29,9 +29,12 @@ class ScheduleNotificationReceiver : BroadcastReceiver() {
         val visitUUid = inputData?.getString(BundleKeys.VISIT_UUI)
         val name = inputData?.getString(BundleKeys.NAME)
         val notificationTriggerTime = inputData?.getLong(BundleKeys.NOTIFICATION_TRIGGER_TIME)
+        val start = System.currentTimeMillis()
+        Log.d("prescription", "ScheduleNotificationReceiver onReceive: follow-up alarm fired, visitUuid=$visitUUid, thread=${Thread.currentThread().name}")
         sendNotification(
             title, description, channelId, visitUUid, name
         )
+        Log.d("prescription", "ScheduleNotificationReceiver sendNotification (incl. DB insert) took ${System.currentTimeMillis() - start} ms")
     }
 
     private fun sendNotification(

@@ -177,7 +177,8 @@ public final class QueueCardUpdater {
                         waitTimeMinutes,
                         emptyToNull(QueueRowFormatter.toAvatarUri(row.getPatientPhoto())),
                         emptyToNull(row.getSpeciality()),
-                        emptyToNull(row.getVisitUuid())
+                        emptyToNull(row.getVisitUuid()),
+                        emptyToNull(row.getEtaAt())
                 ));
             }
         } catch (Exception e) {
@@ -357,7 +358,10 @@ public final class QueueCardUpdater {
                 waitTimeMinutes,
                 emptyToNull(avatarUrl),
                 emptyToNull(data.get("speciality")),
-                emptyToNull(visitUuid)
+                emptyToNull(visitUuid),
+                // Same absolute ETA instant the queue list counts down from, so
+                // the home card stays in sync instead of showing its own snapshot.
+                emptyToNull(firstNonEmpty(data.get("etaAt"), data.get("etaTime")))
         );
     }
 
@@ -396,6 +400,7 @@ public final class QueueCardUpdater {
         map.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         map.putString("avatarUrl", patient.getAvatarUrl());
         map.putString("speciality", patient.getSpeciality());
+        map.putString("etaAt", patient.getEtaAt());
 
         WritableArray symptoms = Arguments.createArray();
         if (patient.getSymptoms() != null) {
@@ -434,6 +439,7 @@ public final class QueueCardUpdater {
         bundle.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         bundle.putString("avatarUrl", patient.getAvatarUrl());
         bundle.putString("speciality", patient.getSpeciality());
+        bundle.putString("etaAt", patient.getEtaAt());
         return bundle;
     }
 

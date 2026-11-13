@@ -23,8 +23,10 @@ import java.util.Map;
  * "doctor:status") to the React Native {@code StatusBannerModule} shown on the
  * home screen — the counterpart of {@link QueueCardUpdater} for the status banner.
  *
- * <p>A {@code doctorStatus} of "away" shows the "Doctor is on Break" banner; any
- * other status removes it. The banner is persisted so it survives the home
+ * <p>A {@code doctorStatus} of "away" shows the banner, titled with the payload's
+ * {@code title} (e.g. "A doctor is away — Pediatrician"), falling back to the
+ * "Doctor is on Break" string when absent; any other status removes it. The
+ * banner is persisted so it survives the home
  * screen remounting, pushed live via a {@code StatusBannerUpdate} device event
  * when mounted, and announced through {@link #getBannerReceived()} so the home
  * screen can mount or remove it.
@@ -47,6 +49,9 @@ public final class StatusBannerUpdater {
 
     /** FCM data key holding the doctor's current status, e.g. "away" or "online". */
     private static final String KEY_DOCTOR_STATUS = "doctorStatus";
+
+    /** FCM data key holding the banner title, e.g. "A doctor is away — Pediatrician". */
+    private static final String KEY_TITLE = "title";
 
     /** The only doctor status that shows the "Doctor is on Break" banner. */
     private static final String DOCTOR_STATUS_AWAY = "away";
@@ -73,9 +78,16 @@ public final class StatusBannerUpdater {
             return;
         }
         if (DOCTOR_STATUS_AWAY.equalsIgnoreCase(data.get(KEY_DOCTOR_STATUS))) {
+            // Prefer the title from the notification payload (e.g. "A doctor is
+            // away — Pediatrician"); fall back to the static string only when the
+            // payload omits it.
+            String title = data.get(KEY_TITLE);
+            if (TextUtils.isEmpty(title)) {
+                title = context.getString(R.string.doctor_on_break);
+            }
             StatusBannerData banner = new StatusBannerData(
                     DEFAULT_VARIANT,
-                    context.getString(R.string.doctor_on_break),
+                    title,
                     context.getString(R.string.queue_paused),
                     context.getString(R.string.view_queue));
             persist(context, banner);

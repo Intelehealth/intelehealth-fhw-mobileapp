@@ -38,6 +38,8 @@ import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.extensions.fromJson
 import java.util.Locale
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -52,6 +54,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     ) {
         Timber.tag(TAG).d("onMessageReceived: $data")
         Log.d(TAG, "onMessageReceived: data received in notification : $data")
+        Log.d(PRESCRIPTION_TAG, "FCM onMessageReceived: thread=${Thread.currentThread().name}, type=${data["type"]}, title=${data["title"]}, visitUuid=${data["visitUuid"]}, hasNotificationPayload=${notification != null}, appInForeground=${isAppInForeground()}")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
@@ -106,14 +109,32 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                 if ((event.equals("queue:queued", ignoreCase = true)
                             || event.equals("queue:position", ignoreCase = true))
                     && data["position"]?.trim() == "1") {
-                    QueueCardUpdater.handleQueueNotification(context, data)
+                    // The update reads the DB (queue, visit, patient, obs), and onReceive
+                    // runs on the main thread; goAsync keeps the receiver alive while it
+                    // runs on queueCardExecutor, which also serializes the read-merge-write
+                    // of the persisted card list across back-to-back notifications.
+                    val pendingResult = goAsync()
+                    val appContext = it.applicationContext
+                    queueCardExecutor.execute {
+                        try {
+                            QueueCardUpdater.handleQueueNotification(appContext, data)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "handleQueueNotification failed: ${e.message}")
+                        } finally {
+                            pendingResult.finish()
+                        }
+                    }
                 }
                 return@let
             } else {
                 if(data.isNotEmpty() && notification == null){
                     val title = (data["title"] ?: "").lowercase()
+                    val showStart = System.currentTimeMillis()
                     sendNotificationFromBody(data,context)
+                    Log.d(PRESCRIPTION_TAG, "FCM sendNotificationFromBody took ${System.currentTimeMillis() - showStart} ms (thread=${Thread.currentThread().name})")
                     if(title.contains("prescription")){
+                        Log.d(PRESCRIPTION_TAG, "FCM prescription notification: scheduling follow-up, followupDatetime=${data["followupDatetime"]}, visitUuid=${data["visitUuid"]}")
+                        val scheduleStart = System.currentTimeMillis()
                         NotificationSchedulerUtils.scheduleFollowUpNotification(
                                 FollowUpNotificationData(
                                         value = data["followupDatetime"] ?: "",
@@ -123,7 +144,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                                         visitUuid = data["visitUuid"] ?: "",
                                 )
                         )
+                        Log.d(PRESCRIPTION_TAG, "FCM scheduleFollowUpNotification took ${System.currentTimeMillis() - scheduleStart} ms (thread=${Thread.currentThread().name})")
                     }
+                    Log.d(PRESCRIPTION_TAG, "FCM prescription/data notification handled, total ${System.currentTimeMillis() - showStart} ms on thread=${Thread.currentThread().name}")
 
                 }else{
                     parseMessage(notification, context)
@@ -247,6 +270,11 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
     companion object {
         const val TAG = "FCMNotificationReceiver"
+        // Temporary: traces the "home screen stuck on prescription notification" issue.
+        const val PRESCRIPTION_TAG = "prescription"
+
+        // One thread for queue card updates, so they run off the main thread and in arrival order.
+        private val queueCardExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     }
     private fun getNotificationTitle(notificationType: NotificationType, patientName: String, context: Context): String {
         val resources = getLocalizedResources(context)

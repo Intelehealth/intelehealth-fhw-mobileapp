@@ -1259,7 +1259,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             dialogRefreshInProgress.dismiss();
         }*/
         CustomLog.d(TAG, "check11onResume: home");
-        loadLastSelectedFragment();
+        // "View Queue" from the visit-submitted popup: open the Queue tab
+        // directly, without first loading the Home fragment. Loading Home first
+        // (and only then posting a deferred switch to Queue) caused a visible
+        // Home -> Queue detour with a few seconds' delay.
+        boolean openQueueFromPopup = getIntent() != null
+                && getIntent().getBooleanExtra(EXTRA_OPEN_QUEUE, false)
+                && preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        if (openQueueFromPopup) {
+            getIntent().removeExtra(EXTRA_OPEN_QUEUE);
+            bottomNav.setSelectedItemId(R.id.bottom_nav_queue);
+        } else {
+            loadLastSelectedFragment();
+        }
         //toolbarHome.setVisibility(View.VISIBLE);
         /*set from broadcast
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
@@ -1281,14 +1293,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         }
         checkAppVer();  //auto-update feature.
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        // "View Queue" from the visit-submitted popup: open the Queue tab. Done
-        // last (after loadLastSelectedFragment reset the nav to Home) so it wins,
-        // and posted so it runs after the pending fragment transaction.
-        if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_OPEN_QUEUE, false)
-                && preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false)) {
-            getIntent().removeExtra(EXTRA_OPEN_QUEUE);
-            bottomNav.post(() -> bottomNav.setSelectedItemId(R.id.bottom_nav_queue));
+        // Don't force the Home item checked when we've gone straight to the
+        // Queue tab for the "View Queue" popup, or it would visually reselect
+        // Home over the Queue tab we just opened.
+        if (!openQueueFromPopup) {
+            bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         }
         super.onResume();
     }
@@ -1410,6 +1419,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
                 mTempSyncHelperList.add(flagType);
+                Log.d("prescription", "Home syncBroadcastReceiver onReceive: flagType=" + flagType + ", thread=" + Thread.currentThread().getName());
 
                /* if (flagType == AppConstants.SYNC_FAILED && sessionManager.isFirstTimeLaunched()) {
                     hideSyncProgressBar(false);
@@ -1422,12 +1432,18 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 }*/
 
                 if (flagType == AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE) {
+                    long navStart = System.currentTimeMillis();
                     updateNavHeaderUserDetails();
+                    long fragStart = System.currentTimeMillis();
+                    Log.d("prescription", "Home sync done: updateNavHeaderUserDetails took " + (fragStart - navStart) + " ms");
                     mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
+                    Log.d("prescription", "Home sync done: fragment onFinished (UI refresh) took " + (System.currentTimeMillis() - fragStart) + " ms");
                     //hideSyncProgressBar(true);
                 }
             }
+            long lastSyncStart = System.currentTimeMillis();
             updateLastSyncTime();
+            Log.d("prescription", "Home syncBroadcastReceiver: updateLastSyncTime took " + (System.currentTimeMillis() - lastSyncStart) + " ms");
             // The sync icon is stopped by observeSyncWork(), not here: these broadcasts also
             // come at the start and middle of a sync (push sent, each pull page saved).
         }

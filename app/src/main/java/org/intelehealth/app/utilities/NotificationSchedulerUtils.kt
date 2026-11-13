@@ -33,6 +33,7 @@ class NotificationSchedulerUtils {
 
             try {
                 val followUpTime = DateAndTimeUtils.getTimeStampFromString(followUpNotificationData.value,"yyyy-MM-dd, 'Time: 'hh:mm a")
+                Log.d("prescription", "scheduleFollowUpNotification: value=${followUpNotificationData.value}, followUpTime=$followUpTime, inFuture=${followUpTime > System.currentTimeMillis()}, thread=${Thread.currentThread().name}")
                 if (followUpTime > System.currentTimeMillis()) {
 
                     val followupDateTimeBefore24H =
@@ -201,9 +202,11 @@ class NotificationSchedulerUtils {
                 requestCode = /*requestCode.toString()*/intent.hashCode().toString()
             );
             if (!isFromBootComplete) {
+                val insertStart = System.currentTimeMillis()
                 FollowUpNotificationDAO().insertFollowupNotification(
                     notification
                 )
+                Log.d("prescription", "scheduleNotificationAlarmManager: insertFollowupNotification took ${System.currentTimeMillis() - insertStart} ms (thread=${Thread.currentThread().name}), duration=$duration, triggerTime=$triggerTime")
             }
 
             CustomLog.d("TRIGGER_TIME", "" + triggerTime+" "+Gson().toJson(notificationData)+"  "+Gson().toJson(notification))

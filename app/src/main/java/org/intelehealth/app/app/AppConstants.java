@@ -37,7 +37,7 @@ public class AppConstants {
     public static final String MESSAGE_PROGRESS = "message_progress";
     public static final String MCC_USER_TYPE = "mcc";
 
-    //PAGE_LIMIT has been updated from server's end from 1000 to 200
+    // Records per pull page; the server honours this value (raised back from 200 to 1000).
     public static final int PAGE_LIMIT = 1000;
 
     public static final long FOLLOW_UP_SCHEDULE_ONE_DURATION = 5;
