@@ -100,9 +100,20 @@ configurations.all {
     }
 }
 
+/*
+ * ABHA / ABDM is pluggable. The app always compiles against the small abdm-api contract; the
+ * abdm implementation is added only for the client flavors listed here. Drop a client from this
+ * list to ship it without ABHA: every ABHA entry point hides itself (see AbhaAvailability).
+ * At runtime the `abha_section` config flag can additionally switch it off for clients that ship it.
+ */
+def abhaClients = ['ida', 'namma', 'kf', 'biocon', 'bmgf', 'nas', 'unicef', 'kcdo', 'unfpa']
+
 dependencies {
     implementation project(':features:ondemand:klivekit')
-    implementation project(':features:ondemand:abdm')
+    implementation project(':features:ondemand:abdm-api')
+    abhaClients.each { client ->
+        add("${client}Implementation", project(':features:ondemand:abdm'))
+    }
     api project(':fcm')
     api project(':config')
     implementation 'androidx.activity:activity-ktx:1.7.2'

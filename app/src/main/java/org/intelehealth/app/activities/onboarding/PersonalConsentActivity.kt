@@ -16,13 +16,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.view.WindowCompat
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import org.intelehealth.abdm.presentation.AbdmCardDownloader
-import org.intelehealth.abdm.presentation.AbdmLauncher
-import org.intelehealth.abdm.presentation.abha_choice.AbhaChoiceDialogFragment
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.intelehealth.abdm.api.AbhaChoice
 import org.intelehealth.abdm.result.AbdmOutcomes
 import org.intelehealth.abdm.result.AbdmResult
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
+import org.intelehealth.app.abha.AbhaAvailability
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
 import org.intelehealth.app.database.dao.PatientsDAO
@@ -151,21 +154,25 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
      * change while the dialog is open.
      */
     private fun registerAbhaChoiceListener() {
-        AbhaChoiceDialogFragment.setResultListener(supportFragmentManager, this) { choice ->
+        val abha = AbhaAvailability.feature(this) ?: return
+        abha.registerChoiceListener(this, this) { choice ->
             when (choice) {
-                AbhaChoiceDialogFragment.Choice.VERIFY_ABHA ->
-                    AbdmLauncher.startVerifyAbha(this, abhaResultLauncher)
-
-                AbhaChoiceDialogFragment.Choice.CREATE_ABHA ->
-                    AbdmLauncher.startCreateAbha(this, abhaResultLauncher)
-
-                AbhaChoiceDialogFragment.Choice.CONTINUE_WITHOUT_ABHA -> continueWithoutAbha()
+                AbhaChoice.VERIFY_ABHA -> abha.startVerifyAbha(this, abhaResultLauncher)
+                AbhaChoice.CREATE_ABHA -> abha.startCreateAbha(this, abhaResultLauncher)
+                AbhaChoice.CONTINUE_WITHOUT_ABHA -> continueWithoutAbha()
             }
         }
     }
 
+    /**
+     * Offers ABHA only when this build ships it and the `abha_section` flag is on; otherwise goes
+     * straight to registration, exactly as "Continue without ABHA" would.
+     */
     private fun offerAbhaThenRegister() {
-        AbhaChoiceDialogFragment.show(supportFragmentManager)
+        lifecycleScope.launch {
+            val abha = withContext(Dispatchers.IO) { AbhaAvailability.enabledFeature(this@PersonalConsentActivity) }
+            if (abha == null) continueWithoutAbha() else abha.showChoice(this@PersonalConsentActivity)
+        }
     }
 
     private fun continueWithoutAbha() {
@@ -193,7 +200,7 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
             data, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
         ) ?: return
 
-        AbdmCardDownloader.downloadInBackground(
+        AbhaAvailability.feature(this)?.downloadCardInBackground(
             this, abdmResult.xToken, abdmResult.cardScope, abdmResult.profile?.abhaNumber
         )
 

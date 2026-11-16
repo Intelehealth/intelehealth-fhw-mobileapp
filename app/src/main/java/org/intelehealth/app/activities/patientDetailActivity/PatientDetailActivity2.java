@@ -139,7 +139,8 @@ import org.intelehealth.app.models.dto.PatientDTO;
 import org.intelehealth.app.models.dto.VisitDTO;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
-import org.intelehealth.abdm.presentation.AbdmCardDownloader;
+import org.intelehealth.abdm.api.AbhaFeature;
+import org.intelehealth.app.abha.AbhaAvailability;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.utilities.AgeUtils;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
@@ -1434,12 +1435,15 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
         if (hasAbhaAddress && abhaAddressTv != null) abhaAddressTv.setText(abhaAddress);
 
         if (btnViewAbhaCard == null) return;
-        if (!hasAbhaNumber) {
+        // The card viewer lives in the abdm module; a build without it still shows the ABHA number
+        // and address rows above, just not the button.
+        AbhaFeature abha = AbhaAvailability.feature(this);
+        if (!hasAbhaNumber || abha == null) {
             btnViewAbhaCard.setVisibility(View.GONE);
             return;
         }
         btnViewAbhaCard.setVisibility(View.VISIBLE);
-        btnViewAbhaCard.setOnClickListener(v -> AbdmCardDownloader.viewCard(this, abhaNumber));
+        btnViewAbhaCard.setOnClickListener(v -> abha.viewCard(this, abhaNumber));
     }
 
     /**

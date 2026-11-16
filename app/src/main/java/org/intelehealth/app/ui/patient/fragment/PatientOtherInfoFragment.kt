@@ -12,11 +12,9 @@ import androidx.core.view.isVisible
 import androidx.navigation.fragment.findNavController
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
-import org.intelehealth.abdm.presentation.AbdmCardDownloader
-import org.intelehealth.abdm.presentation.AbdmLauncher
-import org.intelehealth.abdm.presentation.abha_suggestions.AbhaSuggestionsActivity
 import org.intelehealth.abdm.result.AbdmOutcomes
 import org.intelehealth.abdm.result.AbdmResult
+import org.intelehealth.app.abha.AbhaAvailability
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.FragmentPatientOtherInfoBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -48,8 +46,8 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
     private val abhaSuggestionsLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
-            val chosen = result.data?.getStringExtra(AbhaSuggestionsActivity.EXTRA_CHOSEN_ADDRESS)
-            if (chosen.isNullOrBlank()) return@registerForActivityResult
+            val chosen = AbhaAvailability.feature(requireContext())?.chosenAbhaAddress(result.data)
+                ?: return@registerForActivityResult
             applyNewAbhaAddress(chosen)
         }
 
@@ -104,9 +102,12 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
      * the outcome instead of threading a separate boolean through every screen.
      */
     private fun setupCreateNewAbhaAddress() {
+        // Only the module's own flows produce an AbdmResult, so a build without ABHA never gets here
+        // with one; checking the feature anyway keeps this independent of that reasoning.
+        val abha = AbhaAvailability.feature(requireContext())
         val abdmResult = abdmResultFromIntent()
         val profile = abdmResult?.profile
-        val eligible = profile != null &&
+        val eligible = abha != null && profile != null &&
             abdmResult.cardScope == AbdmResult.CARD_SCOPE_CREATE &&
             abdmResult.outcome !=
             AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION &&
@@ -124,7 +125,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
                 ).show()
                 return@setOnClickListener
             }
-            AbdmLauncher.startAbhaSuggestions(
+            abha!!.startAbhaSuggestions(
                 requireActivity(),
                 abhaSuggestionsLauncher,
                 abdmResult.txnId.orEmpty(),
@@ -152,7 +153,7 @@ class PatientOtherInfoFragment : BasePatientFragment(R.layout.fragment_patient_o
             .filter { it.isNotEmpty() && !it.equals(newAddress, ignoreCase = true) }
         patient.abhaAddress = (listOf(newAddress) + existing).joinToString(",")
 
-        AbdmCardDownloader.invalidate(requireContext(), patient.abhaNumber)
+        AbhaAvailability.feature(requireContext())?.invalidateCard(requireContext(), patient.abhaNumber)
 
         binding.patient = patient
         binding.textInputAbhaAddress.setText(patient.abhaAddress)
