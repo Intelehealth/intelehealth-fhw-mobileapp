@@ -260,7 +260,10 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     private void takePhoto() {
-        if (imageCapture == null) return;
+        if (imageCapture == null) {
+            Toast.makeText(this, R.string.camera_not_available, Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         //file....
         if (mImageName == null) {
@@ -307,7 +310,8 @@ public class CameraActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(@NonNull ImageCaptureException exception) {
-                        exception.printStackTrace();
+                        Log.e("CameraActivity", "Image capture failed, code " + exception.getImageCaptureError(), exception);
+                        Toast.makeText(CameraActivity.this, R.string.camera_not_available, Toast.LENGTH_LONG).show();
                     }
                 }
         );
@@ -386,7 +390,7 @@ public class CameraActivity extends AppCompatActivity {
         Preview preview = new Preview.Builder().build();
         preview.setSurfaceProvider(binding.viewFinder.getSurfaceProvider());
 
-        imageCapture = new ImageCapture
+        ImageCapture capture = new ImageCapture
                 .Builder()
                 .build();
 
@@ -394,9 +398,13 @@ public class CameraActivity extends AppCompatActivity {
 
         try {
             cameraProvider.unbindAll();
-            cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture);
-        } catch (Exception ignored) {
-
+            cameraProvider.bindToLifecycle(this, cameraSelector, preview, capture);
+            // only keep it once it is attached to a camera, so takePhoto() can't use an unbound one
+            imageCapture = capture;
+        } catch (Exception e) {
+            imageCapture = null;
+            Log.e("CameraActivity", "Unable to bind the camera", e);
+            Toast.makeText(this, R.string.camera_not_available, Toast.LENGTH_LONG).show();
         }
     }
 

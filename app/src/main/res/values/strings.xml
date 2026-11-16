@@ -709,6 +709,7 @@
 
     <!--@lincon-->
     <string name="failed_initial_synced">Failed refresh, check your internet connection. Please restart the app.</string>
+    <string name="camera_not_available">Camera is not available right now. Please close the camera screen and try again.</string>
     <string name="something_went_wrong">Something went wrong. Please contact support</string>
 
     //Speciality Spinner
