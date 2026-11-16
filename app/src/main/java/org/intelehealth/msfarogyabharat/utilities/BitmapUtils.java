@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.media.ExifInterface;
 import android.util.Log;
 
@@ -178,6 +179,30 @@ public class BitmapUtils {
             Log.e("AdditionalDocuments", fnfe1.getMessage());
         } catch (Exception e) {
             Log.v("AdditionalDocuments", e.getMessage());
+        }
+    }
+
+    /**
+     * Copies a picked image (content Uri from the system picker) into the app's own folder.
+     * Reading through the ContentResolver needs no storage / media permission.
+     *
+     * @return true if the file was copied
+     */
+    public static boolean copyFile(Context context, Uri inputUri, String outputPath) {
+        try (InputStream in = context.getContentResolver().openInputStream(inputUri);
+             OutputStream out = new FileOutputStream(outputPath)) {
+            if (in == null) return false;
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                out.write(buffer, 0, read);
+            }
+            out.flush();
+            Log.d("AdditionalDocuments", outputPath);
+            return true;
+        } catch (Exception e) {
+            Log.e("AdditionalDocuments", String.valueOf(e.getMessage()));
+            return false;
         }
     }
 }

@@ -151,13 +151,6 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
         } else if (requestCode == PICK_IMAGE_FROM_GALLERY) {
             if (resultCode == RESULT_OK) {
                 Uri selectedImage = data.getData();
-                String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver().query(selectedImage, filePath, null, null, null);
-                c.moveToFirst();
-                int columnIndex = c.getColumnIndex(filePath[0]);
-                String picturePath = c.getString(columnIndex);
-                c.close();
-                Log.v("path", picturePath + "");
 
                 EditText editText = new EditText(AdditionalDocumentsActivity.this);
                 editText.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -171,7 +164,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                          m_finalImageName = editText.getText().toString();
                         final String finalFilePath = AppConstants.IMAGE_PATH + m_finalImageName + ".jpg";
-                        BitmapUtils.copyFile(picturePath, finalFilePath);
+                        if (!BitmapUtils.copyFile(AdditionalDocumentsActivity.this, selectedImage, finalFilePath)) {
+                            Toast.makeText(AdditionalDocumentsActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         compressImageAndSave(finalFilePath, m_finalImageName);
                     }
                 });
@@ -190,7 +186,10 @@ public class AdditionalDocumentsActivity extends AppCompatActivity {
                         alertDialog.dismiss();
 
                         final String finalFilePath = AppConstants.IMAGE_PATH + m_finalImageName + ".jpg";
-                        BitmapUtils.copyFile(picturePath, finalFilePath);
+                        if (!BitmapUtils.copyFile(AdditionalDocumentsActivity.this, selectedImage, finalFilePath)) {
+                            Toast.makeText(AdditionalDocumentsActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         compressImageAndSave(finalFilePath, m_finalImageName);
                     }
                 });

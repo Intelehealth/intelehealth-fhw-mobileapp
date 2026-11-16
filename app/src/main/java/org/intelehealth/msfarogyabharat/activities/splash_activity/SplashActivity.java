@@ -170,7 +170,6 @@ public class SplashActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.ACCESS_NETWORK_STATE);
         permissions.add(Manifest.permission.CAMERA);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissions.add(Manifest.permission.READ_MEDIA_IMAGES);
             permissions.add(Manifest.permission.POST_NOTIFICATIONS);
         } else permissions.add(Manifest.permission.READ_EXTERNAL_STORAGE);
         return permissions.toArray(new String[0]);
