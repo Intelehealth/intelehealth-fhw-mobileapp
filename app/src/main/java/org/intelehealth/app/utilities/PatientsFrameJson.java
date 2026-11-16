@@ -179,7 +179,9 @@ public class PatientsFrameJson {
            /* if (visitDTO.getAttributes().size() > 0) {*/
 
             //this condition is changed for visit is not closing even we close the visit
-            if (!visitDTO.getAttributes().isEmpty() || visitDTO.getEnddate() != null) {
+            // hold an unsent visit (no Speciality yet) unless it has been ended
+            if ((!visitDTO.getAttributes().isEmpty() && speciality_row_exist_check(visitDTO.getUuid()))
+                    || visitDTO.getEnddate() != null) {
                 visit.setLocation(visitDTO.getLocationuuid());
                 visit.setPatient(visitDTO.getPatientuuid());
                 visit.setStartDatetime(visitDTO.getStartdate());
