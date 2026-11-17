@@ -830,7 +830,26 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         // QMS turned off by a config sync while the Queue tab is open: hiding the item alone
         // would leave the queue screen showing with nothing selected, so go back to Home.
         if (!isQmsConfigured && bottomNav.getSelectedItemId() == R.id.bottom_nav_queue) {
+            // Selecting Home commits a fragment transaction, which throws once the activity's
+            // state is saved (stopped / in background). This can be reached from a config sync
+            // callback at any time, so defer the switch until the activity is resumed again.
+            if (getSupportFragmentManager().isStateSaved()) {
+                qmsNavUpdatePending = true;
+                return;
+            }
             bottomNav.setSelectedItemId(R.id.bottom_nav_home_menu);
+        }
+    }
+
+    // Set when updateQMSBottomNavigation() had to skip the switch to Home; applied on resume.
+    private boolean qmsNavUpdatePending;
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (qmsNavUpdatePending && bottomNav != null) {
+            qmsNavUpdatePending = false;
+            updateQMSBottomNavigation();
         }
     }
 
@@ -853,7 +872,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 HomeScreenActivity_New activity = activityRef.get();
                 if (activity != null) {
                     activity.runOnUiThread(() -> {
-                        if (!activity.isFinishing() && activity.bottomNav != null) {
+                        if (!activity.isFinishing() && !activity.isDestroyed() && activity.bottomNav != null) {
                             activity.updateQMSBottomNavigation();
                         }
                     });
@@ -1419,7 +1438,6 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             if (intent.hasExtra(AppConstants.SYNC_INTENT_DATA_KEY)) {
                 int flagType = intent.getIntExtra(AppConstants.SYNC_INTENT_DATA_KEY, AppConstants.SYNC_FAILED);
                 mTempSyncHelperList.add(flagType);
-                Log.d("prescription", "Home syncBroadcastReceiver onReceive: flagType=" + flagType + ", thread=" + Thread.currentThread().getName());
 
                /* if (flagType == AppConstants.SYNC_FAILED && sessionManager.isFirstTimeLaunched()) {
                     hideSyncProgressBar(false);
@@ -1432,18 +1450,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 }*/
 
                 if (flagType == AppConstants.SYNC_PUSH_DATA_TO_LOCAL_DB_DONE) {
-                    long navStart = System.currentTimeMillis();
                     updateNavHeaderUserDetails();
-                    long fragStart = System.currentTimeMillis();
-                    Log.d("prescription", "Home sync done: updateNavHeaderUserDetails took " + (fragStart - navStart) + " ms");
                     mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
-                    Log.d("prescription", "Home sync done: fragment onFinished (UI refresh) took " + (System.currentTimeMillis() - fragStart) + " ms");
                     //hideSyncProgressBar(true);
                 }
             }
-            long lastSyncStart = System.currentTimeMillis();
             updateLastSyncTime();
-            Log.d("prescription", "Home syncBroadcastReceiver: updateLastSyncTime took " + (System.currentTimeMillis() - lastSyncStart) + " ms");
             // The sync icon is stopped by observeSyncWork(), not here: these broadcasts also
             // come at the start and middle of a sync (push sent, each pull page saved).
         }

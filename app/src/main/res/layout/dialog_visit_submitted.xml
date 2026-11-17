@@ -44,6 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/fu_margin_start"
             android:gravity="center"
+            android:paddingBottom="@dimen/margin_16dp"
             android:lineSpacingExtra="3sp"
             android:text="@string/patient_added_to_doctor_queue"
             android:textAppearance="@style/dialog_subtitle" />
@@ -55,6 +56,7 @@
             android:layout_marginTop="@dimen/margin_24"
             android:background="@drawable/bg_rounded_lavender_queue"
             android:gravity="center_vertical"
+            android:visibility="gone"
             android:orientation="horizontal"
             android:paddingStart="@dimen/margin_16dp"
             android:paddingTop="@dimen/margin_16dp"

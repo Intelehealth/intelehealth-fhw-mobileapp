@@ -54,7 +54,6 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
     ) {
         Timber.tag(TAG).d("onMessageReceived: $data")
         Log.d(TAG, "onMessageReceived: data received in notification : $data")
-        Log.d(PRESCRIPTION_TAG, "FCM onMessageReceived: thread=${Thread.currentThread().name}, type=${data["type"]}, title=${data["title"]}, visitUuid=${data["visitUuid"]}, hasNotificationPayload=${notification != null}, appInForeground=${isAppInForeground()}")
         val sessionManager = SessionManager(context)
         if (sessionManager.isLogout) return
         context?.let {
@@ -129,12 +128,8 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
             } else {
                 if(data.isNotEmpty() && notification == null){
                     val title = (data["title"] ?: "").lowercase()
-                    val showStart = System.currentTimeMillis()
                     sendNotificationFromBody(data,context)
-                    Log.d(PRESCRIPTION_TAG, "FCM sendNotificationFromBody took ${System.currentTimeMillis() - showStart} ms (thread=${Thread.currentThread().name})")
                     if(title.contains("prescription")){
-                        Log.d(PRESCRIPTION_TAG, "FCM prescription notification: scheduling follow-up, followupDatetime=${data["followupDatetime"]}, visitUuid=${data["visitUuid"]}")
-                        val scheduleStart = System.currentTimeMillis()
                         NotificationSchedulerUtils.scheduleFollowUpNotification(
                                 FollowUpNotificationData(
                                         value = data["followupDatetime"] ?: "",
@@ -144,9 +139,7 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                                         visitUuid = data["visitUuid"] ?: "",
                                 )
                         )
-                        Log.d(PRESCRIPTION_TAG, "FCM scheduleFollowUpNotification took ${System.currentTimeMillis() - scheduleStart} ms (thread=${Thread.currentThread().name})")
                     }
-                    Log.d(PRESCRIPTION_TAG, "FCM prescription/data notification handled, total ${System.currentTimeMillis() - showStart} ms on thread=${Thread.currentThread().name}")
 
                 }else{
                     parseMessage(notification, context)
@@ -270,8 +263,6 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
     companion object {
         const val TAG = "FCMNotificationReceiver"
-        // Temporary: traces the "home screen stuck on prescription notification" issue.
-        const val PRESCRIPTION_TAG = "prescription"
 
         // One thread for queue card updates, so they run off the main thread and in arrival order.
         private val queueCardExecutor: ExecutorService = Executors.newSingleThreadExecutor()
