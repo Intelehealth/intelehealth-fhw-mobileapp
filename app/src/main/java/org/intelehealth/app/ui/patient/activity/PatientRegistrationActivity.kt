@@ -513,11 +513,14 @@ class PatientRegistrationActivity : BaseActivity() {
             // NAS-1752 - set only by PersonalConsentActivity's no-ABHA path; every other
             // (Java) call site edits an already-registered patient and leaves this null.
             patientConsentValue: String? = null,
+            // A declined ABDM consent from the same no-ABHA path
+            abdmConsentValue: String? = null,
         ) {
             Intent(context, PatientRegistrationActivity::class.java).apply {
                 putExtra(PATIENT_UUID, patientId)
                 putExtra(PATIENT_CURRENT_STAGE, stage)
                 putExtra(PATIENT_CONSENT_VALUE, patientConsentValue)
+                putExtra(ABDM_CONSENT_VALUE, abdmConsentValue)
             }.also { context.startActivity(it) }
         }
 

@@ -60,6 +60,7 @@ class AbhaCreateActivity : AppCompatActivity() {
         observeEvents()
 
         seedPatientNameFromIntent()
+        setConsentResult()
 
         if (!NetworkConnection.isOnline(this)) {
             showNoInternetDialog()
@@ -141,9 +142,23 @@ class AbhaCreateActivity : AppCompatActivity() {
             setListeners(object : ConsentDialog.Clickable {
                 override fun isChecked(isCheck: Boolean) {
                     binding.includeAadhaarEntry.cbTermsAndConditions.isChecked = isCheck
+                    if (isCheck) onConsentAnswered(declined = false)
                 }
+
+                override fun onDeclined() = onConsentAnswered(declined = true)
             })
         }.show(supportFragmentManager, ConsentDialog.ABHA_CONSENT)
+    }
+
+    private fun onConsentAnswered(declined: Boolean) {
+        viewModel.onConsentAnswered(declined)
+        setConsentResult()
+    }
+
+    /** If this screen closes without an ABHA, the host still gets the last consent answer. */
+    private fun setConsentResult() {
+        val declined = viewModel.uiState.value.consentDeclined ?: return
+        setResult(Activity.RESULT_CANCELED, AbdmResult.consentAnswerIntent(declined))
     }
 
     /** Hands the outcome back to the host (PrivacyNoticeActivity) and closes this screen. */

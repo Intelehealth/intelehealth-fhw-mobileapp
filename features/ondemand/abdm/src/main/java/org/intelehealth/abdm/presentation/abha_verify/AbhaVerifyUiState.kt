@@ -9,6 +9,8 @@ internal data class AbhaVerifyUiState(
     val patientName: String = "",
 
     val isConsentChecked: Boolean = false,
+    /** Last Accept/Decline in the consent dialog; null until one is given. */
+    val consentDeclined: Boolean? = null,
 
     val aadhaarNumber: String = "",
     val mobileNumber: String = "",

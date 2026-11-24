@@ -493,6 +493,10 @@ internal class AbhaCreateViewModel @Inject constructor(
         _uiState.update { it.copy(isConsentChecked = checked) }
     }
 
+    fun onConsentAnswered(declined: Boolean) {
+        _uiState.update { it.copy(consentDeclined = declined) }
+    }
+
     private var countdownJob: Job? = null
 
     private fun startResendCountdown(seconds: Int = 60) {

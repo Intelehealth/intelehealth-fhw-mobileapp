@@ -24,6 +24,7 @@ class ConsentDialog(
     override fun getTheme(): Int = R.style.Theme_Abdm_Dialog
 
     private var isAccepted: Boolean = false
+    private var isDeclined: Boolean = false
     private var clickable: Clickable? = null
     private var checkboxAdapter: CheckboxAdapter? = null
     private lateinit var binding: DialogConsentBinding
@@ -82,6 +83,7 @@ class ConsentDialog(
         }
         binding.btnDecline.setOnClickListener {
             isAccepted = false
+            isDeclined = true
             dismiss()
         }
         return binding.root
@@ -90,6 +92,7 @@ class ConsentDialog(
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
         clickable?.isChecked(isAccepted)
+        if (isDeclined) clickable?.onDeclined()
     }
 
     fun setListeners(clickable: Clickable) {
@@ -106,5 +109,8 @@ class ConsentDialog(
 
     interface Clickable {
         fun isChecked(isCheck: Boolean)
+
+        /** Only for the Decline button, not for a back-press or outside-tap dismiss. */
+        fun onDeclined() {}
     }
 }

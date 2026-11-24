@@ -35,7 +35,7 @@
     <string name="yesterday_at">काल येथे</string>
     <string name="now">आता</string>
 
-    <string name="decline">घट</string>
+    <string name="decline">नकार</string>
     <string name="accept">स्वीकार करा</string>
     <string name="hang_up">हँग अप</string>
 </resources>

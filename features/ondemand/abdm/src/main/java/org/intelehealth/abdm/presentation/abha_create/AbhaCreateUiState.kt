@@ -8,6 +8,8 @@ internal data class AbhaCreateUiState(
     val step: AbhaCreateStep = AbhaCreateStep.EnterAadhaar,
     val patientName: String = "",
     val isConsentChecked: Boolean = false,
+    /** Last Accept/Decline in the consent dialog; null until one is given. */
+    val consentDeclined: Boolean? = null,
     val aadhaarLocked: Boolean = false,
     val aadhaarNumber: String = "",
     val aadhaarOtp: String = "",

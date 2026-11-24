@@ -19,6 +19,7 @@ import java.util.Locale
 object ConsentUtils {
 
     const val STATUS_ACTIVE = "active"
+    const val STATUS_DECLINED = "declined"
     const val APPLICATION_NAS_MOBILE = "NAS-mobile"
 
     @JvmStatic

@@ -32,11 +32,12 @@ public class NcdConsentActivity extends BaseActivity implements WebViewStatus {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teleconsultation_consent);
         mCommonVisitData = getIntent().getExtras().getParcelable("CommonVisitData");
-        ((TextView) findViewById(R.id.tv_consent_title)).setText(R.string.ncd_screening);
+        ((TextView) findViewById(R.id.tv_consent_title)).setText(R.string.ncd_consent_title);
 
         loadingDialog = new DialogUtils().showCommonLoadingDialog(this, getString(R.string.loading), getString(R.string.please_wait));
+        // The consent text is HTML with its own paragraphs and lists
         String text = "<html><body style='color:black;font-size: 0.8em;' >"
-                + "<p>" + getString(R.string.ncd_consent_placeholder_text) + "</p>"
+                + getString(R.string.ncd_consent_text)
                 + "<p>" + getString(R.string.ncd_consent_question) + "</p>"
                 + "</body></html>";
         WebView consentWebView = findViewById(R.id.content_tv);
