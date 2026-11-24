@@ -462,7 +462,8 @@ public class VisitCreationActivity extends BaseActivity implements
                 if (!isRecreated) {
                     startVisit();
                     // Accepted or declined, the NCD consent is kept with the visit
-                    if (mNcdConsentAccepted != null) ncdScreeningRepository().saveConsent(visitUuid, mNcdConsentAccepted);
+                    if (mNcdConsentAccepted != null)
+                        ncdScreeningRepository().saveConsent(visitUuid, mNcdConsentAccepted, sessionManager.getAppLanguage());
                 }
             } else {
                 visitUuid = mCommonVisitData.getVisitUuid();
