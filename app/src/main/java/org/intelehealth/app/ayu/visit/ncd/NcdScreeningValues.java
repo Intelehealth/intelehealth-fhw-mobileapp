@@ -3,6 +3,8 @@ package org.intelehealth.app.ayu.visit.ncd;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import org.intelehealth.app.utilities.ConsentUtils;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -35,8 +37,18 @@ public final class NcdScreeningValues {
     private NcdScreeningValues() {
     }
 
-    public static String consent(boolean accepted) {
-        return accepted ? YES : NO;
+    // Same format as Patient/ABDM consent, e.g. "24-11-2026 11:05:09 | <HW uuid> | mr | active | NAS-mobile"
+    public static String consent(boolean accepted, String hwUuid, String language) {
+        return ConsentUtils.buildConsentValue(hwUuid, language,
+                accepted ? ConsentUtils.STATUS_ACTIVE : ConsentUtils.STATUS_DECLINED);
+    }
+
+    // Also reads the plain "No" saved by earlier builds
+    static boolean consentDeclined(String value) {
+        if (value == null) return false;
+        if (NO.equals(value)) return true;
+        String[] parts = value.split("\\|");
+        return parts.length > 3 && ConsentUtils.STATUS_DECLINED.equals(parts[3].trim());
     }
 
     // e.g. {"pregnant":"No","multimorbidity":"No","knownCase":"Yes, Diabetes only","urgentSymptoms":[],"result":"Eligible"}

@@ -42,7 +42,7 @@ public class NcdScreeningRepository {
             String encounterUuid = mEncounterDAO.getEmergencyEncounters(visitUuid, UuidDictionary.ENCOUNTER_NCD_SCREENING);
             if (encounterUuid == null || encounterUuid.isEmpty()) return null;
             String consent = mObsDAO.getObsValue(encounterUuid, UuidDictionary.NCD_CONSENT);
-            if (NcdScreeningValues.consent(false).equals(consent)) return NcdScreeningPlan.consentDeclined();
+            if (NcdScreeningValues.consentDeclined(consent)) return NcdScreeningPlan.consentDeclined();
             String eligibility = mObsDAO.getObsValue(encounterUuid, UuidDictionary.NCD_ELIGIBILITY);
             NcdEligibilityRules.Result result = NcdScreeningValues.savedResult(eligibility);
             if (result == null) return null;
@@ -75,8 +75,8 @@ public class NcdScreeningRepository {
         return null;
     }
 
-    public void saveConsent(String visitUuid, boolean accepted) {
-        save(visitUuid, UuidDictionary.NCD_CONSENT, NcdScreeningValues.consent(accepted));
+    public void saveConsent(String visitUuid, boolean accepted, String language) {
+        save(visitUuid, UuidDictionary.NCD_CONSENT, NcdScreeningValues.consent(accepted, mProviderUuid, language));
     }
 
     public void saveEligibility(String visitUuid, NcdEligibilityState state) {

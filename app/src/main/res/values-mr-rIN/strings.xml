@@ -75,7 +75,7 @@
 
 
     //Table Exam Screen
-    <string name="title_activity_vitals">महत्वपूर्ण</string>
+    <string name="title_activity_vitals">Vitals</string>
     <string name="table_hw">शरीर मोजमाप</string>
     <string name="table_height">उंची (सेमी)</string>
     <string name="table_weight">वजन (किलो)</string>
@@ -105,7 +105,7 @@
     <string name="visit_summary_family_history">कौटुंबिक इतिहास</string>
     <string name="visit_summary_on_examination">परीक्षेवर</string>
     <string name="visit_summary_complaint">भेटीचे कारण</string>
-    <string name="visit_summary_vitals">महत्वपूर्ण</string>
+    <string name="visit_summary_vitals">Vitals</string>
     <string name="visit_summary_rx">लिहून दिलेली औषधे</string>
     <string name="visit_summary_button_upload">अपलोड करा</string>
     <string name="visit_summary_follow_up_reminder">कृपया रुग्णाला त्यांच्या पाठपुरावा तारखेची आठवण करून द्या:</string>
@@ -456,7 +456,7 @@
     <string name="error_field_valid_village_required">कृपया वैध गावाचे नाव प्रविष्ट करा (किमान 3 अक्षर)</string>
     <string name="patinet_history">%1$d/%2$d वैद्यकीय इतिहास: रुग्णाचा इतिहास</string>
     <string name="_medical_family_history">%1$d/%2$d. वैद्यकीय इतिहास: कौटुंबिक इतिहास</string>
-    <string name="_1_4_vitals">%1$d/%2$d महत्वपूर्ण</string>
+    <string name="_1_4_vitals">%1$d/%2$d Vitals</string>
     <string name="bp_validation_sys"><![CDATA[BP Sys नेहमी > BP Dia असावा]]></string>
     <string name="bp_validation_dia"><![CDATA[BP Dia नेहमी < BP Sys असावा]]></string>
     <string name="number_label">संख्या</string>
@@ -1360,7 +1360,7 @@
     <string name="_corresponding_address_1">संबंधित पत्ता 1</string>
     <string name="_corresponding_address_2">संबंधित पत्ता 2</string>
     <string name="this_field_is_mandatory">हे फील्ड अनिवार्य आहे</string>
-    <string name="_vitals_summary">%1$d/%2$d महत्वपूर्ण सारांश</string>
+    <string name="_vitals_summary">%1$d/%2$d Vitals सारांश</string>
     <string name="select_one_or_multiple_reasons">एक किंवा अधिक कारणे निवडा</string>
     <string name="_visit_reason_summary">%1$d/%2$d विजीटच्या कारण सारांश</string>
     <string name="add_patients">रुग्ण जोडा</string>

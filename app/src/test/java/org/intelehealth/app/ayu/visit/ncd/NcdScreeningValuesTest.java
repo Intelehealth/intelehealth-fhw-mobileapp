@@ -1,6 +1,8 @@
 package org.intelehealth.app.ayu.visit.ncd;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules.Result;
 import org.junit.Test;
@@ -8,9 +10,21 @@ import org.junit.Test;
 public class NcdScreeningValuesTest {
 
     @Test
-    public void consentIsYesOrNo() {
-        assertEquals("Yes", NcdScreeningValues.consent(true));
-        assertEquals("No", NcdScreeningValues.consent(false));
+    public void consentUsesTheSharedConsentFormat() {
+        assertTrue(NcdScreeningValues.consent(true, "hw-1", "mr")
+                .matches("\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} \\| hw-1 \\| mr \\| active \\| NAS-mobile"));
+        assertTrue(NcdScreeningValues.consent(false, "hw-1", "en")
+                .matches("\\d{2}-\\d{2}-\\d{4} \\d{2}:\\d{2}:\\d{2} \\| hw-1 \\| en \\| declined \\| NAS-mobile"));
+    }
+
+    @Test
+    public void declinedConsentIsReadInBothFormats() {
+        assertTrue(NcdScreeningValues.consentDeclined(NcdScreeningValues.consent(false, "hw-1", "mr")));
+        assertFalse(NcdScreeningValues.consentDeclined(NcdScreeningValues.consent(true, "hw-1", "mr")));
+        // Values saved by earlier builds
+        assertTrue(NcdScreeningValues.consentDeclined("No"));
+        assertFalse(NcdScreeningValues.consentDeclined("Yes"));
+        assertFalse(NcdScreeningValues.consentDeclined(null));
     }
 
     @Test
