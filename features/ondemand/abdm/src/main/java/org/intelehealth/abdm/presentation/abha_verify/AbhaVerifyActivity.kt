@@ -47,7 +47,11 @@ class AbhaVerifyActivity : AppCompatActivity() {
 
     private val createLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
+            if (result.resultCode != Activity.RESULT_OK) {
+                // An answer given in the nested Create screen is the latest one
+                AbdmResult.consentDeclined(result.data)?.let { onConsentAnswered(it) }
+                return@registerForActivityResult
+            }
             @Suppress("DEPRECATION")
             val abdmResult = result.data?.getParcelableExtra<AbdmResult>(AbdmResult.EXTRA_ABDM_RESULT)
                 ?: return@registerForActivityResult
@@ -62,6 +66,7 @@ class AbhaVerifyActivity : AppCompatActivity() {
         applyInsets()
 
         viewModel.seedPatientName(intent.getStringExtra(EXTRA_PATIENT_NAME).orEmpty())
+        setConsentResult()
 
         setupTabs()
         setupInputListeners()
@@ -146,9 +151,23 @@ class AbhaVerifyActivity : AppCompatActivity() {
             setListeners(object : ConsentDialog.Clickable {
                 override fun isChecked(isCheck: Boolean) {
                     binding.cbTermsAndConditions.isChecked = isCheck
+                    if (isCheck) onConsentAnswered(declined = false)
                 }
+
+                override fun onDeclined() = onConsentAnswered(declined = true)
             })
         }.show(supportFragmentManager, ConsentDialog.ABHA_CONSENT)
+    }
+
+    private fun onConsentAnswered(declined: Boolean) {
+        viewModel.onConsentAnswered(declined)
+        setConsentResult()
+    }
+
+    /** If this screen closes without an ABHA, the host still gets the last consent answer. */
+    private fun setConsentResult() {
+        val declined = viewModel.uiState.value.consentDeclined ?: return
+        setResult(Activity.RESULT_CANCELED, AbdmResult.consentAnswerIntent(declined))
     }
 
     private fun finishWithResult(result: AbdmResult) {

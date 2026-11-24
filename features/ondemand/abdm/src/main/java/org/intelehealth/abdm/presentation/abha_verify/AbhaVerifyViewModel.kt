@@ -93,6 +93,10 @@ internal class AbhaVerifyViewModel @Inject constructor(
         _uiState.update { it.copy(isConsentChecked = checked) }
     }
 
+    fun onConsentAnswered(declined: Boolean) {
+        _uiState.update { it.copy(consentDeclined = declined) }
+    }
+
     fun onInputChanged(field: AbhaVerifyInputField, value: String) {
         _uiState.update {
             when (field) {

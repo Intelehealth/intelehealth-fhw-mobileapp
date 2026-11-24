@@ -56,6 +56,9 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
      */
     private var patientConsentValue: String? = null
 
+    /** ABDM_Consent with a declined status, saved if the patient then registers without ABHA. */
+    private var abdmConsentDeclinedValue: String? = null
+
     private val abhaResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             handleAbhaResult(result)
@@ -170,7 +173,9 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
     private fun continueWithoutAbha() {
         PatientRegistrationActivity.startPatientRegistration(
-            this, patientConsentValue = patientConsentValue
+            this,
+            patientConsentValue = patientConsentValue,
+            abdmConsentValue = abdmConsentDeclinedValue
         )
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
         finish()
@@ -187,7 +192,11 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
      */
     private fun handleAbhaResult(result: ActivityResult) {
         val data = result.data
-        if (result.resultCode != RESULT_OK || data == null) return
+        if (result.resultCode != RESULT_OK) {
+            rememberAbdmConsentAnswer(data)
+            return
+        }
+        if (data == null) return
         data.setExtrasClassLoader(AbdmResult::class.java.classLoader)
         val abdmResult = IntentCompat.getParcelableExtra(
             data, AbdmResult.EXTRA_ABDM_RESULT, AbdmResult::class.java
@@ -234,6 +243,17 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus {
 
         setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
         finish()
+    }
+
+    /**
+     * The HW left ABHA without finishing it. Keep the latest answer: a Decline is stored with
+     * the patient, while an Accept without an ABHA stores nothing (as before).
+     */
+    private fun rememberAbdmConsentAnswer(data: Intent?) {
+        val declined = AbdmResult.consentDeclined(data) ?: return
+        abdmConsentDeclinedValue = if (declined) ConsentUtils.buildConsentValue(
+            sessionManager?.providerID, sessionManager?.appLanguage, ConsentUtils.STATUS_DECLINED
+        ) else null
     }
 
     /**
