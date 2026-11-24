@@ -242,6 +242,7 @@ import java.util.concurrent.Executors;
 
 import org.intelehealth.app.database.dao.QueueDAO;
 import org.intelehealth.app.reactnative.QueueRowFormatter;
+import org.intelehealth.app.reactnative.VisitSummaryQueueBanner;
 import org.intelehealth.app.ui.queue.model.QueueRow;
 import org.intelehealth.app.ui.queue.repository.QueueRepository;
 
@@ -621,7 +622,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         boolean isQmsConfigured = new PreferenceHelper(this)
                 .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
         boolean isVisitSubmitted = !TextUtils.isEmpty(visitUuid) && speciality_row_exist_check(visitUuid);
-        if (isQmsConfigured && isVisitSubmitted && !isVisitEnded(visitUuid)) {
+        if (VisitSummaryQueueBanner.shouldShow(isQmsConfigured, isVisitSubmitted,
+                // Only look up the end date when it can matter (same short-circuit as before).
+                isQmsConfigured && isVisitSubmitted && isVisitEnded(visitUuid))) {
             loadQueueStatusBanner(visitUuid);
         } else {
             hideQueueStatusBanner();
@@ -671,27 +674,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             container.setVisibility(View.VISIBLE);
         }
 
-        int position = row.getPosition();
-        String status = QueueRowFormatter.mapStatus(row.getStatus(), position);
-        // Queue positions start at 1; 0 means the entry has no waiting position (e.g. on call),
-        // so show "In Queue" rather than "Position #0". The patient's id isn't repeated here -
-        // this is already that patient's visit.
-        String title = position > 0
-                ? getString(R.string.queue_banner_position, position)
-                : getString(R.string.queue_banner_in_queue);
-
-        Bundle bannerProps = new Bundle();
-        bannerProps.putString("variant", "warning");
-        bannerProps.putString("title", title);
-        bannerProps.putString("subtitle", QueueRowFormatter.statusLabel(this, status));
-        bannerProps.putString("status", status);
-        // Pre-formatted snapshot (initial paint / fallback when no instant).
-        bannerProps.putString("time", QueueRowFormatter.formatTimeInMinutes(this, status, row));
-        // Localized minute unit for the banner's live (JS-side) tick, which re-formats the time.
-        bannerProps.putString("minuteLabel", QueueRowFormatter.minuteUnit(this, 1));
-        bannerProps.putString("minutesLabel", QueueRowFormatter.minuteUnit(this, 2));
-        bannerProps.putString("etaAt", row.getEtaAt() != null ? row.getEtaAt() : "");
-        bannerProps.putString("connectedAt", row.getConnectedAt() != null ? row.getConnectedAt() : "");
+        Bundle bannerProps = VisitSummaryQueueBanner.buildProps(this, row);
 
         if (isQueueBannerAttached()) {
             // Launch options are only read on mount, so later refreshes go to the mounted banner

@@ -43,6 +43,12 @@ android {
         vectorDrawables.useSupportLibrary = true
         archivesBaseName = "IDA-" + versionName + "-" + getDateTime()
     }
+    testOptions {
+        unitTests {
+            // Robolectric needs the merged resources for string lookups in queue tests.
+            includeAndroidResources = true
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
@@ -115,6 +121,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.7.7'
     implementation 'androidx.activity:activity:1.9.1'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    testImplementation 'org.robolectric:robolectric:4.14.1'
+    testImplementation 'androidx.test:core:1.6.1'
+    // Static mocking of React Native's Arguments (native-backed) in home queue tests.
+    testImplementation 'org.mockito:mockito-core:5.14.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.media:media:1.7.0'
     implementation 'androidx.vectordrawable:vectordrawable-animated:1.2.0'

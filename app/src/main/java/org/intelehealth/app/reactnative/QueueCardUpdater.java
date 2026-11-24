@@ -169,8 +169,7 @@ public final class QueueCardUpdater {
                         emptyToNull(row.getQueueEntryId()),
                         emptyToNull(row.getPatientName()),
                         emptyToNull(row.getGender()),
-                        TextUtils.isEmpty(row.getDateOfBirth())
-                                ? 0 : DateAndTimeUtils.getAge(row.getDateOfBirth(), context),
+                        ageOf(row.getDateOfBirth(), context),
                         emptyToNull(row.getOpenmrsId()),
                         extractComplaintNames(row.getChiefComplaint()),
                         row.getPosition(),
@@ -185,6 +184,23 @@ public final class QueueCardUpdater {
             Log.e(TAG, "fromQueueTable failed: " + e.getMessage());
         }
         return patients;
+    }
+
+    /**
+     * Age in years, or 0 when the date of birth is absent or unparseable. Caught per
+     * row: {@link DateAndTimeUtils#getAge} throws on a bad date, which would otherwise
+     * abort the whole card list.
+     */
+    private static int ageOf(@Nullable String dateOfBirth, Context context) {
+        if (TextUtils.isEmpty(dateOfBirth)) {
+            return 0;
+        }
+        try {
+            return DateAndTimeUtils.getAge(dateOfBirth, context);
+        } catch (Exception e) {
+            Log.e(TAG, "age calc failed: " + e.getMessage());
+            return 0;
+        }
     }
 
     /**

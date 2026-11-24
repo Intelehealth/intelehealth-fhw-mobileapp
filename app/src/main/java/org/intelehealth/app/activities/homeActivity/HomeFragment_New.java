@@ -23,7 +23,6 @@ import android.os.LocaleList;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.reactnative.PatientData;
 import org.intelehealth.app.reactnative.QueueCardUpdater;
