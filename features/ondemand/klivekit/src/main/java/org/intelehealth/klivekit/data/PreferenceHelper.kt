@@ -27,6 +27,10 @@ class PreferenceHelper @Inject constructor(val context: Context) {
         // of the local edit-cache/visit-note-started logic.
         const val IS_EDIT_VISIT_CONFIGURE = "isEditVisitConfigure"
 
+        // App versionCode for which the server config was last fetched. A different value (an app
+        // update) triggers a config re-fetch so flags parsed with new keys replace the stored ones.
+        const val CONFIG_SYNCED_APP_VERSION = "config_synced_app_version"
+
         // Latest "Next In Queue" card payload (JSON), persisted from FCM
         // notifications so the home card reflects the newest queue state even
         // after the app was backgrounded when the notification arrived.

@@ -6,16 +6,27 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.WritableArray;
 import com.facebook.react.bridge.WritableMap;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.lang3.StringUtils;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
+import org.intelehealth.app.database.dao.QueueDAO;
+import org.intelehealth.app.database.dao.VisitsDAO;
+import org.intelehealth.app.ui.queue.model.QueueRow;
+import org.intelehealth.app.ui.queue.repository.QueueRepository;
 import org.intelehealth.app.knowledgeEngine.Node;
 import org.intelehealth.app.utilities.DateAndTimeUtils;
 import org.intelehealth.klivekit.data.PreferenceHelper;
@@ -23,15 +34,22 @@ import org.intelehealth.klivekit.data.PreferenceHelper;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Bridges an incoming "Next In Queue" FCM notification to the React Native
  * {@code QueueCardModule} shown on the home screen.
  *
+ * <p>A notification can carry several patients as a JSON array under
+ * {@link #KEY_PATIENTS}; each element uses the same keys as a single-patient
+ * payload. A payload without that key is treated as a single patient. The
+ * home screen shows the list as a slideshow of cards.
+ *
  * <p>Two things happen for every queue notification:
  * <ol>
- *   <li>The card payload is persisted to prefs so the home card reflects the
+ *   <li>The patient list is persisted to prefs so the home card reflects the
  *       latest queue state the next time it mounts (covers notifications that
  *       arrive while the app is backgrounded and the RN view isn't mounted).</li>
  *   <li>If the React context is already alive (app in foreground), a
@@ -49,39 +67,216 @@ public final class QueueCardUpdater {
     /** JS event name the {@code QueueCard} component subscribes to. */
     public static final String EVENT_QUEUE_CARD_UPDATE = "QueueCardUpdate";
 
+    /** FCM data key holding the JSON array of queue patients. */
+    public static final String KEY_PATIENTS = "patients";
+
+    /** Props / event key under which the patient list is passed to JS. */
+    private static final String PROP_PATIENTS = "patients";
+
     private QueueCardUpdater() {
     }
 
     /**
-     * Parse a "Next In Queue" FCM data payload, persist it, and push it to the
-     * live card if the RN context is running.
+     * Parse a "Next In Queue" FCM data payload and merge it into the persisted
+     * patient list: an entry for the same speciality is replaced, otherwise the
+     * patient is added as a new slide. The merged list is persisted and pushed
+     * to the live card if the RN context is running.
      */
     public static void handleQueueNotification(Context context, Map<String, String> data) {
         if (context == null || data == null) {
             return;
         }
-        PatientData patient = parse(context, data);
-        persist(context, patient);
-        emit(patient);
+        // The first notification after login starts from the tbl_queue seed the
+        // card was showing; from then on the notification list is the source.
+        List<PatientData> patients = new ArrayList<>(getCards(context));
+        for (Map<String, String> item : splitPatients(data)) {
+            upsert(patients, parse(context, item));
+        }
+        persist(context, patients);
+        emit(patients);
+        cardsReceived.postValue(System.currentTimeMillis());
     }
 
     /**
-     * The most recently persisted queue card payload, or {@code null} if no
-     * queue notification has been received yet. Used by the home fragment to
-     * seed the card on mount.
+     * Posted with the receive time on every queue card notification, so a home
+     * screen whose card slot is collapsed (nothing queued when it opened) can
+     * mount the card; a mounted card already updates through the live event.
      */
-    @Nullable
-    public static PatientData getPersisted(Context context) {
+    private static final MutableLiveData<Long> cardsReceived = new MutableLiveData<>();
+
+    public static LiveData<Long> getCardsReceived() {
+        return cardsReceived;
+    }
+
+    /**
+     * Replace the entry queued for the same speciality (or, when the payload has
+     * no speciality, the same visit), otherwise append the patient.
+     */
+    private static void upsert(List<PatientData> patients, PatientData patient) {
+        for (int i = 0; i < patients.size(); i++) {
+            if (isSameQueueEntry(patients.get(i), patient)) {
+                patients.set(i, patient);
+                return;
+            }
+        }
+        patients.add(patient);
+    }
+
+    private static boolean isSameQueueEntry(PatientData existing, PatientData incoming) {
+        if (!TextUtils.isEmpty(incoming.getSpeciality())) {
+            return incoming.getSpeciality().equalsIgnoreCase(existing.getSpeciality());
+        }
+        return !TextUtils.isEmpty(incoming.getVisitUuid())
+                && incoming.getVisitUuid().equalsIgnoreCase(existing.getVisitUuid());
+    }
+
+    /**
+     * The patients for the home slideshow: the list built from queue
+     * notifications once one has been received since login, otherwise the
+     * "Next in Queue" rows of the synced {@code tbl_queue}. Reads the DB, so
+     * call it off the main thread.
+     */
+    public static List<PatientData> getCards(Context context) {
+        if (hasNotificationData(context)) {
+            return getPersisted(context);
+        }
+        return fromQueueTable(context);
+    }
+
+    /**
+     * Whether a queue notification has been persisted since login. Cleared on
+     * logout ({@link QueueDataCleaner}), so a fresh login starts from tbl_queue.
+     */
+    public static boolean hasNotificationData(Context context) {
+        try {
+            return !TextUtils.isEmpty(
+                    new PreferenceHelper(context).getString(PreferenceHelper.QUEUE_CARD_DATA));
+        } catch (Exception e) {
+            Log.e(TAG, "hasNotificationData failed: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /** The "Next in Queue" rows of tbl_queue, mapped onto the card fields. */
+    private static List<PatientData> fromQueueTable(Context context) {
+        List<PatientData> patients = new ArrayList<>();
+        try {
+            for (QueueRow row : new QueueRepository(new QueueDAO()).getNextInQueue()) {
+                int waitTimeMinutes = !TextUtils.isEmpty(row.getEtaAt())
+                        ? minutesUntil(row.getEtaAt())
+                        : row.getEtaMinutes();
+                patients.add(new PatientData(
+                        emptyToNull(row.getQueueEntryId()),
+                        emptyToNull(row.getPatientName()),
+                        emptyToNull(row.getGender()),
+                        ageOf(row.getDateOfBirth(), context),
+                        emptyToNull(row.getOpenmrsId()),
+                        extractComplaintNames(row.getChiefComplaint()),
+                        row.getPosition(),
+                        waitTimeMinutes,
+                        emptyToNull(QueueRowFormatter.toAvatarUri(row.getPatientPhoto())),
+                        emptyToNull(row.getSpeciality()),
+                        emptyToNull(row.getVisitUuid()),
+                        emptyToNull(row.getEtaAt())
+                ));
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "fromQueueTable failed: " + e.getMessage());
+        }
+        return patients;
+    }
+
+    /**
+     * Age in years, or 0 when the date of birth is absent or unparseable. Caught per
+     * row: {@link DateAndTimeUtils#getAge} throws on a bad date, which would otherwise
+     * abort the whole card list.
+     */
+    private static int ageOf(@Nullable String dateOfBirth, Context context) {
+        if (TextUtils.isEmpty(dateOfBirth)) {
+            return 0;
+        }
+        try {
+            return DateAndTimeUtils.getAge(dateOfBirth, context);
+        } catch (Exception e) {
+            Log.e(TAG, "age calc failed: " + e.getMessage());
+            return 0;
+        }
+    }
+
+    /**
+     * The most recently persisted queue patient list, or an empty list if no
+     * queue notification has been received yet.
+     */
+    public static List<PatientData> getPersisted(Context context) {
         try {
             String json = new PreferenceHelper(context).getString(PreferenceHelper.QUEUE_CARD_DATA);
             if (TextUtils.isEmpty(json)) {
-                return null;
+                return new ArrayList<>();
             }
-            return new Gson().fromJson(json, PatientData.class);
+            Gson gson = new Gson();
+            // Builds before the slideshow persisted a single patient object.
+            if (json.trim().startsWith("{")) {
+                ArrayList<PatientData> legacy = new ArrayList<>();
+                legacy.add(gson.fromJson(json, PatientData.class));
+                return legacy;
+            }
+            List<PatientData> patients = gson.fromJson(json,
+                    new TypeToken<ArrayList<PatientData>>() {}.getType());
+            return patients != null ? patients : new ArrayList<>();
         } catch (Exception e) {
             Log.e(TAG, "getPersisted failed: " + e.getMessage());
-            return null;
+            return new ArrayList<>();
         }
+    }
+
+    /**
+     * Split the FCM payload into one string map per patient. When
+     * {@link #KEY_PATIENTS} holds a JSON array, each element becomes a map
+     * (arrays such as {@code symptoms} are joined with commas, matching the
+     * single-patient format); otherwise the whole payload is one patient.
+     */
+    private static List<Map<String, String>> splitPatients(Map<String, String> data) {
+        List<Map<String, String>> items = new ArrayList<>();
+        String raw = data.get(KEY_PATIENTS);
+        if (TextUtils.isEmpty(raw)) {
+            items.add(data);
+            return items;
+        }
+        try {
+            JsonArray array = JsonParser.parseString(raw).getAsJsonArray();
+            for (JsonElement element : array) {
+                if (element != null && element.isJsonObject()) {
+                    items.add(toStringMap(element.getAsJsonObject()));
+                }
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "patients parse failed: " + e.getMessage());
+        }
+        return items;
+    }
+
+    private static Map<String, String> toStringMap(JsonObject object) {
+        Map<String, String> map = new HashMap<>();
+        for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
+            JsonElement value = entry.getValue();
+            if (value == null || value.isJsonNull()) {
+                continue;
+            }
+            if (value.isJsonPrimitive()) {
+                map.put(entry.getKey(), value.getAsString());
+            } else if (value.isJsonArray()) {
+                ArrayList<String> parts = new ArrayList<>();
+                for (JsonElement part : value.getAsJsonArray()) {
+                    if (part != null && part.isJsonPrimitive()) {
+                        parts.add(part.getAsString());
+                    }
+                }
+                map.put(entry.getKey(), TextUtils.join(",", parts));
+            } else {
+                map.put(entry.getKey(), value.toString());
+            }
+        }
+        return map;
     }
 
     /** Map the FCM string payload onto the card's typed fields. */
@@ -94,13 +289,25 @@ public final class QueueCardUpdater {
         String patientId = firstNonEmpty(data.get("patientId"), data.get("patientOpenMrsId"));
         String gender = data.get("gender");
         int age = parseInt(data.get("age"));
+        String avatarUrl = data.get("avatarUrl");
 
         // A "Queue update" notification identifies the patient only by UUID, so
-        // look the display fields (name, id, gender, age) up from the local DB
-        // for any the payload didn't already carry.
+        // look the display fields (name, id, gender, age, photo) up from the
+        // local DB for any the payload didn't already carry.
+        // The "queue:*" event payload carries only the visitUuid; resolve the
+        // patient from the locally synced visit.
+        String visitUuid = data.get("visitUuid");
         String patientUuid = data.get("patientUuid");
+        if (TextUtils.isEmpty(patientUuid) && !TextUtils.isEmpty(visitUuid)) {
+            try {
+                patientUuid = new VisitsDAO().patientUuidByViistUuid(visitUuid);
+            } catch (Exception e) {
+                Log.e(TAG, "visit lookup failed: " + e.getMessage());
+            }
+        }
         if (!TextUtils.isEmpty(patientUuid) && (TextUtils.isEmpty(patientName)
-                || TextUtils.isEmpty(patientId) || TextUtils.isEmpty(gender) || age == 0)) {
+                || TextUtils.isEmpty(patientId) || TextUtils.isEmpty(gender) || age == 0
+                || TextUtils.isEmpty(avatarUrl))) {
             try {
                 Map<String, String> details = new PatientsDAO().getQueueCardPatientDetails(patientUuid);
                 if (!details.isEmpty()) {
@@ -116,17 +323,27 @@ public final class QueueCardUpdater {
                     if (age == 0) {
                         age = DateAndTimeUtils.getAge(details.get("date_of_birth"), context);
                     }
+                    if (TextUtils.isEmpty(avatarUrl)) {
+                        // Same local photo file the queue list rows show.
+                        avatarUrl = QueueRowFormatter.toAvatarUri(details.get("patient_photo"));
+                    }
                 }
             } catch (Exception e) {
                 Log.e(TAG, "patient lookup failed: " + e.getMessage());
             }
         }
 
-        // The "Queue update" payload carries an ISO-8601 ETA (etaTime) instead
-        // of a plain minute count; fall back to it when waitTimeMinutes is absent.
-        int waitTimeMinutes = data.containsKey("waitTimeMinutes")
-                ? parseInt(data.get("waitTimeMinutes"))
-                : minutesUntil(data.get("etaTime"));
+        // Queue payloads carry the wait as etaMinutes and/or an ISO-8601 ETA
+        // (etaAt, or etaTime in older payloads); fall back through them when
+        // waitTimeMinutes is absent.
+        int waitTimeMinutes;
+        if (data.containsKey("waitTimeMinutes")) {
+            waitTimeMinutes = parseInt(data.get("waitTimeMinutes"));
+        } else if (data.containsKey("etaMinutes")) {
+            waitTimeMinutes = parseInt(data.get("etaMinutes"));
+        } else {
+            waitTimeMinutes = minutesUntil(firstNonEmpty(data.get("etaAt"), data.get("etaTime")));
+        }
 
         ArrayList<String> symptoms = new ArrayList<>();
         String symptomsRaw = data.get("symptoms");
@@ -143,11 +360,11 @@ public final class QueueCardUpdater {
         // visitUuid. The symptoms shown on the card are that visit's chief
         // complaint, stored as an OBS; pull and parse them from the local DB.
         if (symptoms.isEmpty()) {
-            symptoms = fetchSymptoms(data.get("visitUuid"));
+            symptoms = fetchSymptoms(visitUuid);
         }
 
         return new PatientData(
-                emptyToNull(data.get("queueNumber")),
+                emptyToNull(firstNonEmpty(data.get("queueNumber"), data.get("queueEntryId"))),
                 emptyToNull(patientName),
                 emptyToNull(gender),
                 age,
@@ -155,28 +372,39 @@ public final class QueueCardUpdater {
                 symptoms,
                 parseInt(data.get("position")),
                 waitTimeMinutes,
-                emptyToNull(data.get("avatarUrl"))
+                emptyToNull(avatarUrl),
+                emptyToNull(data.get("speciality")),
+                emptyToNull(visitUuid),
+                // Same absolute ETA instant the queue list counts down from, so
+                // the home card stays in sync instead of showing its own snapshot.
+                emptyToNull(firstNonEmpty(data.get("etaAt"), data.get("etaTime")))
         );
     }
 
-    private static void persist(Context context, PatientData patient) {
+    private static void persist(Context context, List<PatientData> patients) {
         try {
             new PreferenceHelper(context)
-                    .save(PreferenceHelper.QUEUE_CARD_DATA, new Gson().toJson(patient));
+                    .save(PreferenceHelper.QUEUE_CARD_DATA, new Gson().toJson(patients));
         } catch (Exception e) {
             Log.e(TAG, "persist failed: " + e.getMessage());
         }
     }
 
     /**
-     * Emit the card update to JS. A no-op when RN isn't running (app in
+     * Emit the patient list to JS. A no-op when RN isn't running (app in
      * background); the persisted copy is picked up when the card next mounts.
      */
-    private static void emit(PatientData patient) {
-        RnEventEmitter.emit(EVENT_QUEUE_CARD_UPDATE, toWritableMap(patient));
+    private static void emit(List<PatientData> patients) {
+        WritableArray array = Arguments.createArray();
+        for (PatientData patient : patients) {
+            array.pushMap(toWritableMap(patient));
+        }
+        WritableMap map = Arguments.createMap();
+        map.putArray(PROP_PATIENTS, array);
+        RnEventEmitter.emit(EVENT_QUEUE_CARD_UPDATE, map);
     }
 
-    /** Build the JS props map that mirrors the QueueCardProps shape. */
+    /** Build the JS map for one card, mirroring the QueuePatientData shape. */
     private static WritableMap toWritableMap(PatientData patient) {
         WritableMap map = Arguments.createMap();
         map.putString("queueNumber", patient.getQueueNumber());
@@ -187,6 +415,8 @@ public final class QueueCardUpdater {
         map.putInt("position", patient.getPosition());
         map.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         map.putString("avatarUrl", patient.getAvatarUrl());
+        map.putString("speciality", patient.getSpeciality());
+        map.putString("etaAt", patient.getEtaAt());
 
         WritableArray symptoms = Arguments.createArray();
         if (patient.getSymptoms() != null) {
@@ -200,9 +430,20 @@ public final class QueueCardUpdater {
 
     /**
      * Build the initial-properties {@link Bundle} for the {@code ReactFragment}
-     * that hosts the card, mirroring {@link #toWritableMap(PatientData)}.
+     * that hosts the slideshow: the patient list under {@code patients}, each
+     * entry mirroring {@link #toWritableMap(PatientData)}.
      */
-    public static Bundle toBundle(PatientData patient) {
+    public static Bundle toBundle(List<PatientData> patients) {
+        ArrayList<Bundle> items = new ArrayList<>();
+        for (PatientData patient : patients) {
+            items.add(toBundle(patient));
+        }
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(PROP_PATIENTS, items);
+        return bundle;
+    }
+
+    private static Bundle toBundle(PatientData patient) {
         Bundle bundle = new Bundle();
         bundle.putString("queueNumber", patient.getQueueNumber());
         bundle.putString("patientName", patient.getPatientName());
@@ -213,6 +454,8 @@ public final class QueueCardUpdater {
         bundle.putInt("position", patient.getPosition());
         bundle.putInt("waitTimeMinutes", patient.getWaitTimeMinutes());
         bundle.putString("avatarUrl", patient.getAvatarUrl());
+        bundle.putString("speciality", patient.getSpeciality());
+        bundle.putString("etaAt", patient.getEtaAt());
         return bundle;
     }
 

@@ -8,6 +8,8 @@ import android.provider.Settings;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.DefaultLifecycleObserver;
@@ -97,6 +99,12 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
 
     public static Context getAppContext() {
         return mContext;
+    }
+
+    /** Lets JVM unit tests (no real Application.onCreate) supply the app context DAOs read. */
+    @VisibleForTesting
+    public static void setAppContextForTesting(@Nullable Context context) {
+        mContext = context;
     }
 
     public static String getAndroidId() {
@@ -203,9 +211,10 @@ public class IntelehealthApplication extends MultiDexApplication implements Defa
         );
         CustomLog.i(TAG, "onCreate: Parse init");
 
-        InteleHealthDatabaseHelper mDbHelper = new InteleHealthDatabaseHelper(this);
-        SQLiteDatabase localdb = mDbHelper.getWritableDatabase();
-        mDbHelper.onCreate(localdb);
+        // Use the shared helper: a second helper opens a second connection to the same file,
+        // and its transactions then fail each other with "database is locked" (SQLITE_BUSY).
+        SQLiteDatabase localdb = inteleHealthDatabaseHelper.getWritableDatabase();
+        inteleHealthDatabaseHelper.onCreate(localdb);
 //        }
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);

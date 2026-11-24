@@ -80,6 +80,19 @@ abstract class ConfigDatabase : RoomDatabase() {
             }
 
         /**
+         * Closes and drops the cached instance so the next [getInstance] opens a fresh
+         * database. For tests only (e.g. Robolectric gives each test a new app/data dir).
+         */
+        @VisibleForTesting
+        @JvmStatic
+        fun resetInstanceForTesting() {
+            synchronized(this) {
+                INSTANCE?.close()
+                INSTANCE = null
+            }
+        }
+
+        /**
          * Set up the database configuration.
          * The SQLite database is only created when it's accessed for the first time.
          */

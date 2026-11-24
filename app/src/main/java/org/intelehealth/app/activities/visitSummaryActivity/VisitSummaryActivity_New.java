@@ -242,6 +242,7 @@ import java.util.concurrent.Executors;
 
 import org.intelehealth.app.database.dao.QueueDAO;
 import org.intelehealth.app.reactnative.QueueRowFormatter;
+import org.intelehealth.app.reactnative.VisitSummaryQueueBanner;
 import org.intelehealth.app.ui.queue.model.QueueRow;
 import org.intelehealth.app.ui.queue.repository.QueueRepository;
 
@@ -621,7 +622,9 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         boolean isQmsConfigured = new PreferenceHelper(this)
                 .get(PreferenceHelper.IS_QMS_CONFIGURE, false);
         boolean isVisitSubmitted = !TextUtils.isEmpty(visitUuid) && speciality_row_exist_check(visitUuid);
-        if (isQmsConfigured && isVisitSubmitted && !isVisitEnded(visitUuid)) {
+        if (VisitSummaryQueueBanner.shouldShow(isQmsConfigured, isVisitSubmitted,
+                // Only look up the end date when it can matter (same short-circuit as before).
+                isQmsConfigured && isVisitSubmitted && isVisitEnded(visitUuid))) {
             loadQueueStatusBanner(visitUuid);
         } else {
             hideQueueStatusBanner();
@@ -671,27 +674,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             container.setVisibility(View.VISIBLE);
         }
 
-        int position = row.getPosition();
-        String status = QueueRowFormatter.mapStatus(row.getStatus(), position);
-        // Queue positions start at 1; 0 means the entry has no waiting position (e.g. on call),
-        // so show "In Queue" rather than "Position #0". The patient's id isn't repeated here -
-        // this is already that patient's visit.
-        String title = position > 0
-                ? getString(R.string.queue_banner_position, position)
-                : getString(R.string.queue_banner_in_queue);
-
-        Bundle bannerProps = new Bundle();
-        bannerProps.putString("variant", "warning");
-        bannerProps.putString("title", title);
-        bannerProps.putString("subtitle", QueueRowFormatter.statusLabel(this, status));
-        bannerProps.putString("status", status);
-        // Pre-formatted snapshot (initial paint / fallback when no instant).
-        bannerProps.putString("time", QueueRowFormatter.formatTimeInMinutes(this, status, row));
-        // Localized minute unit for the banner's live (JS-side) tick, which re-formats the time.
-        bannerProps.putString("minuteLabel", QueueRowFormatter.minuteUnit(this, 1));
-        bannerProps.putString("minutesLabel", QueueRowFormatter.minuteUnit(this, 2));
-        bannerProps.putString("etaAt", row.getEtaAt() != null ? row.getEtaAt() : "");
-        bannerProps.putString("connectedAt", row.getConnectedAt() != null ? row.getConnectedAt() : "");
+        Bundle bannerProps = VisitSummaryQueueBanner.buildProps(this, row);
 
         if (isQueueBannerAttached()) {
             // Launch options are only read on mount, so later refreshes go to the mounted banner
@@ -1037,14 +1020,16 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             // Edit btn visibility based on user coming from Visit Details screen - Start
             //if (intentTag.equalsIgnoreCase("VisitDetailsActivity")) {
             if (!isAllowForEdit) {
-                // Keep the edit icons visible even when editing is not allowed;
+                // Editing turned off by server config: hide the edit icons altogether. For the
+                // other reasons (doctor started the visit note, visit ended) keep them visible;
                 // an error message is shown on click instead (see edit listeners).
-                editVitals.setVisibility(View.VISIBLE);
-                editComplaint.setVisibility(View.VISIBLE);
-                editPhysical.setVisibility(View.VISIBLE);
-                editFamHist.setVisibility(View.VISIBLE);
-                editMedHist.setVisibility(View.VISIBLE);
-                editAddDocs.setVisibility(View.VISIBLE);
+                int editIconVisibility = isEditVisitDisabledByConfig() ? View.GONE : View.VISIBLE;
+                editVitals.setVisibility(editIconVisibility);
+                editComplaint.setVisibility(editIconVisibility);
+                editPhysical.setVisibility(editIconVisibility);
+                editFamHist.setVisibility(editIconVisibility);
+                editMedHist.setVisibility(editIconVisibility);
+                editAddDocs.setVisibility(editIconVisibility);
                 add_additional_doc.setVisibility(View.GONE);
 
                 if (BuildConfig.FLAVOR_client == FlavorKeys.UNFPA) {
@@ -1059,7 +1044,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 // mBinding.typeOfConsultationCard.setVisibility(View.GONE);
                 // mBinding.consultationTypeVdCard.setVisibility(View.VISIBLE);
 
-                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(View.VISIBLE);
+                mBinding.layoutVisitSummarySections.imagebuttonEditDiagnostics.setVisibility(editIconVisibility);
                 btn_bottom_printshare.setVisibility(View.VISIBLE);
                 btn_bottom_vs.setVisibility(View.GONE);
 
@@ -1477,6 +1462,18 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
      * Recomputed on demand (not cached from onCreate) so that if the "start visit" notification
      * clears the edit cache while the user is already on this screen, the next edit click reflects it.
      */
+    /**
+     * True when editing a sent visit is turned off by server config (re_enable / edit visit).
+     * In that case the edit controls are hidden rather than shown with an error on click.
+     * Never applies to a visit still being created (not yet sent, so no speciality row).
+     */
+    private boolean isEditVisitDisabledByConfig() {
+        if (!speciality_row_exist_check(visitUUID)) {
+            return false;
+        }
+        return !new PreferenceHelper(this).get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, false);
+    }
+
     private boolean computeIsEditAllowed() {
         // A visit still being created (not yet sent, so no speciality row) is always editable; the
         // config and doctor-started checks below only apply to visits that have been sent.
@@ -1485,9 +1482,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         }
         // Editing an already-sent visit can be turned off entirely via server config, regardless of
         // any local edit cache or whether the doctor has started the visit note.
-        boolean isEditVisitConfigured = new PreferenceHelper(this)
-                .get(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, false);
-        if (!isEditVisitConfigured) {
+        if (isEditVisitDisabledByConfig()) {
             return false;
         }
         // A visit that has already ended (its enddate is set) can never be edited, regardless of any
@@ -1535,7 +1530,11 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
     private boolean blockEditIfNotAllowed() {
         isAllowForEdit = computeIsEditAllowed();
         if (!isAllowForEdit) {
-            Toast.makeText(this, getString(R.string.editing_not_allowed_visit_note_present), Toast.LENGTH_SHORT).show();
+            // Say why: an ended visit can never be edited; otherwise the doctor has started it.
+            int message = isVisitEnded(visitUUID)
+                    ? R.string.editing_not_allowed_visit_ended
+                    : R.string.editing_not_allowed_visit_note_present;
+            Toast.makeText(this, getString(message), Toast.LENGTH_SHORT).show();
             return true;
         }
         return false;
@@ -4008,20 +4007,26 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
           /*  Intent intent = new Intent(VisitSummaryActivity_New.this, HomeScreenActivity_New.class);
             startActivity(intent);*/
             alertDialog.dismiss();
-            // When this success dialog closes, focus returns to the activity and would land back in
-            // the additional-notes field (it held focus while entering the note during creation),
-            // popping the cursor/keyboard. Clear it after the window regains focus. The user can
-            // still tap the note to edit it.
-            if (etAdditionalNotesVS != null) {
-                etAdditionalNotesVS.post(() -> {
-                    etAdditionalNotesVS.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    if (imm != null) imm.hideSoftInputFromWindow(etAdditionalNotesVS.getWindowToken(), 0);
-                });
-            }
+            clearAdditionalNotesFocus();
         });
 
         alertDialog.show();
+    }
+
+    /**
+     * When a success dialog closes, focus returns to the activity and would land back in
+     * the additional-notes field (it held focus while entering the note during creation),
+     * popping the cursor/keyboard. Clear it after the window regains focus. The user can
+     * still tap the note to edit it.
+     */
+    private void clearAdditionalNotesFocus() {
+        if (etAdditionalNotesVS != null) {
+            etAdditionalNotesVS.post(() -> {
+                etAdditionalNotesVS.clearFocus();
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                if (imm != null) imm.hideSoftInputFromWindow(etAdditionalNotesVS.getWindowToken(), 0);
+            });
+        }
     }
 
     /**
@@ -4039,6 +4044,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         TextView waitTimeValue = convertView.findViewById(R.id.tv_wait_time_value);
         Button viewQueueBtn = convertView.findViewById(R.id.btn_view_queue);
         Button backToHomeBtn = convertView.findViewById(R.id.btn_back_to_home);
+        ImageView closeIv = convertView.findViewById(R.id.iv_close);
 
         // Placeholder wait time until real queue data is wired (mirrors the banner).
         waitTimeValue.setText(getString(R.string.wait_time_default_value));
@@ -4049,6 +4055,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         int width = context.getResources().getDimensionPixelSize(R.dimen.internet_dialog_width);
         alertDialog.getWindow().setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT);
         alertDialog.setCancelable(false);
+
+        // Same as the OK button of visitSentSuccessDialog: close and stay on Visit Summary.
+        closeIv.setOnClickListener(v -> {
+            alertDialog.dismiss();
+            clearAdditionalNotesFocus();
+        });
 
         viewQueueBtn.setOnClickListener(v -> {
             alertDialog.dismiss();

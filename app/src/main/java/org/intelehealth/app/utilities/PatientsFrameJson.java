@@ -169,22 +169,7 @@ public class PatientsFrameJson {
                 visit.setVisitType(visitDTO.getVisitTypeUuid());
                 visit.setStopDatetime(visitDTO.getEnddate());
                 visit.setAttributes(visitDTO.getAttributes());
-                // Queue only on the initial submission: not for an ended visit, and not for a re-push
-                // of a visit the server already has (note edit, end visit), which could re-enqueue it
-                // or reset its queue position.
-                if (isQmsConfigured && visitDTO.getEnddate() == null
-                        && !VisitsDAO.isVisitSubmitted(visitDTO.getUuid())) {
-                    if (queueDAO.isVisitInQueue(visitDTO.getUuid())) {
-                        // Already in the pulled queue snapshot: an earlier push queued it but its
-                        // response was lost (timeout). Sending addToQueue again is rejected by the
-                        // server and would fail the push, so record it as submitted and skip it.
-                        Logger.logD(TAG, "visit already queued, skipping addToQueue - " + visitDTO.getUuid());
-                        VisitsDAO.markVisitSubmitted(visitDTO.getUuid());
-                    } else {
-                        Logger.logD(TAG, "push request added to queue data - ");
-                        visit.setAddToQueue(true);
-                    }
-                }
+                applyQueueFlag(visit, visitDTO, isQmsConfigured, queueDAO);
                 visitList.add(visit);
             }
 
@@ -295,6 +280,29 @@ public class PatientsFrameJson {
         return pushRequestApiCall;
     }
 
+
+    /**
+     * Sets the QMS "addToQueue" flag on a visit in the push payload.
+     * Queue only on the initial submission: not for an ended visit, and not for a re-push
+     * of a visit the server already has (note edit, end visit), which could re-enqueue it
+     * or reset its queue position. Reads (and may update) tbl_visit / tbl_queue.
+     */
+    static void applyQueueFlag(Visit visit, VisitDTO visitDTO, boolean isQmsConfigured,
+                               QueueDAO queueDAO) {
+        if (isQmsConfigured && visitDTO.getEnddate() == null
+                && !VisitsDAO.isVisitSubmitted(visitDTO.getUuid())) {
+            if (queueDAO.isVisitInQueue(visitDTO.getUuid())) {
+                // Already in the pulled queue snapshot: an earlier push queued it but its
+                // response was lost (timeout). Sending addToQueue again is rejected by the
+                // server and would fail the push, so record it as submitted and skip it.
+                Logger.logD(TAG, "visit already queued, skipping addToQueue - " + visitDTO.getUuid());
+                VisitsDAO.markVisitSubmitted(visitDTO.getUuid());
+            } else {
+                Logger.logD(TAG, "push request added to queue data - ");
+                visit.setAddToQueue(true);
+            }
+        }
+    }
 
     /**
      * @param uuid the visit uuid of the patient visit records is passed to the function.

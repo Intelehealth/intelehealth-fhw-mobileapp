@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
-  DeviceEventEmitter,
+  StyleProp,
   StyleSheet,
   Text,
   View,
+  ViewStyle,
   Image,
   TouchableOpacity,
 } from 'react-native';
@@ -17,38 +18,56 @@ const MAX_VISIBLE_TAGS = 2;
 // Queue number and position are hidden for now; flip to true to show them again.
 const SHOW_QUEUE_POSITION = false;
 
-// Native event emitted by QueueCardUpdater when a "Next In Queue" FCM
-// notification arrives while this card is mounted. Keep in sync with
-// QueueCardUpdater.EVENT_QUEUE_CARD_UPDATE on the Android side.
-const QUEUE_CARD_UPDATE_EVENT = 'QueueCardUpdate';
+// Footer label shown instead of "Wait Time" once the ETA has passed.
+const OVERDUE_LABEL = 'Overdue';
 
-export default function QueueCard(props: QueueCardProps) {
-  // Card content lives in state so a live FCM update can refresh it without a
-  // native remount. Seeded from the initial props delivered by the host
-  // fragment (which itself may be the last persisted queue payload).
-  const [data, setData] = useState<QueueCardProps>(props);
+// Milliseconds -> "MM:SS", or "HH:MM:SS" once it reaches an hour. Clamped at
+// zero. Identical to the queue list row (QueueListItem.formatMmSs) so the two
+// screens render the same string.
+function formatMmSs(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  const hh = Math.floor(totalSeconds / 3600);
+  const mm = Math.floor((totalSeconds % 3600) / 60);
+  const ss = totalSeconds % 60;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return hh > 0 ? `${pad(hh)}:${pad(mm)}:${pad(ss)}` : `${pad(mm)}:${pad(ss)}`;
+}
 
-  // Re-seed if the host remounts us with fresh initial props.
-  useEffect(() => {
-    setData(props);
-  }, [props]);
+/**
+ * Live wait time for the card, computed exactly like the queue list row: count
+ * down from the absolute `etaAt` instant against `now`, and once it reaches zero
+ * show how far past the ETA we are (overdue). When `etaAt` is absent/unparseable
+ * it falls back to the `waitTimeMinutes` snapshot, rendered in the same MM:SS
+ * shape so the format never changes between states.
+ */
+function computeWaitTime(
+  etaAt: string | undefined,
+  now: number,
+  fallbackMinutes: number,
+): { text: string; overdue: boolean } {
+  if (etaAt) {
+    const targetMs = Date.parse(etaAt);
+    if (!Number.isNaN(targetMs)) {
+      const remainingMs = targetMs - now;
+      if (remainingMs <= 0) {
+        return { text: formatMmSs(-remainingMs), overdue: true };
+      }
+      return { text: formatMmSs(remainingMs), overdue: false };
+    }
+  }
+  return { text: formatMmSs(fallbackMinutes * 60000), overdue: false };
+}
 
-  // Subscribe to live queue updates pushed from native on FCM receipt. Only
-  // the fields present in the payload override the current card; anything
-  // omitted keeps its existing value.
-  useEffect(() => {
-    const subscription = DeviceEventEmitter.addListener(
-      QUEUE_CARD_UPDATE_EVENT,
-      (update: QueueCardProps) => {
-        setData(prev => ({ ...prev, ...update }));
-      },
-    );
-    return () => subscription.remove();
-  }, []);
-
+/**
+ * A single "Next In Queue" card. Rendered per patient by QueueCardSlideshow,
+ * which owns the patient list and the live FCM updates.
+ */
+export default function QueueCard({
+  style,
+  ...data
+}: QueueCardProps & { style?: StyleProp<ViewStyle> }) {
   // Neutral fallbacks for fields missing from the payload. No mock patient here:
-  // a real notification with an empty field must never show fake data. (Debug
-  // builds get their sample card from the native host, behind FORCE_QMS.)
+  // a real notification with an empty field must never show fake data.
   const queueNumber = data.queueNumber || '';
   const patientName = data.patientName || '';
   const gender = data.gender || '';
@@ -57,15 +76,35 @@ export default function QueueCard(props: QueueCardProps) {
   const symptoms = data.symptoms || [];
   const position = data.position ?? 0;
   const waitTimeMinutes = data.waitTimeMinutes ?? 0;
-  // Same placeholder drawable as the queue list rows when there is no photo.
-  const avatarUrl = data.avatarUrl || 'avatar1';
+  // Live wait time from the shared clock (slideshow) or the current instant when
+  // rendered standalone. Recomputed every tick from the absolute `etaAt`, so it
+  // stays in sync with the queue listing instead of showing a static minutes
+  // value.
+  const { text: waitTime, overdue } = computeWaitTime(
+    data.etaAt,
+    data.now ?? Date.now(),
+    waitTimeMinutes,
+  );
+  // Patient photo, same as the queue list rows; falls back to the native
+  // `avatar1` drawable (a bare `{uri}` resolves to a drawable of that name on
+  // Android) when the patient has no synced photo.
+  const avatarSource = data.avatarUrl
+    ? { uri: data.avatarUrl }
+    : { uri: 'avatar1' };
 
   // Collapse overflow symptoms into a "+N More" chip, matching the Figma design.
   const visibleSymptoms = symptoms.slice(0, MAX_VISIBLE_TAGS);
   const extraSymptomCount = symptoms.length - visibleSymptoms.length;
 
   return (
-    <View style={styles.cardContainer}>
+    // Whole card is tappable (same as the native Prescriptions / Open visits
+    // cards), not just the "Open Queue" button. A tap opens the queue; inside
+    // the horizontal slideshow a swipe still scrolls, since RN distinguishes a
+    // tap from a scroll gesture.
+    <TouchableOpacity
+      style={[styles.cardContainer, style]}
+      activeOpacity={0.8}
+      onPress={() => QueueNavigator.openPatientQueue()}>
       {/* Header Row */}
       <View style={styles.headerRow}>
         <Text style={styles.headerTitle}>Next In Queue</Text>
@@ -83,14 +122,19 @@ export default function QueueCard(props: QueueCardProps) {
       {/* Profile Section */}
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: avatarUrl }}
+          source={avatarSource}
+          // Patient photos are full-size camera files; decode them at avatar
+          // size so remounting the card (every return to Home) stays quick.
+          resizeMethod="resize"
           style={styles.avatar}
         />
         <View style={styles.profileDetails}>
           <Text style={styles.profileName}>
             {patientName} <Text style={styles.profileMeta}>{gender} {age}</Text>
           </Text>
-          <Text style={styles.profileId}>{patientId}</Text>
+          <Text style={styles.profileId}>
+            {patientId && !patientId.startsWith('ID-') ? `ID-${patientId}` : patientId}
+          </Text>
         </View>
       </View>
 
@@ -117,7 +161,8 @@ export default function QueueCard(props: QueueCardProps) {
             </Text>
           )}
           <Text style={styles.footerMeta}>
-            Wait Time <Text style={styles.boldText}>{waitTimeMinutes} mins</Text>
+            {overdue ? OVERDUE_LABEL : 'Wait Time'}{' '}
+            <Text style={styles.boldText}>{waitTime}</Text>
           </Text>
         </View>
 
@@ -129,7 +174,7 @@ export default function QueueCard(props: QueueCardProps) {
           <Text style={styles.chevron}>{'›'}</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

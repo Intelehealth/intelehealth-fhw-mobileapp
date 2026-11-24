@@ -19,6 +19,8 @@ interface HomeStatusBannerProps {
 // notification arrives while this banner is mounted. Keep in sync with
 // StatusBannerUpdater.EVENT_STATUS_BANNER_UPDATE on the Android side.
 const STATUS_BANNER_UPDATE_EVENT = 'StatusBannerUpdate';
+// Keep in sync with StatusBannerUpdater.EVENT_STATUS_BANNER_DISMISS.
+const STATUS_BANNER_DISMISS_EVENT = 'StatusBannerDismiss';
 
 /**
  * Home-screen status banner.
@@ -56,6 +58,16 @@ export default function HomeStatusBanner(
     return () => subscription.remove();
   }, []);
 
+  // Native fires this when the banner is closed on either screen (home or
+  // queue list) or the doctor is no longer away.
+  useEffect(() => {
+    const subscription = DeviceEventEmitter.addListener(
+      STATUS_BANNER_DISMISS_EVENT,
+      () => setVisible(false),
+    );
+    return () => subscription.remove();
+  }, []);
+
   if (!visible) {
     return null;
   }
@@ -67,8 +79,9 @@ export default function HomeStatusBanner(
   const subtitle = banner.subtitle ?? 'Queue Paused';
   const actionLabel = banner.actionLabel ?? 'View Queue';
 
-  // Hide the RN view immediately, then collapse the native container so no gap
-  // is left above the Add Patient card.
+  // Hide the RN view immediately; native then dismisses the banner everywhere
+  // (so the queue screen drops it too) and collapses the home container so no
+  // gap is left above the Add Patient card.
   const handleDismiss = () => {
     setVisible(false);
     QueueNavigator.dismissStatusBanner();

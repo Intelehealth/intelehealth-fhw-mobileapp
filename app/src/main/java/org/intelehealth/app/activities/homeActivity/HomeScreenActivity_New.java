@@ -70,8 +70,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.work.Constraints;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import com.bumptech.glide.Glide;
@@ -109,6 +111,7 @@ import org.intelehealth.app.reactnative.PatientQueueFragment;
 import org.intelehealth.app.services.firebase_services.DeviceInfoUtils;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.app.syncModule.PullSyncWorker;
 import org.intelehealth.app.syncModule.SyncWorkerForHomeScreen;
 import org.intelehealth.app.ui.draftsurvey.DraftSurveyActivity;
 import org.intelehealth.app.utilities.AddPatientUtils;
@@ -134,6 +137,10 @@ import org.intelehealth.config.room.entity.FeatureActiveStatus;
 import org.intelehealth.fcm.utils.FcmTokenGenerator;
 import org.intelehealth.fcm.utils.NotificationBroadCast;
 import org.intelehealth.klivekit.data.PreferenceHelper;
+import org.intelehealth.config.worker.ConfigSyncWorker;
+import androidx.work.WorkInfo;
+import org.intelehealth.app.utilities.ConfigFlagsHelper;
+import java.lang.ref.WeakReference;
 import org.intelehealth.klivekit.utils.FirebaseUtils;
 import org.intelehealth.klivekit.utils.Manager;
 
@@ -176,6 +183,8 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
     TextView progressTvStart, progressTvEnd;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ObjectAnimator syncAnimator;
+    // Sync icon rotates while either of these is queued or running.
+    private boolean isHomeSyncActive, isPullSyncActive;
     SyncUtils syncUtils = new SyncUtils();
     int i = 5;
     Context context;
@@ -773,6 +782,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         syncAnimator = ObjectAnimator.ofFloat(imageViewIsInternet, View.ROTATION, 0f, 359f).setDuration(1200);
         syncAnimator.setRepeatCount(ValueAnimator.INFINITE);
         syncAnimator.setInterpolator(new LinearInterpolator());
+        observeSyncWork();
         imageViewIsInternet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -805,6 +815,7 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         bottomNav.setItemIconTintList(null);
         bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         updateQMSBottomNavigation();
+        refreshConfigAfterAppUpdate();
         //tvAppVersion.setText(getString(R.string.app_version_string, "4.0 - Beta"));
         tvAppVersion.setText(getString(R.string.app_version_string, BuildConfig.VERSION_NAME));
         setLocale(HomeScreenActivity_New.this);
@@ -816,6 +827,59 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         boolean isQmsConfigured = preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
         bottomNav.getMenu().findItem(R.id.bottom_nav_queue).setVisible(isQmsConfigured);
         bottomNav.getMenu().findItem(R.id.bottom_nav_help).setVisible(!isQmsConfigured);
+        // QMS turned off by a config sync while the Queue tab is open: hiding the item alone
+        // would leave the queue screen showing with nothing selected, so go back to Home.
+        if (!isQmsConfigured && bottomNav.getSelectedItemId() == R.id.bottom_nav_queue) {
+            // Selecting Home commits a fragment transaction, which throws once the activity's
+            // state is saved (stopped / in background). This can be reached from a config sync
+            // callback at any time, so defer the switch until the activity is resumed again.
+            if (getSupportFragmentManager().isStateSaved()) {
+                qmsNavUpdatePending = true;
+                return;
+            }
+            bottomNav.setSelectedItemId(R.id.bottom_nav_home_menu);
+        }
+    }
+
+    // Set when updateQMSBottomNavigation() had to skip the switch to Home; applied on resume.
+    private boolean qmsNavUpdatePending;
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (qmsNavUpdatePending && bottomNav != null) {
+            qmsNavUpdatePending = false;
+            updateQMSBottomNavigation();
+        }
+    }
+
+    /**
+     * Re-fetches the server config once per app version. Config is otherwise only fetched on
+     * first launch and during pull syncs, so after an update the stored feature flags (parsed
+     * with the previous app's keys, e.g. QMS / edit visit) would stay in effect until the next
+     * pull. Once the fetch rewrites the config DB, onFeatureActiveStatusLoaded() saves the new
+     * flags. Retried on the next launch if it fails (e.g. offline).
+     */
+    private void refreshConfigAfterAppUpdate() {
+        if (!ConfigFlagsHelper.isRefreshPending(preferenceHelper)) return;
+        // The callback outlives this activity (it runs until the worker finishes), so it only
+        // holds the application context and a weak reference to the activity.
+        Context appContext = getApplicationContext();
+        WeakReference<HomeScreenActivity_New> activityRef = new WeakReference<>(this);
+        ConfigSyncWorker.Companion.startConfigSyncWorker(appContext, state -> {
+            if (WorkInfo.State.SUCCEEDED.name().equals(state)) {
+                ConfigFlagsHelper.onConfigSynced(appContext);
+                HomeScreenActivity_New activity = activityRef.get();
+                if (activity != null) {
+                    activity.runOnUiThread(() -> {
+                        if (!activity.isFinishing() && !activity.isDestroyed() && activity.bottomNav != null) {
+                            activity.updateQMSBottomNavigation();
+                        }
+                    });
+                }
+            }
+            return Unit.INSTANCE;
+        });
     }
 
     /**
@@ -1137,13 +1201,12 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             mNavigationView.getMenu().findItem(R.id.menu_view_call_log).setVisible(activeStatus.getVideoSection());
             mNavigationView.getMenu().findItem(R.id.menu_draft_survey).setVisible(activeStatus.getActiveStatusPatientDraftSurvey());
         }
-        // TODO(QMS-CONFIG): drop BuildConfig.FORCE_QMS once the config PR is merged. Debug builds
-        // force QMS on for UI testing; this is not UI-only - PatientsFrameJson reads the same flag
-        // and sends addToQueue on push, so debug builds really queue visits on the server they
-        // point at. Release builds always follow the server config.
-        preferenceHelper.save(PreferenceHelper.IS_QMS_CONFIGURE,
-                BuildConfig.FORCE_QMS || activeStatus.getActiveQms());
-        preferenceHelper.save(PreferenceHelper.IS_EDIT_VISIT_CONFIGURE, activeStatus.getActiveEditVisit());
+        // Right after an app update the stored row may still hold flags parsed with the old keys;
+        // keep the current flags until the refresh lands (ConfigFlagsHelper.onConfigSynced) instead
+        // of applying stale values and flipping them back moments later.
+        if (!ConfigFlagsHelper.isRefreshPending(preferenceHelper)) {
+            ConfigFlagsHelper.applyFlags(preferenceHelper, activeStatus);
+        }
         if(bottomNav != null)
             updateQMSBottomNavigation();
     }
@@ -1215,7 +1278,19 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
             dialogRefreshInProgress.dismiss();
         }*/
         CustomLog.d(TAG, "check11onResume: home");
-        loadLastSelectedFragment();
+        // "View Queue" from the visit-submitted popup: open the Queue tab
+        // directly, without first loading the Home fragment. Loading Home first
+        // (and only then posting a deferred switch to Queue) caused a visible
+        // Home -> Queue detour with a few seconds' delay.
+        boolean openQueueFromPopup = getIntent() != null
+                && getIntent().getBooleanExtra(EXTRA_OPEN_QUEUE, false)
+                && preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false);
+        if (openQueueFromPopup) {
+            getIntent().removeExtra(EXTRA_OPEN_QUEUE);
+            bottomNav.setSelectedItemId(R.id.bottom_nav_queue);
+        } else {
+            loadLastSelectedFragment();
+        }
         //toolbarHome.setVisibility(View.VISIBLE);
         /*set from broadcast
         String lastSync = getResources().getString(R.string.last_sync) + ": " + sessionManager.getLastSyncDateTime();
@@ -1237,14 +1312,11 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
 
         }
         checkAppVer();  //auto-update feature.
-        bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
-        // "View Queue" from the visit-submitted popup: open the Queue tab. Done
-        // last (after loadLastSelectedFragment reset the nav to Home) so it wins,
-        // and posted so it runs after the pending fragment transaction.
-        if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_OPEN_QUEUE, false)
-                && preferenceHelper.get(PreferenceHelper.IS_QMS_CONFIGURE, false)) {
-            getIntent().removeExtra(EXTRA_OPEN_QUEUE);
-            bottomNav.post(() -> bottomNav.setSelectedItemId(R.id.bottom_nav_queue));
+        // Don't force the Home item checked when we've gone straight to the
+        // Queue tab for the "View Queue" popup, or it would visually reselect
+        // Home over the Queue tab we just opened.
+        if (!openQueueFromPopup) {
+            bottomNav.getMenu().findItem(R.id.bottom_nav_home_menu).setChecked(true);
         }
         super.onResume();
     }
@@ -1384,13 +1456,48 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 }
             }
             updateLastSyncTime();
-
-            // Stop animation if running
-            if (syncAnimator != null && syncAnimator.isRunning()) {
-                syncAnimator.cancel();
-            }
+            // The sync icon is stopped by observeSyncWork(), not here: these broadcasts also
+            // come at the start and middle of a sync (push sent, each pull page saved).
         }
     };
+
+    /**
+     * Drives the sync icon from WorkManager state instead of broadcasts, so it also covers
+     * syncs started by the periodic job, and is right again after the screen was paused.
+     */
+    private void observeSyncWork() {
+        WorkManager workManager = WorkManager.getInstance(this);
+        workManager.getWorkInfosForUniqueWorkLiveData(SyncWorkerForHomeScreen.UNIQUE_WORK_NAME)
+                .observe(this, workInfos -> {
+                    isHomeSyncActive = isAnyWorkActive(workInfos);
+                    updateSyncIcon();
+                });
+        workManager.getWorkInfosForUniqueWorkLiveData(PullSyncWorker.UNIQUE_WORK_NAME)
+                .observe(this, workInfos -> {
+                    isPullSyncActive = isAnyWorkActive(workInfos);
+                    updateSyncIcon();
+                });
+    }
+
+    private static boolean isAnyWorkActive(List<WorkInfo> workInfos) {
+        if (workInfos == null) return false;
+        for (WorkInfo workInfo : workInfos) {
+            if (!workInfo.getState().isFinished()) return true;
+        }
+        return false;
+    }
+
+    private void updateSyncIcon() {
+        if (syncAnimator == null) return;
+        boolean isSyncing = isHomeSyncActive || isPullSyncActive;
+        if (isSyncing && !syncAnimator.isStarted()) {
+            syncAnimator.start();
+        } else if (!isSyncing && syncAnimator.isStarted()) {
+            syncAnimator.cancel();
+            imageViewIsInternet.setRotation(0f);
+            updateLastSyncTime();
+        }
+    }
 
     /*private void hideSyncProgressBar(boolean isSuccess) {
         mIsFirstTimeSyncDone = true;
@@ -1888,8 +1995,10 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
                 )
                 .build();
 
+        // KEEP: tapping again while a sync is running doesn't queue a second one.
         WorkManager.getInstance(IntelehealthApplication.getAppContext())
-                .enqueue(syncWorkRequest);
+                .enqueueUniqueWork(SyncWorkerForHomeScreen.UNIQUE_WORK_NAME,
+                        ExistingWorkPolicy.KEEP, syncWorkRequest);
     }
 
 }

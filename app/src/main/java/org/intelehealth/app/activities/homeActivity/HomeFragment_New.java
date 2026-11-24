@@ -20,9 +20,9 @@ import android.os.CancellationSignal;
 import android.os.Handler;
 import android.os.OperationCanceledException;
 import android.os.LocaleList;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
-import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.activities.onboarding.PersonalConsentActivity;
 import org.intelehealth.app.reactnative.PatientData;
 import org.intelehealth.app.reactnative.QueueCardUpdater;
@@ -44,6 +44,7 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentOnAttachListener;
 import androidx.lifecycle.LifecycleObserver;
 
@@ -63,6 +64,7 @@ import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointmentNew.MyAppointmentNew.MyAppointmentActivityNew;
 import org.intelehealth.app.appointmentNew.UpdateFragmentOnEvent;
 import org.intelehealth.app.database.dao.EncounterDAO;
+import org.intelehealth.app.database.dao.QueueDAO;
 import org.intelehealth.app.database.dao.VisitsDAO;
 import org.intelehealth.app.enums.AppointmentTabType;
 import org.intelehealth.app.models.FollowUpModel;
@@ -130,35 +132,79 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         return context;
     }
 
+    /**
+     * Loads the "Next In Queue" patients off the main thread (the tbl_queue seed reads the DB)
+     * and attaches the slideshow: the queue notification list once one has arrived since login,
+     * otherwise the "Next in Queue" rows of tbl_queue.
+     */
     private void addQueueLayout() {
-        // The latest queue payload persisted from a "Next In Queue" FCM
-        // notification so the card reflects real queue state
-        PatientData currentPatient = QueueCardUpdater.getPersisted(requireContext());
-        if (currentPatient == null && !BuildConfig.FORCE_QMS) {
-            // No "Next In Queue" notification received yet: nothing real to show, so collapse the
-            // slot (same as when QMS is off). The card appears once a notification is persisted.
+        Context appContext = requireContext().getApplicationContext();
+        queueCardLoading = true;
+        // Once a queue notification has arrived the list is a small prefs read, so mount the
+        // card right away; the fragment is recreated on every return to Home, and the extra
+        // thread hop left the slot empty for a moment each time.
+        if (QueueCardUpdater.hasNotificationData(appContext)) {
+            showQueueLayout(withPatientDetails(QueueCardUpdater.getPersisted(appContext)));
+            onQueueCardLoaded();
+            return;
+        }
+        initUIExecutor.execute(() -> {
+            List<PatientData> patients = withPatientDetails(QueueCardUpdater.getCards(appContext));
+            // Read once: the fragment can detach between a null check and a second getActivity().
+            Activity activity = getActivity();
+            if (activity == null) return;
+            activity.runOnUiThread(() -> {
+                showQueueLayout(patients);
+                onQueueCardLoaded();
+            });
+        });
+    }
+
+    /**
+     * Keeps only the queue entries whose patient details are available: a patient
+     * that isn't synced locally (or a payload that couldn't be resolved) leaves
+     * the name/id blank, which would render an empty card. Dropping those entries
+     * keeps the slideshow to patients the card can actually show.
+     */
+    private List<PatientData> withPatientDetails(List<PatientData> patients) {
+        List<PatientData> filtered = new ArrayList<>();
+        if (patients == null) return filtered;
+        for (PatientData patient : patients) {
+            if (patient != null
+                    && !TextUtils.isEmpty(patient.getPatientName())
+                    && !TextUtils.isEmpty(patient.getPatientId())) {
+                filtered.add(patient);
+            }
+        }
+        return filtered;
+    }
+
+    // True while the queue card's data is loading; the other cards' counts wait meanwhile so
+    // the queue card gets the DB connection and main thread first.
+    private boolean queueCardLoading;
+    // Set when initUI ran during that load; the counts are then loaded once it finishes.
+    private boolean cardCountsDeferred;
+
+    private void onQueueCardLoaded() {
+        queueCardLoading = false;
+        if (cardCountsDeferred) {
+            cardCountsDeferred = false;
+            loadCardCounts();
+        }
+    }
+
+    private void showQueueLayout(List<PatientData> patients) {
+        if (!isAdded() || view == null || isStateSaved()) return;
+        if (patients.isEmpty()) {
+            // Nothing queued yet: collapse the slot (same as when QMS is off). The card
+            // appears once tbl_queue syncs a "Next in Queue" entry or a notification arrives.
             hideContainer(R.id.queue_card_container);
             return;
         }
-        // TODO(QMS-CONFIG): remove this sample card with BuildConfig.FORCE_QMS once the config PR
-        // is merged. Debug builds only: lets testers see the card before the first FCM arrives.
-        if (currentPatient == null) {
-            ArrayList<String> symptomList = new ArrayList<>(Arrays.asList("Abdominal Pain", "Nausea", "Fever"));
-            currentPatient = new PatientData(
-                    "Q-104",
-                    "Anthony G",
-                    "M",
-                    50,
-                    "ID-987654jK",
-                    symptomList,
-                    2,
-                    8,
-                    "https://unsplash.com"
-            );
-        }
-
+        showContainer(R.id.queue_card_container);
+        
         // 3. Map your custom data class parameters directly into the Android Bundle payload
-        Bundle initialProperties = QueueCardUpdater.toBundle(currentPatient);
+        Bundle initialProperties = QueueCardUpdater.toBundle(patients);
 
         // 4. Boot the pipeline layer inside your execution lifecycle hook
         ReactFragment reactFragment = new ReactFragment.Builder()
@@ -172,26 +218,35 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
                 .commit();
     }
 
+    // Whether the StatusBanner ReactFragment is attached to this view; once it is, later
+    // banner notifications reach it live through the StatusBannerUpdate event.
+    private boolean statusBannerMounted;
+
     /**
-     * Embeds the shared React Native StatusBanner ("Doctor is on Break") above
-     * the Add Patient card, mirroring {@link #addQueueLayout()}. Content is
-     * passed as launch options so it can later be driven by real queue status.
+     * Embeds the shared React Native StatusBanner above the Add Patient card,
+     * mirroring {@link #addQueueLayout()}, seeded from the latest doctor status
+     * FCM notification. Until one has been received the slot stays collapsed.
      */
     private void addStatusBannerLayout() {
-        // Prefer the latest banner payload persisted from a "queue_status" FCM
-        // notification so the banner reflects real queue status; fall back to the
-        // default "Doctor is on Break" banner when none has been received yet.
+        if (!isAdded() || view == null || isStateSaved()) return;
         StatusBannerData banner = StatusBannerUpdater.getPersisted(requireContext());
-        Bundle bannerProps;
-        if (banner != null) {
-            bannerProps = StatusBannerUpdater.toBundle(banner);
-        } else {
-            bannerProps = new Bundle();
-            bannerProps.putString("variant", "alert");
-            bannerProps.putString("title", getString(R.string.doctor_on_break));
-            bannerProps.putString("subtitle", getString(R.string.queue_paused));
-            bannerProps.putString("actionLabel", getString(R.string.view_queue));
+        if (banner == null) {
+            // Doctor not away (or no status yet): take down any banner shown earlier.
+            hideContainer(R.id.status_banner_container);
+            Fragment shown = getChildFragmentManager().findFragmentById(R.id.status_banner_container);
+            if (shown != null) {
+                getChildFragmentManager().beginTransaction().remove(shown).commit();
+            }
+            statusBannerMounted = false;
+            return;
         }
+        if (statusBannerMounted) {
+            // Already showing; the StatusBannerUpdate event refreshed it live.
+            return;
+        }
+        showContainer(R.id.status_banner_container);
+        Bundle bannerProps = StatusBannerUpdater.toBundle(banner);
+        statusBannerMounted = true;
 
         ReactFragment bannerFragment = new ReactFragment.Builder()
                 .setComponentName("StatusBannerModule")
@@ -418,7 +473,22 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
             }
         });
 
+        if (queueCardLoading) {
+            // The queue card goes first; its load picks the counts up when done.
+            cardCountsDeferred = true;
+        } else {
+            loadCardCounts();
+        }
+    }
 
+    /**
+     * Fills the Prescription, Open visits, Follow-up and Appointment counts. These queries
+     * share the DB connection and main thread with the "Next In Queue" card, so while that
+     * card is loading they wait for it (see {@link #onQueueCardLoaded()}).
+     */
+    private void loadCardCounts() {
+        Activity activity = getActivity();
+        if (!isAdded() || activity == null || view == null) return;
         TextView prescriptionCountTextView = view.findViewById(R.id.textview_received_no);
         // Fresh signal per load; cancelled in onDestroyView so these slow queries free the shared
         // DB connection when the user leaves Home (e.g. for the Queue tab, whose read would
@@ -534,6 +604,33 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         if (isQmsConfigured) {
             addStatusBannerLayout();
             addQueueLayout();
+            // Show or take down the banner as doctor status notifications arrive.
+            // LiveData re-delivers its last value to a new observer; skip that one.
+            final Long bannerAlreadySeen = StatusBannerUpdater.getBannerReceived().getValue();
+            StatusBannerUpdater.getBannerReceived().observe(getViewLifecycleOwner(), receivedAt -> {
+                if (receivedAt != null && !receivedAt.equals(bannerAlreadySeen)) {
+                    addStatusBannerLayout();
+                }
+            });
+            // On a first login tbl_queue is filled by the pull sync after the home screen
+            // mounts; reload the card when it lands, until a queue notification takes over.
+            // LiveData re-delivers its last value to a new observer; skip that one.
+            final Long alreadySeen = QueueDAO.getQueueChanged().getValue();
+            QueueDAO.getQueueChanged().observe(getViewLifecycleOwner(), changedAt -> {
+                if (changedAt != null && !changedAt.equals(alreadySeen)
+                        && !QueueCardUpdater.hasNotificationData(requireContext())) {
+                    addQueueLayout();
+                }
+            });
+            // A queue notification while the card slot is collapsed: mount the card. A
+            // mounted card already updated live through the QueueCardUpdate event.
+            final Long cardsAlreadySeen = QueueCardUpdater.getCardsReceived().getValue();
+            QueueCardUpdater.getCardsReceived().observe(getViewLifecycleOwner(), receivedAt -> {
+                if (receivedAt != null && !receivedAt.equals(cardsAlreadySeen)
+                        && getChildFragmentManager().findFragmentById(R.id.queue_card_container) == null) {
+                    addQueueLayout();
+                }
+            });
         } else {
             hideContainer(R.id.status_banner_container);
             hideContainer(R.id.queue_card_container);
@@ -585,6 +682,14 @@ public class HomeFragment_New extends BaseFragment implements NetworkUtils.Inter
         View target = view.findViewById(viewId);
         if (target != null) {
             target.setVisibility(View.GONE);
+        }
+    }
+
+    private void showContainer(int viewId) {
+        if (view == null) return;
+        View target = view.findViewById(viewId);
+        if (target != null) {
+            target.setVisibility(View.VISIBLE);
         }
     }
 

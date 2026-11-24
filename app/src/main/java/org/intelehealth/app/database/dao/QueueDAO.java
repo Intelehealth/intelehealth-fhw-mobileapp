@@ -207,8 +207,8 @@ public class QueueDAO extends BaseDao{
      * was mapped so far (possibly empty) so the caller can still render.
      *
      * <p>Selected patient columns: {@code openmrs_id, first_name, middle_name,
-     * last_name, gender, date_of_birth}. LEFT JOIN keeps queue rows whose
-     * patient is missing locally (patient columns come back null).
+     * last_name, gender, date_of_birth}. Queue rows whose visit or patient is
+     * not available locally are left out.
      */
     public <T> ArrayList<T> getQueueWithPatient(int limit, int offset, QueueRowMapper<T> mapper) {
         if (mapper == null) {
@@ -232,7 +232,11 @@ public class QueueDAO extends BaseDao{
         // chiefComplaint is NOT read from tbl_queue (the queue service doesn't
         // send it); the visitUuid is carried through so the complaint can be
         // resolved from the visit's obs, exactly like the visit summary screen.
+        // Only rows whose patient is synced locally: without it the list row has
+        // no name / id / gender / age to show. Filtered in SQL so limit/offset
+        // still page over the rows that are actually shown.
         String sql = queueWithPatientSelect() +
+                "WHERE p.uuid IS NOT NULL " +
                 "ORDER BY q.position ASC limit ? offset ?";
         Cursor cursor = null;
         try {
@@ -283,6 +287,43 @@ public class QueueDAO extends BaseDao{
             }
         }
         return null;
+    }
+
+    /**
+     * The "Next in Queue" entries - QUEUED / ESCALATED / RE_QUEUED at position 1
+     * (see {@code QueueRowFormatter#mapStatus}) - joined with their patient, one
+     * per speciality queue. Seeds the home "Next In Queue" card until the first
+     * queue notification arrives. Synchronous - call off the main thread. Empty
+     * on any error.
+     */
+    public <T> ArrayList<T> getNextInQueueWithPatient(QueueRowMapper<T> mapper) {
+        if (mapper == null) {
+            return new ArrayList<>();
+        }
+        return read(db -> queryNextInQueueWithPatient(db, mapper), new ArrayList<>());
+    }
+
+    private <T> ArrayList<T> queryNextInQueueWithPatient(SQLiteDatabase db, QueueRowMapper<T> mapper) {
+        ArrayList<T> rows = new ArrayList<>();
+        String sql = queueWithPatientSelect() +
+                "WHERE UPPER(TRIM(q.status)) IN ('QUEUED', 'ESCALATED', 'RE_QUEUED') " +
+                "AND q.position = 1 ORDER BY q.speciality ASC";
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(sql, null);
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    rows.add(mapper.map(cursor));
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            CustomLog.d(TAG, "getNextInQueueWithPatient: e " + e.getLocalizedMessage());
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return rows;
     }
 
     /**
@@ -354,10 +395,16 @@ public class QueueDAO extends BaseDao{
     /**
      * Shared SELECT + JOIN (queue -> visit -> patient) used by the queue list
      * and the per-visit lookup, so both map the exact same columns.
+     * <p>
+     * Inner joins: a queue entry whose visit (or that visit's patient) isn't in
+     * the local DB yet - e.g. not pulled down - has no patient details to show
+     * and would render as an empty/"0" row, so it is left out until the visit
+     * syncs.
      */
     private String queueWithPatientSelect() {
         return "SELECT q.status AS status, q.position AS position, " +
-                "q.visitUuid AS visitUuid, " +
+                "q.visitUuid AS visitUuid, q.speciality AS speciality, " +
+                "q.queueEntryId AS queueEntryId, " +
                 "q.waitedMinutes AS waitedMinutes, q.etaMinutes AS etaMinutes, " +
                 "q.etaAt AS etaAt, q.connectedAt AS connectedAt, " +
                 "p.openmrs_id AS openmrs_id, p.first_name AS first_name, " +
@@ -365,8 +412,8 @@ public class QueueDAO extends BaseDao{
                 "p.gender AS gender, p.date_of_birth AS date_of_birth, " +
                 "p.patient_photo AS patient_photo " +
                 "FROM " + tableName() + " q " +
-                "LEFT JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
-                "LEFT JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE ";
+                "JOIN tbl_visit v ON q.visitUuid = v.uuid COLLATE NOCASE " +
+                "JOIN tbl_patient p ON v.patientuuid = p.uuid COLLATE NOCASE ";
     }
 
     /**

@@ -47,7 +47,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0);
+        PullSyncWorker.enqueue(IntelehealthApplication.getAppContext());
         imagesPushDAO.loggedInUserProfileImagesPush();
         if (!sessionManager.isLogout()) {
             AppointmentSync.getAppointments(IntelehealthApplication.getAppContext());
@@ -60,7 +60,7 @@ public class SyncUtils {
         ImagesPushDAO imagesPushDAO = new ImagesPushDAO();
         SessionManager sessionManager = new SessionManager(IntelehealthApplication.getAppContext());
         syncDAO.pushDataApi();
-        syncDAO.pullData_Background(IntelehealthApplication.getAppContext(), 0); //only this new function duplicate
+        PullSyncWorker.enqueue(IntelehealthApplication.getAppContext());
         imagesPushDAO.loggedInUserProfileImagesPush();
         /*
          * Looper.getMainLooper is used in background sync since the sync_background()

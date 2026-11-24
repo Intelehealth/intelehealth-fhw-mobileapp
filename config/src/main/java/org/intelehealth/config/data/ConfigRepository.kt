@@ -69,7 +69,7 @@ class ConfigRepository(
                 activeStatusDiagnosticsSection = config.patientDiagnosticsSection
                 activeStatusPatientDraftSurvey = config.patientDraftSurvey
                 activeQms = config.activeQms
-                activeEditVisit = config.activeEditVisit
+                // activeEditVisit is parsed straight from patient_visit_summary.re_enable.
             }.also { configDb.featureActiveStatusDao().add(it) }
             onCompleted.invoke()
         }

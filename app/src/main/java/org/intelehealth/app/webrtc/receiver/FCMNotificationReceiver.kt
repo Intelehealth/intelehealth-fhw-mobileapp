@@ -38,6 +38,8 @@ import org.intelehealth.klivekit.call.utils.IntentUtils
 import org.intelehealth.klivekit.model.RtcArgs
 import org.intelehealth.klivekit.utils.extensions.fromJson
 import java.util.Locale
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 
 /**
  * Created by Vaghela Mithun R. on 18-09-2023 - 10:14.
@@ -87,16 +89,29 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
                         }
                     }
                 }
-            } else if (data["type"] == "Queue Banner") {
-                // Refresh the home status banner only: persist the latest payload
-                // and push it to the live banner if mounted. No status-bar
-                // notification is shown for queue status updates.
-                StatusBannerUpdater.handleBannerNotification(context, data)
-            } else if(data["type"] == "Queue update"){
-                // Refresh the home screen "Next In Queue" card only: persist
-                // the latest payload and push it to the live card if mounted.
-                // No status-bar notification is shown for queue updates.
-                QueueCardUpdater.handleQueueNotification(context, data)
+            } else if (QueueNotificationRouter.isQueueUpdate(data)) {
+                // Queue updates never show a status-bar notification; see
+                // QueueNotificationRouter for which ones reach the banner / card.
+                val route = QueueNotificationRouter.route(data)
+                if (route == QueueNotificationRouter.Route.STATUS_BANNER) {
+                    StatusBannerUpdater.handleBannerNotification(context, data)
+                } else if (route == QueueNotificationRouter.Route.QUEUE_CARD) {
+                    // The update reads the DB (queue, visit, patient, obs), and onReceive
+                    // runs on the main thread; goAsync keeps the receiver alive while it
+                    // runs on queueCardExecutor, which also serializes the read-merge-write
+                    // of the persisted card list across back-to-back notifications.
+                    val pendingResult = goAsync()
+                    val appContext = it.applicationContext
+                    queueCardExecutor.execute {
+                        try {
+                            QueueCardUpdater.handleQueueNotification(appContext, data)
+                        } catch (e: Exception) {
+                            Log.e(TAG, "handleQueueNotification failed: ${e.message}")
+                        } finally {
+                            pendingResult.finish()
+                        }
+                    }
+                }
                 return@let
             } else {
                 if(data.isNotEmpty() && notification == null){
@@ -236,6 +251,9 @@ class FCMNotificationReceiver : FcmBroadcastReceiver() {
 
     companion object {
         const val TAG = "FCMNotificationReceiver"
+
+        // One thread for queue card updates, so they run off the main thread and in arrival order.
+        private val queueCardExecutor: ExecutorService = Executors.newSingleThreadExecutor()
     }
     private fun getNotificationTitle(notificationType: NotificationType, patientName: String, context: Context): String {
         val resources = getLocalizedResources(context)

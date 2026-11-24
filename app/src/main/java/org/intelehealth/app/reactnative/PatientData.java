@@ -36,11 +36,38 @@ public class PatientData {
     private int waitTimeMinutes;
     @SerializedName("avatarUrl")
     private String avatarUrl;
+    // Queue the patient is waiting in; one card is kept per speciality.
+    @SerializedName("speciality")
+    private String speciality;
+    @SerializedName("visitUuid")
+    private String visitUuid;
+    // ISO-8601 instant the patient is expected to be seen (server "etaAt"), the
+    // same absolute instant the queue list uses to count the live wait time down.
+    // Carried so the home card and the queue listing show the same value instead
+    // of a static minutes snapshot.
+    @SerializedName("etaAt")
+    private String etaAt;
 
     // Constructor
     public PatientData(String queueNumber, String patientName, String gender, int age,
                        String patientId, ArrayList<String> symptoms, int position,
                        int waitTimeMinutes, String avatarUrl) {
+        this(queueNumber, patientName, gender, age, patientId, symptoms, position,
+                waitTimeMinutes, avatarUrl, null, null, null);
+    }
+
+    public PatientData(String queueNumber, String patientName, String gender, int age,
+                       String patientId, ArrayList<String> symptoms, int position,
+                       int waitTimeMinutes, String avatarUrl, String speciality,
+                       String visitUuid) {
+        this(queueNumber, patientName, gender, age, patientId, symptoms, position,
+                waitTimeMinutes, avatarUrl, speciality, visitUuid, null);
+    }
+
+    public PatientData(String queueNumber, String patientName, String gender, int age,
+                       String patientId, ArrayList<String> symptoms, int position,
+                       int waitTimeMinutes, String avatarUrl, String speciality,
+                       String visitUuid, String etaAt) {
         this.queueNumber = queueNumber;
         this.patientName = patientName;
         this.gender = gender;
@@ -50,6 +77,9 @@ public class PatientData {
         this.position = position;
         this.waitTimeMinutes = waitTimeMinutes;
         this.avatarUrl = avatarUrl;
+        this.speciality = speciality;
+        this.visitUuid = visitUuid;
+        this.etaAt = etaAt;
     }
 
     // Getters
@@ -62,4 +92,7 @@ public class PatientData {
     public int getPosition() { return position; }
     public int getWaitTimeMinutes() { return waitTimeMinutes; }
     public String getAvatarUrl() { return avatarUrl; }
+    public String getSpeciality() { return speciality; }
+    public String getVisitUuid() { return visitUuid; }
+    public String getEtaAt() { return etaAt; }
 }

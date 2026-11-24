@@ -72,14 +72,16 @@ public class QueueNavigatorModule extends ReactContextBaseJavaModule {
     }
 
     /**
-     * Collapse the home status-banner container after the RN banner is dismissed.
-     * The banner is hosted in a native FrameLayout whose margin would otherwise
-     * leave a gap once the RN view renders nothing; setting it GONE lets the
-     * Add Patient card move up to its original position (see the
+     * The status banner was closed (×) on the home or queue screen: dismiss it
+     * everywhere ({@link StatusBannerUpdater#dismiss}), then collapse the home
+     * status-banner container. The banner is hosted in a native FrameLayout whose
+     * margin would otherwise leave a gap once the RN view renders nothing; setting
+     * it GONE lets the Add Patient card move up to its original position (see the
      * layout_goneMarginTop on addpatient_cardview).
      */
     @ReactMethod
     public void dismissStatusBanner() {
+        StatusBannerUpdater.dismiss(getReactApplicationContext());
         Activity activity = getCurrentActivity();
         if (activity == null) {
             return;
