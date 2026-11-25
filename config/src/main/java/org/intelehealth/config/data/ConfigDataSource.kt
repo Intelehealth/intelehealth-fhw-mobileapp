@@ -14,5 +14,8 @@ class ConfigDataSource(
     private val networkHelper: NetworkHelper
 ) : BaseDataSource(networkHelper = networkHelper) {
 
-    fun getConfig() = getResult { webClient.getPublishedConfig() }
+    fun getConfig() = getResult {
+        android.util.Log.d("ConfigApi", "Calling getPublishedConfig")
+        webClient.getPublishedConfig()
+    }
 }

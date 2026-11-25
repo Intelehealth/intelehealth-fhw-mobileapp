@@ -43,7 +43,10 @@ object WebClientProvider {
             .writeTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(interceptor)
 
-    private fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor().apply {
+    // Tagged so the getPublishedConfig request/response can be filtered in Logcat with tag "ConfigApi"
+    private fun provideHttpLoggingInterceptor() = HttpLoggingInterceptor { message ->
+        android.util.Log.d("ConfigApi", message)
+    }.apply {
         level = if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY
         else HttpLoggingInterceptor.Level.NONE
     }
@@ -65,7 +68,7 @@ object WebClientProvider {
     private fun provideWebRtcApiClient(
         retrofitBuilder: Retrofit.Builder
     ): WebClient = retrofitBuilder
-        .baseUrl(Config.baseUrl)
+        .baseUrl(Config.baseUrl.also { android.util.Log.d("ConfigApi", "Config baseUrl: $it") })
         .build()
         .create(WebClient::class.java)
 }

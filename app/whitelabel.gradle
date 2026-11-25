@@ -1,6 +1,11 @@
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
+// Client flavors that bundle the optional ABDM (ABHA) module. Flavors not listed
+// build without it and every ABHA entry point hides itself (see AbhaAvailability).
+// When bundled, the server config flag `abha_section` can still switch ABHA off.
+ext.abdmClientFlavors = ['nas']
+
 android {
     def client = "client"
     def server = "server"
