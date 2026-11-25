@@ -80,13 +80,7 @@ class PatientAddressInfoFragment : BasePatientFragment(R.layout.fragment_patient
         Timber.d { "onPatientDataLoaded" }
         Timber.d { Gson().toJson(patient) }
 
-        if (patientViewModel.otpResponse != null) {
-            patientViewModel.getPatientDataFromOtpVerificationResponse(requireContext(), patient)
-        }
-
-        if (patientViewModel.abhaResponse != null) {
-            patientViewModel.getPatientDataFromAbhaProfileResponse(requireContext(), patient)
-        }
+        patientViewModel.applyAbhaDetails(requireContext(), patient)
 
         binding.patient = patient
         binding.isEditMode = patientViewModel.isEditMode

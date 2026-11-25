@@ -82,7 +82,9 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.intelehealth.abdm.utils.AbdmManager;
+import org.intelehealth.abdm.api.AbdmConfig;
+import org.intelehealth.abdm.api.AbdmPlugin;
+import org.intelehealth.abdm.api.AbdmPlugins;
 import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.activities.aboutus.AboutUsActivity;
@@ -398,15 +400,21 @@ public class HomeScreenActivity_New extends BaseActivity implements NetworkUtils
         sessionManager.setMigration(true);
         //mUpdateFragmentOnEvent.onFinished(AppConstants.EVENT_FLAG_SUCCESS);
         loadFeatureActiveStatus();
-        initializeAbdmManager();
+        initializeAbdmPlugin();
     }
 
-    private void initializeAbdmManager() {
-        AbdmManager.setBaseUrl(BuildConfig.SERVER_URL);
-        AbdmManager.setEncoded(sessionManager.getEncoded());
-        AbdmManager.setLocationUuid(sessionManager.getLocationUuid());
-        AbdmManager.setHwFullName(sessionManager.getChwname());
-        AbdmManager.setDbClient(IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb());
+    /** Configures the optional ABDM module; no-op when it is not bundled in this flavor. */
+    private void initializeAbdmPlugin() {
+        AbdmPlugin abdmPlugin = AbdmPlugins.getPlugin();
+        if (abdmPlugin == null) return;
+        abdmPlugin.initialize(new AbdmConfig(
+                BuildConfig.SERVER_URL,
+                sessionManager.getEncoded(),
+                sessionManager.getLocationUuid(),
+                sessionManager.getChwname(),
+                IntelehealthApplication.inteleHealthDatabaseHelper.getWriteDb(),
+                BuildConfig.ABHA_ADDRESS_SUFFIX
+        ));
     }
 
     private void setStatusBarChanges() {

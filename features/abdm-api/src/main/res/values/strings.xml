@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ABHA labels used by the app even when the ABDM module is not bundled. -->
+<resources>
+    <string name="abha_number">ABHA Number</string>
+    <string name="abha_address">ABHA Address</string>
+    <string name="view_download_abha_card">View/Download ABHA card</string>
+</resources>

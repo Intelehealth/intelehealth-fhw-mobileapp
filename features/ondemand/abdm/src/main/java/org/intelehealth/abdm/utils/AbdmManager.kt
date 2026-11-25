@@ -39,4 +39,8 @@ object AbdmManager {
     @JvmStatic
     var dbClient: SQLiteDatabase? = null
 
+    /** ABHA address domain for the current environment; set from AbdmConfig. */
+    @JvmStatic
+    var abhaAddressSuffix: String = "@abdm"
+
 }

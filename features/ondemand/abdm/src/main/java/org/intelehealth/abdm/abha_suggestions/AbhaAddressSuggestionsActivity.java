@@ -180,10 +180,10 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
     };
 
     public boolean isValidAbhaAddress(String text) {
-        // Check for @abdm presence
-        String suffix = "@abdm";
+        // Check for ABHA domain suffix presence
+        String suffix = AbdmManager.getAbhaAddressSuffix();
 
-        // if the entered text contains the @abdm suffix, do not accept
+        // if the entered text contains the domain suffix, do not accept
         if (text.contains(suffix)) {
             snackbarUtils.showSnackLinearLayoutParentSuccess(context, binding.llActionBar, getString(R.string.abha_address_suffix_not_allowed_validation), false);
             return false;
@@ -313,12 +313,12 @@ public class AbhaAddressSuggestionsActivity extends AppCompatActivity {
 
                 if (setAbhaAddressResponseResponse.body() != null) {
                     String preferredAbhaAddress = setAbhaAddressResponseResponse.body().getPreferredAbhaAddress();
-                    String preferredAbhaAddressWithoutSbx = preferredAbhaAddress.replaceAll("@abdm", "");
+                    String preferredAbhaAddressWithoutSbx = preferredAbhaAddress.replace(AbdmManager.getAbhaAddressSuffix(), "");
                     List<String> phrAddresses = otpVerificationResponse.getABHAProfile().getPhrAddress();
                     phrAddresses.remove(preferredAbhaAddressWithoutSbx);
 
-                    if (!preferredAbhaAddress.endsWith("@abdm")) {
-                        preferredAbhaAddress = preferredAbhaAddress.concat("@abdm");
+                    if (!preferredAbhaAddress.endsWith(AbdmManager.getAbhaAddressSuffix())) {
+                        preferredAbhaAddress = preferredAbhaAddress.concat(AbdmManager.getAbhaAddressSuffix());
                     }
 
                     phrAddresses.add(0, preferredAbhaAddress);

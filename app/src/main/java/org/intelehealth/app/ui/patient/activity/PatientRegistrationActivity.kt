@@ -20,9 +20,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
-import org.intelehealth.abdm.constants.AbdmConstant
-import org.intelehealth.abdm.model.AbhaProfileResponse
-import org.intelehealth.abdm.model.OTPVerificationResponse
+import org.intelehealth.abdm.api.AbdmFlowResult
 import org.intelehealth.app.R
 import org.intelehealth.app.databinding.ActivityPatientRegistrationBinding
 import org.intelehealth.app.models.dto.PatientDTO
@@ -106,16 +104,9 @@ class PatientRegistrationActivity : BaseActivity() {
             val patientId = if (it.hasExtra(PATIENT_UUID)) it.getStringExtra(PATIENT_UUID)
             else null
 
-            patientViewModel.accessToken = it.getStringExtra(AbdmConstant.ACCESS_TOKEN)
-            patientViewModel.xToken = it.getStringExtra(AbdmConstant.X_TOKEN)
-
-            patientViewModel.otpResponse = it.getSerializableExtra(
-                AbdmConstant.PAYLOAD
-            ) as? OTPVerificationResponse
-
-            patientViewModel.abhaResponse = it.getSerializableExtra(
-                AbdmConstant.MOBILE_PAYLOAD
-            ) as? AbhaProfileResponse
+            patientViewModel.abdmResult = IntentCompat.getParcelableExtra(
+                it, AbdmFlowResult.EXTRA, AbdmFlowResult::class.java
+            )
 
             patientId?.let { id ->
                 patientViewModel.isEditMode = true

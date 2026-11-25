@@ -88,7 +88,11 @@ android {
 }
 dependencies {
     implementation project(':features:ondemand:klivekit')
-    implementation project(':features:ondemand:abdm')
+    // ABDM contract is always present; the implementation is added per flavor below.
+    implementation project(':features:abdm-api')
+    abdmClientFlavors.each { flavor ->
+        add("${flavor}Implementation", project(':features:ondemand:abdm'))
+    }
     api project(':fcm')
     api project(':config')
 //    api project(':common')

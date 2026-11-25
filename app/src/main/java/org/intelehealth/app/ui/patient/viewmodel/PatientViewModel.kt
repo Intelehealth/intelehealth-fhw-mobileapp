@@ -6,13 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import com.github.ajalt.timberkt.Timber
 import com.google.gson.Gson
-import org.intelehealth.abdm.model.AbhaProfileResponse
-import org.intelehealth.abdm.model.OTPVerificationResponse
-import org.intelehealth.abdm.utils.AbdmUtils
+import org.intelehealth.abdm.api.AbdmFlowResult
+import org.intelehealth.abdm.api.AbdmPlugins
+import org.intelehealth.abdm.api.AbhaPhotoStore
 import org.intelehealth.app.models.dto.PatientDTO
 import org.intelehealth.app.ui.patient.data.PatientRepository
 import org.intelehealth.app.ui.rosterquestionnaire.utilities.FEMALE
-import org.intelehealth.app.utilities.AbhaUtils
 import org.intelehealth.app.utilities.DateAndTimeUtils
 import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.config.presenter.fields.viewmodel.RegFieldViewModel
@@ -35,10 +34,8 @@ class PatientViewModel(
     var isEditMode: Boolean = false
     var activeStatusRosterSection = false
 
-    var otpResponse: OTPVerificationResponse? = null
-    var abhaResponse: AbhaProfileResponse? = null
-    var xToken: String? = null
-    var accessToken: String? = null
+    /** Result of the ABHA verify/create flow that led to this registration, if any. */
+    var abdmResult: AbdmFlowResult? = null
 
     fun loadPatientDetails(
         patientId: String,
@@ -75,23 +72,32 @@ class PatientViewModel(
         )
     }
 
-    fun getPatientDataFromOtpVerificationResponse(context: Context, patient: PatientDTO) {
-        patient.also { patient ->
-            otpResponse?.let { response ->
-                AbhaUtils.getPatientPersonalDetailsFromOtpResponse(context, patient, response)
-                AbhaUtils.getPatientAddressDetailsFromOtpResponse(patient, response)
-                AbhaUtils.getPatientAbhaDetailsFromOtpResponse(patient, response)
-            }
+    /** Fills [patient] with the details from a finished ABHA flow, if there was one. */
+    fun applyAbhaDetails(context: Context, patient: PatientDTO) {
+        val details = abdmResult?.patientDetails ?: return
+        patient.apply {
+            patientPhoto = uuid?.let { AbhaPhotoStore.save(context, details.photoBase64, it) }
+            firstname = details.firstName
+            middlename = details.middleName
+            lastname = details.lastName
+            gender = details.gender
+            phonenumber = details.phoneNumber
+            details.dateOfBirth?.let { dateofbirth = it }
+
+            postalcode = details.postalCode
+            address1 = details.address1
+            details.cityVillage?.let { cityvillage = it }
+            details.district?.let { district = it }
+            details.stateProvince?.let { stateprovince = it }
+
+            abhaNumber = details.abhaNumber
+            abhaAddress = details.abhaAddress
         }
     }
 
-    fun getPatientDataFromAbhaProfileResponse(context: Context, patient: PatientDTO) {
-        patient.also { patient ->
-            abhaResponse?.let { response ->
-                AbhaUtils.getPatientPersonalDetailsFromAbhaResponse(context, patient, response)
-                AbhaUtils.getPatientAddressDetailsFromAbhaResponse(patient, response)
-                AbhaUtils.getPatientAbhaDetailsFromAbhaResponse(patient, response)
-            }
-        }
+    /** Downloads the patient's ABHA card when this registration came from an ABHA flow. */
+    fun downloadAbhaCardIfNeeded(context: Context, patient: PatientDTO) {
+        val session = abdmResult?.session ?: return
+        AbdmPlugins.plugin?.downloadAbhaCardIfNeeded(context, patient.abhaNumber, session)
     }
 }

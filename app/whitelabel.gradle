@@ -1,6 +1,11 @@
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
+// Client flavors that bundle the optional ABDM (ABHA) module. Flavors not listed
+// build without it and never show ABHA. When bundled, ABHA is shown only if the
+// server config flag `abha_section` is also on.
+ext.abdmClientFlavors = ['ida']
+
 android {
     def client = "client"
     def server = "server"
@@ -85,16 +90,19 @@ android {
         dev {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "false"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@sbx"'
         }
 
         staging {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@sbx"'
         }
 
         production {
             dimension server
             buildConfigField "boolean", "ACTIVE_CRASH", "true"
+            buildConfigField "String", "ABHA_ADDRESS_SUFFIX", '"@abdm"'
         }
     }
 

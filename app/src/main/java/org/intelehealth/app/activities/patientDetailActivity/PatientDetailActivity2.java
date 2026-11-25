@@ -171,6 +171,8 @@ import org.intelehealth.config.room.entity.PatientRegistrationFields;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import org.intelehealth.abdm.api.AbhaCardStore;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -440,12 +442,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
     }
 
     private void openAbhaCard(String abhaNumber) {
-        File dir = new File(
-                getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "Intelehealth_AbhaCard"
-        );
-
-        File file = new File(dir, abhaNumber + ".png");
+        File file = AbhaCardStore.cardFile(this, abhaNumber);
 
         if (!file.exists()) {
             return;
@@ -2359,7 +2356,7 @@ public class PatientDetailActivity2 extends BaseActivity implements NetworkUtils
 
         if (abhaAddress != null && !abhaAddress.isEmpty() && !abhaAddress.equalsIgnoreCase("NA")) {
             abhaAddressTr.setVisibility(View.VISIBLE);
-            String finalAbhaAddress = (abhaAddress.endsWith("@abdm") ? abhaAddress : abhaAddress.concat("@abdm"));
+            String finalAbhaAddress = (abhaAddress.endsWith(BuildConfig.ABHA_ADDRESS_SUFFIX) ? abhaAddress : abhaAddress.concat(BuildConfig.ABHA_ADDRESS_SUFFIX));
             abhaAddressTv.setText(finalAbhaAddress);
             binding.otherCard.btnViewAbhaCard.setVisibility(View.VISIBLE);
         }

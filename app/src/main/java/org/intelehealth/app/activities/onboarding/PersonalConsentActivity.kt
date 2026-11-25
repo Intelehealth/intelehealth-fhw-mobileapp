@@ -14,15 +14,11 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
-import org.intelehealth.abdm.abha_create.CreateAbhaAccountActivity
-import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity
-import org.intelehealth.abdm.abha_verify.AbhaCardVerificationActivity.intentPatientNameTag
-import org.intelehealth.abdm.constants.AbdmConstant
-import org.intelehealth.abdm.dialog.AbhaChoiceDialogFragment
-import org.intelehealth.abdm.enums.AbdmOutcomes
-import org.intelehealth.abdm.listener.AbhaChoiceListener
-import org.intelehealth.abdm.model.AbdmResult
-import org.intelehealth.app.BuildConfig
+import org.intelehealth.abdm.api.AbdmFlow
+import org.intelehealth.abdm.api.AbdmFlowResult
+import org.intelehealth.abdm.api.AbdmNavigation
+import org.intelehealth.abdm.api.AbdmPlugins
+import org.intelehealth.abdm.api.AbhaChoiceCallbacks
 import org.intelehealth.app.R
 import org.intelehealth.app.activities.patientDetailActivity.PatientDetailActivity2
 import org.intelehealth.app.app.AppConstants
@@ -36,19 +32,22 @@ import org.intelehealth.app.utilities.BundleKeys
 import org.intelehealth.app.utilities.ConfigUtils
 import org.intelehealth.app.utilities.DialogUtils
 import org.intelehealth.app.utilities.NetworkConnection
-import org.intelehealth.app.utilities.PatientRegStage
 import org.intelehealth.app.utilities.SessionManager
 import org.intelehealth.app.utilities.WebViewStatus
+import org.intelehealth.config.room.ConfigDatabase
 import java.util.Locale
 
 
-class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceListener {
+class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceCallbacks {
     private var personal_consent_string = ""
     private var webView: WebView? = null
     var ivBack: ImageView? = null
     private val context: Context = this
     private var sessionManager: SessionManager? = null
     private var loadingDialog: AlertDialog? = null
+
+    /** Server config flag `abha_section`; ABHA is offered only when this is on AND the module is bundled. */
+    private var abhaSectionActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,6 +73,10 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
 
         ivBack?.setOnClickListener { v: View? -> finish() }
 
+        ConfigDatabase.getInstance(this).featureActiveStatusDao()
+            .getFeatureActiveStatusLiveRecord()
+            .observe(this) { abhaSectionActive = it?.activeStatusAbha == true }
+
         Thread {
             var text: String?
             text =
@@ -98,52 +101,23 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
     private val abdmLauncher: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { contractResult ->
             if (contractResult.resultCode != RESULT_OK) return@registerForActivityResult
+            val result = AbdmPlugins.plugin?.parseResult(contractResult.data)
+                ?: return@registerForActivityResult
 
-            val data = contractResult.data ?: return@registerForActivityResult
+            if (result.syncRequired) SyncUtils.syncOnServer()
 
-            val result: AbdmResult? = data.getParcelableExtra<AbdmResult>(
-                AbdmConstant.INTENT_ABDM_RESULT
-            ) ?: return@registerForActivityResult
-
-            val newIntent = Intent(context, PatientRegistrationActivity::class.java)
-            newIntent.putExtra(AbdmConstant.ACCESS_TOKEN, result?.accessToken ?: "")
-
-            when (result?.outcome) {
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_EXISTING_DETAILS_FOR_CREATION -> {
-                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
-                    newIntent.putExtra(BundleKeys.PATIENT_UUID, result.otpResponse?.uuID)
-                    newIntent.putExtra(BundleKeys.PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
-                    startActivity(newIntent)
+            when (result.navigation) {
+                AbdmNavigation.PATIENT_REGISTRATION -> {
+                    val intent = Intent(context, PatientRegistrationActivity::class.java)
+                    intent.putExtra(AbdmFlowResult.EXTRA, result)
+                    result.patientUuid?.let { intent.putExtra(BundleKeys.PATIENT_UUID, it) }
+                    startActivity(intent)
                 }
 
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_FOR_NEW_PATIENT_FOR_CREATION -> {
-                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
-                    startActivity(newIntent)
-                }
-
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_AFTER_ABHA_SUGGESTIONS_FOR_CREATION -> {
-                    SyncUtils.syncOnServer()
-                    newIntent.putExtra(AbdmConstant.PAYLOAD, result.otpResponse)
-                    newIntent.putExtra(BundleKeys.PATIENT_UUID, result.otpResponse?.uuID)
-                    startActivity(newIntent)
-                }
-
-                AbdmOutcomes.NAVIGATE_TO_IDENTIFICATION_SCREEN_WITH_NEW_PATIENT_FOR_VERIFICATION -> {
-                    newIntent.putExtra(AbdmConstant.X_TOKEN, result.xToken)
-                    newIntent.putExtra(AbdmConstant.MOBILE_PAYLOAD, result.abhaResponse)
-                    newIntent.putExtra(BundleKeys.PATIENT_CURRENT_STAGE, PatientRegStage.PERSONAL)
-                    startActivity(newIntent)
-                }
-
-                AbdmOutcomes.NAVIGATE_TO_PATIENT_DETAILS_SCREEN_WITH_EXISTING_PATIENT_AFTER_COMPARISON -> {
-                    SyncUtils.syncOnServer()
-                    val detailIntent = Intent(context, PatientDetailActivity2::class.java)
-                    detailIntent.putExtra("patientUuid", result.abhaResponse?.uuiD)
-                    startActivity(detailIntent)
-                }
-
-                else -> {
-
+                AbdmNavigation.PATIENT_DETAILS -> {
+                    val intent = Intent(context, PatientDetailActivity2::class.java)
+                    intent.putExtra("patientUuid", result.patientUuid)
+                    startActivity(intent)
                 }
             }
 
@@ -155,18 +129,12 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
         finish()
     }
 
-    @Suppress("KotlinConstantConditions")
     fun acceptCon(view: View?) {
-        if (BuildConfig.FLAVOR == "idaProduction") {
-            AbhaChoiceDialogFragment()
-                .apply {
-                    listener = this@PersonalConsentActivity
-                }
-                .show(supportFragmentManager, AbhaChoiceDialogFragment.TAG)
+        val plugin = AbdmPlugins.plugin
+        if (plugin != null && AbdmPlugins.isEnabled(abhaSectionActive)) {
+            plugin.showAbhaChoice(this, this)
         } else {
-            PatientRegistrationActivity.startPatientRegistration(this@PersonalConsentActivity)
-            setResult(AppConstants.PERSONAL_CONSENT_ACCEPT)
-            this@PersonalConsentActivity.finish()
+            onContinueWithoutAbha()
         }
     }
 
@@ -206,22 +174,12 @@ class PersonalConsentActivity : AppCompatActivity(), WebViewStatus, AbhaChoiceLi
         loadingDialog?.dismiss()
     }
 
-    override fun onHasAbha() {
-        org.intelehealth.abdm.utils.DialogUtils.triggerTextViewDialogFragment(
-            this@PersonalConsentActivity,
-            AbhaCardVerificationActivity::class.java,
-            intentPatientNameTag,
-            abdmLauncher
-        )
+    override fun onVerifyAbha() {
+        AbdmPlugins.plugin?.startFlow(this, AbdmFlow.VERIFY_ABHA, abdmLauncher)
     }
 
     override fun onCreateAbha() {
-        org.intelehealth.abdm.utils.DialogUtils.triggerTextViewDialogFragment(
-            this@PersonalConsentActivity,
-            CreateAbhaAccountActivity::class.java,
-            intentPatientNameTag,
-            abdmLauncher
-        )
+        AbdmPlugins.plugin?.startFlow(this, AbdmFlow.CREATE_ABHA, abdmLauncher)
     }
 
     override fun onContinueWithoutAbha() {
