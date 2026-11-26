@@ -54,6 +54,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.HandlerThread;
 import android.os.LocaleList;
 import android.print.PdfPrint;
@@ -168,6 +169,8 @@ import org.intelehealth.app.models.dto.RTCConnectionDTO;
 import org.intelehealth.app.services.DownloadService;
 import org.intelehealth.app.shared.BaseActivity;
 import org.intelehealth.app.syncModule.SyncUtils;
+import org.intelehealth.jatayu.audiorecording.VisitVoiceRecorder;
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.intelehealth.app.ui.billgeneration.models.BillDetails;
 import org.intelehealth.app.ui.patient.activity.PatientRegistrationActivity;
 import org.intelehealth.app.ui.specialization.SpecializationArrayAdapter;
@@ -3328,7 +3331,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
         positive_btn.setOnClickListener(v -> {
             alertDialog.dismiss();
-            visitUploadBlock();
+            uploadAfterVoiceDocResult();
         });
 
         if (!isFinishing() && !isDestroyed()) {
@@ -3564,6 +3567,58 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
             uploadButton.setAlpha(1f);
         }
     }*/
+    /** Longest the visit upload waits for this visit's Jatayu VoiceDoc result to be saved. */
+    private static final long VOICEDOC_RESULT_WAIT_MS = 60_000L;
+
+    /**
+     * Jatayu VoiceDoc: the recording stops when the visit is created and its result (transcript +
+     * summaries) arrives some time later. If it's still on its way, wait for it to be saved to the
+     * obs - at most {@link #VOICEDOC_RESULT_WAIT_MS} - so it goes up with the visit, then upload as
+     * usual. A result that comes after the wait is still saved and uploaded on a later sync.
+     * Offline there's no wait: VoiceDoc can't finish without internet and the upload fails anyway.
+     */
+    private void uploadAfterVoiceDocResult() {
+        if (!NetworkConnection.isOnline(getApplication()) || !VisitVoiceRecorder.isResultPending(visitUuid)) {
+            visitUploadBlock();
+            return;
+        }
+        final CustomProgressDialog waitDialog = new CustomProgressDialog(context);
+        final Handler handler = new Handler(Looper.getMainLooper());
+        final LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(this);
+        final AtomicBoolean finished = new AtomicBoolean(false);
+        final BroadcastReceiver[] resultSavedReceiver = new BroadcastReceiver[1];
+        final Runnable proceed = new Runnable() {
+            @Override
+            public void run() {
+                if (!finished.compareAndSet(false, true)) return;
+                handler.removeCallbacks(this);
+                broadcastManager.unregisterReceiver(resultSavedReceiver[0]);
+                if (waitDialog.isShowing()) waitDialog.dismiss();
+                CustomLog.d("VoiceDoc", "upload continues for visit " + visitUuid
+                        + ", result pending=" + VisitVoiceRecorder.isResultPending(visitUuid));
+                if (isFinishing() || isDestroyed()) return;
+                visitUploadBlock();
+            }
+        };
+        resultSavedReceiver[0] = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context ctx, Intent intent) {
+                if (visitUuid != null && visitUuid.equals(intent.getStringExtra(VisitVoiceRecorder.EXTRA_VISIT_UUID)))
+                    proceed.run();
+            }
+        };
+        broadcastManager.registerReceiver(resultSavedReceiver[0], new IntentFilter(VisitVoiceRecorder.ACTION_RESULT_SAVED));
+        // Saved between the check above and registering: its broadcast is already gone.
+        if (!VisitVoiceRecorder.isResultPending(visitUuid)) {
+            proceed.run();
+            return;
+        }
+        CustomLog.d("VoiceDoc", "waiting for the conversation result of visit " + visitUuid + " before upload");
+        waitDialog.setCancelable(false);
+        waitDialog.show(getString(R.string.voicedoc_waiting_for_result));
+        handler.postDelayed(proceed, VOICEDOC_RESULT_WAIT_MS);
+    }
+
     private void visitUploadBlock() {
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
         CustomLog.d("visitUUID", "upload_click: " + visitUUID);

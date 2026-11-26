@@ -255,6 +255,7 @@
 
     <string name="syncInProgress">ৰিফ্ৰেছ চলি আছে</string>
     <string name="please_wait">অনুগ্ৰহ কৰি অপেক্ষা কৰক...</string>
+    <string name="voicedoc_waiting_for_result">কথোপকথনৰ সাৰাংশ প্ৰস্তুত কৰা হৈছে…</string>
     <string name="sure_to_exit">আপুনি নিশ্চিতভাৱে প্ৰস্থান কৰিব বিচাৰেনে?</string>
     <string name="sure_to_logout">আপুনি নিশ্চিতভাৱে এপটোৰ পৰা লগ আউট কৰিব বিচাৰেনে?</string>
     <string name="update_patient_identification">ৰোগী আপডেট কৰক</string>

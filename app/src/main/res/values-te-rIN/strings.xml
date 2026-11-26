@@ -133,6 +133,7 @@
     <string name="cancel">"రద్దు "</string>
     <string name="syncInProgress">" రిఫ్రెష్ పురోగతిలో ఉంది"</string>
     <string name="please_wait">" దయచేసి వేచి ఉండండి ..."</string>
+    <string name="voicedoc_waiting_for_result">సంభాషణ సారాంశం సిద్ధమవుతోంది…</string>
     <string name="sure_to_exit">" మీరు ఖచ్చితంగా నిష్క్రమించాలనుకుంటున్నారా?"</string>
     <string name="sure_to_logout">" మీరు ఖచ్చితంగా లాగ్ అవుట్ చేయాలనుకుంటున్నారా?"</string>
     <string name="update_patient_identification">" రోగిని నవీకరించండి"</string>

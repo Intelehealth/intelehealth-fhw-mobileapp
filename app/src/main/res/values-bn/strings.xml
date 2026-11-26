@@ -255,6 +255,7 @@
 
     <string name="syncInProgress">রিফ্রেশ চলছে</string>
     <string name="please_wait">অনুগ্রহপূর্বক অপেক্ষা করুন...</string>
+    <string name="voicedoc_waiting_for_result">কথোপকথনের সারসংক্ষেপ তৈরি করা হচ্ছে…</string>
     <string name="sure_to_exit">আপনি প্রস্থান করতে চান?</string>
     <string name="sure_to_logout">আপনি লগ আউট করতে চান?</string>
     <string name="update_patient_identification">রোগীর আপডেট করুন</string>

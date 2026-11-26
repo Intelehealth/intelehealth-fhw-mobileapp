@@ -46,11 +46,17 @@ import org.json.JSONTokener
  *  1. [ACTION_RESULT_CAPTURED] as soon as VoiceDoc returns the transcript and section summary;
  *  2. [ACTION_PATIENT_SUMMARY_CAPTURED] right after, with the patient visit summary
  *     (FinalizeResult.shortSummary), when VoiceDoc returned one.
+ *
+ * A visit is "pending" from [stopForVisit] until the app reports the result saved through
+ * [onResultSaved] (which announces [ACTION_RESULT_SAVED]), so the visit upload can wait for it.
+ * Kept in SharedPreferences, so it survives an app restart.
  */
 object VisitVoiceRecorder {
 
     const val ACTION_RESULT_CAPTURED = "org.intelehealth.jatayu.audiorecording.RESULT_CAPTURED"
     const val ACTION_PATIENT_SUMMARY_CAPTURED = "org.intelehealth.jatayu.audiorecording.PATIENT_SUMMARY_CAPTURED"
+    /** The app saved the result of [EXTRA_VISIT_UUID] to its DB; see [onResultSaved]. */
+    const val ACTION_RESULT_SAVED = "org.intelehealth.jatayu.audiorecording.RESULT_SAVED"
 
     /** NAS visit UUID the recording belongs to. Both actions. */
     const val EXTRA_VISIT_UUID = "visitUuid"
@@ -78,6 +84,10 @@ object VisitVoiceRecorder {
     )
 
     private const val NAME_SEPARATOR = '_'
+
+    private const val PENDING_PREFS = "voicedoc_pending_results"
+    /** A result not saved within this long after stop is treated as not coming (no more waiting). */
+    private const val PENDING_MAX_AGE_MS = 30 * 60 * 1000L
 
     /**
      * Waits between /api/patient-visit-summary attempts: the patient summary may not be ready
@@ -184,10 +194,13 @@ object VisitVoiceRecorder {
     /** Stops the recording for [visitUuid] and asks VoiceDoc for its transcript and summary. */
     @JvmStatic
     fun stopForVisit(visitUuid: String) {
+        // Marked right away (not in the coroutine) so a Send tapped straight after already sees it.
+        if (activeVisitUuid == visitUuid) markPending(visitUuid)
         scope.launch {
             lock.withLock {
                 if (activeVisitUuid != visitUuid) return@withLock
                 activeVisitUuid = null
+                markPending(visitUuid)
                 runCatching { VoiceDoc.stop() }
                     .onSuccess(::onResult)
                     // Offline/incomplete uploads are kept by the SDK and finished later;
@@ -204,10 +217,48 @@ object VisitVoiceRecorder {
             lock.withLock {
                 if (activeVisitUuid != visitUuid) return@withLock
                 activeVisitUuid = null
+                clearPending(visitUuid)
                 runCatching { VoiceDoc.cancel() }
                     .onFailure { Timber.e(it) { "VoiceDoc: cancel for visit $visitUuid failed" } }
             }
         }
+    }
+
+    /**
+     * True while the recording of [visitUuid] was stopped but its result isn't saved yet, so the
+     * visit upload should wait for [ACTION_RESULT_SAVED]. Gives up after [PENDING_MAX_AGE_MS].
+     */
+    @JvmStatic
+    fun isResultPending(visitUuid: String?): Boolean {
+        if (visitUuid.isNullOrBlank() || !VoiceDoc.isInitialized) return false
+        val stoppedAt = pendingPrefs().getLong(visitUuid, 0L)
+        if (stoppedAt == 0L) return false
+        if (System.currentTimeMillis() - stoppedAt > PENDING_MAX_AGE_MS) {
+            clearPending(visitUuid)
+            return false
+        }
+        return true
+    }
+
+    /**
+     * Called by the app once the result of [visitUuid] is in its DB (or can't be saved, e.g. the
+     * visit is gone). Ends the pending state and announces [ACTION_RESULT_SAVED].
+     */
+    @JvmStatic
+    fun onResultSaved(visitUuid: String?) {
+        if (visitUuid.isNullOrBlank() || !VoiceDoc.isInitialized) return
+        clearPending(visitUuid)
+        broadcast(Intent(ACTION_RESULT_SAVED).putExtra(EXTRA_VISIT_UUID, visitUuid))
+    }
+
+    private fun pendingPrefs() = appContext.getSharedPreferences(PENDING_PREFS, Context.MODE_PRIVATE)
+
+    private fun markPending(visitUuid: String) {
+        pendingPrefs().edit().putLong(visitUuid, System.currentTimeMillis()).apply()
+    }
+
+    private fun clearPending(visitUuid: String) {
+        pendingPrefs().edit().remove(visitUuid).apply()
     }
 
     /** Signs in again and, only if that succeeds, lets the SDK retry the chunks stuck on 401. */

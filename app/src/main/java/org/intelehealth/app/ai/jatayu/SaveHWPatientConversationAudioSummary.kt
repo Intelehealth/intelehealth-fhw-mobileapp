@@ -6,6 +6,7 @@ import org.intelehealth.app.database.dao.EncounterDAO
 import org.intelehealth.app.database.dao.ObsDAO
 import org.intelehealth.app.models.dto.ObsDTO
 import org.intelehealth.app.utilities.SessionManager
+import org.intelehealth.jatayu.audiorecording.VisitVoiceRecorder
 import org.intelehealth.app.utilities.UuidDictionary
 import org.intelehealth.app.utilities.exception.DAOException
 import org.json.JSONObject
@@ -36,33 +37,42 @@ object SaveHWPatientConversationAudioSummary {
     fun saveResult(visitUuid: String?, sessionName: String?, transcript: String?, summaryJson: String?) {
         Timber.tag(TAG).d("saveResult: visit=$visitUuid session=$sessionName transcript=${transcript?.length} chars summary=${summaryJson?.length} chars")
         executor.execute {
-            val encounterUuid = adultInitialEncounter(visitUuid) ?: return@execute
-            val value = JSONObject()
-                .put("sessionName", sessionName)
-                .put("transcript", transcript.orEmpty())
-                .put("summary", parse(summaryJson))
-                .toString()
             try {
-                val obsDAO = ObsDAO()
-                val obsDTO = ObsDTO().apply {
-                    conceptuuid = CONCEPT_UUID
-                    encounteruuid = encounterUuid
-                    creator = SessionManager(IntelehealthApplication.getAppContext()).creatorID
-                    this.value = value
-                }
-                val existingObsUuid = obsDAO.getObsuuid(encounterUuid, CONCEPT_UUID)
-                val isSaved = if (existingObsUuid != null) {
-                    obsDTO.uuid = existingObsUuid
-                    obsDAO.updateObs(obsDTO)
-                } else {
-                    obsDAO.insertObs(obsDTO)
-                }
-                markEncounterUnsynced(encounterUuid)
-                Timber.tag(TAG).i("saveResult: visit=$visitUuid encounter=$encounterUuid isSaved=$isSaved")
-            } catch (e: DAOException) {
-                FirebaseCrashlytics.getInstance().recordException(e)
-                Timber.tag(TAG).e("saveResult failed for visit $visitUuid: ${e.message}")
+                saveResultToDb(visitUuid, sessionName, transcript, summaryJson)
+            } finally {
+                // Saved or not, stop the visit upload from waiting for it (see VisitSummaryActivity_New).
+                VisitVoiceRecorder.onResultSaved(visitUuid)
             }
+        }
+    }
+
+    private fun saveResultToDb(visitUuid: String?, sessionName: String?, transcript: String?, summaryJson: String?) {
+        val encounterUuid = adultInitialEncounter(visitUuid) ?: return
+        val value = JSONObject()
+            .put("sessionName", sessionName)
+            .put("transcript", transcript.orEmpty())
+            .put("summary", parse(summaryJson))
+            .toString()
+        try {
+            val obsDAO = ObsDAO()
+            val obsDTO = ObsDTO().apply {
+                conceptuuid = CONCEPT_UUID
+                encounteruuid = encounterUuid
+                creator = SessionManager(IntelehealthApplication.getAppContext()).creatorID
+                this.value = value
+            }
+            val existingObsUuid = obsDAO.getObsuuid(encounterUuid, CONCEPT_UUID)
+            val isSaved = if (existingObsUuid != null) {
+                obsDTO.uuid = existingObsUuid
+                obsDAO.updateObs(obsDTO)
+            } else {
+                obsDAO.insertObs(obsDTO)
+            }
+            markEncounterUnsynced(encounterUuid)
+            Timber.tag(TAG).i("saveResult: visit=$visitUuid encounter=$encounterUuid isSaved=$isSaved")
+        } catch (e: DAOException) {
+            FirebaseCrashlytics.getInstance().recordException(e)
+            Timber.tag(TAG).e("saveResult failed for visit $visitUuid: ${e.message}")
         }
     }
 

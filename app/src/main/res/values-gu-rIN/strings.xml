@@ -244,6 +244,7 @@
 
     <string name="syncInProgress">રિફ્રેશ કરવાનું ચાલુ</string>
     <string name="please_wait">મહેરબાની કરી રાહ જુવો...</string>
+    <string name="voicedoc_waiting_for_result">વાતચીતનો સારાંશ તૈયાર થઈ રહ્યો છે…</string>
     <string name="sure_to_exit">શું તમે ખરેખર બહાર નીકળવા માંગો છો?</string>
     <string name="sure_to_logout">શું તમે ખરેખર લોગઆઉટ કરવા માંગો છો?</string>
     <string name="update_patient_identification">દર્દીને અપડેટ કરો</string>

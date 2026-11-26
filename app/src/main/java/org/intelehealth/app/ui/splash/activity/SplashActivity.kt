@@ -27,6 +27,10 @@ import androidx.transition.Transition
 import androidx.transition.TransitionManager
 import androidx.work.WorkInfo
 import com.github.ajalt.timberkt.Timber
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.intelehealth.config.room.ConfigDatabase
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import org.intelehealth.app.BuildConfig
 import org.intelehealth.app.R
@@ -86,8 +90,24 @@ class SplashActivity : LanguageActivity(), BaseViewHolder.ViewHolderClickListene
                 }
             }
         } else {
+            refreshConfigIfMissing()
             //as we are implementing force update now thus commenting this.
             Handler(Looper.getMainLooper()).postDelayed({ nextActivity() }, 3000)
+        }
+    }
+
+    /**
+     * The config DB is wiped when its schema version changes (destructive migration), and after
+     * the first launch it's otherwise only refreshed on sync. Download it again if it's empty.
+     */
+    private fun refreshConfigIfMissing() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val dao = ConfigDatabase.getInstance(applicationContext).featureActiveStatusDao()
+            if (dao.getAllRecord().isNotEmpty()) return@launch
+            Timber.d { "Config DB empty, downloading config again" }
+            ConfigSyncWorker.startConfigSyncWorker(applicationContext) {
+                Timber.d { "Config refresh worker state $it" }
+            }
         }
     }
 

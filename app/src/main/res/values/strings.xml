@@ -258,6 +258,7 @@
 
     <string name="syncInProgress">Refresh in progress</string>
     <string name="please_wait">Please wait...</string>
+    <string name="voicedoc_waiting_for_result">Processing conversation summary…</string>
     <string name="sure_to_exit">Are you sure you want to EXIT?</string>
     <string name="sure_to_logout">Are you sure you want to log out from the app?</string>
     <string name="update_patient_identification">Update Patient</string>

@@ -146,6 +146,7 @@
     <string name="cancel">ரத்துசெய்</string>
     <string name="syncInProgress">புதுப்பித்தல் செயலில் உள்ளது</string>
     <string name="please_wait">தயவுசெய்து காத்திருங்கள் ...</string>
+    <string name="voicedoc_waiting_for_result">உரையாடல் சுருக்கம் தயாராகிறது…</string>
     <string name="sure_to_exit">நிச்சயமாக நீங்கள் வெளியேற வேண்டுமா?</string>
     <string name="sure_to_logout">நீங்கள் நிச்சயமாக வெளியேற விரும்புகிறீர்களா?</string>
     <string name="update_patient_identification">நோயாளியைப் புதுப்பிக்கவும்</string>

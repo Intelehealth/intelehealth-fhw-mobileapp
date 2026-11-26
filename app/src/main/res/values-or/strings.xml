@@ -181,6 +181,7 @@
     <string name="doctor">ଡାକ୍ତର ବିବରଣୀ</string>
     <string name="server_url">ସଭଡର ୟୁଆରଏଲ</string>
     <string name="please_wait">ଦୟାକରିଅସପୋ କରନ୍ତୁ…</string>
+    <string name="voicedoc_waiting_for_result">କଥୋପକଥନର ସାରାଂଶ ପ୍ରସ୍ତୁତ କରାଯାଉଛି…</string>
     <string name="sure_to_logout">ଲଗ୍ ଆଉଟ୍ କରିସବ ସବାଲିନଶ୍ଚିିତ କ?</string>
     <string name="visit_data_failed">ପରିଦଶଡନ ତଥ୍ୟ ବଫି ଳ</string>
     <string name="new_update_available">ନୂଆ ଅପସର୍ଟ୍ ଉପଲବ</string>

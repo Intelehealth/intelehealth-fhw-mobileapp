@@ -253,6 +253,7 @@
 
     <string name="syncInProgress">ರಿಫ್ರೆಶ್ ಪ್ರಗತಿಯಲ್ಲಿದೆ</string>
     <string name="please_wait">ದಯಮಾಡಿ ನಿರೀಕ್ಷಿಸಿ...</string>
+    <string name="voicedoc_waiting_for_result">ಸಂಭಾಷಣೆಯ ಸಾರಾಂಶವನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ…</string>
     <string name="sure_to_exit">ನೀನು ನಿಜವಾಗಲೂ ಹೊರಗೆ ಹೂಗಬಯಸುತ್ತೀಯಾ?</string>
     <string name="sure_to_logout">ನೀವು ಲಾಗ್ ಔಟ್ ಮಾಡಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</string>
     <string name="update_patient_identification">ರೋಗಿಯನ್ನು ನವೀಕರಿಸಿ</string>

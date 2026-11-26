@@ -148,6 +148,7 @@
     <string name="cancel">ക്യാൻസൽ</string>
     <string name="syncInProgress">റിഫ്രഷ് നടന്നുകൊണ്ടിരിക്കുകയാണ്</string>
     <string name="please_wait">" ദയവായി കാത്തിരിക്കുക"</string>
+    <string name="voicedoc_waiting_for_result">സംഭാഷണത്തിന്റെ സംഗ്രഹം തയ്യാറാക്കുന്നു…</string>
     <string name="sure_to_exit">" എക്സിറ്റ് ചെയ്യണമെന്നത് നിങ്ങള്‍ക്ക് ഉറപ്പാണോ?"</string>
     <string name="sure_to_logout">ലോഗൗട്ട് ചെയ്യണമെന്നത് നിങ്ങള്‍ക്ക് ഉറപ്പാണോ?</string>
     <string name="update_patient_identification">" അപ്ഡേറ്റ് രോഗി"</string>

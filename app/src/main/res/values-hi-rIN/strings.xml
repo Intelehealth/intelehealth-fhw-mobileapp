@@ -253,6 +253,7 @@
 
     <string name="syncInProgress">सिंक प्रगति में</string>
     <string name="please_wait">कृपया रुके...</string>
+    <string name="voicedoc_waiting_for_result">बातचीत का सारांश तैयार किया जा रहा है…</string>
     <string name="sure_to_exit">क्या आप निसंदेह बाहर निकलना चाहते है?</string>
     <string name="sure_to_logout">क्या आप लॉग आउट करना चाहते हैं?</string>
     <string name="update_patient_identification">मरीज डालना</string>

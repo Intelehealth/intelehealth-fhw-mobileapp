@@ -1,0 +1,11 @@
+# Copy this file to local.properties (git-ignored) and fill in real values.
+# Never commit local.properties.
+
+# Location of the Android SDK. Android Studio usually writes this for you.
+sdk.dir=/Users/<you>/Library/Android/sdk
+
+# Jatayu VoiceDoc account (read by features/ondemand/jatayuAudioRecording/build.gradle).
+# The login email is built at runtime as <providerId><suffix>,
+# e.g. providerId "abc123" + suffix "@example.org" -> abc123@example.org
+jatayu.voicedoc.email.suffix=@example.org
+jatayu.voicedoc.password=<voicedoc-password>

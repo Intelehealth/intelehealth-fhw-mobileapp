@@ -327,12 +327,18 @@ public class VisitCreationActivity extends BaseActivity implements
     }
 
     private boolean mIsInitilaFeaturesLoading = true;
+    private boolean mIsNewVisitForVoiceDoc = false;
 
     @Override
     protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
         super.onFeatureActiveStatusLoaded(activeStatus);
         featureActiveStatus = activeStatus;
         if (mIsInitilaFeaturesLoading) {
+            // Jatayu VoiceDoc: record the consultation for a new visit only when the published config
+            // enables ai_llm_voice_transcript.record_transcribe_mobile (starts once permissions resolve).
+            if (mIsNewVisitForVoiceDoc && featureActiveStatus != null
+                    && featureActiveStatus.getRecordTranscribeMobile() && VisitVoiceRecorder.isEnabled())
+                mVoiceDocPermissionLauncher.launch(VisitVoiceRecorder.requiredPermissions());
             if (featureActiveStatus != null) {
                 boolean isVitalsActive = featureActiveStatus.getVitalSection();
                 boolean isDiagnosticsActive = featureActiveStatus.getActiveStatusDiagnosticsSection();
@@ -376,9 +382,8 @@ public class VisitCreationActivity extends BaseActivity implements
             if (intentTag.equalsIgnoreCase("new")) {
                 privacy_value_selected = mCommonVisitData.getPrivacyNote();
                 startVisit();
-                // Jatayu VoiceDoc: record the consultation for this new visit (starts once permissions resolve).
-                if (VisitVoiceRecorder.isEnabled())
-                    mVoiceDocPermissionLauncher.launch(VisitVoiceRecorder.requiredPermissions());
+                // Jatayu VoiceDoc: recorded once the config flag is known (see onFeatureActiveStatusLoaded).
+                mIsNewVisitForVoiceDoc = true;
             } else {
                 visitUuid = mCommonVisitData.getVisitUuid();
                 encounterVitals = mCommonVisitData.getEncounterUuidVitals();

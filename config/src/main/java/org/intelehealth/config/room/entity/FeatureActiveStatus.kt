@@ -74,4 +74,8 @@ data class FeatureActiveStatus(
     @SerializedName("patient_draft_survey")
     var activeStatusPatientDraftSurvey: Boolean = true
 
+    /** Record + transcribe the consultation on mobile (Jatayu VoiceDoc). Off unless the server enables it. */
+    @SerializedName("record_transcribe_mobile")
+    var recordTranscribeMobile: Boolean = false
+
 }

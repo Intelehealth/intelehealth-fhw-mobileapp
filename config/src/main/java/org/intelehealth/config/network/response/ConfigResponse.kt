@@ -54,4 +54,9 @@ data class ConfigResponse(
     val patientVisitSection: List<ActiveSection>,
     @SerializedName("home_screen")
     val homeScreen: List<ActiveSection>,
+    // Nullable: older servers (e.g. dev) don't send these, and Gson leaves missing fields null.
+    @SerializedName("ai_llm_voice_transcript_section")
+    val voiceTranscriptSection: Boolean? = null,
+    @SerializedName("ai_llm_voice_transcript")
+    val voiceTranscript: VoiceTranscriptActiveStatus? = null,
 )

@@ -70,6 +70,8 @@ class ConfigRepository(
                 activeStatusRosterQuestionnaireSection = config.rosterQuestionnaireSection
                 activeStatusDiagnosticsSection = config.patientDiagnosticsSection
                 activeStatusPatientDraftSurvey = config.patientDraftSurvey
+                recordTranscribeMobile = config.voiceTranscriptSection == true &&
+                        config.voiceTranscript?.recordTranscribeMobile == true
             }.also { configDb.featureActiveStatusDao().add(it) }
             onCompleted.invoke()
         }

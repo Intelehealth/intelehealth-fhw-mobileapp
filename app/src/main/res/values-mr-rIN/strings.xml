@@ -254,6 +254,7 @@
 
     <string name="syncInProgress">रीफ्रेश प्रगतीपथावर</string>
     <string name="please_wait">कृपया थांबा...</string>
+    <string name="voicedoc_waiting_for_result">संभाषणाचा सारांश तयार होत आहे…</string>
     <string name="sure_to_exit">आपली खात्री आहे की आपण बाहेर पडू इच्छिता?</string>
     <string name="sure_to_logout">आपली खात्री आहे की आपण लॉगआउट करू इच्छिता?</string>
     <string name="update_patient_identification">रुग्ण अद्यतनित करा</string>

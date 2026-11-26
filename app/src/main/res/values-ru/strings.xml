@@ -253,6 +253,7 @@
 
     <string name="syncInProgress">Идет обновление</string>
     <string name="please_wait">Пожалуйста, подождите...</string>
+    <string name="voicedoc_waiting_for_result">Обработка сводки разговора…</string>
     <string name="sure_to_exit">Вы уверены, что хотите ВЫЙТИ?</string>
     <string name="sure_to_logout">Вы уверены, что хотите выйти из системы?</string>
     <string name="update_patient_identification">Обновить пациента</string>
