@@ -23,9 +23,12 @@ import java.util.concurrent.TimeUnit
  *
  * Refresh is done by signing in again: the refresh-token endpoint isn't documented, and
  * re-login also sidesteps the rotating refresh token the integration guide warns about.
+ *
+ * Each provider has their own VoiceDoc account: email = providerId + [emailSuffix].
+ * Call [setProviderId] before the first sign-in.
  */
 class VoiceDocTokenProvider(
-    private val email: String = BuildConfig.VOICEDOC_EMAIL,
+    private val emailSuffix: String = BuildConfig.VOICEDOC_EMAIL_SUFFIX,
     private val password: String = BuildConfig.VOICEDOC_PASSWORD,
     private val authBaseUrl: String = BuildConfig.VOICEDOC_AUTH_URL,
     private val client: OkHttpClient = OkHttpClient.Builder()
@@ -37,6 +40,20 @@ class VoiceDocTokenProvider(
 
     @Volatile
     private var token: String? = null
+
+    @Volatile
+    private var providerId: String? = null
+
+    /** VoiceDoc account email for the current provider (providerId + suffix); empty until set. */
+    val email: String
+        get() = providerId?.takeIf { it.isNotBlank() }?.let { "$it$emailSuffix" }.orEmpty()
+
+    /** Switches the account to [id]. A token signed in for another provider is dropped. */
+    fun setProviderId(id: String?) {
+        if (id.isNullOrBlank() || id == providerId) return
+        providerId = id
+        token = null
+    }
 
     override suspend fun getAccessToken(): String =
         token ?: mutex.withLock { token ?: login() }
@@ -56,32 +73,34 @@ class VoiceDocTokenProvider(
     }
 
     /**
-     * Ends the VoiceDoc session on the auth service (POST /logout, I02 doc) and drops the cached
-     * token. Does nothing if we never signed in. The next SDK call signs in again, so recordings
-     * still waiting to upload carry on afterwards.
+     * Ends the account's current VoiceDoc session on the auth service (POST /logout, I02 doc).
+     * Sends the cached token when we have one; after an app restart we don't, so only the email
+     * is sent. Failures are logged and ignored, so sign-in still goes ahead.
      */
-    suspend fun logout() {
-        val current = mutex.withLock { token.also { token = null } } ?: return
-        withContext(Dispatchers.IO) {
-            val body = JSONObject().put("emailid", email).toString()
-            val request = Request.Builder()
-                .url("$authBaseUrl/logout")
-                .header("Authorization", "Bearer $current")
-                .post(body.toRequestBody("application/json".toMediaType()))
-                .build()
-            runCatching {
-                client.newCall(request).execute().use { response ->
-                    if (response.isSuccessful) Timber.d { "VoiceDoc: logged out $email" }
-                    else Timber.w { "VoiceDoc logout failed: HTTP ${response.code}, body: ${response.body?.string()}" }
-                }
-            }.onFailure { Timber.w(it) { "VoiceDoc logout request failed" } }
-        }
+    private fun logout(current: String?) {
+        val body = JSONObject().put("emailid", email).toString()
+        val request = Request.Builder()
+            .url("$authBaseUrl/logout")
+            .apply { if (current != null) header("Authorization", "Bearer $current") }
+            .post(body.toRequestBody("application/json".toMediaType()))
+            .build()
+        runCatching {
+            client.newCall(request).execute().use { response ->
+                if (response.isSuccessful) Timber.d { "VoiceDoc: logged out $email" }
+                else Timber.w { "VoiceDoc logout failed: HTTP ${response.code}, body: ${response.body?.string()}" }
+            }
+        }.onFailure { Timber.w(it) { "VoiceDoc logout request failed" } }
     }
 
+    /** Logs out any existing session for the account, then signs in fresh. Called under [mutex]. */
     private suspend fun login(): String = withContext(Dispatchers.IO) {
-        check(email.isNotBlank() && password.isNotBlank()) {
-            "VoiceDoc credentials missing: set jatayu.voicedoc.email/password in local.properties"
+        val email = email
+        check(email.isNotBlank()) { "VoiceDoc: providerId not set, can't build the account email" }
+        check(emailSuffix.isNotBlank() && password.isNotBlank()) {
+            "VoiceDoc credentials missing: set jatayu.voicedoc.email.suffix/password in local.properties"
         }
+        logout(token)
+        token = null
         val body = JSONObject().put("email", email).put("pkd", password).toString()
         Timber.d { "VoiceDoc: signing in as $email at $authBaseUrl" }
         val request = Request.Builder()

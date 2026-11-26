@@ -1,11 +1,16 @@
+// LocalBroadcastManager is deprecated but still works, and it's what NAS uses for in-app events.
+@file:Suppress("DEPRECATION")
+
 package org.intelehealth.jatayu.audiorecording
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.github.ajalt.timberkt.Timber
 import com.jatayu.voicedoc.sdk.FinalizeResult
 import com.jatayu.voicedoc.sdk.SessionParams
@@ -14,10 +19,15 @@ import com.jatayu.voicedoc.sdk.VoiceDocEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
+import org.intelehealth.jatayu.audiorecording.api.NetworkWaiter
+import org.intelehealth.jatayu.audiorecording.api.PatientVisitSummaryApi
 import org.intelehealth.jatayu.audiorecording.auth.VoiceDocTokenProvider
+import org.json.JSONObject
+import org.json.JSONTokener
 
 /**
  * Records the consultation for one visit through the VoiceDoc SDK: started when a new visit
@@ -31,8 +41,29 @@ import org.intelehealth.jatayu.audiorecording.auth.VoiceDocTokenProvider
  * Each VoiceDoc session is named "<visitUuid>_<startMillis>", so a result arriving later (a
  * recording finished offline, or after an app restart) can still be matched back to its visit,
  * and a visit can be recorded more than once.
+ *
+ * Results are announced in-app through LocalBroadcastManager:
+ *  1. [ACTION_RESULT_CAPTURED] as soon as VoiceDoc returns the transcript and section summary;
+ *  2. [ACTION_PATIENT_SUMMARY_CAPTURED] right after, with the patient visit summary
+ *     (FinalizeResult.shortSummary), when VoiceDoc returned one.
  */
 object VisitVoiceRecorder {
+
+    const val ACTION_RESULT_CAPTURED = "org.intelehealth.jatayu.audiorecording.RESULT_CAPTURED"
+    const val ACTION_PATIENT_SUMMARY_CAPTURED = "org.intelehealth.jatayu.audiorecording.PATIENT_SUMMARY_CAPTURED"
+
+    /** NAS visit UUID the recording belongs to. Both actions. */
+    const val EXTRA_VISIT_UUID = "visitUuid"
+    /** VoiceDoc session name ("<visitUuid>_<startMillis>"). Both actions. */
+    const val EXTRA_SESSION_NAME = "sessionName"
+    const val EXTRA_SESSION_ID = "sessionId"
+    const val EXTRA_TRANSCRIPT = "transcript"
+    /** Section summary as a JSON object string, e.g. {"Vitals":[...],"Family History":[...]}. */
+    const val EXTRA_SUMMARY_JSON = "summaryJson"
+    /** Same as [EXTRA_SUMMARY_JSON] in the consultation's original language. */
+    const val EXTRA_ORIGINAL_LANG_SUMMARY_JSON = "originalLangSummaryJson"
+    /** Patient visit summary (FinalizeResult.shortSummary). */
+    const val EXTRA_PATIENT_SUMMARY_JSON = "patientSummaryJson"
 
     /**
      * Appendix A (I02 doc) sections VoiceDoc should fill from the conversation. metadata,
@@ -48,9 +79,19 @@ object VisitVoiceRecorder {
 
     private const val NAME_SEPARATOR = '_'
 
+    /**
+     * Waits between /api/patient-visit-summary attempts: the patient summary may not be ready
+     * the moment the VoiceDoc result arrives. 7 online attempts over ~6 minutes, then give up.
+     * Time spent offline doesn't count: the retry waits for internet first.
+     */
+    private val PATIENT_SUMMARY_RETRY_DELAYS_MS = longArrayOf(10_000, 20_000, 40_000, 60_000, 120_000, 120_000)
+
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private val lock = Mutex()
     private val tokenProvider = VoiceDocTokenProvider()
+    private val patientSummaryApi = PatientVisitSummaryApi(tokenProvider)
+    private lateinit var appContext: Context
+    private val networkWaiter by lazy { NetworkWaiter(appContext) }
 
     @Volatile
     private var activeVisitUuid: String? = null
@@ -77,10 +118,13 @@ object VisitVoiceRecorder {
      * earlier run are retried right away and background results are never missed.
      *
      * @param smallIcon icon for the ongoing-recording notification
+     * @param providerId logged-in provider, if any; their VoiceDoc account is providerId + suffix
      */
     @JvmStatic
-    fun init(context: Context, @DrawableRes smallIcon: Int) {
+    fun init(context: Context, @DrawableRes smallIcon: Int, providerId: String?) {
         if (VoiceDoc.isInitialized) return
+        appContext = context.applicationContext
+        tokenProvider.setProviderId(providerId)
         VoiceDocSetup.initialize(context, smallIcon, tokenProvider)
         scope.launch {
             VoiceDoc.events.collect { event ->
@@ -109,7 +153,7 @@ object VisitVoiceRecorder {
      * @param language app language code, e.g. "en" or "hi"
      */
     @JvmStatic
-    fun startForVisit(context: Context, visitUuid: String, language: String) {
+    fun startForVisit(context: Context, providerId: String, visitUuid: String, language: String) {
         if (!VoiceDoc.isInitialized) return
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO)
             != PackageManager.PERMISSION_GRANTED
@@ -119,11 +163,12 @@ object VisitVoiceRecorder {
         }
         scope.launch {
             lock.withLock {
+                tokenProvider.setProviderId(providerId)
                 if (signInRejected) retryAfterSignIn()
                 runCatching {
                     val sessionId = VoiceDoc.startSession(
                         SessionParams(
-                            ownerEmail = BuildConfig.VOICEDOC_EMAIL,
+                            ownerEmail = tokenProvider.email,
                             language = language,
                             fields = SUMMARY_FIELDS,
                             name = "$visitUuid$NAME_SEPARATOR${System.currentTimeMillis()}",
@@ -165,13 +210,6 @@ object VisitVoiceRecorder {
         }
     }
 
-    /** Logs out of VoiceDoc; call when the NAS user logs out. Fire-and-forget. */
-    @JvmStatic
-    fun logout() {
-        if (!VoiceDoc.isInitialized) return
-        scope.launch { lock.withLock { tokenProvider.logout() } }
-    }
-
     /** Signs in again and, only if that succeeds, lets the SDK retry the chunks stuck on 401. */
     private suspend fun retryAfterSignIn() {
         if (tokenProvider.refreshAccessToken() == null) return
@@ -195,14 +233,94 @@ object VisitVoiceRecorder {
         }
     }
 
+    /** Announces the VoiceDoc result, then fetches the patient summary for the same recording. */
     private fun onResult(result: FinalizeResult) {
-        val visitUuid = result.name?.substringBefore(NAME_SEPARATOR)
-        // TODO: map the summary (Appendix A of the I02 doc) onto the visit.
+        val sessionName = result.name
+        val visitUuid = sessionName.substringBefore(NAME_SEPARATOR)
+        // The SDK now hands the summary over as JSON text as well; fall back to the map.
+        val summaryJson = result.summaryJson?.takeIf { it.isNotBlank() } ?: toJson(result.summary).toString()
+        val shortSummary = result.shortSummary
+
         Timber.d {
             "VoiceDoc: result for visit $visitUuid (session ${result.sessionId}), " +
-                "transcript ${result.transcript?.length ?: 0} chars, summary keys ${result.summary?.keys}"
+                "transcript ${result.transcript.length} chars, summary $summaryJson, shortSummary $shortSummary"
         }
-        //print summary for debugging
-        Timber.d { "VoiceDoc: summary for visit $visitUuid: ${result.summary}" }
+        broadcast(
+            Intent(ACTION_RESULT_CAPTURED)
+                .putExtra(EXTRA_VISIT_UUID, visitUuid)
+                .putExtra(EXTRA_SESSION_NAME, sessionName)
+                .putExtra(EXTRA_SESSION_ID, result.sessionId)
+                .putExtra(EXTRA_TRANSCRIPT, result.transcript)
+                .putExtra(EXTRA_SUMMARY_JSON, summaryJson)
+                .putExtra(EXTRA_ORIGINAL_LANG_SUMMARY_JSON, toJson(result.originalLangSummary).toString())
+        )
+
+        // The patient visit summary now comes inside the result, so it's announced straight away
+        // (receivers save it after the result above, in order).
+        if (shortSummary.isNullOrBlank()) {
+            Timber.w { "VoiceDoc: result for visit $visitUuid has no patient visit summary (shortSummary)" }
+        } else {
+            broadcast(
+                Intent(ACTION_PATIENT_SUMMARY_CAPTURED)
+                    .putExtra(EXTRA_VISIT_UUID, visitUuid)
+                    .putExtra(EXTRA_SESSION_NAME, sessionName)
+                    .putExtra(EXTRA_PATIENT_SUMMARY_JSON, shortSummary)
+            )
+        }
+        // Earlier flow: patient summary fetched separately from /api/patient-visit-summary.
+       /* scope.launch {
+            val patientSummary = fetchPatientSummaryWithRetry(visitUuid, sessionName) ?: return@launch
+            Timber.d { "VoiceDoc: patient summary for visit $visitUuid: $patientSummary" }
+            broadcast(
+                Intent(ACTION_PATIENT_SUMMARY_CAPTURED)
+                    .putExtra(EXTRA_VISIT_UUID, visitUuid)
+                    .putExtra(EXTRA_SESSION_NAME, sessionName)
+                    .putExtra(EXTRA_PATIENT_SUMMARY_JSON, patientSummary)
+            )
+        }*/
+    }
+
+    /**
+     * Calls /api/patient-visit-summary until it returns a summary, waiting longer each time.
+     * Only attempts made with internet count towards the limit; while offline it waits for the
+     * connection to come back (as long as the app process is alive).
+     */
+    private suspend fun fetchPatientSummaryWithRetry(visitUuid: String?, sessionName: String): String? {
+        val attempts = PATIENT_SUMMARY_RETRY_DELAYS_MS.size + 1
+        var attempt = 0
+        while (true) {
+            if (!networkWaiter.isOnline()) {
+                Timber.w { "VoiceDoc: offline, patient summary for visit $visitUuid waits for internet" }
+                networkWaiter.awaitOnline()
+            }
+            Timber.d { "VoiceDoc: fetching patient summary for visit $visitUuid (attempt ${attempt + 1}/$attempts)" }
+            val result = runCatching { patientSummaryApi.fetch(sessionName) }
+            result.getOrNull()?.let { return it }
+            // Connection dropped during the call: not the server's answer, so don't count it.
+            if (!networkWaiter.isOnline()) continue
+
+            attempt++
+            if (attempt == attempts) {
+                Timber.e(result.exceptionOrNull()) { "VoiceDoc: patient summary for visit $visitUuid failed after $attempts attempts" }
+                return null
+            }
+            val wait = PATIENT_SUMMARY_RETRY_DELAYS_MS[attempt - 1]
+            Timber.w { "VoiceDoc: patient summary for visit $visitUuid not available (attempt $attempt/$attempts): ${result.exceptionOrNull()?.message}; retrying in ${wait / 1000}s" }
+            delay(wait)
+        }
+    }
+
+    private fun broadcast(intent: Intent) {
+        LocalBroadcastManager.getInstance(appContext).sendBroadcast(intent)
+    }
+
+    /** The SDK returns each summary section as JSON text; nest it as real JSON. */
+    private fun toJson(sections: Map<String, Any?>?): JSONObject = JSONObject().apply {
+        sections?.forEach { (section, value) ->
+            put(section, when (value) {
+                is String -> runCatching { JSONTokener(value).nextValue() }.getOrDefault(value)
+                else -> JSONObject.wrap(value) ?: JSONObject.NULL
+            })
+        }
     }
 }

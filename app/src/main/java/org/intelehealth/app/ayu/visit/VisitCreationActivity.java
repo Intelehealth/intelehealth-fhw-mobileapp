@@ -1810,7 +1810,7 @@ public class VisitCreationActivity extends BaseActivity implements
     // Starts regardless of the outcome: without RECORD_AUDIO the recorder skips and the visit carries on.
     private final ActivityResultLauncher<String[]> mVoiceDocPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), result ->
-                    VisitVoiceRecorder.startForVisit(this, visitUuid, sessionManager.getAppLanguage()));
+                    VisitVoiceRecorder.startForVisit(this, sessionManager.getProviderID(),visitUuid, sessionManager.getAppLanguage()));
 
     public FeatureActiveStatus getFeatureActiveStatus() { return featureActiveStatus; }
 

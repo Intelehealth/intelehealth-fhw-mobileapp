@@ -17,14 +17,14 @@ android {
         buildConfigField 'String', 'VOICEDOC_CORE_URL', '"https://core-tyohwkctkq-el.a.run.app"'
 
         // VoiceDoc account issued by Jatayu. Kept in the git-ignored local.properties:
-        //   jatayu.voicedoc.email=...
+        //   jatayu.voicedoc.email.suffix=@example.org  (account email = <providerId><suffix>)
         //   jatayu.voicedoc.password=...
         // access token - 1hr
         // refresh token - 3 days
         def localProps = new Properties()
         def localPropsFile = rootProject.file('local.properties')
         if (localPropsFile.exists()) localPropsFile.withInputStream { localProps.load(it) }
-        buildConfigField 'String', 'VOICEDOC_EMAIL', "\"${localProps.getProperty('jatayu.voicedoc.email', '')}\""
+        buildConfigField 'String', 'VOICEDOC_EMAIL_SUFFIX', "\"${localProps.getProperty('jatayu.voicedoc.email.suffix', '')}\""
         buildConfigField 'String', 'VOICEDOC_PASSWORD', "\"${localProps.getProperty('jatayu.voicedoc.password', '')}\""
     }
 
@@ -65,13 +65,14 @@ dependencies {
 //    implementation files('libs/voicedoc-sdk-0.2.0-relocated.aar')
 //    implementation files('libs/voicedoc-store-0.2.0-relocated.aar')
 
-    implementation files('libs/voicedoc-sdk-0.3.0.aar')
-    implementation files('libs/voicedoc-store-0.3.0.aar')
+    implementation files('libs/voicedoc-sdk-0.1.0.aar')
+    implementation files('libs/voicedoc-store-0.1.0.aar')
 
     implementation 'com.squareup.okhttp3:okhttp:4.12.0'
 
     // ---- Base AndroidX ----
     implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.1.0'
 
     // ---- Coroutines (match klivekit) ----
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1'

@@ -172,6 +172,28 @@ public class ObsDAO extends BaseDao{
         return true;
     }
 
+    /**
+     * Sets the comments of an existing obs and marks it unsynced so the change is pushed.
+     * insertObs/updateObs don't touch the comments column, so this is the only writer for it.
+     */
+    public boolean updateObsComments(String obsUuid, String comments) throws DAOException {
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put("comments", comments);
+            values.put("modified_date", AppConstants.dateAndTimeUtils.currentDateTime());
+            values.put("sync", "false");
+            int updatedCount = db.update("tbl_obs", values, "uuid = ?", new String[]{obsUuid});
+            db.setTransactionSuccessful();
+            return updatedCount > 0;
+        } catch (SQLException e) {
+            throw new DAOException(e);
+        } finally {
+            db.endTransaction();
+        }
+    }
+
     public boolean insertObsToDb(List<ObsDTO> obsDTO) throws DAOException {
         boolean isUpdated = true;
         long insertedCount = 0;
@@ -219,7 +241,7 @@ public class ObsDAO extends BaseDao{
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                if (idCursor.getColumnIndex("comments") < 0) {
+                if (idCursor.getColumnIndex("comments") >= 0) {
                     obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
                 } else {
                     obsDTO.setComments("");
