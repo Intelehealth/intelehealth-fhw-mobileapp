@@ -358,12 +358,23 @@
 
                 <!--Vitals and Other cards - end-->
 
+                <!-- Collapses to nothing when there is no camp banner -->
+                <LinearLayout
+                    android:id="@+id/ll_ncd_camp_banner_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/cardview_head"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/layout_ncd_camp_banner" />
+                </LinearLayout>
+
                 <!--Additional notes - start-->
                 <RelativeLayout
                     android:id="@+id/vitalsRelativeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/cardview_head"
+                    android:layout_below="@+id/ll_ncd_camp_banner_container"
                     android:layout_alignParentEnd="true"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="0dp">

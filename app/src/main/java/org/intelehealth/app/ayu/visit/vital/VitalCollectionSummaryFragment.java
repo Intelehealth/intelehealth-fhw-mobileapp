@@ -28,6 +28,7 @@ import org.intelehealth.app.BuildConfig;
 import org.intelehealth.app.R;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
+import org.intelehealth.app.ayu.visit.ncd.BpReading;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.DiscardIncompleteVisitUtil;
 import org.intelehealth.app.ayu.visit.common.ManageSummaryScreenTitles;
@@ -206,6 +207,7 @@ public class VitalCollectionSummaryFragment extends Fragment {
                 ((TextView) view.findViewById(R.id.tv_bp)).setText(mVitalsObject.getBpsys() + "/" + mVitalsObject.getBpdia());
             else
                 ((TextView) view.findViewById(R.id.tv_bp)).setText(getString(R.string.ui2_no_information));
+            showLaterBpReadings(view);
             if (mVitalsObject.getPulse() != null && !mVitalsObject.getPulse().isEmpty())
                 ((TextView) view.findViewById(R.id.tv_pulse)).setText(mVitalsObject.getPulse() + " " + getResources().getString(R.string.bpm));
             else
@@ -287,6 +289,21 @@ public class VitalCollectionSummaryFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    // With 2 or 3 readings every BP row is "Final BP Reading N", as in Figma
+    private void showLaterBpReadings(View view) {
+        List<BpReading> readings = mVitalsObject.getBpReadings();
+        if (readings.size() < 2) return;
+        int[][] rows = {{R.id.tv_bp_label, R.id.tv_bp, R.id.ll_bp_container},
+                {R.id.tv_bp_2_label, R.id.tv_bp_2, R.id.ll_bp_2_container},
+                {R.id.tv_bp_3_label, R.id.tv_bp_3, R.id.ll_bp_3_container}};
+        for (BpReading reading : readings) {
+            int[] row = rows[reading.getNumber() - 1];
+            ((TextView) view.findViewById(row[0])).setText(getString(R.string.bp_final_reading_summary, reading.getNumber()));
+            ((TextView) view.findViewById(row[1])).setText(reading.toString());
+            if (reading.getNumber() > 1) view.findViewById(row[2]).setVisibility(View.VISIBLE);
+        }
     }
 
     private ObjectAnimator syncAnimator;

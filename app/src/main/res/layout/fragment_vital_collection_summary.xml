@@ -314,6 +314,73 @@
                         android:text="@string/no_information" />
                 </LinearLayout>
 
+                <!-- BP readings 2 and 3 of an NCD screening visit -->
+                <LinearLayout
+                    android:id="@+id/ll_bp_2_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="6dip"
+                        android:layout_height="6dip"
+                        android:layout_marginEnd="@dimen/padding_5"
+                        android:src="@drawable/ic_baseline_lens_24" />
+
+                    <TextView
+                        android:id="@+id/tv_bp_2_label"
+                        style="@style/label_misc_txt_14sp_dark_1"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp" />
+
+                    <TextView
+                        android:id="@+id/tv_bp_2"
+                        style="@style/label_misc_txt_14sp_dark"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_bp_3_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_8"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:visibility="gone"
+                    android:weightSum="2">
+
+                    <ImageView
+                        android:layout_width="6dip"
+                        android:layout_height="6dip"
+                        android:layout_marginEnd="@dimen/padding_5"
+                        android:src="@drawable/ic_baseline_lens_24" />
+
+                    <TextView
+                        android:id="@+id/tv_bp_3_label"
+                        style="@style/label_misc_txt_14sp_dark_1"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp" />
+
+                    <TextView
+                        android:id="@+id/tv_bp_3"
+                        style="@style/label_misc_txt_14sp_dark"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:lineSpacingExtra="1sp" />
+                </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/ll_pulse_container"
                     android:layout_width="match_parent"

@@ -159,6 +159,11 @@ class SharePrescriptionDataRepository(private val db: SQLiteDatabase) {
                     }
                 }
             }
+            // On an NCD screening visit the BP shown is the final (last) reading
+            ObsDAO.getFinalBpReading(encounterUuid)?.let {
+                systolic = it.systolic.toString()
+                diastolic = it.diastolic.toString()
+            }
             val orderedMap = LinkedHashMap<String, String>()
             vitalsOrder.forEach { key ->
                 if (key == PrescriptionDetailsDataKeys.Vitals.BP) {

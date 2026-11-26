@@ -191,6 +191,10 @@
     <color name="ncd_red_box">#FBECEC</color>
     <color name="ncd_green">#62C99A</color>
     <color name="ncd_green_light">#E9FEF3</color>
+    <color name="bp_readings_card_bg">#F5F3FE</color>
+    <color name="ncd_camp_eligible_bg">#F5FEF9</color>
+    <color name="ncd_camp_not_eligible_bg">#F6F4FF</color>
+    <color name="ncd_camp_not_eligible_icon_bg">#DFDCF9</color>
     <!-- NCD eligibility footer Back button border (Figma "Accent/Light blue") -->
     <color name="ncd_back_outline">#EFE8FF</color>
     <!-- CBAC score above 4 (from Figma) -->

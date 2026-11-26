@@ -108,8 +108,10 @@ object VisitSummaryAiFormatter {
 
     private fun buildVital(vital: VitalsObject?): JSONObject {
         val json = JSONObject()
-        json.put("sbp", numericOrNull(vital?.bpsys))
-        json.put("dbp", numericOrNull(vital?.bpdia))
+        // Final BP: the last reading on an NCD screening visit
+        val finalBp = vital?.finalBp
+        json.put("sbp", finalBp?.systolic ?: numericOrNull(vital?.bpsys))
+        json.put("dbp", finalBp?.diastolic ?: numericOrNull(vital?.bpdia))
         json.put("pulse", numericOrNull(vital?.pulse))
         json.put("rr", numericOrNull(vital?.resp))
         json.put("spo2", numericOrNull(vital?.spo2))

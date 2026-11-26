@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- "BP reading N" with the "Final Reading" label on the right -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/padding_5"
+    android:paddingEnd="@dimen/padding_5">
+
+    <TextView
+        android:id="@+id/tv_bp_reading_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="@color/textview_color"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_bp_final_reading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/bp_final_reading"
+        android:textColor="@color/ncd_green"
+        android:textSize="14sp"
+        android:visibility="gone" />
+</LinearLayout>

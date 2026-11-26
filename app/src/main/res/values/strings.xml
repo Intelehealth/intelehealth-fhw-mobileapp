@@ -1897,5 +1897,16 @@
     <string name="cbac_low_risk_title">Continue to Vitals</string>
     <string name="cbac_low_risk_message">Score below threshold. Proceed to taking vitals.</string>
     <string name="cbac_proceed_to_vitals">Proceed to Vitals</string>
+    <!-- NCD BP readings and camp banner -->
+    <string name="bp_reading_number">BP reading %1$d</string>
+    <string name="bp_final_reading">Final Reading</string>
+    <string name="bp_take_second_reading">BP is at or above the screening threshold. Take a second reading after 01–02 minutes.</string>
+    <string name="bp_take_third_reading">BP readings differ by more than 5 mmHg. Take a third reading after 01–02 minutes.</string>
+    <string name="bp_record_reading">Record Reading %1$d</string>
+    <string name="bp_final_reading_summary">Final BP Reading %1$d</string>
+    <string name="ncd_camp_eligible_title">Eligible for camp</string>
+    <string name="ncd_camp_eligible_message">Please visit the NCD camp when contacted by the health team.</string>
+    <string name="ncd_camp_not_eligible_title">Not Eligible for camp</string>
+    <string name="ncd_camp_not_eligible_message">Not eligible for camp. The doctor will provide health counselling.</string>
 
 </resources>

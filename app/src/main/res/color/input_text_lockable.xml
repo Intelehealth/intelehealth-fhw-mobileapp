@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Input text that greys out when the field is disabled -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/gray_4" android:state_enabled="false" />
+    <item android:color="@color/textview_color" />
+</selector>

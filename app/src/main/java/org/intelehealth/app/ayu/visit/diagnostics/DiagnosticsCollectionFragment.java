@@ -36,9 +36,11 @@ import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
+import org.intelehealth.app.ayu.visit.common.InputLock;
 import org.intelehealth.app.ayu.visit.hba1c.BleScanActivity;
 import org.intelehealth.app.ayu.visit.hba1c.HbA1cLiveViewModel;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningPlan;
 import org.intelehealth.app.ayu.visit.vital.CoroutineProvider;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -74,6 +76,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
     private SessionManager    sessionManager;
     private DiagnosticsModel  results     = new DiagnosticsModel();
     private boolean           mIsEditMode = false;
+    // Reopened from the Diagnostics summary or Visit summary, so the values were already saved
+    private boolean           mDiagnosticsSaved;
     private List<Diagnostics> mPatientDiagnosticsList;
 
     private StringBuilder mDebugLog = new StringBuilder();
@@ -92,6 +96,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         DiagnosticsCollectionFragment f = new DiagnosticsCollectionFragment();
         f.mIsEditMode = isEditMode;
         f.results     = model;
+        // The summary hands back the saved values; Visit summary opens in edit mode
+        f.mDiagnosticsSaved = isEditMode || model != null;
         f.patientUuid                       = d.getPatientUuid();
         f.visitUuid                         = d.getVisitUuid();
         f.encounterVitals                   = d.getEncounterUuidVitals();
@@ -146,8 +152,17 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
         mBinding.btnCancel.setOnClickListener(this);
 
         if (mIsEditMode && results == null) loadSavedDateForEditFromDB();
+        // Saved RBS of a visit offered DM screening can't be changed from the summaries, even when left empty
+        InputLock.set(mBinding.etvGlucoseRandom, mDiagnosticsSaved && offersDmScreening());
 
         return mBinding.getRoot();
+    }
+
+    // The visit's NCD screening plan offers DM screening, so RBS decides its camp banner
+    private boolean offersDmScreening() {
+        NcdScreeningPlan plan = getActivity() instanceof VisitCreationActivity
+                ? ((VisitCreationActivity) getActivity()).getNcdScreeningPlan() : null;
+        return plan != null && plan.getDmSkipReason() == null;
     }
 
     @RequiresPermission(Manifest.permission.BLUETOOTH_CONNECT)
@@ -557,7 +572,8 @@ public class DiagnosticsCollectionFragment extends Fragment implements View.OnCl
 
         // Clear any previous errors
         errorTextView.setVisibility(View.GONE);
-        editText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+        // Same box as before, grey when the field is locked
+        editText.setBackgroundResource(R.drawable.bg_input_field_lockable);
         return true;
     }
 

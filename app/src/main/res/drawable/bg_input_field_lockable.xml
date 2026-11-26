@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Input box that greys out when the field is disabled, e.g. a locked BP reading or RBS -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/gray_1" />
+            <stroke
+                android:width="1dp"
+                android:color="#33B2AFBE" />
+            <corners android:radius="10dip" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/bg_input_fieldnew" />
+</selector>

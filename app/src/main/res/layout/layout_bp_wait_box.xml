@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Wait before the next BP reading: message, countdown, then the record button -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/padding_5"
+    android:layout_marginTop="@dimen/margin_8"
+    android:layout_marginEnd="@dimen/padding_5"
+    android:layout_marginBottom="@dimen/padding_5"
+    android:background="@drawable/bg_bp_wait_box"
+    android:orientation="vertical"
+    android:padding="@dimen/padding_10"
+    android:visibility="gone">
+
+    <TextView
+        android:id="@+id/tv_bp_wait_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="2sp"
+        android:textColor="@color/textview_color"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_bp_wait_countdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/margin_8"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <!-- A TextView: the theme would tint a Button solid purple -->
+    <TextView
+        android:id="@+id/btn_bp_record_reading"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/margin_8"
+        android:background="@drawable/bg_ncd_outline_button"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+</LinearLayout>

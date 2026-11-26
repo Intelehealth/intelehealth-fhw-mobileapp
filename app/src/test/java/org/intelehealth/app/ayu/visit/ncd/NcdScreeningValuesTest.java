@@ -2,12 +2,43 @@ package org.intelehealth.app.ayu.visit.ncd;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import org.intelehealth.app.ayu.visit.ncd.NcdCampRules.Condition;
 import org.intelehealth.app.ayu.visit.ncd.NcdEligibilityRules.Result;
 import org.junit.Test;
 
+import java.util.EnumSet;
+
 public class NcdScreeningValuesTest {
+
+    // NCD Screening Outcome, in the format the PO agreed on 26 Nov
+    @Test
+    public void outcomeOfACampScreeningListsItsConditions() {
+        NcdScreeningPlan plan = NcdScreeningPlan.of(Result.ELIGIBLE, "NCD_KNOWN_CASE_NONE", 6);
+        assertEquals("{\"result\":\"Eligible for camp\",\"conditions\":[\"Diabetes\",\"Hypertension\"]}",
+                NcdScreeningValues.outcome(plan, EnumSet.of(Condition.HYPERTENSION, Condition.DIABETES)));
+        assertEquals("{\"result\":\"Eligible for camp\",\"conditions\":[\"Hypertension\"]}",
+                NcdScreeningValues.outcome(plan, EnumSet.of(Condition.HYPERTENSION)));
+        assertEquals("{\"result\":\"Not eligible for camp\",\"conditions\":[]}",
+                NcdScreeningValues.outcome(plan, EnumSet.noneOf(Condition.class)));
+    }
+
+    @Test
+    public void outcomeOfAScreeningThatEndedEarlyGivesTheReason() {
+        assertEquals("{\"result\":\"Not referred\",\"reason\":\"Consent declined\"}",
+                NcdScreeningValues.outcome(NcdScreeningPlan.consentDeclined(), null));
+        assertEquals("{\"result\":\"Not referred\",\"reason\":\"Urgent attention\"}",
+                NcdScreeningValues.outcome(NcdScreeningPlan.of(Result.URGENT, "NCD_KNOWN_CASE_NONE", null), null));
+        assertEquals("{\"result\":\"Not referred\",\"reason\":\"Not eligible\"}",
+                NcdScreeningValues.outcome(NcdScreeningPlan.of(Result.NOT_ELIGIBLE, NcdEligibilityRules.KNOWN_CASE_BOTH, null), null));
+    }
+
+    @Test
+    public void noOutcomeWithoutNcdScreening() {
+        assertNull(NcdScreeningValues.outcome(null, null));
+    }
 
     @Test
     public void consentUsesTheSharedConsentFormat() {
