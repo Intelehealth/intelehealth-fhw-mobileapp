@@ -10,7 +10,7 @@ public final class NcdScreeningPlan {
     public static final String DM_SCREENING = "Screening for Diabetes";
     public static final String HTN_SCREENING = "Screening for Hypertension";
 
-    public enum SkipReason { CONSENT_DECLINED, URGENT, NOT_ELIGIBLE, KNOWN_DM, KNOWN_HTN, LOW_CBAC_SCORE }
+    public enum SkipReason { CONSENT_DECLINED, URGENT, NOT_ELIGIBLE, KNOWN_DM, KNOWN_HTN, LOW_CBAC_SCORE, NCD_SWITCHED_OFF }
 
     private final SkipReason dmSkipReason; // null when DM screening is offered
     private final SkipReason htnSkipReason; // null when HTN screening is offered
@@ -22,6 +22,11 @@ public final class NcdScreeningPlan {
 
     public static NcdScreeningPlan consentDeclined() {
         return new NcdScreeningPlan(SkipReason.CONSENT_DECLINED, SkipReason.CONSENT_DECLINED);
+    }
+
+    // NCD is switched off in the admin config, so neither screening is offered
+    public static NcdScreeningPlan ncdSwitchedOff() {
+        return new NcdScreeningPlan(SkipReason.NCD_SWITCHED_OFF, SkipReason.NCD_SWITCHED_OFF);
     }
 
     // cbacScore is null when CBAC was not done

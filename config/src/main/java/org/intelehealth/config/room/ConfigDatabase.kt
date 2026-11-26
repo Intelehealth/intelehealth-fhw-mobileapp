@@ -6,6 +6,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import org.intelehealth.config.room.dao.ActiveSectionDao
 import org.intelehealth.config.room.dao.ConfigDao
 import org.intelehealth.config.room.dao.FeatureActiveStatusDao
@@ -40,7 +42,7 @@ import java.util.Locale
         Diagnostics::class,
         ActiveSection::class
     ],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -71,6 +73,14 @@ abstract class ConfigDatabase : RoomDatabase() {
         @VisibleForTesting
         private val DATABASE_NAME = "config-db"
 
+        // Adds the NCD switch and keeps the other saved flags; on an updated app NCD stays off, as the config
+        // is only downloaded at first-time setup
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE tbl_feature_active_status ADD COLUMN activeStatusNcd INTEGER NOT NULL DEFAULT 0")
+            }
+        }
+
         @JvmStatic
         fun getInstance(context: Context): ConfigDatabase =
             INSTANCE ?: synchronized(this) {
@@ -86,6 +96,7 @@ abstract class ConfigDatabase : RoomDatabase() {
         private fun buildDatabase(appContext: Context): ConfigDatabase {
             val databaseName = "${appContext.packageName}.$DATABASE_NAME"
             return Room.databaseBuilder(appContext, ConfigDatabase::class.java, databaseName)
+                .addMigrations(MIGRATION_2_3)
                 .fallbackToDestructiveMigration()
                 .build()
         }

@@ -97,7 +97,13 @@ public class VisitReasonCaptureFragment extends Fragment {
         super.onAttach(context);
         mActionListener = (VisitCreationActionListener) context;
         sessionManager = new SessionManager(context);
-        if (context instanceof VisitCreationActivity) mNcdScreeningPlan = ((VisitCreationActivity) context).getNcdScreeningPlan();
+        if (context instanceof VisitCreationActivity) {
+            VisitCreationActivity activity = (VisitCreationActivity) context;
+            mNcdScreeningPlan = activity.getNcdScreeningPlan();
+            // A NAS visit without NCD answers gets no DM/HTN screening while NCD is switched off
+            if (mNcdScreeningPlan == null && BuildConfig.FLAVOR_client == FlavorKeys.NAS && !activity.isNcdEnabled())
+                mNcdScreeningPlan = NcdScreeningPlan.ncdSwitchedOff();
+        }
         mRawReasonDataList = getVisitReasonFilesNamesOnly();
     }
 
