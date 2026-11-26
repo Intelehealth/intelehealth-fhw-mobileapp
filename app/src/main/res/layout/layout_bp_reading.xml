@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BP reading 2 or 3 inside the readings card of an NCD screening visit. Same fields as reading 1;
+     the CardViews are transparent so the card colour shows through -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/margin_8"
+    android:orientation="vertical"
+    android:visibility="gone">
+
+    <include
+        android:id="@+id/bp_reading_title_row"
+        layout="@layout/layout_bp_reading_title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_bp_reading_sys_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="1sp"
+                    android:text="@string/bp_sys"
+                    android:textColor="@color/gray_3"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <EditText
+                    android:id="@+id/etv_bp_reading_sys"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:background="@drawable/bg_input_fieldnew"
+                    android:hint="@string/enter_value"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="@dimen/padding_10"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/etv_bp_reading_sys_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            app:cardBackgroundColor="@android:color/transparent"
+            app:cardCornerRadius="0dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_bp_reading_dia_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lineSpacingExtra="1sp"
+                    android:text="@string/bp_dia"
+                    android:textColor="@color/gray_3"
+                    android:textSize="@dimen/common_label_text_size" />
+
+                <EditText
+                    android:id="@+id/etv_bp_reading_dia"
+                    style="@style/edittext_textcolor"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_height_44dp"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:background="@drawable/bg_input_fieldnew"
+                    android:hint="@string/enter_value"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="@dimen/padding_10"
+                    android:textColorHint="@color/edittext_hint_color"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/etv_bp_reading_dia_error"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="@dimen/hamburger_margin_start"
+                    android:textAppearance="@style/registr_error_msg"
+                    android:textColor="@color/red"
+                    android:textSize="@null"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</LinearLayout>

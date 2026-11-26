@@ -1655,4 +1655,15 @@
     <string name="cbac_low_risk_title">Vitals कडे पुढे जा</string>
     <string name="cbac_low_risk_message">गुण मर्यादेपेक्षा कमी आहेत. Vitals घेण्यासाठी पुढे जा.</string>
     <string name="cbac_proceed_to_vitals">Vitals साठी पुढे जा</string>
+    <!-- NCD BP readings and camp banner -->
+    <string name="bp_reading_number">BP रीडिंग %1$d</string>
+    <string name="bp_final_reading">अंतिम रीडिंग</string>
+    <string name="bp_take_second_reading">BP स्क्रीनिंग मर्यादेइतका किंवा त्यापेक्षा जास्त आहे. 01–02 मिनिटांनंतर दुसरे रीडिंग घ्या.</string>
+    <string name="bp_take_third_reading">BP रीडिंगमध्ये 5 mmHg पेक्षा जास्त फरक आहे. 01–02 मिनिटांनंतर तिसरे रीडिंग घ्या.</string>
+    <string name="bp_record_reading">रीडिंग %1$d नोंदवा</string>
+    <string name="bp_final_reading_summary">अंतिम BP रीडिंग %1$d</string>
+    <string name="ncd_camp_eligible_title">कॅम्पसाठी पात्र</string>
+    <string name="ncd_camp_eligible_message">आरोग्य टीमकडून संपर्क झाल्यावर कृपया NCD कॅम्पला भेट द्या.</string>
+    <string name="ncd_camp_not_eligible_title">कॅम्पसाठी अपात्र</string>
+    <string name="ncd_camp_not_eligible_message">कॅम्पसाठी पात्र नाही. डॉक्टर आरोग्यविषयक समुपदेशन करतील.</string>
 </resources>

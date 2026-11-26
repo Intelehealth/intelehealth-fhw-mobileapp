@@ -144,6 +144,11 @@ import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.common.adapter.SummaryViewAdapter;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
+import org.intelehealth.app.ayu.visit.ncd.BpReading;
+import org.intelehealth.app.ayu.visit.ncd.NcdCampRules;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningPlan;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningRepository;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningValues;
 import org.intelehealth.app.ayu.visit.model.HeartLungRecordModel;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
 import org.intelehealth.app.ayu.visit.pocdevice.RecordingData;
@@ -1272,6 +1277,41 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
 
     private String complaintLocalString = "", physicalExamLocaleString = "", patientHistoryLocaleString = "", familyHistoryLocaleString = "";
 
+    // Camp eligibility of an NCD screening visit from its CBAC, final BP and RBS; hidden otherwise
+    private void showNcdCampBanner() {
+        View banner = findViewById(R.id.ncd_camp_banner);
+        if (banner == null) return;
+        Boolean eligible = null;
+        if (encounterVitals != null && visitUuid != null) {
+            NcdScreeningRepository repository = new NcdScreeningRepository(sessionManager.getProviderID(), sessionManager.getCreatorID());
+            NcdScreeningPlan plan = repository.loadPlan(this, visitUuid);
+            Double rbs = null;
+            try {
+                // Diagnostics such as RBS are saved in the vitals encounter
+                String value = new ObsDAO().getObsValue(encounterVitals, UuidDictionary.BLOOD_GLUCOSE_RANDOM);
+                if (value != null && !value.trim().isEmpty()) rbs = Double.parseDouble(value.trim());
+            } catch (DAOException | NumberFormatException e) {
+                FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            Set<NcdCampRules.Condition> conditions = NcdCampRules.campConditions(plan, ObsDAO.getFinalBpReading(encounterVitals), rbs);
+            // The outcome goes to the server with the visit, also when the screening ended early; a sent visit keeps its own
+            if (!speciality_row_exist_check(visitUuid)) repository.saveOutcome(visitUuid, NcdScreeningValues.outcome(plan, conditions));
+            eligible = conditions == null ? null : !conditions.isEmpty();
+        }
+        if (eligible == null) {
+            banner.setVisibility(View.GONE);
+            return;
+        }
+        banner.setBackgroundResource(eligible ? R.drawable.bg_ncd_camp_eligible : R.drawable.bg_ncd_camp_not_eligible);
+        ImageView icon = banner.findViewById(R.id.iv_ncd_camp_icon);
+        icon.setBackground(ContextCompat.getDrawable(this, R.drawable.bg_ncd_icon_circle).mutate());
+        icon.getBackground().setTint(ContextCompat.getColor(this, eligible ? R.color.ncd_green_light : R.color.ncd_camp_not_eligible_icon_bg));
+        icon.setColorFilter(ContextCompat.getColor(this, eligible ? R.color.ncd_green : R.color.textview_color));
+        ((TextView) banner.findViewById(R.id.tv_ncd_camp_title)).setText(eligible ? R.string.ncd_camp_eligible_title : R.string.ncd_camp_not_eligible_title);
+        ((TextView) banner.findViewById(R.id.tv_ncd_camp_message)).setText(eligible ? R.string.ncd_camp_eligible_message : R.string.ncd_camp_not_eligible_message);
+        banner.setVisibility(View.VISIBLE);
+    }
+
     private void setViewsData() {
         physicalDoumentsUpdates();
 
@@ -1368,6 +1408,7 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
         } else {
             bpView.setText(bpText);
         }
+        showNcdCampBanner();
 
         if (pulse.getValue() != null) {
             if (pulse.getValue().trim().isEmpty() || pulse.getValue().trim().equals("0"))
@@ -4659,6 +4700,12 @@ public class VisitSummaryActivity_New extends BaseActivity implements AdapterInt
                 }
             } catch (SQLException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            // On an NCD screening visit the BP shown is the final (last) reading
+            BpReading finalBp = ObsDAO.getFinalBpReading(encounterVitals);
+            if (finalBp != null) {
+                bpSys.setValue(String.valueOf(finalBp.getSystolic()));
+                bpDias.setValue(String.valueOf(finalBp.getDiastolic()));
             }
         }
         //Diagnostics code kaveri

@@ -19,6 +19,8 @@ import com.google.gson.Gson;
 import org.intelehealth.app.activities.prescription.PrescDataModel;
 import org.intelehealth.app.app.AppConstants;
 import org.intelehealth.app.app.IntelehealthApplication;
+import org.intelehealth.app.ayu.visit.ncd.BpReading;
+import org.intelehealth.app.ayu.visit.ncd.BpScreeningRules;
 import org.intelehealth.app.models.VitalsObject;
 import org.intelehealth.app.models.dto.ObsDTO;
 import org.intelehealth.app.utilities.CustomLog;
@@ -116,6 +118,8 @@ public class ObsDAO extends BaseDao{
             values.put("voided", "0");
             values.put("sync", "false");
             values.put("conceptsetuuid", obsDTO.getConceptsetuuid());
+            // e.g. the BP reading number
+            if (obsDTO.getComments() != null) values.put("comments", obsDTO.getComments());
             insertedCount = db.insertWithOnConflict("tbl_obs", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 
             db.setTransactionSuccessful();
@@ -219,11 +223,10 @@ public class ObsDAO extends BaseDao{
                 obsDTO.setEncounteruuid(idCursor.getString(idCursor.getColumnIndexOrThrow("encounteruuid")));
                 obsDTO.setConceptuuid(idCursor.getString(idCursor.getColumnIndexOrThrow("conceptuuid")));
                 obsDTO.setValue(idCursor.getString(idCursor.getColumnIndexOrThrow("value")));
-                if (idCursor.getColumnIndex("comments") < 0) {
-                    obsDTO.setComments(idCursor.getString(idCursor.getColumnIndexOrThrow("comments")));
-                } else {
-                    obsDTO.setComments("");
-                }
+                // e.g. the BP reading number; blank when there is none, as before
+                int commentsIndex = idCursor.getColumnIndex("comments");
+                String comments = commentsIndex < 0 ? null : idCursor.getString(commentsIndex);
+                obsDTO.setComments(comments == null ? "" : comments);
                 obsDTOList.add(obsDTO);
             }
         }
@@ -623,6 +626,8 @@ public class ObsDAO extends BaseDao{
         values.put("voided", obsDTOS.getVoided());
         values.put("sync", "TRUE");
         values.put("conceptsetuuid", obsDTOS.getConceptsetuuid());
+        // The row is replaced, so keep the server's comment
+        values.put("comments", obsDTOS.getComments());
         return values;
     }
 
@@ -631,6 +636,35 @@ public class ObsDAO extends BaseDao{
        return "tbl_obs";
     }
 
+
+    // BP readings of a vitals encounter in order. An NCD screening visit saves up to 3 obs per BP concept with
+    // the reading number in the comment; an obs without one (any other visit) is reading 1. If the comments are
+    // lost, every obs counts as reading 1 and the last row of each concept wins.
+    public static List<BpReading> getBpReadings(String encounterUuid) {
+        String[][] values = new String[BpScreeningRules.MAX_READINGS + 1][2];
+        SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
+        try (Cursor cursor = db.rawQuery(
+                "SELECT conceptuuid, value, comments FROM tbl_obs WHERE encounteruuid = ? AND conceptuuid IN (?, ?) AND IFNULL(voided, '0') != '1'",
+                new String[]{encounterUuid, UuidDictionary.SYSTOLIC_BP, UuidDictionary.DIASTOLIC_BP})) {
+            while (cursor.moveToNext()) {
+                int number = BpReading.numberFromComment(cursor.getString(2));
+                values[number][UuidDictionary.SYSTOLIC_BP.equals(cursor.getString(0)) ? 0 : 1] = cursor.getString(1);
+            }
+        } catch (SQLException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+        List<BpReading> readings = new ArrayList<>();
+        for (int number = 1; number <= BpScreeningRules.MAX_READINGS; number++) {
+            BpReading reading = BpReading.of(number, values[number][0], values[number][1]);
+            if (reading != null) readings.add(reading);
+        }
+        return readings;
+    }
+
+    // Final BP of a vitals encounter: its last reading; null without BP
+    public static BpReading getFinalBpReading(String encounterUuid) {
+        return BpScreeningRules.lastReading(getBpReadings(encounterUuid));
+    }
 
     /**
      * Fetches the value column for a given conceptUuid + encounterUuid.
@@ -668,8 +702,22 @@ public class ObsDAO extends BaseDao{
         vitalsObject.setHeight(getObsValue(encounterUuid, UuidDictionary.HEIGHT));
         vitalsObject.setWeight(getObsValue(encounterUuid, UuidDictionary.WEIGHT));
         vitalsObject.setPulse(getObsValue(encounterUuid, UuidDictionary.PULSE));
-        vitalsObject.setBpsys(getObsValue(encounterUuid, UuidDictionary.SYSTOLIC_BP));
-        vitalsObject.setBpdia(getObsValue(encounterUuid, UuidDictionary.DIASTOLIC_BP));
+        for (BpReading reading : getBpReadings(encounterUuid)) {
+            String sys = String.valueOf(reading.getSystolic()), dia = String.valueOf(reading.getDiastolic());
+            if (reading.getNumber() == 1) {
+                vitalsObject.setBpsys(sys);
+                vitalsObject.setBpdia(dia);
+            } else if (reading.getNumber() == 2) {
+                vitalsObject.setBpsys2(sys);
+                vitalsObject.setBpdia2(dia);
+            } else {
+                vitalsObject.setBpsys3(sys);
+                vitalsObject.setBpdia3(dia);
+            }
+        }
+        // A BP that isn't a whole number isn't a reading; keep the raw value as before
+        if (vitalsObject.getBpsys() == null) vitalsObject.setBpsys(getObsValue(encounterUuid, UuidDictionary.SYSTOLIC_BP));
+        if (vitalsObject.getBpdia() == null) vitalsObject.setBpdia(getObsValue(encounterUuid, UuidDictionary.DIASTOLIC_BP));
         vitalsObject.setTemperature(getObsValue(encounterUuid, UuidDictionary.TEMPERATURE));
         vitalsObject.setResp(getObsValue(encounterUuid, UuidDictionary.RESPIRATORY));
         vitalsObject.setSpo2(getObsValue(encounterUuid, UuidDictionary.SPO2));

@@ -5,9 +5,14 @@ import com.google.gson.GsonBuilder;
 
 import org.intelehealth.app.utilities.ConsentUtils;
 
+import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Obs values of the NCD Screening encounter (no Android code, so it is unit tested).
@@ -78,6 +83,35 @@ public final class NcdScreeningValues {
 
     public static String cbacScore(int totalScore) {
         return String.valueOf(totalScore);
+    }
+
+    /**
+     * Final result of the NCD screening, as agreed with the PO, e.g.
+     * {"result":"Eligible for camp","conditions":["Hypertension"]} or {"result":"Not eligible for camp","conditions":[]};
+     * when the screening ended early: {"result":"Not referred","reason":"Consent declined"}. null without NCD screening.
+     */
+    @Nullable
+    public static String outcome(@Nullable NcdScreeningPlan plan, @Nullable Set<NcdCampRules.Condition> campConditions) {
+        if (plan == null) return null;
+        Map<String, Object> json = new LinkedHashMap<>();
+        if (campConditions == null) {
+            json.put("result", "Not referred");
+            json.put("reason", endReasonText(plan.getDmSkipReason()));
+        } else {
+            json.put("result", campConditions.isEmpty() ? "Not eligible for camp" : "Eligible for camp");
+            List<String> names = new ArrayList<>();
+            for (NcdCampRules.Condition condition : campConditions) {
+                names.add(condition == NcdCampRules.Condition.DIABETES ? "Diabetes" : "Hypertension");
+            }
+            json.put("conditions", names);
+        }
+        return GSON.toJson(json);
+    }
+
+    private static String endReasonText(NcdScreeningPlan.SkipReason reason) {
+        if (reason == NcdScreeningPlan.SkipReason.CONSENT_DECLINED) return "Consent declined";
+        if (reason == NcdScreeningPlan.SkipReason.URGENT) return resultText(NcdEligibilityRules.Result.URGENT);
+        return resultText(NcdEligibilityRules.Result.NOT_ELIGIBLE);
     }
 
     // Tells the medicine photos apart from Physical Exam photos, which share their concept

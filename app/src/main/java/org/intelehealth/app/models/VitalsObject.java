@@ -1,6 +1,11 @@
 package org.intelehealth.app.models;
 
+import org.intelehealth.app.ayu.visit.ncd.BpReading;
+import org.intelehealth.app.ayu.visit.ncd.BpScreeningRules;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VitalsObject implements Serializable {
 
@@ -10,6 +15,11 @@ public class VitalsObject implements Serializable {
     private String bmi;
     private String bpsys;
     private String bpdia;
+    // Readings 2 and 3 of an NCD screening visit; bpsys/bpdia hold reading 1
+    private String bpsys2;
+    private String bpdia2;
+    private String bpsys3;
+    private String bpdia3;
     private String pulse;
     private String temperature;
     private String spo2;
@@ -54,6 +64,56 @@ public class VitalsObject implements Serializable {
 
     public void setBpsys(String bpsys) {
         this.bpsys = bpsys;
+    }
+
+    public String getBpsys2() {
+        return bpsys2;
+    }
+
+    public void setBpsys2(String bpsys2) {
+        this.bpsys2 = bpsys2;
+    }
+
+    public String getBpdia2() {
+        return bpdia2;
+    }
+
+    public void setBpdia2(String bpdia2) {
+        this.bpdia2 = bpdia2;
+    }
+
+    public String getBpsys3() {
+        return bpsys3;
+    }
+
+    public void setBpsys3(String bpsys3) {
+        this.bpsys3 = bpsys3;
+    }
+
+    public String getBpdia3() {
+        return bpdia3;
+    }
+
+    public void setBpdia3(String bpdia3) {
+        this.bpdia3 = bpdia3;
+    }
+
+    // Entered BP readings in order
+    public List<BpReading> getBpReadings() {
+        List<BpReading> readings = new ArrayList<>();
+        addIfEntered(readings, BpReading.of(1, bpsys, bpdia));
+        addIfEntered(readings, BpReading.of(2, bpsys2, bpdia2));
+        addIfEntered(readings, BpReading.of(3, bpsys3, bpdia3));
+        return readings;
+    }
+
+    // The last reading taken, which is the final BP; null without BP
+    public BpReading getFinalBp() {
+        return BpScreeningRules.lastReading(getBpReadings());
+    }
+
+    private static void addIfEntered(List<BpReading> readings, BpReading reading) {
+        if (reading != null) readings.add(reading);
     }
 
     public String getBpdia() {

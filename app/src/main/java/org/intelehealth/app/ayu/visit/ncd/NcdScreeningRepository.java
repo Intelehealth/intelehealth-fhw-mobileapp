@@ -104,6 +104,19 @@ public class NcdScreeningRepository {
         save(visitUuid, UuidDictionary.CBAC_SCORE, NcdScreeningValues.cbacScore(state.getTotalScore()));
     }
 
+    // Written only when it changes, so showing the summary again leaves the saved outcome alone
+    public void saveOutcome(String visitUuid, String value) {
+        if (value == null) return;
+        try {
+            String encounterUuid = mEncounterDAO.getEmergencyEncounters(visitUuid, UuidDictionary.ENCOUNTER_NCD_SCREENING);
+            if (encounterUuid != null && value.equals(mObsDAO.getObsValue(encounterUuid, UuidDictionary.NCD_SCREENING_OUTCOME))) return;
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+            return;
+        }
+        save(visitUuid, UuidDictionary.NCD_SCREENING_OUTCOME, value);
+    }
+
     // One obs per concept: saving again updates it instead of adding another
     private void save(String visitUuid, String conceptUuid, String value) {
         try {

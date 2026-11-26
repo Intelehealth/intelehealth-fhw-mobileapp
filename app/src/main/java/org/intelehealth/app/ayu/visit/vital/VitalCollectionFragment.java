@@ -45,6 +45,9 @@ import org.intelehealth.app.ayu.visit.VisitCreationActionListener;
 import org.intelehealth.app.ayu.visit.VisitCreationActivity;
 import org.intelehealth.app.ayu.visit.common.VisitUtils;
 import org.intelehealth.app.ayu.visit.model.BMIStatus;
+import org.intelehealth.app.ayu.visit.ncd.BpReading;
+import org.intelehealth.app.ayu.visit.ncd.BpScreeningRules;
+import org.intelehealth.app.ayu.visit.ncd.NcdScreeningPlan;
 import org.intelehealth.app.ayu.visit.model.CommonVisitData;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
@@ -105,6 +108,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     TextView tv_hbac_group_value,tv_hbac_group_lbl;
     private List<PatientVital> mPatientVitalList;
     private VitalPreference vitalPref;
+    // BP readings card of an NCD screening visit: readings 2 and 3, the wait countdown and when Next is allowed
+    private BpReadingsController mBpReadings;
+    // Reopened from the Vitals summary or Visit summary, so the vitals were already saved
+    private boolean mVitalsSaved;
 
     public VitalCollectionFragment() {
         // Required empty public constructor
@@ -117,6 +124,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         fragment.mIsEditMode = isEditMode;
         fragment.results = vitalsObject;
+        // The summary hands back the saved vitals; Visit summary opens in edit mode
+        fragment.mVitalsSaved = isEditMode || vitalsObject != null;
 
         fragment.patientUuid = commonVisitData.getPatientUuid();//intent.getStringExtra("patientUuid");
         fragment.visitUuid = commonVisitData.getVisitUuid(); // intent.getStringExtra("visitUuid");
@@ -268,6 +277,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         mBloodGroupCardView = mRootView.findViewById(R.id.ll_blood_group_container);
 
+        // Set up before saved values are restored (edit) and before the labels get their asterisk, as both use it.
+        // Whenever a reading changes, Next is re-checked.
+        mBpReadings = new BpReadingsController(mRootView, mBpSysEditText, mBpDiaEditText,
+                () -> setDisabledSubmit(!isValidaForm()));
+        // The card only turns on when this visit is offered HTN screening; other visits keep the single BP
+        mBpReadings.setActive(BpScreeningRules.usesMultipleReadings(ncdScreeningPlan()));
+        // Saved BP readings of these visits can't be changed from the summaries
+        if (mVitalsSaved) mBpReadings.markSaved();
+
         //showHeightListing();
 
 
@@ -335,6 +353,54 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         return mRootView;
     }
 
+
+    // NCD screening plan of this visit; null without NCD screening
+    @Nullable
+    private NcdScreeningPlan ncdScreeningPlan() {
+        return getActivity() instanceof VisitCreationActivity ? ((VisitCreationActivity) getActivity()).getNcdScreeningPlan() : null;
+    }
+
+    // Empty BP is an error when the vitals config makes it mandatory, or on visits with the readings card,
+    // where Next stays disabled until the readings are entered
+    private boolean isBpMandatory(CardView card) {
+        return (mBpReadings != null && mBpReadings.isActive())
+                || (card.getTag() != null && ((PatientVital) card.getTag()).isMandatory());
+    }
+
+    // Saves readings 2 and 3 as extra obs of the same SBP/DBP concepts, with the reading number in the obs comment.
+    // Only readings that were taken are saved. Reading 1 is saved by the usual vitals code with comment "1".
+    private void insertLaterBpReadings(ObsDAO obsDAO, @Nullable PatientVital sbp, @Nullable PatientVital dbp) {
+        if (!mBpReadings.isActive() || sbp == null || dbp == null) return;
+        for (int number = 2; number <= BpScreeningRules.MAX_READINGS; number++) {
+            String sys = mBpReadings.systolic(number), dia = mBpReadings.diastolic(number);
+            if (sys.isEmpty() || dia.isEmpty()) continue;
+            insertBpObs(obsDAO, sbp.getUuid(), sys, number);
+            insertBpObs(obsDAO, dbp.getUuid(), dia, number);
+        }
+    }
+
+    // One BP obs of the vitals encounter, built like the other vitals obs, plus its reading number as the comment
+    private void insertBpObs(ObsDAO obsDAO, String conceptUuid, String value, int readingNumber) {
+        ObsDTO obsDTO = new ObsDTO();
+        obsDTO.setConceptuuid(conceptUuid);
+        obsDTO.setEncounteruuid(encounterVitals);
+        obsDTO.setCreator(sessionManager.getCreatorID());
+        obsDTO.setValue(value);
+        obsDTO.setComments(String.valueOf(readingNumber));
+        obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
+        try {
+            obsDAO.insertObs(obsDTO);
+        } catch (DAOException e) {
+            FirebaseCrashlytics.getInstance().recordException(e);
+        }
+    }
+
+    // Stops the BP countdown so it doesn't keep ticking on a destroyed view
+    @Override
+    public void onDestroyView() {
+        if (mBpReadings != null) mBpReadings.release();
+        super.onDestroyView();
+    }
 
     private void setDataIfExist() {
         vitalPref = SessionManager.getInstance(getContext()).getVitalPreference();
@@ -429,12 +495,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.SBP)) {
                 mSBPCardView.setVisibility(View.VISIBLE);
                 mSBPCardView.setTag(patientVital);
-                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_bp_sys_lbl));
+                // Asterisk also when the readings card is on, since BP is then required
+                appendMandatorySing(patientVital.isMandatory() || mBpReadings.isActive(), mRootView.findViewById(R.id.tv_bp_sys_lbl));
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.DBP)) {
                 mDBPCardView.setVisibility(View.VISIBLE);
                 mDBPCardView.setTag(patientVital);
-                appendMandatorySing(patientVital.isMandatory(), mRootView.findViewById(R.id.tv_bp_dia_lbl));
+                // Asterisk also when the readings card is on, since BP is then required
+                appendMandatorySing(patientVital.isMandatory() || mBpReadings.isActive(), mRootView.findViewById(R.id.tv_bp_dia_lbl));
 
             } else if (patientVital.getVitalKey().equals(PatientVitalConfigKeys.PULSE)) {
                 mPulseCardView.setVisibility(View.VISIBLE);
@@ -509,6 +577,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 editText.setText("");
                 return;
             }
+            // Reading 1 decides whether readings 2 and 3 are needed: a change may start the wait or clear them
+            if (mBpReadings != null && (editText == mBpSysEditText || editText == mBpDiaEditText)) mBpReadings.evaluate();
             boolean isValid = isValidaForm();
             updatePreference();
             setDisabledSubmit(!isValid);
@@ -619,7 +689,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
         String bpDia = mBpDiaEditText.getText().toString().trim();
         if (bpSysVal.isEmpty()) {
-            if (mSBPCardView.getTag() != null && ((PatientVital) mSBPCardView.getTag()).isMandatory()) {
+            // Required when the config says so or the readings card is on
+            if (isBpMandatory(mSBPCardView)) {
                 mBpSysErrorTextView.setText(getString(R.string.error_field_required));
                 mBpSysErrorTextView.setVisibility(View.VISIBLE);
                 //mBpSysEditText.requestFocus();
@@ -628,14 +699,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else {
                 if (bpDia.isEmpty()) {
                     mBpSysErrorTextView.setVisibility(View.GONE);
-                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                 } else {
                     mBpSysErrorTextView.setVisibility(View.VISIBLE);
                     mBpSysErrorTextView.setText(getString(R.string.error_field_required));
                     mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
 
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
 
                     return false;
                 }
@@ -651,7 +722,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
 
                 mBpDiaErrorTextView.setVisibility(View.GONE);
-                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
 
                 return false;
                 //return;
@@ -659,7 +730,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             if (bpDia.isEmpty()) {
                 mBpSysErrorTextView.setVisibility(View.GONE);
-                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
             } else {
                 int bpSysInt = Integer.parseInt(bpSysVal);
                 int bpDiaInt = Integer.parseInt(bpDia);
@@ -669,15 +740,15 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     mBpSysEditText.setBackgroundResource(R.drawable.input_field_error_bg_ui2);
 
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
 
                     return false;
                 } else {
                     mBpSysErrorTextView.setVisibility(View.GONE);
-                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
 
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                 }
             }
         }
@@ -688,7 +759,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
         String bpSys = mBpSysEditText.getText().toString().trim();
 
         if (bpDiaVal.isEmpty()) {
-            if (mDBPCardView.getTag() != null && ((PatientVital) mDBPCardView.getTag()).isMandatory()) {
+            // Required when the config says so or the readings card is on
+            if (isBpMandatory(mDBPCardView)) {
                 mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
                 mBpDiaErrorTextView.setVisibility(View.VISIBLE);
                 //mBpDiaEditText.requestFocus();
@@ -697,7 +769,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             } else {
                 if (bpSys.isEmpty()) {
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                 } else {
                     mBpDiaErrorTextView.setVisibility(View.VISIBLE);
                     mBpDiaErrorTextView.setText(getString(R.string.error_field_required));
@@ -718,7 +790,7 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             }
             if (bpSys.isEmpty()) {
                 mBpDiaErrorTextView.setVisibility(View.GONE);
-                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
             } else {
                 int bpSysInt = Integer.parseInt(bpSys);
                 int bpDiaInt = Integer.parseInt(bpDiaVal);
@@ -729,10 +801,10 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     return false;
                 } else {
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
 
                     mBpSysErrorTextView.setVisibility(View.GONE);
-                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
 
                 }
             }
@@ -908,8 +980,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             mBloodGroupTextView.setBackgroundResource(R.drawable.bg_input_fieldnew);
         }
 
-
-        return isValid;
+        // Next stays disabled until every BP reading the rules call for is entered
+        return isValid && (mBpReadings == null || mBpReadings.isComplete());
     }
 
     private void setDisabledSubmit(boolean disableNow) {
@@ -968,6 +1040,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
 
             if (results.getBpdia() != null && !results.getBpdia().isEmpty())
                 mBpDiaEditText.setText(results.getBpdia());
+
+            // Readings 2 and 3 entered earlier in this visit, e.g. when coming back from the Vitals summary
+            mBpReadings.restore(results.getBpsys2(), results.getBpdia2(), results.getBpsys3(), results.getBpdia3());
 
 
             if (results.getPulse() != null && !results.getPulse().isEmpty())
@@ -1076,18 +1151,30 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
     public void loadSavedDateForEditFromDB() {
 
         SQLiteDatabase db = IntelehealthApplication.inteleHealthDatabaseHelper.getWritableDatabase();
-        String[] columns = {"value", " conceptuuid"};
+        // comments holds the BP reading number on NCD screening visits
+        String[] columns = {"value", " conceptuuid", "comments"};
         String visitSelection = "encounteruuid = ? and voided!='1'";
         String[] visitArgs = {encounterVitals};
+        // Saved BP readings 2 and 3, indexed [reading number][0 = systolic, 1 = diastolic]
+        String[][] laterReadings = new String[BpScreeningRules.MAX_READINGS + 1][2];
         Cursor visitCursor = db.query("tbl_obs", columns, visitSelection, visitArgs, null, null, null);
         if (visitCursor.moveToFirst()) {
             do {
                 String dbConceptID = visitCursor.getString(visitCursor.getColumnIndex("conceptuuid"));
                 String dbValue = visitCursor.getString(visitCursor.getColumnIndex("value"));
-                parseData(dbConceptID, dbValue);
+                int readingNumber = BpReading.numberFromComment(visitCursor.getString(visitCursor.getColumnIndex("comments")));
+                boolean isBp = UuidDictionary.SYSTOLIC_BP.equals(dbConceptID) || UuidDictionary.DIASTOLIC_BP.equals(dbConceptID);
+                // Readings 2 and 3 go to the card; reading 1 (or a BP without a number) fills the usual BP fields
+                if (isBp && readingNumber > 1) {
+                    laterReadings[readingNumber][UuidDictionary.SYSTOLIC_BP.equals(dbConceptID) ? 0 : 1] = dbValue;
+                } else {
+                    parseData(dbConceptID, dbValue);
+                }
             } while (visitCursor.moveToNext());
         }
         visitCursor.close();
+        // After reading 1 is in its fields, so the card can check which readings are still needed
+        mBpReadings.restore(laterReadings[2][0], laterReadings[2][1], laterReadings[3][0], laterReadings[3][1]);
     }
 
     private void parseData(String concept_id, String value) {
@@ -1277,11 +1364,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         //mBpSysErrorTextView.setVisibility(View.GONE);
-                        //mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        //mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                         String bpDia = mBpDiaEditText.getText().toString().trim();
                         if (bpDia.isEmpty()) {
                             mBpSysErrorTextView.setVisibility(View.GONE);
-                            mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                            mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                         } else {
                             int bpSysInt = Integer.parseInt(abc1);
                             int bpDiaInt = Integer.parseInt(bpDia);
@@ -1293,14 +1380,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                                 break;
                             } else {
                                 mBpSysErrorTextView.setVisibility(View.GONE);
-                                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                                mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                             }
                         }
                     }
 //       }
                 } else {
                     mBpSysErrorTextView.setVisibility(View.GONE);
-                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpSysEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                 }
 
             } else if (i == 1) {
@@ -1318,11 +1405,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                         break;
                     } else {
                         //mBpDiaErrorTextView.setVisibility(View.GONE);
-                        //mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                        //mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                         String bpSys = mBpSysEditText.getText().toString().trim();
                         if (bpSys.isEmpty()) {
                             mBpDiaErrorTextView.setVisibility(View.GONE);
-                            mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                            mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                         } else {
                             int bpSysInt = Integer.parseInt(bpSys);
                             int bpDiaInt = Integer.parseInt(abc1);
@@ -1334,14 +1421,14 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                                 break;
                             } else {
                                 mBpDiaErrorTextView.setVisibility(View.GONE);
-                                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                                mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                             }
                         }
                     }
 //       }
                 } else {
                     mBpDiaErrorTextView.setVisibility(View.GONE);
-                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_fieldnew);
+                    mBpDiaEditText.setBackgroundResource(R.drawable.bg_input_field_lockable);
                 }
 
             } else if (i == 5) {
@@ -1470,6 +1557,11 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
             results.setPulse((mPulseEditText.getText().toString()));
             results.setBpdia((mBpDiaEditText.getText().toString()));
             results.setBpsys((mBpSysEditText.getText().toString()));
+            // Readings 2 and 3 for the Vitals summary; empty when not taken
+            results.setBpsys2(mBpReadings.systolic(2));
+            results.setBpdia2(mBpReadings.diastolic(2));
+            results.setBpsys3(mBpReadings.systolic(3));
+            results.setBpdia3(mBpReadings.diastolic(3));
             if (!mTemperatureEditText.getText().toString().isEmpty()) {
                 if (configUtils.fahrenheit()) {
                     results.setTemperature(convertFtoC(TAG, mTemperatureEditText.getText().toString()));
@@ -1728,6 +1820,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpsys());
+                // Numbered like readings 2 and 3 so the server can tell them apart
+                if (mBpReadings.isActive()) obsDTO.setComments("1");
                 obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
@@ -1745,6 +1839,8 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                 obsDTO.setEncounteruuid(encounterVitals);
                 obsDTO.setCreator(sessionManager.getCreatorID());
                 obsDTO.setValue(results.getBpdia());
+                // Reading 1, numbered as for systolic above
+                if (mBpReadings.isActive()) obsDTO.setComments("1");
                 obsDTO.setConceptsetuuid(UuidDictionary.OBS_TYPE_VITAL_SET);
 
                 try {
@@ -1753,6 +1849,9 @@ public class VitalCollectionFragment extends Fragment implements View.OnClickLis
                     FirebaseCrashlytics.getInstance().recordException(e);
                 }
             }
+
+            // Readings 2 and 3 after reading 1; nothing is added on visits without the readings card
+            insertLaterBpReadings(obsDAO, (PatientVital) mSBPCardView.getTag(), (PatientVital) mDBPCardView.getTag());
 
             patientVital = (PatientVital) mTemperatureCardView.getTag();
             if ((patientVital != null && patientVital.isMandatory()) || (patientVital != null && !results.getTemperature().isEmpty())) {

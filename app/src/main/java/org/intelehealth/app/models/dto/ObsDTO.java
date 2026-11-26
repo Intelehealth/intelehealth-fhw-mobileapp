@@ -29,7 +29,8 @@ public class ObsDTO {
     private Integer voided;
 
 
-    @SerializedName("comments")
+    // The pull sends "comment"
+    @SerializedName(value = "comments", alternate = {"comment"})
     @Expose
     private String comments;
 

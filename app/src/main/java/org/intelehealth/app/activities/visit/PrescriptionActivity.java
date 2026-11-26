@@ -109,6 +109,7 @@ import org.intelehealth.app.app.IntelehealthApplication;
 import org.intelehealth.app.appointment.dao.AppointmentDAO;
 import org.intelehealth.app.appointment.model.AppointmentInfo;
 import org.intelehealth.app.ayu.visit.model.VisitSummaryData;
+import org.intelehealth.app.ayu.visit.ncd.BpReading;
 import org.intelehealth.app.database.dao.EncounterDAO;
 import org.intelehealth.app.database.dao.ObsDAO;
 import org.intelehealth.app.database.dao.PatientsDAO;
@@ -3178,6 +3179,12 @@ public class PrescriptionActivity extends BaseActivity implements NetworkUtils.I
                 }
             } catch (SQLException e) {
                 FirebaseCrashlytics.getInstance().recordException(e);
+            }
+            // On an NCD screening visit the BP shown is the final (last) reading
+            BpReading finalBp = ObsDAO.getFinalBpReading(vitalsUUID);
+            if (finalBp != null) {
+                bpSys.setValue(String.valueOf(finalBp.getSystolic()));
+                bpDias.setValue(String.valueOf(finalBp.getDiastolic()));
             }
         }
 

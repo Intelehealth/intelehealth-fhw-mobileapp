@@ -121,5 +121,7 @@ public class UuidDictionary {
     public static final String NCD_ELIGIBILITY = "d4d9427f-2699-4c16-92c7-544822b6e014";
     public static final String CBAC_QUESTIONNAIRE = "a710ee70-870f-49e0-8da1-27d4b7de5552";
     public static final String CBAC_SCORE = "56e0692b-6c07-40d4-8c3e-44b426a5463b";
+    // Camp referral result of the screening, same uuid on staging and prod
+    public static final String NCD_SCREENING_OUTCOME = "b986dd07-699c-4672-a77e-92320f797d35";
 
 }

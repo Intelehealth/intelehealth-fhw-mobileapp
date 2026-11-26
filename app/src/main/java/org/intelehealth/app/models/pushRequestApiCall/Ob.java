@@ -14,7 +14,8 @@ public class Ob {
     @SerializedName("value")
     @Expose
     private String value;
-    @SerializedName("comments")
+    // pushdata saves the obs comment only from "comment"; it dropped "comments"
+    @SerializedName("comment")
     @Expose
     private String comments;
     public String getUuid() {

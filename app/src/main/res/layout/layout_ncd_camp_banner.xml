@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Camp eligibility of an NCD screening visit, on Visit summary -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ncd_camp_banner"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/toolbar_margin_left"
+    android:layout_marginTop="20dp"
+    android:layout_marginEnd="@dimen/toolbar_margin_left"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/iv_ncd_camp_icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:contentDescription="@null"
+        android:padding="10dp"
+        android:src="@drawable/baseline_photo_camera_24" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_ncd_camp_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/find_patient_hint_size"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_ncd_camp_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:lineSpacingExtra="3sp"
+            android:textColor="@color/textview_color"
+            android:textSize="@dimen/find_patient_hint_size" />
+    </LinearLayout>
+</LinearLayout>
