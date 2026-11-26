@@ -1,5 +1,6 @@
 package org.intelehealth.config.room.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
@@ -73,5 +74,10 @@ data class FeatureActiveStatus(
 
     @SerializedName("patient_draft_survey")
     var activeStatusPatientDraftSurvey: Boolean = true
+
+    // NCD (DM & HTN) screening; off unless the admin config publishes it as on
+    @SerializedName("ncd_section")
+    @ColumnInfo(defaultValue = "0")
+    var activeStatusNcd: Boolean = false
 
 }

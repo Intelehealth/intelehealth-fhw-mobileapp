@@ -24,6 +24,16 @@ public class NcdScreeningPlanTest {
     }
 
     @Test
+    public void ncdSwitchedOffHidesBothAndKeepsOtherProtocols() {
+        NcdScreeningPlan plan = NcdScreeningPlan.ncdSwitchedOff();
+        assertTrue(plan.isHidden(DM));
+        assertTrue(plan.isHidden(HTN));
+        assertFalse(plan.isHidden("Fever"));
+        assertEquals(SkipReason.NCD_SWITCHED_OFF, plan.getDmSkipReason());
+        assertEquals(SkipReason.NCD_SWITCHED_OFF, plan.getHtnSkipReason());
+    }
+
+    @Test
     public void urgentHidesBoth() {
         NcdScreeningPlan plan = NcdScreeningPlan.of(Result.URGENT, "NCD_KNOWN_CASE_NONE", null);
         assertTrue(plan.isHidden(DM));

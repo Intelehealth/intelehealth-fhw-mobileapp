@@ -1929,6 +1929,9 @@ public class VisitCreationActivity extends BaseActivity implements
 
     public FeatureActiveStatus getFeatureActiveStatus() { return featureActiveStatus; }
 
+    // NCD screening switched on in the admin config
+    public boolean isNcdEnabled() { return featureActiveStatus != null && featureActiveStatus.getActiveStatusNcd(); }
+
     public void setTitle(int screenId) {
         Timber.tag(TAG).d("setTitle=>%s", screenId);
         int currentScreenIndex = 1; String title = "";

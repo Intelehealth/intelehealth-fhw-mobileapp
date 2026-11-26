@@ -49,6 +49,9 @@ data class ConfigResponse(
     val patientDiagnosticsSection: Boolean = true,
     @SerializedName("patient_draft_survey")
     val patientDraftSurvey: Boolean = true,
+    // Missing on servers without the NCD admin setting, which reads as off
+    @SerializedName("ncd_section")
+    val ncdSection: Boolean = false,
 
     @SerializedName("patient_visit_sections")
     val patientVisitSection: List<ActiveSection>,

@@ -32,6 +32,7 @@ import org.intelehealth.app.utilities.DialogUtils;
 import org.intelehealth.app.utilities.FlavorKeys;
 import org.intelehealth.app.utilities.SessionManager;
 import org.intelehealth.app.utilities.WebViewStatus;
+import org.intelehealth.config.room.entity.FeatureActiveStatus;
 
 import java.util.Locale;
 
@@ -41,6 +42,14 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
     SessionManager sessionManager = null;
     private AlertDialog loadingDialog;
     private CommonVisitData mCommonVisitData;
+    // NCD screening switched on in the admin config; off until the saved config says otherwise
+    private boolean mNcdEnabled;
+
+    @Override
+    protected void onFeatureActiveStatusLoaded(FeatureActiveStatus activeStatus) {
+        super.onFeatureActiveStatusLoaded(activeStatus);
+        mNcdEnabled = activeStatus.getActiveStatusNcd();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +103,7 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
 
     public void acceptConsent(View view) {
         //setResult(AppConstants.TELECONSULTATION_CONSENT_ACCEPT);
-        // Patients aged 30+ get the NCD screening consent before the visit
+        // Patients aged 30+ get the NCD screening consent before the visit, when NCD is switched on
         Class<?> next = isNcdConsentNeeded() ? NcdConsentActivity.class : VisitCreationActivity.class;
         Intent intent = new Intent(TeleconsultationConsentActivity.this, next);
         mCommonVisitData.setIntentTag("new");
@@ -104,7 +113,7 @@ public class TeleconsultationConsentActivity extends BaseActivity implements Web
     }
 
     private boolean isNcdConsentNeeded() {
-        if (BuildConfig.FLAVOR_client != FlavorKeys.NAS) return false;
+        if (BuildConfig.FLAVOR_client != FlavorKeys.NAS || !mNcdEnabled) return false;
         PatientDTO patient = PatientsDAO.getPatientDetailsByPatientUUID(mCommonVisitData.getPatientUuid());
         if (patient == null || TextUtils.isEmpty(patient.getDateofbirth())) return false;
         return NcdEligibilityRules.isScreeningAge(DateAndTimeUtils.getFloat_Age_Year_Month(patient.getDateofbirth()));
